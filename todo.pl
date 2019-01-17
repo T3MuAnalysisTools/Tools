@@ -81,7 +81,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 
     printf("\n\nInstructions:");
     printf("\nsource  Install_MuPoGNtuple_$time to complete installation, compilation might take some time...  ");
-    printf("\nTo run test job do  'cmsRun muonPogNtuples_cfg.py'  in  $CMSSW_BASE/src/MuonPOGtreeProducer/Tools/test/ \n\n");
+    printf("\n\n\nTo run test job do  'cmsRun muonPogNtuples_cfg.py'  in  $CMSSW_BASE/src/MuonPOGtreeProducer/Tools/test/ \n\n");
 }
 
 if( $ARGV[0] eq "--DsTauTo3MNtuple"){
@@ -114,7 +114,7 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     printf("\n\nInstructions:");
     printf("\nsource  Install_DsTNtuple_$time to complete installation, compilation might take some time...  ");
-    printf("\nTo run test job do  'cmsRun analyze.py'  in  $CMSSW_BASE/src/DsTau23Mu/T3MNtuple/test/ \n\n");
+    printf("\n\n\nTo run test job do  'cmsRun analyze.py'  in  $CMSSW_BASE/src/DsTau23Mu/T3MNtuple/test/ \n\n");
 
 
 
