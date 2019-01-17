@@ -27,7 +27,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\nThis code requires input options. The syntax is:./todo.pl [--OPTION1]  [--OPTION2] ... ");
     printf("\nPlease choose from the following options:\n");
     printf("\n./todo.pl --help                                   Prints this message");
-    printf("\n./todo.pl --MuonPogNtuple <InstallDir>             Clone and compile MuonPog ntuple. Example: ./todo.pl --MuonPogNtuple workdir  ");
+    printf("\n./todo.pl --DsTauTo3MNtuple <dir>                  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
+    printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
     printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc6_amd64_gcc630 ");
     printf("\n                                                    --CMSSWRel <CMSSW_X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_9_4_4  \n\n");
 
@@ -54,7 +55,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 	$basedir=$ARGV[1];
     }
     else{
-	printf("\nWorkingDir for CMSSW is required. Please follow the syntax:./todo.pl --MuonPogNtuple <InstallDir> ");
+	printf("\nWorkingDir for CMSSW is required. Please follow the syntax:./todo.pl --MuonPogNtuple <dir> ");
 	printf("\nFor more details use: ./todo --help\n"); 
 	exit(0);
     }
@@ -81,5 +82,40 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
     printf("\n\nInstructions:");
     printf("\nsource  Install_MuPoGNtuple_$time to complete installation, compilation might take some time...  ");
     printf("\nTo run test job do  'cmsRun muonPogNtuples_cfg.py'  in  $CMSSW_BASE/src/MuonPOGtreeProducer/Tools/test/ \n\n");
+}
+
+if( $ARGV[0] eq "--DsTauTo3MNtuple"){
+    $currentdir=getcwd;
+    if($ARGV[1] ne ""){
+        $basedir=$ARGV[1];
+    }
+    else{
+        printf("\nWorkingDir for CMSSW is required. Please follow the syntax:./todo.pl ----DsTauTo3MNtuple <dir> ");
+        printf("\nFor more details use: ./todo --help\n");
+        exit(0);
+    }
+    printf("\nWorkingDir for CMSSW: $basedir");
+    printf("\nCurrentDir is: $currentdir \n");
+
+    system(sprintf("rm Install_DsTNtuple_$time"));
+    system(sprintf("echo \"export SCRAM_ARCH=\\\"$ARCH\\\"\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"source /cvmfs/cms.cern.ch/cmsset_default.sh\" >> Install_DsTNtuple_$time"));
+
+    system(sprintf("echo \"mkdir $basedir\" >>  Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd $basedir\" >>  Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cmsrel CMSSW_$CMSSWRel\" >>  Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd CMSSW_$CMSSWRel/src\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cmsenv\" >> Install_DsTNtuple_$time"));
+    $CMSPATH="/CMSSW_$CMSSWRel";
+    $CMSSW_BASE="$basedir$CMSPATH";
+    system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/DsTau23Mu.git\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"scram b -j 4\" >> Install_DsTNtuple_$time"));
+
+    printf("\n\nInstructions:");
+    printf("\nsource  Install_DsTNtuple_$time to complete installation, compilation might take some time...  ");
+    printf("\nTo run test job do  'cmsRun analyze.py'  in  $CMSSW_BASE/src/DsTau23Mu/T3MNtuple/test/ \n\n");
+
+
 
 }
