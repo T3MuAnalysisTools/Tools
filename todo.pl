@@ -90,7 +90,7 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
         $basedir=$ARGV[1];
     }
     else{
-        printf("\nWorkingDir for CMSSW is required. Please follow the syntax:./todo.pl ----DsTauTo3MNtuple <dir> ");
+        printf("\nWorkingDir for CMSSW is required. Please follow the syntax:./todo.pl --DsTauTo3MNtuple <dir> ");
         printf("\nFor more details use: ./todo --help\n");
         exit(0);
     }
@@ -109,6 +109,8 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
     $CMSPATH="/CMSSW_$CMSSWRel";
     $CMSSW_BASE="$basedir$CMSPATH";
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/DsTau23Mu.git\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/SkimProduction.git\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"scram b -j 4\" >> Install_DsTNtuple_$time"));
 
