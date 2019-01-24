@@ -17,7 +17,7 @@ $PWD=getcwd;
 
 $CMSSWRel="9_4_4";
 $ARCH="slc6_amd64_gcc530";
-
+$DsdevBranch = "master";
 #export SCRAM_ARCH= slc6_amd64_gcc630
 #source /cvmfs/cms.cern.ch/cmsset_default.sh
 
@@ -28,6 +28,7 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\nPlease choose from the following options:\n");
     printf("\n./todo.pl --help                                   Prints this message");
     printf("\n./todo.pl --DsTauTo3MNtuple <dir>                  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
+    printf("\n                                                                        --Branch <branch> developing branch; Default: master ");
     printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
     printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc6_amd64_gcc630 ");
     printf("\n                                                    --CMSSWRel <CMSSW_X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_9_4_4  \n\n");
@@ -94,6 +95,13 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
         printf("\nFor more details use: ./todo --help\n");
         exit(0);
     }
+    for($l=2;$l<$numArgs; $l++){
+	if($ARGV[$l] eq "--Branch"){
+	    $l++;
+	    $DsdevBranch=$ARGV[$l];
+	}
+    }
+
     printf("\nWorkingDir for CMSSW: $basedir");
     printf("\nCurrentDir is: $currentdir \n");
 
@@ -109,6 +117,9 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
     $CMSPATH="/CMSSW_$CMSSWRel";
     $CMSSW_BASE="$basedir$CMSPATH";
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/DsTau23Mu.git\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src/DsTau23Mu; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
+
+
     system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/SkimProduction.git\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
