@@ -1,9 +1,9 @@
 #include "Selection_Factory.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 
 #include "Example.h"
 #ifdef USE_cherepanov
-//#include "cherepanov/MyTest.h"
+#include "cherepanov/MyTest.h"
 
 #endif
 
@@ -22,7 +22,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   // WARNING: be aware of the consequences of "Contains". Make sure that Class "foo" is put after "foobar".
   if(Analysis.Contains("example"))s=new Example(Analysis,UncertType);
 #ifdef USE_cherepanov
-  //  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 
   else{

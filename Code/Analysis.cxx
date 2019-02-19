@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <stdlib.h> 
 
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 #include <string.h>
 #include <istream>
 #include <strstream>

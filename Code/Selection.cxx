@@ -1,5 +1,5 @@
 #include "Selection.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 
 #include "Tables.h"
 #include "Plots.h"

@@ -16,8 +16,7 @@
 #include <math.h>
 
 #include "HistoConfig.h"
-#include "TauDataFormat/TauNtuple/interface/DataMCType.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 
 std::vector<Long64_t> SkimConfig::SkimIDs;
 std::vector<float> SkimConfig::NEvents;
@@ -272,7 +271,7 @@ bool SkimConfig::CovertToHistoFormat() {
 			}
 		}
 	}
-
+	/*
 	for (unsigned int i = 0; i < SkimIDs_new.size(); i++) {
 		if (SkimIDs_new.at(i) == DataMCType::Signal) {
 			for (unsigned int j = 0; j < SkimIDs.size(); j++) {
@@ -290,6 +289,8 @@ bool SkimConfig::CovertToHistoFormat() {
 		}
 	}
 
+
+	*/
 	for (unsigned int j = 0; j < SkimIDs.size(); j++) {
 		if (!IDFlag.at(j)) {
 			Logger(Logger::Warning) << "unmatched DataMCType: " << SkimIDs.at(j) << std::endl;

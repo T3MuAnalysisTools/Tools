@@ -36,8 +36,6 @@
 
 #include "HistoConfig.h"
 
-#include "SimpleFits/FitSoftware/interface/PDGInfo.h"
-#include "TauDataFormat/TauNtuple/interface/TauDecay.h"
 
 // small struct needed to allow sorting indices by some value
 struct sortIdxByValue {
@@ -120,12 +118,7 @@ class Ntuple_Controller{
   HistoConfig HistoC;
 
   // Fit Variables
-  LorentzVectorParticle               theTau;
-  std::vector<LorentzVectorParticle>  daughter;
-  double                              LC_chi2;
-  double                              ndof;
-  bool                                fitStatus;
-  bool                                isInit;
+
 
   // muon correction related objects
   //  rochcor2012*   rmcor;
@@ -182,27 +175,14 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   bool isData()  {return (bool)Ntp->Event_isRealData;}
   void ThinTree();
 
-  // Set object corrections to be applied
-  void SetTauCorrections(TString tauCorr){tauCorrection = tauCorr;}
-  void SetMuonCorrections(TString muonCorr){muonCorrection = muonCorr;}
-  void SetElecCorrections(TString elecCorr){elecCorrection = elecCorr;}
-  void SetJetCorrections(TString jetCorr){jetCorrection = jetCorr;}
-  // corresponding getters
-  const TString& GetTauCorrections() const {return tauCorrection;}
-  const TString& GetMuonCorrections() const {return muonCorrection;}
-  const TString& GetElecCorrections() const {return elecCorrection;}
-  const TString& GetJetCorrections() const {return jetCorrection;}
+
+  bool                                isInit;
 
   // Information from input Ntuple path name
   TString GetInputNtuplePath();
   TString GetInputDatasetName();
   TString GetInputPublishDataName();
-  int getSampleHiggsMass();
-  int readHiggsMassFromString(TString input);
 
-  // resonance mass
-  int getHiggsSampleMassFromGenInfo();
-  double getResonanceMassFromGenInfo(bool useZ0 = true, bool useHiggs0 = true, bool useW = true);
 
   // Physics Variable Get Functions
   // Event Variables
@@ -210,25 +190,25 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   int GetStrippedMCID();
   /* // Vertex Information */
 
-   ULong64_t EventNumber(){return Ntp->EventNumber;}
-   Int_t RunNumber(){return Ntp->RunNumber;}
-   Int_t           LuminosityBlock(){return Ntp->lumi;}
-   Long64_t        triggerbit(){return Ntp->triggerbit;}
-   Long64_t           metfilterbit(){return Ntp->metfilterbit;}
+   ULong64_t EventNumber(){return Ntp->Event_EventNumber;}
+   Int_t RunNumber(){return Ntp->Event_RunNumber;}
+   Int_t           LuminosityBlock(){return Ntp->Event_luminosityBlock;}
+   //   Long64_t        triggerbit(){return Ntp->triggerbit;}
+   //   Long64_t           metfilterbit(){return Ntp->metfilterbit;}
 
-   Float_t         npu(){return Ntp->npu;}
-   Int_t           npv(){return Ntp->npv;}
-   Float_t         PUReweight(){return Ntp->PUReweight;}
-   Int_t           PUNumInteractions(){return Ntp->PUNumInteractions;}
-   Float_t         rho(){return Ntp->rho;}
-
-
+   //   Float_t         npu(){return Ntp->npu;}
+   //   Int_t           npv(){return Ntp->npv;}
+   //   Float_t         PUReweight(){return Ntp->PUReweight;}
+   //   Int_t           PUNumInteractions(){return Ntp->PUNumInteractions;}
+   //   Float_t         rho(){return Ntp->rho;}
 
 
 
+   float NVtx(){return Ntp->Vertex_N_primary;}
 
 
-
+   double DeltaPhi(double, double);
+   /*
    int NTriggers(){return Ntp->trigger_accept->size();}
    bool TriggerAccept(unsigned int i){return Ntp->trigger_accept->at(i);}
    TString TriggerName(unsigned int i){return Ntp->trigger_name->at(i);}
@@ -305,6 +285,6 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
  }
  bool hasSignalTauDecay(PDGInfo::PDGMCNumbering parent_pdgid,unsigned int &Boson_idx,TauDecay::JAK tau_jak, unsigned int &idx);
  bool hasSignalTauDecay(PDGInfo::PDGMCNumbering parent_pdgid,unsigned int &Boson_idx,unsigned int &tau1_idx, unsigned int &tau2_idx);
-
-} 
+   */
+};
 #endif

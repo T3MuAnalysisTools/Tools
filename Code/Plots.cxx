@@ -1,5 +1,5 @@
 #include "Plots.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 
 #include "THStack.h"
 #include "TLegend.h"
