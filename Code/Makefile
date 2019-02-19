@@ -14,8 +14,8 @@ SHELL = /bin/sh
 ###                              ###
 ####################################
 
-SHAREDLIBFLAGS =-L./CommonUtils/lib -lTauNtuple -L./DataFormats/lib -lDataFormats  -L./CommonUtils/lib -lClassicSVfit  -L./CommonUtils/lib -lTDCILib 
-SHAREDCXXFLAGS =-I./CommonUtils -I./DataFormats
+SHAREDLIBFLAGS = #-L./CommonUtils/lib -lTauNtuple -L./DataFormats/lib -lDataFormats  -L./CommonUtils/lib -lClassicSVfit  -L./CommonUtils/lib -lTDCILib 
+SHAREDCXXFLAGS = #-I./CommonUtils -I./DataFormats
 SUBDIRS = CommonUtils/ 
 TAUSPINERFLAG = 
 
@@ -42,9 +42,9 @@ TARGETS       =	Ntuple_Controller \
 		Tools \
 		SkimConfig \
 		HistoConfig \
-		Example \
-		Objects \
-		PUReweight 
+		Logger \
+		Example 
+
 
 
 CINTTARGETS = 
@@ -93,18 +93,18 @@ $(OBJS): %.o : %.cxx
 
 .PHONY: clean cleanall cleandf all dataformats install sharedlib 
 
-install: dataformats Analysis.exe
+install: Analysis.exe
 
 
-dataformats: 
-	@cd DataFormats; gmake install; cd ../
+#dataformats: 
+#	@cd DataFormats; gmake install; cd ../
 
 clean:
 	@rm i386_linux/*.o
 	@rm Analysis.exe
 
-cleandf:
-	@cd DataFormats; gmake clean; cd ../
+#cleandf:#=
+#	@cd DataFormats; gmake clean; cd ../
 
 cleanall:
 	@for subdir in $(SUBDIRS); do \
@@ -116,28 +116,4 @@ cleanall:
 	@rm Analysis.exe
 
 all: sharedlib dataformats install
-
-sharedlib:
-	@cd CommonUtils/TauPolSoftware/TauDecaysInterface/; make; cp bin/libTDCILib.so ../../lib; cd ../../../;
-	@for subdir in $(SUBDIRS); do \
-		echo "Making all in $$subdir"; \
-		if [ $$subdir == "TauSpiner/" ]; then \
-			echo with flag; \
-			cd $$subdir && $(MAKE) -f Makefile.standalone $(TAUSPINERFLAG) && cd ../ && pwd; \
-		else \
-			echo without flag ; \
-			cd $$subdir echo $(CXXFLAGS) && $(MAKE) -f Makefile.standalone CXXFLAGS+='$(CXXFLAGS)' ; \
-			pwd; \
-			if [ $$subdir == "CommonUtils/" ]; then \
-				echo $(USE_SVfit); \
-				if [ $(USE_SVfit) -eq 1 ]; then \
-					$(MAKE) -f Makefile.SVfitStandalone CXXFLAGS+='$(CXXFLAGS)' ; \
-					$(MAKE) -f Makefile.SVfitClassic CXXFLAGS+='$(CXXFLAGS)' ; \
-				fi \
-			fi \
-			&& cd ../ && pwd; \
-		fi \
-	done
-	$(install)
-
 

@@ -15,6 +15,12 @@ if($UserID eq "cherepan"){
     $UserName="Vladimir";
 }
 
+
+if($UserID eq "cherepan"){
+    $UserDir="--cherepanov";
+    $UserName="Vladimir";
+}
+
 $letter = substr($UserID, 0, 1);
 
 #Default values

@@ -11,15 +11,16 @@ if [ "${1}"  == "--help" ]; then
 else
 
     echo "Configuring Environment...."
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/DataFormats/lib
-    export DATAFORMATS_LIB=$PWD/DataFormats/lib/libDataFormats.so
-    export codedir=$PWD
+ #   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
+ #   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/DataFormats/lib
+ #   export DATAFORMATS_LIB=$PWD/DataFormats/lib/libDataFormats.so
     ## setup variables for make files
-#    export ROOTSYS=/libcern/root/5.34.18/sl6.3-x86_64
-#    source /libcern/gcc/4.9.3/sl6.5-x86_64/setup.sh
-#    export ROOTSYS=/libcern/root/6.06.08/sl6.6-x86_64
-#    ROOT="$PWD/../root/"
+    export codedir=$PWD
+    source /cvmfs/sft.cern.ch/lcg/external/gcc/4.9.1/x86_64-slc6-gcc48-opt/setup.sh
+    export ROOTSYS=/cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/
+    source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/bin/thisroot.sh
+ 
+
     if [ "${1}"  == "--useRoot" ]; then
         export ROOTSYS=${2}
         ROOT="$PWD/../root/"
@@ -31,7 +32,7 @@ else
 	if [ "${var}" == "--ReBuild" ]; then
 #	    rm -rf CommonUtils/SimpleFits 
 #	    rm -rf CommonUtils/TauDataFormat 
-	    rm -rf CommonUtils/lib
+#	    rm -rf CommonUtils/lib
 	    rm make.inc
 	fi
     done
@@ -56,13 +57,13 @@ else
     cd ..
     if [ $CommonUtils == 0 ]; then
 	cd CommonUtils
-	mkdir lib
+#	mkdir lib
 	
-	git clone https://github.com/cherepan/SimpleFits.git SimpleFits
+#	git clone https://github.com/cherepan/SimpleFits.git SimpleFits
 	
-	git clone https://github.com/cherepan/TauDataFormat.git TauDataFormat
+#	git clone https://github.com/cherepan/TauDataFormat.git TauDataFormat
 	
-	git clone https://github.com/TauPolSoftware/TauDecaysInterface.git TauPolSoftware/TauDecaysInterface
+#	git clone https://github.com/TauPolSoftware/TauDecaysInterface.git TauPolSoftware/TauDecaysInterface
 
 	cd ../
     fi
