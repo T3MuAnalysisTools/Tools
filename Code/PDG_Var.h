@@ -9,6 +9,7 @@ namespace PDG_Var {
   double W_width();
   double Top_mass();
   double Top_width();
+  double Phi_mass();
 }
 
 #endif

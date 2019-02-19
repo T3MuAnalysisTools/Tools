@@ -193,98 +193,133 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    ULong64_t EventNumber(){return Ntp->Event_EventNumber;}
    Int_t RunNumber(){return Ntp->Event_RunNumber;}
    Int_t           LuminosityBlock(){return Ntp->Event_luminosityBlock;}
-   //   Long64_t        triggerbit(){return Ntp->triggerbit;}
-   //   Long64_t           metfilterbit(){return Ntp->metfilterbit;}
-
-   //   Float_t         npu(){return Ntp->npu;}
-   //   Int_t           npv(){return Ntp->npv;}
-   //   Float_t         PUReweight(){return Ntp->PUReweight;}
-   //   Int_t           PUNumInteractions(){return Ntp->PUNumInteractions;}
-   //   Float_t         rho(){return Ntp->rho;}
-
-
-
    float NVtx(){return Ntp->Vertex_N_primary;}
-
-
    double DeltaPhi(double, double);
-   /*
-   int NTriggers(){return Ntp->trigger_accept->size();}
-   bool TriggerAccept(unsigned int i){return Ntp->trigger_accept->at(i);}
-   TString TriggerName(unsigned int i){return Ntp->trigger_name->at(i);}
-   bool         GetTriggerIndex(TString n,  int &i);
-   std::vector<int> GetVectorTriggers(TString n); 
-   std::vector<int> GetVectorTriggers(std::vector<TString> v);
-   std::vector<int> GetVectorTriggersFullMatch(std::vector<TString> v);
-   std::vector<int> GetVectorCrossTriggers(TString n1,TString n2,TString f1,TString f2);
-   bool  CheckIfAnyPassed(  std::vector<int> list);
- 
-   Int_t            DataMC_Type(){return Ntp->DataMC_Type_idx;}
 
-   unsigned int    NGenParts(){return Ntp->genpart_px->size();}
-   TLorentzVector Genpart_P4(unsigned int i){return TLorentzVector(Ntp->genpart_px->at(i), Ntp->genpart_py->at(i), Ntp->genpart_pz->at(i),Ntp->genpart_e->at(i));}
-   int Genpart_pdg(unsigned int i){return Ntp->genpart_pdg->at(i);}
-   int Genpart_status(unsigned int i){return Ntp->genpart_status->at(i);}
-   int Genpart_HMothInd(unsigned int i){return Ntp->genpart_HMothInd->at(i);}
-   int Genpart_MSSMHMothInd(unsigned int i){return Ntp->genpart_MSSMHMothInd->at(i);}
-   int Genpart_TopMothInd(unsigned int i){return Ntp->genpart_TopMothInd->at(i);}
-   int Genpart_TauMothInd(unsigned int i){return Ntp->genpart_TauMothInd->at(i);}
-   int Genpart_ZMothInd(unsigned int i){return Ntp->genpart_ZMothInd->at(i);}
-   int Genpart_WMothInd(unsigned int i){return Ntp->genpart_WMothInd->at(i);}
-   int Genpart_bMothInd(unsigned int i){return Ntp->genpart_bMothInd->at(i);}
-   int Genpart_HZDecayMode(unsigned int i){return Ntp->genpart_HZDecayMode->at(i);}
-   int Genpart_TopDecayMode(unsigned int i){return Ntp->genpart_TopDecayMode->at(i);}
-   int Genpart_WDecayMode(unsigned int i){return Ntp->genpart_WDecayMode->at(i);}
-   int Genpart_TauGenDecayMode(unsigned int i){return Ntp->genpart_TauGenDecayMode->at(i);}
-   int Genpart_TauGenDetailedDecayMode(unsigned int i){return Ntp->genpart_TauGenDetailedDecayMode->at(i);}
-   int Genpart_flags(unsigned int i){return Ntp->genpart_flags->at(i);}
+   unsigned int   NTracks(){return Ntp->Track_p4->size();}
+   TLorentzVector Track_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2), Ntp->Track_p4->at(i).at(3), Ntp->Track_p4->at(i).at(0));}
+   TVector3       Track_Poca(unsigned int i){return TVector3(Ntp->Track_poca->at(i).at(0),Ntp->Track_poca->at(i).at(1),Ntp->Track_poca->at(i).at(2));}
+   double         Track_normalizedChi2(unsigned int i){return Ntp->Track_normalizedChi2->at(i);}
+   double         Track_numberOfValidHits(unsigned int i){return Ntp->Track_numberOfValidHits->at(i);}
+   double         Track_charge(unsigned int i){return Ntp->Track_charge->at(i);}
+   double         Track_dxy(unsigned int i){return  Ntp->Track_dxy->at(i);}
+   double         Track_dz(unsigned int i){return  Ntp->Track_dz->at(i);}
+   double         Track_dxyError(unsigned int i){return  Ntp->Track_dxyError->at(i);}
+   double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
+
+   unsigned int   NMuons(){return Ntp->Muon_p4->size();}
+   TLorentzVector Muon_P4(unsigned int i){return TLorentzVector(Ntp->Muon_p4->at(i).at(1),Ntp->Muon_p4->at(i).at(2), Ntp->Muon_p4->at(i).at(3), Ntp->Muon_p4->at(i).at(0));}
+   TVector3       Muon_Poca(unsigned int i){return TVector3(Ntp->Muon_Poca->at(i).at(0),Ntp->Muon_Poca->at(i).at(1),Ntp->Muon_Poca->at(i).at(2));}
+   bool    Muon_isGlobalMuon(unsigned int i){return Ntp->Muon_isGlobalMuon->at(i);} 
+   bool    Muon_isStandAloneMuon(unsigned int i){return Ntp->Muon_isStandAloneMuon->at(i);}
+   bool    Muon_isTrackerMuon(unsigned int i){return Ntp->Muon_isTrackerMuon->at(i);}
+   bool    Muon_isCaloMuon(unsigned int i){return Ntp->Muon_isCaloMuon->at(i);}
+   bool    Muon_isIsolationValid(unsigned int i){return Ntp->Muon_isIsolationValid->at(i);}
+   bool    Muon_isQualityValid(unsigned int i){return Ntp->Muon_isQualityValid->at(i);}
+   bool    Muon_isTimeValid(unsigned int i){return Ntp->Muon_isTimeValid->at(i);}
+   float   Muon_emEt03(unsigned int i){return Ntp->Muon_emEt03->at(i);}
+   float   Muon_emVetoEt03(unsigned int i){return Ntp->Muon_emVetoEt03->at(i);}
+   float   Muon_hadEt03(unsigned int i){return Ntp->Muon_hadEt03->at(i);}
+   float   Muon_hadVetoEt03(unsigned int i){return Ntp->Muon_hadVetoEt03->at(i);}
+   int     Muon_nJets03(unsigned int i){return Ntp->Muon_nJets03->at(i);}
+   int     Muon_nTracks03(unsigned int i){return Ntp->Muon_nTracks03->at(i);}
+   float   Muon_sumPt03(unsigned int i){return Ntp->Muon_sumPt03->at(i);}
+   float   Muon_trackerVetoPt03(unsigned int i){return Ntp->Muon_trackerVetoPt03->at(i);}
+   float   Muon_emEt05(unsigned int i){return Ntp->Muon_emEt05->at(i);}
+   float   Muon_emVetoEt05(unsigned int i){return Ntp->Muon_emVetoEt05->at(i);}
+   float   Muon_hadEt05(unsigned int i){return Ntp->Muon_hadEt05->at(i);}
+   float   Muon_hadVetoEt05(unsigned int i){return Ntp->Muon_hadVetoEt05->at(i);}
+   int     Muon_nJets05(unsigned int i){return Ntp->Muon_nJets05->at(i);}
+   int     Muon_nTracks05(unsigned int i){return Ntp->Muon_nTracks05->at(i);}
+   float   Muon_sumPt05(unsigned int i){return Ntp->Muon_sumPt05->at(i);}
+   float   Muon_trackerVetoPt05(unsigned int i){return Ntp->Muon_trackerVetoPt05->at(i);}
+   float   Muon_sumChargedHadronPt03(unsigned int i){return Ntp->Muon_sumChargedHadronPt03->at(i);}
+   float   Muon_sumChargedParticlePt03(unsigned int i){return Ntp->Muon_sumChargedParticlePt03->at(i);}
+   float   Muon_sumNeutralHadronEt03(unsigned int i){return Ntp->Muon_sumNeutralHadronEt03->at(i);}
+   float   Muon_sumNeutralHadronEtHighThreshold03(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold03->at(i);}
+   float   Muon_sumPhotonEt03(unsigned int i){return Ntp->Muon_sumPhotonEt03->at(i);}
+   float   Muon_sumPhotonEtHighThreshold03(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold03->at(i);}
+   float   Muon_sumPUPt03(unsigned int i){return Ntp->Muon_sumPUPt03->at(i);}
+   float   Muon_sumChargedHadronPt04(unsigned int i){return Ntp->Muon_sumChargedHadronPt04->at(i);}
+   float   Muon_sumChargedParticlePt04(unsigned int i){return Ntp->Muon_sumChargedParticlePt04->at(i);}
+   float   Muon_sumNeutralHadronEt04(unsigned int i){return Ntp->Muon_sumNeutralHadronEt04->at(i);}
+   float   Muon_sumNeutralHadronEtHighThreshold04(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold04->at(i);}
+   float   Muon_sumPhotonEt04(unsigned int i){return Ntp->Muon_sumPhotonEt04->at(i);}
+   float   Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
+   float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
+
+   //   std::vector<std::vector<double> > *Muon_outerTrack_p4;
+   //   std::vector<std::vector<double> > *Muon_innerTrack_p4;
+   /*   unsigned int> *Muon_Track_idx;
+   int>          *Muon_hitPattern_pixelLayerwithMeas;
+   int>          *Muon_numberOfMatchedStations;
+   float>   *Muon_normChi2;
+   int>     *Muon_hitPattern_numberOfValidMuonHits;
+   int>     *Muon_innerTrack_numberofValidHits;
+   int>     *Muon_numberOfMatches;
+   int>     *Muon_numberOfChambers;
+   bool>    *Muon_isPFMuon;
+   bool>    *Muon_isRPCMuon;
+   int>     *Muon_numberofValidPixelHits;
+   int>     *Muon_trackerLayersWithMeasurement;
+   bool>    *Muon_combinedQuality_updatedSta;
+   double>  *Muon_combinedQuality_trkKink;
+   double>  *Muon_combinedQuality_glbKink;
+   double>  *Muon_combinedQuality_trkRelChi2;
+   double>  *Muon_combinedQuality_staRelChi2;
+   double>  *Muon_combinedQuality_chi2LocalPosition;
+   double>  *Muon_combinedQuality_chi2LocalMomentum;
+   double>  *Muon_combinedQuality_localDistance;
+   double>  *Muon_combinedQuality_globalDeltaEtaPhi;
+   bool>    *Muon_combinedQuality_tightMatch;
+   double>  *Muon_combinedQuality_glbTrackProbability;
+   double>  *Muon_prod_inner_outer_charge;
+
+   double>  *Muon_innerTrack_quality;
+   double>  *Muon_ptErrOverPt;
+   double>  *Muon_calEnergy_hadS9;
+   double>  *Muon_calEnergy_had;
+   double>  *Muon_calEnergy_emS25;
+   double>  *Muon_calEnergy_emS9;
+   double>  *Muon_calEnergy_em;
+   bool>    *Muon_segmentCompatibility;
+   bool>    *Muon_caloCompatibility;
+   bool>    *Muon_isGoodMuon_TM2DCompatibility;
+   double>  *Muon_innerTrack_validFraction;
+   double>  *Muon_innerTrack_pixelLayersWithMeasurement;
+   double>  *Muon_innerTrack_numberOfValidTrackerHits;
+   double>  *Muon_innerTrack_numberOfLostTrackerHits;
+   double>  *Muon_innerTrack_numberOfLostTrackerInnerHits;
+   double>  *Muon_innerTrack_numberOfLostTrackerOuterHits;
+   double>  *Muon_innerTrack_normalizedChi2;
+   double>  *Muon_outerTrack_normalizedChi2;
+   double>  *Muon_outerTrack_muonStationsWithValidHits;
+   bool>    *Muon_isGoodMuon_TrackerMuonArbitrated;
+   bool>    *Muon_isGoodMuon_TMOneStationTight;
+   bool>    *Muon_isGoodMuon_TMOneStationAngTight;
+   bool>    *Muon_isGoodMuon_TMLastStationTight;
+   bool>    *Muon_isGoodMuon_TMLastStationAngTight;
+   bool>    *Muon_isGoodMuon_TMLastStationOptimizedLowPtTight;
+   bool>    *Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight;
+   double>  *Muon_vmuonhitcomb_reco;
+   double>  *Muon_rpchits_reco; */
+   int      Muon_charge(unsigned int i){return Ntp->Muon_charge->at(i);}
+   /*   int>     *Muon_trackCharge;
+   int>     *Muon_pdgid;
+   double>  *Muon_B;
+   double>  *Muon_M;
+   std::vector<std::vector<double> > *Muon_par;
+   std::vector<std::vector<double> > *Muon_cov;*/
+   
+
+   unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
+   std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
 
 
-
- float  dxy(unsigned int i){return Ntp->dxy->at(i);}
- float  dz(unsigned int i){return Ntp->dz->at(i);}
- float  dxy_innerTrack(unsigned int i){return Ntp->dxy_innerTrack->at(i);}
- float  dz_innerTrack(unsigned int i){return Ntp->dz_innerTrack->at(i);}
- float  Daughters_rel_error_trackpt(unsigned int i){return Ntp->daughters_rel_error_trackpt->at(i);}
- TLorentzVector             MCParticle_p4(unsigned int i){return TLorentzVector(Ntp->MC_p4->at(i).at(1),Ntp->MC_p4->at(i).at(2),Ntp->MC_p4->at(i).at(3),Ntp->MC_p4->at(i).at(0));}
- int                        MCParticle_pdgid(unsigned int i){return Ntp->MC_pdgid->at(i);}
- int                        MCParticle_charge(unsigned int i){return Ntp->MC_charge->at(i);}
- //int              		  MCParticle_midx(unsigned int i){return Ntp->MC_midx->at(i);}
- int              		  MCParticle_midx(unsigned int i){return Ntp->MC_midx->at(i);}
- std::vector<int>           MCParticle_childpdgid(unsigned int i){return Ntp->MC_childpdgid->at(i);}
- std::vector<int>           MCParticle_childidx(unsigned int i){return Ntp->MC_childidx->at(i);}
- int						  MCParticle_status(unsigned int i){return Ntp->MC_status->at(i);}
- int 						  getMatchTruthIndex(TLorentzVector tvector, int pid, double dr);
- int						  matchTruth(TLorentzVector tvector);
- bool						  matchTruth(TLorentzVector tvector, int pid, double dr);
- // decay tree functionality
- bool						  MCParticle_hasMother(unsigned int i){return Ntp->MC_midx->at(i) >= 0;}
- void						  printMCDecayChainOfMother(unsigned int i, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // decay chain of object i
- void						  printMCDecayChainOfEvent(bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
- std::string				  MCParticleToString(unsigned int par, bool printStatus = false, bool printPt = false, bool printEtaPhi = false);
- bool CheckDecayID( unsigned int jak1,unsigned  int jak2);
- TLorentzVector GetTruthTauLV(unsigned int jak, unsigned  int number);
- TLorentzVector GetTruthTauProductLV(unsigned int jak, int pdgID, unsigned  int number);
- std::vector<TLorentzVector> GetTruthPionsFromA1(unsigned int number=0);
- std::vector<TLorentzVector> GetTruthPionsFromRho(unsigned int number=0);
- 
+   unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
+   std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
+   std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
 
 
-
- TLorentzVector MCTau_invisiblePart(unsigned int i);
- TLorentzVector MCTau_visiblePart(unsigned int i);
- 
- //Tau and decay products
- int NMCTauDecayProducts(unsigned int i){if(0<=i && i<(unsigned int)NMCTaus()) return Ntp->MCTauandProd_p4->at(i).size(); return 0;}
- TLorentzVector MCTauandProd_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->MCTauandProd_p4->at(i).at(j).at(1),Ntp->MCTauandProd_p4->at(i).at(j).at(2),Ntp->MCTauandProd_p4->at(i).at(j).at(3),Ntp->MCTauandProd_p4->at(i).at(j).at(0));}
- int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
- unsigned int MCTauandProd_midx(unsigned int i, unsigned int j){return Ntp->MCTauandProd_midx->at(i).at(j);}
- int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
- TVector3 MCTauandProd_Vertex(unsigned int i, unsigned int j){
-   return TVector3(Ntp->MCTauandProd_Vertex->at(i).at(j).at(0),Ntp->MCTauandProd_Vertex->at(i).at(j).at(1),Ntp->MCTauandProd_Vertex->at(i).at(j).at(2));
- }
- bool hasSignalTauDecay(PDGInfo::PDGMCNumbering parent_pdgid,unsigned int &Boson_idx,TauDecay::JAK tau_jak, unsigned int &idx);
- bool hasSignalTauDecay(PDGInfo::PDGMCNumbering parent_pdgid,unsigned int &Boson_idx,unsigned int &tau1_idx, unsigned int &tau2_idx);
-   */
 };
 #endif

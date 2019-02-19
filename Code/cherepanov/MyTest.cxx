@@ -2,6 +2,7 @@
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
+#include "PDG_Var.h"
 #include <iostream>
 #include "Logger.h"
 
@@ -59,8 +60,13 @@ void  MyTest::Configure(){
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events");
   // Setup Extra Histograms
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
-  //  NGoodVtx=HConfig.GetTH1D(Name+"_NGoodVtx","NGoodVtx",26,-0.05,25.5,"Number of Vertex","Events");
-  // NTrackperVtx=HConfig.GetTH1D(Name+"_NTracksperVtx","NTracksperVtx",151,-0.5,150.5,"Number of Track per Vertex","Events");
+  MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"Transverse Momenta of all stored Muons","Events");
+  MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
+  MuonsPhi=HConfig.GetTH1D(Name+"_MuonsPhi","All Muons #phi",25,-3.15,3.15,"Azimuthal angle of all stored Muons","Events");
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",25,0.2,1.5,"Mass of the #mu#mu pair","Events");
+  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
+  PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
+
 
   Selection::ConfigureHistograms();
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour);
@@ -71,15 +77,18 @@ void  MyTest::Configure(){
 
 void  MyTest::Store_ExtraDist(){
   Extradist1d.push_back(&NVtx);
-  // Extradist1d.push_back(&NGoodVtx);
-  // Extradist1d.push_back(&NTrackperVtx);
+  Extradist1d.push_back(&MuonsPt);
+  Extradist1d.push_back(&MuonsEta);
+  Extradist1d.push_back(&MuonsPhi);
+  Extradist1d.push_back(&PhiMass);
+  Extradist1d.push_back(&TripleMass);
+  Extradist2d.push_back(&PhiMassVsDsMass);
 }
 
 void  MyTest::doEvent(){
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
-  
   // Apply Selection
 
 
@@ -100,17 +109,41 @@ void  MyTest::doEvent(){
   ///////////////////////////////////////////////////////////
   // Add plots
   if(status){
+
     NVtx.at(t).Fill(Ntp->NVtx(),w);
-  //   unsigned int nGoodVtx=0;
-  //   for(unsigned int i=0;i<Ntp->NVtx();i++){
-  //     NTrackperVtx.at(t).Fill(Ntp->Vtx_Track_idx(i).size(),w);
-  //     if(Ntp->isVtxGood(i))nGoodVtx++;
-  //   }
-  //   NGoodVtx.at(t).Fill(nGoodVtx,w);
+
+    for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){
+      MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
+      MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
+      MuonsPhi.at(t).Fill(Ntp->Muon_P4(iMuon).Phi(),w);
+      std::cout<<" Muon index "<< iMuon <<std::endl;
+    }
+
+    double deltaMass(999.);
+    unsigned int pair_index(0);
+    if(Ntp->NTwoMuonsTrack()!=0){
+    for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
+
+      unsigned int muon_1 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(0);
+      unsigned int muon_2 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(1);
+
+      if( fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass())< deltaMass){
+	deltaMass =  fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass());
+	pair_index = i2M;
+      }
+    }
+    
+    PhiMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M(), w);
+    TripleMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+ 
+			   Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M(), w);
+    double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M();
+    double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+
+		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M();
+    PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
+
+    }
   }
 }
-
-
 
 
 
