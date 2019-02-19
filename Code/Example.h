@@ -4,7 +4,6 @@
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
-#include "SVFitStorage.h"
 
 class Example : public Selection {
 

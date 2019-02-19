@@ -3,8 +3,7 @@
 #include <cstdlib>
 #include "HistoConfig.h"
 #include <iostream>
-#include "SVFitObject.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "Logger.h"
 
 Example::Example(TString Name_, TString id_):
   Selection(Name_,id_)
@@ -92,7 +91,7 @@ void  Example::doEvent(){
   
   double wobs=1;
   double w;
-  if(!Ntp->isData()){w = Ntp->PUReweight();}
+  if(!Ntp->isData()){w=1; /*w = Ntp->PUReweight();*/}
   else{w=1;}
 
 
