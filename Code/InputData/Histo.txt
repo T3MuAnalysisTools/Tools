@@ -1,2 +1,3 @@
 Histo: 1   -1 Data Data 1
-Histo: 60  -1  MC MC_{1} 221
+Histo: 60  -1  MC1 MC_{1} 221
+Histo: 90  -1  MC2 MC_{2} 32
