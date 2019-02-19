@@ -16,9 +16,9 @@ if($UserID eq "cherepan"){
 }
 
 
-if($UserID eq "cherepan"){
-    $UserDir="--cherepanov";
-    $UserName="Vladimir";
+if($UserID eq "bjoshi"){
+    $UserDir="--joshi";
+    $UserName="Bhargav";
 }
 
 $letter = substr($UserID, 0, 1);

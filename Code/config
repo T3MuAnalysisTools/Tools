@@ -5,6 +5,7 @@ if [ "${1}"  == "--help" ]; then
     echo "--ReBuild                 Cleans out existing downloads and resets the configuration"
     echo "--useRoot <ROOTSYSPath>   Configures the enviroment to use root versions <ROOTSYSPath> instead of default version" 
     echo "--cherepanov              Configures the make file to compile files in the directory cherepanov"
+    echo "--joshi                   Configures the make file to compile files in the directory joshi"
 
 
 
@@ -48,6 +49,11 @@ else
 		echo "USE_cherepanov=1" >> make.inc
 	    fi
 
+	    if [ "${var}" == "--joshi" ]; then
+		echo "Configuring Code to use directory joshi"
+		echo "USE_joshi=1" >> make.inc
+	    fi
+
 	done
     fi
     
@@ -57,13 +63,6 @@ else
     cd ..
     if [ $CommonUtils == 0 ]; then
 	cd CommonUtils
-#	mkdir lib
-	
-#	git clone https://github.com/cherepan/SimpleFits.git SimpleFits
-	
-#	git clone https://github.com/cherepan/TauDataFormat.git TauDataFormat
-	
-#	git clone https://github.com/TauPolSoftware/TauDecaysInterface.git TauPolSoftware/TauDecaysInterface
 
 	cd ../
     fi

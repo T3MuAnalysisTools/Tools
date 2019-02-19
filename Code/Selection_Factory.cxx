@@ -8,6 +8,12 @@
 #endif
 
 
+#ifdef USE_joshi
+#include "joshi/MyTest.h"
+
+#endif
+
+
 Selection_Factory::Selection_Factory(){
 }
 
@@ -22,6 +28,10 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   // WARNING: be aware of the consequences of "Contains". Make sure that Class "foo" is put after "foobar".
   if(Analysis.Contains("example"))s=new Example(Analysis,UncertType);
 #ifdef USE_cherepanov
+  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+#endif
+
+#ifdef USE_joshi
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 

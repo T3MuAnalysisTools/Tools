@@ -59,6 +59,12 @@ ifdef USE_cherepanov
 endif
 
 
+ifdef USE_joshi
+	TARGETS += MyTest
+	DEFS += -DUSE_joshi=1
+endif
+
+
 
 HDRS          = $(TARGETS:=.h) 		
 SRCS          = $(TARGETS:=.cxx)  Analysis.cxx
@@ -77,6 +83,13 @@ VPATH = utilities:i386_linux
 ifdef USE_cherepanov
 	vpath %.cxx cherepanov
 	vpath %.h cherepanov
+endif
+
+
+
+ifdef USE_joshi
+	vpath %.cxx joshi
+	vpath %.h joshi
 endif
 
 vpath %.cxx CommonFiles
