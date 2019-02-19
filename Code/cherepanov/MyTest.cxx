@@ -61,6 +61,7 @@ void  MyTest::Configure(){
   // Setup Extra Histograms
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
   MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"Transverse Momenta of all stored Muons","Events");
+  MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
   MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
   MuonsPhi=HConfig.GetTH1D(Name+"_MuonsPhi","All Muons #phi",25,-3.15,3.15,"Azimuthal angle of all stored Muons","Events");
   PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
@@ -80,6 +81,7 @@ void  MyTest::Store_ExtraDist(){
   Extradist1d.push_back(&MuonsPt);
   Extradist1d.push_back(&MuonsEta);
   Extradist1d.push_back(&MuonsPhi);
+  Extradist1d.push_back(&MuonsPtRatio);
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&TripleMass);
   Extradist2d.push_back(&PhiMassVsDsMass);
@@ -132,6 +134,8 @@ void  MyTest::doEvent(){
       }
     }
     
+
+    MuonsPtRatio.at(t).Fill(Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0)).Pt()/Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1)).Pt(),w );
     PhiMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M(), w);
     TripleMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+ 
 			   Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M(), w);

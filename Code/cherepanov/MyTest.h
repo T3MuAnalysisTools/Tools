@@ -30,7 +30,7 @@ class MyTest : public Selection {
   std::vector<TH1D> PhiMass;
   std::vector<TH1D> TripleMass;
   std::vector<TH2D> PhiMassVsDsMass;
-
+  std::vector<TH1D>  MuonsPtRatio;
 
 };
 #endif
