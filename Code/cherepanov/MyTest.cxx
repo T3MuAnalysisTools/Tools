@@ -63,7 +63,7 @@ void  MyTest::Configure(){
   MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"Transverse Momenta of all stored Muons","Events");
   MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
   MuonsPhi=HConfig.GetTH1D(Name+"_MuonsPhi","All Muons #phi",25,-3.15,3.15,"Azimuthal angle of all stored Muons","Events");
-  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",25,0.2,1.5,"Mass of the #mu#mu pair","Events");
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
   TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
@@ -116,7 +116,6 @@ void  MyTest::doEvent(){
       MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
       MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
       MuonsPhi.at(t).Fill(Ntp->Muon_P4(iMuon).Phi(),w);
-      std::cout<<" Muon index "<< iMuon <<std::endl;
     }
 
     double deltaMass(999.);
