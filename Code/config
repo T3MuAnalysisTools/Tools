@@ -17,10 +17,9 @@ else
  #   export DATAFORMATS_LIB=$PWD/DataFormats/lib/libDataFormats.so
     ## setup variables for make files
     export codedir=$PWD
-    source /cvmfs/sft.cern.ch/lcg/external/gcc/4.9.1/x86_64-slc6-gcc48-opt/setup.sh
     export ROOTSYS=/cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/
     source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/bin/thisroot.sh
- 
+
 
     if [ "${1}"  == "--useRoot" ]; then
         export ROOTSYS=${2}
@@ -28,7 +27,7 @@ else
     fi
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib/
     export PATH=$PATH:$ROOTSYS/bin/
-    
+    source /cvmfs/sft.cern.ch/lcg/external/gcc/4.9.1/x86_64-slc6-gcc48-opt/setup.sh     
     for var in $@ ; do
 	if [ "${var}" == "--ReBuild" ]; then
 #	    rm -rf CommonUtils/SimpleFits 
