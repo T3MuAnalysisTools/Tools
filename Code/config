@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/zsh
 if [ "${1}"  == "--help" ]; then
     echo "Options for running this configuration file:"
     echo "--help                    Prints this message"
@@ -6,20 +6,14 @@ if [ "${1}"  == "--help" ]; then
     echo "--useRoot <ROOTSYSPath>   Configures the enviroment to use root versions <ROOTSYSPath> instead of default version" 
     echo "--cherepanov              Configures the make file to compile files in the directory cherepanov"
     echo "--joshi                   Configures the make file to compile files in the directory joshi"
-
-
-
 else
 
     echo "Configuring Environment...."
- #   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
- #   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/DataFormats/lib
- #   export DATAFORMATS_LIB=$PWD/DataFormats/lib/libDataFormats.so
     ## setup variables for make files
     export codedir=$PWD
     export ROOTSYS=/cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/
     source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/5.34.36/x86_64-slc6-gcc49-opt/root/bin/thisroot.sh
-
+    source init.sh
 
     if [ "${1}"  == "--useRoot" ]; then
         export ROOTSYS=${2}
