@@ -339,7 +339,7 @@ if( $ARGV[0] eq "--Local" ){
 			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
 			system(sprintf("chmod +x $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe 2>&1 | tee >(sed -r \\\"s/\\\\x1B\\\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\\\" > Set_$B.output) \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
-			system(sprintf("echo \"echo 'Completed Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"echo 'Science Completed' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 
 			# Setup Input.txt
 			system(sprintf("cp   $InputFile $OutputDir/workdir$set/Set_$B/Input.txt ")); 
@@ -381,14 +381,13 @@ if( $ARGV[0] eq "--Local" ){
     # print Instructions  
     printf("\n\nInstructions");
     printf("\nPlease make sure you have run:");
-    printf("\ngit config --global credential.helper 'cache --timeout=3600'");
-    printf("\ngit config --global credential.helper cache");
+    printf("\nvoms-proxy-init -voms cms -valid 192:00");
     printf("\nNow you can run the analysis.");
     printf("\nTo go to the Test workdir: cd  $OutputDir/workdir$set ");
     printf("\nTo compile the code in the workdir: source compile   $UserDir");
     printf("\nTo submit jobs to the batch queue: source Submit ");
     printf("\nTo combine jobs submitted to the batch queue: source Combine \n");
-    printf("\nTo test a single job: cd  $OutputDir/workdir$set; source compile   $UserDir; cd $OutputDir/workdir$set/Set_1; source Set_1 | tee log; cd ..\n");
+    printf("\nTo test a single job: cd  $OutputDir/workdir$set; source compile   $UserDir; cd $OutputDir/workdir$set/Set_1; ./Set_1 | tee log; cd ..\n");
 
 }
 
