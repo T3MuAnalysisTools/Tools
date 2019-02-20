@@ -18,6 +18,8 @@
 #include "HistoConfig.h"
 #include "Logger.h"
 
+using namespace std;
+
 std::vector<Long64_t> SkimConfig::SkimIDs;
 std::vector<float> SkimConfig::NEvents;
 std::vector<float> SkimConfig::NEventsErr;

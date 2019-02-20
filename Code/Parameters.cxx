@@ -15,6 +15,8 @@
 #include <cstdlib>
 #include <math.h>
 
+
+using namespace std;
 // Static var
 TString Parameters::file = "Tools/Par.dat";
 

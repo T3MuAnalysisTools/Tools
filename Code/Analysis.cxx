@@ -30,6 +30,8 @@
 #include "Parameters.h"
 #include "Plots.h"
 
+using namespace std;
+
 int main() {
 	Logger::Instance()->SetLevel(Logger::Info);
 	Logger(Logger::Info) << "\n\n\n================" << std::endl;

@@ -12,6 +12,8 @@
 #include <errno.h>
 #include <sstream>
 
+using namespace std;
+
 Selection::Selection(TString Name_, TString id_) :
 		Selection_Base(Name_, id_), HConfig(), NGoodFiles(0), NBadFiles(0), histsAreScaled(false), isStored(false), data(0) {
 	if (Name_)

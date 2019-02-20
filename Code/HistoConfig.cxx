@@ -16,6 +16,8 @@
 #include "TH1D.h"
 #include <math.h>
 
+using namespace std;
+
 // Static var
 std::vector<Long64_t>      HistoConfig::ID;
 std::vector<double>       HistoConfig::CS;

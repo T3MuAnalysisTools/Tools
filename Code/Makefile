@@ -3,7 +3,8 @@ include make.inc
 ### Defining Compiling variables              ###
 #################################################
 #-Wno-parentheses
-CXX           = c++ -Wno-deprecated -Wall -std=c++0x
+# -std=c++1y or -std=gnu++1y
+CXX           = c++ -Wno-deprecated -Wall -std=c++0x  -std=c++1y
 #-m32  -Wno-deprecated
 LD            = g++ -Wno-deprecated -Wall
 #-m32  -Wno-deprecated 
@@ -22,7 +23,10 @@ TAUSPINERFLAG =
 override CXXFLAGS += 
 ALLCXXFLAGS = $(CXXFLAGS) -I$(ROOTSYS)/include -c -I/include $(SHAREDCXXFLAGS) -c -I./ -c
 LDFLAGS       =  
-ROOTLIBS      =  -L$(ROOTSYS)/lib -L/usr/lib/ -L/lib/i686/  -lCore -lCint -lHist -lGraf  -lGraf3d -lGpad -lTree -lRint -lReflexDict -lReflex -lPostscript -lMatrix -lPhysics -lGui -LObj -lMinuit2 -lThread -lTreePlayer -lRIO -lMathCore -rdynamic -Wl,--rpath $(ROOTSYS)/lib
+
+ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)
+
+#ROOTLIBS      =  -L$(ROOTSYS)/lib -L/usr/lib/ -L/lib/i686/  -lCore -lCint -lHist -lGraf  -lGraf3d -lGpad -lTree -lRint -lReflexDict -lReflex -lPostscript -lMatrix -lPhysics -lGui -LObj -lMinuit2 -lThread -lTreePlayer -lRIO -lMathCore -rdynamic -Wl,--rpath $(ROOTSYS)/lib
 
 # -ldl -lpthread
 
