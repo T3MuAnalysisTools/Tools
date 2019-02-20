@@ -111,7 +111,7 @@ void Plots::Plot1D(std::vector<std::vector<TH1D> > histo, std::vector<int> colou
 			Logger(Logger::Debug) << "Setup plot " << histo.at(i_plot).at(0).GetTitle() << std::endl;
 
 			// set colours and legends of histograms
-			for (int i_hist = histo.at(i_plot).size() - 1; i_hist >= 0; i_hist--) {
+			for (int i_hist = int(histo.at(i_plot).size() - 1); i_hist >= 0; i_hist--) {
 				// don't draw histogram if colour is set to -999
 				if( colour.at(i_hist) == -999 ) continue;
 
@@ -120,7 +120,7 @@ void Plots::Plot1D(std::vector<std::vector<TH1D> > histo, std::vector<int> colou
 				histo.at(i_plot).at(i_hist).SetFillColor(colour.at(i_hist));
 
 				// combine histograms if they have the same legend
-				if (i_hist + 1 < histo.at(i_plot).size()) { // first element is always a new histogram
+				if (i_hist + 1 < int(histo.at(i_plot).size()) ) { // first element is always a new histogram
 					if (legend.at(i_hist) != legOfPreviousHist) {
 						legOfPreviousHist = legend.at(i_hist);
 						isNewHist = true;
