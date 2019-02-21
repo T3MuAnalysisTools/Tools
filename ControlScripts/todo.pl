@@ -192,7 +192,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     # User check
-    if($UserID ne "cherepan" or $UserID ne "wangjian" or $UserID ne "bjoshi" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -246,7 +246,7 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 if( $ARGV[0] eq "--Local" ){
 
     # User check
-    if($UserID ne "cherepan" or $UserID ne "wangjian" or $UserID ne "bjoshi" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
