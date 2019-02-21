@@ -14,6 +14,12 @@
 #endif
 
 
+#ifdef USE_wang
+#include "wang/MyTest.h"
+
+#endif
+
+
 Selection_Factory::Selection_Factory(){
 }
 
@@ -32,6 +38,11 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #endif
 
 #ifdef USE_joshi
+  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+#endif
+
+
+#ifdef USE_wang
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 

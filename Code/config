@@ -6,6 +6,7 @@ if [ "${1}"  == "--help" ]; then
     echo "--useRoot <ROOTSYSPath>   Configures the enviroment to use root versions <ROOTSYSPath> instead of default version" 
     echo "--cherepanov              Configures the make file to compile files in the directory cherepanov"
     echo "--joshi                   Configures the make file to compile files in the directory joshi"
+    echo "--wang                    Configures the make file to compile files in the directory wang"
 else
 
     echo "Configuring Environment...."
@@ -26,7 +27,6 @@ else
 	cd ../
     fi
 
-
     if [ "${1}"  == "--useRoot" ]; then
         export ROOTSYS=${2}
         ROOT="$PWD/../root/"
@@ -36,9 +36,7 @@ else
 
     for var in $@ ; do
 	if [ "${var}" == "--ReBuild" ]; then
-#	    rm -rf CommonUtils/SimpleFits 
-#	    rm -rf CommonUtils/TauDataFormat 
-#	    rm -rf CommonUtils/lib
+	    rm -rf CommonUtils/lib
 	    rm make.inc
 	fi
     done
@@ -47,8 +45,6 @@ else
     if [ $myINC == 0 ]; then
 	echo "# -*- mode: makefile-gmake -*-" >> make.inc
 	for var in $@ ; do
-		echo ${var}
-
 	    if [ "${var}" == "--cherepanov" ]; then
 		echo "Configuring Code to use directory cherepanov"
 		echo "USE_cherepanov=1" >> make.inc
@@ -59,11 +55,12 @@ else
 		echo "USE_joshi=1" >> make.inc
 	    fi
 
+
+	    if [ "${var}" == "--wang" ]; then
+		echo "Configuring Code to use directory wang"
+		echo "USE_wang=1" >> make.inc
+	    fi
 	done
     fi
-    
-
-
-    
     echo "Environment Configured"
 fi

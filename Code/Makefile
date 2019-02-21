@@ -68,6 +68,11 @@ ifdef USE_joshi
 	DEFS += -DUSE_joshi=1
 endif
 
+ifdef USE_wang
+	TARGETS += MyTest
+	DEFS += -DUSE_joshi=1
+endif
+
 
 
 HDRS          = $(TARGETS:=.h) 		
@@ -90,8 +95,13 @@ ifdef USE_cherepanov
 endif
 
 
-
 ifdef USE_joshi
+	vpath %.cxx joshi
+	vpath %.h joshi
+endif
+
+
+ifdef USE_wang
 	vpath %.cxx joshi
 	vpath %.h joshi
 endif

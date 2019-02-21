@@ -13,13 +13,21 @@ $UserName="";
 if($UserID eq "cherepan"){
     $UserDir="--cherepanov";
     $UserName="Vladimir";
-}
-
+} 
 
 if($UserID eq "bjoshi"){
     $UserDir="--joshi";
     $UserName="Bhargav";
 }
+
+
+if($UserID eq "wangjian"){
+    $UserDir="--wang";
+    $UserName="Jian";
+}
+
+
+
 
 $letter = substr($UserID, 0, 1);
 
@@ -38,7 +46,7 @@ $PWD=getcwd;
 $DsdevBranch = "master";
 
 if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
-    printf("\n ===========>>>>  Hello  $UserName ! <<<<=============\n\n");
+    printf("\n ===========>>>>  Bonjour $UserName ! <<<<=============\n\n");
     printf("\nThis code requires one input option. The syntax is:./todo.pl [OPTION]");
     printf("\nPlease choose from the following options:\n");
     printf("\n./todo.pl --help                                   Prints this message\n");
@@ -182,6 +190,13 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 }
 
 if( $ARGV[0] eq "--DsTauTo3MNtuple"){
+
+    # User check
+    if($UserID neq "cherepan" or $UserID neq "wangjian" or $UserID neq "bjoshi" ){
+	printf("\nUnrecognized user. Exit.\n"); 
+	exit(0);
+    }
+
     $currentdir=getcwd;
     if($ARGV[1] ne ""){
         $basedir=$ARGV[1];
@@ -229,6 +244,13 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
 
 if( $ARGV[0] eq "--Local" ){
+
+    # User check
+    if($UserID neq "cherepan" or $UserID neq "wangjian" or $UserID neq "bjoshi" ){
+	printf("\nUnrecognized user. Exit.\n"); 
+	exit(0);
+    }
+
     # Print out input parameters
     printf("Active directory will be: $OutputDir/workdir$set \n");
     printf("Input directory will be:  $InputDir \n");
