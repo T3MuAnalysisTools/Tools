@@ -228,16 +228,16 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
     system(sprintf("echo \"cd CMSSW_$CMSSWRel/src\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"cmsenv\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/DsTau23Mu.git\" >> Install_DsTNtuple_$time"));
-    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src/DsTau23Mu; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd DsTau23Mu; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
 
 
-    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd ../\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/SkimProduction.git\" >> Install_DsTNtuple_$time"));
-    system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"scram b -j 4\" >> Install_DsTNtuple_$time"));
 
     printf("\n\nInstructions:");
-    printf("\nsource  Install_DsTNtuple_$time to complete installation, compilation might take some time...  ");
+    printf("\nTo complete the installation do the following command (compilation might take some time ...):");
+    printf("\nsource  Install_DsTNtuple_$time");
     printf("\n\n\nTo run test job do  'cmsRun analyze.py'  in  $CMSSW_BASE/src/DsTau23Mu/T3MNtuple/test/ \n\n");
 }
 
