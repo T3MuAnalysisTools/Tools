@@ -9,6 +9,7 @@
 MyTest::MyTest(TString Name_, TString id_):
   Selection(Name_,id_)
 {
+  // This is a class constructor;
 }
 
 MyTest::~MyTest(){
@@ -22,6 +23,10 @@ MyTest::~MyTest(){
 
 void  MyTest::Configure(){
   // Setup Cut Values
+  // There are three vector for cuts:
+  // std::vector<double>   cut   contains the actual cut values, for example  
+  // if you want to introduce a cut on variables Var1, Var2, Var3 (Var1 =>< Val1,  
+  // Var2 =>< Val2 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -57,8 +62,10 @@ void  MyTest::Configure(){
     }
   } 
   // Setup NPassed Histogams
-  Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events");
+  Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
+  // Book here your histrogramms
+
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
   MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"Transverse Momenta of all stored Muons","Events");
   MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
@@ -69,14 +76,14 @@ void  MyTest::Configure(){
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
 
-  Selection::ConfigureHistograms();
-  HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour);
+  Selection::ConfigureHistograms(); //do not remove
+  HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
 
 
 
-void  MyTest::Store_ExtraDist(){
+void  MyTest::Store_ExtraDist(){ // dont forget to pushback your histrograms, otherwise they wont be propagated to the output
   Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&MuonsPt);
   Extradist1d.push_back(&MuonsEta);
@@ -87,7 +94,7 @@ void  MyTest::Store_ExtraDist(){
   Extradist2d.push_back(&PhiMassVsDsMass);
 }
 
-void  MyTest::doEvent(){
+void  MyTest::doEvent(){ // Method called on each event
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -101,8 +108,9 @@ void  MyTest::doEvent(){
   pass.at(TriggerOk)=true;
   
   double wobs=1;
-  double w;
-  if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */}
+  double w;  //  this is an event weights, one may intorduce any weights to the event, for exmaple PU. 
+             //  there can be several weights, e.g. w = w1*w2*w3 ...
+  if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
 
 
@@ -110,7 +118,12 @@ void  MyTest::doEvent(){
   bool status=AnalysisCuts(t,w,wobs);
   ///////////////////////////////////////////////////////////
   // Add plots
-  if(status){
+  // The status boolean is true if all elements in pass are true
+  // and false if at least one is false: status = true if 
+  // pass = (true, true, true ..., true)  and status = false
+  // if pass = (true, true, false, ..., true)
+
+  if(status){ // Only selected events pass this if statement
 
     NVtx.at(t).Fill(Ntp->NVtx(),w);
 
