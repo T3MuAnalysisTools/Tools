@@ -70,12 +70,11 @@ void  MyTest::Configure(){
   // Setup Extra Histograms
   // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
-  MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"Transverse Momenta of all stored Muons","Events");
+  MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"p_{T} of all stored Muons, GeV","Events");
   MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
   MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
-  MuonsPhi=HConfig.GetTH1D(Name+"_MuonsPhi","All Muons #phi",25,-3.15,3.15,"Azimuthal angle of all stored Muons","Events");
-  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
-  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair, GeV","Events");
+  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track, GeV","Events");
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
 
@@ -92,7 +91,6 @@ void  MyTest::Store_ExtraDist(){
   Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&MuonsPt);
   Extradist1d.push_back(&MuonsEta);
-  Extradist1d.push_back(&MuonsPhi);
   Extradist1d.push_back(&MuonsPtRatio);
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&TripleMass);
@@ -145,7 +143,6 @@ void  MyTest::doEvent(){
     for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){ // loop over muons
       MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
       MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
-      MuonsPhi.at(t).Fill(Ntp->Muon_P4(iMuon).Phi(),w);
     }
 
 
@@ -160,7 +157,7 @@ void  MyTest::doEvent(){
     if(Ntp->NTwoMuonsTrack()!=0){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
 
-      unsigned int muon_1 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(0);x
+      unsigned int muon_1 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(0);
       unsigned int muon_2 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(1);
 
       if( fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass())< deltaMass){
