@@ -70,7 +70,7 @@ endif
 
 ifdef USE_wang
 	TARGETS += MyTest
-	DEFS += -DUSE_joshi=1
+	DEFS += -DUSE_wang=1
 endif
 
 
