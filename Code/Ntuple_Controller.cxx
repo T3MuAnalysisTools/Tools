@@ -200,26 +200,11 @@ void Ntuple_Controller::doMET(){
 
 //Physics get Functions
 Long64_t  Ntuple_Controller::GetMCID(){
-  /*	Long64_t  DataMCTypeFromTupel = Ntp->DataMC_Type_idx;
-	if (DataMCTypeFromTupel == DataMCType::DY_ll_Signal && HistoC.hasID(DataMCType::DY_ll_Signal)) {
-		for (unsigned int i = 0; i < NMCSignalParticles(); i++) {
-			if (abs(MCSignalParticle_pdgid(i)) == PDGInfo::Z0) {
-				if (fabs(MCSignalParticle_p4(i).M() - PDG_Var::Z_mass()) < 3 * PDG_Var::Z_width()) {
-					return DataMCType::Signal;
-				}
-			}
-		}
-		return DataMCTypeFromTupel;
-	}
 
-	int dmcType = -999;
+  Long64_t  DataMCTypeFromTupel =  Ntp->Event_DataMC_Type;
+  std::cout<<"GetMC ID " << Ntp->Event_DataMC_Type <<std::endl;
+  return DataMCTypeFromTupel;
 
-	 if (HistoC.hasID(DataMCTypeFromTupel % 100)) {
-	dmcType = DataMCTypeFromTupel % 100;
-	 }
-	 return dmcType;
-  */
-  return 1;
 }
 
 // return DataMCType without mass information

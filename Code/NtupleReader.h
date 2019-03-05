@@ -29,6 +29,7 @@ public :
 
    // Declaration of leaf types
    UInt_t          Event_EventNumber;
+   UInt_t          Event_DataMC_Type;
    UInt_t          Event_RunNumber;
    Int_t           Event_bunchCrossing;
    Int_t           Event_orbitNumber;
@@ -179,6 +180,7 @@ public :
 
    // List of branches
    TBranch        *b_Event_EventNumber;   //!
+   TBranch        *b_Event_DataMC_Type;   //!
    TBranch        *b_Event_RunNumber;   //!
    TBranch        *b_Event_bunchCrossing;   //!
    TBranch        *b_Event_orbitNumber;   //!
@@ -553,6 +555,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetMakeClass(1);
 
    fChain->SetBranchAddress("Event_EventNumber", &Event_EventNumber, &b_Event_EventNumber);
+   fChain->SetBranchAddress("Event_DataMC_Type", &Event_DataMC_Type, &b_Event_DataMC_Type);
    fChain->SetBranchAddress("Event_RunNumber", &Event_RunNumber, &b_Event_RunNumber);
    fChain->SetBranchAddress("Event_bunchCrossing", &Event_bunchCrossing, &b_Event_bunchCrossing);
    fChain->SetBranchAddress("Event_orbitNumber", &Event_orbitNumber, &b_Event_orbitNumber);

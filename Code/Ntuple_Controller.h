@@ -191,10 +191,11 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   /* // Vertex Information */
 
    ULong64_t EventNumber(){return Ntp->Event_EventNumber;}
-   Int_t RunNumber(){return Ntp->Event_RunNumber;}
-   Int_t           LuminosityBlock(){return Ntp->Event_luminosityBlock;}
-   float NVtx(){return Ntp->Vertex_N_primary;}
-   double DeltaPhi(double, double);
+   Int_t     RunNumber(){return Ntp->Event_RunNumber;}
+   Int_t     DataMC_Type(){return Ntp->Event_DataMC_Type;}
+   Int_t     LuminosityBlock(){return Ntp->Event_luminosityBlock;}
+   float     NVtx(){return Ntp->Vertex_N_primary;}
+   double    DeltaPhi(double, double);
 
    unsigned int   NTracks(){return Ntp->Track_p4->size();}
    TLorentzVector Track_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2), Ntp->Track_p4->at(i).at(3), Ntp->Track_p4->at(i).at(0));}
