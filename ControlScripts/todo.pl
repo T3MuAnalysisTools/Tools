@@ -285,7 +285,7 @@ if( $ARGV[0] eq "--Local" ){
     # Generate Combine script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Combine")) ;
     system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Combine"));
-    system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; source config \" >> $OutputDir/workdir$set/Combine")); 
+    system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; ./config \" >> $OutputDir/workdir$set/Combine")); 
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/Combine")) ; 
     system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe \" >> $OutputDir/workdir$set/Combine")) ;
 
