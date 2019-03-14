@@ -313,6 +313,10 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    std::vector<std::vector<double> > *Muon_cov;*/
    
 
+
+
+
+
    unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
    std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
 
@@ -320,6 +324,41 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
    std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
    std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
+
+
+   double NPrimaryVertex(){return Ntp->Vertex_N_primary;}
+   int    NumberSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}
+   double Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
+
+   /*
+   std::vector<std::vector<double> > *Vertex_signal_dca_reco;
+   std::vector<std::vector<double> > *Vertex_signal_KF_pos;
+   std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
+   std::vector<double>  *Vertex_signal_KF_Chi2;
+   std::vector<std::vector<double> > *Vertex_signal_AF_pos;
+   std::vector<double>  *Vertex_signal_AF_Chi2;
+   std::vector<double>  *Vertex_signal_AF_Ndf;
+   std::vector<std::vector<double> > *Vertex_pair_quality;
+   std::vector<std::vector<double> > *Vertex_pairfit_status;
+   std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;
+   std::vector<bool>    *Vertex_RefitPVisValid;
+   std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
+   std::vector<std::vector<double> > *Vertex_d0_reco;
+   std::vector<std::vector<double> > *Vertex_d0sig_reco;
+   std::vector<std::vector<double> > *Vertex_2Ddisplacement;
+   std::vector<std::vector<double> > *Vertex_3Ddisplacement;
+   std::vector<std::vector<float> > *Vertex_Isolation1;
+   std::vector<std::vector<float> > *Vertex_Isolation2;
+   std::vector<std::vector<float> > *Vertex_Isolation3;
+   std::vector<std::vector<float> > *Vertex_Isolation4;
+   */
+   int NL1Seeds(){return Ntp->Trigger_l1name->size();}
+   string L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
+   int L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}
+   int Trigger_l1prescale(unsigned int i){return Ntp->Trigger_l1prescale->at(i);}
+   int NHLT(){return Ntp->Trigger_hltname->size();}
+   string HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
+   int HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
 
 
 };
