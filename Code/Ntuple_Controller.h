@@ -90,25 +90,6 @@ class Ntuple_Controller{
   // helper functions for internal calculations
   void printMCDecayChain(unsigned int par, unsigned int level = 0, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false);
 
-  // Object Variables
-  std::vector<TLorentzVector> electrons_default;
-  std::vector<TLorentzVector> photons_default;
-  std::vector<TLorentzVector> jets_default;
-  std::vector<TLorentzVector> muons_default;
-  std::vector<TLorentzVector> taus_default;
-  TLorentzVector              met_default;
-  std::vector<TLorentzVector> electrons;
-  std::vector<TLorentzVector> photons;
-  std::vector<TLorentzVector> jets;
-  std::vector<TLorentzVector> muons;
-  std::vector<TLorentzVector> taus;
-  TLorentzVector              met;
-
-  // TString flags for object corrections
-  TString tauCorrection;
-  TString muonCorrection;
-  TString elecCorrection;
-  TString jetCorrection;
 
   // Systematic controls variables
   int theSys;
@@ -162,8 +143,8 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   //Ntuple Cloning Functions
   virtual void CloneTree(TString n);
   virtual void SaveCloneTree();
-  inline void AddEventToCloneTree(){if(copyTree)SkimmedTree->Fill();}
-
+  inline  void AddEventToCloneTree(){if(copyTree)SkimmedTree->Fill();}
+ 
   // Systematic controls
   enum    Systematic {Default=0,NSystematics};
 
@@ -326,13 +307,19 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
 
 
-   double NPrimaryVertex(){return Ntp->Vertex_N_primary;}
-   int    NumberSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}
-   double Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
+
+   int      NumberOfSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}
+   double   Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
+   TVector3 Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2))}
+
+   ///// closest distance between the tracks of a candidate
+   double Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
+   double Vertex_DCA23(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(1);}
+   double Vertex_DCA31(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(2);}
+   double Vertex_DCAMax(unsigned int i){return Ntp->Vertex_signal_dca_reco->at(i).at(3);}
+
 
    /*
-   std::vector<std::vector<double> > *Vertex_signal_dca_reco;
-   std::vector<std::vector<double> > *Vertex_signal_KF_pos;
    std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
    std::vector<double>  *Vertex_signal_KF_Chi2;
    std::vector<std::vector<double> > *Vertex_signal_AF_pos;
@@ -352,6 +339,8 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
    */
+
+
    int NL1Seeds(){return Ntp->Trigger_l1name->size();}
    string L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
    int L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}

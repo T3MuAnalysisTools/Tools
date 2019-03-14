@@ -33,10 +33,6 @@ Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
   std::cout << "Ntuple Configured" << std::endl;
 
   gRandom->SetSeed(1234);
-  tauCorrection = "";
-  muonCorrection = "";
-  elecCorrection = "";
-  jetCorrection = "";
 }
 
 ///////////////////////////////////////////////////////////////////////
