@@ -4,6 +4,7 @@
 #include "Example.h"
 #ifdef USE_cherepanov
 #include "cherepanov/MyTest.h"
+#include "cherepanov/Validation.h"
 
 #endif
 
@@ -35,6 +36,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   if(Analysis.Contains("example"))s=new Example(Analysis,UncertType);
 #ifdef USE_cherepanov
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
 #endif
 
 #ifdef USE_joshi

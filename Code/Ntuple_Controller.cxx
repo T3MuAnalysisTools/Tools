@@ -4,7 +4,7 @@
 #include <tuple>
 #include "Logger.h"
 // External code
- 
+
 ///////////////////////////////////////////////////////////////////////
 //
 // Constructor
@@ -164,7 +164,6 @@ void Ntuple_Controller::ConfigureObjects(){
 Long64_t  Ntuple_Controller::GetMCID(){
 
   Long64_t  DataMCTypeFromTupel =  Ntp->Event_DataMC_Type;
-  std::cout<<"GetMC ID " << Ntp->Event_DataMC_Type <<std::endl;
   return DataMCTypeFromTupel;
 
 }

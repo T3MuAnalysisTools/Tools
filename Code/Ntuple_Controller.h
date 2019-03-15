@@ -230,7 +230,6 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    float   Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
    float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
-
    TLorentzVector Muon_outerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_outerTrack_p4->at(i).at(1), Ntp->Muon_outerTrack_p4->at(i).at(2), Ntp->Muon_outerTrack_p4->at(i).at(3),Ntp->Muon_outerTrack_p4->at(i).at(0));}
 
    TLorentzVector Muon_innerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_innerTrack_p4->at(i).at(1), Ntp->Muon_innerTrack_p4->at(i).at(2), Ntp->Muon_innerTrack_p4->at(i).at(3),Ntp->Muon_innerTrack_p4->at(i).at(0));}
@@ -293,7 +292,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
    double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
 
-   /*   
+   /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
    TrackParticle Muon_TrackParticle(unsigned int i){ 
      TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1); 
@@ -310,59 +309,67 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    }  
    */
 
-
-
-
    unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
    std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
-
 
    unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
    std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
    std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
 
-
-
-   int      NumberOfSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}
-   double   Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
-   TVector3 Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
+   int        NumberOfSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}// should coincide with number of candidate
+   double     Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
+   TVector3   Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
 
    ///// closest distance between the tracks of a candidate
-   double Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
-   double Vertex_DCA23(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(1);}
-   double Vertex_DCA31(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(2);}
-   double Vertex_DCAMax(unsigned int i){return Ntp->Vertex_signal_dca_reco->at(i).at(3);}
+   double     Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
+   double     Vertex_DCA23(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(1);}
+   double     Vertex_DCA31(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(2);}
+   double     Vertex_DCAMax(unsigned int i){return Ntp->Vertex_signal_dca_reco->at(i).at(3);}
+
+   TLorentzVector Vertex_signal_KF_refittedTracksP4(unsigned int i, unsigned int j){
+     return TLorentzVector(Ntp->Vertex_signal_KF_refittedTracksP4->at(i).at(j).at(1),Ntp->Vertex_signal_KF_refittedTracksP4->at(i).at(j).at(2),Ntp->Vertex_signal_KF_refittedTracksP4->at(i).at(j).at(3),Ntp->Vertex_signal_KF_refittedTracksP4->at(i).at(j).at(0));}
 
 
-   /*
-   std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
+   double     Vertex_d0_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+   double     Vertex_d0sig_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0sig_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+   double     Vertex_2Ddisplacement(unsigned int i, unsigned int j){return Ntp->Vertex_2Ddisplacement->at(i).at(j);}// j=0 - value, j=1 - significane, j=3 - distance
+   double     Vertex_3Ddisplacement(unsigned int i, unsigned int j){return Ntp->Vertex_3Ddisplacement->at(i).at(j);}// j=0 - value, j=1 - significane, j=3 - distance
+
+   double     Vertex_pair_quality(unsigned int i, unsigned int j){return Ntp->Vertex_pair_quality->at(i).at(j);}//the second index should not exceed 3
+   bool       Vertex_pairfit_status(unsigned int i, unsigned int j){return Ntp->Vertex_pairfit_status->at(i).at(j);}//the second index should not exceed 3
    double     Vertex_signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i); }
-   TVector3   Vertex_signal_AF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_Chi2->at(i).at(0),Ntp->Vertex_signal_KF_Chi2->at(i).at(1),Ntp->Vertex_signal_KF_Chi2->at(i).at(2))}
+   TVector3   Vertex_signal_AF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_AF_pos->at(i).at(0),Ntp->Vertex_signal_AF_pos->at(i).at(1),Ntp->Vertex_signal_AF_pos->at(i).at(2));}
    double     Vertex_signal_AF_Chi2(unsigned int i){return Ntp->Vertex_signal_AF_Chi2->at(i); }
    double     Vertex_signal_AF_Ndf(unsigned int i){return Ntp->Vertex_signal_AF_Ndf->at(i); }
-   std::vector<std::vector<double> > *Vertex_pair_quality;
-   std::vector<std::vector<double> > *Vertex_pairfit_status;
-   std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;
-   std::vector<bool>    *Vertex_RefitPVisValid;
-   std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
-   std::vector<std::vector<double> > *Vertex_d0_reco;
-   std::vector<std::vector<double> > *Vertex_d0sig_reco;
-   std::vector<std::vector<double> > *Vertex_2Ddisplacement;
-   std::vector<std::vector<double> > *Vertex_3Ddisplacement;
-   std::vector<std::vector<float> > *Vertex_Isolation1;
-   std::vector<std::vector<float> > *Vertex_Isolation2;
-   std::vector<std::vector<float> > *Vertex_Isolation3;
-   std::vector<std::vector<float> > *Vertex_Isolation4;
-   */
+   TVector3   Vertex_MatchedPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedPrimaryVertex->at(i).at(2));}
+   bool       Vertex_RefitPVisValid(unsigned int i){return Ntp->Vertex_RefitPVisValid->at(i);}
+   TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
+
+   float      Isolation_RelPt(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(0);}
+   float      Isolation_NTracks(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(1);}
+   float      Isolation_MinDist(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(2);}
+
+   float      Isolation05_RelPt(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(0);}
+   float      Isolation05_NTracks(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(1);}
+   float      Isolation05_MinDist(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(2);}
+
+   float      Isolation_Ntrk1(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
+   float      Isolation_Ntrk2(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
+   float      Isolation_Ntrk3(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
+
+   float      Isolation_Ntrk0p1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(0);}
+   float      Isolation_Ntrk0p2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(1);}
+   float      Isolation_Ntrk0p5(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(2);}
+   float      Isolation_maxdy(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(3);}
 
 
-   int NL1Seeds(){return Ntp->Trigger_l1name->size();}
-   string L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
-   int L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}
-   int Trigger_l1prescale(unsigned int i){return Ntp->Trigger_l1prescale->at(i);}
-   int NHLT(){return Ntp->Trigger_hltname->size();}
-   string HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
-   int HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
+   int        NL1Seeds(){return Ntp->Trigger_l1name->size();}
+   string     L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
+   int        L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}
+   int        Trigger_l1prescale(unsigned int i){return Ntp->Trigger_l1prescale->at(i);}
+   int        NHLT(){return Ntp->Trigger_hltname->size();}
+   string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
+   int        HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
 
 
 };
