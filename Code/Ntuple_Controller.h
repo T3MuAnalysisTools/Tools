@@ -230,70 +230,85 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    float   Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
    float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
-   //   std::vector<std::vector<double> > *Muon_outerTrack_p4;
-   //   std::vector<std::vector<double> > *Muon_innerTrack_p4;
-   /*   unsigned int> *Muon_Track_idx;
-   int>          *Muon_hitPattern_pixelLayerwithMeas;
-   int>          *Muon_numberOfMatchedStations;
-   float>   *Muon_normChi2;
-   int>     *Muon_hitPattern_numberOfValidMuonHits;
-   int>     *Muon_innerTrack_numberofValidHits;
-   int>     *Muon_numberOfMatches;
-   int>     *Muon_numberOfChambers;
-   bool>    *Muon_isPFMuon;
-   bool>    *Muon_isRPCMuon;
-   int>     *Muon_numberofValidPixelHits;
-   int>     *Muon_trackerLayersWithMeasurement;
-   bool>    *Muon_combinedQuality_updatedSta;
-   double>  *Muon_combinedQuality_trkKink;
-   double>  *Muon_combinedQuality_glbKink;
-   double>  *Muon_combinedQuality_trkRelChi2;
-   double>  *Muon_combinedQuality_staRelChi2;
-   double>  *Muon_combinedQuality_chi2LocalPosition;
-   double>  *Muon_combinedQuality_chi2LocalMomentum;
-   double>  *Muon_combinedQuality_localDistance;
-   double>  *Muon_combinedQuality_globalDeltaEtaPhi;
-   bool>    *Muon_combinedQuality_tightMatch;
-   double>  *Muon_combinedQuality_glbTrackProbability;
-   double>  *Muon_prod_inner_outer_charge;
 
-   double>  *Muon_innerTrack_quality;
-   double>  *Muon_ptErrOverPt;
-   double>  *Muon_calEnergy_hadS9;
-   double>  *Muon_calEnergy_had;
-   double>  *Muon_calEnergy_emS25;
-   double>  *Muon_calEnergy_emS9;
-   double>  *Muon_calEnergy_em;
-   bool>    *Muon_segmentCompatibility;
-   bool>    *Muon_caloCompatibility;
-   bool>    *Muon_isGoodMuon_TM2DCompatibility;
-   double>  *Muon_innerTrack_validFraction;
-   double>  *Muon_innerTrack_pixelLayersWithMeasurement;
-   double>  *Muon_innerTrack_numberOfValidTrackerHits;
-   double>  *Muon_innerTrack_numberOfLostTrackerHits;
-   double>  *Muon_innerTrack_numberOfLostTrackerInnerHits;
-   double>  *Muon_innerTrack_numberOfLostTrackerOuterHits;
-   double>  *Muon_innerTrack_normalizedChi2;
-   double>  *Muon_outerTrack_normalizedChi2;
-   double>  *Muon_outerTrack_muonStationsWithValidHits;
-   bool>    *Muon_isGoodMuon_TrackerMuonArbitrated;
-   bool>    *Muon_isGoodMuon_TMOneStationTight;
-   bool>    *Muon_isGoodMuon_TMOneStationAngTight;
-   bool>    *Muon_isGoodMuon_TMLastStationTight;
-   bool>    *Muon_isGoodMuon_TMLastStationAngTight;
-   bool>    *Muon_isGoodMuon_TMLastStationOptimizedLowPtTight;
-   bool>    *Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight;
-   double>  *Muon_vmuonhitcomb_reco;
-   double>  *Muon_rpchits_reco; */
-   int      Muon_charge(unsigned int i){return Ntp->Muon_charge->at(i);}
-   /*   int>     *Muon_trackCharge;
-   int>     *Muon_pdgid;
-   double>  *Muon_B;
-   double>  *Muon_M;
-   std::vector<std::vector<double> > *Muon_par;
-   std::vector<std::vector<double> > *Muon_cov;*/
-   
+   TLorentzVector Muon_outerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_outerTrack_p4->at(i).at(1), Ntp->Muon_outerTrack_p4->at(i).at(2), Ntp->Muon_outerTrack_p4->at(i).at(3),Ntp->Muon_outerTrack_p4->at(i).at(0));}
 
+   TLorentzVector Muon_innerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_innerTrack_p4->at(i).at(1), Ntp->Muon_innerTrack_p4->at(i).at(2), Ntp->Muon_innerTrack_p4->at(i).at(3),Ntp->Muon_innerTrack_p4->at(i).at(0));}
+   unsigned int Muon_Track_idx(unsigned int i){return Ntp->Muon_Track_idx->at(i);}
+   int     Muon_hitPattern_pixelLayerwithMeas(unsigned int i){return Ntp->Muon_hitPattern_pixelLayerwithMeas->at(i);}
+   int     Muon_numberOfMatchedStations(unsigned int i){return Ntp->Muon_numberOfMatchedStations->at(i);}
+   float   Muon_normChi2(unsigned int i){return Ntp->Muon_normChi2->at(i);}
+   int     Muon_hitPattern_numberOfValidMuonHits(unsigned int i){return Ntp->Muon_hitPattern_numberOfValidMuonHits->at(i);}
+   int     Muon_innerTrack_numberofValidHits(unsigned int i){return Ntp->Muon_innerTrack_numberofValidHits->at(i);}
+   int     Muon_numberOfMatches(unsigned int i){return Ntp->Muon_numberOfMatches->at(i);}
+   int     Muon_numberOfChambers(unsigned int i){return Ntp->Muon_numberOfChambers->at(i);}
+   bool    Muon_isPFMuon(unsigned int i){return Ntp->Muon_isPFMuon->at(i);}
+   bool    Muon_isRPCMuon(unsigned int i){return Ntp->Muon_isRPCMuon->at(i);}
+   int     Muon_numberofValidPixelHits(unsigned int i){return Ntp->Muon_numberofValidPixelHits->at(i);} 
+   int     Muon_trackerLayersWithMeasurement(unsigned int i){return Ntp->Muon_trackerLayersWithMeasurement->at(i);}
+   bool    Muon_combinedQuality_updatedSta(unsigned int i){return Ntp->Muon_combinedQuality_updatedSta->at(i);}
+   double  Muon_combinedQuality_trkKink(unsigned int i){return Ntp->Muon_combinedQuality_trkKink->at(i);}
+   double  Muon_combinedQuality_glbKink(unsigned int i){return Ntp->Muon_combinedQuality_glbKink->at(i);}
+   double  Muon_combinedQuality_trkRelChi2(unsigned int i){return Ntp->Muon_combinedQuality_trkRelChi2->at(i);}
+   double  Muon_combinedQuality_staRelChi2(unsigned int i){return Ntp->Muon_combinedQuality_staRelChi2->at(i);}
+   double  Muon_combinedQuality_chi2LocalPosition(unsigned int i){return Ntp->Muon_combinedQuality_chi2LocalPosition->at(i);}
+   double  Muon_combinedQuality_chi2LocalMomentum(unsigned int i){return Ntp->Muon_combinedQuality_chi2LocalMomentum->at(i);}
+   double  Muon_combinedQuality_localDistance(unsigned int i){return Ntp->Muon_combinedQuality_localDistance->at(i);}
+   double  Muon_combinedQuality_globalDeltaEtaPhi(unsigned int i){return Ntp->Muon_combinedQuality_globalDeltaEtaPhi->at(i);}
+   bool    Muon_combinedQuality_tightMatch(unsigned int i){return Ntp->Muon_combinedQuality_tightMatch->at(i);}
+   double  Muon_combinedQuality_glbTrackProbability(unsigned int i){return Ntp->Muon_combinedQuality_glbTrackProbability->at(i);}
+   double  Muon_prod_inner_outer_charge(unsigned int i){return Ntp->Muon_prod_inner_outer_charge->at(i);}
+
+   double  Muon_innerTrack_quality(unsigned int i){return Ntp->Muon_innerTrack_quality->at(i);}
+   double  Muon_ptErrOverPt(unsigned int i){return Ntp->Muon_ptErrOverPt->at(i);}
+   double  Muon_calEnergy_hadS9(unsigned int i){return Ntp->Muon_calEnergy_hadS9->at(i);}
+   double  Muon_calEnergy_had(unsigned int i){return Ntp->Muon_calEnergy_had->at(i);}
+   double  Muon_calEnergy_emS25(unsigned int i){return Ntp->Muon_calEnergy_emS25->at(i);}
+   double  Muon_calEnergy_emS9(unsigned int i){return Ntp->Muon_calEnergy_emS9->at(i);}
+   double  Muon_calEnergy_em(unsigned int i){return Ntp->Muon_calEnergy_em->at(i);}
+   bool    Muon_segmentCompatibility(unsigned int i){return Ntp->Muon_segmentCompatibility->at(i);}
+   bool    Muon_caloCompatibility(unsigned int i){return Ntp->Muon_caloCompatibility->at(i);}
+   bool    Muon_isGoodMuon_TM2DCompatibility(unsigned int i){return Ntp->Muon_isGoodMuon_TM2DCompatibility->at(i);}
+   double  Muon_innerTrack_validFraction(unsigned int i){return Ntp->Muon_innerTrack_validFraction->at(i);}
+   double  Muon_innerTrack_pixelLayersWithMeasurement(unsigned int i){return Ntp->Muon_innerTrack_pixelLayersWithMeasurement->at(i);}
+   double  Muon_innerTrack_numberOfValidTrackerHits(unsigned int i){return Ntp->Muon_innerTrack_numberOfValidTrackerHits->at(i);}
+   double  Muon_innerTrack_numberOfLostTrackerHits(unsigned int i){return Ntp->Muon_innerTrack_numberOfLostTrackerHits->at(i);}
+   double  Muon_innerTrack_numberOfLostTrackerInnerHits(unsigned int i){return Ntp->Muon_innerTrack_numberOfLostTrackerInnerHits->at(i);}
+   double  Muon_innerTrack_numberOfLostTrackerOuterHits(unsigned int i){return Ntp->Muon_innerTrack_numberOfLostTrackerOuterHits->at(i);}
+   double  Muon_innerTrack_normalizedChi2(unsigned int i){return Ntp->Muon_innerTrack_normalizedChi2->at(i);}
+   double  Muon_outerTrack_normalizedChi2(unsigned int i){return Ntp->Muon_outerTrack_normalizedChi2->at(i);}
+   double  Muon_outerTrack_muonStationsWithValidHits(unsigned int i){return Ntp->Muon_outerTrack_muonStationsWithValidHits->at(i);}
+   bool    Muon_isGoodMuon_TrackerMuonArbitrated(unsigned int i){return Ntp->Muon_isGoodMuon_TrackerMuonArbitrated->at(i);}
+   bool    Muon_isGoodMuon_TMOneStationTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMOneStationTight->at(i);}
+   bool    Muon_isGoodMuon_TMOneStationAngTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMOneStationAngTight->at(i);}
+   bool    Muon_isGoodMuon_TMLastStationTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMLastStationTight->at(i);}
+   bool    Muon_isGoodMuon_TMLastStationAngTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMLastStationAngTight->at(i);}
+   bool    Muon_isGoodMuon_TMLastStationOptimizedLowPtTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMLastStationOptimizedLowPtTight->at(i);}
+   bool    Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight(unsigned int i){return Ntp->Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight->at(i);}
+   double  Muon_vmuonhitcomb_reco(unsigned int i){return Ntp->Muon_vmuonhitcomb_reco->at(i);}
+   double  Muon_rpchits_reco(unsigned int i){return Ntp->Muon_rpchits_reco->at(i);}
+   int     Muon_charge(unsigned int i){return Ntp->Muon_charge->at(i);}
+   int     Muon_trackCharge(unsigned int i){return Ntp->Muon_trackCharge->at(i);}
+   int     Muon_pdgid(unsigned int i){return Ntp->Muon_pdgid->at(i);}
+   double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
+   double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
+
+   /*   
+   bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
+   TrackParticle Muon_TrackParticle(unsigned int i){ 
+     TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1); 
+     TMatrixTSym<double> mu_cov(TrackParticle::NHelixPar); 
+     unsigned int l=0;
+     for(int k=0; k<TrackParticle::NHelixPar; k++){ 
+       mu_par(k,0)=Ntp->Muon_par->at(i).at(k); 
+       for(int j=k; j<TrackParticle::NHelixPar; j++){ 
+         mu_cov(k,j)=Ntp->Muon_cov->at(i).at(l); 
+         l++; 
+       } 
+     } 
+     return TrackParticle(mu_par,mu_cov,Ntp->Muon_pdgid->at(i),Ntp->Muon_M->at(i),Ntp->Muon_trackCharge->at(i),Ntp->Muon_B->at(i));
+   }  
+   */
 
 
 
@@ -310,7 +325,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
 
    int      NumberOfSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}
    double   Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
-   TVector3 Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2))}
+   TVector3 Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
 
    ///// closest distance between the tracks of a candidate
    double Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
@@ -321,10 +336,10 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
 
    /*
    std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
-   std::vector<double>  *Vertex_signal_KF_Chi2;
-   std::vector<std::vector<double> > *Vertex_signal_AF_pos;
-   std::vector<double>  *Vertex_signal_AF_Chi2;
-   std::vector<double>  *Vertex_signal_AF_Ndf;
+   double     Vertex_signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i); }
+   TVector3   Vertex_signal_AF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_Chi2->at(i).at(0),Ntp->Vertex_signal_KF_Chi2->at(i).at(1),Ntp->Vertex_signal_KF_Chi2->at(i).at(2))}
+   double     Vertex_signal_AF_Chi2(unsigned int i){return Ntp->Vertex_signal_AF_Chi2->at(i); }
+   double     Vertex_signal_AF_Ndf(unsigned int i){return Ntp->Vertex_signal_AF_Ndf->at(i); }
    std::vector<std::vector<double> > *Vertex_pair_quality;
    std::vector<std::vector<double> > *Vertex_pairfit_status;
    std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;

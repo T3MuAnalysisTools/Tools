@@ -155,43 +155,9 @@ int Ntuple_Controller::SetupSystematics(TString sys){
 void Ntuple_Controller::ConfigureObjects(){
   if(ObjEvent!=EventNumber()){
     ObjEvent=EventNumber();
-    doElectrons();
-    doPhotons();
-    doJets();
-    doMuons();
-    doTaus();
-    doMET();
   }
 }
 
-void Ntuple_Controller::doElectrons(){
-  electrons.clear();
-  electrons_default.clear();
-}
-
-void Ntuple_Controller::doPhotons(){
-  photons.clear();
-  photons_default.clear();
-
-}
-
-void Ntuple_Controller::doJets(){
-  jets.clear();
-  jets_default.clear();
-}
-
-void Ntuple_Controller::doMuons(){
-  muons.clear();
-  muons_default.clear();
-}
-
-void Ntuple_Controller::doTaus(){
-  taus.clear();
-  taus_default.clear();
-}
-
-void Ntuple_Controller::doMET(){
-}
 
 
 //Physics get Functions
