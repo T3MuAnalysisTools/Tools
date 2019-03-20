@@ -70,6 +70,20 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n                                                     --NMaxEmbed <Max Number of Embedding files per job > Default value: $maxemb ");
     printf("\n                                                     --ROOTSYS <ROOTSYS> the current ROOTSYS variable if --BuildRoot is not defined");
     printf("\n                                                     --Proxy <path>;   a path to proxy recieved by running grid-init");
+    printf("\n./todo.pl --DCache <Input.txt> <ListofDS.txt>      INTENTED FOR REGULAR USE (DEFAULT)");
+    printf("\n                                                   Configure a directory to run from. <InputPar.txt> name of file that");
+    printf("\n                                                   contains input command template.");
+    printf("\n                                                   <ListoDS.txt> list of DCache Dataset directories you want to run on.");
+    printf("\n                                                   Optional commands:  ");
+    printf("\n                                                     --OutputDir <OutputDir> ");
+    printf("\n                                                     --CodeDir <CodeDir>");
+    printf("\n                                                     --SetName <SetName> "); 
+    printf("\n                                                     --NMaxData <Max Number of data files per job >     Default value: $maxdata ");
+    printf("\n                                                     --NMaxMC <Max Number of MC files per job >     Default value: $maxmc ");
+    printf("\n                                                     --NMaxEmbed <Max Number of Embedding files per job > Default value: $maxemb ");
+    printf("\n                                                     --Proxy <path>;   a path to proxy recieved by running grid-init");
+    printf("\n  ");
+
 
     exit(0);  
 } 
@@ -357,7 +371,7 @@ if( $ARGV[0] eq "--Local" ){
 			system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
 			system(sprintf("echo \"echo 'Starting Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
-			system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; source config \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; ./config \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
 			system(sprintf("chmod +x $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe 2>&1 | tee >(sed -r \\\"s/\\\\x1B\\\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\\\" > Set_$B.output) \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
@@ -413,3 +427,286 @@ if( $ARGV[0] eq "--Local" ){
 
 }
 
+
+
+
+
+if( $ARGV[0] eq "--DCache" ){
+    $RemoteScrathDir="/afs/cern.ch/work/$letter/$UserID";
+    $RemoteDir='\$TMPDIR'; 
+    #$RemoteDir   <-> $RemoteDir$UserID
+    $TempDataSetFile=$ARGV[2];
+    # Print out input parameters
+    printf("Active directory will be: $OutputDir/workdir$set \n");
+    printf("Code Repository is:       $CodeDir \n");
+    printf("List of dcache dir:       $TempDataSetFile \n");
+
+    # Open ListofFile.txt
+    @DataSets;
+    open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile!");
+    while ($item = <DAT>) {
+	chomp($item);
+	push(@DataSets,$item);
+    }
+    close(DAT);
+    # Clean Directory in case workdir$set exists
+    printf("Cleaning Directories \n");
+    system(sprintf("cd $OutputDir"));
+    system(sprintf("rm -rf $OutputDir/workdir$set \n"));
+    system(sprintf("mkdir $OutputDir/workdir$set "));
+    printf("Cleaning complete \n");
+    
+    # creat directory stucture
+    system(sprintf("mkdir  $OutputDir/workdir$set/Code "));
+    system(sprintf("mkdir  $OutputDir/workdir$set/Code/i386_linux "));
+    system(sprintf("cp -r $CodeDir/* $OutputDir/workdir$set/Code/ "));
+    system(sprintf("mkdir $OutputDir/workdir$set/EPS "));
+    system(sprintf("ln -s $OutputDir/workdir$set/Code/InputData $OutputDir/workdir$set/InputData "));
+    
+
+
+    # generate init script
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init "));
+    system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init "));
+
+    # generate compile script
+    system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"./config \\\$\@ \"   >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"source $OutputDir/workdir$set/init \"   >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"gmake all \" >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/compile")) ;
+
+ 
+    # Generate Combine script 
+    system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Combine")) ;
+    system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Combine"));
+    system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; ./config \" >> $OutputDir/workdir$set/Combine"));
+    system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/Combine")) ; 
+    system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe \" >> $OutputDir/workdir$set/Combine")) ;
+
+    # Generate Combine Input
+    system(sprintf("cp $InputFile $OutputDir/workdir$set/Input.txt "));
+    system(sprintf("cd $OutputDir/workdir$set/; $dir/subs '{SET}' COMBINE Input.txt; cd $dir"));
+    system(sprintf("cd $OutputDir/workdir$set/; $dir/subs '{FileDir}' COMBINE Input.txt; cd $dir"));
+    system(sprintf("echo \"Mode: RECONSTRUCT\" >> $OutputDir/workdir$set/Input.txt"));
+    system(sprintf("echo \"RunType: LOCAL\" >> $OutputDir/workdir$set/Input.txt"));
+
+    # Generate SubmitManual and set_env 
+    system(sprintf("cp  subs  $OutputDir/workdir$set/;"));
+
+
+    # Setup Condor Combine scripts
+    system(sprintf("echo \"universe     = vanilla      \"  >> $OutputDir/workdir$set/Condor_Combine"));
+    system(sprintf("echo \"rank         = memory       \"  >> $OutputDir/workdir$set/Condor_Combine"));
+    system(sprintf("echo \"executable   = Combine      \"  >> $OutputDir/workdir$set/Condor_Combine")); 
+    system(sprintf("echo \"output       = Combine-Condor_\\\$(cluster)_\\\$(proccess).o  \" >> $OutputDir/workdir$set/Condor_Combine")); 
+    system(sprintf("echo \"error        = Combine-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Condor_Combine")); 
+    system(sprintf("echo \"log          = Combine-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Condor_Combine")); 
+    system(sprintf("echo \"queue = 1 \" >> $OutputDir/workdir$set/Condor_Combine"));
+
+    # Start Submit script
+    system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Submit")) ; 
+    system(sprintf("echo \"verbosity=\\\$(grep SetLevel Code/Analysis.cxx | grep -c -e Debug -e Verbose)\" >> $OutputDir/workdir$set/Submit")) ;
+    system(sprintf("echo \"  if [[ \\\${verbosity} -ne 0 ]]; then \" >> $OutputDir/workdir$set/Submit")) ;
+    system(sprintf("echo \"    echo 'ERROR: Please make sure to set the verbosity level to Info in Analysis.cxx, otherwise your log-files will break QSUB! Abort...' \" >> $OutputDir/workdir$set/Submit"));
+    system(sprintf("echo \"    exit \\\${verbosity}\" >> $OutputDir/workdir$set/Submit"));
+    system(sprintf("echo \"  fi\" >> $OutputDir/workdir$set/Submit"));
+    system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/Submit")) ;
+    system(sprintf("echo \"rm Set*/*.o; rm Set*/*.e; rm Set*/*.log; \" >> $OutputDir/workdir$set/Submit")) ;
+ 
+
+
+    $B=0;
+    for($l=0;$l<2; $l++){
+	system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Condor_Combine"));
+	$max=1;
+	foreach $DS (@DataSets){
+	    print $DS; 	       
+	    if(($l==0 && ($DS =~ m/data/)) || ($l==1 && !($DS =~ m/data/))){
+		#print "true 1   l = $l\n";
+		if($l==0){
+		    #print "true 2   l = $l\n";
+		    $max=$maxdata;
+		}
+		else{
+		    #print "true 3   l = $l\n";
+		    $max=$maxmc;
+		    if($DS =~ m/embed/){
+			#print "true 4";
+			$max=$maxemb
+		    }
+		}
+		print "max  = $max;    maxmc = $maxmc \n";
+#		print "------- DS   $DS  \n";
+		printf("\n\nStarting Loop $l \n");
+		$A=$maxdata+$maxmc+$maxemb+10;
+
+		# find the root files for the current DataSet (DS)
+		printf("Accessing Directory  $DS \n");
+		system(sprintf("touch junk0"));
+		system(sprintf("touch junk1"));
+		system(sprintf("touch junk2"));
+		system(sprintf("touch junk"));
+		system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
+
+#		system(sprintf("cat  junk0 "));
+
+
+		@dpmsubdirs=();
+		open(DAT, "junk0");
+		while ($item = <DAT>) {
+		    chomp($item);
+		    push(@dpmsubdirs,$item);
+		}
+		close(DAT);
+		system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
+#		printf("cat junk1: ");		system(sprintf("cat  junk1 "));
+		@dpmdirs=();
+		open(DAT, "junk1");
+		while ($item = <DAT>) {
+		    chomp($item);
+		    $fpath="$DS/$item";
+		    push(@dpmdirs,$fpath);
+		}
+#		printf("print dpmdirs");		print @dpmdirs;
+		# Get list of files in dcache dir
+		@files=(); 
+		foreach $ipath (@dpmdirs){
+
+		    system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
+#		    printf("cat junk2: ");		system(sprintf("cat  junk2 "));
+		    system(sprintf("cat junk2 | awk '{print \$1}' >& junk")); 
+		    open(DAT, "junk");
+		    while ($item = <DAT>) {
+			chomp($item);
+#			printf(" file --- =  $ipath/$item  \n ");
+			$FileList="$ipath/$item";
+#			print ">>>>>>>>>>>> Filelst  $FileList";
+			push(@files,$FileList);
+		    }
+		}
+
+		close(DAT);
+		system(sprintf("rm junk"));
+		system(sprintf("rm junk0"));
+		system(sprintf("rm junk1"));
+		system(sprintf("rm junk2"));
+
+		$nfiles = @files;
+		$idx=0;
+
+		print $A, $B;
+		foreach $file (@files){
+		    $idx++;
+		    printf("$file Set = $B  Index =  $A   Max. = $max N Files = $nfiles Current File = $idx \n");
+		    if($A > $max ){
+			$A=1;
+			$B++;
+
+			# Add Set information to Combining scripts and Input.txt
+			system(sprintf("echo \"File: $OutputDir/workdir$set/Set_$B/ \" >>  $OutputDir/workdir$set/Input.txt ")) ;
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B \" >> $OutputDir/workdir$set/Submit")) ;
+			system(sprintf("echo \"condor_submit  Condor_Set_$B  \" >> $OutputDir/workdir$set/Submit")) ;
+
+
+
+			# Create and configure Set_$B dir
+			system(sprintf("mkdir $OutputDir/workdir$set/Set_$B ")) ;
+			system(sprintf("ln -s $OutputDir/workdir$set/Code/InputData $OutputDir/workdir$set/Set_$B/InputData "));
+			system(sprintf("mkdir $OutputDir/workdir$set/Set_$B/EPS ")) ;
+			
+
+			# Setup Set_$B.sh
+			system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
+			system(sprintf("echo \"echo 'Starting Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"export X509_USER_PROXY=\\\"$Proxy\\\"\"  >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Code/; ./config \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-get.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ; 
+			system(sprintf("chmod +x $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"mkdir $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cp -r *    $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cd  $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe 2>&1 | tee >(sed -r \\\"s/\\\\x1B\\\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\\\" > Set_$B.output) \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"cp -r *  $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"rm -r   $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"export HOME=\\\"/home/$UserID\\\"         \"   >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"echo 'Completed Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+
+
+
+
+
+                        # Setup Set_$B_get.sh and Set_$B_clean.sh
+			system(sprintf("echo \"#! /bin/bash\"         >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+			system(sprintf("echo \"mkdir $RemoteDir \" >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+			system(sprintf("echo \"cd $RemoteDir \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+
+			system(sprintf("echo \"#! /bin/bash\"         >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
+			system(sprintf("echo \"cd $RemoteDir \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh")); 
+
+			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
+			# Setup Input.txt
+			system(sprintf("cp   $InputFile $OutputDir/workdir$set/Set_$B/Input.txt ")); 
+			system(sprintf("cd $OutputDir/workdir$set/Set_$B; $dir/subs '{SET}' Set_$B Input.txt; cd $dir "));
+			system(sprintf("cd $OutputDir/workdir$set/Set_$B; $dir/subs '{FileDir}' $DS Input.txt; cd $dir "));
+			system(sprintf("echo \"Mode: ANALYSIS\" >> $OutputDir/workdir$set/Set_$B/Input.txt")); 
+			system(sprintf("echo \"RunType: LOCAL\" >> $OutputDir/workdir$set/Set_$B/Input.txt"));
+
+			system(sprintf("echo \"universe     = vanilla      \"  >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"rank         = memory       \"  >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"executable   = Set_$B.sh      \"  >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
+			system(sprintf("echo \"output       = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).o  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
+			system(sprintf("echo \"error        = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
+			system(sprintf("echo \"log          = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
+			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"queue = 1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+		    
+			
+		    }
+		    ($a,$b,$c)=split('/',$file);
+		    $myfile=$file;
+		    if($a =~ m/root/){
+			$myfile=$a;
+		    }
+		    if($b =~ m/root/){
+                        $myfile=$b;
+			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+                    }
+		    if($c =~ m/root/){
+                        $myfile=$c;
+                    }
+		    $myfiletrunc = $myfile;
+		    my @wholepath = split /\//, $file;
+		    foreach $TreeName (@wholepath){
+			if($TreeName =~ m/root/){
+			        $myfiletrunc=$TreeName
+			}
+		    }
+		    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));  ##rfcp /dpm/in2p3.fr/home/cms/phedex/store/user/cherepan
+		    system(sprintf("echo \"File:  $RemoteDir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
+		    system(sprintf("echo \"rm -rf $RemoteDir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
+		    $A++;
+		}
+	    }
+	}
+    }
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/Submit"));
+
+    # print Instructions
+    printf("\n\nInstructions");
+    printf("\nPlease make sure you have run:");
+    printf("\ngrid-proxy-init"); 
+    printf("\nNow you can run the analysis using dcache.");
+    printf("\nTo go to the Test workdir: cd  $OutputDir/workdir$set ");
+    printf("\nTo compile the code in the workdir: source compile  $UserDir ");
+    printf("\nTo submit jobs to the batch queue: source Submit ");
+    printf("\nTo combine jobs submitted to the batch queue: source Combine \n");
+    printf("\nTo test a single job: cd  $OutputDir/workdir$set; source compile   $UserDir; cd $OutputDir/workdir$set/Set_1; source Set_1 | tee log; cd ..\n");
+
+}

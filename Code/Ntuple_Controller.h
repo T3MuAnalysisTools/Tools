@@ -133,8 +133,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    };
   enum TrackPar{i_qoverp = 0, i_lambda, i_phi, i_dxy,i_dsz};
   enum MuonQualityBitMask{Bit_MuonLoose=0,Bit_MuonSoft,Bit_MuonMedium,Bit_MuonTight, Bit_MuonHighPt, Bit_MuonTight_noVtx};
-  enum MuonStandardSelectors{
-    CutBasedIdLoose=0,
+  enum MuonStandardSelectors{CutBasedIdLoose=0,
     CutBasedIdMedium,
     CutBasedIdMediumPrompt,
     CutBasedIdTight,
@@ -155,7 +154,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
     MiniIsoLoose,
     MiniIsoMedium,
     MiniIsoTight,
-    MiniIsoVeryTight}
+    MiniIsoVeryTight};
 
   // Ntuple Access Functions 
   virtual Int_t Get_Entries();
