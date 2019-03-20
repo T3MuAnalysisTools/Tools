@@ -149,18 +149,6 @@ for($l=2;$l<$numArgs; $l++){
         $l++;
         $Proxy=$ARGV[$l];
     }
-    if($ARGV[$l] eq  "--QsubQueue" ){
-	$l++;
-	if($ARGV[$l] eq  "short"){
-	    $QsubQue="cms_local_short";
-	}
-	if($ARGV[$l] eq  "medium"){
-	    $QsubQue="sbg_local_mdm";
-	}
-	if($ARGV[$l] eq  "long"){
-	    $QsubQue="cms_local";
-	}
-    }
 }
 my $dir = getcwd;
 
@@ -655,7 +643,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"error        = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"log          = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
-			system(sprintf("echo \"queue = 1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"queue  1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 		    
 			
 		    }
