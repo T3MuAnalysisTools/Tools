@@ -73,6 +73,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n./todo.pl --DCache <Input.txt> <ListofDS.txt>      INTENTED FOR REGULAR USE (DEFAULT)");
     printf("\n                                                   Configure a directory to run from. <InputPar.txt> name of file that");
     printf("\n                                                   contains input command template.");
+    printf("\n                                                   Please make sure that you have run voms-proxy-init -voms cms -valid 192:00");
+    printf("\n                                                   beforehand and copy your received proxy to proxy dir");
     printf("\n                                                   <ListoDS.txt> list of DCache Dataset directories you want to run on.");
     printf("\n                                                   Optional commands:  ");
     printf("\n                                                     --OutputDir <OutputDir> ");
