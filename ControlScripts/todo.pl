@@ -434,7 +434,6 @@ if( $ARGV[0] eq "--Local" ){
 if( $ARGV[0] eq "--DCache" ){
     $RemoteScrathDir="/afs/cern.ch/work/$letter/$UserID";
     $RemoteDir='\$TMPDIR'; 
-    #$RemoteDir   <-> $RemoteDir$UserID
     $TempDataSetFile=$ARGV[2];
     # Print out input parameters
     printf("Active directory will be: $OutputDir/workdir$set \n");
@@ -525,21 +524,16 @@ if( $ARGV[0] eq "--DCache" ){
 	foreach $DS (@DataSets){
 	    print $DS; 	       
 	    if(($l==0 && ($DS =~ m/data/)) || ($l==1 && !($DS =~ m/data/))){
-		#print "true 1   l = $l\n";
 		if($l==0){
-		    #print "true 2   l = $l\n";
 		    $max=$maxdata;
 		}
 		else{
-		    #print "true 3   l = $l\n";
 		    $max=$maxmc;
 		    if($DS =~ m/embed/){
-			#print "true 4";
 			$max=$maxemb
 		    }
 		}
 		print "max  = $max;    maxmc = $maxmc \n";
-#		print "------- DS   $DS  \n";
 		printf("\n\nStarting Loop $l \n");
 		$A=$maxdata+$maxmc+$maxemb+10;
 
@@ -551,9 +545,6 @@ if( $ARGV[0] eq "--DCache" ){
 		system(sprintf("touch junk"));
 		system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
 
-#		system(sprintf("cat  junk0 "));
-
-
 		@dpmsubdirs=();
 		open(DAT, "junk0");
 		while ($item = <DAT>) {
@@ -562,7 +553,6 @@ if( $ARGV[0] eq "--DCache" ){
 		}
 		close(DAT);
 		system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
-#		printf("cat junk1: ");		system(sprintf("cat  junk1 "));
 		@dpmdirs=();
 		open(DAT, "junk1");
 		while ($item = <DAT>) {
@@ -570,20 +560,17 @@ if( $ARGV[0] eq "--DCache" ){
 		    $fpath="$DS/$item";
 		    push(@dpmdirs,$fpath);
 		}
-#		printf("print dpmdirs");		print @dpmdirs;
+
 		# Get list of files in dcache dir
 		@files=(); 
 		foreach $ipath (@dpmdirs){
 
 		    system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
-#		    printf("cat junk2: ");		system(sprintf("cat  junk2 "));
 		    system(sprintf("cat junk2 | awk '{print \$1}' >& junk")); 
 		    open(DAT, "junk");
 		    while ($item = <DAT>) {
 			chomp($item);
-#			printf(" file --- =  $ipath/$item  \n ");
 			$FileList="$ipath/$item";
-#			print ">>>>>>>>>>>> Filelst  $FileList";
 			push(@files,$FileList);
 		    }
 		}
@@ -597,10 +584,11 @@ if( $ARGV[0] eq "--DCache" ){
 		$nfiles = @files;
 		$idx=0;
 
-		print $A, $B;
+		printf("A = $A  and B=$B \n ");
 		foreach $file (@files){
 		    $idx++;
-		    printf("$file Set = $B  Index =  $A   Max. = $max N Files = $nfiles Current File = $idx \n");
+		    $AM1=$A-1;
+		    printf("$file Set = $B  Index =  $A   Max. = $max    N Files = $nfiles   Current File = $idx \n");
 		    if($A > $max ){
 			$A=1;
 			$B++;
@@ -688,7 +676,7 @@ if( $ARGV[0] eq "--DCache" ){
 			        $myfiletrunc=$TreeName
 			}
 		    }
-		    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));  ##rfcp /dpm/in2p3.fr/home/cms/phedex/store/user/cherepan
+		    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 		    system(sprintf("echo \"File:  $RemoteDir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $RemoteDir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 		    $A++;
