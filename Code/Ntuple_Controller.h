@@ -132,7 +132,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
      qualitySize = 7
    };
   enum TrackPar{i_qoverp = 0, i_lambda, i_phi, i_dxy,i_dsz};
-
+  enum MuonQualityBitMask{Bit_MuonLoose=0,Bit_MuonSoft,Bit_MuonMedium,Bit_MuonTight, Bit_MuonHighPt, Bit_MuonTight_noVtx};
 
   // Ntuple Access Functions 
   virtual Int_t Get_Entries();
@@ -371,6 +371,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
    int        HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
 
+   bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
 
 };
 #endif
