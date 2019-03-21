@@ -82,11 +82,11 @@ PROGRAM       = Analysis.exe
 
 $(PROGRAM):     $(OBJS)
 	@echo "Linking $(PROGRAM) ..."
-	@echo $(LD) $(LDFLAGS) i386_linux/*.o $(LIBS) -o $(PROGRAM)
-	@$(LD) $(LDFLAGS) i386_linux/*.o $(LIBS) -o $(PROGRAM)
+	@echo $(LD) $(LDFLAGS) libs/*.o $(LIBS) -o $(PROGRAM)
+	@$(LD) $(LDFLAGS) libs/*.o $(LIBS) -o $(PROGRAM)
 	@echo "done"
 
-VPATH = utilities:i386_linux
+VPATH = utilities:libs
 
 ifdef USE_cherepanov
 	vpath %.cxx cherepanov
@@ -115,7 +115,7 @@ vpath %.h CommonFiles
 ##########################################################
 
 $(OBJS): %.o : %.cxx
-	$(CXX) $(ALLCXXFLAGS) $(DEFS) $< -o i386_linux/$@ 
+	$(CXX) $(ALLCXXFLAGS) $(DEFS) $< -o libs/$@ 
 
 .PHONY: clean cleanall cleandf all dataformats install sharedlib 
 
@@ -126,7 +126,7 @@ install: Analysis.exe
 #	@cd DataFormats; gmake install; cd ../
 
 clean:
-	@rm i386_linux/*.o
+	@rm libs/*.o
 	@rm Analysis.exe
 
 #cleandf:#=
@@ -138,7 +138,7 @@ cleanall:
 		cd $$subdir && $(MAKE) -f Makefile.standalone clean && cd ../../; \
 	done
 	@cd DataFormats; gmake clean; cd ../
-	@rm i386_linux/*.o
+	@rm libs/*.o
 	@rm Analysis.exe
 
 all: sharedlib dataformats install

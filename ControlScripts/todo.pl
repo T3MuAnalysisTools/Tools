@@ -268,7 +268,7 @@ if( $ARGV[0] eq "--Local" ){
     
     # create directory stucture
     system(sprintf("mkdir  $OutputDir/workdir$set/Code "));
-    system(sprintf("mkdir  $OutputDir/workdir$set/Code/i386_linux "));
+    system(sprintf("mkdir  $OutputDir/workdir$set/Code/libs "));
     system(sprintf("cp -r $CodeDir/* $OutputDir/workdir$set/Code/ "));
     system(sprintf("mkdir $OutputDir/workdir$set/EPS "));
     system(sprintf("ln -s $OutputDir/workdir$set/Code/InputData $OutputDir/workdir$set/InputData "));
@@ -450,7 +450,7 @@ if( $ARGV[0] eq "--DCache" ){
     
     # creat directory stucture
     system(sprintf("mkdir  $OutputDir/workdir$set/Code "));
-    system(sprintf("mkdir  $OutputDir/workdir$set/Code/i386_linux "));
+    system(sprintf("mkdir  $OutputDir/workdir$set/Code/libs "));
     system(sprintf("cp -r $CodeDir/* $OutputDir/workdir$set/Code/ "));
     system(sprintf("mkdir $OutputDir/workdir$set/EPS "));
     system(sprintf("ln -s $OutputDir/workdir$set/Code/InputData $OutputDir/workdir$set/InputData "));
