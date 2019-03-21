@@ -9,6 +9,8 @@
 Validation::Validation(TString Name_, TString id_):
   Selection(Name_,id_)
 {
+
+
   // This is a class constructor;
 }
 
@@ -18,6 +20,8 @@ Validation::~Validation(){
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
 	 << Npassed.at(j).GetBinContent(NCuts+1) << " +/- " << Npassed.at(j).GetBinError(NCuts) << std::endl;
   }
+
+
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
@@ -73,13 +77,21 @@ void  Validation::Configure(){
   Category=HConfig.GetTH1D(Name+"_Category","Category",2,0.5,2.5,"1 - #mu#mu#mu; 2 - #mu#mu+track ","Events");
   MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
   MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
-  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair, GeV","Events");
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",75,0.2,1.4,"Mass of the #mu#mu pair, GeV","Events");
   TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track, GeV","Events");
-  PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
+  PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",75,0.2,1.4,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
   FirstMuonsPt=HConfig.GetTH1D(Name+"_FirstMuonsPt","FirstMuonPt",25,0,50,"First  #mu p_{T}, GeV","Events");
   SecondMuonsPt=HConfig.GetTH1D(Name+"_SecondMuonsPt","SecondMuonPt",25,0,50,"Second #mu p_{T}, GeV","Events");
   ThirdMuonsPt=HConfig.GetTH1D(Name+"_ThirdMuonsPt","ThirdMuonPt",25,0,50,"Third  #mu p_{T}, GeV","Events");
+
+
+  FirstMuonsEta=HConfig.GetTH1D(Name+"_FirstMuonsEta","FirstMuonEta",25,-2.5,2.5,"First  #mu  rapidity","Events");
+  SecondMuonsEta=HConfig.GetTH1D(Name+"_SecondMuonsEta","SecondMuonEta",25,-2.5,2.5,"Second #mu  rapidity","Events");
+  ThirdMuonsEta=HConfig.GetTH1D(Name+"_ThirdMuonsEta","ThirdMuonEta",25,-2.5,2.5,"Third  #mu rapidity","Events");
+
+
+
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -104,6 +116,13 @@ void  Validation::Store_ExtraDist(){
   Extradist1d.push_back(&FirstMuonsPt);
   Extradist1d.push_back(&SecondMuonsPt);
   Extradist1d.push_back(&ThirdMuonsPt);
+
+  Extradist1d.push_back(&FirstMuonsEta);
+  Extradist1d.push_back(&SecondMuonsEta);
+  Extradist1d.push_back(&ThirdMuonsEta);
+
+
+
 }
 
 
@@ -168,6 +187,11 @@ void  Validation::doEvent(){
       FirstMuonsPt.at(t).Fill(pt1,1);
       SecondMuonsPt.at(t).Fill(pt2,1);
       ThirdMuonsPt.at(t).Fill(pt3,1);
+
+
+      FirstMuonsEta.at(t).Fill( Ntp->Muon_P4(Muon_index_1).Eta(),1);
+      SecondMuonsEta.at(t).Fill(  Ntp->Muon_P4(Muon_index_2).Eta(),1);
+      ThirdMuonsEta.at(t).Fill(  Ntp->Muon_P4(Muon_index_3).Eta(),1);
     }
 
 
@@ -205,6 +229,7 @@ void  Validation::doEvent(){
 
 void  Validation::Finish(){
   Selection::Finish();
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
 }

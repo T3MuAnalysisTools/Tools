@@ -45,5 +45,10 @@ class Validation : public Selection {
   std::vector<TH1D> SecondMuonsPt;
   std::vector<TH1D> ThirdMuonsPt;
 
+  std::vector<TH1D> FirstMuonsEta;
+  std::vector<TH1D> SecondMuonsEta;
+  std::vector<TH1D> ThirdMuonsEta;
+
+
 };
 #endif
