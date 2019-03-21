@@ -205,6 +205,55 @@ TString Ntuple_Controller::GetInputPublishDataName(){
     return diff;
   }
 
+
+std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned int> indixes){
+
+  std::vector<unsigned int> out;
+  unsigned int Muon_index_1=indixes.at(0);
+  unsigned int Muon_index_2=indixes.at(1);
+  unsigned int Muon_index_3=indixes.at(2);
+  unsigned int j1,j2,j3;
+
+  double pt1 = Muon_P4(Muon_index_1).Pt();
+  double pt2 = Muon_P4(Muon_index_2).Pt();
+  double pt3 = Muon_P4(Muon_index_3).Pt();
+
+  if(pt1>pt2)
+    {
+      if(pt2>pt3)
+	{
+	  j1=Muon_index_1; j2 = Muon_index_2; j3 = Muon_index_3;
+	}
+      else if(pt1>pt3)
+	{
+	  j1=Muon_index_1; j2 = Muon_index_3; j3 = Muon_index_2;
+	}
+      else
+	{
+	  j1=Muon_index_3; j2 = Muon_index_1; j3 = Muon_index_2;
+	}
+    }
+  else
+    {
+      if(pt1> pt3)
+	{
+	  j1=Muon_index_2; j2 = Muon_index_1; j3 = Muon_index_3;
+	}
+      else if(pt2> pt3)
+	{
+	  j1=Muon_index_2; j2 = Muon_index_3; j3 = Muon_index_1;
+	}
+      else
+	{
+	  j1=Muon_index_3; j2 = Muon_index_2; j3 = Muon_index_1;
+	}
+    }
+  out.push_back(j1);
+  out.push_back(j2);
+  out.push_back(j3);
+
+  return out;
+}
 //float Ntuple_Controller::DeltaRDau(int dau1idx, int dau2idx)
 //{
 //  TLorentzVector v1, v2;

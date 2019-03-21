@@ -313,7 +313,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
    int     Muon_pdgid(unsigned int i){return Ntp->Muon_pdgid->at(i);}
    double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
    double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
-
+   std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
    TrackParticle Muon_TrackParticle(unsigned int i){ 

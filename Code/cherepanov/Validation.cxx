@@ -22,23 +22,15 @@ Validation::~Validation(){
 }
 
 void  Validation::Configure(){
-  ////////////////////////////////////////////////////////////////////////
-  // Here you can defined your cuts. There are three vector for cuts:
-  // std::vector<double> cut, std::vector<double> value and std::vecto<bool> pass.  
-  // For exmaple if you want to aplly a  selection to variables Var1,Var2,Var3
-  // with selection values Val1, Val2, Val3, then you have: vector cut = (Val1,Val2,Val3),
-  // vector value  = (actual_value1, actual_value2, actual_value3), where the actuala_value
-  // is an actual value of Var1,2,3 in a given event (this vector will be filled later)
-  // vector pass contains boolean of the cut status.
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk)    cut.at(TriggerOk)=1;
+    if(i==L1SeedOk)    cut.at(L1SeedOk)=1;
+    if(i==HLTOk)    cut.at(HLTOk)=1;
     if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
   }
-
   TString hlabel;
   TString htitle;
   for(int i=0; i<NCuts; i++){
@@ -55,14 +47,21 @@ void  Validation::Configure(){
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       hlabel="Number of Prime Vertices";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
     }
-    else if(i==TriggerOk){
-      title.at(i)="Trigger ";
-      hlabel="Trigger ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    else if(i==L1SeedOk){
+      title.at(i)="L1 seed ";
+      hlabel="L1 triggers";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1SeedOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1SeedOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+
+    else if(i==HLTOk){
+      title.at(i)="HLT trigger ";
+      hlabel="DoubleMu3_Trk_Tau3mu";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
   } 
   // Setup NPassed Histogams
@@ -71,11 +70,16 @@ void  Validation::Configure(){
   // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
   MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"p_{T} of all stored Muons, GeV","Events");
+  Category=HConfig.GetTH1D(Name+"_Category","Category",2,0.5,2.5,"1 - #mu#mu#mu; 2 - #mu#mu+track ","Events");
   MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
   MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
   PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair, GeV","Events");
   TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track, GeV","Events");
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
+
+  FirstMuonsPt=HConfig.GetTH1D(Name+"_FirstMuonsPt","FirstMuonPt",25,0,50,"First  #mu p_{T}, GeV","Events");
+  SecondMuonsPt=HConfig.GetTH1D(Name+"_SecondMuonsPt","SecondMuonPt",25,0,50,"Second #mu p_{T}, GeV","Events");
+  ThirdMuonsPt=HConfig.GetTH1D(Name+"_ThirdMuonsPt","ThirdMuonPt",25,0,50,"Third  #mu p_{T}, GeV","Events");
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -94,34 +98,46 @@ void  Validation::Store_ExtraDist(){
   Extradist1d.push_back(&MuonsPtRatio);
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&TripleMass);
+  Extradist1d.push_back(&Category);
   Extradist2d.push_back(&PhiMassVsDsMass);
+
+  Extradist1d.push_back(&FirstMuonsPt);
+  Extradist1d.push_back(&SecondMuonsPt);
+  Extradist1d.push_back(&ThirdMuonsPt);
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// This method is called on each event
 
 void  Validation::doEvent(){ 
-  /////////////////////////////////////////////////////////////////////////////////////////////////
-  // Here the index t belongs to sample type, this value originally filled at Ntuple filling
-  // level: https://github.com/T3MuAnalysisTools/DsTau23Mu/blob/master/T3MNtuple/interface/DataMCType.h
-  // but you can flexibly redefined this and make combinations like, Data, MC1, MC2, MC3+MC4, etc ...
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
 
+  value.at(L1SeedOk) = 0;
+  value.at(HLTOk) = 0;
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLT = Ntp->HLTName(iTrigger);
+    if(HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+  }
+  for(int l1iTrigger=0; l1iTrigger < Ntp->NL1Seeds(); l1iTrigger++){
+    TString L1 = Ntp->L1Name(l1iTrigger);
+    if(L1.Contains("L1_DoubleMu0er1p4_dEta_Max1p8_OS") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
+    if(L1.Contains("L1_DoubleMu_10_0_dEta_Max1p8") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
+    if(L1.Contains("L1_TripleMu0") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
+  }
 
-  value.at(PrimeVtx)=Ntp->NVtx(); // Here the actual_value of a cut is set
-  pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); // Here we check that the actuall value of PrimeVrtices is above 5.
+  value.at(PrimeVtx)=Ntp->NVtx(); 
+  pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); 
   
-  value.at(TriggerOk)=(Ntp->EventNumber()%1000)==1;
-  pass.at(TriggerOk)=true; // always true
+  pass.at(L1SeedOk)= (value.at(L1SeedOk)==cut.at(L1SeedOk)); 
+  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
   
   double wobs=1;
-  double w;  //  This is an event weights, one may intorduce any weights to the event, for exmaple PU. 
-             //  there can be several weights, e.g. w = w1*w2*w3 ...
+  double w;  
+             
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
+
 
 
 
@@ -129,25 +145,31 @@ void  Validation::doEvent(){
   if(status){
     NVtx.at(t).Fill(Ntp->NVtx(),w);
 
-
-    std::cout<<"N 2 mu + track  "<< Ntp->NTwoMuonsTrack() << " N three mu  "<< Ntp->NThreeMuons() << "  Number of Vertices  " << Ntp->NumberOfSVertices() <<std::endl;
+    //    std::cout<<"N 2 mu + track  "<< Ntp->NTwoMuonsTrack() << " N three mu  "<< Ntp->NThreeMuons() << "  Number of Vertices  " << Ntp->NumberOfSVertices() <<std::endl;
     for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){ // loop over muons
       MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
       MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
     }
+    if(Ntp->NThreeMuons()!=0) Category.at(t).Fill(1);
+    if(Ntp->NTwoMuonsTrack()!=0) Category.at(t).Fill(2);
 
+    //    std::cout<<"  "<< Ntp->NThreeMuons() << "   "<< Ntp->NTwoMuonsTrack()<<std::endl;
+    //    Ntp->Vertex_signal_KF_refittedTracksP4(0,0).Print();
+    //    Ntp->Vertex_signal_KF_refittedTracksP4(0,1).Print();
+    //    Ntp->Vertex_signal_KF_refittedTracksP4(0,2).Print();
+    if(Ntp->NThreeMuons()!=0){
+      unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
+      unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(1);
+      unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(2);
 
-    for(int iL1=0; iL1< Ntp->NL1Seeds(); iL1++){
-      // std::cout<<"L1:   "<< Ntp->L1Name(iL1) << "  decision  "<< Ntp->L1Decision(iL1) <<std::endl;
+      double pt1 = Ntp->Muon_P4(Muon_index_1).Pt();
+      double pt2 = Ntp->Muon_P4(Muon_index_2).Pt();
+      double pt3 = Ntp->Muon_P4(Muon_index_3).Pt();
+      FirstMuonsPt.at(t).Fill(pt1,1);
+      SecondMuonsPt.at(t).Fill(pt2,1);
+      ThirdMuonsPt.at(t).Fill(pt3,1);
     }
 
-    for(int iHLT=0; iHLT< Ntp->NHLT(); iHLT++){
-      //     std::cout<<"HLT:   "<< Ntp->HLTName(iHLT) << "  decision  "<< Ntp->HLTDecision(iHLT) <<std::endl;
-    }
-
-    Ntp->Vertex_signal_KF_refittedTracksP4(0,0).Print();
-    Ntp->Vertex_signal_KF_refittedTracksP4(0,1).Print();
-    Ntp->Vertex_signal_KF_refittedTracksP4(0,2).Print();
 
     double deltaMass(999.);
     unsigned int pair_index(0);

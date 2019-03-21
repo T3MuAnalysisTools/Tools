@@ -21,7 +21,7 @@ class Validation : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {TriggerOk=0,PrimeVtx,NCuts}; 
+  enum cuts {L1SeedOk=0,HLTOk,PrimeVtx,NCuts}; 
 
 
  protected:
@@ -39,6 +39,11 @@ class Validation : public Selection {
   std::vector<TH1D> TripleMass;
   std::vector<TH2D> PhiMassVsDsMass;
   std::vector<TH1D>  MuonsPtRatio;
+  std::vector<TH1D> Category;
+
+  std::vector<TH1D> FirstMuonsPt;
+  std::vector<TH1D> SecondMuonsPt;
+  std::vector<TH1D> ThirdMuonsPt;
 
 };
 #endif
