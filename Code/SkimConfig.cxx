@@ -158,13 +158,15 @@ void SkimConfig::ApplySkimEfficiency(std::vector<Long64_t> ids, std::vector<TH1D
 		}
 	}
 	for (unsigned int i = 0; i < ids.size(); i++) {
-		NPassed.at(i).SetBinContent(0, 0);
+		NPassed.at(i).SetBinContent(0, 1);
+		//		NPassed.at(i).SetBinContent(0, 0);
 		NPassed.at(i).SetBinError(0, 0);
 		NPassed_noweight.at(i).SetBinContent(0, 0);
 		NPassed_noweight.at(i).SetBinError(0, 0);
 	}
 	for (unsigned int i = 0; i < SkimIDs.size(); i++) {
-		NPassed.at(i).SetBinContent(0, NEvents.at(i));
+		NPassed.at(i).SetBinContent(0, 1);
+		//		NPassed.at(i).SetBinContent(0, NEvents.at(i));
 		NPassed.at(i).SetBinError(0, NEventsErr.at(i));
 		NPassed_noweight.at(i).SetBinContent(0, NEvents_noweight.at(i));
 		NPassed_noweight.at(i).SetBinError(0, NEvents_noweight.at(i) * NEvents_noweight.at(i));
