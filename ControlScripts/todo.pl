@@ -312,6 +312,7 @@ if( $ARGV[0] eq "--Local" ){
 
     # Start Submit script
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Submit")) ; 
+    system(sprintf("chmod u+x $OutputDir/workdir$set/Submit"));
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/Submit")) ;
     system(sprintf("echo \"rm Set*/*.o; rm Set*/*.e; rm Set*/*.log; \" >> $OutputDir/workdir$set/Submit")) ;
 
@@ -500,6 +501,7 @@ if( $ARGV[0] eq "--DCache" ){
 
     # Start Submit script
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Submit")) ; 
+    system(sprintf("chmod u+x $OutputDir/workdir$set/Submit"));
     system(sprintf("echo \"verbosity=\\\$(grep SetLevel Code/Analysis.cxx | grep -c -e Debug -e Verbose)\" >> $OutputDir/workdir$set/Submit")) ;
     system(sprintf("echo \"  if [[ \\\${verbosity} -ne 0 ]]; then \" >> $OutputDir/workdir$set/Submit")) ;
     system(sprintf("echo \"    echo 'ERROR: Please make sure to set the verbosity level to Info in Analysis.cxx, otherwise your log-files will break QSUB! Abort...' \" >> $OutputDir/workdir$set/Submit"));
