@@ -43,7 +43,6 @@ TARGETS       =	Ntuple_Controller \
 		Plots \
 		DoubleEventRemoval \
 		PDG_Var \
-		Tools \
 		SkimConfig \
 		HistoConfig \
 		Logger \

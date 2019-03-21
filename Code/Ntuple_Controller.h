@@ -49,7 +49,7 @@ struct sortIdxByValue {
 //*
 //*   Class: Ntuple_Controller
 //*   
-//*   Purpose: The purpose of this class is to provide a interface to the
+//*   Purpose: The purpose of this class is to provide an interface to the
 //*            Ntuple
 //*
 //*   Designed by: Vladimir Cherepanov
@@ -71,20 +71,12 @@ class Ntuple_Controller{
 
   int currentEvent;
 
-  bool cannotObtainHiggsMass; // avoid repeated printing of warning when running locally
-
   // Ntuple Access Functions
   virtual void Branch_Setup(TString B_Name, int type);
   virtual void Branch_Setup(){}
 
   // Functions to configure objects
   virtual void ConfigureObjects(); 
-  void doElectrons();
-  void doPhotons();
-  void doJets();
-  void doMuons();
-  void doTaus();
-  void doMET();
   unsigned int ObjEvent;
 
   // helper functions for internal calculations
@@ -113,27 +105,15 @@ class Ntuple_Controller{
   Ntuple_Controller(std::vector<TString> RootFiles);
 
   // Destructor
-  virtual ~Ntuple_Controller() ;
+  virtual ~Ntuple_Controller();
 
   // Event initializer
   void InitEvent();
 
-  //TauSpiner function
-  double TauSpinerGet(int SpinType);
-  void TauSpinerSetSignal(int signalcharge){
-#ifdef USE_TauSpinner
-TauSpinerInt.SetTauSignalCharge(signalcharge);
-#endif
-}
    enum beamspot{BS_x0,BS_y0,BS_z0,BS_sigmaZ,BS_dxdz,BS_dydz,BS_BeamWidthX,NBS_par};
-   enum TrackQuality {
-     undefQuality = -1, loose = 0, tight = 1, highPurity = 2,
-     confirmed = 3, goodIterative = 4, looseSetWithPV = 5, highPuritySetWithPV = 6,
-     qualitySize = 7
-   };
-  enum TrackPar{i_qoverp = 0, i_lambda, i_phi, i_dxy,i_dsz};
-  enum MuonQualityBitMask{Bit_MuonLoose=0,Bit_MuonSoft,Bit_MuonMedium,Bit_MuonTight, Bit_MuonHighPt, Bit_MuonTight_noVtx};
-  enum MuonStandardSelectors{CutBasedIdLoose=0,
+   enum TrackPar{i_qoverp = 0, i_lambda, i_phi, i_dxy,i_dsz};
+   enum MuonQualityBitMask{Bit_MuonLoose=0,Bit_MuonSoft,Bit_MuonMedium,Bit_MuonTight, Bit_MuonHighPt, Bit_MuonTight_noVtx};
+   enum MuonStandardSelectors{CutBasedIdLoose=0,
     CutBasedIdMedium,
     CutBasedIdMediumPrompt,
     CutBasedIdTight,
@@ -179,7 +159,7 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   void ThinTree();
 
 
-  bool                                isInit;
+  bool isInit;
 
   // Information from input Ntuple path name
   TString GetInputNtuplePath();
@@ -191,7 +171,6 @@ TauSpinerInt.SetTauSignalCharge(signalcharge);
   // Event Variables
   Long64_t GetMCID();
   int GetStrippedMCID();
-  /* // Vertex Information */
 
    ULong64_t EventNumber(){return Ntp->Event_EventNumber;}
    Int_t     RunNumber(){return Ntp->Event_RunNumber;}

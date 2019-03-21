@@ -12,7 +12,6 @@
 ///////////////////////////////////////////////////////////////////////
 Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
   copyTree(false)
-  ,cannotObtainHiggsMass(false)
   ,ObjEvent(-1)
   ,isInit(false)
 {
@@ -144,7 +143,7 @@ void Ntuple_Controller::SaveCloneTree(){
 }
 
 void Ntuple_Controller::ThinTree(){
-  std::cout << "ThinTree not implemented." << std::endl;
+  std::cout << "ThinTree not implemented..." << std::endl;
 }
 
 int Ntuple_Controller::SetupSystematics(TString sys){
@@ -197,68 +196,58 @@ TString Ntuple_Controller::GetInputPublishDataName(){
 
 
 
- double Ntuple_Controller::DeltaPhi(double angle1,double angle2)
-  {
-    double diff=angle1-angle2;
-    while(diff>=TMath::Pi())diff=diff-TMath::TwoPi();
-    while(diff<=-TMath::Pi())diff=diff+TMath::TwoPi();
-    return diff;
-  }
+double Ntuple_Controller::DeltaPhi(double angle1,double angle2)
+{
+  double diff=angle1-angle2;
+  while(diff>=TMath::Pi())diff=diff-TMath::TwoPi();
+  while(diff<=-TMath::Pi())diff=diff+TMath::TwoPi();
+  return diff;
+}
 
 
-std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned int> indixes){
-
+std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned int> indices){
+  
   std::vector<unsigned int> out;
-  unsigned int Muon_index_1=indixes.at(0);
-  unsigned int Muon_index_2=indixes.at(1);
-  unsigned int Muon_index_3=indixes.at(2);
-  unsigned int j1,j2,j3;
+  unsigned int i1,i2,i3;
 
-  double pt1 = Muon_P4(Muon_index_1).Pt();
-  double pt2 = Muon_P4(Muon_index_2).Pt();
-  double pt3 = Muon_P4(Muon_index_3).Pt();
+  double pt1 = Muon_P4(indices.at(0)).Pt();
+  double pt2 = Muon_P4(indices.at(1)).Pt();
+  double pt3 = Muon_P4(indices.at(2)).Pt();
 
   if(pt1>pt2)
     {
       if(pt2>pt3)
 	{
-	  j1=Muon_index_1; j2 = Muon_index_2; j3 = Muon_index_3;
+	  i1=indices.at(0); i2 = indices.at(1); i3 = indices.at(2);
 	}
       else if(pt1>pt3)
 	{
-	  j1=Muon_index_1; j2 = Muon_index_3; j3 = Muon_index_2;
+	  i1=indices.at(0); i2 = indices.at(2); i3 = indices.at(1);
 	}
       else
 	{
-	  j1=Muon_index_3; j2 = Muon_index_1; j3 = Muon_index_2;
+	  i1=indices.at(2); i2 = indices.at(0); i3 = indices.at(1);
 	}
     }
   else
     {
-      if(pt1> pt3)
+      if(pt1>pt3)
 	{
-	  j1=Muon_index_2; j2 = Muon_index_1; j3 = Muon_index_3;
+	  i1=indices.at(1); i2 = indices.at(0); i3 = indices.at(2);
 	}
-      else if(pt2> pt3)
+      else if(pt2>pt3)
 	{
-	  j1=Muon_index_2; j2 = Muon_index_3; j3 = Muon_index_1;
+	  i1=indices.at(1); i2 = indices.at(2); i3 = indices.at(0);
 	}
       else
 	{
-	  j1=Muon_index_3; j2 = Muon_index_2; j3 = Muon_index_1;
+	  i1=indices.at(2); i2 = indices.at(1); i3 = indices.at(0);
 	}
     }
-  out.push_back(j1);
-  out.push_back(j2);
-  out.push_back(j3);
+  out.push_back(i1);
+  out.push_back(i2);
+  out.push_back(i3);
 
   return out;
 }
-//float Ntuple_Controller::DeltaRDau(int dau1idx, int dau2idx)
-//{
-//  TLorentzVector v1, v2;
-//  v1 =Daughters_P4(dau1idx);
-//  v2 =Daughters_P4(dau2idx);
-//  return v1.DeltaR(v2);
-//}
 
