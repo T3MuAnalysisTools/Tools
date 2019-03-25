@@ -372,7 +372,26 @@ class Ntuple_Controller{
    string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
    int        HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
 
-   bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
 
+
+   unsigned int               NMCSignalParticles(){return Ntp->MCSignalParticle_p4->size();}
+   TLorentzVector             MCSignalParticle_p4(unsigned int i){return TLorentzVector(Ntp->MCSignalParticle_p4->at(i).at(1),Ntp->MCSignalParticle_p4->at(i).at(2),Ntp->MCSignalParticle_p4->at(i).at(3),Ntp->MCSignalParticle_p4->at(i).at(0));}
+   int                        MCSignalParticle_pdgid(unsigned int i){return Ntp->MCSignalParticle_pdgid->at(i);}
+   int                        MCSignalParticle_charge(unsigned int i){return Ntp->MCSignalParticle_charge->at(i);}
+   std::vector<unsigned int>  MCSignalParticle_Tauidx(unsigned int i){return Ntp->MCSignalParticle_Tauidx->at(i);}
+   // Tau decays (Tau is first element of vector)
+   int NMCTaus(){return Ntp->MCTauandProd_p4->size();}
+   TLorentzVector MCTau_p4(unsigned int i){return MCTauandProd_p4(i,0);}
+   int MCTau_pdgid(unsigned int i){return MCTauandProd_pdgid(i,0);}
+   int MCTau_charge(unsigned int i){return MCTauandProd_charge(i,0);}
+
+
+   //Tau and decay products
+   int NMCTauDecayProducts(unsigned int i){if(0<=i && i<(unsigned int)NMCTaus()) return Ntp->MCTauandProd_p4->at(i).size(); return 0;}
+   TLorentzVector MCTauandProd_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->MCTauandProd_p4->at(i).at(j).at(1),Ntp->MCTauandProd_p4->at(i).at(j).at(2),Ntp->MCTauandProd_p4->at(i).at(j).at(3),Ntp->MCTauandProd_p4->at(i).at(j).at(0));}
+   int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
+   int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
+
+   bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
 };
 #endif
