@@ -202,6 +202,7 @@ public :
    vector<vector<double> > *MCSignalParticle_p4;
    vector<int>     *MCSignalParticle_pdgid;
    vector<vector<int> > *MCSignalParticle_childpdgid;
+   vector<vector<vector<double> > > *MCSignalParticle_childp4;
    vector<int>     *MCSignalParticle_charge;
    vector<vector<double> > *MCSignalParticle_Poca;
    vector<vector<unsigned int> > *MCSignalParticle_Tauidx;
@@ -380,6 +381,7 @@ public :
    TBranch        *b_MCSignalParticle_p4;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
    TBranch        *b_MCSignalParticle_childpdgid;   //!
+   TBranch        *b_MCSignalParticle_childp4;   //!
    TBranch        *b_MCSignalParticle_charge;   //!
    TBranch        *b_MCSignalParticle_Poca;   //!
    TBranch        *b_MCSignalParticle_Tauidx;   //!
@@ -624,6 +626,7 @@ void NtupleReader::Init(TTree *tree)
    MCSignalParticle_p4 = 0;
    MCSignalParticle_pdgid = 0;
    MCSignalParticle_childpdgid = 0;
+   MCSignalParticle_childp4 = 0;
    MCSignalParticle_charge = 0;
    MCSignalParticle_Poca = 0;
    MCSignalParticle_Tauidx = 0;
@@ -806,6 +809,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
    fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
    fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
+   fChain->SetBranchAddress("MCSignalParticle_childp4", &MCSignalParticle_childp4, &b_MCSignalParticle_childp4);
    fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
    fChain->SetBranchAddress("MCSignalParticle_Poca", &MCSignalParticle_Poca, &b_MCSignalParticle_Poca);
    fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
@@ -813,24 +817,9 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCTauandProd_Vertex", &MCTauandProd_Vertex, &b_MCTauandProd_Vertex);
    fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
    fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
-   fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
-   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
-   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
-   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
-   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
-   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
-   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
-   fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
-   fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
-   fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
-   fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
-   fChain->SetBranchAddress("MCSignalParticle_Poca", &MCSignalParticle_Poca, &b_MCSignalParticle_Poca);
-   fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
-   fChain->SetBranchAddress("MCTauandProd_p4", &MCTauandProd_p4, &b_MCTauandProd_p4);
-   fChain->SetBranchAddress("MCTauandProd_Vertex", &MCTauandProd_Vertex, &b_MCTauandProd_Vertex);
-   fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
-   fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
-   fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);
+   fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);   
+
+
    Notify();
 }
 

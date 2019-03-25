@@ -63,12 +63,9 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n                                                       Note: the root files must be inside a $InputDir/<dir>/ ");
     printf("\n                                                       where dir contains user, data or mc as a substring");
     printf("\n                                                     --OutputDir <OutputDir> Default value: $OutputDir");
-    printf("\n                                                     --CodeDir  <CodeDir>    Default value: $CodeDir");
     printf("\n                                                     --SetName <SetName>     Default value: $set ");
     printf("\n                                                     --NMaxData <Max Number of data files per job >     Default value: $maxdata ");
     printf("\n                                                     --NMaxMC <Max Number of MC files per job >     Default value: $maxmc ");
-    printf("\n                                                     --NMaxEmbed <Max Number of Embedding files per job > Default value: $maxemb ");
-    printf("\n                                                     --ROOTSYS <ROOTSYS> the current ROOTSYS variable if --BuildRoot is not defined");
     printf("\n                                                     --Proxy <path>;   a path to proxy recieved by running grid-init");
     printf("\n./todo.pl --DCache <Input.txt> <ListofDS.txt>      INTENTED FOR REGULAR USE (DEFAULT)");
     printf("\n                                                   Configure a directory to run from. <InputPar.txt> name of file that");
@@ -78,11 +75,9 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n                                                   <ListoDS.txt> list of DCache Dataset directories you want to run on.");
     printf("\n                                                   Optional commands:  ");
     printf("\n                                                     --OutputDir <OutputDir> ");
-    printf("\n                                                     --CodeDir <CodeDir>");
     printf("\n                                                     --SetName <SetName> "); 
     printf("\n                                                     --NMaxData <Max Number of data files per job >     Default value: $maxdata ");
     printf("\n                                                     --NMaxMC <Max Number of MC files per job >     Default value: $maxmc ");
-    printf("\n                                                     --NMaxEmbed <Max Number of Embedding files per job > Default value: $maxemb ");
     printf("\n                                                     --Proxy <path>;   a path to proxy recieved by running grid-init");
     printf("\n  ");
 
@@ -98,14 +93,6 @@ for($l=2;$l<$numArgs; $l++){
     if($ARGV[$l] eq "--InputDir"){
 	$l++;
 	$InputDir=$ARGV[$l];
-    }
-    if($ARGV[$l] eq "--OutputDir"){
-	$l++;
-	$OutputDir=$ARGV[$l];
-    }
-    if($ARGV[$l] eq "--CodeDir"){
-	$l++;
-	$CodeDir=$ARGV[$l];
     }
     if($ARGV[$l] eq "--SetName"){
 	$l++;
@@ -123,24 +110,7 @@ for($l=2;$l<$numArgs; $l++){
 	$l++;
 	$maxmc=$ARGV[$l];
     }
-    if($ARGV[$l] eq  "--NMaxEmbed" ){
-	$l++;
-	$maxemb=$ARGV[$l];
-    }
-    if($ARGV[$l] eq  "--BuildRoot"){
-	$l++;
-	$buildrootversion=$ARGV[$l];
-	$buildRoot=1;
-    } 
-    if($ARGV[$l] eq  "--ROOTSYS"){
-        $l++;
-        $MYROOTSYS=$ARGV[$l];
-	$hasroot=1;
-    }
-    if($ARGV[$l] eq  "--LongQueue"){
-		$l++;
-		$Queue="cream-pbs-cms";
-    }
+
     if($ARGV[$l] eq  "--ARCH" ){
         $l++;
         $ARCH=$ARGV[$l];
@@ -425,6 +395,11 @@ if( $ARGV[0] eq "--Local" ){
 
 
 if( $ARGV[0] eq "--DCache" ){
+
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
+	printf("\nUnrecognized user. Exit.\n"); 
+	exit(0);
+    }
     $RemoteScrathDir="/afs/cern.ch/work/$letter/$UserID";
     $RemoteDir='\$TMPDIR'; 
     $TempDataSetFile=$ARGV[2];

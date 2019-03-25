@@ -5,6 +5,7 @@
 #ifdef USE_cherepanov
 #include "cherepanov/MyTest.h"
 #include "cherepanov/Validation.h"
+#include "cherepanov/MCStudy.h"
 
 #endif
 
@@ -37,6 +38,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #ifdef USE_cherepanov
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
+  else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
 #endif
 
 #ifdef USE_joshi

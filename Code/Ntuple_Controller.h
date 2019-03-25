@@ -379,6 +379,18 @@ class Ntuple_Controller{
    int                        MCSignalParticle_pdgid(unsigned int i){return Ntp->MCSignalParticle_pdgid->at(i);}
    int                        MCSignalParticle_charge(unsigned int i){return Ntp->MCSignalParticle_charge->at(i);}
    std::vector<unsigned int>  MCSignalParticle_Tauidx(unsigned int i){return Ntp->MCSignalParticle_Tauidx->at(i);}
+
+
+   int                        MCSignalParticle_Nchilds(unsigned int i){return Ntp->MCSignalParticle_childp4->at(i).size();}
+   int                        MCSignalParticle_childpdgid(unsigned int i,unsigned int j){return Ntp->MCSignalParticle_childpdgid->at(i).at(j);}
+   TLorentzVector             MCSignalParticle_child_p4(unsigned int i, unsigned int j){
+     return TLorentzVector(Ntp->MCSignalParticle_childp4->at(i).at(j).at(1),
+			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(2),
+			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(3),
+			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(0));}
+
+
+
    // Tau decays (Tau is first element of vector)
    int NMCTaus(){return Ntp->MCTauandProd_p4->size();}
    TLorentzVector MCTau_p4(unsigned int i){return MCTauandProd_p4(i,0);}
