@@ -493,7 +493,7 @@ if( $ARGV[0] eq "--DCache" ){
 	$max=1;
 	foreach $DS (@DataSets){
 	    print $DS; 	       
-	    if(($l==0 && ($DS =~ m/data/)) || ($l==1 && !($DS =~ m/data/))){
+	    if(($l==0 && ($DS =~ m/_Run/)) || ($l==1 && !($DS =~ m/_Run/))){
 		if($l==0){
 		    $max=$maxdata;
 		}
