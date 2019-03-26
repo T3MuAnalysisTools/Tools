@@ -396,7 +396,7 @@ class Ntuple_Controller{
    TLorentzVector MCTau_p4(unsigned int i){return MCTauandProd_p4(i,0);}
    int MCTau_pdgid(unsigned int i){return MCTauandProd_pdgid(i,0);}
    int MCTau_charge(unsigned int i){return MCTauandProd_charge(i,0);}
-
+   int MCTau_midx(unsigned int i){return Ntp->MCTauandProd_midx->at(i);}
 
    //Tau and decay products
    int NMCTauDecayProducts(unsigned int i){if(0<=i && i<(unsigned int)NMCTaus()) return Ntp->MCTauandProd_p4->at(i).size(); return 0;}
