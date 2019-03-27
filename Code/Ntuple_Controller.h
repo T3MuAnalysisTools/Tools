@@ -313,6 +313,14 @@ class Ntuple_Controller{
    unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
    std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
 
+   double ThreeMuons_SV_Chi2(unsigned int i){return Ntp->ThreeMuons_SV_Chi2->at(i);}
+   std::vector<float> ThreeMuons_TriggerMatch_dR(unsigned int i){return Ntp->ThreeMuons_TriggerMatch_dR->at(i);}
+
+
+   double TwoMuonsTrack_SV_Chi2(unsigned int i){return Ntp->TwoMuonsTrack_SV_Chi2->at(i);}
+   std::vector<float> TwoMuonsTrack_TriggerMatch_dR(unsigned int i){return Ntp->TwoMuonsTrack_TriggerMatch_dR->at(i);}
+
+
    unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
    std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
    std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
