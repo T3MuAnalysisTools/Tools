@@ -12,6 +12,7 @@
 
 #ifdef USE_joshi
 #include "joshi/MyTest.h"
+#include "joshi/NewTest.h"
 
 #endif
 
@@ -43,6 +44,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 #ifdef USE_joshi
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+  else if(Analysis.Contains("newtest"))s=new NewTest(Analysis,UncertType);
 #endif
 
 

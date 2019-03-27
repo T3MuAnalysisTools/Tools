@@ -63,7 +63,7 @@ endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest
+	TARGETS += MyTest NewTest Validation
 	DEFS += -DUSE_joshi=1
 endif
 
