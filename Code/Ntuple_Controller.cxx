@@ -251,3 +251,22 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
   return out;
 }
 
+
+
+TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
+  TLorentzVector out(0,0,0,0);
+  double dr(0.3);
+  if(NMCTaus()==0)
+    {
+      Logger(Logger::Warning) << "No truth tau leptons in this event found; return TLorentzVector(0,0,0,0) " << std::endl; return out;
+    }
+  for(int i=0; i < NMCTaus(); i++ ){
+    for(int j =0; j < NMCTauDecayProducts(i); j++){
+      if(MCTauandProd_p4(i,j).DeltaR(vector) < dr){
+	out=MCTauandProd_p4(i,j);
+	dr = MCTauandProd_p4(i,j).DeltaR(vector);
+      }
+    }
+  }
+  return out;
+}

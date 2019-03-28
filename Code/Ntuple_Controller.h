@@ -292,7 +292,7 @@ class Ntuple_Controller{
    int     Muon_pdgid(unsigned int i){return Ntp->Muon_pdgid->at(i);}
    double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
    double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
-   std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
+
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
    TrackParticle Muon_TrackParticle(unsigned int i){ 
@@ -412,6 +412,11 @@ class Ntuple_Controller{
    int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
    int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
 
+
+   //Tool functions
+   std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
+   TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
+
 };
 #endif
