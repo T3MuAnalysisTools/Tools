@@ -228,10 +228,20 @@ void  Validation::doEvent(){
 
 
 void  Validation::Finish(){
-  Selection::Finish();
-
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
+
+  if(mode == RECONSTRUCT){
+    for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
+      double scale(1.);
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = scale/Nminus0.at(0).at(i).Integral();
+      ScaleAllHistOfType(HConfig.GetType(1),scale);
+    }
+  }
+
+
+  Selection::Finish();
+
 }
 
 
