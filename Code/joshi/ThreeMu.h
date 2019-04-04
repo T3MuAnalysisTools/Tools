@@ -22,7 +22,7 @@ class ThreeMu : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {L1SeedOk=0,HLTOk,PrimeVtx,isThreeMu,NCuts}; 
+  enum cuts {L1SeedOk=0,HLTOk,PrimeVtx,isThreeMu,fitVtxChiSq,NCuts}; 
 
 
  protected:

@@ -5,6 +5,7 @@
 #include "PDG_Var.h"
 #include <iostream>
 #include "Logger.h"
+
 double ThreeMu::deltaR(double eta1, double phi1, double eta2, double phi2)
 {
     double deta = eta1 - eta2;
@@ -43,6 +44,7 @@ void  ThreeMu::Configure(){
     if(i==HLTOk)        cut.at(HLTOk)=1;
     if(i==isThreeMu)        cut.at(isThreeMu)=1;
     if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+	 if(i==fitVtxChiSq)	cut.at(fitVtxChiSq)=5.0;
   }
 
   TString hlabel;
@@ -83,6 +85,13 @@ void  ThreeMu::Configure(){
       hlabel="DoubleMu3_Trk_Tau3mu";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+	 
+	 else if(i==fitVtxChiSq){
+      title.at(i)="Normalized chi sq fit vertex $(>5)$ ";
+      hlabel="Normalized chi sq fit vertex";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
     }
   } 
 
@@ -205,14 +214,13 @@ void  ThreeMu::Configure(){
   Muon1Muon3dR=HConfig.GetTH1D(Name+"_Muon1Muon3dR","dR between the highest p muon and the lowest pt muon",100,0,5,"dR","Events");
   Muon2Muon3dR=HConfig.GetTH1D(Name+"_Muon2Muon3dR","dR between the second highest p muon and the lowest pt muon",100,0,5,"dR","Events");
   Muon1Muon2dR=HConfig.GetTH1D(Name+"_Muon1Muon1dR","dR between the highest p muon and the second highest p muon",100,0,5,"dR","Events");
-  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu#mu mass",50,1.7,2.1,"Mass of the #mu#mu#mu","Events");
+  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu#mu mass",50,1.6,2.1,"Mass of the #mu#mu#mu","Events");
 
 Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
 void  ThreeMu::Store_ExtraDist(){ 
-
   Extradist1d.push_back(&Muon1Muon3dR);
   Extradist1d.push_back(&Muon2Muon3dR);
   Extradist1d.push_back(&Muon1Muon2dR);
@@ -353,17 +361,39 @@ void  ThreeMu::doEvent(){
     if(L1.Contains("L1_TripleMu0") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
   }
 
-  value.at(PrimeVtx)=Ntp->NVtx(); 
+  value.at(PrimeVtx)=Ntp->NVtx();
+  value.at(fitVtxChiSq)=0;
 
   value.at(isThreeMu) = 0;
   if(Ntp->NTwoMuonsTrack()==0 && Ntp->NThreeMuons() != 0) value.at(isThreeMu) = 1;
 
   pass.at(isThreeMu) = (value.at(isThreeMu) == cut.at(isThreeMu));
-
   pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); 
   pass.at(L1SeedOk)= (value.at(L1SeedOk)==cut.at(L1SeedOk)); 
-  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
+  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
 
+  int mu1=-1, mu2=-1, mu3=-1;
+  int tmp_idx = -1;
+  double tmp_chisq = 999;
+
+  if (value.at(isThreeMu)==1){
+  	for (unsigned int i3M=0; i3M<Ntp->NThreeMuons(); i3M++){
+		int tmp_mu1 =  Ntp->ThreeMuonIndices(i3M).at(0);
+      int tmp_mu2 =  Ntp->ThreeMuonIndices(i3M).at(1);
+      int tmp_mu3 =  Ntp->ThreeMuonIndices(i3M).at(2);
+		if (tmp_chisq>Ntp->ThreeMuons_SV_Chi2(i3M)){
+			tmp_idx = i3M;
+			tmp_chisq = Ntp->ThreeMuons_SV_Chi2(i3M);
+			mu1 = tmp_mu1;
+			mu2 = tmp_mu2;
+			mu3 = tmp_mu3;
+		}
+	}
+  }
+  if (tmp_idx==-1) value.at(fitVtxChiSq)=999.0;
+  else value.at(fitVtxChiSq) = tmp_chisq;
+  pass.at(fitVtxChiSq) = (value.at(fitVtxChiSq)<cut.at(fitVtxChiSq));
+  
   double wobs=1;
   double w;  
              
@@ -372,13 +402,8 @@ void  ThreeMu::doEvent(){
 
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
-    NVtx.at(t).Fill(Ntp->NVtx(),w);
-
-    for(unsigned int i2M=0; i2M < Ntp->NThreeMuons(); i2M++){
-      unsigned int mu1 =  Ntp->ThreeMuonIndices(i2M).at(0);
-      unsigned int mu2 =  Ntp->ThreeMuonIndices(i2M).at(1);
-      unsigned int mu3 =  Ntp->ThreeMuonIndices(i2M).at(2);
-		cout<<mu1<<" "<<mu2<<" "<<mu3<<endl;
+  if (DEBUG) cout<<mu1<<" "<<mu2<<" "<<mu3<<" "<<Ntp->NMuons()<<endl;
+	NVtx.at(t).Fill(Ntp->NVtx(),w);
 	 Muon1_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu1),w);
     Muon2_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu2),w);
     Muon3_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu3),w);
@@ -487,13 +512,13 @@ void  ThreeMu::doEvent(){
     Muon1_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu1),w);
     Muon2_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu2),w);
     Muon3_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu3),w);
+	 TripleMass.at(t).Fill((Ntp->Muon_P4(mu1)+Ntp->Muon_P4(mu2)+Ntp->Muon_P4(mu3)).M(), w);
 /* 
 //	 Muon1Muon2dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu1).Eta(),Ntp->Muon_P4(mu1).Phi(),Ntp->Track_P4(mu2).Eta(),Ntp->Track_P4(mu2).Phi()));
 //	 Muon2Muon3dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu2).Eta(),Ntp->Muon_P4(mu2).Phi(),Ntp->Track_P4(mu3).Eta(),Ntp->Track_P4(mu3).Phi()));
 //	 Muon1Muon3dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu1).Eta(),Ntp->Muon_P4(mu1).Phi(),Ntp->Track_P4(mu3).Eta(),Ntp->Track_P4(mu3).Phi()));
 cout<<mu3<<endl;
-    TripleMass.at(t).Fill((Ntp->Muon_P4(mu1)+Ntp->Muon_P4(mu2)+ Ntp->Track_P4(mu3)).M(), w);*/
-	 }
+    */
 
     /*
     if(Ntp->NThreeMuons()!=0){
