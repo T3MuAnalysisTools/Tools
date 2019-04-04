@@ -117,7 +117,7 @@ for($l=2;$l<$numArgs; $l++){
     }
     if($ARGV[$l] eq  "--Proxy" ){
         $l++;
-        $Proxy="$PWD/$ARGV[$l]";
+        $Proxy=$ARGV[$l];
     }
 }
 my $dir = getcwd;

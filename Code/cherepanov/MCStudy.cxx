@@ -212,27 +212,28 @@ void  MCStudy::doEvent(){
 
 
 
-    if(Ntp->NThreeMuons()==2){
+    if(Ntp->NThreeMuons()==1){
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(1);
       unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(2);
 
 
-      unsigned int Muon_index_11=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(1)).at(0);
-      unsigned int Muon_index_21=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(1)).at(1);
-      unsigned int Muon_index_31=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(1)).at(2);
 
-
-      std::cout<<"RECO MUONS      11111111111111111111 a"<<std::endl;
+      std::cout<<"RECO MUONS    "<<std::endl;
       Ntp->Muon_P4(Muon_index_1).Print();
       Ntp->Muon_P4(Muon_index_2).Print();
       Ntp->Muon_P4(Muon_index_3).Print();
 
 
-      std::cout<<"RECO MUONS      22222222222222222222 a"<<std::endl;
-      Ntp->Muon_P4(Muon_index_11).Print();
-      Ntp->Muon_P4(Muon_index_21).Print();
-      Ntp->Muon_P4(Muon_index_31).Print();
+
+      std::cout<<"matched "<< std::endl;
+      Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1)).Print();
+      Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2)).Print();
+      Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_3)).Print();
+
+
+      std::cout<<"mass "<< (Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2))).M() <<std::endl;
+
 
     }
 
