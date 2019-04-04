@@ -234,8 +234,8 @@ void  Validation::Finish(){
   if(mode == RECONSTRUCT){
     for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = scale/Nminus0.at(0).at(i).Integral();
-      ScaleAllHistOfType(HConfig.GetType(1),scale);
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
+      ScaleAllHistOfType(HConfig.GetType(i),scale);
     }
   }
 
