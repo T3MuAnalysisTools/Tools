@@ -80,14 +80,14 @@ void  MCEfficiency::Configure(){
       }
 
       else if(i==is2MuTrk){
-        title.at(i)="is2MuTrk ";
+        title.at(i)="Catrgory: 2Mu+Trk ";
         hlabel="2muon + track category";
         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_mumuMass_",htitle,2,-0.5,1.5,hlabel,"Events"));
         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_mumuMass_",htitle,2,-0.5,1.5,hlabel,"Events"));
       }
       
 		else if(i==mumuMass){
-        title.at(i)="mumuMass";
+        title.at(i)="MuMu Invariant Mass within (1.0,1.04) GeV";
         hlabel="mumuMass";
         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_mumuMass_",htitle,80,0.8,1.6,hlabel,"Events"));
         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_mumuMass_",htitle,80,0.8,1.6,hlabel,"Events"));
@@ -101,44 +101,69 @@ void  MCEfficiency::Configure(){
       }
 
       else if(i==trkPt){
-        title.at(i)="pT of the track";
+        title.at(i)="Track pt $(pt>$";
+		  title.at(i)+=cut.at(trkPt);
+		  title.at(i)+=")";
         hlabel="pT of the track";
         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_trkPt_",htitle,100,-0.5,9.5,hlabel,"Events"));
         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_trkPt_",htitle,100,-0.5,9.5,hlabel,"Events"));
       }
 
       else if(i==nTrkHits){
-        title.at(i)="Number of hits in the tracker";
+        title.at(i)="Number of hits in the tracker $(N>$";
+		  title.at(i)+=cut.at(nTrkHits);
+		  title.at(i)+=")";
         hlabel="Number of hits in the tracker";
         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_nTrkHits_",htitle,11,-1,10,hlabel,"Events"));
         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_nTrkHits_",htitle,11,-1,10,hlabel,"Events"));
       }
 		
 		else if(i==fitVtxChiSq){
-        title.at(i)="Normalized chi square of the vertex fit";
-        hlabel="Normalized chi square of the vertex fit";
+        title.at(i)="Normalized chi sq of the vertex fit $(<$";
+        title.at(i)+=cut.at(fitVtxChiSq);
+		  title.at(i)+=")";
+		  hlabel="Normalized chi square of the vertex fit";
         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
       }
 
       // Track Candidate Information
-      Track_P=HConfig.GetTH1D(Name+"_Track_P","Momentum magnitude of track (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_E=HConfig.GetTH1D(Name+"_Track_E","Energy of track (all tracks)",66,-0.5,65.5,"","Events");
-      Track_Pt=HConfig.GetTH1D(Name+"_Track_Pt","Transverse momentum of track (all tracks)",66,-0.5,65.5,"","Events");
-      Track_Eta=HConfig.GetTH1D(Name+"_Track_Eta","Psuedorapidity of track (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_Phi=HConfig.GetTH1D(Name+"_Track_Phi","Azimuthal angle of track (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_vx=HConfig.GetTH1D(Name+"_Track_vx","X coordinate of the parent vertex (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_vy=HConfig.GetTH1D(Name+"_Track_vy","Y coordinate of the parent vertex (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_vz=HConfig.GetTH1D(Name+"_Track_vz","Z coordinate of the parent vertex (all tracks)",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_normalizedChi2=HConfig.GetTH1D(Name+"_Track_normalizedChi2","Normalized chi square",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_numberOfValidHits=HConfig.GetTH1D(Name+"_Track_numberOfValidHits","number of valid hits in te tracker",66,-0.5,65.5,"Number of Vertices","Events");
+      Track_P=HConfig.GetTH1D(Name+"_Track_P","Momentum magnitude of track (2mu+trk track candidate)",66,-0.5,65.5,"p (track)","Events");
+      Track_E=HConfig.GetTH1D(Name+"_Track_E","Energy of track (2mu+trk track candidate)",66,-0.5,65.5,"E (track)","Events");
+      Track_Pt=HConfig.GetTH1D(Name+"_Track_Pt","Transverse momentum of track (2mu+trk track candidate)",66,-0.5,65.5,"p_{T} (track)","Events");
+      Track_Eta=HConfig.GetTH1D(Name+"_Track_Eta","Psuedorapidity of track (2mu+trk track candidate)",66,-0.5,65.5,"#eta","Events");
+      Track_Phi=HConfig.GetTH1D(Name+"_Track_Phi","Azimuthal angle of track (2mu+trk track candidate)",66,-0.5,65.5,"#phi","Events");
+      Track_vx=HConfig.GetTH1D(Name+"_Track_vx","X coordinate of the parent vertex (2mu+trk track candidate)",66,-0.5,65.5,"Parent vertex x coordinate (cm)","Events");
+      Track_vy=HConfig.GetTH1D(Name+"_Track_vy","Y coordinate of the parent vertex (2mu+trk track candidate)",66,-0.5,65.5,"Parent vertex y coordinate (cm)","Events");
+      Track_vz=HConfig.GetTH1D(Name+"_Track_vz","Z coordinate of the parent vertex (2mu+trk track candidate)",66,-0.5,65.5,"Parent vertex z coordinate (cm)","Events");
+      Track_normalizedChi2=HConfig.GetTH1D(Name+"_Track_normalizedChi2","Normalized chi square",66,-0.5,65.5,"#chi^{2}/ndf (track fit)","Events");
+      Track_numberOfValidHits=HConfig.GetTH1D(Name+"_Track_numberOfValidHits","number of valid hits in te tracker",66,-0.5,65.5,"n valid track hits","Events");
       Track_charge=HConfig.GetTH1D(Name+"_Track_charge","Chargeof the track",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_dxy=HConfig.GetTH1D(Name+"_Track_dxy","Transverse displacement of the parent vertex from the bs",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_dz=HConfig.GetTH1D(Name+"_Track_dz","Longitudnal displacement of the parent vertex from the bs",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_dxyError=HConfig.GetTH1D(Name+"_Track_dxyError","dxy Error",66,-0.5,65.5,"Number of Vertices","Events");
-      Track_dzError=HConfig.GetTH1D(Name+"_Track_dzError","dz Error",66,-0.5,65.5,"Number of Vertices","Events");
+      Track_dxy=HConfig.GetTH1D(Name+"_Track_dxy","Transverse displacement of the parent vertex from the bs",66,-0.5,65.5,"dxy (cm)","Events");
+      Track_dz=HConfig.GetTH1D(Name+"_Track_dz","Longitudnal displacement of the parent vertex from the bs",66,-0.5,65.5,"dz (cm)","Events");
+      Track_dxyError=HConfig.GetTH1D(Name+"_Track_dxyError","dxy Error",66,-0.5,65.5,"#Deltadxy (cm)","Events");
+      Track_dzError=HConfig.GetTH1D(Name+"_Track_dzError","dz Error",66,-0.5,65.5,"#Deltadz (cm)","Events");
 
-      //Muon variables (Muons from dimuon + track candidates)
+      // Muon variables (Muons from dimuon + track candidates)
+		 Muon1_Pt=HConfig.GetTH1D(Name+"_Muon_Pt","Transverse Pt (muon 1)",25,0,50,"#mu_{1} p_{T} (GeV)","Events");
+		 Muon1_Eta=HConfig.GetTH1D(Name+"_Muon_Eta","Psuedorapidity (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+		 Muon1_Phi=HConfig.GetTH1D(Name+"_Muon_Phi","Azimuthal angle of (muons 1)",25,-3.15,3.15,"#mu_{1} #phi","Events"); 
+		 Muon1_E=HConfig.GetTH1D(Name+"_Muon_E","Energy of all (muon 1)",20,0,40,"#mu_{1} E (GeV)","Events");
+		 Muon1_P=HConfig.GetTH1D(Name+"_Muon_P","Magnitude of momentum of (muon 1)",20,0,40,"#mu_{1} p (GeV)","Events");  
+		 
+		 Muon1_vx=HConfig.GetTH1D(Name+"_Muon_Vx","X coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vx","Events"); 
+  Muon1_vy=HConfig.GetTH1D(Name+"_Muon_Vy","Y coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vy","Events"); 
+  Muon1_vz=HConfig.GetTH1D(Name+"_Muon_Vz","Z coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vz","Events");
+  
+  Muon2_Pt=HConfig.GetTH1D(Name+"_Muon_Pt","Transverse Pt (muon 2)",25,0,50,"#mu_{2} p_{T} (GeV)","Events");
+  Muon2_Eta=HConfig.GetTH1D(Name+"_Muon_Eta","Psuedorapidity (muon 2)",25,-2.5,2.5,"#mu_{2} #eta","Events");
+  Muon2_Phi=HConfig.GetTH1D(Name+"_Muon_Phi","Azimuthal angle of (muons 1)",25,-3.15,3.15,"#mu_{2} #phi","Events"); 
+  Muon2_E=HConfig.GetTH1D(Name+"_Muon_E","Energy of all (muon 2)",20,0,40,"#mu_{2} E (GeV)","Events");
+  Muon2_P=HConfig.GetTH1D(Name+"_Muon_P","Magnitude of momentum of (muon 2)",20,0,40,"#mu_{2} p (GeV)","Events");  
+  Muon2_vx=HConfig.GetTH1D(Name+"_Muon_Vx","X coordinate of the parent vertex all muons",100,0,5,"#mu_{2} vx","Events"); 
+  Muon2_vy=HConfig.GetTH1D(Name+"_Muon_Vy","Y coordinate of the parent vertex all muons",100,0,5,"#mu_{2} vy","Events"); 
+  Muon2_vz=HConfig.GetTH1D(Name+"_Muon_Vz","Z coordinate of the parent vertex all muons",100,0,5,"#mu_{2} vz","Events");
+
       Muon1_isGlobal=HConfig.GetTH1D(Name+"_Muon1_isGlobal","Global muons status ",2,-.5,1.5,"#mu_{1} isGlb","Events");
       Muon2_isGlobal=HConfig.GetTH1D(Name+"_Muon2_isGlobal","",2,-0.5,0.5,"#mu_{2} isGlb","Events");
       Muon1_isStandAlone=HConfig.GetTH1D(Name+"_Muon1_isStandAlone","",2,-0.5,1.5,"#mu_{1} isStandAlone","Events");
@@ -147,8 +172,8 @@ void  MCEfficiency::Configure(){
       Muon2_isTracker=HConfig.GetTH1D(Name+"_Muon2_isTracker","",2,-0.5,1.5,"#mu_{2} isTracker","Events");
       Muon1_isCalo=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon","",2,-0.5,1.5,"#mu_{1} isCalo","Events");
       Muon2_isCalo=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon","",2,-0.5,1.5,"#mu_{2} isCalo","Events");
-      Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"","Events");
-      Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"","Events");
+      Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events");
+      Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events");
       Muon1_isTimeValid=HConfig.GetTH1D(Name+"_Muon1_isTimeValid","#mu_{1} isTimevalid",2,-0.5,1.5,"","Events");
       Muon2_isTimeValid=HConfig.GetTH1D(Name+"_Muon2_isTimeValid","#mu_{2} isTimeValid",2,-0.5,1.5,"","Events");
       Muon1_emEt03=HConfig.GetTH1D(Name+"_Muon1_emEt03","",10,0,10,"","Events");
@@ -205,21 +230,24 @@ void  MCEfficiency::Configure(){
       Muon2_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEt04","",10,0,10,"","Events");
       Muon1_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEtHighThreshold04","",10,0,10,"","Events");
       Muon2_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEtHighThreshold04","",10,0,10,"","Events");
-      Muon1_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt04","",10,0,10,"","Events");
-      Muon2_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt04","",10,0,10,"","Events");
-      Muon1_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold04","",10,0,10,"","Events");
-      Muon2_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold04","",10,0,10,"","Events");
-      Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"","Events");
-      Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"","Events");
+      Muon1_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt04","",10,0,10,"#mu_{1}	sumPhotonEt04","Events");
+      Muon2_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt04","",10,0,10,"#mu_{2} sumPhotonEt04","Events");
+      Muon1_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold04","",10,0,10,"#mu_{1} sumPhotonEtHighThreshold04","Events");
+      Muon2_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold04","",10,0,10,"#mu_{2} sumPhotonEtHighThreshold04","Events");
+      Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"#mu_{1} PUPt04 (GeV)","Events");
+      Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"#mu_{2} PUPt04 (GeV)","Events");
+		Track_TriggerMatchdR=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR","track dR (trigger match)",10,-0.5,9.5,"track dR (trigger match)","Events");
+		Muon1_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR","#mu_{1} dR (trigger match)",10,-0.5,9.5,"#mu_{1} dR (trigger match)","Events");
+		Muon2_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR","#mu_{2} dR (trigger match)",10,-0.5,9.5,"#mu_{2} dR (trigger match)","Events");
 
       //Dimuon Information (Muons from dimuon + track candidates)
       MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of Pt of two muons",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
       DimuondR=HConfig.GetTH1D(Name+"_DimuondR","dR between the muon pair",20,0,1,"dR","Events");
-      Muon1TrkdR=HConfig.GetTH1D(Name+"_Muon1TrkdR","dR between the highest p muon and the track",100,0,5,"dR","Events");
-      Muon2TrkdR=HConfig.GetTH1D(Name+"_Muon2TrkdR","dR between the lowest p muon and the track",100,0,5,"dR","Events");
-      PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
-      TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
-      PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
+      Muon1TrkdR=HConfig.GetTH1D(Name+"_Muon1TrkdR","dR between the highest p muon and the track",100,0,5,"dR (#mu_{1},track)","Events");
+      Muon2TrkdR=HConfig.GetTH1D(Name+"_Muon2TrkdR","dR between the lowest p muon and the track",100,0,5,"dR (#mu_{2},track)","Events");
+      PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Invariant mass of the #mu#mu pair","Events");
+      TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Invariant mass of the #mu#mu + track","Events");
+      PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Invariant mass vs. #mu#mu + track Invariant mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
     } 
     // Setup NPassed Histogams
     Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -250,7 +278,23 @@ void  MCEfficiency::Store_ExtraDist(){
     Extradist1d.push_back(&Track_dxyError);
     Extradist1d.push_back(&Track_dzError);
 
-    //Dimuon variables
+    //Dimuon variable
+    Extradist1d.push_back(&Muon1_P);
+    Extradist1d.push_back(&Muon1_E);
+    Extradist1d.push_back(&Muon1_Pt);
+    Extradist1d.push_back(&Muon1_Phi);
+    Extradist1d.push_back(&Muon1_Eta);
+    Extradist1d.push_back(&Muon1_vx);
+    Extradist1d.push_back(&Muon1_vy);
+    Extradist1d.push_back(&Muon1_vz);
+	 Extradist1d.push_back(&Muon2_P);
+    Extradist1d.push_back(&Muon2_E);
+    Extradist1d.push_back(&Muon2_Pt);
+    Extradist1d.push_back(&Muon2_Phi);
+    Extradist1d.push_back(&Muon2_Eta);
+    Extradist1d.push_back(&Muon2_vx);
+    Extradist1d.push_back(&Muon2_vy);
+    Extradist1d.push_back(&Muon2_vz);
     Extradist1d.push_back(&MuonsPtRatio);
     Extradist1d.push_back(&DimuondR);
     Extradist1d.push_back(&Muon1TrkdR);
@@ -330,8 +374,11 @@ void  MCEfficiency::Store_ExtraDist(){
     Extradist1d.push_back(&Muon2_sumPhotonEtHighThreshold04);
     Extradist1d.push_back(&Muon1_sumPUPt04);
     Extradist1d.push_back(&Muon2_sumPUPt04);
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    Extradist1d.push_back(&Track_TriggerMatchdR);
+	 Extradist1d.push_back(&Muon1_TriggerMatchdR);
+	 Extradist1d.push_back(&Muon2_TriggerMatchdR);
+    
+	 //////////////////////////////////////////////////////////////////////////////////////////////////////
     // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -346,7 +393,6 @@ void  MCEfficiency::doEvent(){
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
     
 	 // Apply Selection
-	 cout<<trkPt<<" "<<nTrkHits<<" "<<fitVtxChiSq<<endl;
     value.at(L1SeedOk) = 0;
     value.at(HLTOk) = 0;
     value.at(trkPt) = 0;
@@ -378,8 +424,6 @@ void  MCEfficiency::doEvent(){
     value.at(is2MuTrk) = 0;
     if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
 	 if (DEBUG) cout<<"select dimutrk"<<endl;
-    double deltaMass(999.);
-    unsigned int pair_index(0);
 
 	 if (value.at(is2MuTrk)){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
@@ -395,25 +439,25 @@ void  MCEfficiency::doEvent(){
       unsigned int trk_idx = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
 
 		if (DEBUG) cout<<mu1_idx<<" "<<mu2_idx<<" "<<trk_idx<<endl;
+		
 		if (fabs((Ntp->Muon_P4(mu1_idx) + Ntp->Muon_P4(mu2_idx)).M()-PDG_Var::Phi_mass())<phidM){
 			cut_count[i2M]++;
 			tmp_mumuMass[i2M] = (Ntp->Muon_P4(mu1_idx)+Ntp->Muon_P4(mu2_idx)).M();
 			if (DEBUG) cout<<"Dimuon Invariant mass: "<<tmp_mumuMass[i2M]<<endl;
-
 		}
 		else continue;
 
       if (Ntp->Track_P4(trk_idx).Pt()>cut.at(trkPt)) {
         cut_count[i2M]++;
         tmp_trkPt[i2M] = Ntp->Track_P4(trk_idx).Pt();
-		  if (DEBUG) cout<<"Track Pt:"<<tmp_trkPt[i2M]<<endl;
+		  if (DEBUG) cout<<"Track Pt: "<<tmp_trkPt[i2M]<<endl;
       }
 		else continue;
 
       if (Ntp->Track_numberOfValidHits(trk_idx)>=cut.at(nTrkHits)){
         cut_count[i2M]++;
         tmp_nTrkHits[i2M] = Ntp->Track_numberOfValidHits(trk_idx);
-		  cout<<"Track nHits:"<<tmp_nTrkHits[i2M]<<endl;
+		  if (DEBUG) cout<<"Track nHits: "<<tmp_nTrkHits[i2M]<<endl;
       }
 		else continue;
 
@@ -442,7 +486,7 @@ void  MCEfficiency::doEvent(){
 	 if (DEBUG) cout<<"Final index"<<tmp_idx<<endl;
 	 }
 
-	cout<<"Values of the variables:"<<value.at(trkPt)<<" "<<value.at(nTrkHits)<<" "<<value.at(fitVtxChiSq)<<endl;
+	if (DEBUG) cout<<"Values of the variables:"<<value.at(trkPt)<<" "<<value.at(nTrkHits)<<" "<<value.at(fitVtxChiSq)<<endl;
 
     pass.at(is2MuTrk) = (value.at(is2MuTrk) == cut.at(is2MuTrk));
     pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); 
@@ -450,11 +494,11 @@ void  MCEfficiency::doEvent(){
     pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
     pass.at(nTrkHits)=(value.at(nTrkHits)>=cut.at(nTrkHits));
     pass.at(trkPt)=(value.at(trkPt)>cut.at(trkPt));
-	 pass.at(mumuMass)=(value.at(mumuMass)<cut.at(mumuMass)+phidM || value.at(mumuMass)>cut.at(mumuMass)-phidM);
+	 pass.at(mumuMass)=(value.at(mumuMass)<cut.at(mumuMass)+phidM && value.at(mumuMass)>cut.at(mumuMass)-phidM);
     pass.at(fitVtxChiSq)=(value.at(fitVtxChiSq)<=cut.at(fitVtxChiSq));
 
     double wobs=1;
-    double w;  
+    double w;
 
     if(!Ntp->isData()){w = 1;} //  No weights to data
     else{w=1;}
@@ -482,6 +526,24 @@ void  MCEfficiency::doEvent(){
     Track_dz.at(t).Fill(Ntp->Track_dz(track),w);
     Track_dxyError.at(t).Fill(Ntp->Track_dxyError(track),w);
     Track_dzError.at(t).Fill(Ntp->Track_dzError(track),w);
+
+    Muon1_E.at(t).Fill(Ntp->Muon_P4(mu1).E(),w);
+    Muon1_P.at(t).Fill(Ntp->Muon_P4(mu1).P(),w);
+    Muon1_Pt.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+    Muon1_Eta.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
+    Muon1_Phi.at(t).Fill(Ntp->Muon_P4(mu1).Phi(),w);
+    Muon1_vx.at(t).Fill(Ntp->Muon_Poca(mu1).X(),w);
+    Muon1_vy.at(t).Fill(Ntp->Muon_Poca(mu1).Y(),w);
+    Muon1_vz.at(t).Fill(Ntp->Muon_Poca(mu1).Z(),w);
+	 
+	 Muon2_E.at(t).Fill(Ntp->Muon_P4(mu2).E(),w);
+    Muon2_P.at(t).Fill(Ntp->Muon_P4(mu2).P(),w);
+    Muon2_Pt.at(t).Fill(Ntp->Muon_P4(mu2).Pt(),w);
+    Muon2_Eta.at(t).Fill(Ntp->Muon_P4(mu2).Eta(),w);
+    Muon2_Phi.at(t).Fill(Ntp->Muon_P4(mu2).Phi(),w);
+    Muon2_vx.at(t).Fill(Ntp->Muon_Poca(mu2).X(),w);
+    Muon2_vy.at(t).Fill(Ntp->Muon_Poca(mu2).Y(),w);
+    Muon2_vz.at(t).Fill(Ntp->Muon_Poca(mu2).Z(),w);
 
     Muon1_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu1),w);
     Muon2_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu2),w);
@@ -556,16 +618,21 @@ void  MCEfficiency::doEvent(){
     Muon1_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu1),w);
     Muon2_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu2),w);
 
-    DimuondR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0)).Phi(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(1)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(1)).Phi()));
-    Muon1TrkdR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0)).Phi(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0)).Eta(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0)).Phi()));
-    Muon2TrkdR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(1)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(1)).Phi(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0)).Eta(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0)).Phi()));
-    MuonsPtRatio.at(t).Fill(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0)).Pt()/Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1)).Pt(),w );
-    PhiMass.at(t).Fill((Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M(), w);
-    TripleMass.at(t).Fill((Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+ 
-    Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M(), w);
-    double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M();
-    double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+
-    Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M();
+ // cout<<(Ntp->TwoMuonsTrack_TriggerMatch_dR).size()<<endl;
+ // Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
+ // Muon2_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1),w);
+ // Track_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2),w);
+    
+DimuondR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Phi(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Phi()));
+    Muon1TrkdR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Phi(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Eta(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Phi()));
+    Muon2TrkdR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Phi(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Eta(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Phi()));
+    MuonsPtRatio.at(t).Fill(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Pt()/Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Pt(),w );
+    PhiMass.at(t).Fill((Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))).M(), w);
+    TripleMass.at(t).Fill((Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+ 
+    Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M(), w);
+    double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))).M();
+    double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
+    Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M();
       PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
       /*
@@ -616,16 +683,21 @@ void  MCEfficiency::doEvent(){
     }
 }
 
-
-
 void  MCEfficiency::Finish(){
-    Selection::Finish();
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
+  if(mode == RECONSTRUCT){
+    for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
+      double scale(1.);
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
+      ScaleAllHistOfType(HConfig.GetType(i),scale);
+    }
+  }
+
+
+  Selection::Finish();
+
 }
-
-
-
 
 
