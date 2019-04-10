@@ -235,7 +235,7 @@ void  Validation::Finish(){
     for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
       if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
-      ScaleAllHistOfType(HConfig.GetType(i),scale);
+      ScaleAllHistOfType(i,scale);
     }
   }
 
