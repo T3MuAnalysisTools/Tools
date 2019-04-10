@@ -209,19 +209,19 @@ void  ThreeMu::Configure(){
   Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"#mu_{2} #SigmaPUPt04","Events");
   Muon3_sumPUPt04=HConfig.GetTH1D(Name+"_Muon3_sumPUPt04","",10,0,10,"#mu_{3} #sigmaPUPt04","Events");
   
-  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTrack","",10,0,10,"#mu_{1} Iso ntrks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelP","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
-  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDis","",10,0,10,"#mu_{1} Iso MinDist","Events");
-  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelP","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
-  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTrack","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
-  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDis","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
-  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
-  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
-  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
-  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
-  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
-  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
-  Isolation_maxdy=HConfig.GetTH1D(Name+"_Isolation_maxd","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
+  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","",10,0,10,"#mu_{1} Iso ntrks","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","",10,0,10,"#mu_{1} Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
+  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
   
   //Dimuon Information (Muons from dimuon + track candidates)
   Muon1Muon3dR=HConfig.GetTH1D(Name+"_Muon1Muon3dR","dR between the highest p muon and the lowest pt muon",100,0,5,"dR","Events");
@@ -359,7 +359,7 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Isolation_Ntrk0p1);
   Extradist1d.push_back(&Isolation_Ntrk0p2);
   Extradist1d.push_back(&Isolation_Ntrk0p5);
-  Extradist1d.push_back(&Isolation_maxdy);
+  Extradist1d.push_back(&Isolation_maxdxy);
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
@@ -551,7 +551,7 @@ void  ThreeMu::doEvent(){
     Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(tmp_idx),w);
     Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(tmp_idx),w);
     Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(tmp_idx),w);
-    Isolation_maxdy.at(t).Fill(Ntp->Isolation_maxdy(tmp_idx),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(tmp_idx),w);
 	 
 	 TripleMass.at(t).Fill((Ntp->Muon_P4(mu1)+Ntp->Muon_P4(mu2)+Ntp->Muon_P4(mu3)).M(), w);
 /* 

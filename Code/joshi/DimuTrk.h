@@ -173,7 +173,7 @@ std::vector<TH1D> Muon2_vz;
    std::vector<TH1D> Isolation_Ntrk0p1;
    std::vector<TH1D> Isolation_Ntrk0p2;
    std::vector<TH1D> Isolation_Ntrk0p5;
-   std::vector<TH1D> Isolation_maxdy;
+   std::vector<TH1D> Isolation_maxdxy;
 
 };
 #endif

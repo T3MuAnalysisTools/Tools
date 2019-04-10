@@ -108,7 +108,6 @@ void  DimuTrk::Configure(){
 		 Muon1_Phi=HConfig.GetTH1D(Name+"_Muon1_Phi","Azimuthal angle of (muons 1)",25,-3.15,3.15,"#mu_{1} #phi","Events"); 
 		 Muon1_E=HConfig.GetTH1D(Name+"_Muon1_E","Energy of all (muon 1)",20,0,40,"#mu_{1} E (GeV)","Events");
 		 Muon1_P=HConfig.GetTH1D(Name+"_Muon1_P","Magnitude of momentum of (muon 1)",20,0,40,"#mu_{1} p (GeV)","Events");  
-		 
 		 Muon1_vx=HConfig.GetTH1D(Name+"_Muon1_Vx","X coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vx","Events"); 
 		 Muon1_vy=HConfig.GetTH1D(Name+"_Muon1_Vy","Y coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vy","Events"); 
 		 Muon1_vz=HConfig.GetTH1D(Name+"_Muon1_Vz","Z coordinate of the parent vertex all muons",100,0,5,"#mu_{1} vz","Events");
@@ -197,19 +196,19 @@ void  DimuTrk::Configure(){
   Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"#mu_{1} #SigmaPUPt04","Events");
   Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"#mu_{2} #SigmaPUPt04","Events");
   
-  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTrack","",10,0,10,"#mu_{1} Iso ntrks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelP","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
-  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDis","",10,0,10,"#mu_{1} Iso MinDist","Events");
-  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelP","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
-  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTrack","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
-  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDis","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
-  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
-  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
-  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
-  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
-  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
-  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
-  Isolation_maxdy=HConfig.GetTH1D(Name+"_Isolation_maxd","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
+  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","",10,0,10,"#mu_{1} Iso ntrks","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","",10,0,10,"#mu_{1} Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
+  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
   
       //Dimuon Information (Muons from dimuon + track candidates)
       MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of Pt of two muons",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
@@ -363,8 +362,7 @@ Extradist1d.push_back(&Isolation_NTracks);
     Extradist1d.push_back(&Isolation_Ntrk0p1);
     Extradist1d.push_back(&Isolation_Ntrk0p2);
     Extradist1d.push_back(&Isolation_Ntrk0p5);
-    Extradist1d.push_back(&Isolation_maxdy);
-	 cout<<"finni iso"<<endl;
+    Extradist1d.push_back(&Isolation_maxdxy);
   
 	 //////////////////////////////////////////////////////////////////////////////////////////////////////
     // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
@@ -523,7 +521,7 @@ Track_Pt.at(t).Fill(Ntp->Track_P4(track).Pt(),w);
     Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(i2M),w);
     Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(i2M),w);
     Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(i2M),w);
-    Isolation_maxdy.at(t).Fill(Ntp->Isolation_maxdy(i2M),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(i2M),w);
  
  // cout<<(Ntp->TwoMuonsTrack_TriggerMatch_dR).size()<<endl;
  // Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
@@ -598,7 +596,6 @@ void  DimuTrk::Finish(){
     for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
       if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
-      std::cout<<" i "<< i << " scale = "<< scale <<std::endl;
       ScaleAllHistOfType(HConfig.GetType(i),scale);
     }
   }
