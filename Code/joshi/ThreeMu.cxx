@@ -30,7 +30,6 @@ ThreeMu::~ThreeMu(){
 	 << Npassed.at(j).GetBinContent(NCuts+1) << " +/- " << Npassed.at(j).GetBinError(NCuts) << std::endl;
   }
 
-
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
@@ -75,7 +74,7 @@ void  ThreeMu::Configure(){
 
     else if(i==isThreeMu){
       title.at(i)="isThreeMu ";
-      hlabel="2muon + track category";
+      hlabel="3mu category";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_isThreeMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_isThreeMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
@@ -113,102 +112,116 @@ void  ThreeMu::Configure(){
   Muon1_isCalo=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon","",2,-0.5,1.5,"#mu_{1} isCalo","Events");
   Muon2_isCalo=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon","",2,-0.5,1.5,"#mu_{2} isCalo","Events");
   Muon3_isCalo=HConfig.GetTH1D(Name+"_Muon3_isCaloMuon","",2,-0.5,1.5,"#mu_{2} isCalo","Events");
-  Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"","Events");
-  Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"","Events");
-  Muon3_isIsolationValid=HConfig.GetTH1D(Name+"_Muon3_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"","Events");
-  Muon1_isTimeValid=HConfig.GetTH1D(Name+"_Muon1_isTimeValid","#mu_{1} isTimevalid",2,-0.5,1.5,"","Events");
-  Muon2_isTimeValid=HConfig.GetTH1D(Name+"_Muon2_isTimeValid","#mu_{2} isTimeValid",2,-0.5,1.5,"","Events");
-  Muon3_isTimeValid=HConfig.GetTH1D(Name+"_Muon3_isTimeValid","#mu_{2} isTimeValid",2,-0.5,1.5,"","Events");
-  Muon1_emEt03=HConfig.GetTH1D(Name+"_Muon1_emEt03","",10,0,10,"","Events");
-  Muon2_emEt03=HConfig.GetTH1D(Name+"_Muon2_emEt03","",10,0,10,"","Events");
-  Muon3_emEt03=HConfig.GetTH1D(Name+"_Muon3_emEt03","",10,0,10,"","Events");
-  Muon1_emVetoEt03=HConfig.GetTH1D(Name+"_Muon1_emVetoEt03","",10,0,10,"","Events");
-  Muon2_emVetoEt03=HConfig.GetTH1D(Name+"_Muon2_emVetoEt03","",10,0,10,"","Events");
-  Muon3_emVetoEt03=HConfig.GetTH1D(Name+"_Muon3_emVetoEt03","",10,0,10,"","Events");
-  Muon1_hadEt03=HConfig.GetTH1D(Name+"_Muon1_hadEt03","",10,0,10,"","Events");
-  Muon2_hadEt03=HConfig.GetTH1D(Name+"_Muon2_hadEt03","",10,0,10,"","Events");
-  Muon3_hadEt03=HConfig.GetTH1D(Name+"_Muon3_hadEt03","",10,0,10,"","Events");
-  Muon1_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon1_hadVetoEt03","",10,0,10,"","Events");
-  Muon2_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon2_hadVetoEt03","",10,0,10,"","Events");
-  Muon3_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon3_hadVetoEt03","",10,0,10,"","Events");
-  Muon1_nJets03=HConfig.GetTH1D(Name+"_Muon1_nJets03","",10,0,10,"","Events");
-  Muon2_nJets03=HConfig.GetTH1D(Name+"_Muon2_nJets03","",10,0,10,"","Events");
-  Muon3_nJets03=HConfig.GetTH1D(Name+"_Muon3_nJets03","",10,0,10,"","Events");
-  Muon1_nTracks03=HConfig.GetTH1D(Name+"_Muon1_nTracks03","",10,0,10,"","Events");
-  Muon2_nTracks03=HConfig.GetTH1D(Name+"_Muon2_nTracks03","",10,0,10,"","Events");
-  Muon3_nTracks03=HConfig.GetTH1D(Name+"_Muon3_nTracks03","",10,0,10,"","Events");
+  Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"#mu_{1} is Iso valid","Events");
+  Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"#mu_{2} is Iso valid","Events");
+  Muon3_isIsolationValid=HConfig.GetTH1D(Name+"_Muon3_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"#mu_{3} is Iso valid","Events");
+  Muon1_isTimeValid=HConfig.GetTH1D(Name+"_Muon1_isTimeValid","#mu_{1} isTimevalid",2,-0.5,1.5,"#mu_{1} is Time valid","Events");
+  Muon2_isTimeValid=HConfig.GetTH1D(Name+"_Muon2_isTimeValid","#mu_{2} isTimeValid",2,-0.5,1.5,"#mu_{2} is Time valid","Events");
+  Muon3_isTimeValid=HConfig.GetTH1D(Name+"_Muon3_isTimeValid","#mu_{2} isTimeValid",2,-0.5,1.5,"#mu_{3} is Time valid","Events");
+  Muon1_emEt03=HConfig.GetTH1D(Name+"_Muon1_emEt03","",10,0,10,"#mu_{1} EM E_{T}03","Events");
+  Muon2_emEt03=HConfig.GetTH1D(Name+"_Muon2_emEt03","",10,0,10,"#mu_{2} EM E_{T}03","Events");
+  Muon3_emEt03=HConfig.GetTH1D(Name+"_Muon3_emEt03","",10,0,10,"#mu_{3} EM E_{T}03","Events");
+  Muon1_emVetoEt03=HConfig.GetTH1D(Name+"_Muon1_emVetoEt03","",10,0,10,"#mu_{1} EM veto E_{T}03","Events");
+  Muon2_emVetoEt03=HConfig.GetTH1D(Name+"_Muon2_emVetoEt03","",10,0,10,"#mu_{2} EM veto E_{T}03","Events");
+  Muon3_emVetoEt03=HConfig.GetTH1D(Name+"_Muon3_emVetoEt03","",10,0,10,"#mu_{3} EM veto E_{T}03","Events");
+  Muon1_hadEt03=HConfig.GetTH1D(Name+"_Muon1_hadEt03","",10,0,10,"#mu_{1} hadron E_{T}03","Events");
+  Muon2_hadEt03=HConfig.GetTH1D(Name+"_Muon2_hadEt03","",10,0,10,"#mu_{2} hadron E_{T}03","Events");
+  Muon3_hadEt03=HConfig.GetTH1D(Name+"_Muon3_hadEt03","",10,0,10,"#mu_{3} hadron E_{T}03","Events");
+  Muon1_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon1_hadVetoEt03","",10,0,10,"#mu_{1} hadron veto E_{T}03","Events");
+  Muon2_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon2_hadVetoEt03","",10,0,10,"#mu_{2} hadron veto E_{T}03","Events");
+  Muon3_hadVetoEt03=HConfig.GetTH1D(Name+"_Muon3_hadVetoEt03","",10,0,10,"#mu_{3} hadron veto E_{T}03","Events");
+  Muon1_nJets03=HConfig.GetTH1D(Name+"_Muon1_nJets03","",10,0,10,"#mu_{1} njets03","Events");
+  Muon2_nJets03=HConfig.GetTH1D(Name+"_Muon2_nJets03","",10,0,10,"#mu_{2} njets03","Events");
+  Muon3_nJets03=HConfig.GetTH1D(Name+"_Muon3_nJets03","",10,0,10,"#mu_{3} njets03","Events");
+  Muon1_nTracks03=HConfig.GetTH1D(Name+"_Muon1_nTracks03","",10,0,10,"#mu_{1} ntracks03","Events");
+  Muon2_nTracks03=HConfig.GetTH1D(Name+"_Muon2_nTracks03","",10,0,10,"#mu_{2} ntracks03","Events");
+  Muon3_nTracks03=HConfig.GetTH1D(Name+"_Muon3_nTracks03","",10,0,10,"#mu_{3} ntracks03","Events");
   Muon1_sumPt03=HConfig.GetTH1D(Name+"_Muon1_sumPt03","",10,0,10,"","Events");
   Muon2_sumPt03=HConfig.GetTH1D(Name+"_Muon2_sumPt03","",10,0,10,"","Events");
   Muon3_sumPt03=HConfig.GetTH1D(Name+"_Muon3_sumPt03","",10,0,10,"","Events");
   Muon1_trackerVetoPt03=HConfig.GetTH1D(Name+"_Muon1_trackerVetoPt03","",10,0,10,"","Events");
   Muon2_trackerVetoPt03=HConfig.GetTH1D(Name+"_Muon2_trackerVetoPt03","",10,0,10,"","Events");
   Muon3_trackerVetoPt03=HConfig.GetTH1D(Name+"_Muon3_trackerVetoPt03","",10,0,10,"","Events");
-  Muon1_emEt05=HConfig.GetTH1D(Name+"_Muon1_emEt05","",10,0,10,"","Events");
-  Muon2_emEt05=HConfig.GetTH1D(Name+"_Muon2_emEt05","",10,0,10,"","Events");
-  Muon3_emEt05=HConfig.GetTH1D(Name+"_Muon3_emEt05","",10,0,10,"","Events");
-  Muon1_emVetoEt05=HConfig.GetTH1D(Name+"_Muon1_emVetoEt05","",10,0,10,"","Events");
-  Muon2_emVetoEt05=HConfig.GetTH1D(Name+"_Muon2_emVetoEt05","",10,0,10,"","Events");
-  Muon3_emVetoEt05=HConfig.GetTH1D(Name+"_Muon3_emVetoEt05","",10,0,10,"","Events");
-  Muon1_hadEt05=HConfig.GetTH1D(Name+"_Muon1_hadEt05","",10,0,10,"","Events");
-  Muon2_hadEt05=HConfig.GetTH1D(Name+"_Muon2_hadEt05","",10,0,10,"","Events");
-  Muon3_hadEt05=HConfig.GetTH1D(Name+"_Muon3_hadEt05","",10,0,10,"","Events");
-  Muon1_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon1_hadVetoEt05","",10,0,10,"","Events");
-  Muon2_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon2_hadVetoEt05","",10,0,10,"","Events");
-  Muon3_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon3_hadVetoEt05","",10,0,10,"","Events");
-  Muon1_nJets05=HConfig.GetTH1D(Name+"_Muon1_nJets05","",10,0,10,"","Events");
-  Muon2_nJets05=HConfig.GetTH1D(Name+"_Muon2_nJets05","",10,0,10,"","Events");
-  Muon3_nJets05=HConfig.GetTH1D(Name+"_Muon3_nJets05","",10,0,10,"","Events");
-  Muon1_nTracks05=HConfig.GetTH1D(Name+"_Muon1_nTracks05","",10,0,10,"","Events");
-  Muon2_nTracks05=HConfig.GetTH1D(Name+"_Muon2_nTracks05","",10,0,10,"","Events");
-  Muon3_nTracks05=HConfig.GetTH1D(Name+"_Muon3_nTracks05","",10,0,10,"","Events");
-  Muon1_sumPt05=HConfig.GetTH1D(Name+"_Muon1_sumPt05","",10,0,10,"","Events");
-  Muon2_sumPt05=HConfig.GetTH1D(Name+"_Muon2_sumPt05","",10,0,10,"","Events");
-  Muon3_sumPt05=HConfig.GetTH1D(Name+"_Muon3_sumPt05","",10,0,10,"","Events");
-  Muon1_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon1_trackerVetoPt05","",10,0,10,"","Events");
-  Muon2_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon2_trackerVetoPt05","",10,0,10,"","Events");
-  Muon3_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon3_trackerVetoPt05","",10,0,10,"","Events");
-  Muon1_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon1_sumChargedHadronPt03","",10,0,10,"","Events");
-  Muon2_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon2_sumChargedHadronPt03","",10,0,10,"","Events");
-  Muon3_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon3_sumChargedHadronPt03","",10,0,10,"","Events");
-  Muon1_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon1_sumChargedParticlePt03","",10,0,10,"","Events");
-  Muon2_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon2_sumChargedParticlePt03","",10,0,10,"","Events");
-  Muon3_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon3_sumChargedParticlePt03","",10,0,10,"","Events");
-  Muon1_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEt03","",10,0,10,"","Events");
-  Muon2_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEt03","",10,0,10,"","Events");
-  Muon3_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEt03","",10,0,10,"","Events");
-  Muon1_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEtHighThreshold03","",10,0,10,"","Events");
-  Muon2_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEtHighThreshold03","",10,0,10,"","Events");
-  Muon3_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEtHighThreshold03","",10,0,10,"","Events");
-  Muon1_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt03","",10,0,10,"","Events");
-  Muon2_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt03","",10,0,10,"","Events");
-  Muon3_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEt03","",10,0,10,"","Events");
-  Muon1_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold03","",10,0,10,"","Events");
-  Muon2_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold03","",10,0,10,"","Events");
-  Muon3_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEtHighThreshold03","",10,0,10,"","Events");
-  Muon1_sumPUPt03=HConfig.GetTH1D(Name+"_Muon1_sumPUPt03","",10,0,10,"","Events");
-  Muon2_sumPUPt03=HConfig.GetTH1D(Name+"_Muon2_sumPUPt03","",10,0,10,"","Events");
-  Muon3_sumPUPt03=HConfig.GetTH1D(Name+"_Muon3_sumPUPt03","",10,0,10,"","Events");
-  Muon1_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon1_sumChargedHadronPt04","",10,0,10,"","Events");
-  Muon2_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon2_sumChargedHadronPt04","",10,0,10,"","Events");
-  Muon3_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon3_sumChargedHadronPt04","",10,0,10,"","Events");
-  Muon1_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon1_sumChargedParticlePt04","",10,0,10,"","Events");
-  Muon2_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon2_sumChargedParticlePt04","",10,0,10,"","Events");
-  Muon3_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon3_sumChargedParticlePt04","",10,0,10,"","Events");
-  Muon1_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEt04","",10,0,10,"","Events");
-  Muon2_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEt04","",10,0,10,"","Events");
-  Muon3_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEt04","",10,0,10,"","Events");
-  Muon1_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEtHighThreshold04","",10,0,10,"","Events");
-  Muon2_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEtHighThreshold04","",10,0,10,"","Events");
-  Muon3_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEtHighThreshold04","",10,0,10,"","Events");
-  Muon1_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt04","",10,0,10,"","Events");
-  Muon2_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt04","",10,0,10,"","Events");
-  Muon3_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEt04","",10,0,10,"","Events");
-  Muon1_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold04","",10,0,10,"","Events");
-  Muon2_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold04","",10,0,10,"","Events");
-  Muon3_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEtHighThreshold04","",10,0,10,"","Events");
-  Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"","Events");
-  Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"","Events");
-  Muon3_sumPUPt04=HConfig.GetTH1D(Name+"_Muon3_sumPUPt04","",10,0,10,"","Events");
+  Muon1_emEt05=HConfig.GetTH1D(Name+"_Muon1_emEt05","",10,0,10,"#mu_{1} EM E_{T}05","Events");
+  Muon2_emEt05=HConfig.GetTH1D(Name+"_Muon2_emEt05","",10,0,10,"#mu_{2} EM E_{T}05","Events");
+  Muon3_emEt05=HConfig.GetTH1D(Name+"_Muon3_emEt05","",10,0,10,"#mu_{3} EM E_{T}05","Events");
+  Muon1_emVetoEt05=HConfig.GetTH1D(Name+"_Muon1_emVetoEt05","#mu_{1} EM veto E_{T}05",10,0,10,"","Events");
+  Muon2_emVetoEt05=HConfig.GetTH1D(Name+"_Muon2_emVetoEt05","#mu_{2} EM veto E_{T}05",10,0,10,"","Events");
+  Muon3_emVetoEt05=HConfig.GetTH1D(Name+"_Muon3_emVetoEt05","#mu_{3} EM veto E_{T}05",10,0,10,"","Events");
+  Muon1_hadEt05=HConfig.GetTH1D(Name+"_Muon1_hadEt05","",10,0,10,"#mu_{1} hadron E_{T}05","Events");
+  Muon2_hadEt05=HConfig.GetTH1D(Name+"_Muon2_hadEt05","",10,0,10,"#mu_{2} hadron E_{T}05","Events");
+  Muon3_hadEt05=HConfig.GetTH1D(Name+"_Muon3_hadEt05","",10,0,10,"#mu_{3} hadron E_{T}05","Events");
+  Muon1_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon1_hadVetoEt05","",10,0,10,"#mu_{1} hadron veto E_{T}05","Events");
+  Muon2_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon2_hadVetoEt05","",10,0,10,"#mu_{2} hadron veto E_{T}05","Events");
+  Muon3_hadVetoEt05=HConfig.GetTH1D(Name+"_Muon3_hadVetoEt05","",10,0,10,"#mu_{3} hadron veto E_{T}05","Events");
+  Muon1_nJets05=HConfig.GetTH1D(Name+"_Muon1_nJets05","",10,0,10,"#mu_{1} njets 05","Events");
+  Muon2_nJets05=HConfig.GetTH1D(Name+"_Muon2_nJets05","",10,0,10,"#mu_{2} njets 05","Events");
+  Muon3_nJets05=HConfig.GetTH1D(Name+"_Muon3_nJets05","",10,0,10,"#mu_{3} njets 05","Events");
+  Muon1_nTracks05=HConfig.GetTH1D(Name+"_Muon1_nTracks05","",10,0,10,"#mu_{1} ntracks05","Events");
+  Muon2_nTracks05=HConfig.GetTH1D(Name+"_Muon2_nTracks05","",10,0,10,"#mu_{2} ntracks05","Events");
+  Muon3_nTracks05=HConfig.GetTH1D(Name+"_Muon3_nTracks05","",10,0,10,"#mu_{3} ntracks05","Events");
+  Muon1_sumPt05=HConfig.GetTH1D(Name+"_Muon1_sumPt05","",10,0,10,"#mu_{1} #Sigmap_{T}05","Events");
+  Muon2_sumPt05=HConfig.GetTH1D(Name+"_Muon2_sumPt05","",10,0,10,"#mu_{2} #Sigmap_{T}05","Events");
+  Muon3_sumPt05=HConfig.GetTH1D(Name+"_Muon3_sumPt05","",10,0,10,"#mu_{3} #Sigmap_{T}05","Events");
+  Muon1_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon1_trackerVetoPt05","",10,0,10,"#mu_{1} tracker veto p_{T}05","Events");
+  Muon2_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon2_trackerVetoPt05","",10,0,10,"#mu_{2} tracker veto p_{T}05","Events");
+  Muon3_trackerVetoPt05=HConfig.GetTH1D(Name+"_Muon3_trackerVetoPt05","",10,0,10,"#mu_{3} tracker veto p_{T}05","Events");
+  Muon1_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon1_sumChargedHadronPt03","#mu_{1} #Sigma charged had p_{T}03",10,0,10,"","Events");
+  Muon2_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon2_sumChargedHadronPt03","#mu_{2} #Sigma charged had p_{T}03",10,0,10,"","Events");
+  Muon3_sumChargedHadronPt03=HConfig.GetTH1D(Name+"_Muon3_sumChargedHadronPt03","#mu_{3} #Sigma charged had p_{T}03",10,0,10,"","Events");
+  Muon1_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon1_sumChargedParticlePt03","",10,0,10,"#mu_{1} #Sigma charged particle p_{T}03","Events");
+  Muon2_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon2_sumChargedParticlePt03","",10,0,10,"#mu_{2} #Sigma charged particle p_{T}03","Events");
+  Muon3_sumChargedParticlePt03=HConfig.GetTH1D(Name+"_Muon3_sumChargedParticlePt03","",10,0,10,"#mu_{3} #Sigma charged particle p_{T}03","Events");
+  Muon1_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEt03","",10,0,10,"#mu_{1} #Sigma neutral had E_{T}03","Events");
+  Muon2_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEt03","",10,0,10,"#mu_{2} #Sigma neutral had E_{T}03","Events");
+  Muon3_sumNeutralHadronEt03=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEt03","",10,0,10,"#mu_{3} #Sigma neutral had E_{T}03","Events");
+  Muon1_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEtHighThreshold03","",10,0,10,"#mu_{1} #Sigma neutral had E_{T} HT03","Events");
+  Muon2_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEtHighThreshold03","",10,0,10,"#mu_{2} #Sigma neutral had E_{T} HT03","Events");
+  Muon3_sumNeutralHadronEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEtHighThreshold03","",10,0,10,"#mu_{3} #Sigma neutral had E_{T} HT03","Events");
+  Muon1_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt03","",10,0,10,"#mu_{1} #Sigma#gamma E_{T}03","Events");
+  Muon2_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt03","",10,0,10,"#mu_{2} #Sigma#gamma E_{T}03","Events");
+  Muon3_sumPhotonEt03=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEt03","",10,0,10,"#mu_{3} #Sigma#gamma E_{T}03","Events");
+  Muon1_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold03","",10,0,10,"#mu_{1} #Sigma#gamma E_{T}03","Events");
+  Muon2_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold03","",10,0,10,"#mu_{2} #Sigma#gamma E_{T}03","Events");
+  Muon3_sumPhotonEtHighThreshold03=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEtHighThreshold03","",10,0,10,"#mu_{3} #Sigma#gamma E_{T}03","Events");
+  Muon1_sumPUPt03=HConfig.GetTH1D(Name+"_Muon1_sumPUPt03","",10,0,10,"#mu_{1} #Sigma PU p_{T}","Events");
+  Muon2_sumPUPt03=HConfig.GetTH1D(Name+"_Muon2_sumPUPt03","",10,0,10,"#mu_{2} #Sigma PU p_{T}","Events");
+  Muon3_sumPUPt03=HConfig.GetTH1D(Name+"_Muon3_sumPUPt03","",10,0,10,"#mu_{3} #Sigma PU p_{T}","Events");
+  Muon1_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon1_sumChargedHadronPt04","#mu_{1} #Sigma charged had p_{T}04",10,0,10,"","Events");
+  Muon2_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon2_sumChargedHadronPt04","#mu_{2} #Sigma charged had p_{T}04",10,0,10,"","Events");
+  Muon3_sumChargedHadronPt04=HConfig.GetTH1D(Name+"_Muon3_sumChargedHadronPt04","#mu_{3} #Sigma charged had p_{T}04",10,0,10,"","Events");
+  Muon1_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon1_sumChargedParticlePt04","",10,0,10,"#mu_{1} #Sigma charged particle p_{T}04","Events");
+  Muon2_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon2_sumChargedParticlePt04","",10,0,10,"#mu_{2} #Sigma charged particle p_{T}04","Events");
+  Muon3_sumChargedParticlePt04=HConfig.GetTH1D(Name+"_Muon3_sumChargedParticlePt04","",10,0,10,"#mu_{3} #Sigma charged particle p_{T}04","Events");
+  Muon1_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEt04","",10,0,10,"#mu_{1} #Sigma neutral had E_{T}04","Events");
+  Muon2_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEt04","",10,0,10,"#mu_{2} #Sigma neutral had E_{T}04","Events");
+  Muon3_sumNeutralHadronEt04=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEt04","",10,0,10,"#mu_{3} #Sigma neutral had E_{T}04","Events");
+  Muon1_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumNeutralHadronEtHighThreshold04","",10,0,10,"#mu_{1} #Sigma neutral had E_{T} HT04","Events");
+  Muon2_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumNeutralHadronEtHighThreshold04","",10,0,10,"#mu_{2} #Sigma neutral had E_{T} HT04","Events");
+  Muon3_sumNeutralHadronEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon3_sumNeutralHadronEtHighThreshold04","",10,0,10,"#mu_{3} #Sigma neutral had E_{T} HT04","Events");
+  Muon1_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEt04","",10,0,10,"#mu_{1} #Sigma#gammaE_{T}04","Events");
+  Muon2_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEt04","",10,0,10,"#mu_{2} #Sigma#gammaE_{T}04","Events");
+  Muon3_sumPhotonEt04=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEt04","",10,0,10,"#mu_{3} #Sigma#gammaE_{T}04","Events");
+  Muon1_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon1_sumPhotonEtHighThreshold04","",10,0,10,"#mu_{1} #Sigma#gammaE_{T} HT04","Events");
+  Muon2_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon2_sumPhotonEtHighThreshold04","",10,0,10,"#mu_{2} #Sigma#gammaE_{T} HT04","Events");
+  Muon3_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Muon3_sumPhotonEtHighThreshold04","",10,0,10,"#mu_{3} #Sigma#gammaE_{T} HT04","Events");
+  Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"#mu_{1} #SigmaPUPt04","Events");
+  Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"#mu_{2} #SigmaPUPt04","Events");
+  Muon3_sumPUPt04=HConfig.GetTH1D(Name+"_Muon3_sumPUPt04","",10,0,10,"#mu_{3} #sigmaPUPt04","Events");
+  
+  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","",10,0,10,"#mu_{1} Iso ntrks","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","",10,0,10,"#mu_{1} Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
+  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
   
   //Dimuon Information (Muons from dimuon + track candidates)
   Muon1Muon3dR=HConfig.GetTH1D(Name+"_Muon1Muon3dR","dR between the highest p muon and the lowest pt muon",100,0,5,"dR","Events");
@@ -334,13 +347,26 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Muon2_sumPUPt04);
   Extradist1d.push_back(&Muon3_sumPUPt04);
   
+  Extradist1d.push_back(&Isolation_NTracks);
+  Extradist1d.push_back(&Isolation_RelPt);
+  Extradist1d.push_back(&Isolation_MinDist);
+  Extradist1d.push_back(&Isolation05_RelPt);
+  Extradist1d.push_back(&Isolation05_NTracks);
+  Extradist1d.push_back(&Isolation05_MinDist);
+  Extradist1d.push_back(&Isolation_Ntrk1);
+  Extradist1d.push_back(&Isolation_Ntrk2);
+  Extradist1d.push_back(&Isolation_Ntrk3);
+  Extradist1d.push_back(&Isolation_Ntrk0p1);
+  Extradist1d.push_back(&Isolation_Ntrk0p2);
+  Extradist1d.push_back(&Isolation_Ntrk0p5);
+  Extradist1d.push_back(&Isolation_maxdxy);
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   Extradist1d.push_back(&NVtx);
 }
-
 
 void  ThreeMu::doEvent(){ 
   unsigned int t;
@@ -403,7 +429,7 @@ void  ThreeMu::doEvent(){
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
   if (DEBUG) cout<<mu1<<" "<<mu2<<" "<<mu3<<" "<<Ntp->NMuons()<<endl;
-	NVtx.at(t).Fill(Ntp->NVtx(),w);
+	 NVtx.at(t).Fill(Ntp->NVtx(),w);
 	 Muon1_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu1),w);
     Muon2_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu2),w);
     Muon3_isGlobal.at(t).Fill(Ntp->Muon_isGlobalMuon(mu3),w);
@@ -512,15 +538,28 @@ void  ThreeMu::doEvent(){
     Muon1_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu1),w);
     Muon2_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu2),w);
     Muon3_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu3),w);
+	 
+	 Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(tmp_idx),w);
+    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(tmp_idx),w);
+    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(tmp_idx),w);
+    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(tmp_idx),w);
+    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(tmp_idx),w);
+    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(tmp_idx),w);
+    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(tmp_idx),w);
+    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(tmp_idx),w);
+    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(tmp_idx),w);
+    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(tmp_idx),w);
+    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(tmp_idx),w);
+    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(tmp_idx),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(tmp_idx),w);
+	 
 	 TripleMass.at(t).Fill((Ntp->Muon_P4(mu1)+Ntp->Muon_P4(mu2)+Ntp->Muon_P4(mu3)).M(), w);
 /* 
 //	 Muon1Muon2dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu1).Eta(),Ntp->Muon_P4(mu1).Phi(),Ntp->Track_P4(mu2).Eta(),Ntp->Track_P4(mu2).Phi()));
 //	 Muon2Muon3dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu2).Eta(),Ntp->Muon_P4(mu2).Phi(),Ntp->Track_P4(mu3).Eta(),Ntp->Track_P4(mu3).Phi()));
 //	 Muon1Muon3dR.at(t).Fill(deltaR(Ntp->Muon_P4(mu1).Eta(),Ntp->Muon_P4(mu1).Phi(),Ntp->Track_P4(mu3).Eta(),Ntp->Track_P4(mu3).Phi()));
 cout<<mu3<<endl;
-    */
 
-    /*
     if(Ntp->NThreeMuons()!=0){
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(1);
@@ -532,7 +571,6 @@ cout<<mu3<<endl;
       FirstMuonsPt.at(t).Fill(pt1,1);
       SecondMuonsPt.at(t).Fill(pt2,1);
       ThirdMuonsPt.at(t).Fill(pt3,1);
-
 
       FirstMuonsEta.at(t).Fill( Ntp->Muon_P4(Muon_index_1).Eta(),1);
       SecondMuonsEta.at(t).Fill(  Ntp->Muon_P4(Muon_index_2).Eta(),1);
@@ -563,20 +601,25 @@ cout<<mu3<<endl;
 
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
-    }*/
+}*/
   }
 }
 
 
-
 void  ThreeMu::Finish(){
-  Selection::Finish();
-
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  if(mode == RECONSTRUCT){
+    for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
+      double scale(1.);
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
+      ScaleAllHistOfType(HConfig.GetType(i),scale);
+    }
+  }
+
+
+  Selection::Finish();
+
 }
-
-
-
-
-

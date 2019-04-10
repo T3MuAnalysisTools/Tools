@@ -161,5 +161,19 @@ std::vector<TH1D> Muon2_vz;
   std::vector<TH1D> Muon2_TriggerMatchdR;
   std::vector<TH1D> Track_TriggerMatchdR;
 
+   std::vector<TH1D> Isolation_NTracks;
+   std::vector<TH1D> Isolation_RelPt;
+   std::vector<TH1D> Isolation_MinDist;
+   std::vector<TH1D> Isolation05_RelPt;
+   std::vector<TH1D> Isolation05_NTracks;
+   std::vector<TH1D> Isolation05_MinDist;
+   std::vector<TH1D> Isolation_Ntrk1;
+   std::vector<TH1D> Isolation_Ntrk2;
+   std::vector<TH1D> Isolation_Ntrk3;
+   std::vector<TH1D> Isolation_Ntrk0p1;
+   std::vector<TH1D> Isolation_Ntrk0p2;
+   std::vector<TH1D> Isolation_Ntrk0p5;
+   std::vector<TH1D> Isolation_maxdxy;
+
 };
 #endif

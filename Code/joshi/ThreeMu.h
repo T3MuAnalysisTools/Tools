@@ -154,5 +154,20 @@ class ThreeMu : public Selection {
    std::vector<TH1D> Muon1_sumPUPt04;
    std::vector<TH1D> Muon2_sumPUPt04;
    std::vector<TH1D> Muon3_sumPUPt04;
+   
+	std::vector<TH1D> Isolation_NTracks;
+   std::vector<TH1D> Isolation_RelPt;
+   std::vector<TH1D> Isolation_MinDist;
+   std::vector<TH1D> Isolation05_RelPt;
+   std::vector<TH1D> Isolation05_NTracks;
+   std::vector<TH1D> Isolation05_MinDist;
+   std::vector<TH1D> Isolation_Ntrk1;
+   std::vector<TH1D> Isolation_Ntrk2;
+   std::vector<TH1D> Isolation_Ntrk3;
+   std::vector<TH1D> Isolation_Ntrk0p1;
+   std::vector<TH1D> Isolation_Ntrk0p2;
+   std::vector<TH1D> Isolation_Ntrk0p5;
+   std::vector<TH1D> Isolation_maxdxy;
+	
 };
 #endif

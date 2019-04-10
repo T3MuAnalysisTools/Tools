@@ -65,6 +65,24 @@ class MCEfficiency : public Selection {
   std::vector<TH1D> Track_dzError;
 
 //Dimuon variables
+
+std::vector<TH1D> Muon1_Pt;
+std::vector<TH1D> Muon1_E;
+std::vector<TH1D> Muon1_P;
+std::vector<TH1D> Muon1_Eta;
+std::vector<TH1D> Muon1_Phi;
+std::vector<TH1D> Muon1_vx;
+std::vector<TH1D> Muon1_vy;
+std::vector<TH1D> Muon1_vz;
+
+std::vector<TH1D> Muon2_Pt;
+std::vector<TH1D> Muon2_E;
+std::vector<TH1D> Muon2_P;
+std::vector<TH1D> Muon2_Eta;
+std::vector<TH1D> Muon2_Phi;
+std::vector<TH1D> Muon2_vx;
+std::vector<TH1D> Muon2_vy;
+std::vector<TH1D> Muon2_vz;
 		
   std::vector<TH1D> Muon1_isGlobal;
   std::vector<TH1D> Muon2_isGlobal;
@@ -138,6 +156,9 @@ class MCEfficiency : public Selection {
   std::vector<TH1D> Muon2_sumPhotonEtHighThreshold04;
   std::vector<TH1D> Muon1_sumPUPt04;
   std::vector<TH1D> Muon2_sumPUPt04;
+  std::vector<TH1D> Muon1_TriggerMatchdR;
+  std::vector<TH1D> Muon2_TriggerMatchdR;
+  std::vector<TH1D> Track_TriggerMatchdR;
 
 };
 #endif
