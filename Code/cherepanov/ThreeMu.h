@@ -42,6 +42,7 @@ class ThreeMu : public Selection {
 
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
+  std::vector<TH1D> TauP;
   std::vector<TH1D> TauMass;
   std::vector<TH1D> TauMassResolution;
 
@@ -80,11 +81,14 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon2EtaResolution;
   std::vector<TH1D> Muon3EtaResolution;
 
-
-
   std::vector<TH1D> Muon1DRToTruth;
   std::vector<TH1D> Muon2DRToTruth;
   std::vector<TH1D> Muon3DRToTruth;
+
+  std::vector<TH1D> MuPair1_vertex_chi2;
+  std::vector<TH1D> MuPair2_vertex_chi2;
+  std::vector<TH1D> MuPair3_vertex_chi2;
+
 
 };
 #endif

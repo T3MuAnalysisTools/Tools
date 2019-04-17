@@ -60,9 +60,9 @@ void  ThreeMu::Configure(){
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms  // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
 
-  Muon1Pt =HConfig.GetTH1D(Name+"_Muon1Pt","Muon1Pt",50,0,25,"  #mu_{1} p_{T}, GeV","Events");
-  Muon2Pt =HConfig.GetTH1D(Name+"_Muon2Pt","Muon2Pt",50,0,20,"  #mu_{2} p_{T}, GeV","Events");
-  Muon3Pt =HConfig.GetTH1D(Name+"_Muon3Pt","Muon3Pt",50,0,15,"  #mu_{3} p_{T}, GeV","Events");
+  Muon1Pt =HConfig.GetTH1D(Name+"_Muon1Pt","Muon1Pt",75,0,25,"  #mu_{1} p_{T}, GeV","Events");
+  Muon2Pt =HConfig.GetTH1D(Name+"_Muon2Pt","Muon2Pt",75,0,20,"  #mu_{2} p_{T}, GeV","Events");
+  Muon3Pt =HConfig.GetTH1D(Name+"_Muon3Pt","Muon3Pt",75,0,15,"  #mu_{3} p_{T}, GeV","Events");
 
   Muon1isGlob =HConfig.GetTH1D(Name+"_Muon1isGlob","Muon1isGlob",2,-0.5,1.5,"  #mu_{1} is global muon","Events");
   Muon2isGlob =HConfig.GetTH1D(Name+"_Muon2isGlob","Muon2isGlob",2,-0.5,1.5,"  #mu_{2} is global muon","Events");
@@ -76,9 +76,9 @@ void  ThreeMu::Configure(){
   Muon2kink =HConfig.GetTH1D(Name+"_Muon2kink","Muon2kink",50,0.,50,"  #mu_{2} kink","Events");
   Muon3kink =HConfig.GetTH1D(Name+"_Muon3kink","Muon3kink",50,0.,50,"  #mu_{3} kink","Events");
 
-  Muon1InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon1InOutTrackMatch","Muon1InOutTrackMatch",50,0.,30,"  #mu_{1} inner and outer tracker match","Events");
-  Muon2InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon2InOutTrackMatch","Muon2InOutTrackMatch",50,0.,30,"  #mu_{2} inner and outer tracker match","Events");
-  Muon3InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon3InOutTrackMatch","Muon3InOutTrackMatch",50,0.,30,"  #mu_{3} inner and outer tracker match","Events");
+  Muon1InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon1InOutTrackMatch","Muon1InOutTrackMatch",50,0.,10,"  #mu_{1} inner and outer tracker match","Events");
+  Muon2InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon2InOutTrackMatch","Muon2InOutTrackMatch",50,0.,10,"  #mu_{2} inner and outer tracker match","Events");
+  Muon3InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon3InOutTrackMatch","Muon3InOutTrackMatch",50,0.,10,"  #mu_{3} inner and outer tracker match","Events");
 
   Muon1Eta=HConfig.GetTH1D(Name+"_Muon1Eta","Muon1Eta",25,-2.6,2.6,"#mu_{1}  rapidity","Events");
   Muon2Eta=HConfig.GetTH1D(Name+"_Muon2Eta","Muon2Eta",25,-2.6,2.6,"#mu_{2}  rapidity","Events");
@@ -91,15 +91,14 @@ void  ThreeMu::Configure(){
 
   TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#tau  rapidity","Events");
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"  #tau p_{T}, GeV","Events");
+  TauP =HConfig.GetTH1D(Name+"_TauP","TauP",30,0,50,"  #tau |p|, GeV","Events");
   TauMass =HConfig.GetTH1D(Name+"_TauMass","#tau lepton mass",50,1.5,1.9,"  M_{#tau} , GeV","Events");
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
   TauMassRefit =HConfig.GetTH1D(Name+"_TauMassRefit","Refit #tau lepton mass",50,1.5,1.9,"KF refit  M_{#tau} , GeV","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
 
-
-  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",55,0,40,"#chi^{2} of the KF SV","Events");
-  VertexChi2AF=HConfig.GetTH1D(Name+"_VertexChi2AF","VertexChi2AF",55,0,40,"#chi^{2} of the AF SV","Events");
-
+  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",55,0,10,"#chi^{2} of the KF SV","Events");
+  VertexChi2AF=HConfig.GetTH1D(Name+"_VertexChi2AF","VertexChi2AF",55,0,10,"#chi^{2} of the AF SV","Events");
 
   Muon1PtResolution=HConfig.GetTH1D(Name+"_Muon1PtResolution","Muon1PtResolution",50,-0.2,0.2," #Delta p_{T}(#mu_{1})  (reco - mc)/mc ","Events");
   Muon2PtResolution=HConfig.GetTH1D(Name+"_Muon2PtResolution","Muon2PtResolution",50,-0.2,0.2," #Delta p_{T}(#mu_{2})  (reco - mc)/mc ","Events");
@@ -110,11 +109,13 @@ void  ThreeMu::Configure(){
   Muon3EtaResolution=HConfig.GetTH1D(Name+"_Muon3EtaResolution","Muon3EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{1})  (reco - mc)/mc   ","Events");
 
 
+  Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
+  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
+  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
 
-  Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",10,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
-  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",10,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
-  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",10,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
-
+  MuPair1_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair1_vertex_chi2","MuPair1_vertex_chi2",50,0,5,"KF  #chi^{2} of first #mu pair","Events");
+  MuPair2_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair2_vertex_chi2","MuPair2_vertex_chi2",50,0,5,"KF  #chi^{2} of second #mu pair","Events");
+  MuPair3_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair3_vertex_chi2","MuPair3_vertex_chi2",50,0,5,"KF  #chi^{2} of third #mu pair","Events");
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -147,6 +148,7 @@ void  ThreeMu::Store_ExtraDist(){
 
   Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&TauPt);
+  Extradist1d.push_back(&TauP);
   Extradist1d.push_back(&TauMass);
   Extradist1d.push_back(&TauMassRefit);
   Extradist1d.push_back(&TauMassResolution);
@@ -170,13 +172,13 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Muon2EtaResolution);
   Extradist1d.push_back(&Muon3EtaResolution);
 
-
-
   Extradist1d.push_back(&Muon1DRToTruth);
   Extradist1d.push_back(&Muon2DRToTruth);
   Extradist1d.push_back(&Muon3DRToTruth);
 
-
+  Extradist1d.push_back(&MuPair1_vertex_chi2);
+  Extradist1d.push_back(&MuPair2_vertex_chi2);
+  Extradist1d.push_back(&MuPair3_vertex_chi2);
 
 }
 
@@ -200,7 +202,6 @@ void  ThreeMu::doEvent(){
 
 
 
-
   double wobs=1;
   double w;  
              
@@ -209,7 +210,7 @@ void  ThreeMu::doEvent(){
 
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
-    
+
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(2);
@@ -233,6 +234,7 @@ void  ThreeMu::doEvent(){
     
     TauEta.at(t).Fill(TauLV.Eta(),1);
     TauPt.at(t).Fill(TauLV.Pt(),1);
+    TauP.at(t).Fill(TauLV.P(),1);
     TauMass.at(t).Fill(TauLV.M(),1);
     TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
     for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_1).size(); iMuSelector++ ){
@@ -266,6 +268,9 @@ void  ThreeMu::doEvent(){
     Muon2InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),1);
     Muon3InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3),1);
 
+    MuPair1_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,0),1);
+    MuPair2_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,1),1);
+    MuPair3_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,2),1);
 
     //---------------  Fill MC plots 
     if(id==40 || id == 60 || id ==90){
@@ -306,7 +311,7 @@ void  ThreeMu::Finish(){
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = 0.5*Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral();
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/3;
       ScaleAllHistOfType(i,scale);
     }
   }

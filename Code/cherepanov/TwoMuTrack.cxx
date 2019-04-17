@@ -28,7 +28,7 @@ TwoMuTrack::~TwoMuTrack(){
 void  TwoMuTrack::Configure(){
 
   for(int i=0; i<NCuts;i++){
-    cut.push_back(0);
+    cut.push_back(0); 
     value.push_back(0);
     pass.push_back(false);
     if(i==HLTOk)               cut.at(HLTOk)=1;
@@ -58,28 +58,15 @@ void  TwoMuTrack::Configure(){
   } 
   // Setup NPassed Histogams
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
+
   // Setup Extra Histograms
   // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
-  NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
-  MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"p_{T} of all stored Muons, GeV","Events");
-  Category=HConfig.GetTH1D(Name+"_Category","Category",2,0.5,2.5,"1 - #mu#mu#mu; 2 - #mu#mu+track ","Events");
-  MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
-  MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
-  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",75,0.2,1.4,"Mass of the #mu#mu pair, GeV","Events");
-  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track, GeV","Events");
-  PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",75,0.2,1.4,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
-  FirstMuonsPt=HConfig.GetTH1D(Name+"_FirstMuonsPt","FirstMuonPt",25,0,50,"First  #mu p_{T}, GeV","Events");
-  SecondMuonsPt=HConfig.GetTH1D(Name+"_SecondMuonsPt","SecondMuonPt",25,0,50,"Second #mu p_{T}, GeV","Events");
-  ThirdMuonsPt=HConfig.GetTH1D(Name+"_ThirdMuonsPt","ThirdMuonPt",25,0,50,"Third  #mu p_{T}, GeV","Events");
+  
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","PhiMass",50,0.8,1.2,"M_{#mu#mu}, GeV","Events");
+  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","TripleMass",50,1.5,2.5,"M_{#mu#mu+#pi}, GeV","Events");
 
-
-  FirstMuonsEta=HConfig.GetTH1D(Name+"_FirstMuonsEta","FirstMuonEta",25,-2.5,2.5,"First  #mu  rapidity","Events");
-  SecondMuonsEta=HConfig.GetTH1D(Name+"_SecondMuonsEta","SecondMuonEta",25,-2.5,2.5,"Second #mu  rapidity","Events");
-  ThirdMuonsEta=HConfig.GetTH1D(Name+"_ThirdMuonsEta","ThirdMuonEta",25,-2.5,2.5,"Third  #mu rapidity","Events");
-
-
-
+ 
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -92,22 +79,9 @@ void  TwoMuTrack::Configure(){
 void  TwoMuTrack::Store_ExtraDist(){ 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-  Extradist1d.push_back(&NVtx);
-  Extradist1d.push_back(&MuonsPt);
-  Extradist1d.push_back(&MuonsEta);
-  Extradist1d.push_back(&MuonsPtRatio);
+
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&TripleMass);
-  Extradist1d.push_back(&Category);
-  Extradist2d.push_back(&PhiMassVsDsMass);
-
-  Extradist1d.push_back(&FirstMuonsPt);
-  Extradist1d.push_back(&SecondMuonsPt);
-  Extradist1d.push_back(&ThirdMuonsPt);
-
-  Extradist1d.push_back(&FirstMuonsEta);
-  Extradist1d.push_back(&SecondMuonsEta);
-  Extradist1d.push_back(&ThirdMuonsEta);
 
 }
 
@@ -142,15 +116,8 @@ void  TwoMuTrack::doEvent(){
     NVtx.at(t).Fill(Ntp->NVtx(),w);
 
     //    std::cout<<"N 2 mu + track  "<< Ntp->NTwoMuonsTrack() << " N three mu  "<< Ntp->NTwoMuTrackons() << "  Number of Vertices  " << Ntp->NumberOfSVertices() <<std::endl;
-    for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){ // loop over muons
-      MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
-      MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
-    }
-
-
     double deltaMass(999.);
     unsigned int pair_index(0);
-    if(Ntp->NTwoMuonsTrack()!=0){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
 
       unsigned int muon_1 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(0);
@@ -159,11 +126,10 @@ void  TwoMuTrack::doEvent(){
       if( fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass())< deltaMass){
 	deltaMass =  fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass());
 	pair_index = i2M; // this is an index of the candidate with best mumu mass
-      }
+
     }
     
 
-    MuonsPtRatio.at(t).Fill(Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0)).Pt()/Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1)).Pt(),w );
     PhiMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M(), w);
     TripleMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+ 
 			   Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M(), w);
@@ -172,7 +138,7 @@ void  TwoMuTrack::doEvent(){
     double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+
 		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M();
 
-    PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
+    //    PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
     }
   }
@@ -185,9 +151,9 @@ void  TwoMuTrack::Finish(){
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
 
   if(mode == RECONSTRUCT){
-    for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
+    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(0).Integral();
       ScaleAllHistOfType(i,scale);
     }
   }
