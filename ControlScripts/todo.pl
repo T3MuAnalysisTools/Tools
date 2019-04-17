@@ -33,10 +33,10 @@ $letter = substr($UserID, 0, 1);
 
 #Default values
 $InputDir="/afs/cern.ch/work/$letter/$UserID/InputTest";
-$OutputDir="/afs/cern.ch/work/$letter/$UserID/Test";
+$OutputDir="/afs/cern.ch/work/$letter/$UserID/Analysis";
 $CodeDir="../Code";
 $set="ControlSample_";
-$CMSSWRel="9_4_4";
+$CMSSWRel="10_4_0";
 $Cleaning ="NO";
 $maxdata=20;
 $maxmc=5;

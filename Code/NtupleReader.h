@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Mar 13 17:31:52 2019 by ROOT version 6.10/09
+// Wed Apr 17 13:12:55 2019 by ROOT version 6.10/05
 // from TTree t3mtree/
-// found on file: DsT3MNtuple.root
+// found on file: DsT3MNtuple_39.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleReader_h
@@ -13,18 +13,17 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <string>
-using namespace std;
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+
 class NtupleReader {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -145,6 +144,8 @@ public :
    std::vector<bool>    *Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight;
    std::vector<double>  *Muon_vmuonhitcomb_reco;
    std::vector<double>  *Muon_rpchits_reco;
+   std::vector<int>     *Muon_ID;
+   std::vector<int>     *Muon_StandardSelection;
    std::vector<int>     *Muon_charge;
    std::vector<int>     *Muon_trackCharge;
    std::vector<int>     *Muon_pdgid;
@@ -152,6 +153,24 @@ public :
    std::vector<double>  *Muon_M;
    std::vector<std::vector<double> > *Muon_par;
    std::vector<std::vector<double> > *Muon_cov;
+   std::vector<std::vector<float> > *MC_p4;
+   std::vector<int>     *MC_pdgid;
+   std::vector<int>     *MC_charge;
+   std::vector<int>     *MC_midx;
+   std::vector<std::vector<int> > *MC_childpdgid;
+   std::vector<std::vector<int> > *MC_childidx;
+   std::vector<int>     *MC_status;
+   Bool_t          MC_isReco;
+   std::vector<std::vector<double> > *MCSignalParticle_p4;
+   std::vector<int>     *MCSignalParticle_pdgid;
+   std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
+   std::vector<std::vector<std::vector<double> > > *MCSignalParticle_childp4;
+   std::vector<int>     *MCSignalParticle_charge;
+   std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
+   std::vector<std::vector<std::vector<double> > > *MCTauandProd_p4;
+   std::vector<std::vector<int> > *MCTauandProd_pdgid;
+   std::vector<unsigned int> *MCTauandProd_midx;
+   std::vector<std::vector<int> > *MCTauandProd_charge;
    std::vector<std::vector<unsigned int> > *ThreeMuons_index;
    std::vector<double>  *ThreeMuons_SV_Chi2;
    std::vector<double>  *ThreeMuons_SV_NDF;
@@ -186,29 +205,11 @@ public :
    std::vector<std::vector<float> > *Vertex_Isolation2;
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
-   std::vector<string>  *Trigger_l1name;
+   std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
-   std::vector<string>  *Trigger_hltname;
+   std::vector<std::string>  *Trigger_hltname;
    std::vector<int>     *Trigger_hltdecision;
-
-   vector<vector<float> > *MC_p4;
-   vector<int>     *MC_pdgid;
-   vector<int>     *MC_charge;
-   vector<int> *MC_midx;
-   vector<vector<int> > *MC_childpdgid;
-   vector<vector<int> > *MC_childidx;
-   vector<int>     *MC_status;
-   vector<vector<double> > *MCSignalParticle_p4;
-   vector<int>     *MCSignalParticle_pdgid;
-   vector<vector<int> > *MCSignalParticle_childpdgid;
-   vector<vector<vector<double> > > *MCSignalParticle_childp4;
-   vector<int>     *MCSignalParticle_charge;
-   vector<vector<unsigned int> > *MCSignalParticle_Tauidx;
-   vector<vector<vector<double> > > *MCTauandProd_p4;
-   vector<vector<int> > *MCTauandProd_pdgid;
-   vector<unsigned int > *MCTauandProd_midx;
-   vector<vector<int> > *MCTauandProd_charge;
 
    // List of branches
    TBranch        *b_Event_EventNumber;   //!
@@ -323,6 +324,8 @@ public :
    TBranch        *b_Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight;   //!
    TBranch        *b_Muon_vmuonhitcomb_reco;   //!
    TBranch        *b_Muon_rpchits_reco;   //!
+   TBranch        *b_Muon_ID;   //!
+   TBranch        *b_Muon_StandardSelection;   //!
    TBranch        *b_Muon_charge;   //!
    TBranch        *b_Muon_trackCharge;   //!
    TBranch        *b_Muon_pdgid;   //!
@@ -330,6 +333,24 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
+   TBranch        *b_MC_p4;   //!
+   TBranch        *b_MC_pdgid;   //!
+   TBranch        *b_MC_charge;   //!
+   TBranch        *b_MC_midx;   //!
+   TBranch        *b_MC_childpdgid;   //!
+   TBranch        *b_MC_childidx;   //!
+   TBranch        *b_MC_status;   //!
+   TBranch        *b_MC_isReco;   //!
+   TBranch        *b_MCSignalParticle_p4;   //!
+   TBranch        *b_MCSignalParticle_pdgid;   //!
+   TBranch        *b_MCSignalParticle_childpdgid;   //!
+   TBranch        *b_MCSignalParticle_childp4;   //!
+   TBranch        *b_MCSignalParticle_charge;   //!
+   TBranch        *b_MCSignalParticle_Tauidx;   //!
+   TBranch        *b_MCTauandProd_p4;   //!
+   TBranch        *b_MCTauandProd_pdgid;   //!
+   TBranch        *b_MCTauandProd_midx;   //!
+   TBranch        *b_MCTauandProd_charge;   //!
    TBranch        *b_ThreeMuons_index;   //!
    TBranch        *b_ThreeMuons_SV_Chi2;   //!
    TBranch        *b_ThreeMuons_SV_NDF;   //!
@@ -369,23 +390,6 @@ public :
    TBranch        *b_Trigger_l1prescale;   //!
    TBranch        *b_Trigger_hltname;   //!
    TBranch        *b_Trigger_hltdecision;   //!
-   TBranch        *b_MC_p4;   //!
-   TBranch        *b_MC_pdgid;   //!
-   TBranch        *b_MC_charge;   //!
-   TBranch        *b_MC_midx;   //!
-   TBranch        *b_MC_childpdgid;   //!
-   TBranch        *b_MC_childidx;   //!
-   TBranch        *b_MC_status;   //!
-   TBranch        *b_MCSignalParticle_p4;   //!
-   TBranch        *b_MCSignalParticle_pdgid;   //!
-   TBranch        *b_MCSignalParticle_childpdgid;   //!
-   TBranch        *b_MCSignalParticle_childp4;   //!
-   TBranch        *b_MCSignalParticle_charge;   //!
-   TBranch        *b_MCSignalParticle_Tauidx;   //!
-   TBranch        *b_MCTauandProd_p4;   //!
-   TBranch        *b_MCTauandProd_pdgid;   //!
-   TBranch        *b_MCTauandProd_midx;   //!
-   TBranch        *b_MCTauandProd_charge;   //!
 
    NtupleReader(TTree *tree=0);
    virtual ~NtupleReader();
@@ -401,58 +405,58 @@ public :
 #endif
 
 #ifdef NtupleReader_cxx
-NtupleReader::NtupleReader(TTree *tree) : fChain(0) 
+NtupleReader::NtupleReader(TTree *tree) : fChain(0)
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
+  // if parameter tree is not specified (or zero), connect the file
+  // used to generate this class and read the Tree.
+  if (tree == 0) {
 
 #ifdef SINGLE_TREE
-     // The following code should be used if you want this class to access
-     // a single tree instead of a chain
-     TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
-     if (!f || !f->IsOpen()) {
-       f = new TFile("Memory Directory");
-     }
-     f->GetObject("T3MTree/t3mtree",tree);
+    // The following code should be used if you want this class to access
+    // a single tree instead of a chain
+    TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
+    if (!f || !f->IsOpen()) {
+      f = new TFile("Memory Directory");
+    }
+    f->GetObject("T3MTree/t3mtree",tree);
 
 #else // SINGLE_TREE
 
       // The following code should be used if you want this class to access a chain
       // of trees.
-     TChain * chain = new TChain("T3MTree/t3mtree","");
-     //      chain->Add("/home-pbs/vcherepa/cms_work/CMSSW_8_0_25/src/LLRHiggsTauTau/NtupleProducer/test/HTauTauAnalysis.root/HTauTauTree/HTauTauTree");
-     tree = chain;
+    TChain * chain = new TChain("T3MTree/t3mtree","");
+    tree = chain;
 #endif // SINGLE_TREE
 
-   }
-   Init(tree);
+  }
+  Init(tree);
 }
 
 NtupleReader::~NtupleReader()
 {
-   if (!fChain) return;
-   delete fChain->GetCurrentFile();
+  if (!fChain) return;
+  delete fChain->GetCurrentFile();
 }
 
 Int_t NtupleReader::GetEntry(Long64_t entry)
 {
-// Read contents of entry.
-   if (!fChain) return 0;
-   return fChain->GetEntry(entry);
+  // Read contents of entry.
+  if (!fChain) return 0;
+  return fChain->GetEntry(entry);
 }
 Long64_t NtupleReader::LoadTree(Long64_t entry)
 {
-// Set the environment to read one entry
-   if (!fChain) return -5;
-   Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
-      fCurrent = fChain->GetTreeNumber();
-      Notify();
-   }
-   return centry;
+  // Set the environment to read one entry
+  if (!fChain) return -5;
+  Long64_t centry = fChain->LoadTree(entry);
+  if (centry < 0) return centry;
+  if (fChain->GetTreeNumber() != fCurrent) {
+    fCurrent = fChain->GetTreeNumber();
+    Notify();
+  }
+  return centry;
 }
+
 
 void NtupleReader::Init(TTree *tree)
 {
@@ -567,6 +571,8 @@ void NtupleReader::Init(TTree *tree)
    Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight = 0;
    Muon_vmuonhitcomb_reco = 0;
    Muon_rpchits_reco = 0;
+   Muon_ID = 0;
+   Muon_StandardSelection = 0;
    Muon_charge = 0;
    Muon_trackCharge = 0;
    Muon_pdgid = 0;
@@ -574,6 +580,23 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
+   MC_p4 = 0;
+   MC_pdgid = 0;
+   MC_charge = 0;
+   MC_midx = 0;
+   MC_childpdgid = 0;
+   MC_childidx = 0;
+   MC_status = 0;
+   MCSignalParticle_p4 = 0;
+   MCSignalParticle_pdgid = 0;
+   MCSignalParticle_childpdgid = 0;
+   MCSignalParticle_childp4 = 0;
+   MCSignalParticle_charge = 0;
+   MCSignalParticle_Tauidx = 0;
+   MCTauandProd_p4 = 0;
+   MCTauandProd_pdgid = 0;
+   MCTauandProd_midx = 0;
+   MCTauandProd_charge = 0;
    ThreeMuons_index = 0;
    ThreeMuons_SV_Chi2 = 0;
    ThreeMuons_SV_NDF = 0;
@@ -612,23 +635,6 @@ void NtupleReader::Init(TTree *tree)
    Trigger_l1prescale = 0;
    Trigger_hltname = 0;
    Trigger_hltdecision = 0;
-   MC_p4 = 0;
-   MC_pdgid = 0;
-   MC_charge = 0;
-   MC_midx = 0;
-   MC_childpdgid = 0;
-   MC_childidx = 0;
-   MC_status = 0;
-   MCSignalParticle_p4 = 0;
-   MCSignalParticle_pdgid = 0;
-   MCSignalParticle_childpdgid = 0;
-   MCSignalParticle_childp4 = 0;
-   MCSignalParticle_charge = 0;
-   MCSignalParticle_Tauidx = 0;
-   MCTauandProd_p4 = 0;
-   MCTauandProd_pdgid = 0;
-   MCTauandProd_midx = 0;
-   MCTauandProd_charge = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -747,6 +753,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight", &Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight, &b_Muon_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight);
    fChain->SetBranchAddress("Muon_vmuonhitcomb_reco", &Muon_vmuonhitcomb_reco, &b_Muon_vmuonhitcomb_reco);
    fChain->SetBranchAddress("Muon_rpchits_reco", &Muon_rpchits_reco, &b_Muon_rpchits_reco);
+   fChain->SetBranchAddress("Muon_ID", &Muon_ID, &b_Muon_ID);
+   fChain->SetBranchAddress("Muon_StandardSelection", &Muon_StandardSelection, &b_Muon_StandardSelection);
    fChain->SetBranchAddress("Muon_charge", &Muon_charge, &b_Muon_charge);
    fChain->SetBranchAddress("Muon_trackCharge", &Muon_trackCharge, &b_Muon_trackCharge);
    fChain->SetBranchAddress("Muon_pdgid", &Muon_pdgid, &b_Muon_pdgid);
@@ -754,6 +762,24 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
+   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
+   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
+   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
+   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
+   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
+   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
+   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
+   fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
+   fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
+   fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
+   fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
+   fChain->SetBranchAddress("MCSignalParticle_childp4", &MCSignalParticle_childp4, &b_MCSignalParticle_childp4);
+   fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
+   fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
+   fChain->SetBranchAddress("MCTauandProd_p4", &MCTauandProd_p4, &b_MCTauandProd_p4);
+   fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
+   fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
+   fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);
    fChain->SetBranchAddress("ThreeMuons_index", &ThreeMuons_index, &b_ThreeMuons_index);
    fChain->SetBranchAddress("ThreeMuons_SV_Chi2", &ThreeMuons_SV_Chi2, &b_ThreeMuons_SV_Chi2);
    fChain->SetBranchAddress("ThreeMuons_SV_NDF", &ThreeMuons_SV_NDF, &b_ThreeMuons_SV_NDF);
@@ -793,25 +819,6 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Trigger_l1prescale", &Trigger_l1prescale, &b_Trigger_l1prescale);
    fChain->SetBranchAddress("Trigger_hltname", &Trigger_hltname, &b_Trigger_hltname);
    fChain->SetBranchAddress("Trigger_hltdecision", &Trigger_hltdecision, &b_Trigger_hltdecision);
-   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
-   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
-   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
-   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
-   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
-   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
-   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
-   fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
-   fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
-   fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
-   fChain->SetBranchAddress("MCSignalParticle_childp4", &MCSignalParticle_childp4, &b_MCSignalParticle_childp4);
-   fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
-   fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
-   fChain->SetBranchAddress("MCTauandProd_p4", &MCTauandProd_p4, &b_MCTauandProd_p4);
-   fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
-   fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
-   fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);   
-
-
    Notify();
 }
 

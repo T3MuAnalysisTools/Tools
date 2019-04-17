@@ -270,3 +270,79 @@ TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
   }
   return out;
 }
+
+
+std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int MuonIndex){
+
+  std::vector<int> out;
+  out.push_back(1);
+ 
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdMediumPrompt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdGlobalHighPt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdTrkHighPt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoVeryLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoVeryTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::TkIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::TkIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::SoftCutBasedId))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::SoftMvaId))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoVeryTight))out.push_back(1);
+  else out.push_back(0);
+
+  return out;
+}
+
