@@ -90,5 +90,14 @@ class ThreeMu : public Selection {
   std::vector<TH1D> MuPair3_vertex_chi2;
 
 
+  std::vector<TH1D> Pair1Mass;
+  std::vector<TH1D> Pair2Mass;
+  std::vector<TH1D> Pair3Mass;
+
+  std::vector<TH1D> TriggerMatchdR1;
+  std::vector<TH1D> TriggerMatchdR2;
+  std::vector<TH1D> TriggerMatchdR3;
+
+
 };
 #endif

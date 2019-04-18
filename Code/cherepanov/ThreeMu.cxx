@@ -117,6 +117,14 @@ void  ThreeMu::Configure(){
   MuPair2_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair2_vertex_chi2","MuPair2_vertex_chi2",50,0,5,"KF  #chi^{2} of second #mu pair","Events");
   MuPair3_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair3_vertex_chi2","MuPair3_vertex_chi2",50,0,5,"KF  #chi^{2} of third #mu pair","Events");
 
+  Pair1Mass =HConfig.GetTH1D(Name+"_Pair1Mass","Pair1Mass",50,0,2," mass of #mu pair (12), GeV","Events");
+  Pair2Mass =HConfig.GetTH1D(Name+"_Pair2Mass","Pair2Mass",50,0,2," mass of #mu pair (23), GeV","Events");
+  Pair3Mass =HConfig.GetTH1D(Name+"_Pair3Mass","Pair3Mass",50,0,2," mass of #mu pair (31), GeV","Events");
+
+  TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match dR 1","Events");
+  TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match dR 2","Events");
+  TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match dR 3","Events");
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -179,6 +187,15 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&MuPair1_vertex_chi2);
   Extradist1d.push_back(&MuPair2_vertex_chi2);
   Extradist1d.push_back(&MuPair3_vertex_chi2);
+
+  Extradist1d.push_back(&Pair1Mass);
+  Extradist1d.push_back(&Pair2Mass);
+  Extradist1d.push_back(&Pair3Mass);
+
+  Extradist1d.push_back(&TriggerMatchdR1);
+  Extradist1d.push_back(&TriggerMatchdR2);
+  Extradist1d.push_back(&TriggerMatchdR3);
+
 
 }
 
@@ -271,6 +288,16 @@ void  ThreeMu::doEvent(){
     MuPair1_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,0),1);
     MuPair2_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,1),1);
     MuPair3_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(0,2),1);
+
+
+    Pair1Mass.at(t).Fill((Muon1LV + Muon2LV).M(),1);
+    Pair2Mass.at(t).Fill((Muon2LV + Muon3LV).M(),1);
+    Pair3Mass.at(t).Fill((Muon1LV + Muon3LV).M(),1);
+
+    TriggerMatchdR1.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(0),1);
+    TriggerMatchdR2.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(1),1);
+    TriggerMatchdR3.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(2),1);
+
 
     //---------------  Fill MC plots 
     if(id==40 || id == 60 || id ==90){
