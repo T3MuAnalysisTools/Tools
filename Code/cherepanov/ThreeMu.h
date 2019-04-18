@@ -98,6 +98,13 @@ class ThreeMu : public Selection {
   std::vector<TH1D> TriggerMatchdR2;
   std::vector<TH1D> TriggerMatchdR3;
 
+  std::vector<TH1D> dR12;
+  std::vector<TH1D> dR23;
+  std::vector<TH1D> dR31;
+  std::vector<TH1D> dR1Tau;
+  std::vector<TH1D> dR2Tau;
+  std::vector<TH1D> dR3Tau;
+
 
 };
 #endif

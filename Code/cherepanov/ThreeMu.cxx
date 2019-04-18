@@ -125,6 +125,14 @@ void  ThreeMu::Configure(){
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match dR 2","Events");
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match dR 3","Events");
 
+  dR12 =HConfig.GetTH1D(Name+"_dR12","dR12",50,0,1,"dR(#mu_{1}#mu_{2})","Events");
+  dR23 =HConfig.GetTH1D(Name+"_dR23","dR23",50,0,1,"dR(#mu_{2}#mu_{3})","Events");
+  dR31 = HConfig.GetTH1D(Name+"_dR31","dR31",50,0,1,"dR(#mu_{3}#mu_{1})","Events");
+  dR1Tau = HConfig.GetTH1D(Name+"_dR1Tau","dR1Tau",50,0,1,"dR(#mu_{1}#tau)","Events");
+  dR2Tau = HConfig.GetTH1D(Name+"_dR2Tau","dR2Tau",50,0,1,"dR(#mu_{2}#tau)","Events");
+  dR3Tau = HConfig.GetTH1D(Name+"_dR3Tau","dR3Tau",50,0,1,"dR(#mu_{3}#tau)","Events");
+
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -197,6 +205,13 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&TriggerMatchdR3);
 
 
+  Extradist1d.push_back(&dR12);
+  Extradist1d.push_back(&dR23);
+  Extradist1d.push_back(&dR31);
+  Extradist1d.push_back(&dR1Tau);
+  Extradist1d.push_back(&dR2Tau);
+  Extradist1d.push_back(&dR3Tau);
+
 }
 
 
@@ -249,6 +264,16 @@ void  ThreeMu::doEvent(){
 
     TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
     
+    dR12.at(t).Fill(Muon1LV.DeltaR(Muon2LV),1);
+    dR23.at(t).Fill(Muon2LV.DeltaR(Muon3LV),1);
+    dR31.at(t).Fill(Muon1LV.DeltaR(Muon3LV),1);
+    dR1Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
+    dR2Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
+    dR3Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
+
+
+
+
     TauEta.at(t).Fill(TauLV.Eta(),1);
     TauPt.at(t).Fill(TauLV.Pt(),1);
     TauP.at(t).Fill(TauLV.P(),1);
