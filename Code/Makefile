@@ -63,7 +63,7 @@ endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest Validation
+	TARGETS += MyTest DimuTrk ThreeMu
 	DEFS += -DUSE_joshi=1
 endif
 
