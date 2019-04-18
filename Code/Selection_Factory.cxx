@@ -12,7 +12,9 @@
 
 #ifdef USE_joshi
 #include "joshi/MyTest.h"
-#include "joshi/Validation.h"
+//#include "joshi/Validation.h"
+#include "joshi/DimuTrk.h"
+#include "joshi/ThreeMu.h"
 
 #endif
 
@@ -44,7 +46,10 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 #ifdef USE_joshi
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
+  //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
+  else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
+  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
+  
 #endif
 
 
