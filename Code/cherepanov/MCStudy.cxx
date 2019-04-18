@@ -31,9 +31,11 @@ void  MCStudy::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
+    if(i==isRecoCut)   cut.at(isRecoCut)=1; 
     if(i==L1SeedOk)    cut.at(L1SeedOk)=1;
-    if(i==HLTOk)    cut.at(HLTOk)=1;
-    if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+    if(i==HLTOk)       cut.at(HLTOk)=1;
+    if(i==PrimeVtx)    cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+
   }
   TString hlabel;
   TString htitle;
@@ -43,6 +45,7 @@ void  MCStudy::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
+
     if(i==PrimeVtx){
       title.at(i)="Number of Prime Vertices $(N>$";
       title.at(i)+=cut.at(PrimeVtx);
@@ -53,6 +56,12 @@ void  MCStudy::Configure(){
       hlabel="Number of Prime Vertices";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
+    }
+    else if(i==isRecoCut){
+      title.at(i)="MC event pass ntuple pre-selection";
+      hlabel="0 - fail; 1 - pass the pre-selection";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_isRecoCut_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_isRecoCut_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==L1SeedOk){
       title.at(i)="L1 seed ";
@@ -67,6 +76,7 @@ void  MCStudy::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
+
   } 
   // Setup NPassed Histogams
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -91,8 +101,24 @@ void  MCStudy::Configure(){
   ThirdMuonsEta=HConfig.GetTH1D(Name+"_ThirdMuonsEta","ThirdMuonEta",25,-2.5,2.5,"Third  #mu rapidity","Events");
 
 
+  Muon1_Match_dR=HConfig.GetTH1D(Name+"_Muon1_Match_dR","Muon1_Match_dR",25,0,0.01,"dR Matching of first reco #mu_{1} to truth #mu","Events");
+  Muon2_Match_dR=HConfig.GetTH1D(Name+"_Muon2_Match_dR","Muon2_Match_dR",25,0,0.01,"dR Matching of second reco #mu_{2} to truth #mu","Events");
+  Muon3_Match_dR=HConfig.GetTH1D(Name+"_Muon3_Match_dR","Muon3_Match_dR",25,0,0.01,"dR Matching of third reco #mu_{3} to truth #mu","Events");
 
 
+  Muon1_Pass_Standard_Selectors=HConfig.GetTH1D(Name+"_Muon1_Pass_Standard_Selectors","Muon1_Pass_Standard_Selectors",22, -0.5,21.5,"Standard #mu selectors","Events");
+  Muon1_ID=HConfig.GetTH1D(Name+"_Muon1_ID","Muon1_ID",6, -0.5,5.5,"#mu_{1}ID; 0-noID,1-Loose,2-Soft,3-Medium,4-Tight,5-HighPt","Events");
+
+  Muon2_ID=HConfig.GetTH1D(Name+"_Muon2_ID","Muon2_ID",6, -0.5,5.5,"#mu_{2} 0-noID,1-Loose,2-Soft,3-Medium,4-Tight,5-HighPt","Events");
+
+  Muon3_ID=HConfig.GetTH1D(Name+"_Muon3_ID","Muon3_ID",6, -0.5,5.5,"#mu_{3} 0-noID,1-Loose,2-Soft,3-Medium,4-Tight,5-HighPt","Events");
+
+
+  Muon1_isGlob=HConfig.GetTH1D(Name+"_Muon1_isGlob","Muon1_isGlob",2, -0.5,1.5,"#mu_{1} is Global","Events");
+  Muon2_isGlob=HConfig.GetTH1D(Name+"_Muon2_isGlob","Muon2_isGlob",2, -0.5,1.5,"#mu_{2} is Global","Events");
+  Muon3_isGlob=HConfig.GetTH1D(Name+"_Muon3_isGlob","Muon3_isGlob",2, -0.5,1.5,"#mu_{3} is Global","Events");
+
+  Preselection=HConfig.GetTH1D(Name+"_Preselection","Preselection",2,-0.5,1.5,"0 - fail; 1 - pass the pre-selection","Events");
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -121,6 +147,20 @@ void  MCStudy::Store_ExtraDist(){
   Extradist1d.push_back(&SecondMuonsEta);
   Extradist1d.push_back(&ThirdMuonsEta);
 
+  Extradist1d.push_back(&Muon1_Match_dR);
+  Extradist1d.push_back(&Muon2_Match_dR);
+  Extradist1d.push_back(&Muon3_Match_dR);
+
+  Extradist1d.push_back(&Preselection);
+  Extradist1d.push_back(&Muon1_Pass_Standard_Selectors);
+
+
+  Extradist1d.push_back(&Muon1_ID);
+  Extradist1d.push_back(&Muon2_ID);
+  Extradist1d.push_back(&Muon3_ID);
+  Extradist1d.push_back(&Muon1_isGlob);
+  Extradist1d.push_back(&Muon2_isGlob);
+  Extradist1d.push_back(&Muon3_isGlob);
 
 
 }
@@ -131,7 +171,7 @@ void  MCStudy::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  std::cout<<"----------------id "<<id << std::endl;
+  //  std::cout<<"----------------id "<<id << std::endl;
   value.at(L1SeedOk) = 0;
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
@@ -150,7 +190,10 @@ void  MCStudy::doEvent(){
   
   pass.at(L1SeedOk)= (value.at(L1SeedOk)==cut.at(L1SeedOk)); 
   pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
-  
+
+
+  pass.at(isRecoCut) = true;//(value.at(isRecoCut) == cut.at(isRecoCut));
+
   double wobs=1;
   double w;  
              
@@ -178,7 +221,7 @@ void  MCStudy::doEvent(){
   int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
   */
 
-
+  /*
   std::cout<<"N signal particles  "<< Ntp->NMCSignalParticles() << std::endl;
     for(int isig=0; isig< Ntp->NMCSignalParticles() ; isig++){
       std::cout<<"---------------------------- Signal Particle ID:  "<< Ntp->MCSignalParticle_pdgid(isig) << " Mass  "<< Ntp->MCSignalParticle_p4(isig).M() << std::endl;
@@ -208,7 +251,7 @@ void  MCStudy::doEvent(){
 	Ntp->MCTauandProd_p4(itau,ida).Print();
       }
     }
-
+  */
 
 
 
@@ -218,7 +261,7 @@ void  MCStudy::doEvent(){
       unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(2);
 
 
-
+      /*
       std::cout<<"RECO MUONS    "<<std::endl;
       Ntp->Muon_P4(Muon_index_1).Print();
       Ntp->Muon_P4(Muon_index_2).Print();
@@ -226,30 +269,34 @@ void  MCStudy::doEvent(){
 
 
 
-      std::cout<<"matched "<< std::endl;
+      //     std::cout<<"matched "<< std::endl;
       Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1)).Print();
       Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2)).Print();
       Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_3)).Print();
+      */
 
-
-      std::cout<<"mass "<< (Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2))).M() <<std::endl;
+      //      std::cout<<"mass "<< (Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2)) + Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2))).M() <<std::endl;
 
 
     }
 
 
+    if(!Ntp->isData()){
+    Preselection.at(t).Fill(Ntp->MCEventIsReconstructed(),w);
+    }
 
+    bool status=AnalysisCuts(t,w,wobs);
+    if(status){
+      NVtx.at(t).Fill(Ntp->NVtx(),w);
 
-
-  bool status=AnalysisCuts(t,w,wobs);
-  if(status){
-    NVtx.at(t).Fill(Ntp->NVtx(),w);
 
     //    std::cout<<"N 2 mu + track  "<< Ntp->NTwoMuonsTrack() << " N three mu  "<< Ntp->NThreeMuons() << "  Number of Vertices  " << Ntp->NumberOfSVertices() <<std::endl;
     for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){ // loop over muons
       MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
       MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
     }
+
+
     if(Ntp->NThreeMuons()!=0) Category.at(t).Fill(1);
     if(Ntp->NTwoMuonsTrack()!=0) Category.at(t).Fill(2);
 
@@ -265,6 +312,7 @@ void  MCStudy::doEvent(){
       double pt1 = Ntp->Muon_P4(Muon_index_1).Pt();
       double pt2 = Ntp->Muon_P4(Muon_index_2).Pt();
       double pt3 = Ntp->Muon_P4(Muon_index_3).Pt();
+
       FirstMuonsPt.at(t).Fill(pt1,1);
       SecondMuonsPt.at(t).Fill(pt2,1);
       ThirdMuonsPt.at(t).Fill(pt3,1);
@@ -273,6 +321,68 @@ void  MCStudy::doEvent(){
       FirstMuonsEta.at(t).Fill( Ntp->Muon_P4(Muon_index_1).Eta(),1);
       SecondMuonsEta.at(t).Fill(  Ntp->Muon_P4(Muon_index_2).Eta(),1);
       ThirdMuonsEta.at(t).Fill(  Ntp->Muon_P4(Muon_index_3).Eta(),1);
+
+
+
+      TLorentzVector MuReco1 =  Ntp->Muon_P4(Muon_index_1);
+      TLorentzVector MuReco2 =  Ntp->Muon_P4(Muon_index_2);
+      TLorentzVector MuReco3 =  Ntp->Muon_P4(Muon_index_3);
+
+      TLorentzVector MuMC1 = Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_1));
+      TLorentzVector MuMC2 = Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_2));
+      TLorentzVector MuMC3 = Ntp->matchToTruthTauDecay( Ntp->Muon_P4(Muon_index_3));
+
+      Muon1_Match_dR.at(t).Fill(MuReco1.DeltaR(MuMC1),w);
+      Muon2_Match_dR.at(t).Fill(MuReco2.DeltaR(MuMC2),w);
+      Muon3_Match_dR.at(t).Fill(MuReco3.DeltaR(MuMC3),w);
+
+      //      std::cout<<"  bit  "<< Ntp->Muon_ID(Muon_index_1) <<std::endl;
+      Muon1_isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_1),w);
+      Muon2_isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_2),w);
+      Muon3_isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_3),w);
+      Muon1_ID.at(t).Fill(0);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1), Ntp->MuonQualityBitMask::Bit_MuonLoose))
+	Muon1_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonLoose+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1), Ntp->MuonQualityBitMask::Bit_MuonSoft))
+	Muon1_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonSoft+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1), Ntp->MuonQualityBitMask::Bit_MuonMedium))
+	Muon1_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonMedium+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1), Ntp->MuonQualityBitMask::Bit_MuonTight))
+	Muon1_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonTight+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1), Ntp->MuonQualityBitMask::Bit_MuonHighPt))
+	Muon1_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonHighPt+1);
+
+      Muon2_ID.at(t).Fill(0);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2), Ntp->MuonQualityBitMask::Bit_MuonLoose))
+	Muon2_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonLoose+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2), Ntp->MuonQualityBitMask::Bit_MuonSoft))
+	Muon2_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonSoft+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2), Ntp->MuonQualityBitMask::Bit_MuonMedium))
+	Muon2_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonMedium+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2), Ntp->MuonQualityBitMask::Bit_MuonTight))
+	Muon2_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonTight+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2), Ntp->MuonQualityBitMask::Bit_MuonHighPt))
+	Muon2_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonHighPt+1);
+
+      Muon3_ID.at(t).Fill(0);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3), Ntp->MuonQualityBitMask::Bit_MuonLoose))
+	Muon3_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonLoose+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3), Ntp->MuonQualityBitMask::Bit_MuonSoft))
+	Muon3_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonSoft+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3), Ntp->MuonQualityBitMask::Bit_MuonMedium))
+	Muon3_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonMedium+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3), Ntp->MuonQualityBitMask::Bit_MuonTight))
+	Muon3_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonTight+1);
+      if(Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3), Ntp->MuonQualityBitMask::Bit_MuonHighPt))
+	Muon3_ID.at(t).Fill( Ntp->MuonQualityBitMask::Bit_MuonHighPt+1);
+
+
+
+
+      //      std::cout<<"  MuReco1.DeltaR(MuMC1)  "<< MuReco1.DeltaR(MuMC1) << std::endl;
+      //      std::cout<<"  Muon Index   "<< Muon_index_1 << "   first bit "<< Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::CutBasedIdLoose)<< " very tight   "<<
+      //	Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::PFIsoVeryTight)<<std::endl;
+
     }
 
 
@@ -309,6 +419,18 @@ void  MCStudy::doEvent(){
 
 
 void  MCStudy::Finish(){
+
+
+
+
+
+  if(mode == RECONSTRUCT){
+    for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
+      double scale(1.);
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
+      //      ScaleAllHistOfType(i,scale);
+    }
+  }
   Selection::Finish();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

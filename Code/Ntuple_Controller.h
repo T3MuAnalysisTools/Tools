@@ -33,7 +33,6 @@
 #include <functional>
 
 #include "NtupleReader.h"
-
 #include "HistoConfig.h"
 
 
@@ -293,6 +292,10 @@ class Ntuple_Controller{
    double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
    double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
 
+   int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
+   int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
+
+
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
    TrackParticle Muon_TrackParticle(unsigned int i){ 
@@ -309,6 +312,9 @@ class Ntuple_Controller{
      return TrackParticle(mu_par,mu_cov,Ntp->Muon_pdgid->at(i),Ntp->Muon_M->at(i),Ntp->Muon_trackCharge->at(i),Ntp->Muon_B->at(i));
    }  
    */
+
+   bool MCEventIsReconstructed(){return Ntp->MC_isReco;}
+
 
    unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
    std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
@@ -373,11 +379,11 @@ class Ntuple_Controller{
 
 
    int        NL1Seeds(){return Ntp->Trigger_l1name->size();}
-   string     L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
+   std::string     L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
    int        L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}
    int        Trigger_l1prescale(unsigned int i){return Ntp->Trigger_l1prescale->at(i);}
    int        NHLT(){return Ntp->Trigger_hltname->size();}
-   string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
+   std::string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
    int        HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
 
 
@@ -416,7 +422,11 @@ class Ntuple_Controller{
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
+   std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
+
+
    bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
+
 
 };
 #endif
