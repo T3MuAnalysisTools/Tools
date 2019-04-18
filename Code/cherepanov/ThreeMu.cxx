@@ -132,6 +132,20 @@ void  ThreeMu::Configure(){
   dR2Tau = HConfig.GetTH1D(Name+"_dR2Tau","dR2Tau",50,0,1,"dR(#mu_{2}#tau)","Events");
   dR3Tau = HConfig.GetTH1D(Name+"_dR3Tau","dR3Tau",50,0,1,"dR(#mu_{3}#tau)","Events");
 
+  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","Isolation_NTracks",20,0,10,"N tracks","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",20,0,10,"relative p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","Isolation_MinDist",10,0,1,"Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","Isolation05_RelPt",10,0,3,"relative  rel p_{T} in 0.5 cone","Events");
+  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","Isolation05_NTracks",20,0,10,"N tracks in 0.5 cone","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","Isolation05_MinDist",10,0,1,"Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","Isolation_Ntrk1",10,0,10,"Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","Isolation_Ntrk2",10,0,10,"Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","Isolation_Ntrk3",10,0,10,"Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","Isolation_Ntrk0p1",10,0,10,"Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","Isolation_Ntrk0p2",10,0,10,"Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","Isolation_Ntrk0p5",10,0,10,"Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","Isolation_maxdxy",40,0,20,"Iso max(dxy)","Events");
+
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -204,13 +218,27 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&TriggerMatchdR2);
   Extradist1d.push_back(&TriggerMatchdR3);
 
-
   Extradist1d.push_back(&dR12);
   Extradist1d.push_back(&dR23);
   Extradist1d.push_back(&dR31);
   Extradist1d.push_back(&dR1Tau);
   Extradist1d.push_back(&dR2Tau);
   Extradist1d.push_back(&dR3Tau);
+
+  Extradist1d.push_back(&Isolation_NTracks);
+  Extradist1d.push_back(&Isolation_RelPt);
+  Extradist1d.push_back(&Isolation_MinDist);
+  Extradist1d.push_back(&Isolation05_RelPt);
+  Extradist1d.push_back(&Isolation05_NTracks);
+  Extradist1d.push_back(&Isolation05_MinDist);
+  Extradist1d.push_back(&Isolation_Ntrk1);
+  Extradist1d.push_back(&Isolation_Ntrk2);
+  Extradist1d.push_back(&Isolation_Ntrk3);
+  Extradist1d.push_back(&Isolation_Ntrk0p1);
+  Extradist1d.push_back(&Isolation_Ntrk0p2);
+  Extradist1d.push_back(&Isolation_Ntrk0p5);
+  Extradist1d.push_back(&Isolation_maxdxy);
+
 
 }
 
@@ -322,6 +350,35 @@ void  ThreeMu::doEvent(){
     TriggerMatchdR1.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(0),1);
     TriggerMatchdR2.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(1),1);
     TriggerMatchdR3.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(0).at(2),1);
+
+
+     
+    Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(0),w);
+    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(0),w);
+    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(0),w);
+    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(0),w);
+    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(0),w);
+    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(0),w);
+    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(0),w);
+    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(0),w);
+    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(0),w);
+    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(0),w);
+    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(0),w);
+    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(0),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(0),w); 
+    Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(0),w);
+    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(0),w);
+    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(0),w);
+    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(0),w);
+    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(0),w);
+    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(0),w);
+    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(0),w);
+    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(0),w);
+    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(0),w);
+    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(0),w);
+    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(0),w);
+    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(0),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(0),w);
 
 
     //---------------  Fill MC plots 
