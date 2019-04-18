@@ -45,6 +45,7 @@ void  DimuTrk::Configure(){
     if(i==HLTOk)        cut.at(HLTOk)=1;
     if(i==is2MuTrk)        cut.at(is2MuTrk)=1;
     if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+	 if(i==fitVtxChiSq)	cut.at(fitVtxChiSq)=5.0;
   }
   TString hlabel;
   TString htitle;
@@ -84,8 +85,15 @@ void  DimuTrk::Configure(){
       hlabel="DoubleMu3_Trk_Tau3mu";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+	}	
+	else if(i==fitVtxChiSq){
+      title.at(i)="Normalized chi sq fit vertex $(<5)$ ";
+      hlabel="Normalized chi sq fit vertex";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
     }
-
+    
+}
       // Track Candidate Information
       Track_P=HConfig.GetTH1D(Name+"_Track_P","Momentum magnitude of track (2mu+trk track candidate)",66,-0.5,65.5,"p (track)","Events");
       Track_E=HConfig.GetTH1D(Name+"_Track_E","Energy of track (2mu+trk track candidate)",66,-0.5,65.5,"E (track)","Events");
@@ -196,19 +204,19 @@ void  DimuTrk::Configure(){
   Muon1_sumPUPt04=HConfig.GetTH1D(Name+"_Muon1_sumPUPt04","",10,0,10,"#mu_{1} #SigmaPUPt04","Events");
   Muon2_sumPUPt04=HConfig.GetTH1D(Name+"_Muon2_sumPUPt04","",10,0,10,"#mu_{2} #SigmaPUPt04","Events");
   
-  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","",10,0,10,"#mu_{1} Iso ntrks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","",10,0,10,"#mu_{1} Iso rel p_{T}","Events");
-  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","",10,0,10,"#mu_{1} Iso MinDist","Events");
-  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","",10,0,10,"#mu_{1} Iso05 rel p_{T}","Events");
-  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","",10,0,10,"#mu_{1} Iso05 ntrks","Events");
-  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","",10,0,10,"#mu_{1} Iso05 MinDist","Events");
-  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","",10,0,10,"#mu_{1} Iso ntrk 1","Events");
-  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","",10,0,10,"#mu_{1} Iso ntrk 2","Events");
-  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","",10,0,10,"#mu_{1} Iso ntrk 3","Events");
-  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","",10,0,10,"#mu_{1} Iso ntrk0p1","Events");
-  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","",10,0,10,"#mu_{1} Iso ntrk0p2","Events");
-  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","",10,0,10,"#mu_{1} Iso ntrk0p5","Events");
-  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","",10,0,10,"#mu_{1} Iso max(dxy)","Events");
+  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","",20,0,10,"Iso ntrks","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","",20,0,10,"Iso rel p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","",10,0,1,"Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","",10,0,3,"Iso05 rel p_{T}","Events");
+  Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","",20,0,10,"Iso05 ntrks","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","",10,0,1,"Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","",10,0,10,"Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","",10,0,10,"Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","",10,0,10,"Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","",10,0,10,"Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","",10,0,10,"Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","",10,0,10,"Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","",40,0,20,"Iso max(dxy)","Events");
   
       //Dimuon Information (Muons from dimuon + track candidates)
       MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of Pt of two muons",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
@@ -218,7 +226,7 @@ void  DimuTrk::Configure(){
       PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu invariant mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
       TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track invariant mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
       PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu invariant Mass vs. #mu#mu + track invariant mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
-    } 
+     
     // Setup NPassed Histogams
     Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
     // Setup Extra Histograms
@@ -249,7 +257,7 @@ void  DimuTrk::Store_ExtraDist(){
     Extradist1d.push_back(&Track_dzError);
 
     //Dimuon variable
-	 cout<<"finni tracks"<<endl;
+    
     Extradist1d.push_back(&Muon1_P);
     Extradist1d.push_back(&Muon1_E);
     Extradist1d.push_back(&Muon1_Pt);
@@ -284,7 +292,7 @@ void  DimuTrk::Store_ExtraDist(){
     Extradist1d.push_back(&Muon2_isCalo);
     Extradist1d.push_back(&Muon1_isIsolationValid);
     Extradist1d.push_back(&Muon2_isIsolationValid);
-    Extradist1d.push_back(&Muon1_isTimeValid);
+    /*  Extradist1d.push_back(&Muon1_isTimeValid);
     Extradist1d.push_back(&Muon2_isTimeValid);
     Extradist1d.push_back(&Muon1_emEt03);
     Extradist1d.push_back(&Muon2_emEt03);
@@ -345,7 +353,7 @@ void  DimuTrk::Store_ExtraDist(){
     Extradist1d.push_back(&Muon1_sumPhotonEtHighThreshold04);
     Extradist1d.push_back(&Muon2_sumPhotonEtHighThreshold04);
     Extradist1d.push_back(&Muon1_sumPUPt04);
-    Extradist1d.push_back(&Muon2_sumPUPt04);
+    Extradist1d.push_back(&Muon2_sumPUPt04);*/
     //Extradist1d.push_back(&Track_TriggerMatchdR);
 	 //Extradist1d.push_back(&Muon1_TriggerMatchdR);
 	 //Extradist1d.push_back(&Muon2_TriggerMatchdR);
@@ -383,7 +391,7 @@ void  DimuTrk::doEvent(){
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if(HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
   }
   for(int l1iTrigger=0; l1iTrigger < Ntp->NL1Seeds(); l1iTrigger++){
     TString L1 = Ntp->L1Name(l1iTrigger);
@@ -391,18 +399,38 @@ void  DimuTrk::doEvent(){
     if(L1.Contains("L1_DoubleMu_10_0_dEta_Max1p8") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
     if(L1.Contains("L1_TripleMu0") && Ntp->L1Decision(l1iTrigger) == 1)value.at(L1SeedOk)=Ntp->L1Decision(l1iTrigger);
   }
+  
 
+ int mu1=-1, mu2=-1, track=-1;
+ int tmp_idx = -1;
+ double tmp_chisq = 999.0;
 
   value.at(PrimeVtx)=Ntp->NVtx(); 
-
+  value.at(fitVtxChiSq)=999.0;
   value.at(is2MuTrk) = 0;
   if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
+
+  if (value.at(is2MuTrk)==1){
+    for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
+		tmp_idx = i2M;
+		int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0);
+      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1);
+      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0);
+		if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
+			tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
+			mu1 = tmp_mu1;
+			mu2 = tmp_mu2;
+			track = tmp_track;
+		}
+		}
+  }
 
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
   pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); 
   pass.at(L1SeedOk)= (value.at(L1SeedOk)==cut.at(L1SeedOk)); 
   pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
-  
+  pass.at(fitVtxChiSq)=(value.at(fitVtxChiSq)==cut.at(fitVtxChiSq));
+
   double wobs=1;
   double w;  
              
@@ -412,15 +440,8 @@ void  DimuTrk::doEvent(){
   if(status){
     NVtx.at(t).Fill(Ntp->NVtx(),w);
     double deltaMass(999.);
-    unsigned int tmp_idx(0);
 
-	for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
-		tmp_idx = i2M;
-		int mu1 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0);
-      int mu2 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1);
-      int track = Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0);
-
-Track_Pt.at(t).Fill(Ntp->Track_P4(track).Pt(),w);
+	 Track_Pt.at(t).Fill(Ntp->Track_P4(track).Pt(),w);
     Track_Eta.at(t).Fill(Ntp->Track_P4(track).Eta(),w);
     Track_Phi.at(t).Fill(Ntp->Track_P4(track).Phi(),w);
     Track_E.at(t).Fill(Ntp->Track_P4(track).E(),w);
@@ -509,19 +530,19 @@ Track_Pt.at(t).Fill(Ntp->Track_P4(track).Pt(),w);
     Muon1_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu1),w);
     Muon2_sumPUPt04.at(t).Fill(Ntp->Muon_sumPUPt04(mu2),w);
 	 
-	 Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(i2M),w);
-    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(i2M),w);
-    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(i2M),w);
-    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(i2M),w);
-    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(i2M),w);
-    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(i2M),w);
-    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(i2M),w);
-    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(i2M),w);
-    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(i2M),w);
-    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(i2M),w);
-    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(i2M),w);
-    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(i2M),w);
-    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(i2M),w);
+	 Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(tmp_idx),w);
+    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(tmp_idx),w);
+    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(tmp_idx),w);
+    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(tmp_idx),w);
+    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(tmp_idx),w);
+    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(tmp_idx),w);
+    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(tmp_idx),w);
+    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(tmp_idx),w);
+    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(tmp_idx),w);
+    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(tmp_idx),w);
+    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(tmp_idx),w);
+    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(tmp_idx),w);
+    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(tmp_idx),w);
  
  // cout<<(Ntp->TwoMuonsTrack_TriggerMatch_dR).size()<<endl;
  // Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
@@ -540,7 +561,7 @@ DimuondR.at(t).Fill(deltaR(Ntp->Muon_P4(mu1).Eta(),Ntp->Muon_P4(mu1).Phi(),Ntp->
     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M();
       PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
-}
+
     /*
     if(Ntp->NThreeMuons()!=0){
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
@@ -596,7 +617,7 @@ void  DimuTrk::Finish(){
     for(unsigned int i=0; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
       if(Nminus0.at(0).at(i).Integral()!=0)scale = 1/Nminus0.at(0).at(i).Integral();
-      ScaleAllHistOfType(HConfig.GetType(i),scale);
+      ScaleAllHistOfType(i,scale);
     }
   }
 
