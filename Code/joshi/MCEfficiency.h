@@ -22,7 +22,7 @@ class MCEfficiency : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {L1SeedOk=0,HLTOk,PrimeVtx,is2MuTrk,mumuMass,trkPt,nTrkHits,fitVtxChiSq,NCuts}; 
+  enum cuts {L1SeedOk=0,HLTOk,PrimeVtx,is2MuTrk,mumuMass,trkPt,nTrkHits,fitVtxChiSq,trigObjMatch,genMatch,NCuts}; 
 
  protected:
   virtual void doEvent();  
