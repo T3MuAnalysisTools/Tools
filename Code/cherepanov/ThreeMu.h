@@ -90,5 +90,35 @@ class ThreeMu : public Selection {
   std::vector<TH1D> MuPair3_vertex_chi2;
 
 
+  std::vector<TH1D> Pair1Mass;
+  std::vector<TH1D> Pair2Mass;
+  std::vector<TH1D> Pair3Mass;
+
+  std::vector<TH1D> TriggerMatchdR1;
+  std::vector<TH1D> TriggerMatchdR2;
+  std::vector<TH1D> TriggerMatchdR3;
+
+  std::vector<TH1D> dR12;
+  std::vector<TH1D> dR23;
+  std::vector<TH1D> dR31;
+  std::vector<TH1D> dR1Tau;
+  std::vector<TH1D> dR2Tau;
+  std::vector<TH1D> dR3Tau;
+
+  std::vector<TH1D> Isolation_NTracks;
+  std::vector<TH1D> Isolation_RelPt;
+  std::vector<TH1D> Isolation_MinDist;
+  std::vector<TH1D> Isolation05_RelPt;
+  std::vector<TH1D> Isolation05_NTracks;
+  std::vector<TH1D> Isolation05_MinDist;
+  std::vector<TH1D> Isolation_Ntrk1;
+  std::vector<TH1D> Isolation_Ntrk2;
+  std::vector<TH1D> Isolation_Ntrk3;
+  std::vector<TH1D> Isolation_Ntrk0p1;
+  std::vector<TH1D> Isolation_Ntrk0p2;
+  std::vector<TH1D> Isolation_Ntrk0p5;
+  std::vector<TH1D> Isolation_maxdxy;
+
+
 };
 #endif
