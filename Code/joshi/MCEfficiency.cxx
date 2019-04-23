@@ -477,15 +477,10 @@ void  MCEfficiency::doEvent(){
       // END of GEN matching
       // Begining of trigger object matching
 
-/*
+
       float mu1_trObj_dR = Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx).at(0);
       float mu2_trObj_dR = Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx).at(1);
       float trk_trObj_dR = Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx).at(2);
-*/
-
-		float mu1_trObj_dR = 0.0;
-		float mu2_trObj_dR = 0.0;
-		float trk_trObj_dR = 0.0;
 
       if (DEBUG){
         if (mu1_trObj_dR<0.01) cout<<"Muon 1 matched to a trigger object"<<endl;

@@ -3,6 +3,9 @@
 #include "Parameters.h"
 #include <tuple>
 #include "Logger.h"
+
+using namespace std;
+
 // External code
 
 ///////////////////////////////////////////////////////////////////////
@@ -194,8 +197,6 @@ TString Ntuple_Controller::GetInputPublishDataName(){
 
 // determine Higgs mass (from Dataset name or fallback options)
 
-
-
 double Ntuple_Controller::DeltaPhi(double angle1,double angle2)
 {
   double diff=angle1-angle2;
@@ -204,6 +205,131 @@ double Ntuple_Controller::DeltaPhi(double angle1,double angle2)
   return diff;
 }
 
+//-------------------------- print vector -------------------
+template<typename T>
+void printVec(int size, T& vec){
+    for (int i = 0; i<size; i++) cout<<vec[i]<<" ";
+    cout<<endl;
+}
+//-------------------------- --------------------------------- 
+
+//-------------------------- return deltaR -------------------
+
+double Ntuple_Controller::deltaR(double eta1, double phi1, double eta2, double phi2)
+{
+    double deta = eta1 - eta2;
+    double dphi = phi1 - phi2;
+    while (dphi > TMath::Pi()) dphi -= 2*TMath::Pi();
+    while (dphi <= -TMath::Pi()) dphi += 2*TMath::Pi();
+
+    return sqrt(deta*deta + dphi*dphi);
+}
+
+//-------------------------- --------------------------------- 
+
+
+//-------------------------- return GEN pdgId -------------------
+// Returns the pdgId of the GEN particle matched to a RECO particle
+
+int Ntuple_Controller::GENMatchedPdgId(TLorentzVector vec){
+	float dR_min = 999.0;
+	int pdgId = 9999999;
+	for (unsigned int it=0; it<NMCSignalParticles(); ++it){
+		float tmp_dR = MCSignalParticle_p4(it).DeltaR(vec);
+		if (tmp_dR<dR_min && tmp_dR<0.05){
+			dR_min = tmp_dR;
+			pdgId = MCSignalParticle_pdgid(it);
+		}
+	} 
+	return pdgId;
+}
+
+//-------------------------- --------------------------------- -------------------
+
+//-------------------------- return GEN LV -------------------
+// Returns the lorentz vector of the GEN particle matched to a RECO particle
+
+TLorentzVector Ntuple_Controller::GENMatchedLV(TLorentzVector vec){
+	float dR_min = 999.0;
+	TLorentzVector tmp_vec(0,0,0,0);
+	for (unsigned int it=0; it<NMCSignalParticles(); ++it){
+		float tmp_dR = MCSignalParticle_p4(it).DeltaR(vec);
+		if (tmp_dR<dR_min && tmp_dR<0.05){
+			dR_min = tmp_dR;
+			tmp_vec = MCSignalParticle_p4(it);
+		}
+	} 
+	return tmp_vec;
+}
+
+//-------------------------- --------------------------------- -------------------
+
+//-------------------------- Match GEN Ds to 2mu+trk candidate -------------------
+// Returns the dR of best GEN machted Ds
+float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
+
+	float ds_dR = 999.0;
+
+	if (tmp_idx>=NTwoMuonsTrack()) {
+		cout<<"Index out of rangei"<<endl;
+		return 999.0;
+		}
+   
+   for (unsigned int ngen=0; ngen<NMCSignalParticles(); ngen++){
+      bool dspi_flag = 0, dsphi_flag = 0;
+		float tmp_phi_dR = 999.0, tmp_pi_dR = 999.0;
+
+		int track_idx = -1, mu1_idx = -1, mu2_idx = -1;
+
+		TLorentzVector tmp_pi_p4(0,0,0,0);
+		TLorentzVector tmp_phi_p4(0,0,0,0);
+
+      if (fabs(MCSignalParticle_pdgid(ngen))==431){
+         dspi_flag = 0;
+         dsphi_flag = 0;
+
+			tmp_phi_dR = 999.0;
+			tmp_pi_dR = 999.0;
+
+         for (int nchild=0; nchild<MCSignalParticle_Nchilds(ngen); nchild++){
+
+            //Find a pi that is a decay product of ds
+            if(fabs(MCSignalParticle_childpdgid(ngen,nchild))==211){
+               dspi_flag = 1;
+               unsigned int tmp_track_idx = TwoMuonsTrackTrackIndex(tmp_idx).at(0);
+               float dR = Track_P4(tmp_track_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild));
+               if (dR<0.05 && dR<tmp_pi_dR) { 
+						tmp_pi_dR = dR;
+						tmp_pi_p4 = MCSignalParticle_child_p4(ngen,nchild);
+						track_idx = tmp_track_idx;
+                  }
+              }
+
+              //Find a phi that is a decay product of Ds
+              if (fabs(MCSignalParticle_childpdgid(ngen,nchild))==333){
+                dsphi_flag = 1;
+                unsigned int tmp_mu1_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(0);
+                unsigned int tmp_mu2_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(1);
+                float dR = MCSignalParticle_child_p4(ngen,nchild).DeltaR(Muon_P4(tmp_mu1_idx)+Muon_P4(tmp_mu2_idx));
+                if (dR<0.05 && dR<tmp_phi_dR) { 
+					 	tmp_phi_dR = dR;
+						tmp_phi_p4 = MCSignalParticle_child_p4(ngen,nchild);
+						mu1_idx = tmp_mu1_idx;
+						mu2_idx = tmp_mu2_idx;
+                  }
+              }
+
+            }
+
+            if (dspi_flag && dsphi_flag){
+					ds_dR = (tmp_phi_p4+tmp_pi_p4).DeltaR(Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Track_P4(track_idx));
+            }
+        } 
+      }
+	return ds_dR;
+}
+
+//-------------------------- --------------------------------- -------------------
 
 std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned int> indices){
   
@@ -270,3 +396,79 @@ TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
   }
   return out;
 }
+
+
+std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int MuonIndex){
+
+  std::vector<int> out;
+  out.push_back(1);
+ 
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdMediumPrompt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdGlobalHighPt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdTrkHighPt))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoVeryLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::PFIsoVeryTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::TkIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::TkIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::SoftCutBasedId))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::SoftMvaId))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MvaTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoTight))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::MiniIsoVeryTight))out.push_back(1);
+  else out.push_back(0);
+
+  return out;
+}
+

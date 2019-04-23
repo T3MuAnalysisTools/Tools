@@ -1,15 +1,15 @@
-#ifndef MCStudy_h
-#define MCStudy_h
+#ifndef TwoMuTrack_h
+#define TwoMuTrack_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 
-class MCStudy : public Selection {
+class TwoMuTrack : public Selection {
 
  public:
-  MCStudy(TString Name_, TString id_);
-  virtual ~MCStudy();
+  TwoMuTrack(TString Name_, TString id_);
+  virtual ~TwoMuTrack();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -21,7 +21,7 @@ class MCStudy : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {isRecoCut=0, L1SeedOk,HLTOk,PrimeVtx, NCuts}; 
+  enum cuts {HLTOk=0, TwoMuTrackCandidate, NCuts}; 
 
 
  protected:
@@ -48,23 +48,6 @@ class MCStudy : public Selection {
   std::vector<TH1D> FirstMuonsEta;
   std::vector<TH1D> SecondMuonsEta;
   std::vector<TH1D> ThirdMuonsEta;
-
-  std::vector<TH1D> Muon1_Match_dR;
-  std::vector<TH1D> Muon2_Match_dR;
-  std::vector<TH1D> Muon3_Match_dR;
-
-  std::vector<TH1D> Preselection;
-  std::vector<TH1D> Muon1_Pass_Standard_Selectors;
-
-  std::vector<TH1D> Muon1_ID;
-  std::vector<TH1D> Muon2_ID;
-  std::vector<TH1D> Muon3_ID;
-
-
-  std::vector<TH1D> Muon1_isGlob;
-  std::vector<TH1D> Muon2_isGlob;
-  std::vector<TH1D> Muon3_isGlob;
-
 
 
 };
