@@ -421,9 +421,15 @@ class Ntuple_Controller{
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
+	float DsGenMatch(unsigned int tmp_idx);
+	int GENMatchedPdgId(TLorentzVector vec);
+	TLorentzVector GENMatchedLV(TLorentzVector vec);
+	double deltaR(double eta1, double phi1, double eta2, double phi2); 
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
-
+	
+	template<typename T>
+	void printVec(int size, T& vec);
 
    bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
 
