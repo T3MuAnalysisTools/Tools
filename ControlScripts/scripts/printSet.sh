@@ -3,9 +3,6 @@ echo $num
 for i in $(seq 1 $num);
 do
 echo "------------ Set_$i --------------"
-cd Set_$i;
-nohup ./Set_$i\.sh &> nohup.txt &
-#tail nohup.txt 
+tail Set_$i/nohup.txt;
 echo "----------------------------------"
-cd ..
 done;
