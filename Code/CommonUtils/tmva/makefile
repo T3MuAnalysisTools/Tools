@@ -3,6 +3,7 @@
 # Code   : Example usage for TMVA analyses                           #
 ###################################################################### 
 BINS = TMVAClassification \
+	MyTMVAClassification \
         TMVAClassificationCategory \
         TMVAClassificationApplication \
         TMVAClassificationCategoryApplication \
