@@ -210,17 +210,15 @@ int TMVAClassification( TString myMethodList = "" )
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
-   dataloader->AddVariable( "myvar1 := var1+var2", 'F' );
-   dataloader->AddVariable( "myvar2 := var1-var2", "Expression 2", "", 'F' );
-   dataloader->AddVariable( "var1",                "Variable 3", "units", 'F' );
-   dataloader->AddVariable( "var2",                "Variable 4", "units", 'F' );
+   dataloader->AddVariable( "var1",                "Variable 1", "units", 'F' );
+   dataloader->AddVariable( "var2",                "Variable 2", "units", 'F' );
 
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
    // input variables, the response values of all trained MVAs, and the spectator variables
 
    dataloader->AddSpectator( "spec1 := var1*2",  "Spectator 1", "units", 'F' );
-   dataloader->AddSpectator( "spec2 := var1*3",  "Spectator 2", "units", 'F' );
+   //   dataloader->AddSpectator( "spec2 := var1*3",  "Spectator 2", "units", 'F' );
 
 
    // global event weights per tree (see below for setting event-wise weights)

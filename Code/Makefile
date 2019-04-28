@@ -24,7 +24,7 @@ override CXXFLAGS +=
 ALLCXXFLAGS = $(CXXFLAGS) -I$(ROOTSYS)/include -c -I/include $(SHAREDCXXFLAGS) -c -I./ -c
 LDFLAGS       =  
 
-ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)
+ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)  -lTMVA
 
 #ROOTLIBS      =  -L$(ROOTSYS)/lib -L/usr/lib/ -L/lib/i686/  -lCore -lCint -lHist -lGraf  -lGraf3d -lGpad -lTree -lRint -lReflexDict -lReflex -lPostscript -lMatrix -lPhysics -lGui -LObj -lMinuit2 -lThread -lTreePlayer -lRIO -lMathCore -rdynamic -Wl,--rpath $(ROOTSYS)/lib
 
@@ -57,7 +57,7 @@ CINTTARGETS =
 # now include conditional options set by flags in make.inc
 
 ifdef USE_cherepanov
-	TARGETS += MyTest Validation MCStudy ThreeMu TwoMuTrack TMVATree
+	TARGETS += MyTest Validation MCStudy ThreeMu TwoMuTrack TMVATree AnalysisWithTMVA
 	DEFS += -DUSE_cherepanov=1
 endif
 
