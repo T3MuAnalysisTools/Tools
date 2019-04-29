@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.10/05 [395781]"/>
     <Info name="Creator" value="cherepan"/>
-    <Info name="Date" value="Sun Apr 28 22:07:36 2019"/>
+    <Info name="Date" value="Mon Apr 29 14:17:34 2019"/>
     <Info name="Host" value="Linux cmsbuild24.cern.ch 2.6.32-642.11.1.el6.x86_64 #1 SMP Wed Nov 16 09:40:09 CET 2016 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/afs/cern.ch/work/c/cherepan/Analysis/workdirTestTMVAApr_28_2019/Code/CommonUtils/tmva"/>
     <Info name="Training events" value="2000"/>
-    <Info name="TrainingTime" value="4.15223837e-01"/>
+    <Info name="TrainingTime" value="3.99133205e-01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -61,9 +61,7 @@
     <Variable VarIndex="0" Expression="var1" Label="var1" Title="Variable 1" Unit="units" Internal="var1" Type="F" Min="6.25702918e-01" Max="1.08406372e+01"/>
     <Variable VarIndex="1" Expression="var2" Label="var2" Title="Variable 2" Unit="units" Internal="var2" Type="F" Min="2.17177808e-01" Max="8.26463032e+00"/>
   </Variables>
-  <Spectators NSpec="1">
-    <Spectator SpecIndex="0" Expression="var1*2" Label="spec1" Title="Spectator 1" Unit="units" Internal="spec1" Type="F" Min="1.25140584e+00" Max="2.16812744e+01"/>
-  </Spectators>
+  <Spectators NSpec="0"/>
   <Classes NClass="2">
     <Class Name="Signal" Index="0"/>
     <Class Name="Background" Index="1"/>

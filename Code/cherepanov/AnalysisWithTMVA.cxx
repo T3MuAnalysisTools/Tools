@@ -27,11 +27,15 @@ AnalysisWithTMVA::~AnalysisWithTMVA(){
 
 void  AnalysisWithTMVA::Configure(){
 
-  TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
-  Float_t var1, var2;
+  reader = new TMVA::Reader( "!Color:!Silent" );
+
+  TString basedir = "";
+  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/";
+
   reader->AddVariable( "var1", &var1 );
   reader->AddVariable( "var2", &var2 );
-
+  //  reader->AddSpectator("var1*2", &spec1 );  // add spectattor if needed
+  reader->BookMVA( "BDT", basedir+"TMVAClassification_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
@@ -159,6 +163,17 @@ void  AnalysisWithTMVA::doEvent(){
     double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M();
     double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+
 		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M();
+
+
+    var1=phimass;
+    var2=dsmass;
+    spec1 = var1*2;
+
+    //    Float_t var1, var2, spec1;
+
+    std::cout<<"   MVA classifier of the event :  " << reader->EvaluateMVA("BDT") << std::endl;
+      
+
 
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
