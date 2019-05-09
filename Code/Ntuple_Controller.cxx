@@ -377,7 +377,48 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
   return out;
 }
 
+//-------------------------- --------------------------------- -------------------
 
+std::vector<unsigned int> Ntuple_Controller::SortedChargeMuons(std::vector<unsigned int> indices){
+
+	std::vector<unsigned int> out;
+	
+	double q1 = Muon_charge(indices[0]);
+	double q2 = Muon_charge(indices[1]);
+	double q3 = Muon_charge(indices[2]);
+
+	double pt1 = Muon_P4(indices[0]).Pt();
+	double pt2 = Muon_P4(indices[1]).Pt();
+	double pt3 = Muon_P4(indices[2]).Pt();
+
+	unsigned int i1,i2,i3;
+
+	if (q1==q2){
+		i1 = indices[2];
+		i2 = pt1>pt2?indices[0]:indices[1];
+		i3 = pt1>pt2?indices[1]:indices[0];
+	}
+	else if (q2==q3){
+		i1 = indices[1];
+		i2 = pt2>pt3?indices[1]:indices[2];
+		i3 = pt2>pt3?indices[2]:indices[1];
+	}
+	else if (q1==q3){
+		i1 = indices[2];
+		i2 = pt1>pt3?indices[0]:indices[2];
+		i3 = pt1>pt3?indices[2]:indices[0];
+	}
+
+	if (abs(q1+q2+q3)>1.1) Logger(Logger::Warning)<< "Sum of charges is greater than 1"<<endl;
+
+	out.push_back(i1);
+	out.push_back(i2);
+	out.push_back(i3);
+
+	return out;
+}
+
+//-------------------------- --------------------------------- -------------------
 
 TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
   TLorentzVector out(0,0,0,0);
