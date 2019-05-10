@@ -3,7 +3,7 @@
 #include "Parameters.h"
 #include <tuple>
 #include "Logger.h"
-
+#include "PDGInfo.h"
 using namespace std;
 
 // External code
@@ -542,7 +542,7 @@ void Ntuple_Controller::printMCDecayChain(unsigned int par, unsigned int level, 
 std::string Ntuple_Controller::MCParticleToString(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi){
   std::ostringstream out;
   out << "+-> ";
-  out << MCParticle_pdgid(par); //PDGInfo::pdgIdToName( MCParticle_pdgid(par) );
+  out << PDGInfo::pdgIdToName( MCParticle_pdgid(par) );
   if (printStatus) out << " (status = " << MCParticle_status(par) << ", idx = " << par << ")";
   if (printPt || printEtaPhi) out <<  " [";
   if (printPt) out << "pT = " << MCParticle_p4(par).Pt() << "GeV";
