@@ -298,7 +298,7 @@ void  ThreeMu::doEvent(){
     TString HLT = Ntp->HLTName(iTrigger);
     if(HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
   }
-  pass.at(HLTOk)= true;//(value.at(HLTOk)==cut.at(HLTOk)); 
+  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
   pass.at(ThreeMuCandidate)= (value.at(ThreeMuCandidate)==cut.at(ThreeMuCandidate)); 
   //  enum cuts {HLTOk=0, ThreeMuCandidate, TriggerMatch, ThreeMuMass, MuID, PhiVeto, OmegaVeto, NCuts};
 
