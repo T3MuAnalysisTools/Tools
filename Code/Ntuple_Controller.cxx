@@ -377,48 +377,48 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
   return out;
 }
 
-//-------------------------- --------------------------------- -------------------
+
 
 std::vector<unsigned int> Ntuple_Controller::SortedChargeMuons(std::vector<unsigned int> indices){
 
-	std::vector<unsigned int> out;
-	
-	double q1 = Muon_charge(indices[0]);
-	double q2 = Muon_charge(indices[1]);
-	double q3 = Muon_charge(indices[2]);
+  std::vector<unsigned int> out;
+  
+  double q1 = Muon_charge(indices[0]);
+  double q2 = Muon_charge(indices[1]);
+  double q3 = Muon_charge(indices[2]);
 
-	double pt1 = Muon_P4(indices[0]).Pt();
-	double pt2 = Muon_P4(indices[1]).Pt();
-	double pt3 = Muon_P4(indices[2]).Pt();
+  double pt1 = Muon_P4(indices[0]).Pt();
+  double pt2 = Muon_P4(indices[1]).Pt();
+  double pt3 = Muon_P4(indices[2]).Pt();
 
-	unsigned int i1,i2,i3;
+  unsigned int i1,i2,i3;
 
-	if (q1==q2){
-		i1 = indices[2];
-		i2 = pt1>pt2?indices[0]:indices[1];
-		i3 = pt1>pt2?indices[1]:indices[0];
-	}
-	else if (q2==q3){
-		i1 = indices[1];
-		i2 = pt2>pt3?indices[1]:indices[2];
-		i3 = pt2>pt3?indices[2]:indices[1];
-	}
-	else if (q1==q3){
-		i1 = indices[2];
-		i2 = pt1>pt3?indices[0]:indices[2];
-		i3 = pt1>pt3?indices[2]:indices[0];
-	}
+  if (q1==q2){
+    i1 = indices[2];
+    i2 = pt1>pt2?indices[0]:indices[1];
+    i3 = pt1>pt2?indices[1]:indices[0];
+  }
+  else if (q2==q3){
+    i1 = indices[1];
+    i2 = pt2>pt3?indices[1]:indices[2];
+    i3 = pt2>pt3?indices[2]:indices[1];
+  }
+  else if (q1==q3){
+    i1 = indices[2];
+    i2 = pt1>pt3?indices[0]:indices[2];
+    i3 = pt1>pt3?indices[2]:indices[0];
+  }
 
-	if (abs(q1+q2+q3)>1.1) Logger(Logger::Warning)<< "Sum of charges is greater than 1"<<endl;
+  if (abs(q1+q2+q3)>1.1) Logger(Logger::Warning)<< "Sum of charges is greater than 1"<<endl;
 
-	out.push_back(i1);
-	out.push_back(i2);
-	out.push_back(i3);
+  out.push_back(i1);
+  out.push_back(i2);
+  out.push_back(i3);
 
-	return out;
+  return out;
 }
 
-//-------------------------- --------------------------------- -------------------
+
 
 TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
   TLorentzVector out(0,0,0,0);
@@ -513,3 +513,40 @@ std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int Muo
   return out;
 }
 
+
+//// draw decay chain
+void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
+  Logger(Logger::Info) << "=== Draw MC decay chain of event ===" << std::endl;
+  for(unsigned int par = 0; par < NMCParticles(); par++){
+    if ( !MCParticle_hasMother(par) )
+      printMCDecayChainOfMother(par, printStatus, printPt, printEtaPhi, printQCD);
+  }
+}
+void Ntuple_Controller::printMCDecayChainOfMother(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
+  Logger(Logger::Info) << "Draw decay chain for mother particle at index " << par << " :" << std::endl;
+  printMCDecayChain(par, 0, printStatus, printPt, printEtaPhi, printQCD);
+}
+void Ntuple_Controller::printMCDecayChain(unsigned int par, unsigned int level, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
+  std::ostringstream out;
+  for(unsigned int l = 0; l < level; l++) out << "    ";
+  out << MCParticleToString(par, printStatus, printPt, printEtaPhi);
+  if (!printQCD && MCParticle_pdgid(par) == 92) {out << "    QCD stuff truncated ...\n"; std::cout << out.str(); return;}
+  out << "\n";
+  std::cout << out.str();
+  for (unsigned int i_dau = 0; i_dau < MCParticle_childidx(par).size(); i_dau++){
+    if (MCParticle_childidx(par).at(i_dau) != (int)par) // skip cases where particles are daughters of themselves
+      printMCDecayChain(MCParticle_childidx(par).at(i_dau), level+1, printStatus, printPt, printEtaPhi, printQCD);
+  }
+}
+
+std::string Ntuple_Controller::MCParticleToString(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi){
+  std::ostringstream out;
+  out << "+-> ";
+  out << MCParticle_pdgid(par); //PDGInfo::pdgIdToName( MCParticle_pdgid(par) );
+  if (printStatus) out << " (status = " << MCParticle_status(par) << ", idx = " << par << ")";
+  if (printPt || printEtaPhi) out <<  " [";
+  if (printPt) out << "pT = " << MCParticle_p4(par).Pt() << "GeV";
+  if (printEtaPhi) out << " eta = " << MCParticle_p4(par).Eta() << " phi = " << MCParticle_p4(par).Phi();
+  if (printPt || printEtaPhi) out << "]";
+  return out.str();
+}
