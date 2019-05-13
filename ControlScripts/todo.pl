@@ -433,8 +433,9 @@ if( $ARGV[0] eq "--DCache" ){
 
 
     # generate init script
-    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init "));
-    system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"cd -\" >> $OutputDir/workdir$set/init.sh "));
 
     # generate compile script
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
