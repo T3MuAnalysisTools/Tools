@@ -156,9 +156,9 @@ std::vector<TH1D> Muon2_vz;
   std::vector<TH1D> Muon2_sumPhotonEtHighThreshold04;
   std::vector<TH1D> Muon1_sumPUPt04;
   std::vector<TH1D> Muon2_sumPUPt04;
-  std::vector<TH1D> Muon1_TriggerMatchdR;
-  std::vector<TH1D> Muon2_TriggerMatchdR;
-  std::vector<TH1D> Track_TriggerMatchdR;
+  std::vector<TH1D> Muon1_TriggerMatch_dR;
+  std::vector<TH1D> Muon2_TriggerMatch_dR;
+  std::vector<TH1D> Track_TriggerMatch_dR;
 
 };
 #endif

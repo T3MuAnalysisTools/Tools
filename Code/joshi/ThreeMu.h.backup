@@ -21,7 +21,7 @@ class ThreeMu : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {L1SeedsOk=0, HLTOk=0, ThreeMuCandidate, IsMedPrompt, PhiVeto, OmegaVeto, TrigObjMatch, ThreeMuMass, NCuts}; 
+  enum cuts {HLTOk=0, ThreeMuCandidate, NCuts}; 
 
 
  protected:
@@ -131,17 +131,17 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexSignalKFRefittedMu2Eta;
   std::vector<TH1D> VertexSignalKFRefittedMu2Phi;
   
-  std::vector<TH1D> VertexSignalKFRefittedMu3P;
-  std::vector<TH1D> VertexSignalKFRefittedMu3Pt;
-  std::vector<TH1D> VertexSignalKFRefittedMu3Eta;
-  std::vector<TH1D> VertexSignalKFRefittedMu3Phi;
+  std::vector<TH1D> VertexSignalKFRefittedTrackP;
+  std::vector<TH1D> VertexSignalKFRefittedTrackPt;
+  std::vector<TH1D> VertexSignalKFRefittedTrackEta;
+  std::vector<TH1D> VertexSignalKFRefittedTrackPhi;
   
   std::vector<TH1D> VertexMu1D0Reco;
   std::vector<TH1D> VertexMu1D0SigReco;
   std::vector<TH1D> VertexMu2D0Reco;
   std::vector<TH1D> VertexMu2D0SigReco;
-  std::vector<TH1D> VertexMu3D0Reco;
-  std::vector<TH1D> VertexMu3D0SigReco;
+  std::vector<TH1D> VertexTrackD0Reco;
+  std::vector<TH1D> VertexTrackD0SigReco;
   std::vector<TH1D> Vertex2DDisplacement;
   std::vector<TH1D> Vertex3DDisplacement;
   std::vector<TH1D> VertexPairQuality;
@@ -160,6 +160,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexX;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexY;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexZ;
-
+  
+ 
 };
 #endif
