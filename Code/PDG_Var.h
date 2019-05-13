@@ -10,6 +10,11 @@ namespace PDG_Var {
   double Top_mass();
   double Top_width();
   double Phi_mass();
+  double Ds_mass();
+  double Pi_mass();
+  double Omega_mass();
+  double Omega_width();
+  double Phi_width();
 }
 
 #endif
