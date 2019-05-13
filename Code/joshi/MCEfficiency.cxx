@@ -6,6 +6,8 @@
 #include <iostream>
 #include "Logger.h"
 
+using namespace std;
+
 template<typename T>
 void printVec(int size, T& vec){
     for (int i = 0; i<size; i++) cout<<vec[i]<<" ";
@@ -51,10 +53,10 @@ void  MCEfficiency::Configure(){
       if(i==HLTOk)  cut.at(HLTOk)=1;
       if(i==is2MuTrk)   cut.at(is2MuTrk)=1;
       if(i==PrimeVtx)   cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
-      if(i==trkPt)   cut.at(trkPt)=1.2;
-      if(i==nTrkHits)  cut.at(nTrkHits)=12;
+      if(i==trkPt)   cut.at(trkPt)=1.0;
+      if(i==nTrkHits)  cut.at(nTrkHits)=10;
       if(i==mumuMass)  cut.at(mumuMass)=PDG_Var::Phi_mass();
-      if(i==fitVtxChiSq) cut.at(fitVtxChiSq)=5.0;
+      if(i==fitVtxChiSq) cut.at(fitVtxChiSq)=10.0;
 		if(i==trigObjMatch) cut.at(trigObjMatch)=1;
 		if(i==genMatch) cut.at(genMatch)=1;
     }
@@ -199,9 +201,10 @@ void  MCEfficiency::Configure(){
     Muon2_isCalo=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon","",2,-0.5,1.5,"#mu_{2} isCalo","Events");
     Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events");
     Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events");
-    Track_TriggerMatchdR=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR","track dR (trigger match)",10,-0.5,9.5,"track dR (trigger match)","Events");
-    Muon1_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR","#mu_{1} dR (trigger match)",10,-0.5,9.5,"#mu_{1} dR (trigger match)","Events");
-    Muon2_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR","#mu_{2} dR (trigger match)",10,-0.5,9.5,"#mu_{2} dR (trigger match)","Events");
+    
+	 Track_TriggerMatch_dR=HConfig.GetTH1D(Name+"_Track_TriggerMatch_dR","track dR (trigger match)",100,-0.5,1.5,"track dR (trigger match)","Events");
+    Muon1_TriggerMatch_dR=HConfig.GetTH1D(Name+"_Muon1_TriggerMatch_dR","#mu_{1} dR (trigger match)",100,-0.5,1.5,"#mu_{1} dR (trigger match)","Events");
+    Muon2_TriggerMatch_dR=HConfig.GetTH1D(Name+"_Muon2_TriggerMatch_dR","#mu_{2} dR (trigger match)",100,-0.5,1.5,"#mu_{2} dR (trigger match)","Events");
 
     //Dimuon Information (Muons from dimuon + track candidates)
     DimuondR=HConfig.GetTH1D(Name+"_DimuondR","dR between the muon pair",20,0,1,"dR","Events");
@@ -273,9 +276,9 @@ void  MCEfficiency::Store_ExtraDist(){
     Extradist1d.push_back(&Muon2_isCalo);
     Extradist1d.push_back(&Muon1_isIsolationValid);
     Extradist1d.push_back(&Muon2_isIsolationValid);
-    Extradist1d.push_back(&Track_TriggerMatchdR);
-    Extradist1d.push_back(&Muon1_TriggerMatchdR);
-    Extradist1d.push_back(&Muon2_TriggerMatchdR);
+    Extradist1d.push_back(&Track_TriggerMatch_dR);
+    Extradist1d.push_back(&Muon1_TriggerMatch_dR);
+    Extradist1d.push_back(&Muon2_TriggerMatch_dR);
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
@@ -288,7 +291,7 @@ void  MCEfficiency::doEvent(){
     unsigned int t;
     int id(Ntp->GetMCID());
     double phidM = 0.02;
-    bool DEBUG = false;
+    bool DEBUG = true;
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
     // Apply Selection
@@ -462,10 +465,6 @@ void  MCEfficiency::doEvent(){
         } 
       }
 
-      cout<<"GEN Match Indices"<<endl;
-		cout<<tmp_idx<<endl;
-      printVec(dsphi_idxList.size(), dsphi_idxList);
-      cout<<"------------------"<<endl;
       
 		cout<<"Number of Ds produced: "<<ds_count<<endl;
       cout<<"Number of Pis form Ds: "<<dspi_count<<endl;
@@ -492,10 +491,11 @@ void  MCEfficiency::doEvent(){
       }
 
       if(mu1_trObj_dR<0.01 && mu2_trObj_dR<0.01 && trk_trObj_dR<0.01) trigObj_match = true;
+		cout<<mu1_trObj_dR<<" "<<mu2_trObj_dR<<" "<<trk_trObj_dR<<endl;
 
       // End of trigger object matching
 
-      value.at(trigObjMatch)=trigObj_match;
+      value.at(trigObjMatch)=1;
       value.at(genMatch)=dsphipi_flag;
     }
 
@@ -574,9 +574,9 @@ void  MCEfficiency::doEvent(){
       Muon2_isIsolationValid.at(t).Fill(Ntp->Muon_isIsolationValid(mu2),w);
 
       // cout<<(Ntp->TwoMuonsTrack_TriggerMatch_dR).size()<<endl;
-      //Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
-      //Muon2_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1),w);
-      //Track_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2),w);
+      Muon1_TriggerMatch_dR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
+      Muon2_TriggerMatch_dR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1),w);
+      Track_TriggerMatch_dR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2),w);
 
       DimuondR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Phi(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1)).Phi()));
       Muon1TrkdR.at(t).Fill(deltaR(Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Eta(),Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0)).Phi(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Eta(),Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)).Phi()));
