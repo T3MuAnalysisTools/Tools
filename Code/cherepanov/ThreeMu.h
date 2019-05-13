@@ -21,7 +21,7 @@ class ThreeMu : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {HLTOk=0, ThreeMuCandidate, NCuts}; 
+  enum cuts {HLTOk=0, ThreeMuCandidate, TriggerMatch, ThreeMuMass, MuID, PhiVeto, OmegaVeto, NCuts}; 
 
 
  protected:
@@ -31,6 +31,8 @@ class ThreeMu : public Selection {
  private:
   // Selection Variables
   // Initializhere your analysis histograms
+
+  double tauMinMass_, tauMaxMass_;
 
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;

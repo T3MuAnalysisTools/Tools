@@ -46,6 +46,7 @@ TARGETS       =	Ntuple_Controller \
 		SkimConfig \
 		HistoConfig \
 		Logger \
+		PDGInfo	\
 		Example 
 
 

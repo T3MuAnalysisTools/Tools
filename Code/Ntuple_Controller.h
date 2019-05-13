@@ -26,6 +26,7 @@
 // Include files (C & C++ libraries)
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <string.h>
 #include <utility>      // std::pair
@@ -78,8 +79,6 @@ class Ntuple_Controller{
   virtual void ConfigureObjects(); 
   unsigned int ObjEvent;
 
-  // helper functions for internal calculations
-  void printMCDecayChain(unsigned int par, unsigned int level = 0, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false);
 
 
   // Systematic controls variables
@@ -388,6 +387,16 @@ class Ntuple_Controller{
 
 
 
+   unsigned int               NMCParticles(){return Ntp->MC_p4->size();}
+   TLorentzVector             MCParticle_p4(unsigned int i){return TLorentzVector(Ntp->MC_p4->at(i).at(1),Ntp->MC_p4->at(i).at(2),Ntp->MC_p4->at(i).at(3),Ntp->MC_p4->at(i).at(0));}
+   int                        MCParticle_pdgid(unsigned int i){return Ntp->MC_pdgid->at(i);}
+   int                        MCParticle_charge(unsigned int i){return Ntp->MC_charge->at(i);}
+   int                MCParticle_midx(unsigned int i){return Ntp->MC_midx->at(i);}
+   std::vector<int>           MCParticle_childpdgid(unsigned int i){return Ntp->MC_childpdgid->at(i);}
+   std::vector<int>           MCParticle_childidx(unsigned int i){return Ntp->MC_childidx->at(i);}
+   int  MCParticle_status(unsigned int i){return Ntp->MC_status->at(i);}
+
+
    unsigned int               NMCSignalParticles(){return Ntp->MCSignalParticle_p4->size();}
    TLorentzVector             MCSignalParticle_p4(unsigned int i){return TLorentzVector(Ntp->MCSignalParticle_p4->at(i).at(1),Ntp->MCSignalParticle_p4->at(i).at(2),Ntp->MCSignalParticle_p4->at(i).at(3),Ntp->MCSignalParticle_p4->at(i).at(0));}
    int                        MCSignalParticle_pdgid(unsigned int i){return Ntp->MCSignalParticle_pdgid->at(i);}
@@ -411,7 +420,7 @@ class Ntuple_Controller{
    int MCTau_pdgid(unsigned int i){return MCTauandProd_pdgid(i,0);}
    int MCTau_charge(unsigned int i){return MCTauandProd_charge(i,0);}
    int MCTau_midx(unsigned int i){return Ntp->MCTauandProd_midx->at(i);}
-
+   bool  MCParticle_hasMother(unsigned int i){return Ntp->MC_midx->at(i) >= 0;}
    //Tau and decay products
    int NMCTauDecayProducts(unsigned int i){if(0<=i && i<(unsigned int)NMCTaus()) return Ntp->MCTauandProd_p4->at(i).size(); return 0;}
    TLorentzVector MCTauandProd_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->MCTauandProd_p4->at(i).at(j).at(1),Ntp->MCTauandProd_p4->at(i).at(j).at(2),Ntp->MCTauandProd_p4->at(i).at(j).at(3),Ntp->MCTauandProd_p4->at(i).at(j).at(0));}
@@ -421,18 +430,25 @@ class Ntuple_Controller{
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
-	std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
 	float DsGenMatch(unsigned int tmp_idx);
 	int GENMatchedPdgId(TLorentzVector vec);
 	TLorentzVector GENMatchedLV(TLorentzVector vec);
 	double deltaR(double eta1, double phi1, double eta2, double phi2); 
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
-	
+   std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
 	template<typename T>
 	void printVec(int size, T& vec);
 
    bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
+
+   void printMCDecayChain(unsigned int par, unsigned int level = 0, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false);
+   void printMCDecayChainOfMother(unsigned int i, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // decay chain of object i
+   void printMCDecayChainOfEvent(bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
+   std::string  MCParticleToString(unsigned int par, bool printStatus = false, bool printPt = false, bool printEtaPhi = false);
+
+
+
 
 
 };
