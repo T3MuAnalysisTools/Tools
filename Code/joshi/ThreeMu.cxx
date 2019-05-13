@@ -353,8 +353,6 @@ void  ThreeMu::doEvent(){
 
   int final_idx(-1);
   double tmp_chi2(999);
-
-  //  std::cout<<"id  "<<id<< std::endl;
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
   value.at(HLTOk) = 0;
@@ -364,6 +362,7 @@ void  ThreeMu::doEvent(){
   value.at(OmegaVeto) = 999.;
   value.at(TrigObjMatch) = 0;
   value.at(ThreeMuMass) = 0;
+  value.at(IsMedPrompt) = 0;
 
   if(Ntp->NThreeMuons()>0)  value.at(ThreeMuCandidate)=1;
 
@@ -385,25 +384,6 @@ void  ThreeMu::doEvent(){
 		   Ntp->MuonStandardSelectorBitMask(mu2_idx).at(2) &&
 		   Ntp->MuonStandardSelectorBitMask(mu3_idx).at(2) ) ) continue;
 
-	vector<unsigned int> idx_vec;
-	
-	idx_vec.push_back(mu1_idx);
-	idx_vec.push_back(mu2_idx);
-	idx_vec.push_back(mu3_idx);
-
-	unsigned int os_idx = Ntp->SortedChargeMuons(idx_vec).at(0);
-	unsigned int ss1_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
-	unsigned int ss2_idx = Ntp->SortedChargeMuons(idx_vec).at(2);
-
-	double M_osss1 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss1_idx)).M();
-	double M_osss2 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss2_idx)).M();
-
-	double M_dimu_phi = abs(M_osss1-PDG_Var::Phi_mass())<abs(M_osss2-PDG_Var::Phi_mass())?M_osss1:M_osss2;
-	double M_dimu_omega = abs(M_osss1-PDG_Var::Omega_mass())<abs(M_osss2-PDG_Var::Omega_mass())?M_osss1:M_osss2;
-
- 	if (abs(M_dimu_phi-PDG_Var::Phi_mass())>PDG_Var::Phi_width() && abs(M_dimu_phi-PDG_Var::Phi_mass())>PDG_Var::Phi_width()) continue;
- 	if (abs(M_dimu_omega-PDG_Var::Omega_mass())>PDG_Var::Omega_width() && abs(M_dimu_omega-PDG_Var::Omega_mass())>PDG_Var::Omega_width()) continue;
-
 	// Check is the opposite sign muon pairs have mass in either phi or omega window
 	if(Ntp->Vertex_signal_KF_Chi2(cidx)<tmp_chi2){
 		tmp_chi2 = Ntp->Vertex_signal_KF_Chi2(cidx); 
@@ -412,7 +392,7 @@ void  ThreeMu::doEvent(){
 		}
   }
  
- pass.at(IsMedPrompt) = 0;
+ pass.at(IsMedPrompt) = (value.at(IsMedPrompt)==cut.at(IsMedPrompt));
  pass.at(PhiVeto) = 0;
  pass.at(OmegaVeto) = 0;
  pass.at(TrigObjMatch) = 0;
@@ -452,7 +432,6 @@ void  ThreeMu::doEvent(){
 	 value.at(ThreeMuMass) = tau_mass; 
     
 	 pass.at(TrigObjMatch) = (mu1_trgObj_dR<0.01 && mu2_trgObj_dR<0.01 && mu3_trgObj_dR<0.01);
-	 pass.at(IsMedPrompt) = (value.at(IsMedPrompt)==cut.at(IsMedPrompt));
     pass.at(PhiVeto) = abs(M_dimu_phi-PDG_Var::Phi_mass())>PDG_Var::Phi_width();
     pass.at(OmegaVeto) = abs(M_dimu_omega-PDG_Var::Omega_mass())>PDG_Var::Omega_width();
   }
@@ -484,7 +463,7 @@ void  ThreeMu::doEvent(){
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
     
-    TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(0,0)+Ntp->Vertex_signal_KF_refittedTracksP4(0,1)+Ntp->Vertex_signal_KF_refittedTracksP4(0,2);
+    TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
 
     Muon1Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),1);
     Muon2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),1);
@@ -508,7 +487,8 @@ void  ThreeMu::doEvent(){
     TauP.at(t).Fill(TauLV.P(),1);
     TauMass.at(t).Fill(TauLV.M(),1);
     TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
-    for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_1).size(); iMuSelector++ ){
+    
+	 for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_1).size(); iMuSelector++ ){
       if(Ntp->MuonStandardSelectorBitMask(Muon_index_1).at(iMuSelector)==1)  Muon1StandardSelector.at(t).Fill(iMuSelector,1);
     }
 
@@ -615,7 +595,7 @@ void  ThreeMu::doEvent(){
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
 	 VertexRefitPVisValid.at(t).Fill(Ntp->Vertex_RefitPVisValid(final_idx),w);
-	 if (Ntp->Vertex_RefitPVisValid(0)==1){
+	 if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
 	 VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).x(),w);
 	 VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).y(),w);
 	 VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).z(),w);
@@ -628,7 +608,6 @@ void  ThreeMu::doEvent(){
       TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0)));
       TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1)));
       TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2)));
-cout<<"error 16"<<endl;
       TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
       Muon1PtResolution.at(t).Fill((Muon1LV.Pt() - MCMuon1LV.Pt())/MCMuon1LV.Pt(), 1);
       Muon2PtResolution.at(t).Fill((Muon2LV.Pt() - MCMuon2LV.Pt())/MCMuon2LV.Pt(), 1);
@@ -639,7 +618,6 @@ cout<<"error 16"<<endl;
       Muon3EtaResolution.at(t).Fill((Muon3LV.Eta() - MCMuon3LV.Eta())/MCMuon3LV.Eta(), 1);
 
       TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
-cout<<"error 17"<<endl;
       TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
 
       Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
