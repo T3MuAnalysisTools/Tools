@@ -644,7 +644,7 @@ void  ThreeMu::Finish(){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
       if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/3;
-      //      ScaleAllHistOfType(i,scale);
+      ScaleAllHistOfType(i,scale);
     }
   }
 }
