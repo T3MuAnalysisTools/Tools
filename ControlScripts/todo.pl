@@ -244,14 +244,14 @@ if( $ARGV[0] eq "--Local" ){
     system(sprintf("ln -s $OutputDir/workdir$set/Code/InputData $OutputDir/workdir$set/InputData "));
     
     # generate init script 
-    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init "));
-    system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
 
     # generate compile script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"./config \\\$\@ \"   >> $OutputDir/workdir$set/compile "));
-    system(sprintf("echo \"source $OutputDir/workdir$set/init \"   >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"source $OutputDir/workdir$set/init.sh \"   >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"gmake all \" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/compile")) ;
@@ -441,7 +441,7 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"./config \\\$\@ \"   >> $OutputDir/workdir$set/compile "));
-    system(sprintf("echo \"source $OutputDir/workdir$set/init \"   >> $OutputDir/workdir$set/compile "));
+    system(sprintf("echo \"source $OutputDir/workdir$set/init.sh \"   >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"gmake all \" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/compile")) ;
