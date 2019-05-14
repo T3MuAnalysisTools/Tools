@@ -166,6 +166,10 @@ void Ntuple_Controller::ConfigureObjects(){
 Long64_t  Ntuple_Controller::GetMCID(){
 
   Long64_t  DataMCTypeFromTupel =  Ntp->Event_DataMC_Type;
+
+  if(DataMCTypeFromTupel==40 || DataMCTypeFromTupel==60 ||  DataMCTypeFromTupel==90 ){
+    //    return 555;
+  }
   return DataMCTypeFromTupel;
 
 }
