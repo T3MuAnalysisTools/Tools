@@ -138,6 +138,7 @@ class PDGInfo {
     Ds_star_plus = 433 ,
     Ds_star_minus = -433 ,
     D_0 = 421 ,
+    anti_D_0 = -421 ,
     D_plus = 411 ,
     D_minus = -411 ,
     D_star_2010_plus = 413 ,
@@ -273,6 +274,7 @@ class PDGInfo {
     if(pdgId == -521)     return "B_minus";
     if(pdgId == 511)      return "B_0";
     if(pdgId == 421)      return "D_0";
+    if(pdgId == -421)     return "anti_D_0";
     if(pdgId == 411)      return "D_plus";
     if(pdgId == -411)     return "D_minus";
     if(pdgId == 413)      return "D_star_2010_plus";

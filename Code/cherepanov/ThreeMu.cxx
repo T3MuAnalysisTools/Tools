@@ -299,7 +299,7 @@ void  ThreeMu::doEvent(){
     TString HLT = Ntp->HLTName(iTrigger);
     if(HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
   }
-  pass.at(HLTOk)= true;//(value.at(HLTOk)==cut.at(HLTOk)); 
+  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
   pass.at(ThreeMuCandidate)= (value.at(ThreeMuCandidate)==cut.at(ThreeMuCandidate)); 
   //  enum cuts {HLTOk=0, ThreeMuCandidate, TriggerMatch, ThreeMuMass, MuID, PhiVeto, OmegaVeto, NCuts};
 
@@ -341,10 +341,10 @@ void  ThreeMu::doEvent(){
     value.at(OmegaVeto) = (MuonOSLV + MuonSS1LV).M()  + (MuonOSLV + MuonSS2LV).M();
   }
 
-  pass.at(MuID) = true;//(value.at(MuID) == cut.at(MuID));
-  pass.at(ThreeMuMass) = true;//( value.at(ThreeMuMass) > tauMinMass_ && value.at(ThreeMuMass)< tauMaxMass_);
-  pass.at(PhiVeto) = true;//( fabs(value.at(PhiVeto) - PDG_Var::Phi_mass())> PDG_Var::Phi_width() );
-  pass.at(OmegaVeto) = true;//( fabs(value.at(OmegaVeto) - PDG_Var::Omega_mass())> PDG_Var::Omega_width());
+  pass.at(MuID) = (value.at(MuID) == cut.at(MuID));
+  pass.at(ThreeMuMass) = ( value.at(ThreeMuMass) > tauMinMass_ && value.at(ThreeMuMass)< tauMaxMass_);
+  pass.at(PhiVeto) = ( fabs(value.at(PhiVeto) - PDG_Var::Phi_mass())> PDG_Var::Phi_width() );
+  pass.at(OmegaVeto) = ( fabs(value.at(OmegaVeto) - PDG_Var::Omega_mass())> PDG_Var::Omega_width());
   pass.at(TriggerMatch)=true;
 
   // take sideband in data
@@ -366,23 +366,27 @@ void  ThreeMu::doEvent(){
 
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
-    Ntp->printMCDecayChainOfEvent(true, true, true, true);
+
     //Ntp->printMCDecayChain();
 
-    for(unsigned int par = 0; par < Ntp->NMCParticles(); par++){
-
-      
-      std::cout<<"id:  "<<  PDGInfo::pdgIdToName( Ntp->MCParticle_pdgid(par) )<<"  N dau   " << Ntp->MCParticle_childidx(par).size() <<std::endl;
-
-    }
 
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(0)).at(2);
 
-    TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
-    TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
-    TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
+    std::cout<<" selected muons  "<<std::endl;
+    TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+    TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+    TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+
+    Muon1LV.Print(); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+    Muon2LV.Print(); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+    Muon3LV.Print(); std::cout<<" idx:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+
+
+
+    Ntp->printMCDecayChainOfEvent(true, true, true, true);
+
     
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(0,0)+Ntp->Vertex_signal_KF_refittedTracksP4(0,1)+Ntp->Vertex_signal_KF_refittedTracksP4(0,2);
 
