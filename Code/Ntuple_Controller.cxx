@@ -439,6 +439,37 @@ TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
 }
 
 
+
+int Ntuple_Controller::matchTruth(TLorentzVector tvector){
+  double testdr=0.3;
+  int pdgid = 0;
+  for(unsigned int i=0;i<NMCParticles();i++){
+    if(MCParticle_p4(i).Pt()>0.){
+      if(tvector.DeltaR(MCParticle_p4(i))<testdr){
+	testdr = tvector.DeltaR(MCParticle_p4(i));
+	pdgid = MCParticle_pdgid(i);
+      }
+    }
+  }
+  return pdgid;
+}
+
+int Ntuple_Controller::getMatchTruthIndex(TLorentzVector tvector){
+  int index = -9;
+  double dr=1.;
+  for(unsigned int i=0;i<NMCParticles();i++){
+    if(MCParticle_p4(i).Pt()>0.){
+      if(tvector.DeltaR(MCParticle_p4(i))<dr){
+	index = i;
+	dr = tvector.DeltaR(MCParticle_p4(i));
+      }
+    }
+  }
+  return index;
+}
+
+
+
 std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int MuonIndex){
 
   std::vector<int> out;
@@ -521,6 +552,11 @@ void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt,
     if ( !MCParticle_hasMother(par) )
       printMCDecayChainOfMother(par, printStatus, printPt, printEtaPhi, printQCD);
   }
+}
+
+void Ntuple_Controller::printMCDecayChainOfParticle(unsigned int index, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
+  Logger(Logger::Info) << "=== Draw MC decay chain of particle ===" << std::endl;
+      printMCDecayChainOfMother(index, printStatus, printPt, printEtaPhi, printQCD);
 }
 void Ntuple_Controller::printMCDecayChainOfMother(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
   Logger(Logger::Info) << "Draw decay chain for mother particle at index " << par << " :" << std::endl;

@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "HistoConfig.h"
 #include "PDG_Var.h"
+#include "PDGInfo.h"
 #include <iostream>
 #include "Logger.h"
 
@@ -370,7 +371,8 @@ void  ThreeMu::doEvent(){
 
     for(unsigned int par = 0; par < Ntp->NMCParticles(); par++){
 
-      std::cout<<"id:  "<< Ntp->MCParticle_pdgid(par) << std::endl;
+      
+      std::cout<<"id:  "<<  PDGInfo::pdgIdToName( Ntp->MCParticle_pdgid(par) )<<"  N dau   " << Ntp->MCParticle_childidx(par).size() <<std::endl;
 
     }
 

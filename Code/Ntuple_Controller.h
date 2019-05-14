@@ -396,6 +396,11 @@ class Ntuple_Controller{
    std::vector<int>           MCParticle_childidx(unsigned int i){return Ntp->MC_childidx->at(i);}
    int  MCParticle_status(unsigned int i){return Ntp->MC_status->at(i);}
 
+   int   getMatchTruthIndex(TLorentzVector tvector);
+   int    matchTruth(TLorentzVector tvector);
+
+
+
 
    unsigned int               NMCSignalParticles(){return Ntp->MCSignalParticle_p4->size();}
    TLorentzVector             MCSignalParticle_p4(unsigned int i){return TLorentzVector(Ntp->MCSignalParticle_p4->at(i).at(1),Ntp->MCSignalParticle_p4->at(i).at(2),Ntp->MCSignalParticle_p4->at(i).at(3),Ntp->MCSignalParticle_p4->at(i).at(0));}
@@ -441,6 +446,7 @@ class Ntuple_Controller{
 	void printVec(int size, T& vec);
 
    bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
+   void  printMCDecayChainOfParticle(unsigned int index, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
 
    void printMCDecayChain(unsigned int par, unsigned int level = 0, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false);
    void printMCDecayChainOfMother(unsigned int i, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // decay chain of object i
