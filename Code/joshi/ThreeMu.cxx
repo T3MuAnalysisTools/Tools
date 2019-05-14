@@ -39,6 +39,7 @@ void  ThreeMu::Configure(){
 	 if(i==TrigObjMatch)			 cut.at(TrigObjMatch)=1;
 	 if(i==ThreeMuMass)			 cut.at(ThreeMuMass)=1;
   }
+
   TString hlabel;
   TString htitle;
   for(int i=0; i<NCuts; i++){
@@ -55,34 +56,41 @@ void  ThreeMu::Configure(){
     }
     else if(i==ThreeMuCandidate){
       title.at(i)="ThreeMuCandidate is found ";
-      hlabel="is Three Mu Candidate";
+      hlabel="isThreeMuCandidate";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==IsMedPrompt){
-      title.at(i)="IsMedPrompt ";
-      hlabel="is medium prompt";
+      title.at(i)="is medium prompt";
+      hlabel="IsMedPrompt";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_IsMedPrompt_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_IsMedPrompt_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==PhiVeto){
-      title.at(i)=" Phi Veto";
-      hlabel="is from Phi decay";
+      title.at(i)="Phi Veto";
+      hlabel="M_{#mu#mu}";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
     }
 	 else if(i==OmegaVeto){
-      title.at(i)=" Phi Veto";
-      hlabel="is from Omega decay";
+      title.at(i)="Omega Veto";
+      hlabel="M_{#mu#mu}";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,40,0.5,0.9,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,40,0.5,0.9,hlabel,"Events"));
     }
 	 else if(i==TrigObjMatch){
 	 	title.at(i)="Trigger Obj Matched";
-      hlabel="is Three Mu Candidate";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      hlabel="Trigger matched dR_{#mu1}+dR_{#mu2}+dR_{#mu3}";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TrigObjMatching_",htitle,40,0.0,0.4,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TrigObjMatching_",htitle,40,0.0,0.4,hlabel,"Events"));
 	 }
+    else if(i==ThreeMuMass){
+      title.at(i)="ThreeMuMass";
+      hlabel="ThreeMuMass";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuMass_",htitle,40,1.2,2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuMass_",htitle,40,1.2,2,hlabel,"Events"));
+    }
+
   } 
   // Setup NPassed Histogams
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -360,7 +368,6 @@ void  ThreeMu::doEvent(){
   value.at(TrigObjMatch) = 0;
   value.at(PhiVeto) = 999.;
   value.at(OmegaVeto) = 999.;
-  value.at(TrigObjMatch) = 0;
   value.at(ThreeMuMass) = 0;
   value.at(IsMedPrompt) = 0;
 
@@ -368,12 +375,12 @@ void  ThreeMu::doEvent(){
 
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-      if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu")) && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+      if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu")) && Ntp->HLTDecision(iTrigger) == 1) value.at(HLTOk)=1;
     }
 
   pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
   pass.at(ThreeMuCandidate)= (value.at(ThreeMuCandidate)==cut.at(ThreeMuCandidate));
-  
+/*  
   for (unsigned int cidx=0; cidx<Ntp->NThreeMuons(); cidx++){
 
   	unsigned int mu1_idx = Ntp->ThreeMuonIndices(cidx).at(0); 
@@ -391,18 +398,23 @@ void  ThreeMu::doEvent(){
 		final_idx=cidx;
 		}
   }
- 
- pass.at(IsMedPrompt) = (value.at(IsMedPrompt)==cut.at(IsMedPrompt));
+*/
+ final_idx = 0;
+ pass.at(ThreeMuMass) = 0;
+ pass.at(TrigObjMatch) = 0;
  pass.at(PhiVeto) = 0;
  pass.at(OmegaVeto) = 0;
- pass.at(TrigObjMatch) = 0;
 
- if (final_idx!=-1){
+ if (Ntp->NThreeMuons()>0 && final_idx!=-1){
 	 
 	 unsigned int mu1_idx = Ntp->ThreeMuonIndices(final_idx).at(0); 
   	 unsigned int mu2_idx = Ntp->ThreeMuonIndices(final_idx).at(1); 
   	 unsigned int mu3_idx = Ntp->ThreeMuonIndices(final_idx).at(2);
-
+	 
+	 value.at(IsMedPrompt)=(Ntp->MuonStandardSelectorBitMask(mu1_idx).at(2) && 
+		   Ntp->MuonStandardSelectorBitMask(mu2_idx).at(2) &&
+		   Ntp->MuonStandardSelectorBitMask(mu3_idx).at(2) );
+	 
 	 vector<unsigned int> idx_vec;
 	
 	 idx_vec.push_back(mu1_idx);
@@ -430,10 +442,11 @@ void  ThreeMu::doEvent(){
 
     value.at(TrigObjMatch) = mu1_trgObj_dR+mu2_trgObj_dR+mu3_trgObj_dR;
 	 value.at(ThreeMuMass) = tau_mass; 
-    
-	 pass.at(TrigObjMatch) = (mu1_trgObj_dR<0.01 && mu2_trgObj_dR<0.01 && mu3_trgObj_dR<0.01);
-    pass.at(PhiVeto) = abs(M_dimu_phi-PDG_Var::Phi_mass())>PDG_Var::Phi_width();
-    pass.at(OmegaVeto) = abs(M_dimu_omega-PDG_Var::Omega_mass())>PDG_Var::Omega_width();
+
+	 pass.at(IsMedPrompt) = (value.at(IsMedPrompt)==cut.at(IsMedPrompt));
+	 pass.at(TrigObjMatch) = (mu1_trgObj_dR<0.03 && mu2_trgObj_dR<0.03 && mu3_trgObj_dR<0.03);
+    pass.at(PhiVeto) = (abs(M_dimu_phi-PDG_Var::Phi_mass())>0.011);
+    pass.at(OmegaVeto) = (abs(M_dimu_omega-PDG_Var::Omega_mass())>0.011);
   }
   
   // take sideband in data
@@ -442,7 +455,7 @@ void  ThreeMu::doEvent(){
   exclude_cuts.push_back(ThreeMuMass);
   if(id==1){ // Data
     if(passAllBut(exclude_cuts)){
-      if(!pass.at(ThreeMuMass))isSideBand=true;
+      if(!(value.at(ThreeMuMass)>1.75 && value.at(ThreeMuMass)<1.8)) isSideBand=true;
     }
   }
   if(isSideBand)pass.at(ThreeMuMass)=true;
@@ -469,9 +482,9 @@ void  ThreeMu::doEvent(){
     Muon2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),1);
     Muon3Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),1);
 
-    Muon1Eta.at(t).Fill( Ntp->Muon_P4(Muon_index_1).Eta(),1);
-    Muon2Eta.at(t).Fill(  Ntp->Muon_P4(Muon_index_2).Eta(),1);
-    Muon3Eta.at(t).Fill(  Ntp->Muon_P4(Muon_index_3).Eta(),1);
+    Muon1Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),1);
+    Muon2Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),1);
+    Muon3Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),1);
 
     TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
     
