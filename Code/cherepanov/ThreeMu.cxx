@@ -213,9 +213,9 @@ void  ThreeMu::Configure(){
 
 
   Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","Isolation_NTracks",10,-0.5,9.5,"N tracks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",20,0,10,"relative p_{T}","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",20,0,1,"relative p_{T}","Events");
   Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","Isolation_MinDist",10,0,1,"Iso MinDist","Events");
-  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","Isolation05_RelPt",10,0,3,"relative  rel p_{T} in 0.5 cone","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","Isolation05_RelPt",10,0,1,"relative  rel p_{T} in 0.5 cone","Events");
   Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","Isolation05_NTracks",10,-0.5,9.5,"N tracks in 0.5 cone","Events");
   Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","Isolation05_MinDist",10,0,1,"Iso05 MinDist","Events");
   Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","Isolation_Ntrk1",10,-0.5,9.5,"Iso ntrk 1","Events");
@@ -373,20 +373,15 @@ void  ThreeMu::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
-  //  std::cout<<"id  "<<id << std::endl;
-
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
     if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
   }
 
   pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
-  value.at(SignalCandidate)=0;//Ntp->NThreeMuons();
+  value.at(SignalCandidate)=0;
   unsigned int  final_idx=0;
-
-  //  value.at(MuonID)=0;
   value.at(TriggerMatch)=0;
-  //  value.at(ThreeMuMass)=0;
 
 
   if(Ntp->NThreeMuons()>0){
