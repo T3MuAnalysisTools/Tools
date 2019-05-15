@@ -34,6 +34,9 @@ void  ThreeMu::Configure(){
     pass.push_back(false);
     if(i==TriggerOk)          cut.at(TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.5;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.5;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.5;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
     if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
@@ -59,6 +62,24 @@ void  ThreeMu::Configure(){
       hlabel="is 3mu candidate";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu1PtCut){
+      title.at(i)="Mu1 Pt";
+      hlabel="Muon1 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
+    }
+    else if(i==Mu2PtCut){
+      title.at(i)="Mu2 Pt";
+      hlabel="Muon2 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
+    }
+    else if(i==Mu3PtCut){
+      title.at(i)="Mu3 Pt";
+      hlabel="Muon3 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
     }
     else if(i==MuonID){
       title.at(i)="All mu pass ID";
@@ -393,15 +414,18 @@ void  ThreeMu::doEvent(){
     //    			 Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu2_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
     //    			 Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu3_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium));
     //----------------  alternatively require two leading muons to be global and trailing muon to be tracker 
-        unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
-        unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
-        unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+    unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+    unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
     //
-        value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
+    value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
     			Ntp->Muon_isTrackerMuon(mu3_pt_idx));
     //------------------------------------------------------------------------------------------------------
   
+    value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
+    value.at(Mu2PtCut) = Ntp->Muon_P4(mu2_pt_idx).Pt();
+    value.at(Mu3PtCut) = Ntp->Muon_P4(mu3_pt_idx).Pt();
   
     vector<unsigned int> idx_vec;
     
@@ -429,6 +453,9 @@ void  ThreeMu::doEvent(){
     value.at(ThreeMuMass) = TauLV.M();
   }
   pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
+  pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
+  pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
+  pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
   pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
   pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
