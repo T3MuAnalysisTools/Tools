@@ -367,14 +367,18 @@ class Ntuple_Controller{
    float      Isolation05_NTracks(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(1);}
    float      Isolation05_MinDist(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(2);}
 
-   float      Isolation_Ntrk1(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
-   float      Isolation_Ntrk2(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
-   float      Isolation_Ntrk3(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
+	float		  Isolation_Mu1RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
+	float		  Isolation_Mu2RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
+	float		  Isolation_Mu3RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
 
-   float      Isolation_Ntrk0p1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(0);}
-   float      Isolation_Ntrk0p2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(1);}
-   float      Isolation_Ntrk0p5(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(2);}
-   float      Isolation_maxdy(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(3);}
+   float      Isolation_Ntrk1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(0);}
+   float      Isolation_Ntrk2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(1);}
+   float      Isolation_Ntrk3(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(2);}
+
+   float      Isolation_Ntrk0p1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(3);}
+   float      Isolation_Ntrk0p2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(4);}
+   float      Isolation_Ntrk0p5(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(5);}
+   float      Isolation_maxdy(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(6);}
 
 
    int        NL1Seeds(){return Ntp->Trigger_l1name->size();}
