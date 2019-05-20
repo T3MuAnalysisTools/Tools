@@ -14,14 +14,7 @@ class ThreeMu : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  /////////////////////////////////////////////////////////
-  // This is a cut enumerator, for other event cuts please
-  // fill the enumerator with put a new enumarator with an 
-  // understandanle name, for exmaple  enum cuts {TriggerOk=0,
-  // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
-  // Do not remove/rename  the last enumerator   NCuts;
-
-  enum cuts {L1SeedsOk=0, HLTOk=0, ThreeMuCandidate, IsMedPrompt, PhiVeto, OmegaVeto, TrigObjMatch, ThreeMuMass, NCuts}; 
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, ThreeMuMass,NCuts}; 
 
 
  protected:
@@ -29,6 +22,10 @@ class ThreeMu : public Selection {
   virtual void Store_ExtraDist();
 
  private:
+  double tauMinMass_, tauMaxMass_;
+  double tauMinSideBand_,tauMaxSideBand_;
+
+
   // Selection Variables
   // Initializhere your analysis histograms
 
@@ -64,7 +61,6 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon1kink;
   std::vector<TH1D> Muon2kink;
   std::vector<TH1D> Muon3kink;
-
   std::vector<TH1D> Muon1InOutTrackMatch;
   std::vector<TH1D> Muon2InOutTrackMatch;
   std::vector<TH1D> Muon3InOutTrackMatch;
@@ -135,7 +131,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexSignalKFRefittedMu3Pt;
   std::vector<TH1D> VertexSignalKFRefittedMu3Eta;
   std::vector<TH1D> VertexSignalKFRefittedMu3Phi;
-  
+
   std::vector<TH1D> VertexMu1D0Reco;
   std::vector<TH1D> VertexMu1D0SigReco;
   std::vector<TH1D> VertexMu2D0Reco;
@@ -160,6 +156,10 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexX;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexY;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexZ;
+  
+  std::vector<TH1D> Isolation_Mu1RelPt;
+  std::vector<TH1D> Isolation_Mu2RelPt;
+  std::vector<TH1D> Isolation_Mu3RelPt;
 
 };
 #endif
