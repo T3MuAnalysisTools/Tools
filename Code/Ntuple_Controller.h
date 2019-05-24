@@ -229,6 +229,10 @@ class Ntuple_Controller{
    float   Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
    float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
+   double Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
+   double Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
+   double Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
+
    TLorentzVector Muon_outerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_outerTrack_p4->at(i).at(1), Ntp->Muon_outerTrack_p4->at(i).at(2), Ntp->Muon_outerTrack_p4->at(i).at(3),Ntp->Muon_outerTrack_p4->at(i).at(0));}
 
    TLorentzVector Muon_innerTrack_p4(unsigned int i){return TLorentzVector(Ntp->Muon_innerTrack_p4->at(i).at(1), Ntp->Muon_innerTrack_p4->at(i).at(2), Ntp->Muon_innerTrack_p4->at(i).at(3),Ntp->Muon_innerTrack_p4->at(i).at(0));}
@@ -333,6 +337,8 @@ class Ntuple_Controller{
    int        NumberOfSVertices(){return Ntp->Vertex_signal_KF_Chi2->size();}// should coincide with number of candidate
    double     Vertex_Signal_KF_Chi2(unsigned int i){return Ntp->Vertex_signal_KF_Chi2->at(i);}
    TVector3   Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
+   TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i);
+   TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i);
 
    ///// closest distance between the tracks of a candidate
    double     Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
@@ -367,9 +373,9 @@ class Ntuple_Controller{
    float      Isolation05_NTracks(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(1);}
    float      Isolation05_MinDist(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(2);}
 
-	float		  Isolation_Mu1RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
-	float		  Isolation_Mu2RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
-	float		  Isolation_Mu3RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
+   float      Isolation_Mu1RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
+   float      Isolation_Mu2RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
+   float      Isolation_Mu3RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
 
    float      Isolation_Ntrk1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(0);}
    float      Isolation_Ntrk2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(1);}
@@ -436,6 +442,7 @@ class Ntuple_Controller{
    int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
    int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
 
+   double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);

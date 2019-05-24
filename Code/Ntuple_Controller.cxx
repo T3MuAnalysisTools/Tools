@@ -383,6 +383,78 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
 
 
 
+
+
+TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i){
+  TMatrixTSym<double> V_cov(3);
+  int l=0;
+
+  for(int j=0;j<3;j++){
+    for(int k=j;k<3;k++){
+      V_cov(j,k)=Ntp->Vertex_signal_KF_cov->at(i).at(l);
+      V_cov(k,j)=Ntp->Vertex_signal_KF_cov->at(i).at(l);
+      l++;
+    }
+  }
+  return  V_cov;
+}
+
+TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned int i){
+  TMatrixTSym<float> V_cov(3);
+  int l=0;
+  for(int j=0;j<3;j++){
+    for(int k=j;k<3;k++){
+      //if(j==k) V_cov(i,j)=pow(0.0001,2.0);
+      V_cov(j,k)=Ntp->Vertex_MatchedRefitPrimaryVertex_covariance->at(i).at(l);
+      V_cov(k,j)=Ntp->Vertex_MatchedRefitPrimaryVertex_covariance->at(i).at(l);
+      l++;
+    }
+  }
+  return V_cov;
+}
+
+
+  double Ntuple_Controller::FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov ){
+    TVector3 SVPV = sv - pv;
+    TVectorF FD;
+    FD.ResizeTo(3);
+    FD(0) = SVPV.X();
+    FD(1) = SVPV.Y();
+    FD(2) = SVPV.Z();
+
+    TMatrixT<double> PVcv;
+    PVcv.ResizeTo(3,3);
+    for(int nr =0; nr<PVcov.GetNrows(); nr++){
+      for(int nc =0; nc<PVcov.GetNcols(); nc++){
+	PVcv(nr,nc) = PVcov(nr,nc);
+      }
+    }
+    TMatrixT<double> SVcv;
+    SVcv.ResizeTo(3,3);
+    for(int nr =0; nr<SVcov.GetNrows(); nr++){
+      for(int nc =0; nc<SVcov.GetNcols(); nc++){
+	SVcv(nr,nc) = SVcov(nr,nc);
+      }
+    }
+
+    TMatrixT<double> SVPVMatrix(3,1);
+    for(int i=0; i<SVPVMatrix.GetNrows();i++){
+      SVPVMatrix(i,0)=FD(i);
+    }
+
+    TMatrixT<double> SVPVMatrixT=SVPVMatrix;
+    SVPVMatrixT.T();
+
+    TMatrixT<double> lambda2 = SVPVMatrixT*(SVcv + PVcv)*SVPVMatrix;
+    double sigmaabs = sqrt(lambda2(0,0))/SVPV.Mag();
+    double sign = SVPV.Mag()/sigmaabs;
+
+    return sign;
+  }
+
+
+
+
 std::vector<unsigned int> Ntuple_Controller::SortedChargeMuons(std::vector<unsigned int> indices){
 
   std::vector<unsigned int> out;
