@@ -25,6 +25,8 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
 
  private:
   // Selection Variables
+  double tauMinMass_, tauMaxMass_;
+  double tauMinSideBand_,tauMaxSideBand_;
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
   std::vector<TH1D> MuonsPt;
@@ -40,6 +42,7 @@ float	var_VertexMu3D0Sig ;
 float	var_VertexMu3D0 ;
 float	var_mindca_iso ;
 float	var_iso_relpt ;
+float var_fv_cosdphi3d;
 
 };
 #endif
