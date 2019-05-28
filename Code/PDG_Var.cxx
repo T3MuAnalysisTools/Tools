@@ -13,3 +13,5 @@ double PDG_Var::Rho_mass(){return 0.770;}//GeV
 double PDG_Var::Rho_width(){return 0.140;}//GeV
 double PDG_Var::Omega_mass(){return 0.778;}//GeV
 double PDG_Var::Omega_width(){return 8.5/1000;}//GeV
+double PDG_Var::Pi_mass(){return 0.135;}//GeV
+double PDG_Var::Ds_mass(){return 1.977;}//GeV

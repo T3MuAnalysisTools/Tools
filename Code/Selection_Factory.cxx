@@ -18,7 +18,9 @@
 //#include "joshi/Validation.h"
 #include "joshi/DimuTrk.h"
 #include "joshi/ThreeMu.h"
-
+#include "joshi/TMVASignal.h"
+#include "joshi/AnalysisWithTMVA.h"
+#include "joshi/MCEfficiency.h"
 #endif
 
 
@@ -59,7 +61,9 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
-  
+  else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
+  else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
+  else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
 #endif
 
 

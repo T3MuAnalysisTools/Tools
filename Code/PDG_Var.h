@@ -16,7 +16,8 @@ namespace PDG_Var {
   double Rho_width();
   double Omega_mass();
   double Omega_width();
-
+  double Pi_mass();
+  double Ds_mass();
 }
 
 #endif
