@@ -131,6 +131,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexSignalKFRefittedMu3Pt;
   std::vector<TH1D> VertexSignalKFRefittedMu3Eta;
   std::vector<TH1D> VertexSignalKFRefittedMu3Phi;
+  std::vector<TH1D> FLSignificance;
 
   std::vector<TH1D> VertexMu1D0Reco;
   std::vector<TH1D> VertexMu1D0SigReco;

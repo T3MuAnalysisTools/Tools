@@ -166,6 +166,8 @@ void  ThreeMu::Configure(){
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,15,"KF vertex #chi^{2}","Events");
   VertexChi2AF=HConfig.GetTH1D(Name+"_VertexChi2AF","VertexChi2AF",50,0,15,"AF vertex #chi^{2}","Events");
 
+  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,30,"flight length significance","Events");
+
   VertexSignalKFRefittedMu1P=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu1P","VertexSignalKFRefittedMu1P",50,0,20,"KF refitted #mu_{1} track p (GeV)","Events");
   VertexSignalKFRefittedMu1Pt=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu1Pt","VertexSignalKFRefittedMu1P",50,0,20,"KF refitted #mu_{1} track p_{T} (GeV)","Events");
   VertexSignalKFRefittedMu1Eta=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu1Eta","VertexSignalKFRefittedMu1Eta",25,-2.5,2.5,"KF refitted #mu_{1} track #eta","Events");
@@ -326,6 +328,8 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&dR1Tau);
   Extradist1d.push_back(&dR2Tau);
   Extradist1d.push_back(&dR3Tau);
+
+  Extradist1d.push_back(&FLSignificance);
 
   Extradist1d.push_back(&Isolation_NTracks);
   Extradist1d.push_back(&Isolation_RelPt);
@@ -619,6 +623,15 @@ void  ThreeMu::doEvent(){
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).x(),w);
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
+
+
+    //    TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i);
+    //    TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i);
+
+
+    FLSignificance.at(t).Fill( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
+							      Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx)),w);
+
     VertexRefitPVisValid.at(t).Fill(Ntp->Vertex_RefitPVisValid(final_idx),w);
     if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
       VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).x(),w);

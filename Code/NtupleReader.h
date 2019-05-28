@@ -114,6 +114,9 @@ public :
    std::vector<bool>    *Muon_combinedQuality_tightMatch;
    std::vector<double>  *Muon_combinedQuality_glbTrackProbability;
    std::vector<double>  *Muon_prod_inner_outer_charge;
+   std::vector<double>  *Muon_ptError;
+   std::vector<double>  *Muon_phiError;
+   std::vector<double>  *Muon_etaError;
    std::vector<std::vector<double> > *Muon_outerTrack_p4;
    std::vector<std::vector<double> > *Muon_innerTrack_p4;
    std::vector<double>  *Muon_innerTrack_quality;
@@ -160,6 +163,16 @@ public :
    std::vector<std::vector<int> > *MC_childpdgid;
    std::vector<std::vector<int> > *MC_childidx;
    std::vector<int>     *MC_status;
+
+   std::vector<int> *signalTau_charge;
+   std::vector<int> *signalTau_pdgid;
+   std::vector<double> *signalTau_B;
+   std::vector<double> *signalTau_M;
+   std::vector<std::vector<double> > *signalTau_lvp;
+   std::vector<std::vector<double> > *signalTau_cov;
+   std::vector<int> *signalTau_isLVP;
+
+
    Bool_t          MC_isReco;
    std::vector<std::vector<double> > *MCSignalParticle_p4;
    std::vector<int>     *MCSignalParticle_pdgid;
@@ -187,6 +200,7 @@ public :
    Double_t        Vertex_N_primary;
    std::vector<std::vector<double> > *Vertex_signal_dca_reco;
    std::vector<std::vector<double> > *Vertex_signal_KF_pos;
+   std::vector<std::vector<double> > *Vertex_signal_KF_cov;
    std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
    std::vector<double>  *Vertex_signal_KF_Chi2;
    std::vector<std::vector<double> > *Vertex_signal_AF_pos;
@@ -197,6 +211,7 @@ public :
    std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;
    std::vector<bool>    *Vertex_RefitPVisValid;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
+   std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex_covariance;
    std::vector<std::vector<double> > *Vertex_d0_reco;
    std::vector<std::vector<double> > *Vertex_d0sig_reco;
    std::vector<std::vector<double> > *Vertex_2Ddisplacement;
@@ -294,6 +309,9 @@ public :
    TBranch        *b_Muon_combinedQuality_tightMatch;   //!
    TBranch        *b_Muon_combinedQuality_glbTrackProbability;   //!
    TBranch        *b_Muon_prod_inner_outer_charge;   //!
+   TBranch        *b_Muon_ptError;   //!
+   TBranch        *b_Muon_phiError; //!
+   TBranch        *b_Muon_etaError;   //!
    TBranch        *b_Muon_outerTrack_p4;   //!
    TBranch        *b_Muon_innerTrack_p4;   //!
    TBranch        *b_Muon_innerTrack_quality;   //!
@@ -341,6 +359,15 @@ public :
    TBranch        *b_MC_childidx;   //!
    TBranch        *b_MC_status;   //!
    TBranch        *b_MC_isReco;   //!
+
+   TBranch        *b_signalTau_charge;   //!  
+   TBranch        *b_signalTau_pdgid;   //!
+   TBranch        *b_signalTau_B;   //!
+   TBranch        *b_signalTau_M;   //!
+   TBranch        *b_signalTau_lvp;   //!
+   TBranch        *b_signalTau_cov;   //!
+   TBranch        *b_signalTau_isLVP;   //!
+
    TBranch        *b_MCSignalParticle_p4;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
    TBranch        *b_MCSignalParticle_childpdgid;   //!
@@ -367,6 +394,7 @@ public :
    TBranch        *b_Vertex_N_primary;   //!
    TBranch        *b_Vertex_signal_dca_reco;   //!
    TBranch        *b_Vertex_signal_KF_pos;   //!
+   TBranch        *b_Vertex_signal_KF_cov;   //!
    TBranch        *b_Vertex_signal_KF_refittedTracksP4;   //!
    TBranch        *b_Vertex_signal_KF_Chi2;   //!
    TBranch        *b_Vertex_signal_AF_pos;   //!
@@ -377,6 +405,7 @@ public :
    TBranch        *b_Vertex_MatchedPrimaryVertex;   //!
    TBranch        *b_Vertex_RefitPVisValid;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex;   //!
+   TBranch        *b_Vertex_MatchedRefitPrimaryVertex_covariance;   //!
    TBranch        *b_Vertex_d0_reco;   //!
    TBranch        *b_Vertex_d0sig_reco;   //!
    TBranch        *b_Vertex_2Ddisplacement;   //!
@@ -541,6 +570,9 @@ void NtupleReader::Init(TTree *tree)
    Muon_combinedQuality_tightMatch = 0;
    Muon_combinedQuality_glbTrackProbability = 0;
    Muon_prod_inner_outer_charge = 0;
+   Muon_ptError = 0;
+   Muon_phiError = 0;
+   Muon_etaError = 0;
    Muon_outerTrack_p4 = 0;
    Muon_innerTrack_p4 = 0;
    Muon_innerTrack_quality = 0;
@@ -587,6 +619,16 @@ void NtupleReader::Init(TTree *tree)
    MC_childpdgid = 0;
    MC_childidx = 0;
    MC_status = 0;
+
+   signalTau_charge = 0;
+   signalTau_pdgid = 0; 
+   signalTau_B = 0; 
+   signalTau_M = 0; 
+   signalTau_lvp = 0;
+   signalTau_cov = 0;
+   signalTau_isLVP = 0; 
+
+  
    MCSignalParticle_p4 = 0;
    MCSignalParticle_pdgid = 0;
    MCSignalParticle_childpdgid = 0;
@@ -612,6 +654,7 @@ void NtupleReader::Init(TTree *tree)
    Jet_p4 = 0;
    Vertex_signal_dca_reco = 0;
    Vertex_signal_KF_pos = 0;
+   Vertex_signal_KF_cov = 0;
    Vertex_signal_KF_refittedTracksP4 = 0;
    Vertex_signal_KF_Chi2 = 0;
    Vertex_signal_AF_pos = 0;
@@ -622,6 +665,7 @@ void NtupleReader::Init(TTree *tree)
    Vertex_MatchedPrimaryVertex = 0;
    Vertex_RefitPVisValid = 0;
    Vertex_MatchedRefitPrimaryVertex = 0;
+   Vertex_MatchedRefitPrimaryVertex_covariance = 0;
    Vertex_d0_reco = 0;
    Vertex_d0sig_reco = 0;
    Vertex_2Ddisplacement = 0;
@@ -723,6 +767,9 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_combinedQuality_tightMatch", &Muon_combinedQuality_tightMatch, &b_Muon_combinedQuality_tightMatch);
    fChain->SetBranchAddress("Muon_combinedQuality_glbTrackProbability", &Muon_combinedQuality_glbTrackProbability, &b_Muon_combinedQuality_glbTrackProbability);
    fChain->SetBranchAddress("Muon_prod_inner_outer_charge", &Muon_prod_inner_outer_charge, &b_Muon_prod_inner_outer_charge);
+   fChain->SetBranchAddress("Muon_ptError",&Muon_ptError,&b_Muon_ptError);
+   fChain->SetBranchAddress("Muon_phiError",&Muon_phiError, &b_Muon_phiError);
+   fChain->SetBranchAddress("Muon_etaError",&Muon_etaError, &b_Muon_etaError);
    fChain->SetBranchAddress("Muon_outerTrack_p4", &Muon_outerTrack_p4, &b_Muon_outerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_p4", &Muon_innerTrack_p4, &b_Muon_innerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_quality", &Muon_innerTrack_quality, &b_Muon_innerTrack_quality);
@@ -770,6 +817,17 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
    fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
    fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
+
+   fChain->SetBranchAddress("signalTau_charge",&signalTau_charge,&b_signalTau_charge);
+   fChain->SetBranchAddress("signalTau_pdgid",&signalTau_pdgid,&b_signalTau_pdgid);
+   fChain->SetBranchAddress("signalTau_B",&signalTau_B, &b_signalTau_B);
+   fChain->SetBranchAddress("signalTau_M",&signalTau_M, &b_signalTau_M);
+   fChain->SetBranchAddress("signalTau_lvp",&signalTau_lvp, &b_signalTau_lvp);
+   fChain->SetBranchAddress("signalTau_cov",&signalTau_cov,&b_signalTau_cov);
+   fChain->SetBranchAddress("signalTau_isLVP",&signalTau_isLVP, &b_signalTau_isLVP);
+
+
+
    fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
    fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
    fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
@@ -796,6 +854,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_N_primary", &Vertex_N_primary, &b_Vertex_N_primary);
    fChain->SetBranchAddress("Vertex_signal_dca_reco", &Vertex_signal_dca_reco, &b_Vertex_signal_dca_reco);
    fChain->SetBranchAddress("Vertex_signal_KF_pos", &Vertex_signal_KF_pos, &b_Vertex_signal_KF_pos);
+   fChain->SetBranchAddress("Vertex_signal_KF_cov", &Vertex_signal_KF_cov, &b_Vertex_signal_KF_cov);
    fChain->SetBranchAddress("Vertex_signal_KF_refittedTracksP4", &Vertex_signal_KF_refittedTracksP4, &b_Vertex_signal_KF_refittedTracksP4);
    fChain->SetBranchAddress("Vertex_signal_KF_Chi2", &Vertex_signal_KF_Chi2, &b_Vertex_signal_KF_Chi2);
    fChain->SetBranchAddress("Vertex_signal_AF_pos", &Vertex_signal_AF_pos, &b_Vertex_signal_AF_pos);
@@ -806,6 +865,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_MatchedPrimaryVertex", &Vertex_MatchedPrimaryVertex, &b_Vertex_MatchedPrimaryVertex);
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex", &Vertex_MatchedRefitPrimaryVertex, &b_Vertex_MatchedRefitPrimaryVertex);
+   fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex_covariance", &Vertex_MatchedRefitPrimaryVertex_covariance, &b_Vertex_MatchedRefitPrimaryVertex_covariance);
    fChain->SetBranchAddress("Vertex_d0_reco", &Vertex_d0_reco, &b_Vertex_d0_reco);
    fChain->SetBranchAddress("Vertex_d0sig_reco", &Vertex_d0sig_reco, &b_Vertex_d0sig_reco);
    fChain->SetBranchAddress("Vertex_2Ddisplacement", &Vertex_2Ddisplacement, &b_Vertex_2Ddisplacement);
