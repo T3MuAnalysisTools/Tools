@@ -253,6 +253,8 @@ void  ThreeMu::Configure(){
   Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","Isolation_Ntrk0p5",10,-0.5,9.5,"ntrk in #tau iso (>1 GeV) (dR=0.5)","Events");
   Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","Isolation_maxdxy",40,0,40,"Iso max(dxy)","Events");
 
+  FlightLengthSig=HConfig.GetTH1D(Name+"_FlightLengthSig","Significance of flight length",100,0,25,"l/#sigma flight length","Events");
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -388,6 +390,9 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Isolation_Mu1RelPt);
   Extradist1d.push_back(&Isolation_Mu2RelPt);
   Extradist1d.push_back(&Isolation_Mu3RelPt); 
+
+
+  Extradist1d.push_back(&FlightLengthSig);
 }
 
 
@@ -625,13 +630,30 @@ void  ThreeMu::doEvent(){
    // 
 
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).x(),w);
-    VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
-    VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
+    VertexMatchedPrimaryVertexY.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
+    VertexMatchedPrimaryVertexZ.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
     VertexRefitPVisValid.at(t).Fill(Ntp->Vertex_RefitPVisValid(final_idx),w);
+
+	 TVector3 fls_pv = Ntp->Vertex_MatchedPrimaryVertex(final_idx);
+	 TVector3 fls_sv = Ntp->Vertex_Signal_KF_pos(final_idx);
+	 TMatrixTSym<double> fls_PVcov = Ntp->Vertex_PrimaryVertex_Covariance(final_idx);
+	 TMatrixTSym<double> fls_SVcov = Ntp->Vertex_Signal_KF_Covariance(final_idx);
+/*
+	 std::cout<<"----------- primary vertex ----------"<<std::endl;
+	 std::cout<<fls_pv.x()<<" "<<fls_pv.y()<<" "<<fls_pv.z()<<endl;
+	 std::cout<<"----------- secondary vertex ----------"<<std::endl;
+	 std::cout<<fls_sv.x()<<" "<<fls_sv.y()<<" "<<fls_sv.z()<<endl;
+	 std::cout<<"----------- pv covariance ----------"<<std::endl;
+	 fls_PVcov.Print();
+	 std::cout<<"----------- sv covariance ----------"<<std::endl;
+	 fls_SVcov.Print();
+*/
+	 FlightLengthSig.at(t).Fill(Ntp->FlightLength_significance(fls_pv,fls_PVcov,fls_sv,fls_SVcov)); // Add flight length significance
+
     if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
       VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).x(),w);
-      VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).y(),w);
-      VertexMatchedRefitPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).z(),w);
+      VertexMatchedRefitPrimaryVertexY.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).y(),w);
+      VertexMatchedRefitPrimaryVertexZ.at(t).Fill(Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx).z(),w);
     }
 
     //---------------  Fill MC plots 
@@ -669,7 +691,7 @@ void  ThreeMu::Finish(){
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
       double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/3;
+      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral();
       ScaleAllHistOfType(i,scale);
     }
   }
