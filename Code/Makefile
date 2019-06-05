@@ -64,7 +64,7 @@ endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency TMVASignal AnalysisWithTMVA
+	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency TMVASignal AnalysisWithTMVA glbMuIdCuts softMuIdCuts trkMuIdCuts twoGlbOneLooseMuIdCuts looseMuIdCuts
 	DEFS += -DUSE_joshi=1
 endif
 
