@@ -69,11 +69,11 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("glbMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("looseMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("softMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("trkMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("twoGlbOnLooseMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("glbmuidcuts"))s=new glbMuIdCuts(Analysis,UncertType);
+  else if(Analysis.Contains("loosemuidcuts"))s=new looseMuIdCuts(Analysis,UncertType);
+  else if(Analysis.Contains("softmuidcuts"))s=new softMuIdCuts(Analysis,UncertType);
+  else if(Analysis.Contains("trkmuidcuts"))s=new trkMuIdCuts(Analysis,UncertType);
+  else if(Analysis.Contains("twoglboneloosemuidcuts"))s=new twoGlbOneLooseMuIdCuts(Analysis,UncertType);
 
 #endif
 
