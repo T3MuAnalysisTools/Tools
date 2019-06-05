@@ -21,6 +21,11 @@
 #include "joshi/TMVASignal.h"
 #include "joshi/AnalysisWithTMVA.h"
 #include "joshi/MCEfficiency.h"
+#include "joshi/twoGlbOneLooseMuIdCuts.h"
+#include "joshi/looseMuIdCuts.h"
+#include "joshi/trkMuIdCuts.h"
+#include "joshi/glbMuIdCuts.h"
+#include "joshi/softMuIdCuts.h"
 #endif
 
 
@@ -60,10 +65,16 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
-  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
+  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); // two global and one tracker id cuts
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("glbMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("looseMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("softMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("trkMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("twoGlbOnLooseMuIdCuts"))s=new AnalysisWithTMVA(Analysis,UncertType);
+
 #endif
 
 

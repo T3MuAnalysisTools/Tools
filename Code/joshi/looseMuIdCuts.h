@@ -1,15 +1,15 @@
-#ifndef ThreeMu_h
-#define ThreeMu_h
+#ifndef looseMuIdCuts_h
+#define looseMuIdCuts_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 
-class ThreeMu : public Selection {
+class looseMuIdCuts : public Selection {
 
  public:
-  ThreeMu(TString Name_, TString id_);
-  virtual ~ThreeMu();
+  looseMuIdCuts(TString Name_, TString id_);
+  virtual ~looseMuIdCuts();
 
   virtual void  Configure();
   virtual void  Finish();

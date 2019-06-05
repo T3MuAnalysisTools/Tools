@@ -1,4 +1,4 @@
-#include "ThreeMu.h"
+#include "softMuIdCuts.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-ThreeMu::ThreeMu(TString Name_, TString id_):
+softMuIdCuts::softMuIdCuts(TString Name_, TString id_):
   Selection(Name_,id_),
   tauMinMass_(1.731),
   tauMaxMass_(1.823),
@@ -18,7 +18,7 @@ ThreeMu::ThreeMu(TString Name_, TString id_):
   // This is a class constructor;
 }
 
-ThreeMu::~ThreeMu(){
+softMuIdCuts::~softMuIdCuts(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -27,7 +27,7 @@ ThreeMu::~ThreeMu(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  ThreeMu::Configure(){
+void  softMuIdCuts::Configure(){
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -262,7 +262,7 @@ void  ThreeMu::Configure(){
 
 
 
-void  ThreeMu::Store_ExtraDist(){ 
+void  softMuIdCuts::Store_ExtraDist(){ 
 
   Extradist1d.push_back(&Muon1Pt);
   Extradist1d.push_back(&Muon2Pt);
@@ -396,7 +396,7 @@ void  ThreeMu::Store_ExtraDist(){
 }
 
 
-void  ThreeMu::doEvent(){ 
+void  softMuIdCuts::doEvent(){ 
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -433,9 +433,10 @@ void  ThreeMu::doEvent(){
     unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
     unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
     //
-    value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
-    			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-    			Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+    value.at(MuonID) = ( Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu1_pt_idx),Ntp->MuonStandardSelectors::SoftCutBasedId) &&
+	 							 Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu2_pt_idx),Ntp->MuonStandardSelectors::SoftCutBasedId) &&
+								 Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu3_pt_idx),Ntp->MuonStandardSelectors::SoftCutBasedId) );
+
     //------------------------------------------------------------------------------------------------------
   
     value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
@@ -686,7 +687,7 @@ void  ThreeMu::doEvent(){
 }
 
 
-void  ThreeMu::Finish(){
+void  softMuIdCuts::Finish(){
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){

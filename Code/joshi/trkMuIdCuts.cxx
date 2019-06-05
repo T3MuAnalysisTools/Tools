@@ -1,4 +1,4 @@
-#include "ThreeMu.h"
+#include "trkMuIdCuts.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-ThreeMu::ThreeMu(TString Name_, TString id_):
+trkMuIdCuts::trkMuIdCuts(TString Name_, TString id_):
   Selection(Name_,id_),
   tauMinMass_(1.731),
   tauMaxMass_(1.823),
@@ -18,7 +18,7 @@ ThreeMu::ThreeMu(TString Name_, TString id_):
   // This is a class constructor;
 }
 
-ThreeMu::~ThreeMu(){
+trkMuIdCuts::~trkMuIdCuts(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -27,7 +27,7 @@ ThreeMu::~ThreeMu(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  ThreeMu::Configure(){
+void  trkMuIdCuts::Configure(){
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -262,7 +262,7 @@ void  ThreeMu::Configure(){
 
 
 
-void  ThreeMu::Store_ExtraDist(){ 
+void  trkMuIdCuts::Store_ExtraDist(){ 
 
   Extradist1d.push_back(&Muon1Pt);
   Extradist1d.push_back(&Muon2Pt);
@@ -396,7 +396,7 @@ void  ThreeMu::Store_ExtraDist(){
 }
 
 
-void  ThreeMu::doEvent(){ 
+void  trkMuIdCuts::doEvent(){ 
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -433,8 +433,8 @@ void  ThreeMu::doEvent(){
     unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
     unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
     //
-    value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
-    			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
+    value.at(MuonID) = (Ntp->Muon_isTrackerMuon(mu1_pt_idx) && 
+    			Ntp->Muon_isTrackerMuon(mu2_pt_idx) &&
     			Ntp->Muon_isTrackerMuon(mu3_pt_idx));
     //------------------------------------------------------------------------------------------------------
   
@@ -686,7 +686,7 @@ void  ThreeMu::doEvent(){
 }
 
 
-void  ThreeMu::Finish(){
+void  trkMuIdCuts::Finish(){
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
