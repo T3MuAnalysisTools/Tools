@@ -67,14 +67,41 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); // two global and one tracker id cuts
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
-  else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("glbmuidcuts"))s=new glbMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("loosemuidcuts"))s=new looseMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("softmuidcuts"))s=new softMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("trkmuidcuts"))s=new trkMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("twoglboneloosemuidcuts"))s=new twoGlbOneLooseMuIdCuts(Analysis,UncertType);
+  
+  else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
+else if(Analysis.Contains("tmvatree_1"))s=new TMVATree_1(Analysis,UncertType);
+  else if(Analysis.Contains("tmvatree_2"))s=new TMVATree_2(Analysis,UncertType);
+  else if(Analysis.Contains("tmvatree_3"))s=new TMVATree_3(Analysis,UncertType);
 
+  else if(Analysis.Contains("tmva_signal_glbmuon"))s=new TMVA_Signal_glbMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_signal_loosemuon"))s=new TMVA_Signal_looseMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_signal_softmuon"))s=new TMVA_Signal_softMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_signal_trkmuon"))s=new TMVA_Signal_trkMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_signal_twoglboneloosemuon"))s=new TMVA_Signal_twoGlbOneLooseMuon(Analysis,UncertType);
+
+  else if(Analysis.Contains("tmva_tree_1_glbmuon"))s=new TMVA_Tree_1_glbMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_1_loosemuon"))s=new TMVA_Tree_1_looseMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_1_softmuon"))s=new TMVA_Tree_1_softMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_1_trkmuon"))s=new TMVA_Tree_1_trkMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_1_twoglboneloosemuon"))s=new TMVA_Tree_1_twoGlbOneLooseMuon(Analysis,UncertType);
+
+  else if(Analysis.Contains("tmva_tree_2_glbmuon"))s=new TMVA_Tree_2_glbMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_2_loosemuon"))s=new TMVA_Tree_2_looseMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_2_softmuon"))s=new TMVA_Tree_2_softMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_2_trkmuon"))s=new TMVA_Tree_2_trkMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_2_twoglboneloosemuon"))s=new TMVA_Tree_2_twoGlbOneLooseMuon(Analysis,UncertType);
+
+  else if(Analysis.Contains("tmva_tree_3_glbmuon"))s=new TMVA_Tree_3_glbMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_3_loosemuon"))s=new TMVA_Tree_3_looseMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_3_softmuon"))s=new TMVA_Tree_3_softMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_3_trkmuon"))s=new TMVA_Tree_3_trkMuon(Analysis,UncertType);
+  else if(Analysis.Contains("tmva_tree_3_twoglboneloosemuon"))s=new TMVA_Tree_3_twoGlbOneLooseMuon(Analysis,UncertType);
 #endif
 
 

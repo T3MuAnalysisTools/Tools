@@ -1,4 +1,4 @@
-#include "TMVASignal.h"
+#include "TMVA_Signal_looseMuon.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-TMVASignal::TMVASignal(TString Name_, TString id_):
+TMVA_Signal_looseMuon::TMVA_Signal_looseMuon(TString Name_, TString id_):
     Selection(Name_,id_),
     tauMinMass_(1.731),
     tauMaxMass_(1.823),
@@ -19,7 +19,7 @@ TMVASignal::TMVASignal(TString Name_, TString id_):
 }
 
 
-TMVASignal::~TMVASignal(){
+TMVA_Signal_looseMuon::~TMVA_Signal_looseMuon(){
     for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
         << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -28,7 +28,7 @@ TMVASignal::~TMVASignal(){
     Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  TMVASignal::Configure(){
+void  TMVA_Signal_looseMuon::Configure(){
     for(int i=0; i<NCuts;i++){
       cut.push_back(0);
       value.push_back(0);
@@ -154,7 +154,7 @@ void  TMVASignal::Configure(){
 
 
 
-void  TMVASignal::Store_ExtraDist(){ 
+void  TMVA_Signal_looseMuon::Store_ExtraDist(){ 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ void  TMVASignal::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  TMVASignal::doEvent(){ 
+void  TMVA_Signal_looseMuon::doEvent(){ 
     unsigned int t;
     int id(Ntp->GetMCID());
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -200,9 +200,9 @@ void  TMVASignal::doEvent(){
       unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
       unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
       //
-      value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
-            Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-            Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+      value.at(MuonID) = (( Ntp->Muon_isGlobalMuon(mu1_pt_idx) || Ntp->Muon_isTrackerMuon(mu1_pt_idx)) && 
+            ( Ntp->Muon_isGlobalMuon(mu2_pt_idx) || Ntp->Muon_isTrackerMuon(mu2_pt_idx)) &&
+            ( Ntp->Muon_isGlobalMuon(mu3_pt_idx) || Ntp->Muon_isTrackerMuon(mu3_pt_idx)));
       //------------------------------------------------------------------------------------------------------
 
       value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
@@ -312,8 +312,8 @@ void  TMVASignal::doEvent(){
 
 
 
-void  TMVASignal::Finish(){
-    file= new TFile("TMVASignalInput.root","recreate");
+void  TMVA_Signal_looseMuon::Finish(){
+file= new TFile("TMVA_Signal_looseMuonInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 
     file->Write();
