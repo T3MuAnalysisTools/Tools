@@ -1,4 +1,4 @@
-#include "TMVASignal.h"
+#include "TMVA_Tree_1_glbMuon.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,18 +8,19 @@
 
 using namespace std;
 
-TMVASignal::TMVASignal(TString Name_, TString id_):
+TMVA_Tree_1_glbMuon::TMVA_Tree_1_glbMuon(TString Name_, TString id_):
     Selection(Name_,id_),
     tauMinMass_(1.731),
     tauMaxMass_(1.823),
     tauMinSideBand_(1.6),
-    tauMaxSideBand_(2.0)
+    tauMaxSideBand_(2.0),
+	 massRes_(0.02)
 {
     // This is a class constructor;
 }
 
 
-TMVASignal::~TMVASignal(){
+TMVA_Tree_1_glbMuon::~TMVA_Tree_1_glbMuon(){
     for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
         << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -28,7 +29,7 @@ TMVASignal::~TMVASignal(){
     Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  TMVASignal::Configure(){
+void  TMVA_Tree_1_glbMuon::Configure(){
     for(int i=0; i<NCuts;i++){
       cut.push_back(0);
       value.push_back(0);
@@ -117,22 +118,7 @@ void  TMVASignal::Configure(){
     Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
     TMVA_Tree= new TTree("tree","tree");
 
-    /*
-    //----------------------------------------------
-    //   New TMVA variables
-    //----------------------------------------------
-    TMVA_Tree->Branch("var_mu1kink",&var_mu1kink);
-    TMVA_Tree->Branch("var_mu2kink",&var_mu2kink);
-    TMVA_Tree->Branch("var_mu3kink",&var_mu3kink);
-    TMVA_Tree->Branch("var_IsoNtrk0p1",&var_IsoNtrk0p1);
-    TMVA_Tree->Branch("var_IsoNtrks",&var_IsoNtrks);
-    TMVA_Tree->Branch("var_IsoMaxDxy",&var_IsoMaxDxy);
-    TMVA_Tree->Branch("var_dRMu3Tau",&var_dRMu3Tau);
-    TMVA_Tree->Branch("var_dRMu2Mu3",&var_dRMu2Mu3);
-    TMVA_Tree->Branch("var_Mmu1mu2",&var_Mmu1mu2);
-    //----------------------------------------------
-    */
-
+	/*
     //----------------------------------------------
     //   2016 TMVA variables
     //----------------------------------------------
@@ -145,6 +131,17 @@ void  TMVASignal::Configure(){
     TMVA_Tree->Branch("var_mindca_iso", &var_mindca_iso);
     TMVA_Tree->Branch("var_iso_relpt", &var_iso_relpt);
     TMVA_Tree->Branch("var_fv_cosdphi3d", &var_fv_cosdphi3d);
+	 */
+
+  TMVA_Tree->Branch("var_KFV_chiSq", &var_KFV_chiSq);
+  TMVA_Tree->Branch("var_mu3d0sig", &var_mu3d0sig);
+  TMVA_Tree->Branch("var_mu3d0", &var_mu3d0);
+  TMVA_Tree->Branch("var_relPt", &var_relPt);
+  TMVA_Tree->Branch("var_ntrkMu3Iso", &var_ntrkMu3Iso);
+  TMVA_Tree->Branch("var_dcaMu1Mu3", &var_dcaMu1Mu3);
+  TMVA_Tree->Branch("var_mu3InOutMatch", &var_mu3InOutMatch);
+  TMVA_Tree->Branch("var_mu3Kink", &var_mu3Kink);
+  TMVA_Tree->Branch("var_vertex2d", &var_vertex2d);
 
     Selection::ConfigureHistograms(); //do not remove
     HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -154,7 +151,7 @@ void  TMVASignal::Configure(){
 
 
 
-void  TMVASignal::Store_ExtraDist(){ 
+void  TMVA_Tree_1_glbMuon::Store_ExtraDist(){ 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +160,7 @@ void  TMVASignal::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  TMVASignal::doEvent(){ 
+void  TMVA_Tree_1_glbMuon::doEvent(){ 
     unsigned int t;
     int id(Ntp->GetMCID());
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -202,7 +199,7 @@ void  TMVASignal::doEvent(){
       //
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
             Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-            Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+            Ntp->Muon_isGlobalMuon(mu3_pt_idx));
       //------------------------------------------------------------------------------------------------------
 
       value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
@@ -240,8 +237,8 @@ void  TMVASignal::doEvent(){
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-    pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*massRes_);
+    pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*massRes_);
 
     if(id!=1) pass.at(ThreeMuMass) = true;
     else  pass.at(ThreeMuMass) = ( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
@@ -266,7 +263,7 @@ void  TMVASignal::doEvent(){
       TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
       TLorentzVector TauLV = Muon1LV+Muon2LV+Muon3LV;
 
-      //------------------- 2016 variables ----------------------------
+      /*//------------------- 2016 variables ----------------------------
       var_muMinPt = Ntp->Muon_P4(Muon_index_3).Pt();
       var_inOutTrackMatch_Chi2 = Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3);
       var_mu3kink = Ntp->Muon_combinedQuality_trkKink(Muon_index_3);
@@ -275,7 +272,6 @@ void  TMVASignal::doEvent(){
       var_VertexMu3D0 = Ntp->Vertex_d0_reco(final_idx,2);
       var_mindca_iso = Ntp->Isolation_MinDist(final_idx);
       var_iso_relpt = Ntp->Isolation_RelPt(final_idx);
-
       //------------------ calculate dv_cosdphi3d ---------------------
       TVector3 vec_sv = Ntp->Vertex_Signal_KF_pos(final_idx);
 	   TVector3 vec_pv(0,0,0);
@@ -283,37 +279,30 @@ void  TMVASignal::doEvent(){
          vec_pv = Ntp->Vertex_MatchedRefitPrimaryVertex(final_idx);
 	      }
       TVector3 vec_tau = TauLV.Vect();
-
       TVector3 d_pv_sv = vec_sv - vec_pv;
       float fv_cosdphi3d = (d_pv_sv.Dot(vec_tau)/(d_pv_sv.Mag()*vec_tau.Mag()));
       //---------------------------------------------------------------
-
       var_fv_cosdphi3d = fv_cosdphi3d;
+      //---------------------------------------------------------------*/
 
-      //---------------------------------------------------------------
+  		var_KFV_chiSq = Ntp->Vertex_signal_KF_Chi2(final_idx);
+  		var_mu3d0sig = Ntp->Vertex_d0sig_reco(final_idx,2);
+  		var_mu3d0 = Ntp->Vertex_d0_reco(final_idx,2);
+  		var_relPt = Ntp->Isolation_RelPt(final_idx);
+  		var_ntrkMu3Iso = Ntp->Isolation_Ntrk3(final_idx);
+  		var_dcaMu1Mu3 = Ntp->Vertex_DCA31(final_idx);
+  		var_mu3InOutMatch = Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3);
+  		var_mu3Kink = Ntp->Muon_combinedQuality_trkKink(Muon_index_3);
+  		var_vertex2d = Ntp->Vertex_2Ddisplacement(final_idx,0);
 
-      /*
-      //---------------------------------------------------------------
-      var_mu1kink=Ntp->Muon_combinedQuality_trkKink(Muon_index_1);
-      var_mu2kink=Ntp->Muon_combinedQuality_trkKink(Muon_index_2);
-      var_mu3kink=Ntp->Muon_combinedQuality_trkKink(Muon_index_3);
-      var_IsoNtrk0p1=Ntp->Isolation_Ntrk0p1(0);
-      var_IsoNtrks=Ntp->Isolation_NTracks(0);
-      var_IsoMaxDxy=Ntp->Isolation_maxdy(0);
-      var_dRMu3Tau=Muon1LV.DeltaR(TauLV);
-      var_dRMu2Mu3=Muon2LV.DeltaR(Muon2LV);
-      var_Mmu1mu2=Muon1LV.DeltaR(Muon2LV);
-      //---------------------------------------------------------------
-      */
 	 if (Ntp->Vertex_RefitPVisValid(final_idx)==1)  TMVA_Tree->Fill();
     }
-
 }
 
 
 
-void  TMVASignal::Finish(){
-    file= new TFile("TMVASignalInput.root","recreate");
+void  TMVA_Tree_1_glbMuon::Finish(){
+file= new TFile("TMVA_Tree_1_glbMuonInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 
     file->Write();

@@ -12,7 +12,11 @@
 using namespace std;
 
 AnalysisWithTMVA::AnalysisWithTMVA(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  tauMinMass_(1.731),
+  tauMaxMass_(1.823),
+  tauMinSideBand_(1.6),
+  tauMaxSideBand_(2.0)
 {
   // This is a class constructor;
 }
@@ -61,8 +65,9 @@ reader = new TMVA::Reader( "!Color:!Silent" );
 	reader->AddVariable("var_mindca_iso",&var_mindca_iso);
 	reader->AddVariable("var_iso_relpt",&var_iso_relpt);
 	reader->AddVariable("var_fv_cosdphi3d",&var_fv_cosdphi3d);
-
-   for(int i=0; i<NCuts;i++){
+	reader->BookMVA( "BDT", basedir+"TMVAClassification_BDT.weights.xml" );
+   
+	for(int i=0; i<NCuts;i++){
      cut.push_back(0);
      value.push_back(0);
      pass.push_back(false);
