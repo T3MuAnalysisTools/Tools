@@ -28,6 +28,13 @@ if($UserID eq "wangjian"){
 
 
 
+if($UserID eq "nimenend"){
+    $UserDir="--menendez";
+    $UserName="Nicholas";
+}
+
+
+
 
 $letter = substr($UserID, 0, 1);
 
@@ -166,7 +173,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     # User check
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -220,7 +227,7 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 if( $ARGV[0] eq "--Local" ){
 
     # User check
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -396,7 +403,7 @@ if( $ARGV[0] eq "--Local" ){
 
 if( $ARGV[0] eq "--DCache" ){
 
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }

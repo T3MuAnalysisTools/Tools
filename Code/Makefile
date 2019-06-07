@@ -74,6 +74,12 @@ ifdef USE_wang
 endif
 
 
+ifdef USE_menendez
+	TARGETS += MyTest
+	DEFS += -DUSE_menendez=1
+endif
+
+
 
 HDRS          = $(TARGETS:=.h) 		
 SRCS          = $(TARGETS:=.cxx)  Analysis.cxx
@@ -102,8 +108,13 @@ endif
 
 
 ifdef USE_wang
-	vpath %.cxx joshi
-	vpath %.h joshi
+	vpath %.cxx wang
+	vpath %.h wang
+endif
+
+ifdef USE_menendez
+	vpath %.cxx menendez
+	vpath %.h menendez
 endif
 
 vpath %.cxx CommonFiles

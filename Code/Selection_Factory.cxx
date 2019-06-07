@@ -35,6 +35,14 @@
 #endif
 
 
+
+#ifdef USE_nimenend
+#include "menendez/MyTest.h"
+
+#endif
+
+
+
 Selection_Factory::Selection_Factory(){
 }
 
@@ -75,7 +83,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("twoglboneloosemuidcuts"))s=new twoGlbOneLooseMuIdCuts(Analysis,UncertType);
   
   else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
-else if(Analysis.Contains("tmvatree_1"))s=new TMVATree_1(Analysis,UncertType);
+  else if(Analysis.Contains("tmvatree_1"))s=new TMVATree_1(Analysis,UncertType);
   else if(Analysis.Contains("tmvatree_2"))s=new TMVATree_2(Analysis,UncertType);
   else if(Analysis.Contains("tmvatree_3"))s=new TMVATree_3(Analysis,UncertType);
 
@@ -106,6 +114,11 @@ else if(Analysis.Contains("tmvatree_1"))s=new TMVATree_1(Analysis,UncertType);
 
 
 #ifdef USE_wang
+  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+#endif
+
+
+#ifdef USE_nimenend
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 
