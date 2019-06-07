@@ -1,4 +1,4 @@
-#include "MyTest.h"
+#include "Example.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -6,13 +6,13 @@
 #include <iostream>
 #include "Logger.h"
 
-MyTest::MyTest(TString Name_, TString id_):
+Example::Example(TString Name_, TString id_):
   Selection(Name_,id_)
 {
   // This is a class constructor;
 }
 
-MyTest::~MyTest(){
+Example::~Example(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -21,7 +21,7 @@ MyTest::~MyTest(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  MyTest::Configure(){
+void  Example::Configure(){
   ////////////////////////////////////////////////////////////////////////
   // Here you can defined your cuts. There are three vector for cuts:
   // std::vector<double> cut, std::vector<double> value and std::vecto<bool> pass.  
@@ -85,7 +85,7 @@ void  MyTest::Configure(){
 
 
 
-void  MyTest::Store_ExtraDist(){ 
+void  Example::Store_ExtraDist(){ 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
   Extradist1d.push_back(&NVtx);
@@ -100,7 +100,7 @@ void  MyTest::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  MyTest::doEvent(){ 
+void  Example::doEvent(){ 
   /////////////////////////////////////////////////////////////////////////////////////////////////
   // Here the index t belongs to sample type, this value originally filled at Ntuple filling
   // level: https://github.com/T3MuAnalysisTools/DsTau23Mu/blob/master/T3MNtuple/interface/DataMCType.h
@@ -184,7 +184,7 @@ void  MyTest::doEvent(){
 
 
 
-void  MyTest::Finish(){
+void  Example::Finish(){
   Selection::Finish();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
