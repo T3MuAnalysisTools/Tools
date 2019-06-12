@@ -268,7 +268,7 @@ class Ntuple_Controller{
    double  Muon_calEnergy_emS25(unsigned int i){return Ntp->Muon_calEnergy_emS25->at(i);}
    double  Muon_calEnergy_emS9(unsigned int i){return Ntp->Muon_calEnergy_emS9->at(i);}
    double  Muon_calEnergy_em(unsigned int i){return Ntp->Muon_calEnergy_em->at(i);}
-   bool    Muon_segmentCompatibility(unsigned int i){return Ntp->Muon_segmentCompatibility->at(i);}
+   double  Muon_segmentCompatibility(unsigned int i){return Ntp->Muon_segmentCompatibility->at(i);}
    bool    Muon_caloCompatibility(unsigned int i){return Ntp->Muon_caloCompatibility->at(i);}
    bool    Muon_isGoodMuon_TM2DCompatibility(unsigned int i){return Ntp->Muon_isGoodMuon_TM2DCompatibility->at(i);}
    double  Muon_innerTrack_validFraction(unsigned int i){return Ntp->Muon_innerTrack_validFraction->at(i);}
