@@ -268,6 +268,11 @@ void  ThreeMu::Configure(){
   Pair2Mass =HConfig.GetTH1D(Name+"_Pair2Mass","Pair2Mass",50,0,2," mass of #mu pair (23 p_{T} sorted), GeV","Events");
   Pair3Mass =HConfig.GetTH1D(Name+"_Pair3Mass","Pair3Mass",50,0,2," mass of #mu pair (31 p_{T} sorted), GeV","Events");
 
+
+  Pair1Mass_OS1  =HConfig.GetTH1D(Name+"_Pair1Mass_OS1","Pair1Mass_OS1",50,0,2," mass of #mu pair OS1, GeV","Events");
+  Pair2Mass_OS2  =HConfig.GetTH1D(Name+"_Pair2Mass_OS2","Pair2Mass_OS2",50,0,2," mass of #mu pair OS2, GeV","Events");
+  Pair3Mass_SS   =HConfig.GetTH1D(Name+"_Pair3Mass_SS","Pair3Mass_SS",50,0,2," mass of #mu pair SS,  GeV","Events");
+
   TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match dR 1","Events");
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match dR 2","Events");
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match dR 3","Events");
@@ -371,6 +376,10 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Pair1Mass);
   Extradist1d.push_back(&Pair2Mass);
   Extradist1d.push_back(&Pair3Mass);
+
+  Extradist1d.push_back(&Pair1Mass_OS1);
+  Extradist1d.push_back(&Pair2Mass_OS2);
+  Extradist1d.push_back(&Pair3Mass_SS);
 
   Extradist1d.push_back(&TriggerMatchdR1);
   Extradist1d.push_back(&TriggerMatchdR2);
@@ -569,6 +578,23 @@ void  ThreeMu::doEvent(){
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
     
+
+
+    vector<unsigned int> idx_vec;
+
+    idx_vec.push_back(Muon_index_1);
+    idx_vec.push_back(Muon_index_2);
+    idx_vec.push_back(Muon_index_3);
+
+    unsigned int os_mu_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
+    unsigned int ss1_mu_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
+    unsigned int ss2_mu_idx = Ntp->SortedChargeMuons(idx_vec).at(2);
+
+    TLorentzVector MuonOS = Ntp->Muon_P4(os_mu_idx);
+    TLorentzVector MuonSS1 = Ntp->Muon_P4(ss1_mu_idx);
+    TLorentzVector MuonSS2 = Ntp->Muon_P4(ss2_mu_idx);
+
+
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
 
     Muon1Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),1);
@@ -660,6 +686,11 @@ void  ThreeMu::doEvent(){
     Pair1Mass.at(t).Fill((Muon1LV + Muon2LV).M(),1);
     Pair2Mass.at(t).Fill((Muon2LV + Muon3LV).M(),1);
     Pair3Mass.at(t).Fill((Muon1LV + Muon3LV).M(),1);
+
+    Pair1Mass_OS1.at(t).Fill((MuonOS+MuonSS1).M(),1);
+    Pair2Mass_OS2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+    Pair3Mass_SS.at(t).Fill((MuonSS1+MuonSS2).M(),1);
+
 
     TriggerMatchdR1.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(0),1);
     TriggerMatchdR2.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(1),1);

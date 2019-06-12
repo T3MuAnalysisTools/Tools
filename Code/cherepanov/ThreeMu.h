@@ -93,6 +93,10 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Pair2Mass;
   std::vector<TH1D> Pair3Mass;
 
+  std::vector<TH1D> Pair1Mass_OS1;
+  std::vector<TH1D> Pair2Mass_OS2;
+  std::vector<TH1D> Pair3Mass_SS;
+
   std::vector<TH1D> TriggerMatchdR1;
   std::vector<TH1D> TriggerMatchdR2;
   std::vector<TH1D> TriggerMatchdR3;
