@@ -484,7 +484,7 @@ std::vector<unsigned int> Ntuple_Controller::SortedChargeMuons(std::vector<unsig
     i3 = pt2>pt3?indices[2]:indices[1];
   }
   else if (q1==q3){
-    i1 = indices[2];
+    i1 = indices[1];
     i2 = pt1>pt3?indices[0]:indices[2];
     i3 = pt1>pt3?indices[2]:indices[0];
   }
