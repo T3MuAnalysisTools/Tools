@@ -413,6 +413,10 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned 
   return V_cov;
 }
 
+TVector3  Ntuple_Controller::SVPVDirection(TVector3 SV, TVector3 PV){
+  return SV-PV;
+}
+
 
   double Ntuple_Controller::FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov ){
     TVector3 SVPV = sv - pv;

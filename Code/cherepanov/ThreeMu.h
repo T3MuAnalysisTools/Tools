@@ -43,6 +43,8 @@ class ThreeMu : public Selection {
   std::vector<TH1D> TauMass;
   std::vector<TH1D> TauMassResolution;
 
+  std::vector<TH1D> SVPVTauDirAngle;
+
   std::vector<TH1D> TauMassRefit;
   std::vector<TH1D> TauMassResolutionRefit;
 
@@ -61,9 +63,14 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon1kink;
   std::vector<TH1D> Muon2kink;
   std::vector<TH1D> Muon3kink;
+
+  std::vector<TH1D> MuonkinkMax;
+
   std::vector<TH1D> Muon1InOutTrackMatch;
   std::vector<TH1D> Muon2InOutTrackMatch;
   std::vector<TH1D> Muon3InOutTrackMatch;
+
+  std::vector<TH1D> MuonInOutTrackMatchMax;
 
   std::vector<TH1D> Muon1PtResolution;
   std::vector<TH1D> Muon2PtResolution;
@@ -80,7 +87,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> MuPair1_vertex_chi2;
   std::vector<TH1D> MuPair2_vertex_chi2;
   std::vector<TH1D> MuPair3_vertex_chi2;
-
+  std::vector<TH1D> MuPair_vertex_chi2_min;
 
   std::vector<TH1D> Pair1Mass;
   std::vector<TH1D> Pair2Mass;
@@ -110,7 +117,12 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Isolation_Ntrk0p2;
   std::vector<TH1D> Isolation_Ntrk0p5;
   std::vector<TH1D> Isolation_maxdxy;
-  
+
+  std::vector<TH1D> Isolation_RelativePtMu1;  
+  std::vector<TH1D> Isolation_RelativePtMu2;  
+  std::vector<TH1D> Isolation_RelativePtMu3;  
+  std::vector<TH1D> Isolation_RelativePtMaxMu;  
+
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> VertexChi2AF;
   std::vector<TH1D> VertexDCA12;
@@ -139,8 +151,12 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexMu2D0SigReco;
   std::vector<TH1D> VertexMu3D0Reco;
   std::vector<TH1D> VertexMu3D0SigReco;
+  std::vector<TH1D> VertexMuMinD0SigReco;
+
   std::vector<TH1D> Vertex2DDisplacement;
   std::vector<TH1D> Vertex3DDisplacement;
+  std::vector<TH1D> Vertex2DDisplacementSignificance;
+  std::vector<TH1D> Vertex3DDisplacementSignificance;
   std::vector<TH1D> VertexPairQuality;
   std::vector<TH1D> VertexPairRefitStatus;
   std::vector<TH1D> VertexPairfitStatus;
@@ -157,6 +173,18 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexX;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexY;
   std::vector<TH1D> VertexMatchedRefitPrimaryVertexZ;
+
+
+  std::vector<TH1D> Muon_segmentCompatibility_mu1;
+  std::vector<TH1D> Muon_segmentCompatibility_mu2;
+  std::vector<TH1D> Muon_segmentCompatibility_mu3;
+
+
+  std::vector<TH1D> Muon1_globalDeltaEtaPhi;
+  std::vector<TH1D> Muon2_globalDeltaEtaPhi;
+  std::vector<TH1D> Muon3_globalDeltaEtaPhi;
+
+
 
 };
 #endif

@@ -365,6 +365,8 @@ class Ntuple_Controller{
    bool       Vertex_RefitPVisValid(unsigned int i){return Ntp->Vertex_RefitPVisValid->at(i);}
    TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
 
+   TVector3   SVPVDirection(TVector3 SV, TVector3 PV);
+
    float      Isolation_RelPt(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(0);}
    float      Isolation_NTracks(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(1);}
    float      Isolation_MinDist(unsigned int i){return Ntp->Vertex_Isolation1->at(i).at(2);}
@@ -376,6 +378,7 @@ class Ntuple_Controller{
    float      Isolation_Mu1RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
    float      Isolation_Mu2RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
    float      Isolation_Mu3RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(2);}
+   float      Isolation_MuMaxRelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(3);}
 
    float      Isolation_Ntrk1(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(0);}
    float      Isolation_Ntrk2(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(1);}

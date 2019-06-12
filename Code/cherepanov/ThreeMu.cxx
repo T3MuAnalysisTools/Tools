@@ -34,9 +34,9 @@ void  ThreeMu::Configure(){
     pass.push_back(false);
     if(i==TriggerOk)          cut.at(TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.5;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.5;
-    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.5;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=1.0;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
     if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
@@ -58,25 +58,38 @@ void  ThreeMu::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==SignalCandidate){
-      title.at(i)="is signal candidate";
+      title.at(i)="signal candidate";
       hlabel="is 3mu candidate";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==Mu1PtCut){
-      title.at(i)="Mu1 Pt";
+      title.at(i)="$p_{T}(\\mu_{1}) >$ 2.0 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
       hlabel="Muon1 PT, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
     }
     else if(i==Mu2PtCut){
-      title.at(i)="Mu2 Pt";
+      title.at(i)="$p_{T}(\\mu_{2}) >$ 2.0 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
+
       hlabel="Muon2 PT, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
     }
     else if(i==Mu3PtCut){
-      title.at(i)="Mu3 Pt";
+      title.at(i)="$p_{T}(\\mu_{3}) >$ 1 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
       hlabel="Muon3 PT, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
@@ -88,13 +101,20 @@ void  ThreeMu::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==PhiVeto){
-      title.at(i)="phi mass veto";
+      title.at(i)="$\\phi$ mass veto";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
       hlabel="Phi mass Veto, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,50,0.8,1.2,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,50,0.8,1.2,hlabel,"Events"));
     }
     else if(i==OmegaVeto){
-      title.at(i)="omega mass veto";
+      title.at(i)="$\\omega$ mass veto";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
       hlabel="Omega mass veto, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
@@ -106,7 +126,11 @@ void  ThreeMu::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
     }
     else if(i==ThreeMuMass){
-      title.at(i)="Tau Mass";
+      title.at(i)="$\\tau$ mass (sideband in data)";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
       hlabel="three mu mass, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuMass_",htitle,50,1.4,2.2,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuMass_",htitle,50,1.4,2.2,hlabel,"Events"));
@@ -132,10 +156,23 @@ void  ThreeMu::Configure(){
   Muon1kink =HConfig.GetTH1D(Name+"_Muon1kink","Muon1kink",50,0.,50,"  #mu_{1} kink","Events");
   Muon2kink =HConfig.GetTH1D(Name+"_Muon2kink","Muon2kink",50,0.,50,"  #mu_{2} kink","Events");
   Muon3kink =HConfig.GetTH1D(Name+"_Muon3kink","Muon3kink",50,0.,50,"  #mu_{3} kink","Events");
+  MuonkinkMax =HConfig.GetTH1D(Name+"_MuonkinkMax","MuonkinkMax",50,0.,50,"  #mu max kink","Events");
+
+
+
+  Muon_segmentCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu1","Muon_segmentCompatibility_mu1",50,0.,1,"Inner Track and muon segment match  #mu_{1} ","Events");
+  Muon_segmentCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu2","Muon_segmentCompatibility_mu2",50,0.,1,"Inner Track and muon segment match  #mu_{2} ","Events");
+  Muon_segmentCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu3","Muon_segmentCompatibility_mu3",50,0.,1,"Inner Track and muon segment match  #mu_{3} ","Events");
 
   Muon1InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon1InOutTrackMatch","Muon1InOutTrackMatch",50,0.,10,"  #mu_{1} inner and outer tracker match","Events");
   Muon2InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon2InOutTrackMatch","Muon2InOutTrackMatch",50,0.,10,"  #mu_{2} inner and outer tracker match","Events");
   Muon3InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon3InOutTrackMatch","Muon3InOutTrackMatch",50,0.,10,"  #mu_{3} inner and outer tracker match","Events");
+  MuonInOutTrackMatchMax =HConfig.GetTH1D(Name+"_MuonInOutTrackMatchMax","MuonInOutTrackMatchMax",50,0.,10,"  #mu max inner and outer tracker match","Events");
+
+
+  Muon1_globalDeltaEtaPhi=HConfig.GetTH1D(Name+"_Muon1_globalDeltaEtaPhi","Muon1_globalDeltaEtaPhi",40,0,0.5,"#mu_{1} #Delta #eta-#phi","Events");
+  Muon2_globalDeltaEtaPhi=HConfig.GetTH1D(Name+"_Muon2_globalDeltaEtaPhi","Muon2_globalDeltaEtaPhi",40,0,0.5,"#mu_{2} #Delta #eta-#phi","Events");
+  Muon3_globalDeltaEtaPhi=HConfig.GetTH1D(Name+"_Muon2_globalDeltaEtaPhi","Muon3_globalDeltaEtaPhi",40,0,0.5,"#mu_{3} #Delta #eta-#phi","Events");
 
   Muon1Eta=HConfig.GetTH1D(Name+"_Muon1Eta","Muon1Eta",26,-2.6,2.6,"#mu_{1}  rapidity","Events");
   Muon2Eta=HConfig.GetTH1D(Name+"_Muon2Eta","Muon2Eta",26,-2.6,2.6,"#mu_{2}  rapidity","Events");
@@ -159,14 +196,15 @@ void  ThreeMu::Configure(){
   TauMassRefit =HConfig.GetTH1D(Name+"_TauMassRefit","Refit #tau lepton mass",50,1.5,1.9,"KF refit  M_{#tau} , GeV","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
 
-  VertexDCA12=HConfig.GetTH1D(Name+"_VertexDCA12","VertexDCA12",40,0,0.15,"dca (#mu_{1}#mu_{2})","Events");
-  VertexDCA23=HConfig.GetTH1D(Name+"_VertexDCA23","VertexDCA23",40,0,0.15,"dca (#mu_{1}trk)","Events");
-  VertexDCA31=HConfig.GetTH1D(Name+"_VertexDCA31","VertexDCA31",40,0,0.15,"dca (#mu_{2}trk)","Events");
-  VertexDCAMax=HConfig.GetTH1D(Name+"_VertexDCAMax","VertexDCAMax",40,0,0.15,"max dca","Events");
-  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,15,"KF vertex #chi^{2}","Events");
-  VertexChi2AF=HConfig.GetTH1D(Name+"_VertexChi2AF","VertexChi2AF",50,0,15,"AF vertex #chi^{2}","Events");
 
-  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,30,"flight length significance","Events");
+  VertexDCA12=HConfig.GetTH1D(Name+"_VertexDCA12","VertexDCA12",40,0,0.10,"dca (#mu_{1}#mu_{2})","Events");
+  VertexDCA23=HConfig.GetTH1D(Name+"_VertexDCA23","VertexDCA23",40,0,0.10,"dca (#mu_{2}#mu_{3})","Events");
+  VertexDCA31=HConfig.GetTH1D(Name+"_VertexDCA31","VertexDCA31",40,0,0.10,"dca (#mu_{3}#mu_{1})","Events");
+  VertexDCAMax=HConfig.GetTH1D(Name+"_VertexDCAMax","VertexDCAMax",40,0,0.15,"max dca","Events");
+  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
+  VertexChi2AF=HConfig.GetTH1D(Name+"_VertexChi2AF","VertexChi2AF",50,0,10,"AF vertex #chi^{2}","Events");
+
+  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,50,"Flight length significance (squared)","Events");
 
   VertexSignalKFRefittedMu1P=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu1P","VertexSignalKFRefittedMu1P",50,0,20,"KF refitted #mu_{1} track p (GeV)","Events");
   VertexSignalKFRefittedMu1Pt=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu1Pt","VertexSignalKFRefittedMu1P",50,0,20,"KF refitted #mu_{1} track p_{T} (GeV)","Events");
@@ -183,15 +221,21 @@ void  ThreeMu::Configure(){
   VertexSignalKFRefittedMu3Eta=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu3Eta","VertexSignalKFRefittedMu3Eta",25,-2.5,2.5,"KF refitted Mu3 #eta","Events");
   VertexSignalKFRefittedMu3Phi=HConfig.GetTH1D(Name+"_VertexSignalKFRefittedMu3Phi","VertexSignalKFRefittedMu3Phi",32,-3.2,3.2,"KF refitted Mu3 #phi","Events");
 
-  VertexMu1D0Reco=HConfig.GetTH1D(Name+"_VertexMu1D0Reco","VertexMu1D0Reco",40,0,0.05,"#mu_{1} d0 vertex","Events");
-  VertexMu1D0SigReco=HConfig.GetTH1D(Name+"_VertexMu1D0SigReco","VertexMu1D0SigReco",40,0,5,"#mu_{1} d0 vertex significance","Events");
-  VertexMu2D0Reco=HConfig.GetTH1D(Name+"_VertexMu2D0Reco","VertexMu2D0Reco",40,0,0.05,"#mu_{2} d0 vertex","Events");
-  VertexMu2D0SigReco=HConfig.GetTH1D(Name+"_VertexMu2D0SigReco","VertexMu2D0SigReco",40,0,5,"#mu_{2} d0 vertex significance","Events");
-  VertexMu3D0Reco=HConfig.GetTH1D(Name+"_VertexMu3D0Reco","VertexMu3D0Reco",40,0,0.05,"#mu_{3} d0 vertex","Events");
-  VertexMu3D0SigReco=HConfig.GetTH1D(Name+"_VertexMu3D0SigReco","VertexMu3D0SigReco",50,0,5,"#mu_{3} d0 vertex significance","Events");
+  VertexMu1D0Reco=HConfig.GetTH1D(Name+"_VertexMu1D0Reco","VertexMu1D0Reco",40,0,0.01,"#mu_{1} d0 vertex","Events");
+  VertexMu1D0SigReco=HConfig.GetTH1D(Name+"_VertexMu1D0SigReco","VertexMu1D0SigReco",40,0,3,"#mu_{1} d0 vertex significance","Events");
+  VertexMu2D0Reco=HConfig.GetTH1D(Name+"_VertexMu2D0Reco","VertexMu2D0Reco",40,0,0.01,"#mu_{2} d0 vertex","Events");
+  VertexMu2D0SigReco=HConfig.GetTH1D(Name+"_VertexMu2D0SigReco","VertexMu2D0SigReco",40,0,3,"#mu_{2} d0 vertex significance","Events");
+  VertexMu3D0Reco=HConfig.GetTH1D(Name+"_VertexMu3D0Reco","VertexMu3D0Reco",40,0,0.01,"#mu_{3} d0 vertex","Events");
+  VertexMu3D0SigReco=HConfig.GetTH1D(Name+"_VertexMu3D0SigReco","VertexMu3D0SigReco",50,0,3,"#mu_{3} d0 vertex significance","Events");
+  VertexMuMinD0SigReco=HConfig.GetTH1D(Name+"_VertexMuMinD0SigReco","VertexMuMinD0SigReco",50,0,3,"#mu min d0 vertex significance","Events");
 
-  Vertex2DDisplacement=HConfig.GetTH1D(Name+"_Vertex2DDisplacement","Vertex2DDisplacement",10,0,0.01,"vertex 2d displacement","Events");
-  Vertex3DDisplacement=HConfig.GetTH1D(Name+"_Vertex3DDisplacement","Vertex3DDisplacement",10,0,0.01,"vertex 3d displacement","Events");
+  SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw SV-PV and TauDir","Events");
+
+  Vertex2DDisplacementSignificance=HConfig.GetTH1D(Name+"_Vertex2DDisplacementSignificance","Vertex2DDisplacementSignificance",10,0,4,"vertex 2d displacement significance","Events");
+  Vertex3DDisplacementSignificance=HConfig.GetTH1D(Name+"_Vertex3DDisplacementSignificance","Vertex3DDisplacementSignificance",10,0,4,"vertex 3d displacement significance","Events");
+
+  Vertex2DDisplacement=HConfig.GetTH1D(Name+"_Vertex2DDisplacement","Vertex2DDisplacement",10,0,0.1,"vertex 2d displacement","Events");
+  Vertex3DDisplacement=HConfig.GetTH1D(Name+"_Vertex3DDisplacement","Vertex3DDisplacement",10,0,0.1,"vertex 3d displacement","Events");
 
   VertexPairQuality=HConfig.GetTH1D(Name+"_VertexPairQuality","VertexPairQuality",10,0,10,"vertex pair quality","Events");
   VertexPairfitStatus=HConfig.GetTH1D(Name+"_VertexPairfitStatus","VertexPairfitStatus",2,0,2,"vertex pair fit status","Events");
@@ -215,13 +259,14 @@ void  ThreeMu::Configure(){
   Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
   Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
 
-  MuPair1_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair1_vertex_chi2","MuPair1_vertex_chi2",50,0,5,"KF  #chi^{2} of first #mu pair","Events");
-  MuPair2_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair2_vertex_chi2","MuPair2_vertex_chi2",50,0,5,"KF  #chi^{2} of second #mu pair","Events");
-  MuPair3_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair3_vertex_chi2","MuPair3_vertex_chi2",50,0,5,"KF  #chi^{2} of third #mu pair","Events");
+  MuPair1_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair1_vertex_chi2","MuPair1_vertex_chi2",50,0,3,"KF  #chi^{2} of first #mu pair","Events");
+  MuPair2_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair2_vertex_chi2","MuPair2_vertex_chi2",50,0,3,"KF  #chi^{2} of second #mu pair","Events");
+  MuPair3_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair3_vertex_chi2","MuPair3_vertex_chi2",50,0,3,"KF  #chi^{2} of third #mu pair","Events");
+  MuPair_vertex_chi2_min=HConfig.GetTH1D(Name+"_MuPair_vertex_chi2_min","MuPair_vertex_chi2_min",50,0,3,"KF min #chi^{2} of #mu pair","Events");
 
-  Pair1Mass =HConfig.GetTH1D(Name+"_Pair1Mass","Pair1Mass",50,0,2," mass of #mu pair (12), GeV","Events");
-  Pair2Mass =HConfig.GetTH1D(Name+"_Pair2Mass","Pair2Mass",50,0,2," mass of #mu pair (23), GeV","Events");
-  Pair3Mass =HConfig.GetTH1D(Name+"_Pair3Mass","Pair3Mass",50,0,2," mass of #mu pair (31), GeV","Events");
+  Pair1Mass =HConfig.GetTH1D(Name+"_Pair1Mass","Pair1Mass",50,0,2," mass of #mu pair (12 p_{T} sorted), GeV","Events");
+  Pair2Mass =HConfig.GetTH1D(Name+"_Pair2Mass","Pair2Mass",50,0,2," mass of #mu pair (23 p_{T} sorted), GeV","Events");
+  Pair3Mass =HConfig.GetTH1D(Name+"_Pair3Mass","Pair3Mass",50,0,2," mass of #mu pair (31 p_{T} sorted), GeV","Events");
 
   TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match dR 1","Events");
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match dR 2","Events");
@@ -234,23 +279,24 @@ void  ThreeMu::Configure(){
   dR2Tau = HConfig.GetTH1D(Name+"_dR2Tau","dR2Tau",50,0,1,"dR(#mu_{2}#tau)","Events");
   dR3Tau = HConfig.GetTH1D(Name+"_dR3Tau","dR3Tau",50,0,1,"dR(#mu_{3}#tau)","Events");
 
-
   Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","Isolation_NTracks",10,-0.5,9.5,"N tracks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",20,0,1,"relative p_{T}","Events");
-  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","Isolation_MinDist",10,0,1,"Iso MinDist","Events");
-  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","Isolation05_RelPt",10,0,1,"relative  rel p_{T} in 0.5 cone","Events");
+  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",50,0,1,"relative p_{T}","Events");
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","Isolation_MinDist",50,0,0.1,"Iso MinDist","Events");
+  Isolation05_RelPt=HConfig.GetTH1D(Name+"_Isolation05_RelPt","Isolation05_RelPt",50,0,1,"relative  rel p_{T} in 0.5 cone","Events");
   Isolation05_NTracks=HConfig.GetTH1D(Name+"_Isolation05_NTracks","Isolation05_NTracks",10,-0.5,9.5,"N tracks in 0.5 cone","Events");
-  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","Isolation05_MinDist",10,0,1,"Iso05 MinDist","Events");
-  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","Isolation_Ntrk1",10,-0.5,9.5,"Iso ntrk 1","Events");
-  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","Isolation_Ntrk2",10,-0.5,9.5,"Iso ntrk 2","Events");
-  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","Isolation_Ntrk3",10,-0.5,9.5,"Iso ntrk 3","Events");
-  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","Isolation_Ntrk0p1",10,-0.5,9.5,"Iso ntrk0p1","Events");
-  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","Isolation_Ntrk0p2",10,-0.5,9.5,"Iso ntrk0p2","Events");
-  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","Isolation_Ntrk0p5",10,-0.5,9.5,"Iso ntrk0p5","Events");
-  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","Isolation_maxdxy",40,0,40,"Iso max(dxy)","Events");
+  Isolation05_MinDist=HConfig.GetTH1D(Name+"_Isolation05_MinDist","Isolation05_MinDist",50,0,0.1,"Iso05 MinDist","Events");
+  Isolation_Ntrk1=HConfig.GetTH1D(Name+"_Isolation_Ntrk1","Isolation_Ntrk1",20,-0.5,19.5,"Iso ntrk 1","Events");
+  Isolation_Ntrk2=HConfig.GetTH1D(Name+"_Isolation_Ntrk2","Isolation_Ntrk2",20,-0.5,19.5,"Iso ntrk 2","Events");
+  Isolation_Ntrk3=HConfig.GetTH1D(Name+"_Isolation_Ntrk3","Isolation_Ntrk3",20,-0.5,19.5,"Iso ntrk 3","Events");
+  Isolation_Ntrk0p1=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p1","Isolation_Ntrk0p1",20,-0.5,19.5,"Iso ntrk0p1","Events");
+  Isolation_Ntrk0p2=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p2","Isolation_Ntrk0p2",20,-0.5,19.5,"Iso ntrk0p2","Events");
+  Isolation_Ntrk0p5=HConfig.GetTH1D(Name+"_Isolation_Ntrk0p5","Isolation_Ntrk0p5",20,-0.5,19.5,"Iso ntrk0p5","Events");
+  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","Isolation_maxdxy",40,0,15,"Iso max(dxy)","Events");
 
-
-
+  Isolation_RelativePtMu1=HConfig.GetTH1D(Name+"_Isolation_RelativePtMu1","Isolation_RelativePtMu1",50,0,10,"p_{T} ratio  track/#mu_{1}","Events");
+  Isolation_RelativePtMu2=HConfig.GetTH1D(Name+"_Isolation_RelativePtMu2","Isolation_RelativePtMu2",50,0,10,"p_{T} ratio  track/#mu_{2}","Events");
+  Isolation_RelativePtMu3=HConfig.GetTH1D(Name+"_Isolation_RelativePtMu3","Isolation_RelativePtMu3",50,0,10,"p_{T} ratio  track/#mu_{3}","Events");
+  Isolation_RelativePtMaxMu=HConfig.GetTH1D(Name+"_Isolation_RelativePtMaxMu","Isolation_RelativePtMaxMu",50,0,10,"p_{T} ratio  track/#mu Max","Events");
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -290,13 +336,19 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&TauMassResolution);
   Extradist1d.push_back(&TauMassResolutionRefit);
 
+  Extradist1d.push_back(&SVPVTauDirAngle);
+
   Extradist1d.push_back(&Muon1kink);
   Extradist1d.push_back(&Muon2kink);
   Extradist1d.push_back(&Muon3kink);
 
+  Extradist1d.push_back(&MuonkinkMax);
+
   Extradist1d.push_back(&Muon1InOutTrackMatch);
   Extradist1d.push_back(&Muon2InOutTrackMatch);
   Extradist1d.push_back(&Muon3InOutTrackMatch);
+
+  Extradist1d.push_back(&MuonInOutTrackMatchMax);
 
   Extradist1d.push_back(&Muon1PtResolution);
   Extradist1d.push_back(&Muon2PtResolution);
@@ -313,6 +365,8 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&MuPair1_vertex_chi2);
   Extradist1d.push_back(&MuPair2_vertex_chi2);
   Extradist1d.push_back(&MuPair3_vertex_chi2);
+  Extradist1d.push_back(&MuPair_vertex_chi2_min);
+
 
   Extradist1d.push_back(&Pair1Mass);
   Extradist1d.push_back(&Pair2Mass);
@@ -345,6 +399,13 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Isolation_Ntrk0p5);
   Extradist1d.push_back(&Isolation_maxdxy);
 
+  Extradist1d.push_back(&Isolation_RelativePtMu1);
+  Extradist1d.push_back(&Isolation_RelativePtMu2);
+  Extradist1d.push_back(&Isolation_RelativePtMu3);
+  Extradist1d.push_back(&Isolation_RelativePtMaxMu);
+
+
+
   Extradist1d.push_back(&VertexChi2KF);
   Extradist1d.push_back(&VertexChi2AF);
   Extradist1d.push_back(&VertexDCA12);
@@ -371,16 +432,22 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&VertexMu2D0SigReco);
   Extradist1d.push_back(&VertexMu3D0Reco);
   Extradist1d.push_back(&VertexMu3D0SigReco);
+
+  Extradist1d.push_back(&VertexMuMinD0SigReco);
+
   Extradist1d.push_back(&Vertex2DDisplacement);
   Extradist1d.push_back(&Vertex3DDisplacement);
+
+  Extradist1d.push_back(&Vertex2DDisplacementSignificance);
+  Extradist1d.push_back(&Vertex3DDisplacementSignificance);
   Extradist1d.push_back(&VertexPairQuality);
   Extradist1d.push_back(&VertexPairfitStatus);
   Extradist1d.push_back(&VertexSignalKFChi2);
-  Extradist1d.push_back(&VertexSignalAFX);
-  Extradist1d.push_back(&VertexSignalAFY);
-  Extradist1d.push_back(&VertexSignalAFZ);
-  Extradist1d.push_back(&VertexSignalAFChi2);
-  Extradist1d.push_back(&VertexSignalAFNdf);
+  //  Extradist1d.push_back(&VertexSignalAFX);
+  //  Extradist1d.push_back(&VertexSignalAFY);
+  //  Extradist1d.push_back(&VertexSignalAFZ);
+  //  Extradist1d.push_back(&VertexSignalAFChi2);
+  //  Extradist1d.push_back(&VertexSignalAFNdf);
   Extradist1d.push_back(&VertexMatchedPrimaryVertexX);
   Extradist1d.push_back(&VertexMatchedPrimaryVertexY);
   Extradist1d.push_back(&VertexMatchedPrimaryVertexZ);
@@ -388,6 +455,20 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&VertexMatchedRefitPrimaryVertexX);
   Extradist1d.push_back(&VertexMatchedRefitPrimaryVertexY);
   Extradist1d.push_back(&VertexMatchedRefitPrimaryVertexZ);
+
+
+  Extradist1d.push_back(&Muon_segmentCompatibility_mu1);
+  Extradist1d.push_back(&Muon_segmentCompatibility_mu2);
+  Extradist1d.push_back(&Muon_segmentCompatibility_mu3);
+
+
+  Extradist1d.push_back(&Muon1_globalDeltaEtaPhi);
+  Extradist1d.push_back(&Muon2_globalDeltaEtaPhi);
+  Extradist1d.push_back(&Muon3_globalDeltaEtaPhi);
+
+
+
+
 }
 
 
@@ -526,6 +607,12 @@ void  ThreeMu::doEvent(){
       if(Ntp->MuonStandardSelectorBitMask(Muon_index_3).at(iMuSelector)==1)  Muon3StandardSelector.at(t).Fill(iMuSelector,1);
     }
 
+
+    Muon_segmentCompatibility_mu1.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_1),w);
+    Muon_segmentCompatibility_mu2.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_2),w);
+    Muon_segmentCompatibility_mu3.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_3),w);
+
+
     Muon1isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_1),1);
     Muon2isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_2),1);
     Muon3isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_3),1);
@@ -534,18 +621,41 @@ void  ThreeMu::doEvent(){
     Muon2isTrack.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_index_2),1);
     Muon3isTrack.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_index_3),1);
 
-
     Muon1kink.at(t).Fill(Ntp->Muon_combinedQuality_trkKink(Muon_index_1),1);
     Muon2kink.at(t).Fill(Ntp->Muon_combinedQuality_trkKink(Muon_index_2),1);
     Muon3kink.at(t).Fill(Ntp->Muon_combinedQuality_trkKink(Muon_index_3),1);
+
+    float MaxMuonKink =  std::max({Ntp->Muon_combinedQuality_trkKink(Muon_index_1),
+	  Ntp->Muon_combinedQuality_trkKink(Muon_index_2),
+	  Ntp->Muon_combinedQuality_trkKink(Muon_index_3)});
+
+    MuonkinkMax.at(t).Fill(MaxMuonKink,1);
 
     Muon1InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),1);
     Muon2InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),1);
     Muon3InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3),1);
 
+    float maxInOuterTrackerMatch = std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),
+	  Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),
+	  Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)});
+
+    MuonInOutTrackMatchMax.at(t).Fill(maxInOuterTrackerMatch,1);
+
     MuPair1_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,0),1);
     MuPair2_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,1),1);
     MuPair3_vertex_chi2.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,2),1);
+    float MinMuPairVertex_chi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0),
+	  Ntp->Vertex_pair_quality(final_idx,1),
+	  Ntp->Vertex_pair_quality(final_idx,2)});
+
+    MuPair_vertex_chi2_min.at(t).Fill(MinMuPairVertex_chi2,1);
+
+
+    Muon1_globalDeltaEtaPhi.at(t).Fill(Ntp->Muon_combinedQuality_globalDeltaEtaPhi(Muon_index_1),w);
+    Muon2_globalDeltaEtaPhi.at(t).Fill(Ntp->Muon_combinedQuality_globalDeltaEtaPhi(Muon_index_2),w);
+    Muon3_globalDeltaEtaPhi.at(t).Fill(Ntp->Muon_combinedQuality_globalDeltaEtaPhi(Muon_index_3),w);
+
+
 
     Pair1Mass.at(t).Fill((Muon1LV + Muon2LV).M(),1);
     Pair2Mass.at(t).Fill((Muon2LV + Muon3LV).M(),1);
@@ -554,25 +664,17 @@ void  ThreeMu::doEvent(){
     TriggerMatchdR1.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(0),1);
     TriggerMatchdR2.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(1),1);
     TriggerMatchdR3.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(2),1);
+
+    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(final_idx),w);
     Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(final_idx),w);
     Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(final_idx),w);
     Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(final_idx),w);
-    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(final_idx),w);
     Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(final_idx),w);
     Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(final_idx),w);
-    Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(final_idx),w);
-    Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(final_idx),w);
-    Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(final_idx),w);
-    Isolation_Ntrk0p1.at(t).Fill(Ntp->Isolation_Ntrk0p1(final_idx),w);
-    Isolation_Ntrk0p2.at(t).Fill(Ntp->Isolation_Ntrk0p2(final_idx),w);
-    Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(final_idx),w);
-    Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(final_idx),w); 
-    Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(final_idx),w);
-    Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(final_idx),w);
-    Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(final_idx),w);
-    Isolation05_RelPt.at(t).Fill(Ntp->Isolation05_RelPt(final_idx),w);
-    Isolation05_NTracks.at(t).Fill(Ntp->Isolation05_NTracks(final_idx),w);
-    Isolation05_MinDist.at(t).Fill(Ntp->Isolation05_MinDist(final_idx),w);
+
+
+    //    std::cout<<" min dist  "<< Ntp->Isolation_MinDist(final_idx) << std::endl;
+
     Isolation_Ntrk1.at(t).Fill(Ntp->Isolation_Ntrk1(final_idx),w);
     Isolation_Ntrk2.at(t).Fill(Ntp->Isolation_Ntrk2(final_idx),w);
     Isolation_Ntrk3.at(t).Fill(Ntp->Isolation_Ntrk3(final_idx),w);
@@ -581,7 +683,10 @@ void  ThreeMu::doEvent(){
     Isolation_Ntrk0p5.at(t).Fill(Ntp->Isolation_Ntrk0p5(final_idx),w);
     Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(final_idx),w);
 
-
+    Isolation_RelativePtMu1.at(t).Fill(Ntp->Isolation_Mu1RelIso(final_idx),w);
+    Isolation_RelativePtMu2.at(t).Fill(Ntp->Isolation_Mu2RelIso(final_idx),w);
+    Isolation_RelativePtMu3.at(t).Fill(Ntp->Isolation_Mu3RelIso(final_idx),w);
+    Isolation_RelativePtMaxMu.at(t).Fill(Ntp->Isolation_MuMaxRelIso(final_idx),w);
 
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx),w);
     VertexChi2AF.at(t).Fill(Ntp->Vertex_signal_AF_Chi2(final_idx),w);
@@ -609,28 +714,40 @@ void  ThreeMu::doEvent(){
     VertexMu3D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,2),w);
     Vertex2DDisplacement.at(t).Fill(Ntp->Vertex_2Ddisplacement(final_idx,0),w);
     Vertex3DDisplacement.at(t).Fill(Ntp->Vertex_3Ddisplacement(final_idx,0),w);
+
+    float MinD0Significance = std::min({Ntp->Vertex_d0sig_reco(final_idx,0),
+	  Ntp->Vertex_d0sig_reco(final_idx,1),
+	  Ntp->Vertex_d0sig_reco(final_idx,2)});
+
+    VertexMuMinD0SigReco.at(t).Fill(MinD0Significance,1);
+
+    Vertex2DDisplacementSignificance.at(t).Fill(Ntp->Vertex_2Ddisplacement(final_idx,1),w);
+    Vertex3DDisplacementSignificance.at(t).Fill(Ntp->Vertex_3Ddisplacement(final_idx,1),w);
+
+
+
     VertexPairQuality.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,0),w);
     VertexPairfitStatus.at(t).Fill(Ntp->Vertex_pairfit_status(final_idx,0),w);
     VertexSignalKFChi2.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx),w);
     /*
-       VertexSignalAFX.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).X(),w);
-    VertexSignalAFY.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).Y(),w);
-    VertexSignalAFZ.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).Z(),w);
-    VertexSignalAFChi2.at(t).Fill(Ntp->Vertex_signal_AF_Chi2(0),w);
-    VertexSignalAFNdf.at(t).Fill(Ntp->Vertex_signal_AF_Ndf(0),w);
+      VertexSignalAFX.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).X(),w);
+      VertexSignalAFY.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).Y(),w);
+      VertexSignalAFZ.at(t).Fill(Ntp->Vertex_signal_AF_pos(0).Z(),w);
+      VertexSignalAFChi2.at(t).Fill(Ntp->Vertex_signal_AF_Chi2(0),w);
+      VertexSignalAFNdf.at(t).Fill(Ntp->Vertex_signal_AF_Ndf(0),w);
     */
 
     VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).x(),w);
-    VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
-    VertexMatchedPrimaryVertexX.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
-
-
-    //    TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i);
-    //    TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i);
+    VertexMatchedPrimaryVertexY.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).y(),w);
+    VertexMatchedPrimaryVertexZ.at(t).Fill(Ntp->Vertex_MatchedPrimaryVertex(final_idx).z(),w);
 
 
     FLSignificance.at(t).Fill( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
 							      Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx)),w);
+
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+
+    SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
 
     VertexRefitPVisValid.at(t).Fill(Ntp->Vertex_RefitPVisValid(final_idx),w);
     if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
