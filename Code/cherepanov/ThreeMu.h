@@ -63,8 +63,12 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon1kink;
   std::vector<TH1D> Muon2kink;
   std::vector<TH1D> Muon3kink;
-
   std::vector<TH1D> MuonkinkMax;
+
+  std::vector<TH1D> Muon1glbkink;
+  std::vector<TH1D> Muon2glbkink;
+  std::vector<TH1D> Muon3glbkink;
+  std::vector<TH1D> MuonglbkinkMax;
 
   std::vector<TH1D> Muon1InOutTrackMatch;
   std::vector<TH1D> Muon2InOutTrackMatch;

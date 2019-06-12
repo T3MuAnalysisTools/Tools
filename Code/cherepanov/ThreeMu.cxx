@@ -159,6 +159,13 @@ void  ThreeMu::Configure(){
   MuonkinkMax =HConfig.GetTH1D(Name+"_MuonkinkMax","MuonkinkMax",50,0.,50,"  #mu max kink","Events");
 
 
+  Muon1glbkink =HConfig.GetTH1D(Name+"_Muon1glbkink","Muon1glbkink",50,0.,50,"  #mu_{1} glb kink","Events");
+  Muon2glbkink =HConfig.GetTH1D(Name+"_Muon2glbkink","Muon2glbkink",50,0.,50,"  #mu_{2} glb kink","Events");
+  Muon3glbkink =HConfig.GetTH1D(Name+"_Muon3glbkink","Muon3glbkink",50,0.,50,"  #mu_{3} glb kink","Events");
+  MuonglbkinkMax =HConfig.GetTH1D(Name+"_MuonglbkinkMax","MuonglbkinkMax",50,0.,50,"  #mu max glb kink","Events");
+
+
+
 
   Muon_segmentCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu1","Muon_segmentCompatibility_mu1",50,0.,1,"Inner Track and muon segment match  #mu_{1} ","Events");
   Muon_segmentCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu2","Muon_segmentCompatibility_mu2",50,0.,1,"Inner Track and muon segment match  #mu_{2} ","Events");
@@ -348,6 +355,14 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Muon3kink);
 
   Extradist1d.push_back(&MuonkinkMax);
+
+
+  Extradist1d.push_back(&Muon1glbkink);
+  Extradist1d.push_back(&Muon2glbkink);
+  Extradist1d.push_back(&Muon3glbkink);
+  Extradist1d.push_back(&MuonglbkinkMax);
+
+
 
   Extradist1d.push_back(&Muon1InOutTrackMatch);
   Extradist1d.push_back(&Muon2InOutTrackMatch);
@@ -651,11 +666,20 @@ void  ThreeMu::doEvent(){
     Muon2kink.at(t).Fill(Ntp->Muon_combinedQuality_trkKink(Muon_index_2),1);
     Muon3kink.at(t).Fill(Ntp->Muon_combinedQuality_trkKink(Muon_index_3),1);
 
+    Muon1glbkink.at(t).Fill(Ntp->Muon_combinedQuality_glbKink(Muon_index_1),1);
+    Muon2glbkink.at(t).Fill(Ntp->Muon_combinedQuality_glbKink(Muon_index_2),1);
+    Muon3glbkink.at(t).Fill(Ntp->Muon_combinedQuality_glbKink(Muon_index_3),1);
+
     float MaxMuonKink =  std::max({Ntp->Muon_combinedQuality_trkKink(Muon_index_1),
 	  Ntp->Muon_combinedQuality_trkKink(Muon_index_2),
 	  Ntp->Muon_combinedQuality_trkKink(Muon_index_3)});
 
+    float MaxMuonglbKink =  std::max({Ntp->Muon_combinedQuality_glbKink(Muon_index_1),
+	  Ntp->Muon_combinedQuality_glbKink(Muon_index_2),
+	  Ntp->Muon_combinedQuality_glbKink(Muon_index_3)});
+
     MuonkinkMax.at(t).Fill(MaxMuonKink,1);
+    MuonglbkinkMax.at(t).Fill(MaxMuonglbKink,1);
 
     Muon1InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),1);
     Muon2InOutTrackMatch.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),1);
