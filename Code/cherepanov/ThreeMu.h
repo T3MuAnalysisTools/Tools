@@ -37,6 +37,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon2Eta;
   std::vector<TH1D> Muon3Eta;
 
+
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
@@ -56,6 +57,11 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon2isGlob;
   std::vector<TH1D> Muon3isGlob;
 
+  std::vector<TH1D> Muon1isStand;
+  std::vector<TH1D> Muon2isStand;
+  std::vector<TH1D> Muon3isStand;
+
+
   std::vector<TH1D> Muon1isTrack;
   std::vector<TH1D> Muon2isTrack;
   std::vector<TH1D> Muon3isTrack;
@@ -64,11 +70,15 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon2kink;
   std::vector<TH1D> Muon3kink;
   std::vector<TH1D> MuonkinkMax;
+  std::vector<TH1D> MuonkinkMin;
+  std::vector<TH1D> MuonkinkSum;
 
   std::vector<TH1D> Muon1glbkink;
   std::vector<TH1D> Muon2glbkink;
   std::vector<TH1D> Muon3glbkink;
   std::vector<TH1D> MuonglbkinkMax;
+  std::vector<TH1D> MuonglbkinkMin;
+  std::vector<TH1D> MuonglbkinkSum;
 
   std::vector<TH1D> Muon1InOutTrackMatch;
   std::vector<TH1D> Muon2InOutTrackMatch;
@@ -112,6 +122,20 @@ class ThreeMu : public Selection {
   std::vector<TH1D> dR2Tau;
   std::vector<TH1D> dR3Tau;
 
+  std::vector<TH1D> Mu1TauPTRatio;
+  std::vector<TH1D> Mu2TauPTRatio;
+  std::vector<TH1D> Mu3TauPTRatio;
+
+  std::vector<TH1D> Mu1TauPRatio;
+  std::vector<TH1D> Mu2TauPRatio;
+  std::vector<TH1D> Mu3TauPRatio;
+
+  std::vector<TH1D> maxMudR;
+  std::vector<TH1D> minMudR;
+
+  std::vector<TH1D> dRMaxMuTau;
+  std::vector<TH1D> dRMinMuTau;
+
   std::vector<TH1D> Isolation_NTracks;
   std::vector<TH1D> Isolation_RelPt;
   std::vector<TH1D> Isolation_MinDist;
@@ -130,6 +154,37 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Isolation_RelativePtMu2;  
   std::vector<TH1D> Isolation_RelativePtMu3;  
   std::vector<TH1D> Isolation_RelativePtMaxMu;  
+
+  std::vector<TH1D> Isolation_Muon_hadVetoEt03;
+  std::vector<TH1D> Isolation_Muon_hadEt03;
+  std::vector<TH1D> Isolation_Muon_emVetoEt03;
+  std::vector<TH1D> Isolation_Muon_emEt03;
+  std::vector<TH1D> Isolation_Muon_nJets03;
+  std::vector<TH1D> Isolation_Muon_nTracks03;
+  std::vector<TH1D> Isolation_Muon_sumPt03;
+  std::vector<TH1D> Isolation_Muon_trackerVetoPt03;
+  std::vector<TH1D> Isolation_Muon_hadVetoEt05;
+  std::vector<TH1D> Isolation_Muon_hadEt05;
+  std::vector<TH1D> Isolation_Muon_emVetoEt05;
+  std::vector<TH1D> Isolation_Muon_emEt05;
+  std::vector<TH1D> Isolation_Muon_nJets05;
+  std::vector<TH1D> Isolation_Muon_nTracks05;
+  std::vector<TH1D> Isolation_Muon_sumPt05;
+  std::vector<TH1D> Isolation_Muon_trackerVetoPt05;
+  std::vector<TH1D> Isolation_Muon_sumChargedHadronPt03;
+  std::vector<TH1D> Isolation_Muon_sumChargedParticlePt03;
+  std::vector<TH1D> Isolation_Muon_sumNeutralHadronEt03;
+  std::vector<TH1D> Isolation_Muon_sumPhotonEt03;
+  std::vector<TH1D> Isolation_Muon_sumPUPt03;
+  std::vector<TH1D> Isolation_Muon_sumNeutralHadronEtHighThreshold03;
+  std::vector<TH1D> Isolation_Muon_sumPhotonEtHighThreshold03;
+  std::vector<TH1D> Isolation_Muon_sumChargedHadronPt04;
+  std::vector<TH1D> Isolation_Muon_sumChargedParticlePt04;
+  std::vector<TH1D> Isolation_Muon_sumNeutralHadronEt04;
+  std::vector<TH1D> Isolation_Muon_sumPhotonEt04;
+  std::vector<TH1D> Isolation_Muon_sumPUPt04;
+  std::vector<TH1D> Isolation_Muon_sumNeutralHadronEtHighThreshold04;
+  std::vector<TH1D> Isolation_Muon_sumPhotonEtHighThreshold04;
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> VertexChi2AF;
@@ -152,6 +207,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexSignalKFRefittedMu3Eta;
   std::vector<TH1D> VertexSignalKFRefittedMu3Phi;
   std::vector<TH1D> FLSignificance;
+  std::vector<TH1D> FLSignificance2;
 
   std::vector<TH1D> VertexMu1D0Reco;
   std::vector<TH1D> VertexMu1D0SigReco;
@@ -160,6 +216,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> VertexMu3D0Reco;
   std::vector<TH1D> VertexMu3D0SigReco;
   std::vector<TH1D> VertexMuMinD0SigReco;
+  std::vector<TH1D> VertexMuMaxD0SigReco;
 
   std::vector<TH1D> Vertex2DDisplacement;
   std::vector<TH1D> Vertex3DDisplacement;
