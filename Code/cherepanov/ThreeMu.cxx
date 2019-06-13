@@ -115,7 +115,7 @@ void  ThreeMu::Configure(){
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
-      hlabel="Omega mass veto, GeV";
+      hlabel="Rho mass veto, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
     }
@@ -202,8 +202,8 @@ void  ThreeMu::Configure(){
   Muon3PtResolution=HConfig.GetTH1D(Name+"_Muon3PtResolution","Muon3PtResolution",50,-0.2,0.2," #Delta p_{T}(#mu_{3})  (reco - mc)/mc  ","Events");
 
   Muon1EtaResolution=HConfig.GetTH1D(Name+"_Muon1EtaResolution","Muon1EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{1})  (reco - mc)/mc  ","Events");
-  Muon2EtaResolution=HConfig.GetTH1D(Name+"_Muon2EtaResolution","Muon2EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{1})  (reco - mc)/mc   ","Events");
-  Muon3EtaResolution=HConfig.GetTH1D(Name+"_Muon3EtaResolution","Muon3EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{1})  (reco - mc)/mc   ","Events");
+  Muon2EtaResolution=HConfig.GetTH1D(Name+"_Muon2EtaResolution","Muon2EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{2})  (reco - mc)/mc   ","Events");
+  Muon3EtaResolution=HConfig.GetTH1D(Name+"_Muon3EtaResolution","Muon3EtaResolution",50,-0.05,0.05," #Delta #eta(#mu_{3})  (reco - mc)/mc   ","Events");
   TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
@@ -246,7 +246,7 @@ void  ThreeMu::Configure(){
   VertexMuMinD0SigReco=HConfig.GetTH1D(Name+"_VertexMuMinD0SigReco","VertexMuMinD0SigReco",50,0,3,"#mu - PV min transverse distance significance","Events");
   VertexMuMaxD0SigReco=HConfig.GetTH1D(Name+"_VertexMuMaxD0SigReco","VertexMuMaxD0SigReco",50,0,4,"#mu - PV max transverse distance significance","Events");
 
-  SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}","Events");
+  SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
 
   Vertex2DDisplacementSignificance=HConfig.GetTH1D(Name+"_Vertex2DDisplacementSignificance","Vertex2DDisplacementSignificance",20,0,4,"PV-SV  transverse distance  significance","Events");
   Vertex3DDisplacementSignificance=HConfig.GetTH1D(Name+"_Vertex3DDisplacementSignificance","Vertex3DDisplacementSignificance",20,0,4,"PV-SV  distance significance","Events");
@@ -273,8 +273,8 @@ void  ThreeMu::Configure(){
   VertexMatchedRefitPrimaryVertexZ=HConfig.GetTH1D(Name+"_VertexMatchedRefitPrimaryVertexZ","VertexMatchedRefitPrimaryVertexZ",50,-0.1,0.1,"vertex matched refit pv z (cm)","Events");
 
   Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
-  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
-  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
+  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{2} #Delta R","Events");
+  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{3} #Delta R","Events");
 
   MuPair1_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair1_vertex_chi2","MuPair1_vertex_chi2",50,0,3,"KF  #chi^{2} of first #mu pair","Events");
   MuPair2_vertex_chi2=HConfig.GetTH1D(Name+"_MuPair2_vertex_chi2","MuPair2_vertex_chi2",50,0,3,"KF  #chi^{2} of second #mu pair","Events");
@@ -747,8 +747,8 @@ void  ThreeMu::doEvent(){
     minMudR. at(t).Fill(minDrMuons,w);
 
     dR1Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
-    dR2Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
-    dR3Tau.at(t).Fill(Muon1LV.DeltaR(TauLV),1);
+    dR2Tau.at(t).Fill(Muon2LV.DeltaR(TauLV),1);
+    dR3Tau.at(t).Fill(Muon3LV.DeltaR(TauLV),1);
 
     float maxDrTauMu =  std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
     float minDrTauMu =  std::min({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
@@ -870,9 +870,8 @@ void  ThreeMu::doEvent(){
     Pair3Mass.at(t).Fill((Muon1LV + Muon3LV).M(),1);
 
     Pair1Mass_OS1.at(t).Fill((MuonOS+MuonSS1).M(),1);
-    Pair2Mass_OS2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+    Pair2Mass_OS2.at(t).Fill((MuonOS+MuonSS2).M(),1);
     Pair3Mass_SS.at(t).Fill((MuonSS1+MuonSS2).M(),1);
-
 
     TriggerMatchdR1.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(0),1);
     TriggerMatchdR2.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(1),1);
@@ -900,7 +899,6 @@ void  ThreeMu::doEvent(){
     Isolation_RelativePtMu2.at(t).Fill(Ntp->Isolation_Mu2RelIso(final_idx),w);
     Isolation_RelativePtMu3.at(t).Fill(Ntp->Isolation_Mu3RelIso(final_idx),w);
     Isolation_RelativePtMaxMu.at(t).Fill(Ntp->Isolation_MuMaxRelIso(final_idx),w);
-
 
     Isolation_Muon_hadVetoEt03.at(t).Fill(Ntp->Muon_hadVetoEt03(Muon_index_1)  ,w);
     Isolation_Muon_hadEt03.at(t).Fill(Ntp->Muon_hadEt03(Muon_index_1)  ,w);
