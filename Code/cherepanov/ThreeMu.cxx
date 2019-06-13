@@ -811,7 +811,6 @@ void  ThreeMu::doEvent(){
     float MaxMuonglbKink =  std::max({Ntp->Muon_combinedQuality_glbKink(Muon_index_1),
 	  Ntp->Muon_combinedQuality_glbKink(Muon_index_2),
 	  Ntp->Muon_combinedQuality_glbKink(Muon_index_3)});
-    std::cout<<"  MaxMuonglbKink  "<< MaxMuonglbKink << std::endl;
 
     float MinMuonKink =  std::min({Ntp->Muon_combinedQuality_trkKink(Muon_index_1),
 	  Ntp->Muon_combinedQuality_trkKink(Muon_index_2),
