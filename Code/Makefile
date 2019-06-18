@@ -58,7 +58,7 @@ CINTTARGETS =
 # now include conditional options set by flags in make.inc
 
 ifdef USE_cherepanov
-	TARGETS += MyTest Validation MCStudy ThreeMu TwoMuTrack TMVATree AnalysisWithTMVA
+	TARGETS += MyTest Validation MCStudy ThreeMu TwoMuTrack TMVATree AnalysisWithTMVA DimuTrk
 	DEFS += -DUSE_cherepanov=1
 endif
 
@@ -71,6 +71,12 @@ endif
 ifdef USE_wang
 	TARGETS += MyTest
 	DEFS += -DUSE_wang=1
+endif
+
+
+ifdef USE_menendez
+	TARGETS += MyTest
+	DEFS += -DUSE_menendez=1
 endif
 
 
@@ -102,8 +108,13 @@ endif
 
 
 ifdef USE_wang
-	vpath %.cxx joshi
-	vpath %.h joshi
+	vpath %.cxx wang
+	vpath %.h wang
+endif
+
+ifdef USE_menendez
+	vpath %.cxx menendez
+	vpath %.h menendez
 endif
 
 vpath %.cxx CommonFiles

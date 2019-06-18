@@ -413,6 +413,10 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned 
   return V_cov;
 }
 
+TVector3  Ntuple_Controller::SVPVDirection(TVector3 SV, TVector3 PV){
+  return SV-PV;
+}
+
 
   double Ntuple_Controller::FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov ){
     TVector3 SVPV = sv - pv;
@@ -475,12 +479,12 @@ std::vector<unsigned int> Ntuple_Controller::SortedChargeMuons(std::vector<unsig
     i3 = pt1>pt2?indices[1]:indices[0];
   }
   else if (q2==q3){
-    i1 = indices[1];
+    i1 = indices[0];
     i2 = pt2>pt3?indices[1]:indices[2];
     i3 = pt2>pt3?indices[2]:indices[1];
   }
   else if (q1==q3){
-    i1 = indices[2];
+    i1 = indices[1];
     i2 = pt1>pt3?indices[0]:indices[2];
     i3 = pt1>pt3?indices[2]:indices[0];
   }
