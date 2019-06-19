@@ -26,6 +26,34 @@
 #include "joshi/trkMuIdCuts.h"
 #include "joshi/glbMuIdCuts.h"
 #include "joshi/softMuIdCuts.h"
+
+#include "joshi/TMVATree_1.h"
+#include "joshi/TMVATree_2.h"
+#include "joshi/TMVATree_3.h"
+
+#include "joshi/TMVA_Signal_glbMuon.h"
+#include "joshi/TMVA_Signal_looseMuon.h"
+#include "joshi/TMVA_Signal_softMuon.h"
+#include "joshi/TMVA_Signal_trkMuon.h"
+#include "joshi/TMVA_Signal_twoGlbOneLooseMuon.h"
+
+#include "joshi/TMVA_Tree_1_glbMuon.h"
+#include "joshi/TMVA_Tree_1_looseMuon.h"
+#include "joshi/TMVA_Tree_1_softMuon.h"
+#include "joshi/TMVA_Tree_1_trkMuon.h"
+#include "joshi/TMVA_Tree_1_twoGlbOneLooseMuon.h"
+
+#include "joshi/TMVA_Tree_2_glbMuon.h"
+#include "joshi/TMVA_Tree_2_looseMuon.h"
+#include "joshi/TMVA_Tree_2_softMuon.h"
+#include "joshi/TMVA_Tree_2_trkMuon.h"
+#include "joshi/TMVA_Tree_2_twoGlbOneLooseMuon.h"
+
+#include "joshi/TMVA_Tree_3_glbMuon.h"
+#include "joshi/TMVA_Tree_3_looseMuon.h"
+#include "joshi/TMVA_Tree_3_softMuon.h"
+#include "joshi/TMVA_Tree_3_trkMuon.h"
+#include "joshi/TMVA_Tree_3_twoGlbOneLooseMuon.h"
 #endif
 
 
