@@ -270,6 +270,10 @@ TLorentzVector Ntuple_Controller::GENMatchedLV(TLorentzVector vec){
 
 //-------------------------- Match GEN Ds to 2mu+trk candidate -------------------
 // Returns the dR of best GEN machted Ds
+// The function takes the index of the two muons + track candidate as the input
+// and iterates over all the GEN Ds candidates. It matches the track to a daughter pion and
+// the dimuon to a daughter Phi separately. If both matches are found, then it saves the dR.
+// 
 float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 
 	float ds_dR = 999.0;
@@ -299,10 +303,10 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 
             //Find a pi that is a decay product of ds
             if(fabs(MCSignalParticle_childpdgid(ngen,nchild))==211){
-               dspi_flag = 1;
                unsigned int tmp_track_idx = TwoMuonsTrackTrackIndex(tmp_idx).at(0);
                float dR = Track_P4(tmp_track_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild));
                if (dR<0.05 && dR<tmp_pi_dR) { 
+                  dspi_flag = 1;
 						tmp_pi_dR = dR;
 						tmp_pi_p4 = MCSignalParticle_child_p4(ngen,nchild);
 						track_idx = tmp_track_idx;
@@ -311,11 +315,11 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 
               //Find a phi that is a decay product of Ds
               if (fabs(MCSignalParticle_childpdgid(ngen,nchild))==333){
-                dsphi_flag = 1;
                 unsigned int tmp_mu1_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(0);
                 unsigned int tmp_mu2_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(1);
                 float dR = MCSignalParticle_child_p4(ngen,nchild).DeltaR(Muon_P4(tmp_mu1_idx)+Muon_P4(tmp_mu2_idx));
                 if (dR<0.05 && dR<tmp_phi_dR) { 
+                  dsphi_flag = 1;
 					 	tmp_phi_dR = dR;
 						tmp_phi_p4 = MCSignalParticle_child_p4(ngen,nchild);
 						mu1_idx = tmp_mu1_idx;
@@ -326,7 +330,8 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
             }
 
             if (dspi_flag && dsphi_flag){
-					ds_dR = (tmp_phi_p4+tmp_pi_p4).DeltaR(Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Track_P4(track_idx));
+					float tmp_ds_dR = (tmp_phi_p4+tmp_pi_p4).DeltaR(Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Track_P4(track_idx));
+					if (tmp_ds_dR<ds_dR) ds_dR = tmp_ds_dR;
             }
         } 
       }
