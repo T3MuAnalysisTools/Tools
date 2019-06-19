@@ -126,8 +126,8 @@ public :
    std::vector<double>  *Muon_calEnergy_emS25;
    std::vector<double>  *Muon_calEnergy_emS9;
    std::vector<double>  *Muon_calEnergy_em;
-   std::vector<bool>    *Muon_segmentCompatibility;
-   std::vector<bool>    *Muon_caloCompatibility;
+   std::vector<double>    *Muon_segmentCompatibility;
+   std::vector<double>    *Muon_caloCompatibility;
    std::vector<bool>    *Muon_isGoodMuon_TM2DCompatibility;
    std::vector<double>  *Muon_innerTrack_validFraction;
    std::vector<double>  *Muon_innerTrack_pixelLayersWithMeasurement;
