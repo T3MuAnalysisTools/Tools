@@ -244,9 +244,15 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Muon_segmentCompatibility_mu2;
   std::vector<TH1D> Muon_segmentCompatibility_mu3;
 
+  std::vector<TH1D> Muon_segmentCompatibility_min;
+  std::vector<TH1D> Muon_segmentCompatibility_max;
+
   std::vector<TH1D> Muon_ECALCompatibility_mu1;
   std::vector<TH1D> Muon_ECALCompatibility_mu2;
   std::vector<TH1D> Muon_ECALCompatibility_mu3;
+
+  std::vector<TH1D> Muon_ECALCompatibility_min;
+  std::vector<TH1D> Muon_ECALCompatibility_max;
 
   std::vector<TH1D> Muon1_globalDeltaEtaPhi;
   std::vector<TH1D> Muon2_globalDeltaEtaPhi;

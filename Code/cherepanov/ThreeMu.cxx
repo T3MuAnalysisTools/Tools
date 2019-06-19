@@ -179,9 +179,16 @@ void  ThreeMu::Configure(){
   Muon_segmentCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu2","Muon_segmentCompatibility_mu2",50,0.,1,"Inner Track and muon segment match  #mu_{2} ","Events");
   Muon_segmentCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu3","Muon_segmentCompatibility_mu3",50,0.,1,"Inner Track and muon segment match  #mu_{3} ","Events");
 
+  Muon_segmentCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_min","Muon_segmentCompatibility_min",50,0.,1,"Inner Track and muon segment match min ","Events");
+  Muon_segmentCompatibility_max  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_max","Muon_segmentCompatibility_max",50,0.,1,"Inner Track and muon segment match max ","Events");
+
+
   Muon_ECALCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu1","Muon_ECALCompatibility_mu1",50,0.,1,"MIP Likelihood  #mu_{1} ","Events");
   Muon_ECALCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu2","Muon_ECALCompatibility_mu2",50,0.,1,"MIP Likelihood  #mu_{2} ","Events");
   Muon_ECALCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu3","Muon_ECALCompatibility_mu3",50,0.,1,"MIP Likelihood  #mu_{3} ","Events");
+
+  Muon_ECALCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_min","Muon_ECALCompatibility_min",50,0.,1,"MIP Likelihood min ","Events");
+  Muon_ECALCompatibility_max  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_max","Muon_ECALCompatibility_max",50,0.,1,"MIP Likelihood max ","Events");
 
   Muon1InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon1InOutTrackMatch","Muon1InOutTrackMatch",50,0.,10,"  #mu_{1} inner and outer tracker match","Events");
   Muon2InOutTrackMatch =HConfig.GetTH1D(Name+"_Muon2InOutTrackMatch","Muon2InOutTrackMatch",50,0.,10,"  #mu_{2} inner and outer tracker match","Events");
@@ -565,10 +572,15 @@ void  ThreeMu::Store_ExtraDist(){
   Extradist1d.push_back(&Muon_segmentCompatibility_mu2);
   Extradist1d.push_back(&Muon_segmentCompatibility_mu3);
 
+  Extradist1d.push_back(&Muon_segmentCompatibility_min);
+  Extradist1d.push_back(&Muon_segmentCompatibility_max);
+
 
   Extradist1d.push_back(&Muon_ECALCompatibility_mu1);
   Extradist1d.push_back(&Muon_ECALCompatibility_mu2);
   Extradist1d.push_back(&Muon_ECALCompatibility_mu3);
+  Extradist1d.push_back(&Muon_ECALCompatibility_min);
+  Extradist1d.push_back(&Muon_ECALCompatibility_max);
 
 
 
@@ -792,10 +804,21 @@ void  ThreeMu::doEvent(){
     Muon_segmentCompatibility_mu2.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_2),w);
     Muon_segmentCompatibility_mu3.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_3),w);
 
+    float MinSegmentCompatibility = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
+    float MaxSegmentCompatibility = std::max({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
+
+    Muon_segmentCompatibility_min.at(t).Fill(MinSegmentCompatibility,w);
+    Muon_segmentCompatibility_max.at(t).Fill(MaxSegmentCompatibility,w);
+
     Muon_ECALCompatibility_mu1.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_1),w);
     Muon_ECALCompatibility_mu2.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_2),w);
     Muon_ECALCompatibility_mu3.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_3),w);
 
+    float MinMIPLikelihood = std::min({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
+    float MaxMIPLikelihood = std::max({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
+
+    Muon_ECALCompatibility_min.at(t).Fill(MinMIPLikelihood,w);
+    Muon_ECALCompatibility_max.at(t).Fill(MaxMIPLikelihood,w);
 
     Muon1isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_1),1);
     Muon2isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_2),1);
