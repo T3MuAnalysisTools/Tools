@@ -1,15 +1,15 @@
-#ifndef DimuTrk_h
-#define DimuTrk_h
+#ifndef DsToPhiPi_h
+#define DsToPhiPi_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 
-class DimuTrk : public Selection {
+class DsToPhiPi : public Selection {
 
  public:
-  DimuTrk(TString Name_, TString id_);
-  virtual ~DimuTrk();
+  DsToPhiPi(TString Name_, TString id_);
+  virtual ~DsToPhiPi();
 
   virtual void  Configure();
   virtual void  Finish();

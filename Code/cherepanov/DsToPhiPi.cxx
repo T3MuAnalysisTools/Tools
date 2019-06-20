@@ -1,4 +1,4 @@
-#include "DimuTrk.h"
+#include "DsToPhiPi.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 
 
-DimuTrk::DimuTrk(TString Name_, TString id_):
+DsToPhiPi::DsToPhiPi(TString Name_, TString id_):
   Selection(Name_,id_)
 {
 
@@ -16,7 +16,7 @@ DimuTrk::DimuTrk(TString Name_, TString id_):
   // This is a class constructor;
 }
 
-DimuTrk::~DimuTrk(){
+DsToPhiPi::~DsToPhiPi(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -27,7 +27,7 @@ DimuTrk::~DimuTrk(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  DimuTrk::Configure(){
+void  DsToPhiPi::Configure(){
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
@@ -122,7 +122,7 @@ void  DimuTrk::Configure(){
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  DimuTrk::Store_ExtraDist(){ 
+void  DsToPhiPi::Store_ExtraDist(){ 
   
   Extradist1d.push_back(&Track_P);
   Extradist1d.push_back(&Track_E);
@@ -163,7 +163,7 @@ void  DimuTrk::Store_ExtraDist(){
 }
 
 
-void  DimuTrk::doEvent(){ 
+void  DsToPhiPi::doEvent(){ 
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
@@ -263,7 +263,7 @@ void  DimuTrk::doEvent(){
   }
 }
 
-void  DimuTrk::Finish(){
+void  DsToPhiPi::Finish(){
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){

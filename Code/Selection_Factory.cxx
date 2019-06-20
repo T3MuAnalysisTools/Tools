@@ -10,6 +10,7 @@
 #include "cherepanov/TMVATree.h"
 #include "cherepanov/AnalysisWithTMVA.h"
 #include "cherepanov/DimuTrk.h"
+#include "cherepanov/DsToPhiPi.h"
 #endif
 
 
@@ -92,6 +93,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("tmvatree"))s=new TMVATree(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
+  else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
 
 
 
