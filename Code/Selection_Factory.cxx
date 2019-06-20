@@ -7,9 +7,6 @@
 #include "cherepanov/Validation.h"
 #include "cherepanov/MCStudy.h"
 #include "cherepanov/ThreeMu.h"
-#include "cherepanov/TMVATree.h"
-#include "cherepanov/AnalysisWithTMVA.h"
-#include "cherepanov/DimuTrk.h"
 #include "cherepanov/DsToPhiPi.h"
 #endif
 
@@ -90,9 +87,6 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
   else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
-  else if(Analysis.Contains("tmvatree"))s=new TMVATree(Analysis,UncertType);
-  else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
   else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
 
 
