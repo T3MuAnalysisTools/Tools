@@ -30,7 +30,7 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Muon1TrkdR;
   std::vector<TH1D> Muon2TrkdR;
   std::vector<TH1D> PhiMass;
-  std::vector<TH1D> TripleMass;
+  std::vector<TH1D> PhiPlusTrackMass;
   std::vector<TH2D> PhiMassVsDsMass;
   std::vector<TH1D> Category;
 

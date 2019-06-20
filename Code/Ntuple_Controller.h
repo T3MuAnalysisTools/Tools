@@ -373,7 +373,8 @@ class Ntuple_Controller{
 
    float      Isolation05_RelPt(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(0);}
    float      Isolation05_NTracks(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(1);}
-   float      Isolation05_MinDist(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(2);}
+   float      Isolation_MinDist(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(2);}
+   float      Isolation_MinDist05(unsigned int i){return Ntp->Vertex_Isolation2->at(i).at(3);}
 
    float      Isolation_Mu1RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(0);}
    float      Isolation_Mu2RelIso(unsigned int i){return Ntp->Vertex_Isolation3->at(i).at(1);}
