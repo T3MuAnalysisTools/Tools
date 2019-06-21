@@ -62,7 +62,7 @@
 
 
 
-#ifdef USE_nimenend
+#ifdef USE_menendez
 #include "menendez/MyTest.h"
 
 #endif
@@ -142,7 +142,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #endif
 
 
-#ifdef USE_nimenend
+#ifdef USE_menendez
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 
