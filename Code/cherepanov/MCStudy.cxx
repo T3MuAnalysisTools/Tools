@@ -145,6 +145,7 @@ void  MCStudy::Configure(){
   Muon2Pt =HConfig.GetTH1D(Name+"_Muon2Pt","Muon2Pt",50,0,20,"  #mu_{2} p_{T}, GeV","Events");
   Muon3Pt =HConfig.GetTH1D(Name+"_Muon3Pt","Muon3Pt",50,0,15,"  #mu_{3} p_{T}, GeV","Events");
 
+
   Muon1isGlob =HConfig.GetTH1D(Name+"_Muon1isGlob","Muon1isGlob",2,-0.5,1.5,"  #mu_{1} is global muon","Events");
   Muon2isGlob =HConfig.GetTH1D(Name+"_Muon2isGlob","Muon2isGlob",2,-0.5,1.5,"  #mu_{2} is global muon","Events");
   Muon3isGlob =HConfig.GetTH1D(Name+"_Muon3isGlob","Muon3isGlob",2,-0.5,1.5,"  #mu_{3} is global muon","Events");
@@ -157,18 +158,28 @@ void  MCStudy::Configure(){
   Muon2isTrack =HConfig.GetTH1D(Name+"_Muon2isTrack","Muon2isTrack",2,-0.5,1.5,"  #mu_{2} is tracker muon","Events");
   Muon3isTrack =HConfig.GetTH1D(Name+"_Muon3isTrack","Muon3isTrack",2,-0.5,1.5,"  #mu_{3} is tracker muon","Events");
 
+
+
+
   Muon1Eta=HConfig.GetTH1D(Name+"_Muon1Eta","Muon1Eta",26,-2.6,2.6,"#eta(#mu_{1})","Events");
   Muon2Eta=HConfig.GetTH1D(Name+"_Muon2Eta","Muon2Eta",26,-2.6,2.6,"#eta(#mu_{2})","Events");
   Muon3Eta=HConfig.GetTH1D(Name+"_Muon3Eta","Muon3Eta",26,-2.6,2.6,"#eta(#mu_{3})","Events");
 
+  Muon1Eta_EtaSort=HConfig.GetTH1D(Name+"_Muon1Eta_EtaSort","Muon1Eta_EtaSort",26,-2.6,2.6,"#eta(#mu_{1})( #eta sorting)","Events");
+  Muon2Eta_EtaSort=HConfig.GetTH1D(Name+"_Muon2Eta_EtaSort","Muon2Eta_EtaSort",26,-2.6,2.6,"#eta(#mu_{2})( #eta sorting)","Events");
+  Muon3Eta_EtaSort=HConfig.GetTH1D(Name+"_Muon3Eta_EtaSort","Muon3Eta_EtaSort",26,-2.6,2.6,"#eta(#mu_{3})( #eta sorting)","Events");
+
+
+  Muon1Pt_EtaSort =HConfig.GetTH1D(Name+"_Muon1Pt_EtaSort","Muon1Pt_EtaSort",50,0,25,"  #mu_{1} p_{T}( #eta sorting), GeV","Events");
+  Muon2Pt_EtaSort =HConfig.GetTH1D(Name+"_Muon2Pt_EtaSort","Muon2Pt_EtaSort",50,0,20,"  #mu_{2} p_{T}( #eta sorting), GeV","Events");
+  Muon3Pt_EtaSort =HConfig.GetTH1D(Name+"_Muon3Pt_EtaSort","Muon3Pt_EtaSort",50,0,15,"  #mu_{3} p_{T}( #eta sorting), GeV","Events");
+
 
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
-
   
   TauMassResolutionVsEta=HConfig.GetTH2D(Name+"_TauMassResolutionVsEta","TauMassResolutionVsEta",50,-0.1,0.1,50, -2.5,2.5,"#Delta M_{#tau}  (reco - mc)/mc","#eta");
   TauMassResolutionVsPt=HConfig.GetTH2D(Name+"_TauMassResolutionVsPt","TauMassResolutionVsPt",50,-0.1,0.1,50,5,45,"#Delta M_{#tau}  (reco - mc)/mc ","p_{T}, GeV");
-
 
   TauMassResolutionVsMu1Eta=HConfig.GetTH2D(Name+"_TauMassResolutionVsMu1Eta","TauMassResolutionVsMu1Eta",50,-0.1,0.1,50, -2.5,2.5,"#Delta M_{#tau}  (reco - mc)/mc","#mu_1 #eta");
   TauMassResolutionVsMu1Pt=HConfig.GetTH2D(Name+"_TauMassResolutionVsMu1Pt","TauMassResolutionVsMu1Pt",50,-0.1,0.1,50,5,45,"#Delta M_{#tau}  (reco - mc)/mc ","#mu_1 p_{T}, GeV");
@@ -179,12 +190,23 @@ void  MCStudy::Configure(){
   TauMassResolutionVsMu3Eta=HConfig.GetTH2D(Name+"_TauMassResolutionVsMu3Eta","TauMassResolutionVsMu3Eta",50,-0.1,0.1,50, -2.5,2.5,"#Delta M_{#tau}  (reco - mc)/mc","#mu_3 #eta");
   TauMassResolutionVsMu3Pt=HConfig.GetTH2D(Name+"_TauMassResolutionVsMu3Pt","TauMassResolutionVsMu3Pt",50,-0.1,0.1,50,5,45,"#Delta M_{#tau}  (reco - mc)/mc ","#mu_3 p_{T}, GeV");
 
-
-
-
   Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
   Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{2} #Delta R","Events");
   Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{3} #Delta R","Events");
+
+  PETauMassResolution_Pt = HConfig.GetTH1D(Name+"_PETauMassResolution_Pt","PETauMassResolution_Pt",50,0,0.02,"#frac{#Delta m}{m} (pt)","Events");
+  PETauMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_PETauMassResolution_PtEtaPhi","PETauMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
+  
+
+  PETauMassResVsMu1Pt=HConfig.GetTH2D(Name+"_PETauMassResVsMu1Pt","PETauMassResVsMu1Pt",50,0,0.02,50,0,25,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_1 p_{T}, GeV");
+  PETauMassResVsMu2Pt=HConfig.GetTH2D(Name+"_PETauMassResVsMu2Pt","PETauMassResVsMu2Pt",50,0,0.02,50,0,20,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_2 p_{T}, GeV");
+  PETauMassResVsMu3Pt=HConfig.GetTH2D(Name+"_PETauMassResVsMu3Pt","PETauMassResVsMu3Pt",50,0,0.02,50,0,15,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_3 p_{T}, GeV");
+
+
+  PETauMassResVsMu1Eta=HConfig.GetTH2D(Name+"_PETauMassResVsMu1Eta","PETauMassResVsMu1Eta",50,0,0.02,50,-2.5,2.5,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_1 #eta");
+  PETauMassResVsMu2Eta=HConfig.GetTH2D(Name+"_PETauMassResVsMu2Eta","PETauMassResVsMu2Eta",50,0,0.02,50,-2.5,2.5,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_2 #eta");
+  PETauMassResVsMu3Eta=HConfig.GetTH2D(Name+"_PETauMassResVsMu3Eta","PETauMassResVsMu3Eta",50,0,0.02,50,-2.5,2.5,"#frac{#Delta m}{m} (ptEtaPhi)","#mu_3 #eta");
+
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -243,7 +265,27 @@ void  MCStudy::Store_ExtraDist(){
   Extradist2d.push_back(&TauMassResolutionVsMu3Pt);
 
 
+  Extradist1d.push_back(&Muon1Eta_EtaSort);
+  Extradist1d.push_back(&Muon2Eta_EtaSort);
+  Extradist1d.push_back(&Muon3Eta_EtaSort);
+  Extradist1d.push_back(&Muon1Pt_EtaSort);
+  Extradist1d.push_back(&Muon2Pt_EtaSort);
+  Extradist1d.push_back(&Muon3Pt_EtaSort);
 
+
+
+  Extradist1d.push_back(&PETauMassResolution_Pt);
+  Extradist1d.push_back(&PETauMassResolution_PtEtaPhi);
+  
+
+  Extradist2d.push_back(&PETauMassResVsMu1Pt);
+  Extradist2d.push_back(&PETauMassResVsMu2Pt);
+  Extradist2d.push_back(&PETauMassResVsMu3Pt);
+
+
+  Extradist2d.push_back(&PETauMassResVsMu1Eta);
+  Extradist2d.push_back(&PETauMassResVsMu2Eta);
+  Extradist2d.push_back(&PETauMassResVsMu3Eta);
 
 
 
@@ -281,6 +323,8 @@ void  MCStudy::doEvent(){
     unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
     unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
     //
+
+
     value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
     			Ntp->Muon_isTrackerMuon(mu3_pt_idx));
@@ -343,10 +387,24 @@ void  MCStudy::doEvent(){
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
 
+
+
     TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
+
+    unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+    unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+    unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+
     
+    TLorentzVector Muon1EtaLV = Ntp->Muon_P4(Muon_Eta_index_1);
+    TLorentzVector Muon2EtaLV = Ntp->Muon_P4(Muon_Eta_index_2);
+    TLorentzVector Muon3EtaLV = Ntp->Muon_P4(Muon_Eta_index_3);
+
+
+
+
     vector<unsigned int> idx_vec;
 
     idx_vec.push_back(Muon_index_1);
@@ -371,6 +429,20 @@ void  MCStudy::doEvent(){
     Muon1Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),1);
     Muon2Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),1);
     Muon3Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),1);
+
+
+
+
+
+    Muon1Eta_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_1).Eta(),1);
+    Muon2Eta_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_2).Eta(),1);
+    Muon3Eta_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_3).Eta(),1);
+    Muon1Pt_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_1).Pt(),1);
+    Muon2Pt_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_2).Pt(),1);
+    Muon3Pt_EtaSort.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_3).Pt(),1);
+
+    //    std::cout<<"  "<< Ntp->Muon_P4(Muon_Eta_index_1).Eta()<<"  "<< Ntp->Muon_P4(Muon_Eta_index_2).Eta()<< "  "<< Ntp->Muon_P4(Muon_Eta_index_3).Eta() << std::endl;
+
 
     TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
 
@@ -401,9 +473,28 @@ void  MCStudy::doEvent(){
 
 
 
-	std::cout<<"pT   "<< Ntp->Muon_P4(Muon_index_1).Pt() << "   " << Ntp-> Muon_ptError(Muon_index_1) <<"   |  eta  " <<  Ntp->Muon_P4(Muon_index_1).Eta()  << "    "<< Ntp->Muon_etaError()Muon_index_1<< std::endl;
+	std::vector<unsigned int> EtaSortedIndices;
+	
+	EtaSortedIndices.push_back(Muon_Eta_index_1);
+	EtaSortedIndices.push_back(Muon_Eta_index_2);
+	EtaSortedIndices.push_back(Muon_Eta_index_3);
+	
+	Ntp->TauMassResolution(EtaSortedIndices,0);
+	Ntp->TauMassResolution(EtaSortedIndices,1);
+	  
+
+	PETauMassResolution_Pt.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,0)/TauLV.M(),w);
+	PETauMassResolution_PtEtaPhi.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),w);
 
 
+	PETauMassResVsMu1Pt.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_index_1).Pt());
+	PETauMassResVsMu2Pt.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_index_2).Pt());
+	PETauMassResVsMu3Pt.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_index_3).Pt());
+
+
+	PETauMassResVsMu1Eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_Eta_index_1).Eta());
+	PETauMassResVsMu2Eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_Eta_index_2).Eta());
+	PETauMassResVsMu3Eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M(),Ntp->Muon_P4(Muon_Eta_index_3).Eta());
 
 
 	TauMassResolutionVsMu1Eta.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),MCMuon1LV.Eta(),w);

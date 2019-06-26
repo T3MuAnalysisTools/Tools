@@ -37,6 +37,12 @@ class MCStudy : public Selection {
   std::vector<TH1D> Muon2Eta;
   std::vector<TH1D> Muon3Eta;
 
+  std::vector<TH1D>   Muon1Eta_EtaSort;
+  std::vector<TH1D>   Muon2Eta_EtaSort;
+  std::vector<TH1D>   Muon3Eta_EtaSort;
+  std::vector<TH1D>   Muon1Pt_EtaSort;
+  std::vector<TH1D>   Muon2Pt_EtaSort;
+  std::vector<TH1D>   Muon3Pt_EtaSort;
 
 
   std::vector<TH1D> TauMassResolution;
@@ -79,6 +85,19 @@ class MCStudy : public Selection {
   std::vector<TH2D> TauMassResolutionVsMu3Eta;
   std::vector<TH2D> TauMassResolutionVsMu3Pt;
 
+
+  std::vector<TH1D> PETauMassResolution_Pt;
+  std::vector<TH1D> PETauMassResolution_PtEtaPhi;
+
+
+  std::vector<TH2D> PETauMassResVsMu1Pt;
+  std::vector<TH2D> PETauMassResVsMu2Pt;
+  std::vector<TH2D> PETauMassResVsMu3Pt;
+
+
+  std::vector<TH2D> PETauMassResVsMu1Eta;
+  std::vector<TH2D> PETauMassResVsMu2Eta;
+  std::vector<TH2D> PETauMassResVsMu3Eta;
 
 
 

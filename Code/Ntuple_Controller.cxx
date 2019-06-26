@@ -435,7 +435,80 @@ std::vector<unsigned int> Ntuple_Controller::SortedEtaMuons(std::vector<unsigned
 }
 
 
+double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, int type){ // type = 0 - only pt propagation; type = 1 - indluding direction
 
+  TLorentzVector Mu1 = Muon_P4(indices.at(0));
+  TLorentzVector Mu2 = Muon_P4(indices.at(1));
+  TLorentzVector Mu3 = Muon_P4(indices.at(2));
+  TLorentzVector Tau = Mu1 + Mu2 + Mu3;
+
+  TLorentzVector Mu1_deltaPt(0,0,0,0);
+  TLorentzVector Mu2_deltaPt(0,0,0,0);
+  TLorentzVector Mu3_deltaPt(0,0,0,0);
+
+  TLorentzVector Mu1_deltaEta(0,0,0,0);
+  TLorentzVector Mu2_deltaEta(0,0,0,0);
+  TLorentzVector Mu3_deltaEta(0,0,0,0);
+
+  TLorentzVector Mu1_deltaPhi(0,0,0,0);
+  TLorentzVector Mu2_deltaPhi(0,0,0,0);
+  TLorentzVector Mu3_deltaPhi(0,0,0,0);
+
+
+  Mu1_deltaPt.SetPtEtaPhiM(Mu1.Pt() + Muon_ptError(indices.at(0)),Mu1.Eta(), Mu1.Phi(), Mu1.M());
+  Mu2_deltaPt.SetPtEtaPhiM(Mu2.Pt() + Muon_ptError(indices.at(1)),Mu2.Eta(), Mu2.Phi(), Mu2.M());
+  Mu3_deltaPt.SetPtEtaPhiM(Mu3.Pt() + Muon_ptError(indices.at(2)),Mu3.Eta(), Mu3.Phi(), Mu3.M());
+
+
+  Mu1_deltaEta.SetPtEtaPhiM(Mu1.Pt(),Mu1.Eta()  + Muon_etaError(indices.at(0)), Mu1.Phi(), Mu1.M());
+  Mu2_deltaEta.SetPtEtaPhiM(Mu2.Pt(),Mu2.Eta()  + Muon_etaError(indices.at(1)), Mu2.Phi(), Mu2.M());
+  Mu3_deltaEta.SetPtEtaPhiM(Mu3.Pt(),Mu3.Eta()  + Muon_etaError(indices.at(2)), Mu3.Phi(), Mu3.M());
+
+
+  Mu1_deltaPhi.SetPtEtaPhiM(Mu1.Pt(), Mu1.Eta(), Mu1.Phi() + Muon_etaError(indices.at(0)), Mu1.M());
+  Mu2_deltaPhi.SetPtEtaPhiM(Mu2.Pt(), Mu2.Eta(), Mu2.Phi() + Muon_etaError(indices.at(1)), Mu2.M());
+  Mu3_deltaPhi.SetPtEtaPhiM(Mu3.Pt(), Mu3.Eta(), Mu3.Phi() + Muon_etaError(indices.at(2)), Mu3.M());
+
+
+  TLorentzVector Tau_Mu1PtUp = Mu1_deltaPt + Mu2 + Mu3;
+  TLorentzVector Tau_Mu2PtUp = Mu1 + Mu2_deltaPt + Mu3;
+  TLorentzVector Tau_Mu3PtUp = Mu1 + Mu2 + Mu3_deltaPt;
+
+  TLorentzVector Tau_Mu1EtaUp = Mu1_deltaEta + Mu2 + Mu3;
+  TLorentzVector Tau_Mu2EtaUp = Mu1 + Mu2_deltaEta + Mu3;
+  TLorentzVector Tau_Mu3EtaUp = Mu1 + Mu2 + Mu3_deltaEta;
+
+  TLorentzVector Tau_Mu1PhiUp = Mu1_deltaPhi + Mu2 + Mu3;
+  TLorentzVector Tau_Mu2PhiUp = Mu1 + Mu2_deltaPhi + Mu3;
+  TLorentzVector Tau_Mu3PhiUp = Mu1 + Mu2 + Mu3_deltaPhi;
+
+
+  double  deltaM_pt_1 = Tau_Mu1PtUp.M() - Tau.M();
+  double  deltaM_pt_2 = Tau_Mu2PtUp.M() - Tau.M();
+  double  deltaM_pt_3 = Tau_Mu3PtUp.M() - Tau.M();
+
+  double  deltaM_Eta_1 = Tau_Mu1EtaUp.M() - Tau.M();
+  double  deltaM_Eta_2 = Tau_Mu2EtaUp.M() - Tau.M();
+  double  deltaM_Eta_3 = Tau_Mu3EtaUp.M() - Tau.M();
+
+  double  deltaM_Phi_1 = Tau_Mu1PhiUp.M() - Tau.M();
+  double  deltaM_Phi_2 = Tau_Mu2PhiUp.M() - Tau.M();
+  double  deltaM_Phi_3 = Tau_Mu3PhiUp.M() - Tau.M();
+
+
+  double deltaTauM(0);
+  if(type == 0) 
+    deltaTauM = sqrt(deltaM_pt_1*deltaM_pt_1 + deltaM_pt_2*deltaM_pt_2 + deltaM_pt_3*deltaM_pt_3);
+
+  if(type == 1)
+    deltaTauM = sqrt(deltaM_pt_1*deltaM_pt_1 + deltaM_pt_2*deltaM_pt_2 + deltaM_pt_3*deltaM_pt_3
+		     +deltaM_Eta_1*deltaM_Eta_1 + deltaM_Eta_2*deltaM_Eta_2 + deltaM_Eta_3*deltaM_Eta_3
+		     +deltaM_Phi_1*deltaM_Phi_1 + deltaM_Phi_2*deltaM_Phi_2 + deltaM_Phi_3*deltaM_Phi_3);
+  
+
+  return deltaTauM;
+
+}
 
 
 TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i){
