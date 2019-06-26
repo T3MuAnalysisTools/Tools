@@ -388,6 +388,54 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
 
 
 
+std::vector<unsigned int> Ntuple_Controller::SortedEtaMuons(std::vector<unsigned int> indices){
+  
+  std::vector<unsigned int> out;
+  unsigned int i1,i2,i3;
+
+  double eta1 = fabs(Muon_P4(indices.at(0)).Eta());
+  double eta2 = fabs(Muon_P4(indices.at(1)).Eta());
+  double eta3 = fabs(Muon_P4(indices.at(2)).Eta());
+
+  if(eta1>eta2)
+    {
+      if(eta2>eta3)
+	{
+	  i1=indices.at(0); i2 = indices.at(1); i3 = indices.at(2);
+	}
+      else if(eta1>eta3)
+	{
+	  i1=indices.at(0); i2 = indices.at(2); i3 = indices.at(1);
+	}
+      else
+	{
+	  i1=indices.at(2); i2 = indices.at(0); i3 = indices.at(1);
+	}
+    }
+  else
+    {
+      if(eta1>eta3)
+	{
+	  i1=indices.at(1); i2 = indices.at(0); i3 = indices.at(2);
+	}
+      else if(eta2>eta3)
+	{
+	  i1=indices.at(1); i2 = indices.at(2); i3 = indices.at(0);
+	}
+      else
+	{
+	  i1=indices.at(2); i2 = indices.at(1); i3 = indices.at(0);
+	}
+    }
+  out.push_back(i1);
+  out.push_back(i2);
+  out.push_back(i3);
+
+  return out;
+}
+
+
+
 
 
 TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i){

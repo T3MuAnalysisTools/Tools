@@ -399,6 +399,13 @@ void  MCStudy::doEvent(){
 	TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2)));
 	TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
 
+
+
+	std::cout<<"pT   "<< Ntp->Muon_P4(Muon_index_1).Pt() << "   " << Ntp-> Muon_ptError(Muon_index_1) <<"   |  eta  " <<  Ntp->Muon_P4(Muon_index_1).Eta()  << "    "<< Ntp->Muon_etaError()Muon_index_1<< std::endl;
+
+
+
+
 	TauMassResolutionVsMu1Eta.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),MCMuon1LV.Eta(),w);
 	TauMassResolutionVsMu1Pt.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),MCMuon1LV.Pt(),w);
 

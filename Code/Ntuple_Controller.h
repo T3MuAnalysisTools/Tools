@@ -449,6 +449,7 @@ class Ntuple_Controller{
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
+   std::vector<unsigned int> SortedEtaMuons(std::vector<unsigned int> indixes);
 	float DsGenMatch(unsigned int tmp_idx);
 	int GENMatchedPdgId(TLorentzVector vec);
 	TLorentzVector GENMatchedLV(TLorentzVector vec);
