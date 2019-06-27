@@ -493,12 +493,9 @@ void  MCStudy::doEvent(){
 	PETauMassResVsMu2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M());
 	PETauMassResVsMu3Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M());
 
-
-
 	PETauMassResVsMu1Eta.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_1).Eta(),Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M());
 	PETauMassResVsMu2Eta.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_2).Eta(),Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M());
 	PETauMassResVsMu3Eta.at(t).Fill(Ntp->Muon_P4(Muon_Eta_index_3).Eta(),Ntp->TauMassResolution(EtaSortedIndices,1)/TauLV.M());
-
 
 	TauMassResolutionVsMu1Eta.at(t).Fill(MCMuon1LV.Eta(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
 	TauMassResolutionVsMu1Pt.at(t).Fill(MCMuon1LV.Pt(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
@@ -509,14 +506,11 @@ void  MCStudy::doEvent(){
 	TauMassResolutionVsMu3Eta.at(t).Fill(MCMuon3LV.Eta(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
 	TauMassResolutionVsMu3Pt.at(t).Fill(MCMuon3LV.Pt(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
 
-
 	TauMassResolutionVsEta.at(t).Fill(MCTauLV.Eta(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
 	TauMassResolutionVsPt.at(t).Fill(MCTauLV.Pt(),(TauLV.M() - MCTauLV.M())/MCTauLV.M());
 
-
 	TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
 	TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
-
 
 	Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
 	Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
