@@ -73,6 +73,14 @@ class MCStudy : public Selection {
   std::vector<TH1D> Muon2DRToTruth;
   std::vector<TH1D> Muon3DRToTruth;
 
+
+  std::vector<TH2D> Mu1PtvsEta;
+  std::vector<TH2D> Mu2PtvsEta;
+  std::vector<TH2D> Mu3PtvsEta;
+  std::vector<TH2D> TauPtVsEta;
+
+
+
   std::vector<TH2D> TauMassResolutionVsEta;
   std::vector<TH2D> TauMassResolutionVsPt;
 
@@ -88,7 +96,7 @@ class MCStudy : public Selection {
 
   std::vector<TH1D> PETauMassResolution_Pt;
   std::vector<TH1D> PETauMassResolution_PtEtaPhi;
-
+  std::vector<TH1D> PETauMassResolution_PtEtaPhi_RefitTracks;
 
   std::vector<TH2D> PETauMassResVsMu1Pt;
   std::vector<TH2D> PETauMassResVsMu2Pt;
@@ -100,7 +108,18 @@ class MCStudy : public Selection {
   std::vector<TH2D> PETauMassResVsMu3Eta;
 
 
+  std::vector<TH2D> Mu1PtvsPtError;
+  std::vector<TH2D> Mu2PtvsPtError;
+  std::vector<TH2D> Mu3PtvsPtError;
 
+  std::vector<TH2D> Mu1EtavsEtaError;
+  std::vector<TH2D> Mu2EtavsEtaError;
+  std::vector<TH2D> Mu3EtavsPetError;
+
+  std::vector<TH2D> Mu1PhivsPhiError;
+  std::vector<TH2D> Mu2PhivsPhiError;
+  std::vector<TH2D> Mu3PhivsPhiError;
+  std::vector<TH3F> TauMassResolutionVsPtEta;
 
 };
 #endif
