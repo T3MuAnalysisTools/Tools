@@ -435,13 +435,51 @@ std::vector<unsigned int> Ntuple_Controller::SortedEtaMuons(std::vector<unsigned
 }
 
 
-double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, int type){ // type = 0 - only pt propagation; type = 1 - indluding direction
+TLorentzVector Ntuple_Controller::MatchedLV(std::vector<TLorentzVector> list, unsigned int index){
 
-  TLorentzVector Mu1 = Muon_P4(indices.at(0));
-  TLorentzVector Mu2 = Muon_P4(indices.at(1));
-  TLorentzVector Mu3 = Muon_P4(indices.at(2));
+  TLorentzVector ToMatchLV = Muon_P4(index);
+  TLorentzVector out(0,0,0,0);
+  double dR(0.99);
+
+  for(auto &i : list){
+    if(ToMatchLV.DeltaR(i)< dR){
+      dR = ToMatchLV.DeltaR(i);
+      out = i;
+    }
+  }
+  
+  return out;
+}
+
+	
+
+double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, int type, bool UseRefited=true){ // type = 0 - only pt propagation; type = 1 - indluding direction
+
+
+  std::vector<TLorentzVector > listRefited;
+  unsigned int final_idx = 0;
+  listRefited.push_back(Vertex_signal_KF_refittedTracksP4(final_idx,0));
+  listRefited.push_back(Vertex_signal_KF_refittedTracksP4(final_idx,1));
+  listRefited.push_back(Vertex_signal_KF_refittedTracksP4(final_idx,2));
+
+  TLorentzVector Mu1(0,0,0,0);
+  TLorentzVector Mu2(0,0,0,0);
+  TLorentzVector Mu3(0,0,0,0);
+
+
+  if(UseRefited){
+    Mu1=MatchedLV(listRefited,indices.at(0));
+    Mu2=MatchedLV(listRefited,indices.at(1));
+    Mu3=MatchedLV(listRefited,indices.at(2));
+  } else {
+
+    Mu1 = Muon_P4(indices.at(0));
+    Mu2 = Muon_P4(indices.at(1));
+    Mu3 = Muon_P4(indices.at(2));
+ 
+  }
+
   TLorentzVector Tau = Mu1 + Mu2 + Mu3;
-
   TLorentzVector Mu1_deltaPt(0,0,0,0);
   TLorentzVector Mu2_deltaPt(0,0,0,0);
   TLorentzVector Mu3_deltaPt(0,0,0,0);
@@ -506,7 +544,7 @@ double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, 
 		     +deltaM_Phi_1*deltaM_Phi_1 + deltaM_Phi_2*deltaM_Phi_2 + deltaM_Phi_3*deltaM_Phi_3);
   
 
-  return deltaTauM;
+  return deltaTauM/Tau.M();
 
 }
 
