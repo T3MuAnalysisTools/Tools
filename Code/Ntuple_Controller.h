@@ -449,10 +449,14 @@ class Ntuple_Controller{
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
-	float DsGenMatch(unsigned int tmp_idx);
-	int GENMatchedPdgId(TLorentzVector vec);
-	TLorentzVector GENMatchedLV(TLorentzVector vec);
-	double deltaR(double eta1, double phi1, double eta2, double phi2); 
+   std::vector<unsigned int> SortedEtaMuons(std::vector<unsigned int> indixes);
+   double TauMassResolution(std::vector<unsigned int>  indices, int type, bool UseRefited); // type = 0 - only pt propagation; type = 1 - indluding direction
+   TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
+
+   float DsGenMatch(unsigned int tmp_idx);
+   int GENMatchedPdgId(TLorentzVector vec);
+   TLorentzVector GENMatchedLV(TLorentzVector vec);
+   double deltaR(double eta1, double phi1, double eta2, double phi2); 
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
    std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);

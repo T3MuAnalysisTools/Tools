@@ -24,6 +24,7 @@
 #include "joshi/trkMuIdCuts.h"
 #include "joshi/glbMuIdCuts.h"
 #include "joshi/softMuIdCuts.h"
+#include "joshi/TripleMuIsolation.h"
 
 #include "joshi/TMVATree_1.h"
 #include "joshi/TMVATree_2.h"
@@ -62,7 +63,7 @@
 
 
 
-#ifdef USE_nimenend
+#ifdef USE_menendez
 #include "menendez/MyTest.h"
 #include "menendez/DsToPhiPi.h"
 #endif
@@ -97,7 +98,8 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
-  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); // two global and one tracker id cuts
+  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); //  three mu id cuts
+  else if(Analysis.Contains("triplemuisolation"))s=new TripleMuIsolation(Analysis,UncertType); // calorimeter isolation variables 
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("glbmuidcuts"))s=new glbMuIdCuts(Analysis,UncertType);
@@ -142,7 +144,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #endif
 
 
-#ifdef USE_nimenend
+#ifdef USE_menendez
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
 #endif
