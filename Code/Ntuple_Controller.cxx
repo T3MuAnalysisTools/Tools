@@ -279,8 +279,8 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 	float ds_dR = 999.0;
 
 	if (tmp_idx>=NTwoMuonsTrack()) {
-		cout<<"Index out of rangei"<<endl;
-		return 999.0;
+		cout<<"Index out of range!"<<endl;
+		return ds_dR;
 		}
    
    for (unsigned int ngen=0; ngen<NMCSignalParticles(); ngen++){
@@ -305,7 +305,7 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
             if(fabs(MCSignalParticle_childpdgid(ngen,nchild))==211){
                unsigned int tmp_track_idx = TwoMuonsTrackTrackIndex(tmp_idx).at(0);
                float dR = Track_P4(tmp_track_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild));
-               if (dR<0.05 && dR<tmp_pi_dR) { 
+               if (dR<0.01 && dR<tmp_pi_dR) { 
                   dspi_flag = 1;
 						tmp_pi_dR = dR;
 						tmp_pi_p4 = MCSignalParticle_child_p4(ngen,nchild);
@@ -318,7 +318,7 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
                 unsigned int tmp_mu1_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(0);
                 unsigned int tmp_mu2_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(1);
                 float dR = MCSignalParticle_child_p4(ngen,nchild).DeltaR(Muon_P4(tmp_mu1_idx)+Muon_P4(tmp_mu2_idx));
-                if (dR<0.05 && dR<tmp_phi_dR) { 
+                if (dR<0.01 && dR<tmp_phi_dR) { 
                   dsphi_flag = 1;
 					 	tmp_phi_dR = dR;
 						tmp_phi_p4 = MCSignalParticle_child_p4(ngen,nchild);
@@ -340,6 +340,81 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 
 //-------------------------- --------------------------------- -------------------
 
+//-------------------------- Match GEN Ds to 2mu+trk candidate -------------------
+// Return true if the Ds is a prompt one (doesn't come from B+, B0, Bs decays)
+bool Ntuple_Controller::isPromptDs(unsigned int idx){
+	// Check if the candidate is a prompt Ds
+	bool isPrompt = true;
+	if (tmp_idx>=NTwoMuonsTrack()) {
+	cout<<"Index out of range"<<endl;
+	return flase;
+	}
+
+	for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
+		if (!(fabs(MCSignalParticle_pdgid(ngen))==431)) continue; // Check if GEN particle is a Ds
+		if (!(DsGenMatch(idx)<0.01)) continue; // Match the candidate to the GEN particle
+		for (unsigned int nmom=0; nmom<MCSignalParticle_Nmoms; ++nmom){
+			if ( (abs(MCSignalParticle_mompdgid(nmom))==511) || (abs(MCSignalParticle_mompdgid(nmom))==521) || (abs(MCSignalParticle_mom_pdgid)==531)) isPrompt = false;
+		}
+	}
+
+	return isPrompt;
+}
+//-------------------------- --------------------------------- -------------------
+
+//-------------------------- Match Tau3Mu candidates to Taus -------------------
+
+float Ntuple_Controller::TauGenMatch(unsigned int tmp_idx){
+
+   float tau_dR = 999.0;
+
+	if (tmp_idx>=NThreeMuons()){
+		cout<<"Index out of range!"<<endl;
+		return tau_dR;
+	}
+
+	for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
+	   
+		if (!(fabs(MCSignalParticle_pdgid(ngen))==15)) continue;
+
+		int mu1_idx = ThreeMuonsIndices(tmp_idx).at(0);
+		int mu2_idx = ThreeMuonsIndices(tmp_idx).at(1);
+		int mu3_idx = ThreeMuonsIndices(tmp_idx).at(2);
+
+		int gen_mu1_idx = -1, gen_mu2_idx = -1, gen_mu3_idx = -1;
+
+
+		bool mu1_match = false;
+		bool mu2_match = false;
+		bool mu3_match = false;
+
+		float tmp_dR = 999.0
+
+      for (int nchild=0; nchild<MCSignalParticle_Nchilds(ngen); nchild++){
+		   
+			if (Muon_P4(mu1_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu1_match) {
+				mu1_match = true;
+				gen_mu1_idx = nchild;
+				}
+			if (Muon_P4(mu2_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu2_match) {
+				mu2_match = true;
+				gen_mu2_idx = nchild;
+				}
+			if (Muon_P4(mu3_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu3_match) {
+				mu3_match = true;
+				gen_mu3_idx = nchild;
+				}
+		   }
+		
+		if (mu1_match && mu2_match && mu3_match) {
+		tmp_dR = MCSignalParticle_child_p4(ngen,gen_mu1_idx)+MCSignalParticle_child_p4(ngen,gen_mu2_idx)+MCSignalParticle_child_p4(ngen,gen_mu3_idx);
+		if (tmp_dR<tau_dR) tau_dR = tmp_dR;
+	}
+
+   return tau_dR;
+}
+
+//-------------------------- --------------------------------- -------------------
 std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned int> indices){
   
   std::vector<unsigned int> out;

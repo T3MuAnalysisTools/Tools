@@ -454,6 +454,8 @@ class Ntuple_Controller{
    TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
 
    float DsGenMatch(unsigned int tmp_idx);
+	float tauGenMatch(unsigned int tmp_idx);
+	bool isPromptDs(unsigned int idx);
    int GENMatchedPdgId(TLorentzVector vec);
    TLorentzVector GENMatchedLV(TLorentzVector vec);
    double deltaR(double eta1, double phi1, double eta2, double phi2); 
