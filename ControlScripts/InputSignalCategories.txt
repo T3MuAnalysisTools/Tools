@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/Histo.txt
+Analysis: SignalCategories
+UncertType: default
+SkimInfo: InputData/SkimSummary.log
+Lumi: 1
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
