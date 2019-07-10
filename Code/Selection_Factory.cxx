@@ -8,6 +8,9 @@
 #include "cherepanov/MCStudy.h"
 #include "cherepanov/ThreeMu.h"
 #include "cherepanov/DsToPhiPi.h"
+
+#include "cherepanov/SignalCategories.h"
+
 #endif
 
 
@@ -90,6 +93,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
   else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
+  else if(Analysis.Contains("signalcategories"))s=new SignalCategories(Analysis,UncertType);
 
 
 
