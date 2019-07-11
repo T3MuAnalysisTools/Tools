@@ -345,9 +345,10 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 bool Ntuple_Controller::isPromptDs(unsigned int idx){
 	// Check if the candidate is a prompt Ds
 	bool isPrompt = true;
-	if (tmp_idx>=NTwoMuonsTrack()) {
+/*
+	if (idx>=NTwoMuonsTrack()) {
 	cout<<"Index out of range"<<endl;
-	return flase;
+	return false;
 	}
 
 	for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
@@ -357,7 +358,7 @@ bool Ntuple_Controller::isPromptDs(unsigned int idx){
 			if ( (abs(MCSignalParticle_mompdgid(nmom))==511) || (abs(MCSignalParticle_mompdgid(nmom))==521) || (abs(MCSignalParticle_mom_pdgid)==531)) isPrompt = false;
 		}
 	}
-
+*/
 	return isPrompt;
 }
 //-------------------------- --------------------------------- -------------------
@@ -372,43 +373,46 @@ float Ntuple_Controller::TauGenMatch(unsigned int tmp_idx){
 		cout<<"Index out of range!"<<endl;
 		return tau_dR;
 	}
+	
+	int mu1_idx = ThreeMuonIndices(tmp_idx).at(0);
+	int mu2_idx = ThreeMuonIndices(tmp_idx).at(1);
+	int mu3_idx = ThreeMuonIndices(tmp_idx).at(2);
+
+	TLorentzVector tau_p4 = Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Muon_P4(mu3_idx);
 
 	for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
 	   
 		if (!(fabs(MCSignalParticle_pdgid(ngen))==15)) continue;
 
-		int mu1_idx = ThreeMuonsIndices(tmp_idx).at(0);
-		int mu2_idx = ThreeMuonsIndices(tmp_idx).at(1);
-		int mu3_idx = ThreeMuonsIndices(tmp_idx).at(2);
-
 		int gen_mu1_idx = -1, gen_mu2_idx = -1, gen_mu3_idx = -1;
-
 
 		bool mu1_match = false;
 		bool mu2_match = false;
 		bool mu3_match = false;
 
-		float tmp_dR = 999.0
+		float tmp_dR = 999.0;
 
       for (int nchild=0; nchild<MCSignalParticle_Nchilds(ngen); nchild++){
 		   
-			if (Muon_P4(mu1_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu1_match) {
+			if (Muon_P4(mu1_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu1_match) {
 				mu1_match = true;
 				gen_mu1_idx = nchild;
 				}
-			if (Muon_P4(mu2_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu2_match) {
+			if (Muon_P4(mu2_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu2_match) {
 				mu2_match = true;
 				gen_mu2_idx = nchild;
 				}
-			if (Muon_P4(mu3_idx).DeltaR(MCParticle_child_p4(ngen,nchild))<0.01 && !mu3_match) {
+			if (Muon_P4(mu3_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu3_match) {
 				mu3_match = true;
 				gen_mu3_idx = nchild;
 				}
 		   }
 		
 		if (mu1_match && mu2_match && mu3_match) {
-		tmp_dR = MCSignalParticle_child_p4(ngen,gen_mu1_idx)+MCSignalParticle_child_p4(ngen,gen_mu2_idx)+MCSignalParticle_child_p4(ngen,gen_mu3_idx);
+		TLorentzVector gen_tau_p4 = (MCSignalParticle_child_p4(ngen,gen_mu1_idx)+MCSignalParticle_child_p4(ngen,gen_mu2_idx)+MCSignalParticle_child_p4(ngen,gen_mu3_idx));
+		tmp_dR = gen_tau_p4.DeltaR(tau_p4);
 		if (tmp_dR<tau_dR) tau_dR = tmp_dR;
+		}
 	}
 
    return tau_dR;
