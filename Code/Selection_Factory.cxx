@@ -21,6 +21,7 @@
 #include "joshi/ThreeMu.h"
 #include "joshi/TMVASignal.h"
 #include "joshi/AnalysisWithTMVA.h"
+#include "joshi/NewTMVAVars.h"
 #include "joshi/MCEfficiency.h"
 #include "joshi/twoGlbOneLooseMuIdCuts.h"
 #include "joshi/looseMuIdCuts.h"
@@ -106,6 +107,8 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("triplemuisolation"))s=new TripleMuIsolation(Analysis,UncertType); // calorimeter isolation variables 
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("newtmvavars"))s=new NewTMVAVars(Analysis,UncertType);
+
   else if(Analysis.Contains("glbmuidcuts"))s=new glbMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("loosemuidcuts"))s=new looseMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("softmuidcuts"))s=new softMuIdCuts(Analysis,UncertType);
