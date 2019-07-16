@@ -13,7 +13,9 @@ NewTMVAVars::NewTMVAVars(TString Name_, TString id_):
     tauMinMass_(1.731),
     tauMaxMass_(1.823),
     tauMinSideBand_(1.6),
-    tauMaxSideBand_(2.0)
+    tauMaxSideBand_(2.0),
+	 tauMassResCutLow(0.007),
+	 tauMassResCutHigh(0.01)
 {
     // This is a class constructor;
 }
@@ -31,6 +33,8 @@ NewTMVAVars::~NewTMVAVars(){
 void  NewTMVAVars::Configure(){
     // Set tree branches
 	 TMVA_Tree= new TTree("tree","tree");
+	 TMVA_Tree->Branch("MC",&MC);
+	 TMVA_Tree->Branch("category",&category);
 	 TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2);
     TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle);
   	 TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
@@ -309,7 +313,14 @@ void  NewTMVAVars::doEvent(){
       unsigned int Muon_index_2 =  Ntp->ThreeMuonIndices(final_idx).at(1);
       unsigned int Muon_index_3 =  Ntp->ThreeMuonIndices(final_idx).at(2);
 
-      TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
+		std::vector<unsigned int> indices;
+		indices.push_back(Muon_index_1);
+		indices.push_back(Muon_index_2);
+		indices.push_back(Muon_index_3);
+
+		float tauMassRes = Ntp->TauMassResolution(indices,1,1);
+      
+		TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
       TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
       TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
       TLorentzVector TauLV = Muon1LV+Muon2LV+Muon3LV;
@@ -353,16 +364,22 @@ void  NewTMVAVars::doEvent(){
  	 var_mu3d0VertexSig = Ntp->Vertex_d0sig_reco(final_idx,2);
 	 var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
 
-/*
-	 cout<<" ---- Muon_segmentCompatibility ----"<<endl;
-	 cout<<Ntp->Muon_segmentCompatibility(Muon_index_1)<<endl;
-	 cout<<Ntp->Muon_segmentCompatibility(Muon_index_2)<<endl;
-	 cout<<Ntp->Muon_segmentCompatibility(Muon_index_3)<<endl;
-*/	 
+	 if (id==1) MC=0;
+	 else  MC=1;
+	 
+	 if (id==1){
+		 	if (tauMassRes<tauMassResCutLow && value.at(ThreeMuMass)<PDG_Var::Tau_mass()) category = 1;
+		 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh && value.at(ThreeMuMass)<PDG_Var::Tau_mass()) category = 2;
+		 	if (tauMassRes>tauMassResCutHigh && value.at(ThreeMuMass)<PDG_Var::Tau_mass()) category = 3;
+		 	if (tauMassRes<tauMassResCutLow && value.at(ThreeMuMass)>PDG_Var::Tau_mass()) category = 4;
+		 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh && value.at(ThreeMuMass)>PDG_Var::Tau_mass()) category = 5;
+		 	if (tauMassRes>tauMassResCutHigh && value.at(ThreeMuMass)>PDG_Var::Tau_mass()) category = 6;
+		 }
+	 else category = 0;
 	 if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
-   	 
-		 TMVA_Tree->Fill();
-   	 
+	 	
+		TMVA_Tree->Fill();
+
 		 // ----- Fill the histograms -----
     	 VertexDCAMax.at(t).Fill(var_maxdca,w);
 		 SVPVTauDirAngle.at(t).Fill(var_svpvTauAngle);
@@ -390,13 +407,26 @@ void  NewTMVAVars::doEvent(){
 
 
 void  NewTMVAVars::Finish(){
-   if(mode == RECONSTRUCT){
-    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-      double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/3;
-      ScaleAllHistOfType(i,scale);
-    }
-   }
+ 
+  if(mode == RECONSTRUCT){
+    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+    int id(Ntp->GetMCID());
+    double scale(1.);
+    double scaleDsTau(0.637);
+    double scaleBpTau(0.262);
+    double scaleB0Tau(0.099);
+
+    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
+    ScaleAllHistOfType(2,scale*scaleDsTau);
+    
+    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
+    ScaleAllHistOfType(3,scale*scaleB0Tau);
+
+    if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
+    ScaleAllHistOfType(4,scale*scaleBpTau);
+
+    //    }
+  }
     file= new TFile("NewTMVAVarsInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 

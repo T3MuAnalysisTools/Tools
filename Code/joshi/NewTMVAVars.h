@@ -22,11 +22,11 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   TFile * file;
   TTree * TMVA_Tree;
 
-
  private:
   // Selection Variables
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
+  double tauMassResCutLow, tauMassResCutHigh;
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
   std::vector<TH1D> MuonsPt;
@@ -53,7 +53,9 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   std::vector<TH1D> Isolation_maxdxy;
   std::vector<TH1D> VertexMu3D0SigReco;
   std::vector<TH1D> VertexDCAMax;
-  
+ 
+ bool MC;
+ int category;
  float var_vertexKFChi2 ;
  float var_svpvTauAngle ;
  float var_flightLenSig ;
