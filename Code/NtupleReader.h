@@ -176,7 +176,11 @@ public :
    Bool_t          MC_isReco;
    std::vector<std::vector<double> > *MCSignalParticle_p4;
    std::vector<int>     *MCSignalParticle_pdgid;
+   std::vector<std::vector<int> >   *MCSignalParticle_Sourcepdgid;
+   std::vector<std::vector<std::vector<double> > > *MCSignalParticle_Sourcep4;
+
    std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
+
    std::vector<std::vector<std::vector<double> > > *MCSignalParticle_childp4;
    std::vector<int>     *MCSignalParticle_charge;
    std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
@@ -370,6 +374,10 @@ public :
 
    TBranch        *b_MCSignalParticle_p4;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
+
+   TBranch        *b_MCSignalParticle_Sourcepdgid;    //!
+   TBranch        *b_MCSignalParticle_Sourcep4;    //!
+
    TBranch        *b_MCSignalParticle_childpdgid;   //!
    TBranch        *b_MCSignalParticle_childp4;   //!
    TBranch        *b_MCSignalParticle_charge;   //!
@@ -631,6 +639,9 @@ void NtupleReader::Init(TTree *tree)
   
    MCSignalParticle_p4 = 0;
    MCSignalParticle_pdgid = 0;
+   MCSignalParticle_Sourcepdgid = 0;
+   MCSignalParticle_Sourcep4 = 0;
+
    MCSignalParticle_childpdgid = 0;
    MCSignalParticle_childp4 = 0;
    MCSignalParticle_charge = 0;
@@ -830,6 +841,13 @@ void NtupleReader::Init(TTree *tree)
 
    fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
    fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
+
+   fChain->SetBranchAddress("MCSignalParticle_Sourcepdgid",&MCSignalParticle_Sourcepdgid, &b_MCSignalParticle_Sourcepdgid);
+   fChain->SetBranchAddress("MCSignalParticle_Sourcep4",&MCSignalParticle_Sourcep4, &b_MCSignalParticle_Sourcep4);
+
+
+
+
    fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
    fChain->SetBranchAddress("MCSignalParticle_childp4", &MCSignalParticle_childp4, &b_MCSignalParticle_childp4);
    fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);

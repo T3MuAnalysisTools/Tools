@@ -260,6 +260,14 @@ void  DsToPhiPi::doEvent(){
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
 
+    std::cout<<"---- "<< std::endl;
+    for(unsigned int i=0; i < Ntp->NMCSignalParticles(); i++){
+      for(unsigned int j=0; j< Ntp->NMCSignalParticleSources(i); j++){
+	std::cout<<" pdgids    " << Ntp->MCSignalParticle_pdgid(i) << "    "  << Ntp->MCSignalParticle_Sourcepdgid(i,j) <<std::endl;
+	
+      }
+    }
+    
   }
 }
 
