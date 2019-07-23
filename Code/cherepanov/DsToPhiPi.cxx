@@ -200,9 +200,9 @@ void  DsToPhiPi::doEvent(){
   }
   
 
-  pass.at(PhiMassCut) = ( value.at(PhiMassCut) > 0.95 && value.at(PhiMassCut) < 1.1);
+  pass.at(PhiMassCut) = true;//( value.at(PhiMassCut) > 0.95 && value.at(PhiMassCut) < 1.1);
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
-  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk)); 
+  pass.at(HLTOk)= true;//(value.at(HLTOk)==cut.at(HLTOk)); 
 
   double wobs=1;
   double w;  

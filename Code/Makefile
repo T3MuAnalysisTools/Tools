@@ -58,13 +58,13 @@ CINTTARGETS =
 # now include conditional options set by flags in make.inc
 
 ifdef USE_cherepanov
-	TARGETS += MyTest Validation MCStudy ThreeMu DsToPhiPi SignalCategories
+	TARGETS += MyTest Validation MCStudy ThreeMu DsToPhiPi SignalCategories SyncSignal SyncDsPhiPi
 	DEFS += -DUSE_cherepanov=1
 endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency  AnalysisWithTMVA glbMuIdCuts softMuIdCuts trkMuIdCuts twoGlbOneLooseMuIdCuts looseMuIdCuts TMVASignal TMVATree_1 TMVATree_2 TMVATree_3 TMVA_Signal_glbMuon TMVA_Signal_looseMuon TMVA_Signal_softMuon TMVA_Signal_trkMuon TMVA_Signal_twoGlbOneLooseMuon TMVA_Tree_1_glbMuon TMVA_Tree_1_looseMuon TMVA_Tree_1_softMuon TMVA_Tree_1_trkMuon TMVA_Tree_1_twoGlbOneLooseMuon TMVA_Tree_2_glbMuon TMVA_Tree_2_looseMuon TMVA_Tree_2_softMuon TMVA_Tree_2_trkMuon TMVA_Tree_2_twoGlbOneLooseMuon TMVA_Tree_3_glbMuon TMVA_Tree_3_looseMuon TMVA_Tree_3_softMuon TMVA_Tree_3_trkMuon TMVA_Tree_3_twoGlbOneLooseMuon TripleMuIsolation NewTMVAVars
+	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency  AnalysisWithTMVA glbMuIdCuts softMuIdCuts trkMuIdCuts twoGlbOneLooseMuIdCuts looseMuIdCuts TMVASignal TMVATree_1 TMVATree_2 TMVATree_3 TMVA_Signal_glbMuon TMVA_Signal_looseMuon TMVA_Signal_softMuon TMVA_Signal_trkMuon TMVA_Signal_twoGlbOneLooseMuon TMVA_Tree_1_glbMuon TMVA_Tree_1_looseMuon TMVA_Tree_1_softMuon TMVA_Tree_1_trkMuon TMVA_Tree_1_twoGlbOneLooseMuon TMVA_Tree_2_glbMuon TMVA_Tree_2_looseMuon TMVA_Tree_2_softMuon TMVA_Tree_2_trkMuon TMVA_Tree_2_twoGlbOneLooseMuon TMVA_Tree_3_glbMuon TMVA_Tree_3_looseMuon TMVA_Tree_3_softMuon TMVA_Tree_3_trkMuon TMVA_Tree_3_twoGlbOneLooseMuon TripleMuIsolation
 	DEFS += -DUSE_joshi=1
 endif
 
