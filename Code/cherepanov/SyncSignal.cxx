@@ -51,6 +51,13 @@ void  SyncSignal::Configure(){
   Sync_tree->Branch("muon_3_isTrack",&muon_3_isTrack);
 
 
+  Sync_tree->Branch("sync_ThreeMuVtx_x",&sync_ThreeMuVtx_x);
+  Sync_tree->Branch("sync_ThreeMuVtx_y",&sync_ThreeMuVtx_y);
+  Sync_tree->Branch("sync_ThreeMuVtx_z",&sync_ThreeMuVtx_z);
+  Sync_tree->Branch("sync_ThreeMuVtx_Chi2",&sync_ThreeMuVtx_Chi2);
+
+
+
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
@@ -293,6 +300,12 @@ void  SyncSignal::doEvent(){
     evt = Ntp->EventNumber();
     run = Ntp->RunNumber();
     lumi = Ntp->LuminosityBlock();
+
+    sync_ThreeMuVtx_x = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
+    sync_ThreeMuVtx_y = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
+    sync_ThreeMuVtx_z = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
+    sync_ThreeMuVtx_Chi2 = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
+
 
 
     Sync_tree->Fill();

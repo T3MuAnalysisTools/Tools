@@ -45,6 +45,13 @@ void  SyncDsPhiPi::Configure(){
   Sync_tree->Branch("run",&run);
   Sync_tree->Branch("lumi",&lumi);
 
+  Sync_tree->Branch("sync_DsPhiPiVtx_x",&sync_DsPhiPiVtx_x);
+  Sync_tree->Branch("sync_DsPhiPiVtx_y",&sync_DsPhiPiVtx_y);
+  Sync_tree->Branch("sync_DsPhiPiVtx_z",&sync_DsPhiPiVtx_z);
+  Sync_tree->Branch("sync_DsPhiPiVtx_Chi2",&sync_DsPhiPiVtx_Chi2);
+
+
+
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
@@ -119,18 +126,19 @@ void  SyncDsPhiPi::doEvent(){
   value.at(PhiMassCut) = 0;
 
   if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
-  
+ 
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
-      tmp_idx = i2M;
-      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0);
-      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1);
-      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0);
+ 
+      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
+      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(1);
+      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
       if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
 	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
 	mu1 = tmp_mu1;
 	mu2 = tmp_mu2;
 	track = tmp_track;
+	tmp_idx = i2M;
       }
     }
   value.at(PhiMassCut) =  (Ntp->Muon_P4(mu1) + Ntp->Muon_P4(mu2)).M();
@@ -177,6 +185,11 @@ void  SyncDsPhiPi::doEvent(){
     evt = Ntp->EventNumber();
     run = Ntp->RunNumber();
     lumi = Ntp->LuminosityBlock();
+
+    sync_DsPhiPiVtx_x = Ntp->Vertex_Signal_KF_pos(tmp_idx).X();
+    sync_DsPhiPiVtx_y = Ntp->Vertex_Signal_KF_pos(tmp_idx).Y();
+    sync_DsPhiPiVtx_z = Ntp->Vertex_Signal_KF_pos(tmp_idx).Z();
+    sync_DsPhiPiVtx_Chi2 = Ntp->TwoMuonsTrack_SV_Chi2(tmp_idx);
 
 
 

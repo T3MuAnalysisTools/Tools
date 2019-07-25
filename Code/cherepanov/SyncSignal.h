@@ -52,6 +52,10 @@ class SyncSignal : public Selection {
 
   double nSignalCandidates;
 
+  double sync_ThreeMuVtx_x;
+  double sync_ThreeMuVtx_y;
+  double sync_ThreeMuVtx_z;
+  double sync_ThreeMuVtx_Chi2;
 
 };
 #endif

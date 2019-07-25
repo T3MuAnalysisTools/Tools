@@ -49,6 +49,11 @@ class SyncDsPhiPi : public Selection {
 
   double evt,run,lumi;
 
+  double sync_DsPhiPiVtx_x;
+  double sync_DsPhiPiVtx_y;
+  double sync_DsPhiPiVtx_z;
+  double sync_DsPhiPiVtx_Chi2;
+
 
 
 };
