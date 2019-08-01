@@ -18,7 +18,7 @@ TripleMuIsolation::TripleMuIsolation(TString Name_, TString id_):
   // This is a class constructor;
 }
 
-TripleMuIsolation::~TripleMuIsolation){
+TripleMuIsolation::~TripleMuIsolation(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "

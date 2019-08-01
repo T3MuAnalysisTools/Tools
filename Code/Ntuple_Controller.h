@@ -422,6 +422,12 @@ class Ntuple_Controller{
    std::vector<unsigned int>  MCSignalParticle_Tauidx(unsigned int i){return Ntp->MCSignalParticle_Tauidx->at(i);}
 
 
+   int                        NMCSignalParticleSources(unsigned int i){return  Ntp->MCSignalParticle_Sourcepdgid->at(i).size();}
+   int                        MCSignalParticle_Sourcepdgid(unsigned int i, unsigned int j){return Ntp->MCSignalParticle_Sourcepdgid->at(i).at(j);}
+   TLorentzVector             MCSignalParticle_Sourcep4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->MCSignalParticle_Sourcep4->at(i).at(j).at(1), Ntp->MCSignalParticle_Sourcep4->at(i).at(j).at(2), Ntp->MCSignalParticle_Sourcep4->at(i).at(j).at(3), Ntp->MCSignalParticle_Sourcep4->at(i).at(j).at(0));}
+
+
+
    int                        MCSignalParticle_Nchilds(unsigned int i){return Ntp->MCSignalParticle_childp4->at(i).size();}
    int                        MCSignalParticle_childpdgid(unsigned int i,unsigned int j){return Ntp->MCSignalParticle_childpdgid->at(i).at(j);}
    TLorentzVector             MCSignalParticle_child_p4(unsigned int i, unsigned int j){
@@ -454,6 +460,8 @@ class Ntuple_Controller{
    TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
 
    float DsGenMatch(unsigned int tmp_idx);
+   float TauGenMatch(unsigned int tmp_idx);
+   bool isPromptDs(unsigned int idx);
    int GENMatchedPdgId(TLorentzVector vec);
    TLorentzVector GENMatchedLV(TLorentzVector vec);
    double deltaR(double eta1, double phi1, double eta2, double phi2); 
