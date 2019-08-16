@@ -654,7 +654,7 @@ if( $ARGV[0] eq "--DCache" ){
 			        $myfiletrunc=$TreeName
 			}
 		    }
-		    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+		    system(sprintf("echo \"eval `scram unsetenv -sh`; gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 		    system(sprintf("echo \"File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $Filedir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 		    $A++;

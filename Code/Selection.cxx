@@ -249,7 +249,7 @@ void Selection::Finish() {
 
 		///Now make the plots
 		Logger(Logger::Info) << "Printing Plots " << std::endl;
-		system("rm EPS/*.eps");
+		system("rm EPS/*.png");
 		Plots P;
 		P.Plot1D(Nminus1, colour, legend);
 		for (unsigned int i = 0; i < Nminus1.size(); i++) {
