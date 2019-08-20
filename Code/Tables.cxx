@@ -370,7 +370,7 @@ void Tables::AddPlots(std::vector<TString> names) {
 	output.open(Name + "Plots.tex", ios::out);
 
 	vector<TString> files;
-	string dir = "./PNG/";
+	string dir = "./EPS/";
 	DIR *dp;
 	struct dirent *dirp;
 	if ((dp = opendir(dir.c_str())) == NULL) {
@@ -390,54 +390,54 @@ void Tables::AddPlots(std::vector<TString> names) {
 			(output) << "\\clearpage \n\\section{Assorted Plots}" << std::endl;
 		for (unsigned int l = 0; l < names.size(); l++) {
 			for (unsigned int i = 0; i < files.size(); i++) {
-				if (files.at(i).Contains(".png") && files.at(i).Contains(Name)) {
+				if (files.at(i).Contains(".eps") && files.at(i).Contains(Name)) {
 					TString index = "Data_index_";
 					index += l;
-					index += ".png";
+					index += ".eps";
 					TString idxstr = "_index_";
 					idxstr += l;
 					if (j == 0 && files.at(i).Contains("Nminus1_") && files.at(i).Contains(index)) {
-						TString PNGName0 = files.at(i);
-						TString PNGName1 = PNGName0;
-						PNGName1.ReplaceAll("Nminus1", "Nminus0");
-						TString PNGName2 = PNGName0;
-						PNGName2.ReplaceAll("_index_", "_sig_index_");
-						PNGName2.ReplaceAll(idxstr, "_index_0");
-						TString PNGName3 = PNGName2;
-						PNGName3.ReplaceAll("_sig_index_", "_sigtobkg_index_");
-						TString PNGName4 = PNGName2;
-						PNGName4.ReplaceAll("_sig_index_", "_siglt_index_");
-						TString PNGName5 = PNGName2;
-						PNGName5.ReplaceAll("_sig_index_", "_sigtobkglt_index_");
-						TString PNGName6 = PNGName2;
-						PNGName6.ReplaceAll("_sig_index_", "_siggt_index_");
-						TString PNGName7 = PNGName2;
-						PNGName7.ReplaceAll("_sig_index_", "_sigtobkggt_index_");
+						TString EPSName0 = files.at(i);
+						TString EPSName1 = EPSName0;
+						EPSName1.ReplaceAll("Nminus1", "Nminus0");
+						TString EPSName2 = EPSName0;
+						EPSName2.ReplaceAll("_index_", "_sig_index_");
+						EPSName2.ReplaceAll(idxstr, "_index_0");
+						TString EPSName3 = EPSName2;
+						EPSName3.ReplaceAll("_sig_index_", "_sigtobkg_index_");
+						TString EPSName4 = EPSName2;
+						EPSName4.ReplaceAll("_sig_index_", "_siglt_index_");
+						TString EPSName5 = EPSName2;
+						EPSName5.ReplaceAll("_sig_index_", "_sigtobkglt_index_");
+						TString EPSName6 = EPSName2;
+						EPSName6.ReplaceAll("_sig_index_", "_siggt_index_");
+						TString EPSName7 = EPSName2;
+						EPSName7.ReplaceAll("_sig_index_", "_sigtobkggt_index_");
 
-						TString PNGName2dist = PNGName0;
-						PNGName2dist.ReplaceAll("Nminus1", "Nminus1dist");
-						TString PNGName3Accum = PNGName0;
-						PNGName3Accum.ReplaceAll("Nminus1", "Accumdist");
+						TString EPSName2dist = EPSName0;
+						EPSName2dist.ReplaceAll("Nminus1", "Nminus1dist");
+						TString EPSName3Accum = EPSName0;
+						EPSName3Accum.ReplaceAll("Nminus1", "Accumdist");
 
 						bool is1(false), is2(false), is3(false), is4(false), is5(false), is6(false), is7(false), is2dist(false), is3Accum(false);
 						for (unsigned int k = 0; k < files.size(); k++) {
-							if (files.at(k).Contains(PNGName1))
+							if (files.at(k).Contains(EPSName1))
 								is1 = true;
-							if (files.at(k).Contains(PNGName2))
+							if (files.at(k).Contains(EPSName2))
 								is2 = true;
-							if (files.at(k).Contains(PNGName3))
+							if (files.at(k).Contains(EPSName3))
 								is3 = true;
-							if (files.at(k).Contains(PNGName4))
+							if (files.at(k).Contains(EPSName4))
 								is4 = true;
-							if (files.at(k).Contains(PNGName5))
+							if (files.at(k).Contains(EPSName5))
 								is5 = true;
-							if (files.at(k).Contains(PNGName6))
+							if (files.at(k).Contains(EPSName6))
 								is6 = true;
-							if (files.at(k).Contains(PNGName7))
+							if (files.at(k).Contains(EPSName7))
 								is7 = true;
-							if (files.at(k).Contains(PNGName2dist))
+							if (files.at(k).Contains(EPSName2dist))
 								is2dist = true;
-							if (files.at(k).Contains(PNGName3Accum))
+							if (files.at(k).Contains(EPSName3Accum))
 								is3Accum = true;
 						}
 
@@ -445,7 +445,7 @@ void Tables::AddPlots(std::vector<TString> names) {
 						name.ReplaceAll(Name, "");
 						name.ReplaceAll(index, "");
 						name.ReplaceAll("_", " ");
-						name.ReplaceAll("Data.png", "");
+						name.ReplaceAll("Data.eps", "");
 						name.ReplaceAll("Nminus1", "");
 
 						// Default Nminus 1
@@ -469,9 +469,9 @@ void Tables::AddPlots(std::vector<TString> names) {
 						(output) << " }" << std::endl;
 						(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 						(output) << "\\begin{center}" << std::endl;
-						(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName0 << "}" << std::endl;
+						(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName0 << "}" << std::endl;
 						if (is2) {
-							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName2 << "}" << std::endl;
+							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName2 << "}" << std::endl;
 						}
 						(output) << "\\end{center}" << std::endl;
 						(output) << "\\end{minipage}" << std::endl;
@@ -479,9 +479,9 @@ void Tables::AddPlots(std::vector<TString> names) {
 							(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
 							if (is1)
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName1 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName1 << "}" << std::endl;
 							if (is3)
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName3 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName3 << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 						}
@@ -506,14 +506,14 @@ void Tables::AddPlots(std::vector<TString> names) {
 								(output) << " }" << std::endl;
 								(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 								(output) << "\\begin{center}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName4 << "}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName6 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName4 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName6 << "}" << std::endl;
 								(output) << "\\end{center}" << std::endl;
 								(output) << "\\end{minipage}" << std::endl;
 								(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 								(output) << "\\begin{center}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName5 << "}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName7 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName5 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName7 << "}" << std::endl;
 								(output) << "\\end{center}" << std::endl;
 								(output) << "\\end{minipage}" << std::endl;
 								(output) << "\\end{center}" << std::endl;
@@ -539,12 +539,12 @@ void Tables::AddPlots(std::vector<TString> names) {
 							(output) << " }" << std::endl;
 							(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
-							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName2dist << "}" << std::endl;
+							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName2dist << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 							(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
-							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName3Accum << "}" << std::endl;
+							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName3Accum << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
@@ -558,45 +558,45 @@ void Tables::AddPlots(std::vector<TString> names) {
 					} else if (j == 1 && files.at(i).Contains(idxstr) && !files.at(i).Contains("Nminus1") && !files.at(i).Contains("Nminus0") && !files.at(i).Contains("Accumdist")
 							&& !files.at(i).Contains("Nminus1dist") && !files.at(i).Contains("_log_") && !files.at(i).Contains("_sig") && !files.at(i).Contains("_sigtobkg")) {
 						Logger(Logger::Verbose) << "in File loop" << endl;
-						TString PNGName1 = files.at(i);
-						TString PNGName2 = PNGName1;
-						PNGName2.ReplaceAll("_index_", "_log_index_");
-						TString PNGName3 = PNGName2;
-						PNGName3.ReplaceAll("_log_index_", "_sig_index_");
-						TString PNGName4 = PNGName3;
-						PNGName4.ReplaceAll("_sig_index_", "_sigtobkg_index_");
-						TString PNGName5 = PNGName3;
-						PNGName5.ReplaceAll("_sig_index_", "_siglt_index_");
-						TString PNGName6 = PNGName3;
-						PNGName6.ReplaceAll("_sig_index_", "_sigtobkglt_index_");
-						TString PNGName7 = PNGName3;
-						PNGName7.ReplaceAll("_sig_index_", "_siggt_index_");
-						TString PNGName8 = PNGName3;
-						PNGName8.ReplaceAll("_sig_index_", "_sigtobkggt_index_");
+						TString EPSName1 = files.at(i);
+						TString EPSName2 = EPSName1;
+						EPSName2.ReplaceAll("_index_", "_log_index_");
+						TString EPSName3 = EPSName2;
+						EPSName3.ReplaceAll("_log_index_", "_sig_index_");
+						TString EPSName4 = EPSName3;
+						EPSName4.ReplaceAll("_sig_index_", "_sigtobkg_index_");
+						TString EPSName5 = EPSName3;
+						EPSName5.ReplaceAll("_sig_index_", "_siglt_index_");
+						TString EPSName6 = EPSName3;
+						EPSName6.ReplaceAll("_sig_index_", "_sigtobkglt_index_");
+						TString EPSName7 = EPSName3;
+						EPSName7.ReplaceAll("_sig_index_", "_siggt_index_");
+						TString EPSName8 = EPSName3;
+						EPSName8.ReplaceAll("_sig_index_", "_sigtobkggt_index_");
 
 						TString name = files.at(i);
 						name.ReplaceAll(Name, "");
 						name.ReplaceAll(index, "");
 						name.ReplaceAll("_", " ");
-						name.ReplaceAll("Data.png", "");
+						name.ReplaceAll("Data.eps", "");
 
 						bool f1(false), f2(false), f3(false), f4(false), f5(false), f6(false), f7(false), f8(false);
 						for (unsigned int i = 0; i < files.size(); i++) {
-							if (files.at(i).Contains(PNGName1))
+							if (files.at(i).Contains(EPSName1))
 								f1 = true;
-							if (files.at(i).Contains(PNGName2))
+							if (files.at(i).Contains(EPSName2))
 								f2 = true;
-							if (files.at(i).Contains(PNGName3))
+							if (files.at(i).Contains(EPSName3))
 								f3 = true;
-							if (files.at(i).Contains(PNGName4))
+							if (files.at(i).Contains(EPSName4))
 								f4 = true;
-							if (files.at(i).Contains(PNGName5))
+							if (files.at(i).Contains(EPSName5))
 								f5 = true;
-							if (files.at(i).Contains(PNGName6))
+							if (files.at(i).Contains(EPSName6))
 								f6 = true;
-							if (files.at(i).Contains(PNGName7))
+							if (files.at(i).Contains(EPSName7))
 								f7 = true;
-							if (files.at(i).Contains(PNGName8))
+							if (files.at(i).Contains(EPSName8))
 								f8 = true;
 						}
 
@@ -607,7 +607,7 @@ void Tables::AddPlots(std::vector<TString> names) {
 							(output) << "\\begin{minipage}[h!]{400pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
 							(output) << "\\caption[ " << name << "  ]{ A plot of " << name << ".}" << std::endl;
-							(output) << "\\includegraphics*[width=400pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName1 << "}" << std::endl;
+							(output) << "\\includegraphics*[width=400pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName1 << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 							(output) << "\\end{tabular}" << std::endl;
@@ -629,16 +629,16 @@ void Tables::AddPlots(std::vector<TString> names) {
 							(output) << " }" << std::endl;
 							(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
-							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName1 << "}" << std::endl;
+							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName1 << "}" << std::endl;
 							if (f3)
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName3 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName3 << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 							(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 							(output) << "\\begin{center}" << std::endl;
-							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName2 << "}" << std::endl;
+							(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName2 << "}" << std::endl;
 							if (f4)
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName4 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName4 << "}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
 							(output) << "\\end{minipage}" << std::endl;
 							(output) << "\\end{center}" << std::endl;
@@ -661,14 +661,14 @@ void Tables::AddPlots(std::vector<TString> names) {
 								(output) << " }" << std::endl;
 								(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 								(output) << "\\begin{center}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName5 << "}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName7 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName5 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName7 << "}" << std::endl;
 								(output) << "\\end{center}" << std::endl;
 								(output) << "\\end{minipage}" << std::endl;
 								(output) << "\\begin{minipage}[h!]{200pt}" << std::endl;
 								(output) << "\\begin{center}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName6 << "}" << std::endl;
-								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./PNG/" << PNGName8 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName6 << "}" << std::endl;
+								(output) << "\\includegraphics*[width=200pt,bb=0pt 0pt 567pt 550pt]{./EPS/" << EPSName8 << "}" << std::endl;
 								(output) << "\\end{center}" << std::endl;
 								(output) << "\\end{minipage}" << std::endl;
 								(output) << "\\end{center}" << std::endl;

@@ -254,13 +254,13 @@ void Plots::Plot1D(std::vector<std::vector<TH1D> > histo, std::vector<int> colou
 				filename += "_index_";
 				filename += i_plot;
 				// filename including folder structure and type
-				TString PNGName = "PNG/";
-				PNGName += filename;
-				PNGName += ".png";
+				TString EPSName = "EPS/";
+				EPSName += filename;
+				EPSName += ".eps";
 
 				// save plot only if it is linear OR ( logarithmic AND ( Nminus plot OR Accumdist plot) )
 				if (linlog == 0 || !filename.Contains("Nminus") || filename.Contains("Accumdist")) {
-					canv.Print(PNGName);
+					canv.Print(EPSName);
 				}
 
 				// save some histograms in extra root file
@@ -344,16 +344,16 @@ void Plots::Plot1DSignificance(std::vector<TH1D> histo, bool gt, bool lt, std::v
 			name += "gt";
 		name += "_index_";
 		name += 0;
-		TString PNGName = "PNG/";
-		PNGName += name;
-		PNGName += ".png";
+		TString EPSName = "EPS/";
+		EPSName += name;
+		EPSName += ".eps";
 
 		if (!name.Contains("Accumdist")) {
-			c.Print(PNGName);
+			c.Print(EPSName);
 			int bmax = histo.at(0).GetMaximumBin();
 			if (gt)
 				bmax += 1;
-			Logger(Logger::Debug) << "Opt. Sig. " << PNGName << " Sig: " << histo.at(0).GetMaximum() << " bin: " << bmax << std::endl;
+			Logger(Logger::Debug) << "Opt. Sig. " << EPSName << " Sig: " << histo.at(0).GetMaximum() << " bin: " << bmax << std::endl;
 		}
 	}
 
@@ -439,11 +439,11 @@ void Plots::Plot1Dsigtobkg(std::vector<TH1D> histo, bool gt, bool lt, std::vecto
 			name += "gt";
 		name += "_index_";
 		name += 0;
-		TString PNGName = "PNG/";
-		PNGName += name;
-		PNGName += ".png";
+		TString EPSName = "EPS/";
+		EPSName += name;
+		EPSName += ".eps";
 		if (!name.Contains("Accumdist")) {
-			c.Print(PNGName);
+			c.Print(EPSName);
 		}
 	}
 	Logger(Logger::Verbose) << "Plots::Plot1Dsigtobkg done" << std::endl;
@@ -508,11 +508,11 @@ void Plots::Plot1D_DataMC_Compare(std::vector<TH1D> histo, std::vector<int> colo
 		name += "_sig";
 		name += "_index_";
 		name += 0;
-		TString PNGName = "PNG/";
-		PNGName += name;
-		PNGName += ".png";
+		TString EPSName = "EPS/";
+		EPSName += name;
+		EPSName += ".eps";
 		if (!name.Contains("Accumdist")) {
-			c.Print(PNGName);
+			c.Print(EPSName);
 		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		histo.at(1).SetYTitle("Data-MC");
@@ -529,11 +529,11 @@ void Plots::Plot1D_DataMC_Compare(std::vector<TH1D> histo, std::vector<int> colo
 		name += "_sigtobkg";
 		name += "_index_";
 		name += 0;
-		PNGName = "PNG/";
-		PNGName += name;
-		PNGName += ".png";
+		EPSName = "EPS/";
+		EPSName += name;
+		EPSName += ".eps";
 		if (!name.Contains("Accumdist")) {
-			c.Print(PNGName);
+			c.Print(EPSName);
 		}
 
 	}
@@ -642,16 +642,16 @@ void Plots::Plot2D(std::vector<TH2D> histo, std::vector<int> colour, std::vector
 			}
 
 			TString name = histo.at(0).GetName();
-			TString PNGName = "PNG/";
+			TString EPSName = "EPS/";
 			c.Update();
 			name = histo.at(0).GetName();
 			name += "_index_";
 			name += 0;
-			PNGName = "PNG/";
-			PNGName += name;
-			PNGName += nPlotted;
-			PNGName += ".png";
-			c.Print(PNGName);
+			EPSName = "EPS/";
+			EPSName += name;
+			EPSName += nPlotted;
+			EPSName += ".eps";
+			c.Print(EPSName);
 
 			nPlotted += 6;
 		}
@@ -714,16 +714,16 @@ void Plots::Plot3D(std::vector<TH3F> histo, std::vector<int> colour, std::vector
 		c.cd(4);
 		leg.Draw();
 		TString name = histo.at(0).GetName();
-		TString PNGName = "PNG/";
+		TString EPSName = "EPS/";
 		c.Update();
 		name = histo.at(0).GetName();
 		name += "_index_";
 		name += 0;
-		PNGName = "PNG/";
-		PNGName += name;
-		PNGName += ".png";
-		c.Print(PNGName);
-		Logger(Logger::Debug) << "Histo 3D " << PNGName << std::endl;
+		EPSName = "EPS/";
+		EPSName += name;
+		EPSName += ".eps";
+		c.Print(EPSName);
+		Logger(Logger::Debug) << "Histo 3D " << EPSName << std::endl;
 	}
 }
 
