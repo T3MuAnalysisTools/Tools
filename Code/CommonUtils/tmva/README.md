@@ -1,4 +1,4 @@
-#TMVA Analysis
+# TMVA Analysis
 
 The events from background and the signal sample are categorized based on three muon mass resolution.  For training the BDT the background samples are further classified into two categories based on the sidebands region they are inF (right or left).  For training half the events are used and for testing the rest half is used. As an example, NewTMVAVars was given as a 
 The following features were used to train the BDT:
@@ -9,7 +9,7 @@ var_sumMuTrkKinkChi2 (sum of chi sq of the kink of all three muons)
 var_segCompMuMin (Minimum of the segment compatibility of the three muons)
 var_MinMIPLikelihood (Minimum of the calorimeter compatibility of the three muons)
 
-##How to run TMVA
+## How to run TMVA
 
 Write a class with all the features and their corresponding histograms. Run the analysis from framework.
 Go to macros and run add_files.py to combine all the TMVA trees from all the MC sets into one file and TMVA trees from all the data sets into another.
