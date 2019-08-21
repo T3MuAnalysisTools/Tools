@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<MethodSetup Method="Fisher::Fisher">
+  <GeneralInfo>
+    <Info name="TMVA Release" value="4.2.1 [262657]"/>
+    <Info name="ROOT Release" value="6.10/05 [395781]"/>
+    <Info name="Creator" value="bjoshi"/>
+    <Info name="Date" value="Wed Jul 24 13:55:31 2019"/>
+    <Info name="Host" value="Linux cmsbuild24.cern.ch 2.6.32-642.11.1.el6.x86_64 #1 SMP Wed Nov 16 09:40:09 CET 2016 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/afs/cern.ch/work/b/bjoshi/Analysis/workdirtmvaanalysisJul_11_2019/Code/CommonUtils/tmva"/>
+    <Info name="Training events" value="39279"/>
+    <Info name="TrainingTime" value="4.36909199e-02"/>
+    <Info name="AnalysisType" value="Classification"/>
+  </GeneralInfo>
+  <Options>
+    <Option name="V" modified="Yes">False</Option>
+    <Option name="VerbosityLevel" modified="No">Default</Option>
+    <Option name="VarTransform" modified="Yes">None</Option>
+    <Option name="H" modified="Yes">True</Option>
+    <Option name="CreateMVAPdfs" modified="Yes">True</Option>
+    <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+    <Option name="Method" modified="Yes">Fisher</Option>
+  </Options>
+  <Variables NVar="8">
+    <Variable VarIndex="0" Expression="var_vertexKFChi2" Label="var_vertexKFChi2" Title="Variable vertexKFChi2" Unit="units" Internal="var_vertexKFChi2" Type="F" Min="1.70780579e-04" Max="9.91781158e+01"/>
+    <Variable VarIndex="1" Expression="var_svpvTauAngle" Label="var_svpvTauAngle" Title="Variable svpvTauAngle" Unit="units" Internal="var_svpvTauAngle" Type="F" Min="5.68933501e-05" Max="2.77540851e+00"/>
+    <Variable VarIndex="2" Expression="var_flightLenSig" Label="var_flightLenSig" Title="Variable flightLenSig" Unit="units" Internal="var_flightLenSig" Type="F" Min="2.47926995e-01" Max="2.24689236e+01"/>
+    <Variable VarIndex="3" Expression="var_sumMuTrkKinkChi2" Label="var_sumMuTrkKinkChi2" Title="Variable sumMuTrkKinkChi2" Unit="units" Internal="var_sumMuTrkKinkChi2" Type="F" Min="4.73337364e+00" Max="2.69192041e+03"/>
+    <Variable VarIndex="4" Expression="var_segCompMuMin" Label="var_segCompMuMin" Title="Variable segCompMuMin" Unit="units" Internal="var_segCompMuMin" Type="F" Min="0.00000000e+00" Max="1.00000000e+00"/>
+    <Variable VarIndex="5" Expression="var_MinMIPLikelihood" Label="var_MinMIPLikelihood" Title="Variable MinMIPLikelihood" Unit="units" Internal="var_MinMIPLikelihood" Type="F" Min="1.02196088e-06" Max="9.95764613e-01"/>
+    <Variable VarIndex="6" Expression="var_isoMax" Label="var_isoMax" Title="Variable isoMax" Unit="units" Internal="var_isoMax" Type="F" Min="0.00000000e+00" Max="4.41369858e+01"/>
+    <Variable VarIndex="7" Expression="var_maxdca" Label="var_maxdca" Title="Variable maxdca" Unit="units" Internal="var_maxdca" Type="F" Min="1.02996826e-04" Max="6.07498550e+00"/>
+  </Variables>
+  <Spectators NSpec="1">
+    <Spectator SpecIndex="0" Expression="var_tauMass" Label="var_tauMass" Title="Variable tauMass" Unit="units" Internal="var_tauMass" Type="F" Min="6.72131002e-01" Max="3.83080459e+00"/>
+  </Spectators>
+  <Classes NClass="2">
+    <Class Name="Signal" Index="0"/>
+    <Class Name="Background" Index="1"/>
+  </Classes>
+  <Transformations NTransformations="0"/>
+  <MVAPdfs>
+    <PDF Name="Fisher_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_S_original" NBins="50" XMin="-3.6506836414337158e+00" XMax="9.9476921558380127e-01" HasEquidistantBins="1">
+        0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 3.01752595e-04 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 3.01752595e-04 0.00000000e+00 0.00000000e+00 9.05257785e-04 1.20701038e-03 1.20701038e-03 3.01752595e-03 6.63855709e-03 1.50876297e-02 5.58242300e-02 1.64153412e-01 4.52628892e-01 1.06548841e+00 2.00816352e+00 2.61076345e+00 2.32349498e+00 1.34973936e+00 5.00607555e-01 1.49065782e-01 4.10383529e-02 1.14665986e-02 2.11226816e-03 0.00000000e+00 0.00000000e+00 
+      </Histogram>
+    </PDF>
+    <PDF Name="Fisher_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_B_original" NBins="50" XMin="-3.6506836414337158e+00" XMax="9.9476921558380127e-01" HasEquidistantBins="1">
+        2.98232566e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 2.98232566e-03 1.49116283e-02 1.78939540e-02 2.98232566e-02 3.57879079e-02 8.94697698e-02 2.02798145e-01 4.44366523e-01 8.67856767e-01 1.47326888e+00 1.95342331e+00 2.03096377e+00 1.71483725e+00 1.12731910e+00 5.24889316e-01 1.55080934e-01 5.66641875e-02 1.78939540e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      </Histogram>
+    </PDF>
+  </MVAPdfs>
+  <Weights NCoeff="9">
+    <Coefficient Index="0" Value="-4.4825261154260543e-01"/>
+    <Coefficient Index="1" Value="-4.1013820938359926e-03"/>
+    <Coefficient Index="2" Value="-1.6520860453032333e+00"/>
+    <Coefficient Index="3" Value="5.0532807182319547e-02"/>
+    <Coefficient Index="4" Value="-3.3802672871076930e-04"/>
+    <Coefficient Index="5" Value="4.3473347362382569e-01"/>
+    <Coefficient Index="6" Value="1.6644669583106073e-01"/>
+    <Coefficient Index="7" Value="-5.3281560199793286e-03"/>
+    <Coefficient Index="8" Value="-5.2018552333984489e-02"/>
+  </Weights>
+</MethodSetup>
