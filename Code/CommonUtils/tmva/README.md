@@ -13,6 +13,7 @@ The following features were used to train the BDT:
 ## Description of the categories
 Background:
 | BDT category | Description |
+| :---: | :---: |
 | 1 | tauMassRes<0.007 && threeMuMass<1.78 |
 | 2 | tauMassRes>0.007 && tauMassRes<0.01 && threeMuMass<1.78 |
 | 3 | tauMassRes>0.01 && threeMuMass<1.78 |
@@ -22,11 +23,13 @@ Background:
 
 Signal:
 | BDT category | Description |
+| :---: | :---: |
 | 1 | tauMassRes<0.007 |
 | 2 | tauMassRes>0.007 && tauMassRes<0.01 |
 | 3 | tauMassRes>0.01 |
 
 | Classifier | Description |
+| :---: | :---: |
 | 1 | Background category 1 trained with signal category 1 |
 | 2 | Background category 2 trained with signal category 2 |
 | 3 | Background category 3 trained with signal category 3 |
