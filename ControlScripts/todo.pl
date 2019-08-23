@@ -522,6 +522,7 @@ if( $ARGV[0] eq "--DCache" ){
 		system(sprintf("touch junk2"));
 		system(sprintf("touch junk"));
 		system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
+#		system(sprintf("uberftp -ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
 
 		@dpmsubdirs=();
 		open(DAT, "junk0");
@@ -544,6 +545,7 @@ if( $ARGV[0] eq "--DCache" ){
 		foreach $ipath (@dpmdirs){
 
 		    system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
+#		    system(sprintf("uberftp -ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
 		    system(sprintf("cat junk2 | awk '{print \$1}' >& junk")); 
 		    open(DAT, "junk");
 		    while ($item = <DAT>) {
@@ -648,13 +650,21 @@ if( $ARGV[0] eq "--DCache" ){
                         $myfile=$c;
                     }
 		    $myfiletrunc = $myfile;
+
 		    my @wholepath = split /\//, $file;
 		    foreach $TreeName (@wholepath){
 			if($TreeName =~ m/root/){
 			        $myfiletrunc=$TreeName
 			}
+			$myTestpp +=$TreeName
 		    }
-		    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+
+		    $ind = rindex($file,"/");
+		    $mypath = substr($file,0,$ind);
+
+
+		    system(sprintf("echo \"uberftp  cmsio.rc.ufl.edu 'cd /cms/data/$mypath; get $myfiletrunc' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+	#	    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 		    system(sprintf("echo \"File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $Filedir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 		    $A++;
