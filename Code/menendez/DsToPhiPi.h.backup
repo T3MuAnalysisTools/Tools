@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {HLTOk=0,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {HLTOk=0,is2MuTrk,PhiMassCut,Mu1PtCut,Mu2PtCut,TrkPtCut,Mu1DeltaR,Mu2DeltaR,NumValidHits,NCuts}; 
 
 
  protected:
