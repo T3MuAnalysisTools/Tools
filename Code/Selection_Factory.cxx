@@ -12,7 +12,7 @@
 #include "cherepanov/SignalCategories.h"
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
-#include "cherepanov/FillTMVATrees"
+#include "cherepanov/FillTMVATrees.h"
 
 #endif
 
