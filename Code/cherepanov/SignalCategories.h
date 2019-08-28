@@ -5,6 +5,11 @@
 #include <vector>
 #include "TString.h"
 
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
+
 class SignalCategories : public Selection {
 
  public:
@@ -91,7 +96,17 @@ class SignalCategories : public Selection {
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> FLSignificance;
+  std::vector<TH1D> BDTOutput;
 
 
+  TMVA::Reader *reader;
+
+  Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
+  Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
+  Float_t var_flightLenSig;// (Flight length significance of the tau candidate)
+  Float_t var_sumMuTrkKinkChi2;// (sum of chi sq of the kink of all three muons)
+  Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
+  Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
+  Float_t var_tauMass;
 };
 #endif

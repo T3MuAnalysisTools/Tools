@@ -5,6 +5,10 @@
 #include "PDG_Var.h"
 #include <iostream>
 #include "Logger.h"
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
 
 using namespace std;
 
@@ -28,6 +32,25 @@ SignalCategories::~SignalCategories(){
 }
 
 void  SignalCategories::Configure(){
+
+  reader = new TMVA::Reader( "!Color:!Silent" );
+
+  TString basedir = "";
+  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/weights/";
+
+
+  reader->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
+  reader->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
+  reader->AddVariable( "var_flightLenSig", &var_flightLenSig );
+  reader->AddVariable( "var_sumMuTrkKinkChi2", &var_sumMuTrkKinkChi2 );
+  reader->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
+  reader->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
+  reader->AddSpectator("var_tauMass",&var_tauMass);
+
+  reader->BookMVA( "BDT", basedir+"NewTMVAClassification_3_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+
+
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -186,7 +209,7 @@ void  SignalCategories::Configure(){
   TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match #Delta R 1","Events");
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match #Delta R 2","Events");
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match #Delta R 3","Events");
-
+  BDTOutput = HConfig.GetTH1D(Name+"_BDTOutput","BDTOutput",50,-0.3,0.3,"BDT Output","Events");
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -243,7 +266,7 @@ void  SignalCategories::Store_ExtraDist(){
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
 
   Extradist1d.push_back(&VertexChi2KF);
-
+  Extradist1d.push_back(&BDTOutput);
 }
 
 
@@ -332,6 +355,8 @@ void  SignalCategories::doEvent(){
 
   if(status){
 
+
+
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -339,6 +364,9 @@ void  SignalCategories::doEvent(){
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+
+
+
 
     std::vector<unsigned int> EtaSortedIndices;
     
@@ -352,7 +380,12 @@ void  SignalCategories::doEvent(){
     TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
-    
+
+
+
+
+
+
     vector<unsigned int> idx_vec;
 
     idx_vec.push_back(Muon_index_1);
@@ -409,6 +442,35 @@ void  SignalCategories::doEvent(){
 								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx))),w);
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
+
+
+    var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(signal_idx);
+    var_svpvTauAngle = SVPV.Angle(TauLV.Vect());
+    var_flightLenSig = sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
+							    Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
+    var_sumMuTrkKinkChi2= (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
+    var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
+    var_MinMIPLikelihood = std::min({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
+
+    var_tauMass=TauLV.M();
+
+    BDTOutput.at(t).Fill(    reader->EvaluateMVA("BDT") );
+    if(reader->EvaluateMVA("BDT") > 0.1){
+      std::cout<<"------------------ "<< std::endl;
+      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+      
+
+      Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+      
+      Ntp->printMCDecayChainOfEvent(true, true, true, true);
+
+    }
+
+
 
     //---------------  Fill MC plots 
     if(id==40 || id == 60 || id ==90){
