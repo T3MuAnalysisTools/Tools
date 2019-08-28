@@ -12,7 +12,7 @@
 #include "cherepanov/SignalCategories.h"
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
-
+#include "cherepanov/FillTMVATrees"
 
 #endif
 
@@ -98,6 +98,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("signalcategories"))s=new SignalCategories(Analysis,UncertType);
   else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
   else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
+  else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis,UncertType);
 
 
 #endif
