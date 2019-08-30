@@ -75,7 +75,7 @@ endif
 
 
 ifdef USE_menendez
-	TARGETS += MyTest
+	TARGETS += MyTest DsToPhiPi
 	DEFS += -DUSE_menendez=1
 endif
 
