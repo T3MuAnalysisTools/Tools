@@ -197,13 +197,24 @@ void  SyncSignal::doEvent(){
 
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
+    //    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
+    if(HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu_v"))value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
+
   }
 
   pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
   value.at(SignalCandidate)=0;
   unsigned int  signal_idx=0;
   value.at(TriggerMatch)=0;
+
+  double min_chi2(99.);
+  for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
+    if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
+      min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
+      signal_idx = i_idx;
+    }
+  }
+
 
   if(Ntp->NThreeMuons()>0){
     value.at(SignalCandidate) = Ntp->NThreeMuons();
@@ -250,7 +261,7 @@ void  SyncSignal::doEvent(){
     
     value.at(TauMassCut) = TauLV.M();
   }
-  pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
+  pass.at(SignalCandidate) = (value.at(SignalCandidate) > 0);
   pass.at(Mu1PtCut) = true;//(value.at(Mu1PtCut) > cut.at(Mu1PtCut));
   pass.at(Mu2PtCut) = true;//(value.at(Mu2PtCut) > cut.at(Mu2PtCut));
   pass.at(Mu3PtCut) = true;//(value.at(Mu3PtCut) > cut.at(Mu3PtCut));
@@ -259,8 +270,11 @@ void  SyncSignal::doEvent(){
   pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
   pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
 
-  if(id!=1) pass.at(TauMassCut) = true;
-  else  pass.at(TauMassCut) = ( (value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_));
+
+  pass.at(TauMassCut) = true;
+
+  //  if(id!=1) pass.at(TauMassCut) = true;
+  //  else  pass.at(TauMassCut) = ( (value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_));
 
 
 
@@ -270,7 +284,11 @@ void  SyncSignal::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
+  if(Ntp->EventNumber()==6510923){
+    std::cout<<"status "<< status << std::endl;
+    std::cout<<"  N candidates  "<< Ntp-> NThreeMuons()<< " trigger:  "<< pass.at(TriggerOk) << " signal   "<< pass.at(SignalCandidate) << std::endl;
 
+  }
   if(status){
 
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
@@ -300,10 +318,10 @@ void  SyncSignal::doEvent(){
     evt = Ntp->EventNumber();
     run = Ntp->RunNumber();
     lumi = Ntp->LuminosityBlock();
-
+    std::cout<<"evt:  "<< evt<< std::endl;
     sync_ThreeMuVtx_x = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
-    sync_ThreeMuVtx_y = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
-    sync_ThreeMuVtx_z = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
+    sync_ThreeMuVtx_y = Ntp->Vertex_Signal_KF_pos(signal_idx).Y();
+    sync_ThreeMuVtx_z = Ntp->Vertex_Signal_KF_pos(signal_idx).Z();
     sync_ThreeMuVtx_Chi2 = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
 
 
