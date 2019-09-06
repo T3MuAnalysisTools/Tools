@@ -8,6 +8,7 @@ if [ "${1}"  == "--help" ]; then
     echo "--joshi                   Configures the make file to compile files in the directory joshi"
     echo "--wang                    Configures the make file to compile files in the directory wang"
     echo "--menendez                Configures the make file to compile files in the directory menendez"
+    echo "--madhu                   Configures the make file to compile files in the directory madhu"
 else
 
     echo "Configuring Environment...."
@@ -65,6 +66,11 @@ else
 	    if [ "${var}" == "--menendez" ]; then
 		echo "Configuring Code to use directory menendez"
 		echo "USE_menendez=1" >> make.inc
+	    fi
+
+	    if [ "${var}" == "--madhu" ]; then
+		echo "Configuring Code to use directory madhu"
+		echo "USE_madhu=1" >> make.inc
 	    fi
 	done
     fi

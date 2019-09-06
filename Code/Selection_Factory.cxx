@@ -13,7 +13,7 @@
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
-
+#include "cherepanov/SignalSelector.h"
 #endif
 
 
@@ -68,10 +68,15 @@
 #endif
 
 
-
 #ifdef USE_menendez
 #include "menendez/MyTest.h"
 #include "menendez/DsToPhiPi.h"
+#endif
+
+
+#ifdef USE_madhu
+#include "madhu/MyTest.h"
+
 #endif
 
 
@@ -99,7 +104,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
   else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
   else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis,UncertType);
-
+  else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
 
 #endif
 
@@ -149,6 +154,11 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 
 #ifdef USE_wang
+  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+#endif
+
+
+#ifdef USE_madhu
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
 #endif
 
