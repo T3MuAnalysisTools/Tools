@@ -199,12 +199,9 @@ void  SignalCategories::Configure(){
 
   SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
 
- 
-
   Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.02,"reco - mc #mu_{1} #Delta R","Events");
   Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"reco - mc #mu_{2} #Delta R","Events");
   Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"reco - mc #mu_{3} #Delta R","Events");
-
 
   TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match #Delta R 1","Events");
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match #Delta R 2","Events");
@@ -287,6 +284,15 @@ void  SignalCategories::doEvent(){
   unsigned int  signal_idx=0;
   value.at(TriggerMatch)=0;
 
+  double min_chi2(99.);
+  for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
+    if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
+      min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
+      signal_idx = i_idx;
+    }
+  }
+
+
   if(Ntp->NThreeMuons()>0){
     value.at(SignalCandidate) = Ntp->NThreeMuons();
     unsigned int mu1_idx = Ntp->ThreeMuonIndices(signal_idx).at(0); 
@@ -332,7 +338,7 @@ void  SignalCategories::doEvent(){
     
     value.at(TauMassCut) = TauLV.M();
   }
-  pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
+  pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
   pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
   pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
@@ -380,9 +386,6 @@ void  SignalCategories::doEvent(){
     TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
-
-
-
 
 
 
@@ -455,20 +458,20 @@ void  SignalCategories::doEvent(){
     var_tauMass=TauLV.M();
 
     BDTOutput.at(t).Fill(    reader->EvaluateMVA("BDT") );
-    if(reader->EvaluateMVA("BDT") > 0.1){
-      std::cout<<"------------------ "<< std::endl;
-      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
-      std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
-      std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+    //    if(reader->EvaluateMVA("BDT") > 0.1){
+      //      std::cout<<"------------------ "<< std::endl;
+      //      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      //      std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      //      std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
       
 
-      Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
-      Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
-      Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+      //      Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      //      Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      //      Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
       
-      Ntp->printMCDecayChainOfEvent(true, true, true, true);
+      //      Ntp->printMCDecayChainOfEvent(true, true, true, true);
 
-    }
+    //    }
 
 
 

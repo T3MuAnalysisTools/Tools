@@ -35,7 +35,17 @@ void  DsToPhiPi::Configure(){
     pass.push_back(false);
     if(i==HLTOk)           cut.at(HLTOk)=1;
     if(i==is2MuTrk)        cut.at(is2MuTrk)=1;
-    if(i==PhiMassCut)      cut.at(PhiMassCut)=1;
+    if(i==GlobalMu)        cut.at(GlobalMu)=1;
+    if(i==Chi2Cut)         cut.at(Chi2Cut)=1;
+    if(i==MuCharge)        cut.at(MuCharge)=1;
+    if(i==Mass2Mu)         cut.at(Mass2Mu)=1;
+    if(i==Mu1dR)           cut.at(Mu1dR)=1;
+    if(i==Mu2dR)           cut.at(Mu2dR)=1;
+    if(i==TrkdR)           cut.at(TrkdR)=1;
+    if(i==Mu1pt)           cut.at(Mu1pt)=1;
+    if(i==Mu2pt)           cut.at(Mu2pt)=1;
+    if(i==Trkpt)           cut.at(Trkpt)=1;
+
   }
 
   TString hlabel;
@@ -46,28 +56,101 @@ void  DsToPhiPi::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
-    if(i==is2MuTrk){
+    if(i==HLTOk){
+      title.at(i)="HLT trigger ";
+      hlabel="DoubleMu3_Trk_Tau3mu";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==is2MuTrk){
       title.at(i)="Category: 2Mu+Trk ";
       hlabel="2muon + track category";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_is2MuTrk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_is2MuTrk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==HLTOk){
-      title.at(i)="HLT trigger ";
-      hlabel="DoubleMu3_Trk_Tau3mu";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }	
-    else if(i==PhiMassCut){
-      title.at(i)= "0.95 $<$ $M_{\\mu\\mu}$ $<$ 1.1 GeV";
+    else if(i==GlobalMu){
+      title.at(i)="Muons are Global";
+      hlabel="Muons are Global";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GlobalMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GlobalMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    } 
+    else if(i==Chi2Cut){
+      title.at(i)="Triple Vertex Chi Squared $<$ 15";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
-      hlabel="OS muon pair mass, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiMassCut_",htitle,40,0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiMassCut_",htitle,40,0.5,1.5,hlabel,"Events"));
+      hlabel="Chi squared of triple vertex";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Chi2Cut_",htitle,50,0,25,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Chi2Cut_",htitle,50,0,25,hlabel,"Events"));
     }
-    
+    else if(i==MuCharge){
+      title.at(i)="Muons opposite charge";
+      hlabel="Muons have opposite charge";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuCharge_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuCharge_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mass2Mu){
+      title.at(i)="1.00 $<$ $M_{2\\mu}$ $<$ 1.04 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      hlabel="Invariant mass of 2 muons";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mass2Mu_",htitle,200,0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mass2Mu_",htitle,200,0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu1dR){
+      title.at(i)="Mu01 dRtriggerMatch $<$ 0.03";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      hlabel="Trigger Match dR of Muon 1";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1dR_",htitle,50,0,.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1dR_",htitle,50,0,.05,hlabel,"Events"));
+    }
+    else if(i==Mu2dR){
+      title.at(i)="Mu02 dRtriggerMatch $<$ 0.03";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      hlabel="Trigger Match dR of Muon 2";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2dR_",htitle,50,0,.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2dR_",htitle,50,0,.05,hlabel,"Events"));
+    }
+    else if(i==TrkdR){
+      title.at(i)="Tr dRtriggerMatch $<$ 0.03";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      hlabel="Trigger Match dR of Track";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TrkdR_",htitle,50,0,.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TrkdR_",htitle,50,0,.05,hlabel,"Events"));
+    }
+    else if(i==Mu1pt){
+      title.at(i)="$\\mu_{1}$ Pt $>$ .5 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      hlabel="Pt of Muon 1";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1pt_",htitle,80,0,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1pt_",htitle,80,0,20,hlabel,"Events"));
+    }
+    else if(i==Mu2pt){
+      title.at(i)="$\\mu_{2}$ Pt $>$ .5 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      hlabel="Pt of Muon 2";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2pt_",htitle,80,0,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2pt_",htitle,80,0,20,hlabel,"Events"));
+    }
+    else if(i==Trkpt){
+      title.at(i)="Track Pt $>$ 2 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      hlabel="Pt of Track";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Trkpt_",htitle,80,0,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Trkpt_",htitle,80,0,20,hlabel,"Events"));
+    }
+
+
   }
   // Track Candidate Information
   Track_P=HConfig.GetTH1D(Name+"_Track_P","Momentum magnitude of track (2mu+trk track candidate)",36,-0.5,35.5,"p (track)","Events");
@@ -75,7 +158,7 @@ void  DsToPhiPi::Configure(){
   Track_Pt=HConfig.GetTH1D(Name+"_Track_Pt","Transverse momentum of track (2mu+trk track candidate)",26,-0.5,25.5,"p_{T} (track)","Events");
   Track_Eta=HConfig.GetTH1D(Name+"_Track_Eta","Psuedorapidity of track (2mu+trk track candidate)",30,-2.5,2.5,"#eta","Events");
   Track_Phi=HConfig.GetTH1D(Name+"_Track_Phi","Azimuthal angle of track (2mu+trk track candidate)",30,-3.5,3.5,"#phi","Events");
-  Track_normalizedChi2=HConfig.GetTH1D(Name+"_Track_normalizedChi2","Normalized chi square",16,-0.5,15.5,"#chi^{2} (track fit)","Events");
+  Track_normalizedChi2=HConfig.GetTH1D(Name+"_Track_normalizedChi2","Normalized chi square",20,-0.5,4.5,"#chi^{2} (track fit)","Events");
   Track_numberOfValidHits=HConfig.GetTH1D(Name+"_Track_numberOfValidHits","number of valid hits in te tracker",36,-0.5,35.5,"n valid track hits","Events");
   Track_charge=HConfig.GetTH1D(Name+"_Track_charge","Chargeof the track",3,-1.5,1.5,"Track charge","Events");
   
@@ -106,8 +189,8 @@ void  DsToPhiPi::Configure(){
   
   
   DimuondR=HConfig.GetTH1D(Name+"_DimuondR","dR between the muon pair",20,0,1,"dR","Events");
-  Muon1TrkdR=HConfig.GetTH1D(Name+"_Muon1TrkdR","dR between the highest p muon and the track",100,0,5,"dR","Events");
-  Muon2TrkdR=HConfig.GetTH1D(Name+"_Muon2TrkdR","dR between the lowest p muon and the track",100,0,5,"dR","Events");
+  Muon1TrkdR=HConfig.GetTH1D(Name+"_Muon1TrkdR","dR between the highest p muon and the track",100,0,1,"dR","Events");
+  Muon2TrkdR=HConfig.GetTH1D(Name+"_Muon2TrkdR","dR between the lowest p muon and the track",100,0,1,"dR","Events");
   PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu invariant mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
   PhiPlusTrackMass=HConfig.GetTH1D(Name+"_PhiPlusTrackMass","#mu#mu + track invariant mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu invariant Mass vs. #mu#mu + track invariant mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
@@ -117,7 +200,11 @@ void  DsToPhiPi::Configure(){
   // Setup Extra Histograms
   // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
-  
+ 
+  DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",80,1.65,2.3,"M_{Ds} (GeV)", "Events"); 
+
+  DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -159,6 +246,8 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&Muon1_TriggerMatchdR);
   Extradist1d.push_back(&Muon2_TriggerMatchdR);
   Extradist1d.push_back(&NVtx);
+  Extradist1d.push_back(&DsMass);
+  Extradist1d.push_back(&DsGenMatch);
 	 
 }
 
@@ -168,7 +257,7 @@ void  DsToPhiPi::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  
+
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
@@ -178,11 +267,16 @@ void  DsToPhiPi::doEvent(){
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
   double tmp_chisq = 999.0;
-  
-  value.at(is2MuTrk) = 0;
-  value.at(PhiMassCut) = 0;
+ 
+  value.at(is2MuTrk) = 0; 
+  value.at(Chi2Cut) = 0;
+  value.at(Mass2Mu) = 0;
+  value.at(MuCharge) = 0;
+  value.at(Mu1dR) = 0;
+  value.at(Mu2dR) = 0;
+  value.at(TrkdR) = 0;
   if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
-  
+
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
       tmp_idx = i2M;
@@ -196,13 +290,32 @@ void  DsToPhiPi::doEvent(){
 	track = tmp_track;
       }
     }
-  value.at(PhiMassCut) =  (Ntp->Muon_P4(mu1) + Ntp->Muon_P4(mu2)).M();
-  }
-  
 
-  pass.at(PhiMassCut) = true;//( value.at(PhiMassCut) > 0.95 && value.at(PhiMassCut) < 1.1);
+    value.at(GlobalMu) = Ntp->Muon_isGlobalMuon(mu1)==1 && Ntp->Muon_isGlobalMuon(mu2)==1;
+    value.at(Chi2Cut) = tmp_chisq;
+    value.at(Mass2Mu) = (Ntp->Muon_P4(mu1) + Ntp->Muon_P4(mu2)).M();
+    value.at(MuCharge) = Ntp->Muon_charge(mu1)!=Ntp->Muon_charge(mu2);
+    value.at(Mu1dR) = (Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0);
+    value.at(Mu2dR) = (Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1);
+    value.at(TrkdR) = (Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2);
+    value.at(Mu1pt) = Ntp->Muon_P4(mu1).Pt();
+    value.at(Mu2pt) = Ntp->Muon_P4(mu2).Pt();
+    value.at(Trkpt) = Ntp->Track_P4(track).Pt();
+
+  }
+
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
-  pass.at(HLTOk)= true;//(value.at(HLTOk)==cut.at(HLTOk)); 
+  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
+  pass.at(Chi2Cut) = value.at(Chi2Cut) > 0 && value.at(Chi2Cut) < 15;
+  pass.at(Mass2Mu) = value.at(Mass2Mu) > 1 && value.at(Mass2Mu) < 1.04;
+  pass.at(MuCharge) = value.at(MuCharge)==cut.at(MuCharge);
+  pass.at(Mu1dR) = value.at(Mu1dR) < .03;
+  pass.at(Mu2dR) = value.at(Mu2dR) < .03;
+  pass.at(TrkdR) = value.at(TrkdR) < .03;
+  pass.at(Mu1pt) = value.at(Mu1pt) > .5;
+  pass.at(Mu2pt) = value.at(Mu2pt) > .5;
+  pass.at(Trkpt) = value.at(Trkpt) > 2;
 
   double wobs=1;
   double w;  
@@ -259,6 +372,13 @@ void  DsToPhiPi::doEvent(){
 		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M();
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
+    DsMass.at(t).Fill(dsmass);
+
+    if(id==30){
+
+      DsGenMatch.at(t).Fill(Ntp->DsGenMatch(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0) + Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1) + Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)));
+
+    }
 
   }
 }
