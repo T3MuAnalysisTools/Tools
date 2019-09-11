@@ -35,8 +35,11 @@ void  MyTest::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk)    cut.at(TriggerOk)=1;
-    if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+    if(i==TriggerOk)        cut.at(TriggerOk)=1;
+    if(i==PrimeVtx)         cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
+    if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
+    if(i==LeadingMuonPt)    cut.at(LeadingMuonPt)=5;
+
   }
 
   TString hlabel;
@@ -55,8 +58,8 @@ void  MyTest::Configure(){
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       hlabel="Number of Prime Vertices";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
     }
     else if(i==TriggerOk){
       title.at(i)="Trigger ";
@@ -64,8 +67,29 @@ void  MyTest::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
+    else if(i==SignalCandidate){
+      title.at(i)="signal candidate";
+      hlabel="is 3mu candidate";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==LeadingMuonPt){
+      title.at(i)="$\\mu$ Pt $>$ .5 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      hlabel="Pt of the leading  muon";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
+    }
   } 
   // Setup NPassed Histogams
+
+  LeadMuonPt=HConfig.GetTH1D(Name+"_LeadMuonPt","LeadMuonPt",40,0,20,"p_{T}(#mu_{1}), GeV","Events");
+  LeadMuonEta=HConfig.GetTH1D(Name+"_LeadMuonEta","LeadMuonEta",40,-2.6,2.6,"#eta(#mu_{1})","Events");
+  LeadMuonPhi=HConfig.GetTH1D(Name+"_LeadMuonPhi","LeadMuonPhi",40,-3.15,3.15,"#phi(#mu_{1})","Events");
+
+
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
 
@@ -81,6 +105,11 @@ void  MyTest::Configure(){
 void  MyTest::Store_ExtraDist(){ 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
+
+  Extradist1d.push_back(&LeadMuonPt);
+  Extradist1d.push_back(&LeadMuonEta);
+  Extradist1d.push_back(&LeadMuonPhi);
+
 
 }
 
@@ -103,15 +132,32 @@ void  MyTest::doEvent(){
   
   value.at(TriggerOk)=(Ntp->EventNumber()%1000)==1;
   pass.at(TriggerOk)=true; // always true
-  
+
+
+  unsigned int  final_idx=0;
+
+
+  value.at(SignalCandidate) = Ntp->NThreeMuons();
+  if(Ntp->NThreeMuons()>0){  // Check if this is a signal category (take the first triplet only in this example)
+
+    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
+    value.at(LeadingMuonPt) = Ntp->Muon_P4(mu1_pt_idx).Pt();
+
+  }
+
+
+  pass.at(SignalCandidate) = (value.at(SignalCandidate)  > 0 );
+  pass.at(LeadingMuonPt)   = (value.at(LeadingMuonPt)    > cut.at(LeadingMuonPt));
+
+
   double wobs=1;
   double w;  //  This is an event weights, one may intorduce any weights to the event, for exmaple PU. 
              //  there can be several weights, e.g. w = w1*w2*w3 ...
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
-
-
-
+  
+  
+  
   bool status=AnalysisCuts(t,w,wobs);
   ///////////////////////////////////////////////////////////
   // Add plots
@@ -123,6 +169,12 @@ void  MyTest::doEvent(){
   if(status){ // Only selected events pass this if statement
     // Lets fill below some plots ...
     // All available get functions can be found in https://github.com/T3MuAnalysisTools/Tools/blob/master/Code/Ntuple_Controller.h
+    // Lets plot the pT, phi and eta of the leading muon
+    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
+    LeadMuonPt.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Pt(),1);
+    LeadMuonEta.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Eta(),1);
+    LeadMuonPhi.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Phi(),1);
+
 
   }
 }

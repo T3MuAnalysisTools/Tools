@@ -21,7 +21,7 @@ class MyTest : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {TriggerOk=0,PrimeVtx,NCuts}; 
+  enum cuts {TriggerOk=0,PrimeVtx,SignalCandidate,LeadingMuonPt,NCuts}; 
 
 
  protected:
@@ -32,13 +32,11 @@ class MyTest : public Selection {
   // Selection Variables
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
-  std::vector<TH1D> MuonsPt;
-  std::vector<TH1D> MuonsEta;
-  std::vector<TH1D> MuonsPhi;
-  std::vector<TH1D> PhiMass;
-  std::vector<TH1D> TripleMass;
-  std::vector<TH2D> PhiMassVsDsMass;
-  std::vector<TH1D>  MuonsPtRatio;
+
+  std::vector<TH1D> LeadMuonPt;
+  std::vector<TH1D> LeadMuonEta;
+  std::vector<TH1D> LeadMuonPhi;
+
 
 };
 #endif
