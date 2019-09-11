@@ -682,7 +682,7 @@ if( $ARGV[0] eq "--DCache" ){
     # print Instructions
     printf("\n\nInstructions");
     printf("\nPlease make sure you have run:");
-    printf("\ngrid-proxy-init"); 
+    printf("\nvoms-proxy-init -voms cms -valid 192:00"); 
     printf("\nNow you can run the analysis using dcache.");
     printf("\nTo go to the Test workdir: cd  $OutputDir/workdir$set ");
     printf("\nTo compile the code in the workdir: source compile  $UserDir ");
