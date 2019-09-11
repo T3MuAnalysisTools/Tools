@@ -72,6 +72,7 @@
 #ifdef USE_menendez
 #include "menendez/MyTest.h"
 #include "menendez/DsToPhiPi.h"
+#include "menendez/SyncDsPhiPi.h"
 #endif
 
 
@@ -155,6 +156,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #ifdef USE_menendez
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
+  else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
 #endif
 
   else{
