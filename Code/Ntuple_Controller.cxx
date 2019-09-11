@@ -423,7 +423,7 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
   
   std::vector<unsigned int> out;
   unsigned int i1,i2,i3;
-
+  if(indices.size()!=3) {std::cout<< "Sorting muons by Pt failed, wrong vector size! "<< std::endl; return out;}
   double pt1 = Muon_P4(indices.at(0)).Pt();
   double pt2 = Muon_P4(indices.at(1)).Pt();
   double pt3 = Muon_P4(indices.at(2)).Pt();

@@ -1,4 +1,4 @@
-#include "SignalCategories.h"
+#include "SignalSelector.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-SignalCategories::SignalCategories(TString Name_, TString id_):
+SignalSelector::SignalSelector(TString Name_, TString id_):
   Selection(Name_,id_),
   tauMinMass_(1.70),
   tauMaxMass_(1.82),
@@ -22,7 +22,7 @@ SignalCategories::SignalCategories(TString Name_, TString id_):
   // This is a class constructor;
 }
 
-SignalCategories::~SignalCategories(){
+SignalSelector::~SignalSelector(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -31,7 +31,7 @@ SignalCategories::~SignalCategories(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  SignalCategories::Configure(){
+void  SignalSelector::Configure(){
 
   reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -208,13 +208,16 @@ void  SignalCategories::Configure(){
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match #Delta R 3","Events");
   BDTOutput = HConfig.GetTH1D(Name+"_BDTOutput","BDTOutput",50,-0.3,0.3,"BDT Output","Events");
 
+  NSignalCandidates =HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"Number of signal candidates","Events");
+
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
 
 
-void  SignalCategories::Store_ExtraDist(){ 
+void  SignalSelector::Store_ExtraDist(){ 
 
 
   Extradist1d.push_back(&Muon1Pt);
@@ -263,11 +266,14 @@ void  SignalCategories::Store_ExtraDist(){
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
 
   Extradist1d.push_back(&VertexChi2KF);
+  Extradist1d.push_back(&NSignalCandidates);
+
+
   Extradist1d.push_back(&BDTOutput);
 }
 
 
-void  SignalCategories::doEvent(){ 
+void  SignalSelector::doEvent(){ 
 
   
   unsigned int t;
@@ -292,7 +298,7 @@ void  SignalCategories::doEvent(){
     }
   }
 
-
+  NSignalCandidates.at(t).Fill(Ntp->NThreeMuons(),1);
   if(Ntp->NThreeMuons()>0){
     value.at(SignalCandidate) = Ntp->NThreeMuons();
     unsigned int mu1_idx = Ntp->ThreeMuonIndices(signal_idx).at(0); 
@@ -348,7 +354,7 @@ void  SignalCategories::doEvent(){
   pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
-  else  pass.at(TauMassCut) = ( (value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_));
+  else  pass.at(TauMassCut) = true;//( (value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_));
 
 
 
@@ -418,7 +424,7 @@ void  SignalCategories::doEvent(){
     TauEta.at(t).Fill(TauLV.Eta(),1);
     TauPt.at(t).Fill(TauLV.Pt(),1);
     TauP.at(t).Fill(TauLV.P(),1);
-    TauMass.at(t).Fill(TauLV.M(),1);
+    //    TauMass.at(t).Fill(TauLV.M(),1);
     TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
 
     Muon1isGlob.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_index_1),1);
@@ -458,7 +464,8 @@ void  SignalCategories::doEvent(){
     var_tauMass=TauLV.M();
 
     BDTOutput.at(t).Fill(    reader->EvaluateMVA("BDT") );
-    //    if(reader->EvaluateMVA("BDT") > 0.1){
+    if(reader->EvaluateMVA("BDT") > 0.){
+    TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
       //      std::cout<<"------------------ "<< std::endl;
       //      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
       //      std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -470,8 +477,8 @@ void  SignalCategories::doEvent(){
       //      Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
       
       //      Ntp->printMCDecayChainOfEvent(true, true, true, true);
-
-    //    }
+    TauMass.at(t).Fill(TauLV.M(),1);
+    }
 
 
 
@@ -496,7 +503,7 @@ void  SignalCategories::doEvent(){
 }
 
 
-void  SignalCategories::Finish(){
+void  SignalSelector::Finish(){
 
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){

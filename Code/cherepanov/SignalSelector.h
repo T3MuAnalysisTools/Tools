@@ -1,5 +1,5 @@
-#ifndef SignalCategories_h
-#define SignalCategories_h
+#ifndef SignalSelector_h
+#define SignalSelector_h
 
 #include "Selection.h"
 #include <vector>
@@ -10,11 +10,11 @@
 #include "TMVA/MethodCuts.h"
 
 
-class SignalCategories : public Selection {
+class SignalSelector : public Selection {
 
  public:
-  SignalCategories(TString Name_, TString id_);
-  virtual ~SignalCategories();
+  SignalSelector(TString Name_, TString id_);
+  virtual ~SignalSelector();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -97,7 +97,7 @@ class SignalCategories : public Selection {
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> BDTOutput;
-
+  std::vector<TH1D> NSignalCandidates;
 
   TMVA::Reader *reader;
 

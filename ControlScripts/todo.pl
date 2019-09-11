@@ -33,6 +33,11 @@ if($UserID eq "nimenend"){
     $UserName="Nicholas";
 }
 
+if($UserID eq "mmadhu"){
+    $UserDir="--madhu";
+    $UserName="Arun";
+}
+
 
 
 
@@ -173,7 +178,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
 if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     # User check
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend"  and $UserID ne "mmadhu"){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -227,7 +232,7 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 if( $ARGV[0] eq "--Local" ){
 
     # User check
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" and $UserID ne "mmadhu"){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -403,7 +408,7 @@ if( $ARGV[0] eq "--Local" ){
 
 if( $ARGV[0] eq "--DCache" ){
 
-    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend" ){
+    if($UserID ne "cherepan" and $UserID ne "wangjian" and $UserID ne "bjoshi" and $UserID ne "nimenend"  and $UserID ne "mmadhu" ){
 	printf("\nUnrecognized user. Exit.\n"); 
 	exit(0);
     }
@@ -677,7 +682,7 @@ if( $ARGV[0] eq "--DCache" ){
     # print Instructions
     printf("\n\nInstructions");
     printf("\nPlease make sure you have run:");
-    printf("\ngrid-proxy-init"); 
+    printf("\nvoms-proxy-init -voms cms -valid 192:00"); 
     printf("\nNow you can run the analysis using dcache.");
     printf("\nTo go to the Test workdir: cd  $OutputDir/workdir$set ");
     printf("\nTo compile the code in the workdir: source compile  $UserDir ");
