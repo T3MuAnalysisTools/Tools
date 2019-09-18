@@ -35,11 +35,8 @@ void  MyTest::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk)        cut.at(TriggerOk)=1;
-    if(i==PrimeVtx)         cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
-    if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
-    if(i==LeadingMuonPt)    cut.at(LeadingMuonPt)=5;
-
+    if(i==TriggerOk)    cut.at(TriggerOk)=1;
+    if(i==PrimeVtx)     cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
   }
 
   TString hlabel;
@@ -58,8 +55,8 @@ void  MyTest::Configure(){
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       hlabel="Number of Prime Vertices";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,11,-0.5,10.5,hlabel,"Events"));
     }
     else if(i==TriggerOk){
       title.at(i)="Trigger ";
@@ -67,32 +64,18 @@ void  MyTest::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==SignalCandidate){
-      title.at(i)="signal candidate";
-      hlabel="is 3mu candidate";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==LeadingMuonPt){
-      title.at(i)="$\\mu$ Pt $>$ .5 GeV";
-      htitle=title.at(i);
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      hlabel="Pt of the leading  muon";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
-    }
   } 
   // Setup NPassed Histogams
-
-  LeadMuonPt=HConfig.GetTH1D(Name+"_LeadMuonPt","LeadMuonPt",40,0,20,"p_{T}(#mu_{1}), GeV","Events");
-  LeadMuonEta=HConfig.GetTH1D(Name+"_LeadMuonEta","LeadMuonEta",40,-2.6,2.6,"#eta(#mu_{1})","Events");
-  LeadMuonPhi=HConfig.GetTH1D(Name+"_LeadMuonPhi","LeadMuonPhi",40,-3.15,3.15,"#phi(#mu_{1})","Events");
-
-
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
-
+  // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
+  NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
+  MuonsPt=HConfig.GetTH1D(Name+"_MuonsPt","All Muons Pt",25,0,50,"p_{T} of all stored Muons, GeV","Events");
+  MuonsPtRatio=HConfig.GetTH1D(Name+"_MuonsPtRatio","Ratio of 2 muons pt",50,0.1,1.2,"Ratio of first and second muon p_{T}","Events");
+  MuonsEta=HConfig.GetTH1D(Name+"_MuonsEta","All Muons #eta",25,-2.5,2.5,"Rapidity of all stored Muons","Events");
+  PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.2,1.5,"Mass of the #mu#mu pair, GeV","Events");
+  TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",50,1.7,2.1,"Mass of the #mu#mu + track, GeV","Events");
+  PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Mass vs. #mu#mu + track mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -105,12 +88,13 @@ void  MyTest::Configure(){
 void  MyTest::Store_ExtraDist(){ 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-
-  Extradist1d.push_back(&LeadMuonPt);
-  Extradist1d.push_back(&LeadMuonEta);
-  Extradist1d.push_back(&LeadMuonPhi);
-
-
+  Extradist1d.push_back(&NVtx);
+  Extradist1d.push_back(&MuonsPt);
+  Extradist1d.push_back(&MuonsEta);
+  Extradist1d.push_back(&MuonsPtRatio);
+  Extradist1d.push_back(&PhiMass);
+  Extradist1d.push_back(&TripleMass);
+  Extradist2d.push_back(&PhiMassVsDsMass);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,32 +116,15 @@ void  MyTest::doEvent(){
   
   value.at(TriggerOk)=(Ntp->EventNumber()%1000)==1;
   pass.at(TriggerOk)=true; // always true
-
-
-  unsigned int  final_idx=0;
-
-
-  value.at(SignalCandidate) = Ntp->NThreeMuons();
-  if(Ntp->NThreeMuons()>0){  // Check if this is a signal category (take the first triplet only in this example)
-
-    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
-    value.at(LeadingMuonPt) = Ntp->Muon_P4(mu1_pt_idx).Pt();
-
-  }
-
-
-  pass.at(SignalCandidate) = (value.at(SignalCandidate)  > 0 );
-  pass.at(LeadingMuonPt)   = (value.at(LeadingMuonPt)    > cut.at(LeadingMuonPt));
-
-
+  
   double wobs=1;
   double w;  //  This is an event weights, one may intorduce any weights to the event, for exmaple PU. 
              //  there can be several weights, e.g. w = w1*w2*w3 ...
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
-  
-  
-  
+
+
+
   bool status=AnalysisCuts(t,w,wobs);
   ///////////////////////////////////////////////////////////
   // Add plots
@@ -169,15 +136,52 @@ void  MyTest::doEvent(){
   if(status){ // Only selected events pass this if statement
     // Lets fill below some plots ...
     // All available get functions can be found in https://github.com/T3MuAnalysisTools/Tools/blob/master/Code/Ntuple_Controller.h
-    // Lets plot the pT, phi and eta of the leading muon
-    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
-    LeadMuonPt.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Pt(),1);
-    LeadMuonEta.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Eta(),1);
-    LeadMuonPhi.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Phi(),1);
+    NVtx.at(t).Fill(Ntp->NVtx(),w);
 
 
+
+    for(unsigned int iMuon=0; iMuon < Ntp->NMuons(); iMuon++){ // loop over muons
+      MuonsPt.at(t).Fill(Ntp->Muon_P4(iMuon).Pt(),w);
+      MuonsEta.at(t).Fill(Ntp->Muon_P4(iMuon).Eta(),w);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // The mumumu and mumu+track categroies are preselected at the ntuple level
+    // The indices of muons and tracks are stored in vectors that can be accessed by
+    // TwoMuonsTrackMuonIndices, TwoMuonsTrackTrackIndex and ThreeMuonIndices.
+    // Find below an examples, we find a mumu+ track candidate with mumu mass closest
+    // to Phi_mass and plots the mass of mumu+track
+    double deltaMass(999.);
+    unsigned int pair_index(0);
+    if(Ntp->NTwoMuonsTrack()!=0){
+    for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
+
+      unsigned int muon_1 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(0);
+      unsigned int muon_2 =  Ntp-> TwoMuonsTrackMuonIndices(i2M).at(1);
+
+      if( fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass())< deltaMass){
+	deltaMass =  fabs((Ntp->Muon_P4(muon_1)  + Ntp->Muon_P4(muon_2)).M()  - PDG_Var::Phi_mass());
+	pair_index = i2M; // this is an index of the candidate with best mumu mass
+      }
+    }
+    
+
+    MuonsPtRatio.at(t).Fill(Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0)).Pt()/Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1)).Pt(),w );
+    PhiMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M(), w);
+    TripleMass.at(t).Fill((Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+ 
+			   Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M(), w);
+
+    double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))).M();
+    double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(pair_index).at(1))+
+		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(pair_index).at(0))).M();
+
+    PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
+
+    }
   }
 }
+
 
 
 void  MyTest::Finish(){

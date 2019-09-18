@@ -1,15 +1,15 @@
-#ifndef NewTMVAVars_h
-#define NewTMVAVars_h
+#ifndef FillMVATree_h
+#define FillMVATree_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 
-class NewTMVAVars : public Selection {
+class FillMVATree : public Selection {
 
  public:
-  NewTMVAVars(TString Name_, TString id_);
-  virtual ~NewTMVAVars();
+  FillMVATree(TString Name_, TString id_);
+  virtual ~FillMVATree();
 
   virtual void  Configure();
   virtual void  Finish();
