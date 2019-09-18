@@ -1,4 +1,4 @@
-#include "NewTMVAVars.h"
+#include "FillMVATree.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-NewTMVAVars::NewTMVAVars(TString Name_, TString id_):
+FillMVATree::FillMVATree(TString Name_, TString id_):
     Selection(Name_,id_),
     tauMinMass_(1.731),
     tauMaxMass_(1.823),
@@ -21,7 +21,7 @@ NewTMVAVars::NewTMVAVars(TString Name_, TString id_):
 }
 
 
-NewTMVAVars::~NewTMVAVars(){
+FillMVATree::~FillMVATree(){
     for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
         << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -30,7 +30,7 @@ NewTMVAVars::~NewTMVAVars(){
     Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  NewTMVAVars::Configure(){
+void  FillMVATree::Configure(){
     // Set tree branches
 	 TMVA_Tree= new TTree("tree","tree");
 	 TMVA_Tree->Branch("MC",&MC);
@@ -157,7 +157,7 @@ void  NewTMVAVars::Configure(){
     SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
   Muon_segmentCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu1","Muon_segmentCompatibility_mu1",50,0.,1,"Inner Track and muon segment match  #mu_{1} ","Events");
   Muon_segmentCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu2","Muon_segmentCompatibility_mu2",50,0.,1,"Inner Track and muon segment match  #mu_{2} ","Events");
-  Muon_segmentCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu3","Muon_segmentCompatibility_mu3",50,0.,1,"Inner Track and muon segment match  #mu_{3} ","Events");
+  Muon_segmentCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu3","Muon_segmentCompatibility_mu3",50,0.,1,"Inner Track and muon segment match  #mu_{3}OOOO ","Events");
 
   Muon_segmentCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_min","Muon_segmentCompatibility_min",50,0.,1,"Inner Track and muon segment match min ","Events");
   Muon_segmentCompatibility_max  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_max","Muon_segmentCompatibility_max",50,0.,1,"Inner Track and muon segment match max ","Events");
@@ -182,7 +182,7 @@ void  NewTMVAVars::Configure(){
 
 }
 
-void  NewTMVAVars::Store_ExtraDist(){ 
+void  FillMVATree::Store_ExtraDist(){ 
   
   Extradist1d.push_back(&SVPVTauDirAngle);
   Extradist1d.push_back(&FLSignificance);
@@ -212,7 +212,7 @@ void  NewTMVAVars::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  NewTMVAVars::doEvent(){ 
+void  FillMVATree::doEvent(){ 
     unsigned int t;
     int id(Ntp->GetMCID());
 	 bool hlt_pass = false;
@@ -375,7 +375,11 @@ void  NewTMVAVars::doEvent(){
 		 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh && value.at(ThreeMuMass)>PDG_Var::Tau_mass()) category = 5;
 		 	if (tauMassRes>tauMassResCutHigh && value.at(ThreeMuMass)>PDG_Var::Tau_mass()) category = 6;
 		 }
-	 else category = 0;
+	 else {
+		 	if (tauMassRes<tauMassResCutLow) category = 1;
+		 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh) category = 2;
+		 	if (tauMassRes>tauMassResCutHigh) category = 3;
+			}
 	 if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
 	 	
 		TMVA_Tree->Fill();
@@ -406,7 +410,7 @@ void  NewTMVAVars::doEvent(){
 
 
 
-void  NewTMVAVars::Finish(){
+void  FillMVATree::Finish(){
  
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
@@ -427,7 +431,7 @@ void  NewTMVAVars::Finish(){
 
     //    }
   }
-    file= new TFile("NewTMVAVarsInput.root","recreate");
+    file= new TFile("FillMVATreeInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 
     file->Write();
