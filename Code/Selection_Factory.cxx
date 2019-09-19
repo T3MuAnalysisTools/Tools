@@ -32,6 +32,8 @@
 #include "joshi/softMuIdCuts.h"
 #include "joshi/TripleMuIsolation.h"
 
+#include "FillMVATree.h"
+
 #include "joshi/TMVATree_1.h"
 #include "joshi/TMVATree_2.h"
 #include "joshi/TMVATree_3.h"
@@ -122,6 +124,8 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("softmuidcuts"))s=new softMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("trkmuidcuts"))s=new trkMuIdCuts(Analysis,UncertType);
   else if(Analysis.Contains("twoglboneloosemuidcuts"))s=new twoGlbOneLooseMuIdCuts(Analysis,UncertType);
+  
+  else if(Analysis.Contains("FillMVATree"))s=new FillMVATree(Analysis,UncertType);
   
   else if(Analysis.Contains("tmvasignal"))s=new TMVASignal(Analysis,UncertType);
   else if(Analysis.Contains("tmvatree_1"))s=new TMVATree_1(Analysis,UncertType);
