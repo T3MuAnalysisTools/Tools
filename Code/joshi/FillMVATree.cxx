@@ -40,23 +40,14 @@ void  FillMVATree::Configure(){
   	 TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
 	 TMVA_Tree->Branch("var_sumMuTrkKinkChi2",&var_sumMuTrkKinkChi2);
 	 TMVA_Tree->Branch("var_segCompMuMin",&var_segCompMuMin);
-    TMVA_Tree->Branch("var_segCompMuMax",&var_segCompMuMax);
-	 TMVA_Tree->Branch("var_segCompMu1",&var_segCompMu1);
-	 TMVA_Tree->Branch("var_segCompMu2",&var_segCompMu2);
-	 TMVA_Tree->Branch("var_segCompMu3",&var_segCompMu3);
-	 TMVA_Tree->Branch("var_caloCompMin",&var_caloCompMin);
-	 TMVA_Tree->Branch("var_caloCompMax",&var_caloCompMax);
-	 TMVA_Tree->Branch("var_caloCompMu1",&var_caloCompMu1);
-	 TMVA_Tree->Branch("var_caloCompMu2",&var_caloCompMu2);
-	 TMVA_Tree->Branch("var_caloCompMu3",&var_caloCompMu3);
 	 TMVA_Tree->Branch("var_MinMIPLikelihood",&var_MinMIPLikelihood);
 	 TMVA_Tree->Branch("var_tauMass",&var_tauMass);
-	 TMVA_Tree->Branch("var_ntracks",&var_ntracks);
-	 TMVA_Tree->Branch("var_relPt",&var_relPt);
-	 TMVA_Tree->Branch("var_isoMax",&var_isoMax);
-	 TMVA_Tree->Branch("var_mu3d0VertexSig",&var_mu3d0VertexSig);
 	 TMVA_Tree->Branch("var_maxdca",&var_maxdca);
-
+    TMVA_Tree->Branch("var_MuMu_mindR",&var_MuMu_mindR);
+    TMVA_Tree->Branch("var_RelPt_Mu1Tau",&var_RelPt_Mu1Tau);
+    TMVA_Tree->Branch("var_Eta_au",&var_Eta_Tau);
+    TMVA_Tree->Branch("var_MuMu_minKFChi2",&var_MuMu_minKFChi2);
+    TMVA_Tree->Branch("var_MuTau_maxdR",&var_MuTau_maxdR);
 	 // -----------------
 
     for(int i=0; i<NCuts;i++){
@@ -155,26 +146,15 @@ void  FillMVATree::Configure(){
     MuonglbkinkSum  =HConfig.GetTH1D(Name+"_MuonglbkinkSum","MuonglbkinkSum",50,0.,50," #sum  #mu glb kink #chi^{2}","Events");
     FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
     SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
-  Muon_segmentCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu1","Muon_segmentCompatibility_mu1",50,0.,1,"Inner Track and muon segment match  #mu_{1} ","Events");
-  Muon_segmentCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu2","Muon_segmentCompatibility_mu2",50,0.,1,"Inner Track and muon segment match  #mu_{2} ","Events");
-  Muon_segmentCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_mu3","Muon_segmentCompatibility_mu3",50,0.,1,"Inner Track and muon segment match  #mu_{3}OOOO ","Events");
 
   Muon_segmentCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_min","Muon_segmentCompatibility_min",50,0.,1,"Inner Track and muon segment match min ","Events");
-  Muon_segmentCompatibility_max  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_max","Muon_segmentCompatibility_max",50,0.,1,"Inner Track and muon segment match max ","Events");
-
-
-  Muon_ECALCompatibility_mu1  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu1","Muon_ECALCompatibility_mu1",50,0.,1,"MIP Likelihood  #mu_{1} ","Events");
-  Muon_ECALCompatibility_mu2  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu2","Muon_ECALCompatibility_mu2",50,0.,1,"MIP Likelihood  #mu_{2} ","Events");
-  Muon_ECALCompatibility_mu3  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_mu3","Muon_ECALCompatibility_mu3",50,0.,1,"MIP Likelihood  #mu_{3} ","Events");
-
-  Muon_ECALCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_min","Muon_ECALCompatibility_min",50,0.,1,"MIP Likelihood min ","Events");
-  Muon_ECALCompatibility_max  = HConfig.GetTH1D(Name+"_Muon_ECALCompatibility_max","Muon_ECALCompatibility_max",50,0.,1,"MIP Likelihood max ","Events");
-  
-  Isolation_NTracks=HConfig.GetTH1D(Name+"_Isolation_NTracks","Isolation_NTracks",10,-0.5,9.5,"N tracks","Events");
-  Isolation_RelPt=HConfig.GetTH1D(Name+"_Isolation_RelPt","Isolation_RelPt",50,0,1,"relative p_{T}","Events");
-  Isolation_maxdxy=HConfig.GetTH1D(Name+"_Isolation_maxdxy","Isolation_maxdxy",40,0,15,"Iso maximum transversely displaced track","Events");
-  VertexMu3D0SigReco=HConfig.GetTH1D(Name+"_VertexMu3D0SigReco","VertexMu3D0SigReco",50,0,3,"#mu_{3} - PV transverse distance significance","Events");
-
+  Muon_HCALCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_HCALCompatibility_min","Muon_ECALCompatibility_min",50,0.,1,"MIP Likelihood min ","Events");
+  //New variables
+  minMudR = HConfig.GetTH1D(Name+"_minMudR","minMudR",50,0,0.6,"min #DeltaR(#mu#mu)","Events");
+  Mu1TauPTRatio = HConfig.GetTH1D(Name+"_Mu1TauPTRatio","Mu1TauPTRatio",50,0,1,"p_{T}(#mu_{1})/p_{T}(#tau)","Events");
+  dRMaxMuTau = HConfig.GetTH1D(Name+"_dRMaxMuTau","dRMaxMuTau",50,0,0.5,"max #DeltaR(#mu#tau)","Events");
+  MuPair_vertex_chi2_min=HConfig.GetTH1D(Name+"_MuPair_vertex_chi2_min","MuPair_vertex_chi2_min",50,0,1.5,"KF min #chi^{2} of #mu pair","Events");
+  TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
   VertexDCAMax=HConfig.GetTH1D(Name+"_VertexDCAMax","VertexDCAMax",40,0,0.15,"Max closest distance between muons","Events");
   
   Selection::ConfigureHistograms(); //do not remove
@@ -188,20 +168,14 @@ void  FillMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&FLSignificance);
   Extradist1d.push_back(&VertexChi2KF);
   Extradist1d.push_back(&MuonglbkinkSum);
-  Extradist1d.push_back(&Muon_segmentCompatibility_mu1);
-  Extradist1d.push_back(&Muon_segmentCompatibility_mu2);
-  Extradist1d.push_back(&Muon_segmentCompatibility_mu3);
   Extradist1d.push_back(&Muon_segmentCompatibility_min);
-  Extradist1d.push_back(&Muon_segmentCompatibility_max);
-  Extradist1d.push_back(&Muon_ECALCompatibility_mu1);
-  Extradist1d.push_back(&Muon_ECALCompatibility_mu2);
-  Extradist1d.push_back(&Muon_ECALCompatibility_mu3);
-  Extradist1d.push_back(&Muon_ECALCompatibility_min);
-  Extradist1d.push_back(&Muon_ECALCompatibility_max);
-  Extradist1d.push_back(&Isolation_RelPt);
-  Extradist1d.push_back(&Isolation_NTracks);
-  Extradist1d.push_back(&VertexMu3D0SigReco);
-  Extradist1d.push_back(&Isolation_maxdxy);
+  Extradist1d.push_back(&Muon_HCALCompatibility_min);
+  
+  Extradist1d.push_back(&minMudR);
+  Extradist1d.push_back(&Mu1TauPTRatio);
+  Extradist1d.push_back(&dRMaxMuTau);
+  Extradist1d.push_back(&MuPair_vertex_chi2_min);
+  Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&VertexDCAMax);
   
   ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,8 +266,10 @@ void  FillMVATree::doEvent(){
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-    pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    //pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
+    //pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*0.1);
+    pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*0.1);
 
     if(id!=1) pass.at(ThreeMuMass) = true;
     else  pass.at(ThreeMuMass) = ( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
@@ -326,9 +302,7 @@ void  FillMVATree::doEvent(){
       TLorentzVector TauLV = Muon1LV+Muon2LV+Muon3LV;
     
       float MinSegmentCompatibility = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
-      float MaxSegmentCompatibility = std::max({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
       float MinMIPLikelihood = std::min({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
-      float MaxMIPLikelihood = std::max({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
 	 //------------------ calculate var_svpvTauAngle ---------------------
       TVector3 vec_sv = Ntp->Vertex_Signal_KF_pos(final_idx);
 	   TVector3 vec_pv(0,0,0);
@@ -347,22 +321,14 @@ void  FillMVATree::doEvent(){
   	 var_flightLenSig = sqrt(Ntp->FlightLength_significance(vec_pv,fls_PVcov,vec_sv,fls_SVcov)); // Add flight length significance
 	 var_sumMuTrkKinkChi2 = (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
 	 var_segCompMuMin = MinSegmentCompatibility;
-    var_segCompMuMax = MaxSegmentCompatibility;
-	 var_segCompMu1 = Ntp->Muon_segmentCompatibility(Muon_index_1);
-	 var_segCompMu2 = Ntp->Muon_segmentCompatibility(Muon_index_2);
-	 var_segCompMu3 = Ntp->Muon_segmentCompatibility(Muon_index_3);
-	 var_caloCompMin = MinMIPLikelihood;
-	 var_caloCompMax = MaxMIPLikelihood;
-	 var_caloCompMu1 = Ntp->Muon_caloCompatibility(Muon_index_1);
-	 var_caloCompMu2 = Ntp->Muon_caloCompatibility(Muon_index_2);
-	 var_caloCompMu3 = Ntp->Muon_caloCompatibility(Muon_index_3);
 	 var_MinMIPLikelihood = MinMIPLikelihood;
 	 var_tauMass = TauLV.M();
-	 var_ntracks = Ntp->Isolation_NTracks(final_idx);
- 	 var_relPt = Ntp->Isolation_RelPt(final_idx);
- 	 var_isoMax = Ntp->Isolation_maxdy(final_idx);
- 	 var_mu3d0VertexSig = Ntp->Vertex_d0sig_reco(final_idx,2);
-	 var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
+	 var_MuMu_mindR = std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)});
+	 var_RelPt_Mu1Tau = Ntp->Muon_P4(Muon_index_1).Pt()/TauLV.Pt();
+	 var_Eta_Tau = TauLV.Eta();
+	 var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)});
+ 	 var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
+ 	 var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
 
 	 if (id==1) MC=0;
 	 else  MC=1;
@@ -390,24 +356,17 @@ void  FillMVATree::doEvent(){
        FLSignificance.at(t).Fill(var_flightLenSig);
        VertexChi2KF.at(t).Fill(var_vertexKFChi2);
        MuonglbkinkSum.at(t).Fill(var_sumMuTrkKinkChi2);
-       Muon_segmentCompatibility_mu1.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_1),w);
-       Muon_segmentCompatibility_mu2.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_2),w);
-       Muon_segmentCompatibility_mu3.at(t).Fill(Ntp->Muon_segmentCompatibility(Muon_index_3),w);
        Muon_segmentCompatibility_min.at(t).Fill(MinSegmentCompatibility,w);
-       Muon_segmentCompatibility_max.at(t).Fill(MaxSegmentCompatibility,w);
-       Muon_ECALCompatibility_mu1.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_1),w);
-       Muon_ECALCompatibility_mu2.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_2),w);
-       Muon_ECALCompatibility_mu3.at(t).Fill(Ntp->Muon_caloCompatibility(Muon_index_3),w);
-       Muon_ECALCompatibility_min.at(t).Fill(MinMIPLikelihood,w);
-       Muon_ECALCompatibility_max.at(t).Fill(MaxMIPLikelihood,w);
-    	 Isolation_NTracks.at(t).Fill(Ntp->Isolation_NTracks(final_idx),w);
-       Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(final_idx),w);
-       Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(final_idx),w);
-		 VertexMu3D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,2),w);
+       Muon_HCALCompatibility_min.at(t).Fill(MinMIPLikelihood,w);
+		 minMudR.at(t).Fill(std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)}));
+		 Mu1TauPTRatio.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt()/TauLV.Pt());
+		 dRMaxMuTau.at(t).Fill(std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)}));
+		 MuPair_vertex_chi2_min.at(t).Fill(std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)}));
+		 TauEta.at(t).Fill(TauLV.Eta());
+		 VertexDCAMax.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)}));
 	    }
     }
 }
-
 
 
 void  FillMVATree::Finish(){

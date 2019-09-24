@@ -38,44 +38,33 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> MuonglbkinkSum;
-  std::vector<TH1D> Muon_segmentCompatibility_mu1;
-  std::vector<TH1D> Muon_segmentCompatibility_mu2;
-  std::vector<TH1D> Muon_segmentCompatibility_mu3;
   std::vector<TH1D> Muon_segmentCompatibility_min;
-  std::vector<TH1D> Muon_segmentCompatibility_max;
-  std::vector<TH1D> Muon_ECALCompatibility_mu1;
-  std::vector<TH1D> Muon_ECALCompatibility_mu2;
-  std::vector<TH1D> Muon_ECALCompatibility_mu3;
-  std::vector<TH1D> Muon_ECALCompatibility_min;
-  std::vector<TH1D> Muon_ECALCompatibility_max;
-  std::vector<TH1D> Isolation_NTracks;
-  std::vector<TH1D> Isolation_RelPt;
-  std::vector<TH1D> Isolation_maxdxy;
-  std::vector<TH1D> VertexMu3D0SigReco;
+  std::vector<TH1D> Muon_HCALCompatibility_min;
+  //New variables
+  std::vector<TH1D> minMudR;
+  std::vector<TH1D> dRMaxMuTau;
+  std::vector<TH1D> Mu1TauPTRatio;
+  std::vector<TH1D> MuPair_vertex_chi2_min;
+  std::vector<TH1D> TauEta;
   std::vector<TH1D> VertexDCAMax;
- 
- bool MC;
+
+
+ bool MC; 
  int category;
  float var_vertexKFChi2 ;
  float var_svpvTauAngle ;
  float var_flightLenSig ;
  float var_sumMuTrkKinkChi2 ;
  float var_segCompMuMin ;
- float var_segCompMuMax ;
- float var_segCompMu1 ;
- float var_segCompMu2 ;
- float var_segCompMu3 ;
- float var_caloCompMin ;
- float var_caloCompMax ;
- float var_caloCompMu1 ;
- float var_caloCompMu2 ;
- float var_caloCompMu3 ;
  float var_MinMIPLikelihood ;
- float var_tauMass ;
- float var_ntracks;
- float var_relPt;
- float var_isoMax;
- float var_mu3d0VertexSig;
+ float var_tauMass;
+ // new variables
+ float var_MuMu_mindR;
+ float var_RelPt_Mu1Tau;
+ float var_Eta_Tau;
+ float var_MuMu_minKFChi2;
  float var_maxdca;
+ float var_MuTau_maxdR;
+
 };
 #endif
