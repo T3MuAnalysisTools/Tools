@@ -33,21 +33,21 @@ SignalSelector::~SignalSelector(){
 
 void  SignalSelector::Configure(){
 
-  reader = new TMVA::Reader( "!Color:!Silent" );
+  readerA = new TMVA::Reader( "!Color:!Silent" );
 
   TString basedir = "";
   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/weights/";
 
 
-  reader->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
-  reader->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
-  reader->AddVariable( "var_flightLenSig", &var_flightLenSig );
-  reader->AddVariable( "var_sumMuTrkKinkChi2", &var_sumMuTrkKinkChi2 );
-  reader->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  reader->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
-  reader->AddSpectator("var_tauMass",&var_tauMass);
+  readerA->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
+  readerA->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
+  readerA->AddVariable( "var_flightLenSig", &var_flightLenSig );
+  readerA->AddVariable( "var_sumMuTrkKinkChi2", &var_sumMuTrkKinkChi2 );
+  readerA->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
+  readerA->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
+  readerA->AddSpectator("var_tauMass",&var_tauMass);
 
-  reader->BookMVA( "BDT", basedir+"NewTMVAClassification_3_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerA->BookMVA( "BDT", basedir+"NewTMVAClassification_3_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
 
@@ -130,8 +130,8 @@ void  SignalSelector::Configure(){
       htitle.ReplaceAll("\\","#");
 
       hlabel="Phi mass Veto, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,50,0.8,1.2,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,50,0.8,1.2,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,60,0.8,1.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,60,0.8,1.2,hlabel,"Events"));
     }
     else if(i==OmegaVeto){
       title.at(i)="$\\omega$ mass veto";
@@ -155,8 +155,8 @@ void  SignalSelector::Configure(){
       htitle.ReplaceAll("\\","#");
 
       hlabel="three mu mass, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,50,1.4,2.2,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TauMassCut_",htitle,50,1.4,2.2,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,60,1.4,2.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TauMassCut_",htitle,60,1.4,2.2,hlabel,"Events"));
     }
 
 
@@ -187,9 +187,9 @@ void  SignalSelector::Configure(){
   TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
-  TauMass =HConfig.GetTH1D(Name+"_TauMass","#tau lepton mass",50,1.5,1.9,"  M_{#tau} , GeV","Events");
+  TauMass =HConfig.GetTH1D(Name+"_TauMass","#tau lepton mass",75,1.5,2.1,"  M_{#tau} , GeV","Events");
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
-  TauMassRefit =HConfig.GetTH1D(Name+"_TauMassRefit","Refit #tau lepton mass",50,1.5,1.9,"KF refit  M_{#tau} , GeV","Events");
+  TauMassRefit =HConfig.GetTH1D(Name+"_TauMassRefit","Refit #tau lepton mass",75,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
 
   EventMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_EventMassResolution_PtEtaPhi","EventMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
@@ -206,6 +206,7 @@ void  SignalSelector::Configure(){
   TriggerMatchdR1 =HConfig.GetTH1D(Name+"_TriggerMatchdR1","TriggerMatchdR1",50,0,1,"trigger match #Delta R 1","Events");
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match #Delta R 2","Events");
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match #Delta R 3","Events");
+
   BDTOutput = HConfig.GetTH1D(Name+"_BDTOutput","BDTOutput",50,-0.3,0.3,"BDT Output","Events");
 
   NSignalCandidates =HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"Number of signal candidates","Events");
@@ -350,7 +351,7 @@ void  SignalSelector::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
   pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-  pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
+  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 4*PDG_Var::Phi_width());
   pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
@@ -463,8 +464,8 @@ void  SignalSelector::doEvent(){
 
     var_tauMass=TauLV.M();
 
-    BDTOutput.at(t).Fill(    reader->EvaluateMVA("BDT") );
-    if(reader->EvaluateMVA("BDT") > 0.){
+    BDTOutput.at(t).Fill(    readerA->EvaluateMVA("BDT") );
+    if(readerA->EvaluateMVA("BDT") > 0.){
     TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
       //      std::cout<<"------------------ "<< std::endl;
       //      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
@@ -485,7 +486,6 @@ void  SignalSelector::doEvent(){
     //---------------  Fill MC plots 
     if(id==40 || id == 60 || id ==90){
       if(Ntp->MCEventIsReconstructed()){
-
 	TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
 	TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
 	TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2)));
@@ -512,6 +512,9 @@ void  SignalSelector::Finish(){
     double scaleDsTau(0.637);
     double scaleBpTau(0.262);
     double scaleB0Tau(0.099);
+
+    //total xsection of producing taus is 12.848 ub 
+
 
     if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
     ScaleAllHistOfType(2,scale*scaleDsTau);

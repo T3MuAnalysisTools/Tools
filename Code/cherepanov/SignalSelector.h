@@ -99,7 +99,9 @@ class SignalSelector : public Selection {
   std::vector<TH1D> BDTOutput;
   std::vector<TH1D> NSignalCandidates;
 
-  TMVA::Reader *reader;
+  TMVA::Reader *readerA;
+  TMVA::Reader *readerB;
+  TMVA::Reader *readerC;
 
   Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
   Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
