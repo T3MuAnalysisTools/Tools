@@ -48,6 +48,8 @@ void  FillMVATree::Configure(){
     TMVA_Tree->Branch("var_Eta_au",&var_Eta_Tau);
     TMVA_Tree->Branch("var_MuMu_minKFChi2",&var_MuMu_minKFChi2);
     TMVA_Tree->Branch("var_MuTau_maxdR",&var_MuTau_maxdR);
+	 TMVA_Tree->Branch("var_MaxD0Significance", &var_MaxD0Significance);
+	 TMVA_Tree->Branch("var_IsolationMinDist", &var_IsolationMinDist);
 	 // -----------------
 
     for(int i=0; i<NCuts;i++){
@@ -156,9 +158,10 @@ void  FillMVATree::Configure(){
   MuPair_vertex_chi2_min=HConfig.GetTH1D(Name+"_MuPair_vertex_chi2_min","MuPair_vertex_chi2_min",50,0,1.5,"KF min #chi^{2} of #mu pair","Events");
   TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
   VertexDCAMax=HConfig.GetTH1D(Name+"_VertexDCAMax","VertexDCAMax",40,0,0.15,"Max closest distance between muons","Events");
-  
+  Isolation_MinDist=HConfig.GetTH1D(Name+"_Isolation_MinDist","Isolation_MinDist",50,0,0.1,"Iso MinDist","Events"); 
+  VertexMuMaxD0SigReco=HConfig.GetTH1D(Name+"_VertexMuMaxD0SigReco","VertexMuMaxD0SigReco",50,0,4,"#mu - PV max transverse distance significance","Events");
   Selection::ConfigureHistograms(); //do not remove
-    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
+  HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 
 }
 
@@ -177,6 +180,8 @@ void  FillMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&MuPair_vertex_chi2_min);
   Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&VertexDCAMax);
+  Extradist1d.push_back(&Isolation_MinDist);
+  Extradist1d.push_back(&VertexMuMaxD0SigReco);
   
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
@@ -253,6 +258,7 @@ void  FillMVATree::doEvent(){
       value.at(PhiVeto) = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
       value.at(OmegaVeto) = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
 
+
       for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(final_idx)){
         value.at(TriggerMatch)+=i; 
       }
@@ -316,7 +322,13 @@ void  FillMVATree::doEvent(){
 	   TMatrixTSym<double> fls_PVcov = Ntp->Vertex_PrimaryVertex_Covariance(final_idx);
 	   TMatrixTSym<double> fls_SVcov = Ntp->Vertex_Signal_KF_Covariance(final_idx);
 
+		float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(final_idx,0),
+			 	  										Ntp->Vertex_d0sig_reco(final_idx,1),
+				  	  									Ntp->Vertex_d0sig_reco(final_idx,2)});
+
     var_vertexKFChi2 = Ntp->Vertex_signal_KF_Chi2(final_idx);
+	 var_MaxD0Significance = MaxD0Significance;
+	 var_IsolationMinDist = Ntp->Isolation_MinDist(final_idx);
     var_svpvTauAngle = TMath::ACos(d_pvsv.Dot(vec_tau)/(d_pvsv.Mag()*vec_tau.Mag()));
   	 var_flightLenSig = sqrt(Ntp->FlightLength_significance(vec_pv,fls_PVcov,vec_sv,fls_SVcov)); // Add flight length significance
 	 var_sumMuTrkKinkChi2 = (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
@@ -364,6 +376,8 @@ void  FillMVATree::doEvent(){
 		 MuPair_vertex_chi2_min.at(t).Fill(std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)}));
 		 TauEta.at(t).Fill(TauLV.Eta());
 		 VertexDCAMax.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)}));
+		 Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(final_idx),w);
+		 VertexMuMaxD0SigReco.at(t).Fill(MaxD0Significance,1);
 	    }
     }
 }

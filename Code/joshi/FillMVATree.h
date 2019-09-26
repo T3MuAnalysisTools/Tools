@@ -47,6 +47,8 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   std::vector<TH1D> MuPair_vertex_chi2_min;
   std::vector<TH1D> TauEta;
   std::vector<TH1D> VertexDCAMax;
+  std::vector<TH1D> Isolation_MinDist;
+  std::vector<TH1D> VertexMuMaxD0SigReco;
 
 
  bool MC; 
@@ -65,6 +67,8 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
  float var_MuMu_minKFChi2;
  float var_maxdca;
  float var_MuTau_maxdR;
+ float var_IsolationMinDist;
+ float var_MaxD0Significance;
 
 };
 #endif
