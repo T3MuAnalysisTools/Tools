@@ -47,6 +47,7 @@ TARGETS       =	Ntuple_Controller \
 		HistoConfig \
 		Logger \
 		PDGInfo	\
+		PUReweight \
 		Example 
 
 
