@@ -15,7 +15,7 @@ public:
   ~PUReweight();
 
 
-  float PUweightHTT(float npu);
+  float PU_weight(float npu);
 public:
   Type theType;
   TH1D *PUWeightHiso;
