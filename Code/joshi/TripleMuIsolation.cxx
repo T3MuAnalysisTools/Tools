@@ -280,6 +280,36 @@ Muon3_Isolation_emEt03=HConfig.GetTH1D(Name+"_Muon3_Isolation_emEt03","Muon3_Iso
   Max_Isolation_sumPhotonEt04=HConfig.GetTH1D(Name+"_Max_Isolation_sumPhotonEt04","Max_Isolation_sumPhotonEt04",100,0,50,"Max #SigmaE_{T} #gamma in Iso04 (GeV)","Events");
   Max_Isolation_sumPhotonEtHighThreshold04=HConfig.GetTH1D(Name+"_Max_Isolation_sumPhotonEtHighThreshold04","Max_Isolation_sumPhotonEtHighThreshold04",30,0,15,"Max #SigmaE_{T}#gamma (high threshold) in Iso04 (GeV)","Events");
   Max_Isolation_sumPUPt04=HConfig.GetTH1D(Name+"_Max_Isolation_sumPUPt04","Max_Isolation_sumPUPt04",30,0,15,"Max #SigmaPUp_{T} in Iso04 (GeV)","Events");
+   
+	Muon1_calEnergy_hadS9=HConfig.GetTH1D(Name+"_Muon1_calEnergy_hadS9","Muon1_calEnergy_hadS9",30,0,30,"#mu_{1} Energy deposit in crossed 3x3 HCAL crystal","Events");
+   Muon1_calEnergy_had=HConfig.GetTH1D(Name+"_Muon1_calEnergy_had","Muon1_calEnergy_had",30,0,30,"#mu_{1} Energy deposit in crossed HCAL tower","Events");
+   Muon1_calEnergy_emS25=HConfig.GetTH1D(Name+"_Muon1_calEnergy_emS25","Muon1_calEnergy_emS25",30,0,30,"#mu_{1} Energy deposit in 5x5 ECAL crystal","Events");
+   Muon1_calEnergy_emS9=HConfig.GetTH1D(Name+"_Muon1_calEnergy_emS9","Muon1_calEnergy_emS9",30,0,30,"#mu_{1} Energy deposit in 3x3 ECAL crystal","Events");
+   Muon1_calEnergy_em=HConfig.GetTH1D(Name+"_Muon1_calEnergy_em","Muon1_calEnergy_em",30,0,30,"Enenrgy deposit in crossed ECAL crystals","Events");
+
+	Muon2_calEnergy_hadS9=HConfig.GetTH1D(Name+"_Muon2_calEnergy_hadS9","Muon2_calEnergy_hadS9",30,0,30,"#mu_{2} Energy deposit in crossed 3x3 HCAL crystal","Events");
+   Muon2_calEnergy_had=HConfig.GetTH1D(Name+"_Muon2_calEnergy_had","Muon2_calEnergy_had",30,0,30,"#mu_{2} Energy deposit in crossed HCAL tower","Events");
+   Muon2_calEnergy_emS25=HConfig.GetTH1D(Name+"_Muon2_calEnergy_emS25","Muon2_calEnergy_emS25",30,0,30,"#mu_{2} Energy deposit in 5x5 ECAL crystal","Events");
+   Muon2_calEnergy_emS9=HConfig.GetTH1D(Name+"_Muon2_calEnergy_emS9","Muon2_calEnergy_emS9",30,0,30,"#mu_{2} Energy deposit in 3x3 ECAL crystal","Events");
+   Muon2_calEnergy_em=HConfig.GetTH1D(Name+"_Muon2_calEnergy_em","Muon2_calEnergy_em",30,0,30,"Enenrgy deposit in crossed ECAL crystals","Events");
+
+	Muon3_calEnergy_hadS9=HConfig.GetTH1D(Name+"_Muon3_calEnergy_hadS9","Muon3_calEnergy_hadS9",30,0,30,"#mu_{3} Energy deposit in crossed 3x3 HCAL crystal","Events");
+   Muon3_calEnergy_had=HConfig.GetTH1D(Name+"_Muon3_calEnergy_had","Muon3_calEnergy_had",30,0,30,"#mu_{3} Energy deposit in crossed HCAL tower","Events");
+   Muon3_calEnergy_emS25=HConfig.GetTH1D(Name+"_Muon3_calEnergy_emS25","Muon3_calEnergy_emS25",30,0,30,"#mu_{3} Energy deposit in 5x5 ECAL crystal","Events");
+   Muon3_calEnergy_emS9=HConfig.GetTH1D(Name+"_Muon3_calEnergy_emS9","Muon3_calEnergy_emS9",30,0,30,"#mu_{3} Energy deposit in 3x3 ECAL crystal","Events");
+   Muon3_calEnergy_em=HConfig.GetTH1D(Name+"_Muon3_calEnergy_em","Muon3_calEnergy_em",30,0,30,"Enenrgy deposit in crossed ECAL crystals","Events");
+
+	Min_calEnergy_hadS9=HConfig.GetTH1D(Name+"_Min_calEnergy_hadS9","Min_calEnergy_hadS9",30,0,30,"Min Energy deposit in crossed 3x3 HCAL crystal","Events");
+   Min_calEnergy_had=HConfig.GetTH1D(Name+"_Min_calEnergy_had","Min_calEnergy_had",30,0,30,"Min Energy deposit in crossed HCAL tower","Events");
+   Min_calEnergy_emS25=HConfig.GetTH1D(Name+"_Min_calEnergy_emS25","Min_calEnergy_emS25",30,0,30,"Min Energy deposit in 5x5 ECAL crystal","Events");
+   Min_calEnergy_emS9=HConfig.GetTH1D(Name+"_Min_calEnergy_emS9","Min_calEnergy_emS9",30,0,30,"Min Energy deposit in 3x3 ECAL crystal","Events");
+   Min_calEnergy_em=HConfig.GetTH1D(Name+"_Min_calEnergy_em","Min_calEnergy_em",30,0,30,"Enenrgy deposit in crossed ECAL crystals","Events");
+
+	Max_calEnergy_hadS9=HConfig.GetTH1D(Name+"_Max_calEnergy_hadS9","Max_calEnergy_hadS9",30,0,30,"Max Energy deposit in crossed 3x3 HCAL crystal","Events");
+   Max_calEnergy_had=HConfig.GetTH1D(Name+"_Max_calEnergy_had","Max_calEnergy_had",30,0,30,"Max Energy deposit in crossed HCAL tower","Events");
+   Max_calEnergy_emS25=HConfig.GetTH1D(Name+"_Max_calEnergy_emS25","Max_calEnergy_emS25",30,0,30,"Max Energy deposit in 5x5 ECAL crystal","Events");
+   Max_calEnergy_emS9=HConfig.GetTH1D(Name+"_Max_calEnergy_emS9","Max_calEnergy_emS9",30,0,30,"Max Energy deposit in 3x3 ECAL crystal","Events");
+   Max_calEnergy_em=HConfig.GetTH1D(Name+"_Max_calEnergy_em","Max_calEnergy_em",30,0,30,"Enenrgy deposit in crossed ECAL crystals","Events");
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -444,6 +474,36 @@ void  TripleMuIsolation::Store_ExtraDist(){
   Extradist1d.push_back(&Max_Isolation_sumPhotonEtHighThreshold04);
   Extradist1d.push_back(&Max_Isolation_sumPUPt04);
   // ------------------------------------------------------------------------------------------------------------------------
+
+  Extradist1d.push_back(&Muon1_calEnergy_hadS9);
+  Extradist1d.push_back(&Muon1_calEnergy_had);
+  Extradist1d.push_back(&Muon1_calEnergy_emS25);
+  Extradist1d.push_back(&Muon1_calEnergy_emS9);
+  Extradist1d.push_back(&Muon1_calEnergy_em);
+
+  Extradist1d.push_back(&Muon2_calEnergy_hadS9);
+  Extradist1d.push_back(&Muon2_calEnergy_had);
+  Extradist1d.push_back(&Muon2_calEnergy_emS25);
+  Extradist1d.push_back(&Muon2_calEnergy_emS9);
+  Extradist1d.push_back(&Muon2_calEnergy_em);
+
+  Extradist1d.push_back(&Muon3_calEnergy_hadS9);
+  Extradist1d.push_back(&Muon3_calEnergy_had);
+  Extradist1d.push_back(&Muon3_calEnergy_emS25);
+  Extradist1d.push_back(&Muon3_calEnergy_emS9);
+  Extradist1d.push_back(&Muon3_calEnergy_em);
+ 
+  Extradist1d.push_back(&Min_calEnergy_hadS9);
+  Extradist1d.push_back(&Min_calEnergy_had);
+  Extradist1d.push_back(&Min_calEnergy_emS25);
+  Extradist1d.push_back(&Min_calEnergy_emS9);
+  Extradist1d.push_back(&Min_calEnergy_em);
+
+  Extradist1d.push_back(&Max_calEnergy_hadS9);
+  Extradist1d.push_back(&Max_calEnergy_had);
+  Extradist1d.push_back(&Max_calEnergy_emS25);
+  Extradist1d.push_back(&Max_calEnergy_emS9);
+  Extradist1d.push_back(&Max_calEnergy_em);
 }
 
 
@@ -709,6 +769,36 @@ void  TripleMuIsolation::doEvent(){
     Min_Isolation_sumPhotonEtHighThreshold04.at(t).Fill(std::min(Ntp->Muon_sumPhotonEtHighThreshold04(Muon_index_1), std::min(Ntp->Muon_sumPhotonEtHighThreshold04(Muon_index_2),Ntp->Muon_sumPhotonEtHighThreshold04(Muon_index_3))));
     Min_Isolation_sumPUPt04.at(t).Fill(std::min(Ntp->Muon_sumPUPt04(Muon_index_1), std::min(Ntp->Muon_sumPUPt04(Muon_index_2),Ntp->Muon_sumPUPt04(Muon_index_3))));
 
+	 // ------------------------
+  Muon1_calEnergy_hadS9.at(t).Fill(Ntp->Muon_calEnergy_hadS9(Muon_index_1));
+  Muon1_calEnergy_had.at(t).Fill(Ntp->Muon_calEnergy_had(Muon_index_1));
+  Muon1_calEnergy_emS25.at(t).Fill(Ntp->Muon_calEnergy_emS25(Muon_index_1));
+  Muon1_calEnergy_emS9.at(t).Fill(Ntp->Muon_calEnergy_emS9(Muon_index_1));
+  Muon1_calEnergy_em.at(t).Fill(Ntp->Muon_calEnergy_em(Muon_index_1));
+
+  Muon2_calEnergy_hadS9.at(t).Fill(Ntp->Muon_calEnergy_hadS9(Muon_index_2));
+  Muon2_calEnergy_had.at(t).Fill(Ntp->Muon_calEnergy_had(Muon_index_2));
+  Muon2_calEnergy_emS25.at(t).Fill(Ntp->Muon_calEnergy_emS25(Muon_index_2));
+  Muon2_calEnergy_emS9.at(t).Fill(Ntp->Muon_calEnergy_emS9(Muon_index_2));
+  Muon2_calEnergy_em.at(t).Fill(Ntp->Muon_calEnergy_em(Muon_index_2));
+
+  Muon3_calEnergy_hadS9.at(t).Fill(Ntp->Muon_calEnergy_hadS9(Muon_index_3));
+  Muon3_calEnergy_had.at(t).Fill(Ntp->Muon_calEnergy_had(Muon_index_3));
+  Muon3_calEnergy_emS25.at(t).Fill(Ntp->Muon_calEnergy_emS25(Muon_index_3));
+  Muon3_calEnergy_emS9.at(t).Fill(Ntp->Muon_calEnergy_emS9(Muon_index_3));
+  Muon3_calEnergy_em.at(t).Fill(Ntp->Muon_calEnergy_em(Muon_index_3));
+
+  Min_calEnergy_hadS9.at(t).Fill(std::min(Ntp->Muon_calEnergy_hadS9(Muon_index_1), std::min(Ntp->Muon_calEnergy_hadS9(Muon_index_2),Ntp->Muon_calEnergy_hadS9(Muon_index_3))));
+  Min_calEnergy_had.at(t).Fill(std::min(Ntp->Muon_calEnergy_had(Muon_index_1), std::min(Ntp->Muon_calEnergy_had(Muon_index_2),Ntp->Muon_calEnergy_had(Muon_index_3))));
+  Min_calEnergy_emS25.at(t).Fill(std::min(Ntp->Muon_calEnergy_emS25(Muon_index_1), std::min(Ntp->Muon_calEnergy_emS25(Muon_index_2),Ntp->Muon_calEnergy_emS25(Muon_index_3))));
+  Min_calEnergy_emS9.at(t).Fill(std::min(Ntp->Muon_calEnergy_emS9(Muon_index_1), std::min(Ntp->Muon_calEnergy_emS9(Muon_index_2),Ntp->Muon_calEnergy_emS9(Muon_index_3))));
+  Min_calEnergy_em.at(t).Fill(std::min(Ntp->Muon_calEnergy_em(Muon_index_1), std::min(Ntp->Muon_calEnergy_em(Muon_index_2),Ntp->Muon_calEnergy_em(Muon_index_3))));
+
+  Max_calEnergy_hadS9.at(t).Fill(std::max(Ntp->Muon_calEnergy_hadS9(Muon_index_1), std::max(Ntp->Muon_calEnergy_hadS9(Muon_index_2),Ntp->Muon_calEnergy_hadS9(Muon_index_3))));
+  Max_calEnergy_had.at(t).Fill(std::max(Ntp->Muon_calEnergy_had(Muon_index_1), std::max(Ntp->Muon_calEnergy_had(Muon_index_2),Ntp->Muon_calEnergy_had(Muon_index_3))));
+  Max_calEnergy_emS25.at(t).Fill(std::max(Ntp->Muon_calEnergy_emS25(Muon_index_1), std::max(Ntp->Muon_calEnergy_emS25(Muon_index_2),Ntp->Muon_calEnergy_emS25(Muon_index_3))));
+  Max_calEnergy_emS9.at(t).Fill(std::max(Ntp->Muon_calEnergy_emS9(Muon_index_1), std::max(Ntp->Muon_calEnergy_emS9(Muon_index_2),Ntp->Muon_calEnergy_emS9(Muon_index_3))));
+  Max_calEnergy_em.at(t).Fill(std::max(Ntp->Muon_calEnergy_em(Muon_index_1), std::max(Ntp->Muon_calEnergy_em(Muon_index_2),Ntp->Muon_calEnergy_em(Muon_index_3))));
 
 	 // ------------------------
   }
@@ -717,13 +807,24 @@ void  TripleMuIsolation::doEvent(){
 
 
 void  TripleMuIsolation::Finish(){
+ if(mode == RECONSTRUCT){
+    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+    int id(Ntp->GetMCID());
+    double scale(1.);
+    double scaleDsTau(0.637);
+    double scaleBpTau(0.262);
+    double scaleB0Tau(0.099);
 
-  if(mode == RECONSTRUCT){
-    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-      double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral();
-      ScaleAllHistOfType(i,scale);
-    }
+    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
+    ScaleAllHistOfType(2,scale*scaleDsTau);
+    
+    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
+    ScaleAllHistOfType(3,scale*scaleB0Tau);
+
+    if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
+    ScaleAllHistOfType(4,scale*scaleBpTau);
+
+    //    }
   }
   Selection::Finish();
 }

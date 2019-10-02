@@ -46,15 +46,26 @@ class SignalSelector : public Selection {
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
-  std::vector<TH1D> TauMass;
+
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
   std::vector<TH1D> SVPVTauDirAngle;
 
-  std::vector<TH1D> TauMassRefit;
+  std::vector<TH1D> TauMassRefitA;
+  std::vector<TH1D> TauMassA;
+  std::vector<TH1D> TauMassRefitB;
+  std::vector<TH1D> TauMassB;
+  std::vector<TH1D> TauMassRefitC;
+  std::vector<TH1D> TauMassC;
   std::vector<TH1D> TauMassResolutionRefit;
 
+  std::vector<TH1D> TauMass_all_nophiVeto;
+  std::vector<TH1D> TauMass_all;
+  std::vector<TH2D> TauMass_allVsBDTA;
+  std::vector<TH2D> TauMass_allVsBDTB;
+  std::vector<TH2D> TauMass_allVsBDTC;
+  
   std::vector<TH1D> Muon1isGlob;
   std::vector<TH1D> Muon2isGlob;
   std::vector<TH1D> Muon3isGlob;
@@ -96,10 +107,14 @@ class SignalSelector : public Selection {
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> FLSignificance;
-  std::vector<TH1D> BDTOutput;
+  std::vector<TH1D> BDTOutputA;
+  std::vector<TH1D> BDTOutputB;
+  std::vector<TH1D> BDTOutputC;
   std::vector<TH1D> NSignalCandidates;
 
-  TMVA::Reader *reader;
+  TMVA::Reader *readerA;
+  TMVA::Reader *readerB;
+  TMVA::Reader *readerC;
 
   Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
   Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
@@ -108,5 +123,11 @@ class SignalSelector : public Selection {
   Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
   Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
   Float_t var_tauMass;
+  Float_t var_MuMu_mindR;
+  Float_t var_RelPt_Mu1Tau;
+  Float_t var_Eta_au;
+  Float_t var_MuMu_minKFChi2;
+  Float_t var_maxdca;
+  Float_t var_MuTau_maxdR;
 };
 #endif

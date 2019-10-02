@@ -14,8 +14,8 @@ FillTMVATrees::FillTMVATrees(TString Name_, TString id_):
     tauMaxMass_(1.823),
     tauMinSideBand_(1.6),
     tauMaxSideBand_(2.0),
-	 tauMassResCutLow(0.007),
-	 tauMassResCutHigh(0.01)
+    tauMassResCutLow(0.007),
+    tauMassResCutHigh(0.01)
 {
     // This is a class constructor;
 }

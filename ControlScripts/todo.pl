@@ -86,8 +86,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n                                                   beforehand and copy your received proxy to proxy dir");
     printf("\n                                                   <ListoDS.txt> list of DCache Dataset directories you want to run on.");
     printf("\n                                                   Optional commands:  ");
-    printf("\n                                                     --OutputDir <OutputDir> ");
-    printf("\n                                                     --SetName <SetName> "); 
+    printf("\n                                                     --OutputDir <OutputDir> Default value: $OutputDir ");
+    printf("\n                                                     --SetName <SetName>     Default value: $set  "); 
     printf("\n                                                     --NMaxData <Max Number of data files per job >     Default value: $maxdata ");
     printf("\n                                                     --NMaxMC <Max Number of MC files per job >     Default value: $maxmc ");
     printf("\n                                                     --Proxy <path>;   a path to proxy recieved by running grid-init");
@@ -105,6 +105,10 @@ for($l=2;$l<$numArgs; $l++){
     if($ARGV[$l] eq "--InputDir"){
 	$l++;
 	$InputDir=$ARGV[$l];
+    }
+    if($ARGV[$l] eq "--OutputDir"){
+	$l++;
+	$OutputDir=$ARGV[$l];
     }
     if($ARGV[$l] eq "--SetName"){
 	$l++;

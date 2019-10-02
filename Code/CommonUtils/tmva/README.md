@@ -15,12 +15,12 @@ Background:
 
 | BDT category | Description |
 | :---: | :---: |
-| 1 | tauMassRes<0.007 && threeMuMass<1.78 |
-| 2 | tauMassRes>0.007 && tauMassRes<0.01 && threeMuMass<1.78 |
-| 3 | tauMassRes>0.01 && threeMuMass<1.78 |
-| 4 | tauMassRes<0.007 && threeMuMass>1.78 |
-| 5 | tauMassRes>0.007 && tauMassRes<0.01 && threeMuMass>1.78 |
-| 6 | tauMassRes>0.01 && threeMuMass>1.78 |
+| 1 | tauMassRes<0.007 && threeMuMass<1.731 && threeMuMass>1.6 |
+| 2 | tauMassRes>0.007 && tauMassRes<0.01 && threeMuMass<1.731 && && threeMuMass>1.6|
+| 3 | tauMassRes>0.01 && threeMuMass<1.731 && threeMuMass>1.6 |
+| 4 | tauMassRes<0.007 && threeMuMass>1.823 && threeMuMass<2.0  |
+| 5 | tauMassRes>0.007 && tauMassRes<0.01 && threeMuMass>1.823 && threeMuMass<2.0 |
+| 6 | tauMassRes>0.01 && threeMuMass>1.823 && threeMuMass<2.0 |
 
 Signal:
 

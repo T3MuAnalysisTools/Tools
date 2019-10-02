@@ -185,5 +185,35 @@ class TripleMuIsolation : public Selection {
   std::vector<TH1D> Max_Isolation_sumPhotonEtHighThreshold04;
   std::vector<TH1D> Max_Isolation_sumPUPt04;
 
+  // more energy isolation variables
+  std::vector<TH1D> Muon1_calEnergy_hadS9;
+  std::vector<TH1D> Muon1_calEnergy_had;
+  std::vector<TH1D> Muon1_calEnergy_emS25;
+  std::vector<TH1D> Muon1_calEnergy_emS9;
+  std::vector<TH1D> Muon1_calEnergy_em;
+
+  std::vector<TH1D> Muon2_calEnergy_hadS9;
+  std::vector<TH1D> Muon2_calEnergy_had;
+  std::vector<TH1D> Muon2_calEnergy_emS25;
+  std::vector<TH1D> Muon2_calEnergy_emS9;
+  std::vector<TH1D> Muon2_calEnergy_em;
+
+  std::vector<TH1D> Muon3_calEnergy_hadS9;
+  std::vector<TH1D> Muon3_calEnergy_had;
+  std::vector<TH1D> Muon3_calEnergy_emS25;
+  std::vector<TH1D> Muon3_calEnergy_emS9;
+  std::vector<TH1D> Muon3_calEnergy_em;
+  
+  std::vector<TH1D> Min_calEnergy_hadS9;
+  std::vector<TH1D> Min_calEnergy_had;
+  std::vector<TH1D> Min_calEnergy_emS25;
+  std::vector<TH1D> Min_calEnergy_emS9;
+  std::vector<TH1D> Min_calEnergy_em;
+
+  std::vector<TH1D> Max_calEnergy_hadS9;
+  std::vector<TH1D> Max_calEnergy_had;
+  std::vector<TH1D> Max_calEnergy_emS25;
+  std::vector<TH1D> Max_calEnergy_emS9;
+  std::vector<TH1D> Max_calEnergy_em;
 };
 #endif

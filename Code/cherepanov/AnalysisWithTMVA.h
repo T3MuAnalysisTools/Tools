@@ -40,7 +40,7 @@ class AnalysisWithTMVA : public Selection {
   std::vector<TH1D> PhiMass;
   std::vector<TH1D> TripleMass;
   std::vector<TH2D> PhiMassVsDsMass;
-  std::vector<TH1D>  MuonsPtRatio;
+  std::vector<TH1D> MuonsPtRatio;
 
   Float_t var1, var2, spec1;
 

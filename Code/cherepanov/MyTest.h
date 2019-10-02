@@ -38,5 +38,9 @@ class MyTest : public Selection {
   std::vector<TH1D> LeadMuonPhi;
 
 
+  std::vector<TH1D>   LeadMuonPhiAfterSelection;
+  std::vector<TH1D>   PhiEff;
+ 
+
 };
 #endif
