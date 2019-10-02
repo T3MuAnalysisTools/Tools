@@ -296,7 +296,7 @@ TString factoryName = "Run2017Classification_biased_Barrel";
    //TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
 	
 TCut mycutb = "( abs(var_Eta_au)<1.2 && var_MaxD0Significance<100 && var_MaxD0Significance>=0 && MC==0)";
-TCut mycuts = "abs(var_Eta_au)<1.2 && MC==1";
+TCut mycuts = "abs(var_Eta_au)<1.2 && var_MaxD0Significance<100 && var_MaxD0Significance>=0  && MC==1";
 
    // Tell the dataloader how to use the training and testing events
    //
