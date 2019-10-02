@@ -195,7 +195,7 @@ void  MyTest::doEvent(){
 void  MyTest::Finish(){
   for(unsigned int i=0; i<LeadMuonPhi.size(); i++){
     PhiEff.at(i).Reset();
-    PhiEff.at(i).Divide(&LeadMuonPhi.at(i),&LeadMuonPhiAfterSelection.at(i),1.0,1.0,"B");
+    PhiEff.at(i).Divide(&LeadMuonPhiAfterSelection.at(i),&LeadMuonPhi.at(i),1.0,1.0,"B");
   }
 
   Selection::Finish();
