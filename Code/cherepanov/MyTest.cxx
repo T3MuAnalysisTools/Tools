@@ -38,7 +38,7 @@ void  MyTest::Configure(){
     if(i==TriggerOk)        cut.at(TriggerOk)=1;
     if(i==PrimeVtx)         cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
     if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
-    if(i==LeadingMuonPt)    cut.at(LeadingMuonPt)=5;
+    if(i==LeadingMuonPt)    cut.at(LeadingMuonPt)=2;
 
   }
 
@@ -89,6 +89,9 @@ void  MyTest::Configure(){
   LeadMuonEta=HConfig.GetTH1D(Name+"_LeadMuonEta","LeadMuonEta",40,-2.6,2.6,"#eta(#mu_{1})","Events");
   LeadMuonPhi=HConfig.GetTH1D(Name+"_LeadMuonPhi","LeadMuonPhi",40,-3.15,3.15,"#phi(#mu_{1})","Events");
 
+  LeadMuonPhiAfterSelection=HConfig.GetTH1D(Name+"_LeadMuonPhiAfterSelection","LeadMuonPhiAfterSelection",40,-3.15,3.15,"#phi(#mu_{1})","Events");
+  PhiEff=HConfig.GetTH1D(Name+"_PhiEff","PhiEff",40,-3.15,3.15,"efficiency","Events");
+
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -109,6 +112,9 @@ void  MyTest::Store_ExtraDist(){
   Extradist1d.push_back(&LeadMuonPt);
   Extradist1d.push_back(&LeadMuonEta);
   Extradist1d.push_back(&LeadMuonPhi);
+  Extradist1d.push_back(&LeadMuonPhiAfterSelection);
+  Extradist1d.push_back(&PhiEff);
+
 
 
 }
@@ -175,13 +181,25 @@ void  MyTest::doEvent(){
     LeadMuonEta.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Eta(),1);
     LeadMuonPhi.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Phi(),1);
 
+    if(Ntp->Muon_P4(mu1_pt_idx).Pt()>4){ // an example of efficiency plot with extra selection pT>4
+      LeadMuonPhiAfterSelection.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Phi());
+    }
+
+
+
 
   }
 }
 
 
 void  MyTest::Finish(){
+  for(unsigned int i=0; i<LeadMuonPhi.size(); i++){
+    PhiEff.at(i).Reset();
+    PhiEff.at(i).Divide(&LeadMuonPhi.at(i),&LeadMuonPhiAfterSelection.at(i),1.0,1.0,"B");
+  }
+
   Selection::Finish();
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
 }
