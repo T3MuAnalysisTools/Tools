@@ -14,8 +14,8 @@ using namespace std;
 
 SignalSelector::SignalSelector(TString Name_, TString id_):
   Selection(Name_,id_),
-  tauMinMass_(1.72),
-  tauMaxMass_(1.82),
+  tauMinMass_(1.73),
+  tauMaxMass_(1.81),
   tauMinSideBand_(1.6),
   tauMaxSideBand_(2.0)
 {
@@ -33,6 +33,17 @@ SignalSelector::~SignalSelector(){
 
 void  SignalSelector::Configure(){
 
+
+  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
+
+  T3MMiniTree->Branch("m3m",&m3m);
+  T3MMiniTree->Branch("dataMCtype",&dataMCtype);
+  T3MMiniTree->Branch("event_weight",&event_weight);
+  T3MMiniTree->Branch("bdt",&bdt);
+  T3MMiniTree->Branch("category",&category);
+  T3MMiniTree->Branch("rapidity",&rapidity);
+  T3MMiniTree->Branch("LumiScale",&LumiScale);
+
   readerA = new TMVA::Reader( "!Color:!Silent" );
 
   TString basedir = "";
@@ -46,13 +57,12 @@ void  SignalSelector::Configure(){
   readerA->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
   readerA->AddSpectator("var_tauMass",&var_tauMass);
   readerA->AddVariable( "var_maxdca", &var_maxdca );
-  readerA->AddVariable( "var_MuMu_mindR", &var_MuMu_mindR );
   readerA->AddVariable( "var_RelPt_Mu1Tau", &var_RelPt_Mu1Tau );
-  readerA->AddVariable( "var_Eta_au", &var_Eta_au );
-  readerA->AddVariable( "var_MuMu_minKFChi2", &var_MuMu_minKFChi2 );
-  readerA->AddVariable( "var_MuTau_maxdR", & var_MuTau_maxdR);
+  readerA->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
+  readerA->AddVariable( "var_IsolationMinDist", &var_IsolationMinDist);
 
-  readerA->BookMVA( "BDT", basedir+"Run2017Classification_7_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+  readerA->BookMVA( "BDT", basedir+"Run2017Classification_unbiased_A_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
 
@@ -66,14 +76,12 @@ void  SignalSelector::Configure(){
   readerB->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
   readerB->AddSpectator("var_tauMass",&var_tauMass);
   readerB->AddVariable( "var_maxdca", &var_maxdca );
-  readerB->AddVariable( "var_MuMu_mindR", &var_MuMu_mindR );
   readerB->AddVariable( "var_RelPt_Mu1Tau", &var_RelPt_Mu1Tau );
-  readerB->AddVariable( "var_Eta_au", &var_Eta_au );
-  readerB->AddVariable( "var_MuMu_minKFChi2", &var_MuMu_minKFChi2 );
-  readerB->AddVariable( "var_MuTau_maxdR", & var_MuTau_maxdR);
+  readerB->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
+  readerB->AddVariable( "var_IsolationMinDist", &var_IsolationMinDist);
+  readerB->BookMVA( "BDT", basedir+"Run2017Classification_unbiased_B_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
-  readerB->BookMVA( "BDT", basedir+"Run2017Classification_8_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
   readerC = new TMVA::Reader( "!Color:!Silent" );
   readerC->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
@@ -84,14 +92,60 @@ void  SignalSelector::Configure(){
   readerC->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
   readerC->AddSpectator("var_tauMass",&var_tauMass);
   readerC->AddVariable( "var_maxdca", &var_maxdca );
-  readerC->AddVariable( "var_MuMu_mindR", &var_MuMu_mindR );
   readerC->AddVariable( "var_RelPt_Mu1Tau", &var_RelPt_Mu1Tau );
-  readerC->AddVariable( "var_Eta_au", &var_Eta_au );
-  readerC->AddVariable( "var_MuMu_minKFChi2", &var_MuMu_minKFChi2 );
-  readerC->AddVariable( "var_MuTau_maxdR", & var_MuTau_maxdR);
+  readerC->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
+  readerC->AddVariable( "var_IsolationMinDist", &var_IsolationMinDist);
 
 
-  readerC->BookMVA( "BDT", basedir+"Run2017Classification_9_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerC->BookMVA( "BDT", basedir+"Run2017Classification_unbiased_C_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+
+  readerBarrel = new TMVA::Reader( "!Color:!Silent" );
+  readerBarrel->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
+  readerBarrel->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
+  readerBarrel->AddVariable( "var_flightLenSig", &var_flightLenSig );
+  readerBarrel->AddVariable( "var_sumMuTrkKinkChi2", &var_sumMuTrkKinkChi2 );
+  readerBarrel->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
+  readerBarrel->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
+  readerBarrel->AddSpectator("var_tauMass",&var_tauMass);
+  readerBarrel->AddVariable( "var_maxdca", &var_maxdca );
+  readerBarrel->AddVariable( "var_RelPt_Mu1Tau", &var_RelPt_Mu1Tau );
+  readerBarrel->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
+  readerBarrel->AddVariable( "var_IsolationMinDist", &var_IsolationMinDist);
+
+
+  readerBarrel->BookMVA( "BDT", basedir+"Run2017Classification_unbiased_Barrel_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+  readerEndcap = new TMVA::Reader( "!Color:!Silent" );
+  readerEndcap->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
+  readerEndcap->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
+  readerEndcap->AddVariable( "var_flightLenSig", &var_flightLenSig );
+  readerEndcap->AddVariable( "var_sumMuTrkKinkChi2", &var_sumMuTrkKinkChi2 );
+  readerEndcap->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
+  readerEndcap->AddVariable( "var_MinMIPLikelihood", &var_MinMIPLikelihood );
+  readerEndcap->AddSpectator("var_tauMass",&var_tauMass);
+  readerEndcap->AddVariable( "var_maxdca", &var_maxdca );
+  readerEndcap->AddVariable( "var_RelPt_Mu1Tau", &var_RelPt_Mu1Tau );
+  readerEndcap->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
+  readerEndcap->AddVariable( "var_IsolationMinDist", &var_IsolationMinDist);
+
+
+  readerEndcap->BookMVA( "BDT", basedir+"Run2017Classification_unbiased_Endcap_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+
+
+   // dataloader->AddVariable("var_vertexKFChi2","Variable vertexKFChi2","units", 'F' );
+   // dataloader->AddVariable("var_svpvTauAngle","Variable svpvTauAngle","units", 'F' );
+   // dataloader->AddVariable("var_flightLenSig","Variable flightLenSig","units", 'F' );
+   // dataloader->AddVariable("var_sumMuTrkKinkChi2","Variable sumMuTrkKinkChi2","units", 'F' );
+   // dataloader->AddVariable("var_segCompMuMin","Variable segCompMuMin","units", 'F' );
+   // dataloader->AddVariable("var_MinMIPLikelihood","Variable MinMIPLikelihood","units", 'F' );
+   // dataloader->AddSpectator("var_tauMass","Variable tauMass","units", 'F' );
+   // dataloader->AddVariable("var_maxdca","Variable maxdca","units", 'F' );
+   // dataloader->AddVariable("var_RelPt_Mu1Tau","Variable RelPt_Mu1Tau","units", 'F' );
+   // dataloader->AddVariable("var_MaxD0Significance","Variable MaxD0Significance","units", 'F' );
+   // dataloader->AddVariable("var_IsolationMinDist","Variable IsolationMinDist","units", 'F' );
+
 
 
 
@@ -199,7 +253,7 @@ void  SignalSelector::Configure(){
       htitle.ReplaceAll("\\","#");
 
       hlabel="three mu mass, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,60,1.4,2.2,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,60,2.1,2.2,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TauMassCut_",htitle,60,1.4,2.2,hlabel,"Events"));
     }
 
@@ -234,6 +288,7 @@ void  SignalSelector::Configure(){
   TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
+
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
 
@@ -242,21 +297,43 @@ void  SignalSelector::Configure(){
   TauMass_allVsBDTA=HConfig.GetTH2D(Name+"_TauMass_allVsBDTA","3#mu mass vs BDTa",60,1.5,2.1,50,-0.3,0.3,"3#mu mass, GeV","BDT");
   TauMass_allVsBDTB=HConfig.GetTH2D(Name+"_TauMass_allVsBDTB","3#mu mass vs BDTb",60,1.5,2.1,50,-0.3,0.3,"3#mu mass, GeV","BDT");
   TauMass_allVsBDTC=HConfig.GetTH2D(Name+"_TauMass_allVsBDTC","3#mu mass vs BDTc",60,1.5,2.1,50,-0.3,0.3,"3#mu mass, GeV","BDT");
+  TauMass_allVsBDTBarrel=HConfig.GetTH2D(Name+"_TauMass_allVsBDTBarrel","3#mu mass vs BDTBarre;",60,1.5,2.1,50,-0.3,0.3,"3#mu mass, GeV","BDT");
+  TauMass_allVsBDTEndcap=HConfig.GetTH2D(Name+"_TauMass_allVsBDTEndcap","3#mu mass vs BDTEndcap",60,1.5,2.1,50,-0.3,0.3,"3#mu mass, GeV","BDT");
+
+  EMR_tau_eta  =HConfig.GetTH2D(Name+"_EMR_tau_eta","EMR vs eta",50,0,0.02,50,0,2.5,"3#mu mass, GeV","#eta_{#tau}");
+
+  TauMassA1 =HConfig.GetTH1D(Name+"_TauMassA1","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitA1 =HConfig.GetTH1D(Name+"_TauMassRefitA1","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
-  TauMassA =HConfig.GetTH1D(Name+"_TauMassA","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitA =HConfig.GetTH1D(Name+"_TauMassRefitA","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassB1 =HConfig.GetTH1D(Name+"_TauMassB1","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitB1 =HConfig.GetTH1D(Name+"_TauMassRefitB1","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
-  TauMassB =HConfig.GetTH1D(Name+"_TauMassB","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitB =HConfig.GetTH1D(Name+"_TauMassRefitB","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassC1 =HConfig.GetTH1D(Name+"_TauMassC1","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitC1 =HConfig.GetTH1D(Name+"_TauMassRefitC1","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
-  TauMassC =HConfig.GetTH1D(Name+"_TauMassC","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitC =HConfig.GetTH1D(Name+"_TauMassRefitC","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassA2 =HConfig.GetTH1D(Name+"_TauMassA2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitA2 =HConfig.GetTH1D(Name+"_TauMassRefitA2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+
+  TauMassB2 =HConfig.GetTH1D(Name+"_TauMassB2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitB2 =HConfig.GetTH1D(Name+"_TauMassRefitB2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+
+  TauMassC2 =HConfig.GetTH1D(Name+"_TauMassC2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitC2 =HConfig.GetTH1D(Name+"_TauMassRefitC2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+  TauMassBarrel =HConfig.GetTH1D(Name+"_TauMassBarrel","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitBarrel =HConfig.GetTH1D(Name+"_TauMassRefitBarrel","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+  TauMassEndcap =HConfig.GetTH1D(Name+"_TauMassEndcap","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitEndcap =HConfig.GetTH1D(Name+"_TauMassRefitEndcap","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
   EventMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_EventMassResolution_PtEtaPhi","EventMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
+
 
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
   FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
@@ -274,6 +351,10 @@ void  SignalSelector::Configure(){
   BDTOutputA = HConfig.GetTH1D(Name+"_BDTOutputA","BDTOutputA",50,-0.3,0.3,"BDT Output","Events");
   BDTOutputB = HConfig.GetTH1D(Name+"_BDTOutputB","BDTOutputB",50,-0.3,0.3,"BDT Output","Events");
   BDTOutputC = HConfig.GetTH1D(Name+"_BDTOutputC","BDTOutputC",50,-0.3,0.3,"BDT Output","Events");
+  BDTOutputBarrel = HConfig.GetTH1D(Name+"_BDTOutputBarrel","BDTOutputBarrel",50,-0.3,0.3,"BDT Output","Events");
+  BDTOutputEndcap = HConfig.GetTH1D(Name+"_BDTOutputEndcap","BDTOutputENdcap",50,-0.3,0.3,"BDT Output","Events");
+
+
 
   NSignalCandidates =HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"Number of signal candidates","Events");
 
@@ -295,31 +376,53 @@ void  SignalSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Muon2Eta);
   Extradist1d.push_back(&Muon3Eta);
 
-  Extradist1d.push_back(&Muon1isGlob);
-  Extradist1d.push_back(&Muon2isGlob);
-  Extradist1d.push_back(&Muon3isGlob);
+  //Extradist1d.push_back(&Muon1isGlob);
+  //Extradist1d.push_back(&Muon2isGlob);
+  //Extradist1d.push_back(&Muon3isGlob);
 
 
-  Extradist1d.push_back(&Muon1isStand);
-  Extradist1d.push_back(&Muon2isStand);
-  Extradist1d.push_back(&Muon3isStand);
+  //Extradist1d.push_back(&Muon1isStand);
+  //Extradist1d.push_back(&Muon2isStand);
+  //Extradist1d.push_back(&Muon3isStand);
     
 
-  Extradist1d.push_back(&Muon1isTrack);
-  Extradist1d.push_back(&Muon2isTrack);
-  Extradist1d.push_back(&Muon3isTrack);
+  //Extradist1d.push_back(&Muon1isTrack);
+  //Extradist1d.push_back(&Muon2isTrack);
+  //Extradist1d.push_back(&Muon3isTrack);
 
   Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&TauPt);
-  Extradist1d.push_back(&TauP);
-  Extradist1d.push_back(&TauMassA);
-  Extradist1d.push_back(&TauMassRefitA);
+  // Extradist1d.push_back(&TauP);
 
-  Extradist1d.push_back(&TauMassB);
-  Extradist1d.push_back(&TauMassRefitB);
 
-  Extradist1d.push_back(&TauMassC);
-  Extradist1d.push_back(&TauMassRefitC);
+  Extradist1d.push_back(&TauMassA1);
+  Extradist1d.push_back(&TauMassRefitA1);
+
+  Extradist1d.push_back(&TauMassB1);
+  Extradist1d.push_back(&TauMassRefitB1);
+
+  Extradist1d.push_back(&TauMassC1);
+  Extradist1d.push_back(&TauMassRefitC1);
+
+
+  Extradist1d.push_back(&TauMassA2);
+  Extradist1d.push_back(&TauMassRefitA2);
+
+  Extradist1d.push_back(&TauMassB2);
+  Extradist1d.push_back(&TauMassRefitB2);
+
+  Extradist1d.push_back(&TauMassC2);
+  Extradist1d.push_back(&TauMassRefitC2);
+
+
+
+
+  Extradist1d.push_back(&TauMassBarrel);
+  Extradist1d.push_back(&TauMassRefitBarrel);
+  Extradist1d.push_back(&TauMassEndcap);
+  Extradist1d.push_back(&TauMassRefitEndcap);
+
+
   Extradist1d.push_back(&TauMassResolution);
   Extradist1d.push_back(&TauMassResolutionRefit);
 
@@ -328,7 +431,9 @@ void  SignalSelector::Store_ExtraDist(){
   Extradist2d.push_back(&TauMass_allVsBDTA);
   Extradist2d.push_back(&TauMass_allVsBDTB);
   Extradist2d.push_back(&TauMass_allVsBDTC);
-
+  Extradist2d.push_back(&TauMass_allVsBDTBarrel);
+  Extradist2d.push_back(&TauMass_allVsBDTEndcap);
+  Extradist2d.push_back(&EMR_tau_eta);
 
 
 
@@ -344,16 +449,18 @@ void  SignalSelector::Store_ExtraDist(){
   Extradist1d.push_back(&TriggerMatchdR3);
 
 
-  Extradist1d.push_back(&FLSignificance);
+  // Extradist1d.push_back(&FLSignificance);
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
 
-  Extradist1d.push_back(&VertexChi2KF);
+  //Extradist1d.push_back(&VertexChi2KF);
   Extradist1d.push_back(&NSignalCandidates);
 
 
   Extradist1d.push_back(&BDTOutputA);
   Extradist1d.push_back(&BDTOutputB);
   Extradist1d.push_back(&BDTOutputC);
+  Extradist1d.push_back(&BDTOutputBarrel);
+  Extradist1d.push_back(&BDTOutputEndcap);
 }
 
 
@@ -438,8 +545,8 @@ void  SignalSelector::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
   pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 3*PDG_Var::Phi_width());
-  pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
+  pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
   else  pass.at(TauMassCut) = ( (value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ ));
@@ -480,6 +587,7 @@ void  SignalSelector::doEvent(){
 
     EventMassResolution_PtEtaPhi.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),w);
 
+
     TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
@@ -501,6 +609,8 @@ void  SignalSelector::doEvent(){
 
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,2);
 
+
+
     Muon1Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),1);
     Muon2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),1);
     Muon3Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),1);
@@ -513,6 +623,8 @@ void  SignalSelector::doEvent(){
     TauEta.at(t).Fill(TauLV.Eta(),1);
     TauPt.at(t).Fill(TauLV.Pt(),1);
     TauP.at(t).Fill(TauLV.P(),1);
+
+    EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
     //    TauMass.at(t).Fill(TauLV.M(),1);
     //    TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
 
@@ -558,44 +670,132 @@ void  SignalSelector::doEvent(){
     var_maxdca = std::max({Ntp->Vertex_DCA12(signal_idx),Ntp->Vertex_DCA23(signal_idx),Ntp->Vertex_DCA31(signal_idx)});
     var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
 
+    float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(signal_idx,0),
+	  Ntp->Vertex_d0sig_reco(signal_idx,1),
+	  Ntp->Vertex_d0sig_reco(signal_idx,2)});
+
+    var_MaxD0Significance = MaxD0Significance;
+    var_IsolationMinDist = Ntp->Isolation_MinDist(signal_idx);
+
+
 
     var_tauMass=TauRefitLV.M();
     TauMass_all.at(t).Fill(TauRefitLV.M(),1);
 
-
-
+    m3m = TauRefitLV.M();
+    dataMCtype = id;
+    event_weight = w;
+    rapidity = TauLV.Eta();
+    LumiScale=1;
 
     //---------------- define per event resolution categroies 
-    //Category A
+    //Category A1
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
       TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
 
       BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
-      if(readerA->EvaluateMVA("BDT") > 0.){
-	TauMassRefitA.at(t).Fill(TauRefitLV.M(),1);    
-	TauMassA.at(t).Fill(TauLV.M(),1);
+      if(readerA->EvaluateMVA("BDT") > 0.15){
+	TauMassRefitA1.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassA1.at(t).Fill(TauLV.M(),1);
+	category=1;
+	bdt = readerA->EvaluateMVA("BDT");
       }
     }
 
-    //Category B
+    //Category B1
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
       TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
       BDTOutputB.at(t).Fill(    readerB->EvaluateMVA("BDT") );
-      if(readerB->EvaluateMVA("BDT") > 0.){
-	TauMassRefitB.at(t).Fill(TauRefitLV.M(),1);    
-	TauMassB.at(t).Fill(TauLV.M(),1);
+      if(readerB->EvaluateMVA("BDT") > 0.15){
+	TauMassRefitB1.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassB1.at(t).Fill(TauLV.M(),1);
+	category =2 ;
+	bdt = readerB->EvaluateMVA("BDT");
       }
     }
 
-    //Category C
+    //Category C1
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
       TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
       BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
-      if(readerC->EvaluateMVA("BDT") > 0.){
-	TauMassRefitC.at(t).Fill(TauRefitLV.M(),1);    
-	TauMassC.at(t).Fill(TauLV.M(),1);
+      if(readerC->EvaluateMVA("BDT") > 0.1){
+	TauMassRefitC1.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassC1.at(t).Fill(TauLV.M(),1);
+	category = 3;
+	bdt = readerC->EvaluateMVA("BDT");
       }
     }
+
+    //Category A2
+    if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
+      TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
+
+      BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
+      if(readerA->EvaluateMVA("BDT") > -0.2 && readerA->EvaluateMVA("BDT") < 0.1){
+	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassA2.at(t).Fill(TauLV.M(),1);
+	category=1;
+	bdt = readerA->EvaluateMVA("BDT");
+      }
+    }
+
+    //Category B1
+    if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
+      TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
+      BDTOutputB.at(t).Fill(    readerB->EvaluateMVA("BDT") );
+      if(readerB->EvaluateMVA("BDT") > -0.2 && readerB->EvaluateMVA("BDT") < 0.1){
+	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassB2.at(t).Fill(TauLV.M(),1);
+	category =2 ;
+	bdt = readerB->EvaluateMVA("BDT");
+      }
+    }
+
+    //Category C2
+    if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
+      TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
+      BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
+      if(readerC->EvaluateMVA("BDT") > -0.05 && readerC->EvaluateMVA("BDT")< 0.1){
+	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassC2.at(t).Fill(TauLV.M(),1);
+	category = 3;
+	bdt = readerC->EvaluateMVA("BDT");
+      }
+    }
+
+
+
+
+
+
+
+    //Category Barrel
+    if(fabs(TauLV.Eta()) < 1.2){
+      TauMass_allVsBDTBarrel.at(t).Fill(TauRefitLV.M(),readerBarrel->EvaluateMVA("BDT"));
+      BDTOutputBarrel.at(t).Fill(    readerBarrel->EvaluateMVA("BDT") );
+      if(readerBarrel->EvaluateMVA("BDT") > 0.1){
+	TauMassRefitBarrel.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassBarrel.at(t).Fill(TauLV.M(),1);
+	category = 4;
+	bdt = readerBarrel->EvaluateMVA("BDT");
+      }
+    }
+
+    //Category Barrel
+    if(fabs(TauLV.Eta()) > 1.2){
+      TauMass_allVsBDTEndcap.at(t).Fill(TauRefitLV.M(),readerEndcap->EvaluateMVA("BDT"));
+      BDTOutputEndcap.at(t).Fill(    readerEndcap->EvaluateMVA("BDT") );
+      if(readerEndcap->EvaluateMVA("BDT") > 0.1){
+	TauMassRefitEndcap.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassEndcap.at(t).Fill(TauLV.M(),1);
+	category = 5;
+	bdt = readerEndcap->EvaluateMVA("BDT");
+      }
+    }
+
+ 
+
+    T3MMiniTree->Fill();
 
 
     //---------------  Fill MC plots 
@@ -620,6 +820,12 @@ void  SignalSelector::doEvent(){
 
 
 void  SignalSelector::Finish(){
+
+
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
+  T3MMiniTree->SetDirectory(T3MFMiniTree);
+  T3MFMiniTree->Write();
+  T3MFMiniTree->Close();
 
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
