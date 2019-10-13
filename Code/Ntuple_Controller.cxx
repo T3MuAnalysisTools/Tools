@@ -868,6 +868,26 @@ std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int Muo
 }
 
 
+TString Ntuple_Controller::WhichEra(int year){
+  TString out("");
+  if(!isData()) {
+    Logger(Logger::Info)<< "You are currently running over MC, no era returned;  "<< std::endl; 
+    return out;
+  }
+  if(year == 2017){
+    if(RunNumber() >=297047 and RunNumber() <=299329) return out = "RunB";
+    
+    if(RunNumber() >=299368 and RunNumber() <=302029) return out = "RunC";
+    
+    if(RunNumber() >=302031 and RunNumber() <=302663) return out = "RunD";
+    
+    if(RunNumber() >=303824 and RunNumber() <=304797) return out = "RunE";
+    
+    if(RunNumber() >=305040 and RunNumber() <=306460) return out = "RunF";
+  }
+  return out;
+}
+
 //// draw decay chain
 void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
   Logger(Logger::Info) << "=== Draw MC decay chain of event ===" << std::endl;

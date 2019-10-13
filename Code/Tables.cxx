@@ -720,7 +720,7 @@ void Tables::GeneratePDF() {
 	TString cmd1 = "latex " + Name + ".tex -o " + Name + ".dvi";
 	TString cmd2 = "dvips " + Name + ".dvi -o " + Name + ".ps";
 	TString cmd3 = "ps2pdf " + Name + ".ps " + Name + ".pdf";
-	TString cmd4 = " rm *.dvi *.lot *.toc *.aux *.lof *.out *.log ";
+	TString cmd4 = " rm *.dvi *.lot *.toc *.aux *.lof *.out *.log *.ps ";
 	system(cmd1.Data());
 	system(cmd1.Data());
 	system(cmd1.Data());
