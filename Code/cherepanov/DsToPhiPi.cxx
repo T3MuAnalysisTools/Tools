@@ -277,17 +277,24 @@ void  DsToPhiPi::doEvent(){
   value.at(TrkdR) = 0;
   if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
 
+
+
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
-      tmp_idx = i2M;
-      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0);
-      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1);
-      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0);
-      if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
-	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
-	mu1 = tmp_mu1;
-	mu2 = tmp_mu2;
-	track = tmp_track;
+      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
+      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(1);
+      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
+      double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
+
+      if (abs(tmp_PhiMass-1.01)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
+	if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
+	  tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
+	  check_PhiMass = abs(tmp_PhiMass-1.01);
+	  mu1 = tmp_mu1;
+	  mu2 = tmp_mu2;
+	  track = tmp_track;
+	  tmp_idx = i2M;
+	}
       }
     }
 
@@ -302,7 +309,7 @@ void  DsToPhiPi::doEvent(){
     value.at(Mu2pt) = Ntp->Muon_P4(mu2).Pt();
     value.at(Trkpt) = Ntp->Track_P4(track).Pt();
 
-  }
+}
 
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
   pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
