@@ -212,21 +212,21 @@ void  DsToPhiPi::Configure(){
 void  DsToPhiPi::Store_ExtraDist(){ 
   
   Extradist1d.push_back(&Track_P);
-  Extradist1d.push_back(&Track_E);
+  //  Extradist1d.push_back(&Track_E);
   Extradist1d.push_back(&Track_Pt);
   Extradist1d.push_back(&Track_Eta);
   Extradist1d.push_back(&Track_Phi);
-  Extradist1d.push_back(&Track_normalizedChi2);
-  Extradist1d.push_back(&Track_numberOfValidHits);
-  Extradist1d.push_back(&Track_charge);
+  //  Extradist1d.push_back(&Track_normalizedChi2);
+  //  Extradist1d.push_back(&Track_numberOfValidHits);
+  //  Extradist1d.push_back(&Track_charge);
   
   Extradist1d.push_back(&Muon1_E);
   Extradist1d.push_back(&Muon1_Pt);
-  Extradist1d.push_back(&Muon1_Phi);
+  //  Extradist1d.push_back(&Muon1_Phi);
   Extradist1d.push_back(&Muon1_Eta);
-  Extradist1d.push_back(&Muon2_E);
+  //  Extradist1d.push_back(&Muon2_E);
   Extradist1d.push_back(&Muon2_Pt);
-  Extradist1d.push_back(&Muon2_Phi);
+  //  Extradist1d.push_back(&Muon2_Phi);
   Extradist1d.push_back(&Muon2_Eta);
   Extradist1d.push_back(&DimuondR);
   Extradist1d.push_back(&Muon1TrkdR);
@@ -234,20 +234,20 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&PhiPlusTrackMass);
   Extradist2d.push_back(&PhiMassVsDsMass);
-  Extradist1d.push_back(&Muon1_isGlobal);
-  Extradist1d.push_back(&Muon2_isGlobal);
-  Extradist1d.push_back(&Muon1_isStandAlone);
-  Extradist1d.push_back(&Muon2_isStandAlone);
-  Extradist1d.push_back(&Muon1_isTracker);
-  Extradist1d.push_back(&Muon2_isTracker);
-  Extradist1d.push_back(&Muon1_isCalo);
-  Extradist1d.push_back(&Muon2_isCalo);
+  //  Extradist1d.push_back(&Muon1_isGlobal);
+  //  Extradist1d.push_back(&Muon2_isGlobal);
+  //  Extradist1d.push_back(&Muon1_isStandAlone);
+  //  Extradist1d.push_back(&Muon2_isStandAlone);
+  //  Extradist1d.push_back(&Muon1_isTracker);
+  //  Extradist1d.push_back(&Muon2_isTracker);
+  //  Extradist1d.push_back(&Muon1_isCalo);
+  //  Extradist1d.push_back(&Muon2_isCalo);
   Extradist1d.push_back(&Track_TriggerMatchdR);
   Extradist1d.push_back(&Muon1_TriggerMatchdR);
   Extradist1d.push_back(&Muon2_TriggerMatchdR);
   Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&DsMass);
-  Extradist1d.push_back(&DsGenMatch);
+  //  Extradist1d.push_back(&DsGenMatch);
 	 
 }
 
@@ -261,13 +261,13 @@ void  DsToPhiPi::doEvent(){
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
   }
     
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
   double tmp_chisq = 999.0;
- 
+  double check_PhiMass(999.0);
   value.at(is2MuTrk) = 0; 
   value.at(Chi2Cut) = 0;
   value.at(Mass2Mu) = 0;
@@ -275,18 +275,19 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
+  if(Ntp->NTwoMuonsTrack()!=0) value.at(is2MuTrk) = 1;
 
 
 
   if (value.at(is2MuTrk)==1){
+
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
       int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
       int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(1);
       int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
       double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
 
-      if (abs(tmp_PhiMass-1.01)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
+      if (abs(tmp_PhiMass-1.02)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
 	if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
 	  tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
 	  check_PhiMass = abs(tmp_PhiMass-1.01);
@@ -311,18 +312,21 @@ void  DsToPhiPi::doEvent(){
 
 }
 
-  pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
-  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(is2MuTrk) = (value.at(is2MuTrk) >0 );
+  pass.at(HLTOk)    = (value.at(HLTOk)==cut.at(HLTOk));
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
-  pass.at(Chi2Cut) = value.at(Chi2Cut) > 0 && value.at(Chi2Cut) < 15;
-  pass.at(Mass2Mu) = value.at(Mass2Mu) > 1 && value.at(Mass2Mu) < 1.04;
+  pass.at(Chi2Cut) = value.at(Chi2Cut) >= 0 && value.at(Chi2Cut) < 15.01;
+  pass.at(Mass2Mu) = value.at(Mass2Mu) > 0.98 && value.at(Mass2Mu) < 1.042;
   pass.at(MuCharge) = value.at(MuCharge)==cut.at(MuCharge);
   pass.at(Mu1dR) = value.at(Mu1dR) < .03;
   pass.at(Mu2dR) = value.at(Mu2dR) < .03;
   pass.at(TrkdR) = value.at(TrkdR) < .03;
-  pass.at(Mu1pt) = value.at(Mu1pt) > .5;
-  pass.at(Mu2pt) = value.at(Mu2pt) > .5;
+  pass.at(Mu1pt) = value.at(Mu1pt) > 2;
+  pass.at(Mu2pt) = value.at(Mu2pt) > 2;
   pass.at(Trkpt) = value.at(Trkpt) > 2;
+
+
+
 
   double wobs=1;
   double w;  
@@ -331,6 +335,13 @@ void  DsToPhiPi::doEvent(){
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
+
+  if(pass.at(HLTOk)){
+    for(unsigned int il1=0; il1< Ntp->NL1Seeds(); il1++){
+      std::cout<<"  L1Name  "<< Ntp->L1Name(il1) << "  decisions   "<< Ntp->L1Decision(il1) << std::endl;
+    }
+  }
+
     NVtx.at(t).Fill(Ntp->NVtx(),w);
 
     Track_Pt.at(t).Fill(Ntp->Track_P4(track).Pt(),w);
@@ -383,7 +394,7 @@ void  DsToPhiPi::doEvent(){
 
     if(id==30){
 
-      DsGenMatch.at(t).Fill(Ntp->DsGenMatch(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0) + Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1) + Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)));
+      DsGenMatch.at(t).Fill(Ntp->DsGenMatch(tmp_idx),w);
 
     }
 
@@ -392,13 +403,13 @@ void  DsToPhiPi::doEvent(){
 
 void  DsToPhiPi::Finish(){
 
-  if(mode == RECONSTRUCT){
-    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-      double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/1;
-      ScaleAllHistOfType(i,scale);
-    }
-  }
+  //  if(mode == RECONSTRUCT){
+    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+    //      double scale(1.);
+    //      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/1;
+    //      ScaleAllHistOfType(i,scale);
+    //    }
+  //  }
   Selection::Finish();
 
 }
