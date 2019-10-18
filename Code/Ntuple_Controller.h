@@ -176,7 +176,9 @@ class Ntuple_Controller{
    Int_t     LuminosityBlock(){return Ntp->Event_luminosityBlock;}
    float     NVtx(){return Ntp->Vertex_N_primary;}
    double    DeltaPhi(double, double);
-   double TruthNumberOfInterraction(){return Ntp->puN;}
+   double    TruthNumberOfInterraction(){return Ntp->puN;}
+   TString   WhichEra(int year);
+
 
    unsigned int   NTracks(){return Ntp->Track_p4->size();}
    TLorentzVector Track_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2), Ntp->Track_p4->at(i).at(3), Ntp->Track_p4->at(i).at(0));}

@@ -325,11 +325,19 @@ void  SignalSelector::Configure(){
   TauMassC2 =HConfig.GetTH1D(Name+"_TauMassC2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
   TauMassRefitC2 =HConfig.GetTH1D(Name+"_TauMassRefitC2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
-  TauMassBarrel =HConfig.GetTH1D(Name+"_TauMassBarrel","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitBarrel =HConfig.GetTH1D(Name+"_TauMassRefitBarrel","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassBarrel1 =HConfig.GetTH1D(Name+"_TauMassBarrel1","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitBarrel1 =HConfig.GetTH1D(Name+"_TauMassRefitBarrel1","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
-  TauMassEndcap =HConfig.GetTH1D(Name+"_TauMassEndcap","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitEndcap =HConfig.GetTH1D(Name+"_TauMassRefitEndcap","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassEndcap1 =HConfig.GetTH1D(Name+"_TauMassEndcap1","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitEndcap1 =HConfig.GetTH1D(Name+"_TauMassRefitEndcap1","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+
+
+  TauMassBarrel2 =HConfig.GetTH1D(Name+"_TauMassBarrel2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitBarrel2 =HConfig.GetTH1D(Name+"_TauMassRefitBarrel2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+  TauMassEndcap2 =HConfig.GetTH1D(Name+"_TauMassEndcap2","#tau lepton mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitEndcap2 =HConfig.GetTH1D(Name+"_TauMassRefitEndcap2","Refit #tau lepton mass",60,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
   EventMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_EventMassResolution_PtEtaPhi","EventMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
@@ -417,10 +425,15 @@ void  SignalSelector::Store_ExtraDist(){
 
 
 
-  Extradist1d.push_back(&TauMassBarrel);
-  Extradist1d.push_back(&TauMassRefitBarrel);
-  Extradist1d.push_back(&TauMassEndcap);
-  Extradist1d.push_back(&TauMassRefitEndcap);
+  Extradist1d.push_back(&TauMassBarrel1);
+  Extradist1d.push_back(&TauMassRefitBarrel1);
+  Extradist1d.push_back(&TauMassEndcap1);
+  Extradist1d.push_back(&TauMassRefitEndcap1);
+
+  Extradist1d.push_back(&TauMassBarrel2);
+  Extradist1d.push_back(&TauMassRefitBarrel2);
+  Extradist1d.push_back(&TauMassEndcap2);
+  Extradist1d.push_back(&TauMassRefitEndcap2);
 
 
   Extradist1d.push_back(&TauMassResolution);
@@ -545,11 +558,11 @@ void  SignalSelector::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
   pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
-  pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
+  pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
+  pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
-  else  pass.at(TauMassCut) = ( (value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ ));
+  else  pass.at(TauMassCut) = true;//( (value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ ));
 
   std::vector<unsigned int> exclude_cuts;
   exclude_cuts.push_back(PhiVeto);
@@ -692,7 +705,6 @@ void  SignalSelector::doEvent(){
     //Category A1
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
       TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
-
       BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
       if(readerA->EvaluateMVA("BDT") > 0.15){
 	TauMassRefitA1.at(t).Fill(TauRefitLV.M(),1);    
@@ -728,70 +740,81 @@ void  SignalSelector::doEvent(){
 
     //Category A2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
-      TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
-
-      BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
-      if(readerA->EvaluateMVA("BDT") > -0.2 && readerA->EvaluateMVA("BDT") < 0.1){
+      if(readerA->EvaluateMVA("BDT") > -0.1 && readerA->EvaluateMVA("BDT") < 0.15){
 	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA2.at(t).Fill(TauLV.M(),1);
-	category=1;
+	category=4;
 	bdt = readerA->EvaluateMVA("BDT");
       }
     }
 
-    //Category B1
+    //Category B2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
-      TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
-      BDTOutputB.at(t).Fill(    readerB->EvaluateMVA("BDT") );
-      if(readerB->EvaluateMVA("BDT") > -0.2 && readerB->EvaluateMVA("BDT") < 0.1){
+      if(readerB->EvaluateMVA("BDT") > -0.1 && readerB->EvaluateMVA("BDT") < 0.15){
 	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB2.at(t).Fill(TauLV.M(),1);
-	category =2 ;
+	category =5 ;
 	bdt = readerB->EvaluateMVA("BDT");
       }
     }
 
     //Category C2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
-      TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
-      BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
       if(readerC->EvaluateMVA("BDT") > -0.05 && readerC->EvaluateMVA("BDT")< 0.1){
 	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC2.at(t).Fill(TauLV.M(),1);
-	category = 3;
+	category = 6;
 	bdt = readerC->EvaluateMVA("BDT");
       }
     }
 
 
-
-
-
-
-
-    //Category Barrel
+    //Category Barrel1
     if(fabs(TauLV.Eta()) < 1.2){
       TauMass_allVsBDTBarrel.at(t).Fill(TauRefitLV.M(),readerBarrel->EvaluateMVA("BDT"));
       BDTOutputBarrel.at(t).Fill(    readerBarrel->EvaluateMVA("BDT") );
-      if(readerBarrel->EvaluateMVA("BDT") > 0.1){
-	TauMassRefitBarrel.at(t).Fill(TauRefitLV.M(),1);    
-	TauMassBarrel.at(t).Fill(TauLV.M(),1);
-	category = 4;
+      if(readerBarrel->EvaluateMVA("BDT") > 0.15){
+	TauMassRefitBarrel1.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassBarrel1.at(t).Fill(TauLV.M(),1);
+	category = 7;
 	bdt = readerBarrel->EvaluateMVA("BDT");
       }
     }
 
-    //Category Barrel
+    //Category Endcap1
     if(fabs(TauLV.Eta()) > 1.2){
       TauMass_allVsBDTEndcap.at(t).Fill(TauRefitLV.M(),readerEndcap->EvaluateMVA("BDT"));
       BDTOutputEndcap.at(t).Fill(    readerEndcap->EvaluateMVA("BDT") );
-      if(readerEndcap->EvaluateMVA("BDT") > 0.1){
-	TauMassRefitEndcap.at(t).Fill(TauRefitLV.M(),1);    
-	TauMassEndcap.at(t).Fill(TauLV.M(),1);
-	category = 5;
+      if( readerEndcap->EvaluateMVA("BDT")  > 0.15){
+	TauMassRefitEndcap1.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassEndcap1.at(t).Fill(TauLV.M(),1);
+	category = 8;
 	bdt = readerEndcap->EvaluateMVA("BDT");
       }
     }
+
+
+
+    //Category Barrel2
+    if(fabs(TauLV.Eta()) < 1.2){
+      if(readerBarrel->EvaluateMVA("BDT") > 0.05 && readerBarrel->EvaluateMVA("BDT") < 0.15){
+	TauMassRefitBarrel2.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassBarrel2.at(t).Fill(TauLV.M(),1);
+	category = 9;
+	bdt = readerBarrel->EvaluateMVA("BDT");
+      }
+    }
+
+    //Category Endcap2
+    if(fabs(TauLV.Eta()) > 1.2){
+      if(readerEndcap->EvaluateMVA("BDT") > 0.05 && readerEndcap->EvaluateMVA("BDT")  < 0.15){
+	TauMassRefitEndcap2.at(t).Fill(TauRefitLV.M(),1);    
+	TauMassEndcap2.at(t).Fill(TauLV.M(),1);
+	category = 10;
+	bdt = readerEndcap->EvaluateMVA("BDT");
+      }
+    }
+
 
  
 
@@ -829,11 +852,11 @@ void  SignalSelector::Finish(){
 
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-    int id(Ntp->GetMCID());
-    double scale(1.);
-    double scaleDsTau(0.637);
-    double scaleBpTau(0.262);
-    double scaleB0Tau(0.099);
+    //    int id(Ntp->GetMCID());
+    //    double scale(1.);
+    //    double scaleDsTau(0.637);
+    //    double scaleBpTau(0.262);
+    //    double scaleB0Tau(0.099);
 
     //total xsection of producing taus is 12.848 ub 
 
