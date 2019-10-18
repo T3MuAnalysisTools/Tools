@@ -59,7 +59,7 @@ CINTTARGETS =
 # now include conditional options set by flags in make.inc
 
 ifdef USE_cherepanov
-	TARGETS += MyTest Validation MCStudy ThreeMu DsToPhiPi SignalCategories SyncSignal SyncDsPhiPi FillTMVATrees SignalSelector
+	TARGETS += MyTest MCStudy ThreeMu DsToPhiPi SyncSignal SyncDsPhiPi FillTMVATrees SignalSelector
 	DEFS += -DUSE_cherepanov=1
 endif
 
