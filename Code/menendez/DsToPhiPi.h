@@ -21,6 +21,9 @@ class DsToPhiPi : public Selection {
   virtual void doEvent();  
   virtual void Store_ExtraDist();
 
+  TFile * file;
+  TTree * Sync_tree;
+
  private:
  // Selection Variables
   // Initializhere your analysis histograms
@@ -72,6 +75,30 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Muon2_TriggerMatchdR;
   std::vector<TH1D> Track_TriggerMatchdR;
 
+  //Sync variables
+  double sync_pt_1;
+  double sync_pt_2;
+  double sync_pt_3;
+
+  double sync_eta_1;
+  double sync_eta_2;
+  double sync_eta_3;
+
+  double muon_1_isGlob;
+  double muon_2_isGlob;
+
+  double muon_1_isTrack;
+  double muon_2_isTrack;
+
+  double phi_mass;
+  double ds_mass;
+
+  double evt,run,lumi;
+
+  double sync_DsPhiPiVtx_x;
+  double sync_DsPhiPiVtx_y;
+  double sync_DsPhiPiVtx_z;
+  double sync_DsPhiPiVtx_Chi2;
 
 };
 #endif

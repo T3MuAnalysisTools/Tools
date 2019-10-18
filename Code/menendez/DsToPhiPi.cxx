@@ -29,6 +29,27 @@ DsToPhiPi::~DsToPhiPi(){
 
 void  DsToPhiPi::Configure(){
 
+  Sync_tree= new TTree("tree","tree");
+  Sync_tree->Branch("sync_pt_1",&sync_pt_1);
+  Sync_tree->Branch("sync_pt_2",&sync_pt_2);
+  Sync_tree->Branch("sync_pt_3",&sync_pt_3);
+
+  Sync_tree->Branch("sync_eta_1",&sync_eta_1);
+  Sync_tree->Branch("sync_eta_2",&sync_eta_2);
+  Sync_tree->Branch("sync_eta_3",&sync_eta_3);
+
+  Sync_tree->Branch("phi_mass",&phi_mass);
+  Sync_tree->Branch("ds_mass",&ds_mass);
+
+  Sync_tree->Branch("evt",&evt);
+  Sync_tree->Branch("run",&run);
+  Sync_tree->Branch("lumi",&lumi);
+
+  Sync_tree->Branch("sync_DsPhiPiVtx_x",&sync_DsPhiPiVtx_x);
+  Sync_tree->Branch("sync_DsPhiPiVtx_y",&sync_DsPhiPiVtx_y);
+  Sync_tree->Branch("sync_DsPhiPiVtx_z",&sync_DsPhiPiVtx_z);
+  Sync_tree->Branch("sync_DsPhiPiVtx_Chi2",&sync_DsPhiPiVtx_Chi2);
+
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -386,10 +407,48 @@ void  DsToPhiPi::doEvent(){
 
     }
 
+    TLorentzVector Mu1LV;
+    TLorentzVector Mu2LV;
+    TLorentzVector TrackLV = Ntp->Track_P4(track);
+
+    if(Ntp->Muon_P4(mu1).Pt() > Ntp->Muon_P4(mu2).Pt()){
+      Mu1LV = Ntp->Muon_P4(mu1);
+      Mu2LV = Ntp->Muon_P4(mu2);
+
+    }
+    else {
+
+      Mu1LV = Ntp->Muon_P4(mu2);
+      Mu2LV = Ntp->Muon_P4(mu1);
+    }
+
+    sync_pt_1 = Mu1LV.Pt();
+    sync_pt_2 = Mu2LV.Pt();
+    sync_pt_3 = TrackLV.Pt();
+
+    sync_eta_1 = Mu1LV.Eta();
+    sync_eta_2 = Mu2LV.Eta();
+    sync_eta_3 = TrackLV.Eta();
+
+    phi_mass  = (Mu1LV+Mu2LV).M();
+    ds_mass  = (Mu1LV+Mu2LV  + TrackLV).M();
+
+    evt = Ntp->EventNumber();
+    run = Ntp->RunNumber();
+    lumi = Ntp->LuminosityBlock();
+
+    sync_DsPhiPiVtx_Chi2 = Ntp->TwoMuonsTrack_SV_Chi2(tmp_idx);
+
   }
 }
 
 void  DsToPhiPi::Finish(){
+
+  file= new TFile("Sync_dsphipi_tree_UF.root","recreate");
+  Sync_tree->SetDirectory(file);
+
+  file->Write();
+  file->Close();
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
