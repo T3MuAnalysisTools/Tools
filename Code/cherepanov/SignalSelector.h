@@ -71,12 +71,18 @@ class SignalSelector : public Selection {
 
 
 
-  std::vector<TH1D> TauMassRefitBarrel;
-  std::vector<TH1D> TauMassBarrel;
+  std::vector<TH1D> TauMassRefitBarrel1;
+  std::vector<TH1D> TauMassBarrel1;
 
-  std::vector<TH1D> TauMassRefitEndcap;
-  std::vector<TH1D> TauMassEndcap
-;
+  std::vector<TH1D> TauMassRefitEndcap1;
+  std::vector<TH1D> TauMassEndcap1;
+
+  std::vector<TH1D> TauMassRefitBarrel2;
+  std::vector<TH1D> TauMassBarrel2;
+
+  std::vector<TH1D> TauMassRefitEndcap2;
+  std::vector<TH1D> TauMassEndcap2;
+
   std::vector<TH1D> TauMassResolutionRefit;
 
   std::vector<TH1D> TauMass_all_nophiVeto;

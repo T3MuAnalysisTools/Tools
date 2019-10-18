@@ -4,7 +4,7 @@ HistoFile: InputData/HistoScaletoLumi.txt
 Analysis: DsToPhiPi
 UncertType: default
 SkimInfo: InputData/SkimSummaryLog_October2019.log
-Lumi: 1
+Lumi: 36441.98
 PlotStyle: style2
 
 
