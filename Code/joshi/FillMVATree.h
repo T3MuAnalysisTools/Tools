@@ -14,7 +14,7 @@ class FillMVATree : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, ThreeMuMass,NCuts};
+enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut, GenMatch, NCuts};
 
  protected:
   virtual void doEvent();  
@@ -49,6 +49,7 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   std::vector<TH1D> VertexDCAMax;
   std::vector<TH1D> Isolation_MinDist;
   std::vector<TH1D> VertexMuMaxD0SigReco;
+  std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
 
  bool MC; 
