@@ -112,11 +112,11 @@ void  SyncDsPhiPi::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  
+ 
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
   }
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
@@ -125,7 +125,7 @@ void  SyncDsPhiPi::doEvent(){
   value.at(is2MuTrk) = 0;
   value.at(PhiMassCut) = 0;
 
-  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
+  if(Ntp->NTwoMuonsTrack()!=0 /*&& Ntp->NThreeMuons() == 0*/) value.at(is2MuTrk) = 1;
  
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
@@ -153,6 +153,16 @@ void  SyncDsPhiPi::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
+
+  std::vector<int> misses{80586988,98764233,48390993,25573281,15034108,13262859,12};
+
+  for (int i=0;i<misses.size();i++) {
+    if (Ntp->EventNumber() == misses[i]) {
+      std::cout << "///////////////////////////////////////////////////////////" << std::endl;
+      std::cout << "For Event Number " << Ntp->EventNumber() << " , passes are: PhiMassCut=" << pass.at(PhiMassCut) << ", is2MuTrk=" << pass.at(is2MuTrk) << ", HLTOk=" << pass.at(HLTOk) << ". PhiMassCut value = " << value.at(PhiMassCut) << std::endl;
+    }
+  }
+
   if(status){
 
 
@@ -186,9 +196,9 @@ void  SyncDsPhiPi::doEvent(){
     run = Ntp->RunNumber();
     lumi = Ntp->LuminosityBlock();
 
-    sync_DsPhiPiVtx_x = Ntp->Vertex_Signal_KF_pos(tmp_idx).X();
-    sync_DsPhiPiVtx_y = Ntp->Vertex_Signal_KF_pos(tmp_idx).Y();
-    sync_DsPhiPiVtx_z = Ntp->Vertex_Signal_KF_pos(tmp_idx).Z();
+//    sync_DsPhiPiVtx_x = Ntp->Vertex_Signal_KF_pos(tmp_idx).X();
+//    sync_DsPhiPiVtx_y = Ntp->Vertex_Signal_KF_pos(tmp_idx).Y();
+//    sync_DsPhiPiVtx_z = Ntp->Vertex_Signal_KF_pos(tmp_idx).Z();
     sync_DsPhiPiVtx_Chi2 = Ntp->TwoMuonsTrack_SV_Chi2(tmp_idx);
 
 

@@ -29,6 +29,27 @@ DsToPhiPi::~DsToPhiPi(){
 
 void  DsToPhiPi::Configure(){
 
+  Sync_tree= new TTree("tree","tree");
+  Sync_tree->Branch("sync_pt_1",&sync_pt_1);
+  Sync_tree->Branch("sync_pt_2",&sync_pt_2);
+  Sync_tree->Branch("sync_pt_3",&sync_pt_3);
+
+  Sync_tree->Branch("sync_eta_1",&sync_eta_1);
+  Sync_tree->Branch("sync_eta_2",&sync_eta_2);
+  Sync_tree->Branch("sync_eta_3",&sync_eta_3);
+
+  Sync_tree->Branch("phi_mass",&phi_mass);
+  Sync_tree->Branch("ds_mass",&ds_mass);
+
+  Sync_tree->Branch("evt",&evt);
+  Sync_tree->Branch("run",&run);
+  Sync_tree->Branch("lumi",&lumi);
+
+  Sync_tree->Branch("sync_DsPhiPiVtx_x",&sync_DsPhiPiVtx_x);
+  Sync_tree->Branch("sync_DsPhiPiVtx_y",&sync_DsPhiPiVtx_y);
+  Sync_tree->Branch("sync_DsPhiPiVtx_z",&sync_DsPhiPiVtx_z);
+  Sync_tree->Branch("sync_DsPhiPiVtx_Chi2",&sync_DsPhiPiVtx_Chi2);
+
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -192,7 +213,7 @@ void  DsToPhiPi::Configure(){
   Muon1TrkdR=HConfig.GetTH1D(Name+"_Muon1TrkdR","dR between the highest p muon and the track",100,0,1,"dR","Events");
   Muon2TrkdR=HConfig.GetTH1D(Name+"_Muon2TrkdR","dR between the lowest p muon and the track",100,0,1,"dR","Events");
   PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu invariant mass",50,0.2,1.5,"Mass of the #mu#mu pair","Events");
-  PhiPlusTrackMass=HConfig.GetTH1D(Name+"_PhiPlusTrackMass","#mu#mu + track invariant mass",50,1.7,2.1,"Mass of the #mu#mu + track","Events");
+  PhiPlusTrackMass=HConfig.GetTH1D(Name+"_PhiPlusTrackMass","#mu#mu + track invariant mass",100,1.7,2.1,"Mass of the #mu#mu + track","Events");
   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu invariant Mass vs. #mu#mu + track invariant mass",50,0.2,1.5,50,1.7,2.1,"M_{#mu#mu}, GeV","M_{#mu#mu + track}, GeV");
   
   // Setup NPassed Histogams
@@ -201,7 +222,7 @@ void  DsToPhiPi::Configure(){
   // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
  
-  DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",50,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
+  DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
@@ -267,7 +288,8 @@ void  DsToPhiPi::doEvent(){
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
   double tmp_chisq = 999.0;
- 
+  double check_PhiMass = 999.0; 
+
   value.at(is2MuTrk) = 0; 
   value.at(Chi2Cut) = 0;
   value.at(Mass2Mu) = 0;
@@ -275,19 +297,24 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
+  if(Ntp->NTwoMuonsTrack()!=0/* && Ntp->NThreeMuons() == 0*/) value.at(is2MuTrk) = 1;
 
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
-      tmp_idx = i2M;
-      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0);
-      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(1);
-      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0);
+      int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
+      int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(1);
+      int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
+      double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
+
+      if (abs(tmp_PhiMass-1.01)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
       if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
 	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
+        check_PhiMass = abs(tmp_PhiMass-1.01);
 	mu1 = tmp_mu1;
 	mu2 = tmp_mu2;
 	track = tmp_track;
+        tmp_idx = i2M;
+      }
       }
     }
 
@@ -380,10 +407,48 @@ void  DsToPhiPi::doEvent(){
 
     }
 
+    TLorentzVector Mu1LV;
+    TLorentzVector Mu2LV;
+    TLorentzVector TrackLV = Ntp->Track_P4(track);
+
+    if(Ntp->Muon_P4(mu1).Pt() > Ntp->Muon_P4(mu2).Pt()){
+      Mu1LV = Ntp->Muon_P4(mu1);
+      Mu2LV = Ntp->Muon_P4(mu2);
+
+    }
+    else {
+
+      Mu1LV = Ntp->Muon_P4(mu2);
+      Mu2LV = Ntp->Muon_P4(mu1);
+    }
+
+    sync_pt_1 = Mu1LV.Pt();
+    sync_pt_2 = Mu2LV.Pt();
+    sync_pt_3 = TrackLV.Pt();
+
+    sync_eta_1 = Mu1LV.Eta();
+    sync_eta_2 = Mu2LV.Eta();
+    sync_eta_3 = TrackLV.Eta();
+
+    phi_mass  = (Mu1LV+Mu2LV).M();
+    ds_mass  = (Mu1LV+Mu2LV  + TrackLV).M();
+
+    evt = Ntp->EventNumber();
+    run = Ntp->RunNumber();
+    lumi = Ntp->LuminosityBlock();
+
+    sync_DsPhiPiVtx_Chi2 = Ntp->TwoMuonsTrack_SV_Chi2(tmp_idx);
+
   }
 }
 
 void  DsToPhiPi::Finish(){
+
+  file= new TFile("Sync_dsphipi_tree_UF.root","recreate");
+  Sync_tree->SetDirectory(file);
+
+  file->Write();
+  file->Close();
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
