@@ -34,8 +34,7 @@ void  DsToPhiPi::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==HLTOk)           cut.at(HLTOk)=1;
-    if(i==L1Ok)            cut.at(L1Ok)=1;
+    if(i==TriggerOk)           cut.at(TriggerOk)=1;
     if(i==is2MuTrk)        cut.at(is2MuTrk)=1;
     if(i==GlobalMu)        cut.at(GlobalMu)=1;
     if(i==Chi2Cut)         cut.at(Chi2Cut)=1;
@@ -57,18 +56,12 @@ void  DsToPhiPi::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
-    if(i==HLTOk){
+    if(i==TriggerOk){
       title.at(i)="Trigger";
       hlabel="Trigger";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-     if(i==L1Ok){
-       title.at(i)="L1 trigger DoubleMu ";
-       hlabel="L1_DoubleMu";
-       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1Ok_",htitle,2,-0.5,1.5,hlabel,"Events"));
-       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1Ok_",htitle,2,-0.5,1.5,hlabel,"Events"));
-     }
     else if(i==is2MuTrk){
       title.at(i)="Category: 2Mu+Trk ";
       hlabel="2muon + track category";
@@ -358,11 +351,48 @@ void  DsToPhiPi::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  value.at(HLTOk) = 0;
+  value.at(TriggerOk) = 0;
+
+  bool HLTOk(false);
+  bool L1Ok(false);
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v"))value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+
+    if(id==1){
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    }
+
+    //    if(id==1 && Ntp->WhichEra(2017).Contains("RunF")){
+    //      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    //    }	 
+
+    if(id!=1){
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    }
+    
   }
+
+
+  bool DoubleMuFired(0);
+  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    
+    if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+
+    if(id!=1){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+
+    if(id==1 && (Ntp->WhichEra(2017).Contains("RunC") or Ntp->WhichEra(2017).Contains("RunD") or Ntp->WhichEra(2017).Contains("RunF")  or Ntp->WhichEra(2017).Contains("RunE"))){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+  }
+
+  if(DoubleMuFired) L1Ok = true;
+  value.at(TriggerOk)=(HLTOk and L1Ok);
+
 
     
   int mu1=-1, mu2=-1, track=-1;
@@ -414,7 +444,7 @@ void  DsToPhiPi::doEvent(){
 }
   
   pass.at(is2MuTrk) = (value.at(is2MuTrk) >0 );
-  pass.at(HLTOk)    = (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(TriggerOk)    = (value.at(TriggerOk)==cut.at(TriggerOk));
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Chi2Cut)  = value.at(Chi2Cut) >= 0 && value.at(Chi2Cut) < 15.01;
   pass.at(Mass2Mu)  = value.at(Mass2Mu) > 0.99 && value.at(Mass2Mu) < 1.041;
@@ -427,19 +457,6 @@ void  DsToPhiPi::doEvent(){
   pass.at(Trkpt)    = value.at(Trkpt) > 1;
   
   
-  if(pass.at(HLTOk)){
-    for(unsigned int il1=0; il1< Ntp->NL1Seeds(); il1++){
-      if(Ntp->L1Decision(il1)){
-   	TString L1TriggerName = Ntp->L1Name(il1);
-	if(L1TriggerName.Contains("DoubleMu0er1p5") )value.at(L1Ok) = Ntp->L1Decision(il1);
-      }
-    }
-  }
-  
-  pass.at(L1Ok) = (value.at(L1Ok) == cut.at(L1Ok));
-
-
-
 
 
   double wobs=1;
@@ -558,6 +575,7 @@ void  DsToPhiPi::doEvent(){
 
       if(Ntp->WhichEra(2017).Contains("RunF") ){
 	DsMassF.at(t).Fill(dsmass,w);    
+	//	std::cout<<"DsMassF  "<< dsmass << std::endl;
 	Track_PtF.at(t).Fill(Ntp->Track_P4(track).Pt(),w*RelLumiF);
 	Track_EtaF.at(t).Fill(Ntp->Track_P4(track).Eta(),w*RelLumiF);
 	Muon1_PtF.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w*RelLumiF);
