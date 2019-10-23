@@ -593,7 +593,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"cp -r *  $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"rm -r   $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
-			system(sprintf("echo \"export HOME=\\\"/home/$UserID\\\"         \"   >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"export HOME=\\\"/afs/cern.ch/user/c/$UserID\\\"         \"   >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 
 			system(sprintf("echo \"echo 'Completed Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 
