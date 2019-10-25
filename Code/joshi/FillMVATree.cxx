@@ -35,21 +35,33 @@ void  FillMVATree::Configure(){
 	 TMVA_Tree= new TTree("tree","tree");
 	 TMVA_Tree->Branch("MC",&MC);
 	 TMVA_Tree->Branch("category",&category);
-	 TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2);
-    TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle);
+
+	 //commmon variables (2016 + 2017)
+	 TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2); // <= should be changed to normalized KF chi2
+    TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle); 
   	 TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
-	 TMVA_Tree->Branch("var_sumMuTrkKinkChi2",&var_sumMuTrkKinkChi2);
 	 TMVA_Tree->Branch("var_segCompMuMin",&var_segCompMuMin);
-	 TMVA_Tree->Branch("var_MinMIPLikelihood",&var_MinMIPLikelihood);
-	 TMVA_Tree->Branch("var_tauMass",&var_tauMass);
-	 TMVA_Tree->Branch("var_maxdca",&var_maxdca);
-    TMVA_Tree->Branch("var_MuMu_mindR",&var_MuMu_mindR);
-    TMVA_Tree->Branch("var_RelPt_Mu1Tau",&var_RelPt_Mu1Tau);
-    TMVA_Tree->Branch("var_Eta_Tau",&var_Eta_Tau);
+	 
+	 // 2016 variables
+	 TMVA_Tree->Branch("var_pmin", &var_pmin); // Minimum p of the three muons
+	 TMVA_Tree->Branch("var_max_cLP", &var_max_cLP); // Maximum chi square of the STA-TRK matching
+	 TMVA_Tree->Branch("var_max_tKink", &var_max_tKink); // Maximum of the track kink of the 3 muons
+	 TMVA_Tree->Branch("var_MinD0Significance", &var_MinD0Significance); // Minimum of the transverse IP significance of the 3 muons
+	 TMVA_Tree->Branch("var_mindca_iso", &var_mindca_iso); // Minimum DCA of tracks to muons with pT > 1 GeV (Maximum of three muons)
+	 TMVA_Tree->Branch("var_trk_relPt", &var_trk_relPt); // Ratio of sum of Pt of the tracks in muon isolation to muon (max value) [trk_pt>1 GeV, dR<0.03, dca<1 mm]
+
+	 // 2017 variables
+    TMVA_Tree->Branch("var_Eta_Tau",&var_Eta_Tau); 
     TMVA_Tree->Branch("var_MuMu_minKFChi2",&var_MuMu_minKFChi2);
     TMVA_Tree->Branch("var_MuTau_maxdR",&var_MuTau_maxdR);
-	 TMVA_Tree->Branch("var_MaxD0Significance", &var_MaxD0Significance);
-	 TMVA_Tree->Branch("var_IsolationMinDist", &var_IsolationMinDist);
+	 TMVA_Tree->Branch("var_sumMuTrkKinkChi2",&var_sumMuTrkKinkChi2); // sum of chi square of STA-TRK matching of 3 muons
+
+
+	 // Include calo energy in the HCAL tower
+	 
+	 // Spectator variables
+	 TMVA_Tree->Branch("var_tauMass",&var_tauMass);
+	 TMVA_Tree->Branch("var_tauMassRes", &var_tauMassRes);
 	 // -----------------
 
     for(int i=0; i<NCuts;i++){
@@ -347,6 +359,9 @@ void  FillMVATree::doEvent(){
 	 float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(final_idx,0),
 					 	  							 Ntp->Vertex_d0sig_reco(final_idx,1),
 													 Ntp->Vertex_d0sig_reco(final_idx,2)});
+	 float MinD0Significance = std::min({Ntp->Vertex_d0sig_reco(final_idx,0),
+					 	  							 Ntp->Vertex_d0sig_reco(final_idx,1),
+													 Ntp->Vertex_d0sig_reco(final_idx,2)});
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx),w);
     FLSignificance.at(t).Fill(sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
 								   Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx))),w);
@@ -369,7 +384,15 @@ void  FillMVATree::doEvent(){
     var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)});
     var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
     var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
-	 
+	 var_tauMassRes = tauMassRes;
+    
+	 var_pmin = std::min(Ntp->Muon_P4(Muon_index_1).P(), std::min(Ntp->Muon_P4(Muon_index_2).P(), Ntp->Muon_P4(Muon_index_3).P()));
+    var_max_cLP = std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1), std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2), Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)));
+    var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_1), std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_2), Ntp->Muon_combinedQuality_trkKink(Muon_index_3)));
+    var_MinD0Significance = MinD0Significance;
+    var_mindca_iso = Ntp->Isolation_MinDist(final_idx);
+    var_trk_relPt = Ntp->Isolation_MuMaxRelIso(final_idx);
+
 	 if (id==1) MC=0;
 	 else  MC=1;
 	 
