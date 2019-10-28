@@ -250,7 +250,7 @@ void  DsToPhiPi::Configure(){
   Muon1_PtF_substracted=HConfig.GetTH1D(Name+"_Muon1_PtF_substracted","Transverse Pt (muon 1) in subs",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
 
 
-  DsDecayL=HConfig.GetTH1D(Name+"_DsDecayL","Decay Length",25,0,30,"Decay length, cm","Events");
+  DsDecayL=HConfig.GetTH1D(Name+"_DsDecayL","Decay Length",25,0,0.1,"Decay length, cm","Events");
 
 
 
@@ -498,6 +498,29 @@ void  DsToPhiPi::doEvent(){
     //    std::cout<<"   "<< Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)) << std::endl;
     TLorentzVector DsP4 = Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1)) + Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0));
     DsDecayL.at(t).Fill(Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)).Mag()  *  DsP4.M()/DsP4.P(),1);
+
+    bool isPromt(true);
+    std::cout<<"reco signal particle P  "<< DsP4.P() << std::endl;
+    if(id != 1){
+      std::cout<<" Loop Over Signal Particles  "<< std::endl;
+      for(unsigned int isigp = 0; isigp < Ntp-> NMCSignalParticles() ; isigp++){
+	std::cout<<" Id  "<< Ntp->MCSignalParticle_pdgid(isigp)<< "   MC P4  "<< Ntp->MCSignalParticle_p4(isigp).P() <<  "  N sources   "<< Ntp->NMCSignalParticleSources(isigp) << std::endl;
+
+	std::cout<<"loop over sources  "<< std::endl;
+	for(unsigned int is =0; is< Ntp->NMCSignalParticleSources(isigp); is++){
+
+	  std::cout<<" source ID   "<< Ntp->MCSignalParticle_Sourcepdgid(isigp,is)<< std::endl;
+	  if( abs(  Ntp->MCSignalParticle_Sourcepdgid(isigp,is)  )  > 400 ){ // then it means that Ds is coming from B decay
+	    isPromt = false;
+	  }
+
+	}
+      }
+    }
+
+    //    if()
+
+
 
     // Muon1_Pt.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
     // Muon1_Eta.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
