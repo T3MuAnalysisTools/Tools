@@ -250,6 +250,9 @@ void  DsToPhiPi::Configure(){
   Muon1_PtF_substracted=HConfig.GetTH1D(Name+"_Muon1_PtF_substracted","Transverse Pt (muon 1) in subs",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
 
 
+  DsDecayL=HConfig.GetTH1D(Name+"_DsDecayL","Decay Length",25,0,30,"Decay length, cm","Events");
+
+
 
 
 
@@ -321,6 +324,9 @@ void  DsToPhiPi::Store_ExtraDist(){
   //  Extradist1d.push_back(&Muon1TrkdR);
   //  Extradist1d.push_back(&Muon2TrkdR);
   Extradist1d.push_back(&PhiMass);
+
+  Extradist1d.push_back(&DsDecayL);
+
   //  Extradist1d.push_back(&PhiPlusTrackMass);
   //  Extradist2d.push_back(&PhiMassVsDsMass);
   //  Extradist1d.push_back(&Muon1_isGlobal);
@@ -374,7 +380,7 @@ void  DsToPhiPi::doEvent(){
 
 
   bool DoubleMuFired(0);
-  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
     
     if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
@@ -409,8 +415,8 @@ void  DsToPhiPi::doEvent(){
   if(Ntp->NTwoMuonsTrack()!=0) value.at(is2MuTrk) = 1;
 
 
-
-  if (value.at(is2MuTrk)==1){
+  //  std::cout<<"N two muons and tracks:   "<< Ntp->NTwoMuonsTrack()<< " N signal    "<< Ntp-> NThreeMuons() << "  Num vert   "<< Ntp->NumberOfSVertices() << std::endl;
+  if (value.at(is2MuTrk)==1 && Ntp-> NThreeMuons()==0){
 
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
       int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
@@ -444,7 +450,7 @@ void  DsToPhiPi::doEvent(){
 }
   
   pass.at(is2MuTrk) = (value.at(is2MuTrk) >0 );
-  pass.at(TriggerOk)    = (value.at(TriggerOk)==cut.at(TriggerOk));
+  pass.at(TriggerOk)= (value.at(TriggerOk)==cut.at(TriggerOk));
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Chi2Cut)  = value.at(Chi2Cut) >= 0 && value.at(Chi2Cut) < 15.01;
   pass.at(Mass2Mu)  = value.at(Mass2Mu) > 0.99 && value.at(Mass2Mu) < 1.041;
@@ -489,7 +495,9 @@ void  DsToPhiPi::doEvent(){
     Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
     Muon2_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1),w);
     Track_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2),w);
-
+    //    std::cout<<"   "<< Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)) << std::endl;
+    TLorentzVector DsP4 = Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1)) + Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0));
+    DsDecayL.at(t).Fill(Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)).Mag()  *  DsP4.M()/DsP4.P(),1);
 
     // Muon1_Pt.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
     // Muon1_Eta.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
