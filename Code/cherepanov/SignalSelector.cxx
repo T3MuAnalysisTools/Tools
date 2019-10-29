@@ -162,7 +162,9 @@ void  SignalSelector::Configure(){
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
     if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
-    if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
+    if(i==TriggerMatch1)       cut.at(TriggerMatch1)=0.03;
+    if(i==TriggerMatch2)       cut.at(TriggerMatch2)=0.03;
+    if(i==TriggerMatch3)       cut.at(TriggerMatch3)=0.03;
     if(i==TauMassCut)         cut.at(TauMassCut)=1;// true for MC and mass side band for data
   }
 
@@ -256,11 +258,26 @@ void  SignalSelector::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
     }
-    else if(i==TriggerMatch){
-      title.at(i)="Trigger Matching";
+    else if(i==TriggerMatch1){
+      title.at(i)="$\\Delta R(reco-trigger)_{\\mu_{1}} <$ 0.03";
       hlabel="Sum of dR_{reco-trigger}";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch1_",htitle,40,0,0.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch1_",htitle,40,0,0.05,hlabel,"Events"));
+    }
+    else if(i==TriggerMatch2){
+      title.at(i)="$\\Delta R(reco-trigger)_{\\mu_{2}} <$ 0.03";
+      hlabel="Sum of dR_{reco-trigger}";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch2_",htitle,40,0,0.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch2_",htitle,40,0,0.05,hlabel,"Events"));
+    }
+    else if(i==TriggerMatch3){
+      title.at(i)="$\\Delta R(reco-trigger)_{\\mu_{3}} <$ 0.03";
+      hlabel="Sum of dR_{reco-trigger}";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch3_",htitle,40,0,0.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch3_",htitle,40,0,0.05,hlabel,"Events"));
     }
     else if(i==TauMassCut){
       title.at(i)="$\\tau$ mass (sideband in data)";
@@ -564,7 +581,9 @@ void  SignalSelector::doEvent(){
 
   value.at(SignalCandidate)=0;
   unsigned int  signal_idx=0;
-  value.at(TriggerMatch)=0;
+  value.at(TriggerMatch1)=0;
+  value.at(TriggerMatch2)=0;
+  value.at(TriggerMatch3)=0;
 
   double min_chi2(99.);
   for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
@@ -620,10 +639,13 @@ void  SignalSelector::doEvent(){
     value.at(PhiVeto)   = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
     value.at(OmegaVeto) = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
 
-    for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx)){
-      value.at(TriggerMatch)+=i; 
-    }
-    
+    //    for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx)){
+    //      value.at(TriggerMatch)+=i; 
+    //    }
+    value.at(TriggerMatch1) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(0);
+    value.at(TriggerMatch2) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(1);
+    value.at(TriggerMatch3) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(2);
+    //    std::cout<<"Trigger Match  "<< value.at(TriggerMatch1) << std::endl;
     //    value.at(TauMassCut) = TauLV.M();
     value.at(TauMassCut) = TauRefittedLV.M();
   }
@@ -633,7 +655,9 @@ void  SignalSelector::doEvent(){
   pass.at(Mu2PtCut) = (value.at(Mu2PtCut) >= cut.at(Mu2PtCut));
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
-  pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
+  pass.at(TriggerMatch1) = (value.at(TriggerMatch1)  <  cut.at(TriggerMatch1));
+  pass.at(TriggerMatch2) = (value.at(TriggerMatch2)  <  cut.at(TriggerMatch2));
+  pass.at(TriggerMatch3) = (value.at(TriggerMatch3)  <  cut.at(TriggerMatch3));
   pass.at(PhiVeto)      = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
   pass.at(OmegaVeto)    = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
@@ -817,15 +841,12 @@ void  SignalSelector::doEvent(){
     rapidity = TauLV.Eta();
     LumiScale=1;
 
-
-
-
     //---------------- define per event resolution categroies 
     //Category A1
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
       TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
       BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
-      if(readerA->EvaluateMVA("BDT") > 0.3){
+      if(readerA->EvaluateMVA("BDT") > 0.264102){
 	TauMassRefitA1.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA1.at(t).Fill(TauLV.M(),1);
 	category=1;
@@ -837,7 +858,7 @@ void  SignalSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
       TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
       BDTOutputB.at(t).Fill(    readerB->EvaluateMVA("BDT") );
-      if(readerB->EvaluateMVA("BDT") > 0.3){
+      if(readerB->EvaluateMVA("BDT") > 0.199474){
 	TauMassRefitB1.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB1.at(t).Fill(TauLV.M(),1);
 	category =2 ;
@@ -849,7 +870,7 @@ void  SignalSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
       TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
       BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
-      if(readerC->EvaluateMVA("BDT") > 0.25){
+      if(readerC->EvaluateMVA("BDT") > 0.181517){
 	TauMassRefitC1.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC1.at(t).Fill(TauLV.M(),1);
 	category = 3;
@@ -859,7 +880,7 @@ void  SignalSelector::doEvent(){
 
     //Category A2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
-      if(readerA->EvaluateMVA("BDT") > 0.25 && readerA->EvaluateMVA("BDT") < 0.3){
+      if(readerA->EvaluateMVA("BDT") > 0.135609 && readerA->EvaluateMVA("BDT") < 0.264102){
 	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA2.at(t).Fill(TauLV.M(),1);
 	category=4;
@@ -867,9 +888,10 @@ void  SignalSelector::doEvent(){
       }
     }
 
-    //Category B2
+ 
+   //Category B2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
-      if(readerB->EvaluateMVA("BDT") > 0.2 && readerB->EvaluateMVA("BDT") < 0.3){
+      if(readerB->EvaluateMVA("BDT") > 0.100253 && readerB->EvaluateMVA("BDT") < 0.199474){
 	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB2.at(t).Fill(TauLV.M(),1);
 	category =5 ;
@@ -879,14 +901,13 @@ void  SignalSelector::doEvent(){
 
     //Category C2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
-      if(readerC->EvaluateMVA("BDT") > 0.2 && readerC->EvaluateMVA("BDT")< 0.25){
+      if(readerC->EvaluateMVA("BDT") > 0.0830885 && readerC->EvaluateMVA("BDT")< 0.181517){
 	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC2.at(t).Fill(TauLV.M(),1);
 	category = 6;
 	bdt = readerC->EvaluateMVA("BDT");
       }
     }
-
 
     //Category Barrel1
     if(fabs(TauLV.Eta()) < 1.2){

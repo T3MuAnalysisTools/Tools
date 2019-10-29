@@ -123,7 +123,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TrkdR_",htitle,50,0,.05,hlabel,"Events"));
     }
     else if(i==Mu1pt){
-      title.at(i)="$\\mu_{1}$ Pt $>$ 2 GeV";
+      title.at(i)="$\\mu_{1}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -132,7 +132,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1pt_",htitle,80,0,20,hlabel,"Events"));
     }
     else if(i==Mu2pt){
-      title.at(i)="$\\mu_{2}$ Pt $>$ 2 GeV";
+      title.at(i)="$\\mu_{2}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -141,7 +141,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2pt_",htitle,80,0,20,hlabel,"Events"));
     }
     else if(i==Trkpt){
-      title.at(i)="Track Pt $>$ 1 GeV";
+      title.at(i)="Track Pt $>$ 2 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -458,9 +458,9 @@ void  DsToPhiPi::doEvent(){
   pass.at(Mu1dR)    = value.at(Mu1dR) < .03;
   pass.at(Mu2dR)    = value.at(Mu2dR) < .03;
   pass.at(TrkdR)    = value.at(TrkdR) < .03;
-  pass.at(Mu1pt)    = value.at(Mu1pt) > 2;
-  pass.at(Mu2pt)    = value.at(Mu2pt) > 2;
-  pass.at(Trkpt)    = value.at(Trkpt) > 1;
+  pass.at(Mu1pt)    = value.at(Mu1pt) > 3;
+  pass.at(Mu2pt)    = value.at(Mu2pt) > 3;
+  pass.at(Trkpt)    = value.at(Trkpt) > 1.5;
   
   
 
@@ -500,16 +500,16 @@ void  DsToPhiPi::doEvent(){
     DsDecayL.at(t).Fill(Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)).Mag()  *  DsP4.M()/DsP4.P(),1);
 
     bool isPromt(true);
-    std::cout<<"reco signal particle P  "<< DsP4.P() << std::endl;
+    //    std::cout<<"reco signal particle P  "<< DsP4.P() << std::endl;
     if(id != 1){
-      std::cout<<" Loop Over Signal Particles  "<< std::endl;
-      for(unsigned int isigp = 0; isigp < Ntp-> NMCSignalParticles() ; isigp++){
-	std::cout<<" Id  "<< Ntp->MCSignalParticle_pdgid(isigp)<< "   MC P4  "<< Ntp->MCSignalParticle_p4(isigp).P() <<  "  N sources   "<< Ntp->NMCSignalParticleSources(isigp) << std::endl;
+      //std::cout<<" Loop Over Signal Particles  "<< std::endl;
+            for(unsigned int isigp = 0; isigp < Ntp-> NMCSignalParticles() ; isigp++){
+	      //std::cout<<" Id  "<< Ntp->MCSignalParticle_pdgid(isigp)<< "   MC P4  "<< Ntp->MCSignalParticle_p4(isigp).P() <<  "  N sources   "<< Ntp->NMCSignalParticleSources(isigp) << std::endl;
 
-	std::cout<<"loop over sources  "<< std::endl;
+	//	std::cout<<"loop over sources  "<< std::endl;
 	for(unsigned int is =0; is< Ntp->NMCSignalParticleSources(isigp); is++){
 
-	  std::cout<<" source ID   "<< Ntp->MCSignalParticle_Sourcepdgid(isigp,is)<< std::endl;
+	  //	  std::cout<<" source ID   "<< Ntp->MCSignalParticle_Sourcepdgid(isigp,is)<< std::endl;
 	  if( abs(  Ntp->MCSignalParticle_Sourcepdgid(isigp,is)  )  > 400 ){ // then it means that Ds is coming from B decay
 	    isPromt = false;
 	  }

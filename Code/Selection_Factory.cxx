@@ -12,6 +12,8 @@
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
 #include "cherepanov/SignalSelector.h"
+#include "cherepanov/SignalSelector2017BDT.h"
+
 #endif
 
 
@@ -71,6 +73,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
   else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis,UncertType);
   else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
+  else if(Analysis.Contains("signalselector2017bdt"))s=new SignalSelector2017BDT(Analysis,UncertType);
 
 #endif
 
