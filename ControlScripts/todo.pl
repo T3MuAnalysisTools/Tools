@@ -530,53 +530,35 @@ if( $ARGV[0] eq "--DCache" ){
 		system(sprintf("touch junk1"));
 		system(sprintf("touch junk2"));
 		system(sprintf("touch junk"));
-		system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
-#		system(sprintf("uberftp -ls gsiftp://cmsio.rc.ufl.edu/cms/data$DS >& junk0 "));
 
-		@dpmsubdirs=();
-		open(DAT, "junk0");
-		while ($item = <DAT>) {
-		    chomp($item);
-		    push(@dpmsubdirs,$item);
-		}
-		close(DAT);
-		system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
-		@dpmdirs=();
-		open(DAT, "junk1");
-		while ($item = <DAT>) {
-		    chomp($item);
-		    $fpath="$DS/$item";
-		    push(@dpmdirs,$fpath);
-		}
+		system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cms/data$DS/0000/ \" | grep .root >&junk0"));
+		system(sprintf("cat junk0 | awk '{print \$9}' >& junk1")); 
+
+
+		system(sprintf("junk1")); 
+
 
 		# Get list of files in dcache dir
-		@files=(); 
-		foreach $ipath (@dpmdirs){
-
-		    system(sprintf("gfal-ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
-#		    system(sprintf("uberftp -ls gsiftp://cmsio.rc.ufl.edu/cms/data$ipath | grep \".root\" >& junk2 "));
-		    system(sprintf("cat junk2 | awk '{print \$1}' >& junk")); 
-		    open(DAT, "junk");
-		    while ($item = <DAT>) {
-			chomp($item);
-			$FileList="$ipath/$item";
-			push(@files,$FileList);
-		    }
+		@files=();
+		open(DAT, "junk1");
+		while ($item = <DAT>) {
+		    $item =~ s/\r\n$/\n/;
+		    chomp($item);
+		    push(@files,$item);
 		}
-
 		close(DAT);
-		system(sprintf("rm junk"));
+
+
 		system(sprintf("rm junk0"));
 		system(sprintf("rm junk1"));
 		system(sprintf("rm junk2"));
+		system(sprintf("rm junk"));
 
 		$nfiles = @files;
 		$idx=0;
-
 		printf("A = $A  and B=$B \n ");
 		foreach $file (@files){
 		    $idx++;
-		    $AM1=$A-1;
 		    printf("$file Set = $B  Index =  $A   Max. = $max    N Files = $nfiles   Current File = $idx \n");
 		    if($A > $max ){
 			$A=1;
@@ -611,7 +593,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"cp -r *  $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"rm -r   $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
-			system(sprintf("echo \"export HOME=\\\"/home/$UserID\\\"         \"   >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"export HOME=\\\"/afs/cern.ch/user/c/$UserID\\\"         \"   >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 
 			system(sprintf("echo \"echo 'Completed Job' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 
@@ -674,11 +656,15 @@ if( $ARGV[0] eq "--DCache" ){
 		    $ind = rindex($file,"/");
 		    $mypath = substr($file,0,$ind);
 
-
-		    system(sprintf("echo \"uberftp  cmsio.rc.ufl.edu 'cd /cms/data/$mypath; get $myfiletrunc' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+#uberftp  cmsio.rc.ufl.edu 'cd /cms/data//store/user/cherepan/DoubleMuonLowMass/Prod_07_10_2019_DoubleMuonLowMass__Run2017F-17Nov2017-v1/191007_093213/0000; get DsT3MNtuple_1.root'
+		    system(sprintf("echo \"    uberftp  cmsio.rc.ufl.edu 'cd /cms/data/$DS/0000; get $myfiletrunc ' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 	#	    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
-		    system(sprintf("echo \"File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
+		    system(sprintf("echo \" File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $Filedir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
+
+
+
+
 		    $A++;
 		}
 	    }

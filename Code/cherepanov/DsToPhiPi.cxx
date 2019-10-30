@@ -34,8 +34,7 @@ void  DsToPhiPi::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==HLTOk)           cut.at(HLTOk)=1;
-    if(i==L1Ok)            cut.at(L1Ok)=1;
+    if(i==TriggerOk)           cut.at(TriggerOk)=1;
     if(i==is2MuTrk)        cut.at(is2MuTrk)=1;
     if(i==GlobalMu)        cut.at(GlobalMu)=1;
     if(i==Chi2Cut)         cut.at(Chi2Cut)=1;
@@ -57,18 +56,12 @@ void  DsToPhiPi::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
-    if(i==HLTOk){
+    if(i==TriggerOk){
       title.at(i)="Trigger";
       hlabel="Trigger";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-     if(i==L1Ok){
-       title.at(i)="L1 trigger DoubleMu ";
-       hlabel="L1_DoubleMu";
-       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1Ok_",htitle,2,-0.5,1.5,hlabel,"Events"));
-       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1Ok_",htitle,2,-0.5,1.5,hlabel,"Events"));
-     }
     else if(i==is2MuTrk){
       title.at(i)="Category: 2Mu+Trk ";
       hlabel="2muon + track category";
@@ -130,7 +123,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TrkdR_",htitle,50,0,.05,hlabel,"Events"));
     }
     else if(i==Mu1pt){
-      title.at(i)="$\\mu_{1}$ Pt $>$ 2 GeV";
+      title.at(i)="$\\mu_{1}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -139,7 +132,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1pt_",htitle,80,0,20,hlabel,"Events"));
     }
     else if(i==Mu2pt){
-      title.at(i)="$\\mu_{2}$ Pt $>$ 2 GeV";
+      title.at(i)="$\\mu_{2}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -148,7 +141,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2pt_",htitle,80,0,20,hlabel,"Events"));
     }
     else if(i==Trkpt){
-      title.at(i)="Track Pt $>$ 1 GeV";
+      title.at(i)="Track Pt $>$ 2 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -257,6 +250,9 @@ void  DsToPhiPi::Configure(){
   Muon1_PtF_substracted=HConfig.GetTH1D(Name+"_Muon1_PtF_substracted","Transverse Pt (muon 1) in subs",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
 
 
+  DsDecayL=HConfig.GetTH1D(Name+"_DsDecayL","Decay Length",25,0,0.1,"Decay length, cm","Events");
+
+
 
 
 
@@ -328,6 +324,9 @@ void  DsToPhiPi::Store_ExtraDist(){
   //  Extradist1d.push_back(&Muon1TrkdR);
   //  Extradist1d.push_back(&Muon2TrkdR);
   Extradist1d.push_back(&PhiMass);
+
+  Extradist1d.push_back(&DsDecayL);
+
   //  Extradist1d.push_back(&PhiPlusTrackMass);
   //  Extradist2d.push_back(&PhiMassVsDsMass);
   //  Extradist1d.push_back(&Muon1_isGlobal);
@@ -358,11 +357,48 @@ void  DsToPhiPi::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  value.at(HLTOk) = 0;
+  value.at(TriggerOk) = 0;
+
+  bool HLTOk(false);
+  bool L1Ok(false);
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v"))value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+
+    if(id==1){
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    }
+
+    //    if(id==1 && Ntp->WhichEra(2017).Contains("RunF")){
+    //      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    //    }	 
+
+    if(id!=1){
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+    }
+    
   }
+
+
+  bool DoubleMuFired(0);
+  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    
+    if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+
+    if(id!=1){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+
+    if(id==1 && (Ntp->WhichEra(2017).Contains("RunC") or Ntp->WhichEra(2017).Contains("RunD") or Ntp->WhichEra(2017).Contains("RunF")  or Ntp->WhichEra(2017).Contains("RunE"))){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+    }
+  }
+
+  if(DoubleMuFired) L1Ok = true;
+  value.at(TriggerOk)=(HLTOk and L1Ok);
+
 
     
   int mu1=-1, mu2=-1, track=-1;
@@ -379,8 +415,8 @@ void  DsToPhiPi::doEvent(){
   if(Ntp->NTwoMuonsTrack()!=0) value.at(is2MuTrk) = 1;
 
 
-
-  if (value.at(is2MuTrk)==1){
+  //  std::cout<<"N two muons and tracks:   "<< Ntp->NTwoMuonsTrack()<< " N signal    "<< Ntp-> NThreeMuons() << "  Num vert   "<< Ntp->NumberOfSVertices() << std::endl;
+  if (value.at(is2MuTrk)==1 && Ntp-> NThreeMuons()==0){
 
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
       int tmp_mu1 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(0);
@@ -414,7 +450,7 @@ void  DsToPhiPi::doEvent(){
 }
   
   pass.at(is2MuTrk) = (value.at(is2MuTrk) >0 );
-  pass.at(HLTOk)    = (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(TriggerOk)= (value.at(TriggerOk)==cut.at(TriggerOk));
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Chi2Cut)  = value.at(Chi2Cut) >= 0 && value.at(Chi2Cut) < 15.01;
   pass.at(Mass2Mu)  = value.at(Mass2Mu) > 0.99 && value.at(Mass2Mu) < 1.041;
@@ -422,21 +458,12 @@ void  DsToPhiPi::doEvent(){
   pass.at(Mu1dR)    = value.at(Mu1dR) < .03;
   pass.at(Mu2dR)    = value.at(Mu2dR) < .03;
   pass.at(TrkdR)    = value.at(TrkdR) < .03;
-  pass.at(Mu1pt)    = value.at(Mu1pt) > 2;
-  pass.at(Mu2pt)    = value.at(Mu2pt) > 2;
-  pass.at(Trkpt)    = value.at(Trkpt) > 1;
+  pass.at(Mu1pt)    = value.at(Mu1pt) > 3;
+  pass.at(Mu2pt)    = value.at(Mu2pt) > 3;
+  pass.at(Trkpt)    = value.at(Trkpt) > 1.5;
   
   
-  if(pass.at(HLTOk)){
-    for(unsigned int il1=0; il1< Ntp->NL1Seeds(); il1++){
-      if(Ntp->L1Decision(il1)){
-   	TString L1TriggerName = Ntp->L1Name(il1);
-	if(L1TriggerName.Contains("DoubleMu0er1p5") )value.at(L1Ok) = Ntp->L1Decision(il1);
-      }
-    }
-  }
-  
-  pass.at(L1Ok) = (value.at(L1Ok) == cut.at(L1Ok));
+
 
   double wobs=1;
   double w;  
@@ -468,6 +495,31 @@ void  DsToPhiPi::doEvent(){
     Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0),w);
     Muon2_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(1),w);
     Track_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(2),w);
+    //    std::cout<<"   "<< Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)) << std::endl;
+    TLorentzVector DsP4 = Ntp->Muon_P4(Ntp->TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1)) + Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0));
+    DsDecayL.at(t).Fill(Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx)).Mag()  *  DsP4.M()/DsP4.P(),1);
+
+    bool isPromt(true);
+    //    std::cout<<"reco signal particle P  "<< DsP4.P() << std::endl;
+    if(id != 1){
+      //std::cout<<" Loop Over Signal Particles  "<< std::endl;
+            for(unsigned int isigp = 0; isigp < Ntp-> NMCSignalParticles() ; isigp++){
+	      //std::cout<<" Id  "<< Ntp->MCSignalParticle_pdgid(isigp)<< "   MC P4  "<< Ntp->MCSignalParticle_p4(isigp).P() <<  "  N sources   "<< Ntp->NMCSignalParticleSources(isigp) << std::endl;
+
+	//	std::cout<<"loop over sources  "<< std::endl;
+	for(unsigned int is =0; is< Ntp->NMCSignalParticleSources(isigp); is++){
+
+	  //	  std::cout<<" source ID   "<< Ntp->MCSignalParticle_Sourcepdgid(isigp,is)<< std::endl;
+	  if( abs(  Ntp->MCSignalParticle_Sourcepdgid(isigp,is)  )  > 400 ){ // then it means that Ds is coming from B decay
+	    isPromt = false;
+	  }
+
+	}
+      }
+    }
+
+    //    if()
+
 
 
     // Muon1_Pt.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
@@ -554,6 +606,7 @@ void  DsToPhiPi::doEvent(){
 
       if(Ntp->WhichEra(2017).Contains("RunF") ){
 	DsMassF.at(t).Fill(dsmass,w);    
+	//	std::cout<<"DsMassF  "<< dsmass << std::endl;
 	Track_PtF.at(t).Fill(Ntp->Track_P4(track).Pt(),w*RelLumiF);
 	Track_EtaF.at(t).Fill(Ntp->Track_P4(track).Eta(),w*RelLumiF);
 	Muon1_PtF.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w*RelLumiF);

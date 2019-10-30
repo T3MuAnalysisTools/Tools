@@ -19,7 +19,7 @@ class SignalSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut,NCuts}; 
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch1, TriggerMatch2,TriggerMatch3,TauMassCut,NCuts}; 
 
 
  protected:
@@ -85,7 +85,7 @@ class SignalSelector : public Selection {
 
   std::vector<TH1D> TauMassResolutionRefit;
 
-  std::vector<TH1D> TauMass_all_nophiVeto;
+  std::vector<TH2D> TauMass_all_nophiVeto;
   std::vector<TH1D> TauMass_all;
   std::vector<TH2D> TauMass_allVsBDTA;
   std::vector<TH2D> TauMass_allVsBDTB;
@@ -93,6 +93,14 @@ class SignalSelector : public Selection {
   std::vector<TH2D> TauMass_allVsBDTBarrel;
   std::vector<TH2D> TauMass_allVsBDTEndcap;
   std::vector<TH2D> EMR_tau_eta;
+  std::vector<TH2D> L1Triggers;
+
+
+  std::vector<TH2D> L1TriggersB;
+  std::vector<TH2D> L1TriggersC;
+  std::vector<TH2D> L1TriggersD;
+  std::vector<TH2D> L1TriggersE;
+  std::vector<TH2D> L1TriggersF;
 
 
   std::vector<TH1D> Muon1isGlob;

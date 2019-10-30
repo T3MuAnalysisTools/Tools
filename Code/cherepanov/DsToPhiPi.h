@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {HLTOk=0,L1Ok,is2MuTrk,GlobalMu,Chi2Cut,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {TriggerOk=0,is2MuTrk,GlobalMu,Chi2Cut,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
 
 
  protected:
@@ -124,7 +124,7 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Muon1_PtF_sideband;
   std::vector<TH1D> Muon1_PtF_substracted;
 
-
+  std::vector<TH1D> DsDecayL;
 
  
 };
