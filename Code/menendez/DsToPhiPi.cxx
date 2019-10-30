@@ -226,6 +226,12 @@ void  DsToPhiPi::Configure(){
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
+
+  DecayLength_peak=HConfig.GetTH1D(Name+"_DecayLength_peak","Proper Decay Length of Ds in Ds Peak",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds in sideband",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_subtracted=HConfig.GetTH1D(Name+"_DecayLength_subtracted","Proper Decay Length of Ds Subtracted",20,0,.1,"Proper Decay Length (cm)","Events");
+
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -269,6 +275,10 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&DsMass);
   Extradist1d.push_back(&DsGenMatch);
+
+  Extradist1d.push_back(&DecayLength_peak);
+  Extradist1d.push_back(&DecayLength_sideband);
+  Extradist1d.push_back(&DecayLength_subtracted);
 	 
 }
 
@@ -297,7 +307,7 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  if(Ntp->NTwoMuonsTrack()!=0/* && Ntp->NThreeMuons() == 0*/) value.at(is2MuTrk) = 1;
+  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
 
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
@@ -397,6 +407,8 @@ void  DsToPhiPi::doEvent(){
     double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))).M();
     double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
 		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M();
+    double dsPt = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
+                     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).Pt();
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
     DsMass.at(t).Fill(dsmass);
@@ -407,6 +419,24 @@ void  DsToPhiPi::doEvent(){
 
     }
 
+    //if (Ntp->NumberOfSVertices() < Ntp->NTwoMuonsTrack()) {
+    //  std::cout << "NSV = " << Ntp->NumberOfSVertices() << ", NTMT = " << Ntp->NTwoMuonsTrack() << ", tmp_idx = " << tmp_idx << " in Event Number " << Ntp->EventNumber() << std::endl;
+    //}
+    //std::cout << "We doing this" << std::endl;
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx));
+    double DecayLength = SVPV.Mag()*dsmass/dsPt;
+    if(dsmass > 1.93 && dsmass < 2.01){
+      DecayLength_peak.at(t).Fill(DecayLength,w);
+    }
+    if(dsmass > 1.70 && dsmass < 1.80){
+      DecayLength_sideband.at(t).Fill(DecayLength,w);
+    }
+    if(id!=1){
+      DecayLength_subtracted.at(t).Fill(DecayLength,w);
+    }
+
+
+    // Fill Sync Plots
     TLorentzVector Mu1LV;
     TLorentzVector Mu2LV;
     TLorentzVector TrackLV = Ntp->Track_P4(track);
@@ -449,6 +479,14 @@ void  DsToPhiPi::Finish(){
 
   file->Write();
   file->Close();
+
+  if (id==1) {
+    std::vector<double> scaleRunD(5952.73,11303.6);
+    DecayLength_sideband.at(0).Scale(scaleRunD[0]/scaleRunD[1]);//DecayLength_sideband.at(0).Integral());
+
+    DecayLength_subtracted.at(0).Add(&DecayLength_peak.at(0));
+    DecayLength_subtracted.at(0).Add(&DecayLength_sideband.at(0),-1);
+  }
 
   if(mode == RECONSTRUCT){
     for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
