@@ -162,7 +162,7 @@ int TMVAClassification_Veto_2017biased_C( TString myMethodList = "" ){
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
    TFile *input(0);
-TString fname = "../../macros/TMVATrees_FillMVATree_Run2017_MC_combined.root";	// Input file
+TString fname = "../../macros/TMVATrees/TMVATrees_FillMVATree_Run2017_MC_combined.root";	// Input file
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
@@ -222,8 +222,8 @@ TString factoryName = "TMVAClassification_Veto_2017biased_C";   TMVA::Factory *f
    dataloader->AddSpectator("var_tauMassRes","Variable tauMassRes","units", 'F' );
    dataloader->AddSpectator("var_Eta_Tau","Variable Eta_Tau","units", 'F' );
 
-TCut mycutb = "(var_vertexKFChi2 > 0 && var_vertexKFChi2 < 30) && (var_svpvTauAngle > 0 && var_svpvTauAngle < 0.2) && (var_flightLenSig > 0 && var_flightLenSig < 20) && (var_segCompMuMin > 0.2 && var_segCompMuMin < 1) && (var_MuMu_minKFChi2 > 0 && var_MuMu_minKFChi2 < 3) && (var_MuTau_maxdR > 0 && var_MuTau_maxdR < 1) && (var_sumMuTrkKinkChi2 > 0 && var_sumMuTrkKinkChi2 < 99) && (var_MaxD0Significance > 0 && var_MaxD0Significance < 6) && (var_MinMIPLikelihood > 0 && var_MinMIPLikelihood < 1) && (var_MuMu_mindR > 0 && var_MuMu_mindR < 0.15) && (var_maxdca > 0 && var_maxdca < 0.15) && (var_RelPt_Mu1Tau > 0 && var_RelPt_Mu1Tau < 100) && (var_mindca_iso > 0 && var_mindca_iso < 3) &&  MC==0 && abs(var_MaxD0Significance)<100";
-TCut mycuts = "(var_vertexKFChi2 > 0 && var_vertexKFChi2 < 30) && (var_svpvTauAngle > 0 && var_svpvTauAngle < 0.2) && (var_flightLenSig > 0 && var_flightLenSig < 20) && (var_segCompMuMin > 0.2 && var_segCompMuMin < 1) && (var_MuMu_minKFChi2 > 0 && var_MuMu_minKFChi2 < 3) && (var_MuTau_maxdR > 0 && var_MuTau_maxdR < 1) && (var_sumMuTrkKinkChi2 > 0 && var_sumMuTrkKinkChi2 < 99) && (var_MaxD0Significance > 0 && var_MaxD0Significance < 6) && (var_MinMIPLikelihood > 0 && var_MinMIPLikelihood < 1) && (var_MuMu_mindR > 0 && var_MuMu_mindR < 0.15) && (var_maxdca > 0 && var_maxdca < 0.15) && (var_RelPt_Mu1Tau > 0 && var_RelPt_Mu1Tau < 100) && (var_mindca_iso > 0 && var_mindca_iso < 3) &&  MC==1 && abs(var_MaxD0Significance)<100";
+TCut mycutb = "(var_vertexKFChi2 > 0 && var_vertexKFChi2 < 30) && (var_svpvTauAngle > 0 && var_svpvTauAngle < 0.2) && (var_flightLenSig > 0 && var_flightLenSig < 20) && (var_segCompMuMin > 0.2 && var_segCompMuMin < 1) && (var_MuMu_minKFChi2 > 0 && var_MuMu_minKFChi2 < 3) && (var_MuTau_maxdR > 0 && var_MuTau_maxdR < 1) && (var_sumMuTrkKinkChi2 > 0 && var_sumMuTrkKinkChi2 < 99) && (var_MaxD0Significance > 0 && var_MaxD0Significance < 6) && (var_MinMIPLikelihood > 0 && var_MinMIPLikelihood < 1) && (var_MuMu_mindR > 0 && var_MuMu_mindR < 0.15) && (var_maxdca > 0 && var_maxdca < 0.15) && (var_RelPt_Mu1Tau > 0 && var_RelPt_Mu1Tau < 100) && (var_mindca_iso > 0 && var_mindca_iso < 3) && (category == 3 || category==6) &&  MC==0 && abs(var_MaxD0Significance)<100";
+TCut mycuts = "(var_vertexKFChi2 > 0 && var_vertexKFChi2 < 30) && (var_svpvTauAngle > 0 && var_svpvTauAngle < 0.2) && (var_flightLenSig > 0 && var_flightLenSig < 20) && (var_segCompMuMin > 0.2 && var_segCompMuMin < 1) && (var_MuMu_minKFChi2 > 0 && var_MuMu_minKFChi2 < 3) && (var_MuTau_maxdR > 0 && var_MuTau_maxdR < 1) && (var_sumMuTrkKinkChi2 > 0 && var_sumMuTrkKinkChi2 < 99) && (var_MaxD0Significance > 0 && var_MaxD0Significance < 6) && (var_MinMIPLikelihood > 0 && var_MinMIPLikelihood < 1) && (var_MuMu_mindR > 0 && var_MuMu_mindR < 0.15) && (var_maxdca > 0 && var_maxdca < 0.15) && (var_RelPt_Mu1Tau > 0 && var_RelPt_Mu1Tau < 100) && (var_mindca_iso > 0 && var_mindca_iso < 3) && (category == 3) &&  MC==1 && abs(var_MaxD0Significance)<100";
 
    // tell the factory to use all remaining events in the trees after training for testing:
    
