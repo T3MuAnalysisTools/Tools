@@ -77,7 +77,8 @@ class DsToPhiPi : public Selection {
 
   std::vector<TH1D> DecayLength_peak;
   std::vector<TH1D> DecayLength_sideband;
-  std::vector<TH1D> DecayLength_subtracted;
+  std::vector<TH1D> DecayLength_prompt;
+  std::vector<TH1D> DecayLength_non_prompt;
 
   //Sync variables
   double sync_pt_1;
