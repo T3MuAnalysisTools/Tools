@@ -172,6 +172,8 @@ class SignalSelector : public Selection {
   Float_t var_MuTau_maxdR;
   Float_t var_MaxD0Significance;
   Float_t var_IsolationMinDist;
+  Float_t var_pmin;
+
 
 
   Float_t m3m;
