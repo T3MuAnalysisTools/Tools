@@ -232,6 +232,12 @@ void  DsToPhiPi::Configure(){
   DecayLength_prompt=HConfig.GetTH1D(Name+"_DecayLength_prompt","Proper Decay Length of Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
   DecayLength_non_prompt=HConfig.GetTH1D(Name+"_DecayLength_non_prompt","Proper Decay Length of Non-Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
 
+  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+  Muon1_Pt_compare=HConfig.GetTH1D(Name+"_Muon1_Pt_compare","Transverse Pt (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_compare=HConfig.GetTH1D(Name+"_Muon1_Eta_compare","Psuedorapidity (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -281,7 +287,9 @@ void  DsToPhiPi::Store_ExtraDist(){
   //Extradist1d.push_back(&DecayLength_sideband);
   Extradist1d.push_back(&DecayLength_prompt);
   Extradist1d.push_back(&DecayLength_non_prompt);
-	 
+
+  Extradist1d.push_back(&Muon1_Pt_compare);
+  Extradist1d.push_back(&Muon1_Eta_compare);	 
 }
 
 
@@ -421,21 +429,24 @@ void  DsToPhiPi::doEvent(){
 
     }
 
-    //if (Ntp->NumberOfSVertices() < Ntp->NTwoMuonsTrack()) {
-    //  std::cout << "NSV = " << Ntp->NumberOfSVertices() << ", NTMT = " << Ntp->NTwoMuonsTrack() << ", tmp_idx = " << tmp_idx << " in Event Number " << Ntp->EventNumber() << std::endl;
-    //}
-    //std::cout << "We doing this" << std::endl;
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx));
     double DecayLength = SVPV.Mag()*dsmass/dsPt;
     if(dsmass > 1.93 && dsmass < 2.01){
       DecayLength_peak.at(t).Fill(DecayLength,w);
+      Muon1_Pt_peak.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_peak.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
     }
     if(dsmass > 1.70 && dsmass < 1.80){
       DecayLength_sideband.at(t).Fill(DecayLength,w);
+      Muon1_Pt_sideband.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_sideband.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
     }
 
     bool isPrompt(true);
     if(id!=1){
+
+      Muon1_Pt_compare.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_compare.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
 
       for (unsigned int isigp=0; isigp<Ntp->NMCSignalParticles(); isigp++){
         for (int is=0; is<Ntp->NMCSignalParticleSources(isigp); is++){
@@ -497,8 +508,6 @@ void  DsToPhiPi::Finish(){
   int id(Ntp->GetMCID());
   if (id==1) {
 
-    //std::vector<double> scaleRun(5952.73,11303.6);
-
     std::vector<double> scaleRun;
     //
     //if(Ntp->WhichEra(2017).Contains("RunB") ){
@@ -517,12 +526,19 @@ void  DsToPhiPi::Finish(){
     //  scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);
     //}
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
+    Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    Muon1_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
 
     DecayLength_prompt.at(0).Add(&DecayLength_peak.at(0));
     DecayLength_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
     DecayLength_non_prompt.at(0).Add(&DecayLength_peak.at(0));
     DecayLength_non_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
-    
+ 
+    Muon1_Pt_compare.at(0).Add(&Muon1_Pt_peak.at(0));
+    Muon1_Pt_compare.at(0).Add(&Muon1_Pt_sideband.at(0),-1);
+    Muon1_Eta_compare.at(0).Add(&Muon1_Eta_peak.at(0));
+    Muon1_Eta_compare.at(0).Add(&Muon1_Eta_sideband.at(0),-1);   
+
   }
 
   //if(mode == RECONSTRUCT){
