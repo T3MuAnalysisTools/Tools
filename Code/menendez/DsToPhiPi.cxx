@@ -366,9 +366,10 @@ void  DsToPhiPi::doEvent(){
 
   double wobs=1;
   double w;  
-             
-  if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
-  else{w=1;}
+  double w_peak;     
+
+  if(!Ntp->isData()){w = 1; w_peak = .82;/*Ntp->PUReweight(); */} //  No weights to data
+  else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
     NVtx.at(t).Fill(Ntp->NVtx(),w);
@@ -445,8 +446,8 @@ void  DsToPhiPi::doEvent(){
     bool isPrompt(true);
     if(id!=1){
 
-      Muon1_Pt_compare.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
-      Muon1_Eta_compare.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
+      Muon1_Pt_compare.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w*w_peak);
+      Muon1_Eta_compare.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w*w_peak);
 
       for (unsigned int isigp=0; isigp<Ntp->NMCSignalParticles(); isigp++){
         for (int is=0; is<Ntp->NMCSignalParticleSources(isigp); is++){
@@ -456,8 +457,8 @@ void  DsToPhiPi::doEvent(){
         }
       }
       
-      if (isPrompt) {DecayLength_prompt.at(t).Fill(DecayLength,w);}
-      else if (!isPrompt) {DecayLength_non_prompt.at(t).Fill(DecayLength,w);}
+      if (isPrompt) {DecayLength_prompt.at(t).Fill(DecayLength,w*w_peak);}
+      else if (!isPrompt) {DecayLength_non_prompt.at(t).Fill(DecayLength,w*w_peak);}
     }
 
 
