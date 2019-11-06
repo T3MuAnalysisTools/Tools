@@ -75,6 +75,18 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Muon2_TriggerMatchdR;
   std::vector<TH1D> Track_TriggerMatchdR;
 
+  std::vector<TH1D> DecayLength_peak;
+  std::vector<TH1D> DecayLength_sideband;
+  std::vector<TH1D> DecayLength_prompt;
+  std::vector<TH1D> DecayLength_non_prompt;
+
+  std::vector<TH1D> Muon1_Pt_peak;
+  std::vector<TH1D> Muon1_Pt_sideband;
+  std::vector<TH1D> Muon1_Pt_compare;
+  std::vector<TH1D> Muon1_Eta_peak;
+  std::vector<TH1D> Muon1_Eta_sideband;
+  std::vector<TH1D> Muon1_Eta_compare;
+
   //Sync variables
   double sync_pt_1;
   double sync_pt_2;
