@@ -190,7 +190,8 @@ class Ntuple_Controller{
    double         Track_dz(unsigned int i){return  Ntp->Track_dz->at(i);}
    double         Track_dxyError(unsigned int i){return  Ntp->Track_dxyError->at(i);}
    double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
-
+ 	double			Track_dxy_beamSpot(unsigned int i){return Ntp->Track_dxy_beamSpot->at(i);}
+ 	double			Track_dz_beamSpot(unsigned int i){return Ntp->Track_dz_beamSpot->at(i);}
    unsigned int   NMuons(){return Ntp->Muon_p4->size();}
    TLorentzVector Muon_P4(unsigned int i){return TLorentzVector(Ntp->Muon_p4->at(i).at(1),Ntp->Muon_p4->at(i).at(2), Ntp->Muon_p4->at(i).at(3), Ntp->Muon_p4->at(i).at(0));}
    TVector3       Muon_Poca(unsigned int i){return TVector3(Ntp->Muon_Poca->at(i).at(0),Ntp->Muon_Poca->at(i).at(1),Ntp->Muon_Poca->at(i).at(2));}
@@ -233,6 +234,8 @@ class Ntuple_Controller{
    float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
    double Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
+	double   Muon_dxy_beamSpot(unsigned int i){return Ntp->Muon_dxy_beamSpot->at(i);}
+	double   Muon_dz_beamSpot(unsigned int i){return Ntp->Muon_dz_beamSpot->at(i);}
    double Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
    double Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
 
