@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.10/05 [395781]"/>
     <Info name="Creator" value="bjoshi"/>
-    <Info name="Date" value="Tue Nov  5 12:59:34 2019"/>
+    <Info name="Date" value="Wed Nov  6 17:34:46 2019"/>
     <Info name="Host" value="Linux cmsbuild09.cern.ch 2.6.32-696.1.1.el6.x86_64 #1 SMP Wed Apr 12 08:44:28 CEST 2017 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/afs/cern.ch/work/b/bjoshi/Analysis/workdirTMVAAnalysisOct_27_2019/Code/CommonUtils/tmva"/>
     <Info name="Training events" value="35996"/>
-    <Info name="TrainingTime" value="1.59936922e+01"/>
+    <Info name="TrainingTime" value="1.46228709e+01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
