@@ -144,7 +144,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TrkdR_",htitle,50,0,.05,hlabel,"Events"));
     }
     else if(i==Mu1pt){
-      title.at(i)="$\\mu_{1}$ Pt $>$ .5 GeV";
+      title.at(i)="$\\mu_{1}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -153,7 +153,7 @@ void  DsToPhiPi::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1pt_",htitle,80,0,20,hlabel,"Events"));
     }
     else if(i==Mu2pt){
-      title.at(i)="$\\mu_{2}$ Pt $>$ .5 GeV";
+      title.at(i)="$\\mu_{2}$ Pt $>$ 3 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -226,6 +226,19 @@ void  DsToPhiPi::Configure(){
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
+
+  DecayLength_peak=HConfig.GetTH1D(Name+"_DecayLength_peak","Proper Decay Length of Ds in Ds Peak",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds in sideband",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_prompt=HConfig.GetTH1D(Name+"_DecayLength_prompt","Proper Decay Length of Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_non_prompt=HConfig.GetTH1D(Name+"_DecayLength_non_prompt","Proper Decay Length of Non-Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
+
+  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+  Muon1_Pt_compare=HConfig.GetTH1D(Name+"_Muon1_Pt_compare","Transverse Pt (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_compare=HConfig.GetTH1D(Name+"_Muon1_Eta_compare","Psuedorapidity (muon 1)",25,-2.5,2.5,"#mu_{1} #eta","Events");
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -269,7 +282,14 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&DsMass);
   Extradist1d.push_back(&DsGenMatch);
-	 
+
+  //Extradist1d.push_back(&DecayLength_peak);
+  //Extradist1d.push_back(&DecayLength_sideband);
+  Extradist1d.push_back(&DecayLength_prompt);
+  Extradist1d.push_back(&DecayLength_non_prompt);
+
+  Extradist1d.push_back(&Muon1_Pt_compare);
+  Extradist1d.push_back(&Muon1_Eta_compare);	 
 }
 
 
@@ -297,7 +317,7 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  if(Ntp->NTwoMuonsTrack()!=0/* && Ntp->NThreeMuons() == 0*/) value.at(is2MuTrk) = 1;
+  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
 
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
@@ -340,8 +360,8 @@ void  DsToPhiPi::doEvent(){
   pass.at(Mu1dR) = value.at(Mu1dR) < .03;
   pass.at(Mu2dR) = value.at(Mu2dR) < .03;
   pass.at(TrkdR) = value.at(TrkdR) < .03;
-  pass.at(Mu1pt) = value.at(Mu1pt) > .5;
-  pass.at(Mu2pt) = value.at(Mu2pt) > .5;
+  pass.at(Mu1pt) = value.at(Mu1pt) > 3;
+  pass.at(Mu2pt) = value.at(Mu2pt) > 3;
   pass.at(Trkpt) = value.at(Trkpt) > 2;
 
   double wobs=1;
@@ -397,6 +417,8 @@ void  DsToPhiPi::doEvent(){
     double phimass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))).M();
     double dsmass = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
 		     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).M();
+    double dsPt = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
+                     Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0))).Pt();
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
     DsMass.at(t).Fill(dsmass);
@@ -407,6 +429,39 @@ void  DsToPhiPi::doEvent(){
 
     }
 
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx));
+    double DecayLength = SVPV.Mag()*dsmass/dsPt;
+    if(dsmass > 1.93 && dsmass < 2.01){
+      DecayLength_peak.at(t).Fill(DecayLength,w);
+      Muon1_Pt_peak.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_peak.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
+    }
+    if(dsmass > 1.70 && dsmass < 1.80){
+      DecayLength_sideband.at(t).Fill(DecayLength,w);
+      Muon1_Pt_sideband.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_sideband.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
+    }
+
+    bool isPrompt(true);
+    if(id!=1){
+
+      Muon1_Pt_compare.at(t).Fill(Ntp->Muon_P4(mu1).Pt(),w);
+      Muon1_Eta_compare.at(t).Fill(Ntp->Muon_P4(mu1).Eta(),w);
+
+      for (unsigned int isigp=0; isigp<Ntp->NMCSignalParticles(); isigp++){
+        for (int is=0; is<Ntp->NMCSignalParticleSources(isigp); is++){
+          if (abs(Ntp->MCSignalParticle_Sourcepdgid(isigp,is))>500){
+            isPrompt=false;
+          }
+        }
+      }
+      
+      if (isPrompt) {DecayLength_prompt.at(t).Fill(DecayLength,w);}
+      else if (!isPrompt) {DecayLength_non_prompt.at(t).Fill(DecayLength,w);}
+    }
+
+
+    // Fill Sync Plots
     TLorentzVector Mu1LV;
     TLorentzVector Mu2LV;
     TLorentzVector TrackLV = Ntp->Track_P4(track);
@@ -450,13 +505,49 @@ void  DsToPhiPi::Finish(){
   file->Write();
   file->Close();
 
-  if(mode == RECONSTRUCT){
-    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-      double scale(1.);
-      if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/1;
-      ScaleAllHistOfType(i,scale);
-    }
+  int id(Ntp->GetMCID());
+  if (id==1) {
+
+    std::vector<double> scaleRun;
+    //
+    //if(Ntp->WhichEra(2017).Contains("RunB") ){
+    //  scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);
+    //}
+    //if(Ntp->WhichEra(2017).Contains("RunC") ){
+    //  scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);
+    //}
+    //if(Ntp->WhichEra(2017).Contains("RunD") ){
+      scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);
+    //}
+    //if(Ntp->WhichEra(2017).Contains("RunE") ){
+    //  scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);
+    //}
+    //if(Ntp->WhichEra(2017).Contains("RunF") ){
+    //  scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);
+    //}
+    DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
+    Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    Muon1_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+
+    DecayLength_prompt.at(0).Add(&DecayLength_peak.at(0));
+    DecayLength_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
+    DecayLength_non_prompt.at(0).Add(&DecayLength_peak.at(0));
+    DecayLength_non_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
+ 
+    Muon1_Pt_compare.at(0).Add(&Muon1_Pt_peak.at(0));
+    Muon1_Pt_compare.at(0).Add(&Muon1_Pt_sideband.at(0),-1);
+    Muon1_Eta_compare.at(0).Add(&Muon1_Eta_peak.at(0));
+    Muon1_Eta_compare.at(0).Add(&Muon1_Eta_sideband.at(0),-1);   
+
   }
+
+  //if(mode == RECONSTRUCT){
+  //  for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+  //    double scale(1.);
+  //    if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/1;
+  //    ScaleAllHistOfType(i,scale);
+  //  }
+  //}
   Selection::Finish();
 
 }
