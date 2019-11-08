@@ -19,8 +19,8 @@ void TemplateFit()
   TH1F * fraction2 = new TH1F("fraction2","fraction2",40,-20.,20);
 
   for(int ij=0;ij<10000;ij++) {// Filling the histograms with no of Gaussian Distribution 
-    fraction1->Fill(gRandom->Gaus(2.,3.));  // mean  =2, sigma = 3.
-    fraction2->Fill(gRandom->Gaus(-1.,.8)); // mean = -1 sigma = 0.8
+    fraction1->Fill(gRandom->Gaus(3.,4.));  // mean  =3, sigma = 4.
+    fraction2->Fill(gRandom->Gaus(-1.,2.)); // mean = -1 sigma = 2.
   }
 
 
