@@ -105,7 +105,7 @@ void TemplateFit()
  
   // ---  add legend 
   TLegend *legmc = new TLegend(0.12,0.70,0.43,0.86);
-  legmc->AddEntry(fitFrame->getObject(1),"Data","LPE");
+  legmc->AddEntry(fitFrame->getObject(1),"Data (sum of templates 2:1)","LPE");
   legmc->AddEntry(fitFrame->getObject(2),"Fit","LPE");
   legmc->AddEntry(fitFrame->getObject(3),"Template 1","LPE");
   legmc->AddEntry(fitFrame->getObject(4),"Template 2","LPE");
