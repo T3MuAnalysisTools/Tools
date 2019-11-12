@@ -25,7 +25,7 @@
 #include "joshi/TMVASignal.h"
 #include "joshi/AnalysisWithTMVA.h"
 #include "joshi/MCEfficiency.h"
-
+#include "joshi/TriggerStudy.h"
 #include "joshi/FillMVATree.h"
 
 #endif
