@@ -82,10 +82,33 @@ class DsToPhiPi : public Selection {
 
   std::vector<TH1D> Muon1_Pt_peak;
   std::vector<TH1D> Muon1_Pt_sideband;
-  std::vector<TH1D> Muon1_Pt_compare;
   std::vector<TH1D> Muon1_Eta_peak;
   std::vector<TH1D> Muon1_Eta_sideband;
-  std::vector<TH1D> Muon1_Eta_compare;
+  std::vector<TH1D> Muon1_Phi_peak;
+  std::vector<TH1D> Muon1_Phi_sideband;
+  std::vector<TH1D> control_Muon1_Pt;
+  std::vector<TH1D> control_Muon1_Eta;
+  std::vector<TH1D> control_Muon1_Phi;
+
+  std::vector<TH1D> Muon2_Pt_peak;
+  std::vector<TH1D> Muon2_Pt_sideband;
+  std::vector<TH1D> Muon2_Eta_peak;
+  std::vector<TH1D> Muon2_Eta_sideband;
+  std::vector<TH1D> Muon2_Phi_peak;
+  std::vector<TH1D> Muon2_Phi_sideband;
+  std::vector<TH1D> control_Muon2_Pt;
+  std::vector<TH1D> control_Muon2_Eta;
+  std::vector<TH1D> control_Muon2_Phi;
+
+  std::vector<TH1D> Track_Pt_peak;
+  std::vector<TH1D> Track_Pt_sideband;
+  std::vector<TH1D> Track_Eta_peak;
+  std::vector<TH1D> Track_Eta_sideband;
+  std::vector<TH1D> Track_Phi_peak;
+  std::vector<TH1D> Track_Phi_sideband;
+  std::vector<TH1D> control_Track_Pt;
+  std::vector<TH1D> control_Track_Eta;
+  std::vector<TH1D> control_Track_Phi;
 
   //Sync variables
   double sync_pt_1;
