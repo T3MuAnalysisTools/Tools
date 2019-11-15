@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {HLTOk=0,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk=0,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
 
 
  protected:
@@ -38,6 +38,10 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> DsMass;
   std::vector<TH1D> Category;
   std::vector<TH1D> DsGenMatch;
+
+  std::vector<TH1D> DsPt_peak;
+  std::vector<TH1D> DsPt_sideband;
+  std::vector<TH1D> DsPt;
 
   //Muon variables
   
