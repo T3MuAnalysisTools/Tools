@@ -152,9 +152,14 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> NSignalCandidates;
 
   std::vector<TH2D> ThreeMuMassVsFu;
-  std::vector<TH2D> MuPairsMass;
+  std::vector<TH2D> MuPairsMassEta;
+  std::vector<TH2D> MuPairsMassEtaPrime;
+
   std::vector<TH1D> M23;
   std::vector<TH1D> M12;
+
+  std::vector<TH1D> M23_cut;
+  std::vector<TH1D> M12_cut;
 
 
 

@@ -12,6 +12,7 @@
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
 #include "cherepanov/SignalSelector.h"
+#include "cherepanov/BackgroundSelector.h"
 #include "cherepanov/MuIDStudy.h"
 
 

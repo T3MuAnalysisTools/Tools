@@ -578,7 +578,6 @@ void  MuIDStudy::doEvent(){
 
     if(id==1){
       for(unsigned int iMuId =0 ; iMuId < Ntp->MuonCustomID(Muon_index_1).size(); iMuId++){
-	std::cout<<"   "
 	if( Ntp-> MuonCustomID(Muon_index_1).at(iMuId) == 1) CustMuonIdData1.at(t).Fill(iMuId,1);
 
       }

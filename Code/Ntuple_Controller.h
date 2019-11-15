@@ -470,6 +470,9 @@ class Ntuple_Controller{
    double deltaR(double eta1, double phi1, double eta2, double phi2); 
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
+   std::vector<int> MuonCustomID(unsigned int MuonIndex);
+
+
    std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
 	template<typename T>
 	void printVec(int size, T& vec);

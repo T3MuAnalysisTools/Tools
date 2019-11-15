@@ -792,6 +792,35 @@ int Ntuple_Controller::getMatchTruthIndex(TLorentzVector tvector){
 }
 
 
+std::vector<int> Ntuple_Controller::MuonCustomID(unsigned int MuonIndex){
+
+  std::vector<int> out;
+
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdLoose))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::SoftCutBasedId))out.push_back(1);
+  else out.push_back(0);
+
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdMedium))out.push_back(1);
+  else out.push_back(0);
+
+  if(CHECK_BIT(Muon_StandardSelection(MuonIndex),MuonStandardSelectors::CutBasedIdTight))out.push_back(1);
+  else out.push_back(0);
+
+
+  if(Muon_isTrackerMuon(MuonIndex))out.push_back(1);
+  else out.push_back(0);
+
+  if(Muon_isGlobalMuon(MuonIndex))out.push_back(1);
+  else out.push_back(0);
+
+
+  return out;
+}
+
 
 std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int MuonIndex){
 
