@@ -51,15 +51,20 @@ void  FillMVATree::Configure(){
 	 TMVA_Tree->Branch("var_trk_relPt", &var_trk_relPt); // Ratio of sum of Pt of the tracks in muon isolation to muon (max value) [trk_pt>1 GeV, dR<0.03, dca<1 mm]
 
 	 // 2017 variables
-    TMVA_Tree->Branch("var_Eta_Tau",&var_Eta_Tau); 
     TMVA_Tree->Branch("var_MuMu_minKFChi2",&var_MuMu_minKFChi2);
     TMVA_Tree->Branch("var_MuTau_maxdR",&var_MuTau_maxdR);
 	 TMVA_Tree->Branch("var_sumMuTrkKinkChi2",&var_sumMuTrkKinkChi2); // sum of chi square of STA-TRK matching of 3 muons
-
+	 TMVA_Tree->Branch("var_MaxD0Significance", &var_MaxD0Significance); // Maximum of the transverse IP significance of the 3 muons
+	 TMVA_Tree->Branch("var_MinMIPLikelihood", &var_MinMIPLikelihood); //Calo compatibility 
+	 TMVA_Tree->Branch("var_maxdca", &var_maxdca); // max dca between the initial tracks of two muons
+	 TMVA_Tree->Branch("var_MuMu_mindR", &var_MuMu_mindR);
+	 TMVA_Tree->Branch("var_RelPt_Mu1Tau",&var_RelPt_Mu1Tau);
+	 TMVA_Tree->Branch("var_MuTau_maxdR",&var_MuTau_maxdR);
 
 	 // Include calo energy in the HCAL tower
 	 
 	 // Spectator variables
+    TMVA_Tree->Branch("var_Eta_Tau",&var_Eta_Tau); 
 	 TMVA_Tree->Branch("var_tauMass",&var_tauMass);
 	 TMVA_Tree->Branch("var_tauMassRes", &var_tauMassRes);
 	 // -----------------
@@ -70,9 +75,9 @@ void  FillMVATree::Configure(){
       pass.push_back(false);
       if(i==TriggerOk)          cut.at(TriggerOk)=1;
       if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-      if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.0;
-      if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
-      if(i==Mu3PtCut)           cut.at(Mu3PtCut)=1.5;
+      if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+      if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+      if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
       if(i==MuonID)             cut.at(MuonID)=1;
       if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
       if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
@@ -297,8 +302,8 @@ void  FillMVATree::doEvent(){
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-    pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 0.1);
-    pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 0.1);
+	 pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 9*PDG_Var::Phi_width());
+	 pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 	 
 	 pass.at(GenMatch) = value.at(GenMatch);
 
@@ -385,11 +390,13 @@ void  FillMVATree::doEvent(){
     var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
     var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
 	 var_tauMassRes = tauMassRes;
+	 var_tauMass = TauLV.M();
     
 	 var_pmin = std::min(Ntp->Muon_P4(Muon_index_1).P(), std::min(Ntp->Muon_P4(Muon_index_2).P(), Ntp->Muon_P4(Muon_index_3).P()));
     var_max_cLP = std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1), std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2), Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)));
     var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_1), std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_2), Ntp->Muon_combinedQuality_trkKink(Muon_index_3)));
     var_MinD0Significance = MinD0Significance;
+    var_MaxD0Significance = MaxD0Significance;
     var_mindca_iso = Ntp->Isolation_MinDist(final_idx);
     var_trk_relPt = Ntp->Isolation_MuMaxRelIso(final_idx);
 
@@ -435,7 +442,7 @@ void  FillMVATree::doEvent(){
 
 
 void  FillMVATree::Finish(){
- 
+/* 
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
     int id(Ntp->GetMCID());
@@ -455,6 +462,7 @@ void  FillMVATree::Finish(){
 
     //    }
   }
+  */
     file= new TFile("FillMVATreeInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 

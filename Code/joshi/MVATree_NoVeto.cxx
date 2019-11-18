@@ -77,9 +77,9 @@ void  MVATree_NoVeto::Configure(){
       pass.push_back(false);
       if(i==TriggerOk)          cut.at(TriggerOk)=1;
       if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-      if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.0;
-      if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
-      if(i==Mu3PtCut)           cut.at(Mu3PtCut)=1.5;
+      if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+      if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+      if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
       if(i==MuonID)             cut.at(MuonID)=1;
       if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
       if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
