@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1TOk=0,HLTOk=0,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
 
 
  protected:
@@ -41,7 +41,16 @@ class DsToPhiPi : public Selection {
 
   std::vector<TH1D> DsPt_peak;
   std::vector<TH1D> DsPt_sideband;
-  std::vector<TH1D> DsPt;
+  std::vector<TH1D> Ds_Pt;
+  std::vector<TH1D> DsP_peak;
+  std::vector<TH1D> DsP_sideband;
+  std::vector<TH1D> Ds_P;
+  std::vector<TH1D> DsM_peak;
+  std::vector<TH1D> DsM_sideband;
+  std::vector<TH1D> Ds_M;
+  std::vector<TH1D> DsL_peak;
+  std::vector<TH1D> DsL_sideband;
+  std::vector<TH1D> Ds_L;
 
   //Muon variables
   
@@ -83,6 +92,7 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> DecayLength_sideband;
   std::vector<TH1D> DecayLength_prompt;
   std::vector<TH1D> DecayLength_non_prompt;
+  std::vector<TH1D> DecayLength;
 
   std::vector<TH1D> Muon1_Pt_peak;
   std::vector<TH1D> Muon1_Pt_sideband;
