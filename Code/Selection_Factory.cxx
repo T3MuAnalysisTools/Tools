@@ -14,7 +14,7 @@
 #include "cherepanov/SignalSelector.h"
 #include "cherepanov/BackgroundSelector.h"
 #include "cherepanov/MuIDStudy.h"
-
+#include "cherepanov/MinBiasSelector.h"
 
 #endif
 
