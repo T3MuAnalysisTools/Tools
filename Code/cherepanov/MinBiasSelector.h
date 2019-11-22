@@ -30,6 +30,8 @@ class MinBiasSelector : public Selection {
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
 
+  TTree *T3MMiniTree;
+  TFile *T3MFMiniTree;
 
   // Selection Variables
   // Initializhere your analysis histograms
@@ -46,14 +48,60 @@ class MinBiasSelector : public Selection {
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
-  std::vector<TH1D> TauMass;
+
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
   std::vector<TH1D> SVPVTauDirAngle;
 
-  std::vector<TH1D> TauMassRefit;
+  std::vector<TH1D> TauMassRefitA1;
+  std::vector<TH1D> TauMassA1;
+  std::vector<TH1D> TauMassRefitB1;
+  std::vector<TH1D> TauMassB1;
+  std::vector<TH1D> TauMassRefitC1;
+  std::vector<TH1D> TauMassC1;
+
+  std::vector<TH1D> TauMassRefitA2;
+  std::vector<TH1D> TauMassA2;
+  std::vector<TH1D> TauMassRefitB2;
+  std::vector<TH1D> TauMassB2;
+  std::vector<TH1D> TauMassRefitC2;
+  std::vector<TH1D> TauMassC2;
+
+
+
+
+  std::vector<TH1D> TauMassRefitBarrel1;
+  std::vector<TH1D> TauMassBarrel1;
+
+  std::vector<TH1D> TauMassRefitEndcap1;
+  std::vector<TH1D> TauMassEndcap1;
+
+  std::vector<TH1D> TauMassRefitBarrel2;
+  std::vector<TH1D> TauMassBarrel2;
+
+  std::vector<TH1D> TauMassRefitEndcap2;
+  std::vector<TH1D> TauMassEndcap2;
+
   std::vector<TH1D> TauMassResolutionRefit;
+
+  std::vector<TH2D> TauMass_all_nophiVeto;
+  std::vector<TH1D> TauMass_all;
+  std::vector<TH2D> TauMass_allVsBDTA;
+  std::vector<TH2D> TauMass_allVsBDTB;
+  std::vector<TH2D> TauMass_allVsBDTC;
+  std::vector<TH2D> TauMass_allVsBDTBarrel;
+  std::vector<TH2D> TauMass_allVsBDTEndcap;
+  std::vector<TH2D> EMR_tau_eta;
+  std::vector<TH2D> L1Triggers;
+
+
+  std::vector<TH2D> L1TriggersB;
+  std::vector<TH2D> L1TriggersC;
+  std::vector<TH2D> L1TriggersD;
+  std::vector<TH2D> L1TriggersE;
+  std::vector<TH2D> L1TriggersF;
+
 
   std::vector<TH1D> Muon1isGlob;
   std::vector<TH1D> Muon2isGlob;
@@ -96,10 +144,18 @@ class MinBiasSelector : public Selection {
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> FLSignificance;
-  std::vector<TH1D> BDTOutput;
+  std::vector<TH1D> BDTOutputA;
+  std::vector<TH1D> BDTOutputB;
+  std::vector<TH1D> BDTOutputC;
+  std::vector<TH1D> BDTOutputBarrel;
+  std::vector<TH1D> BDTOutputEndcap;
+  std::vector<TH1D> NSignalCandidates;
 
-
-  TMVA::Reader *reader;
+  TMVA::Reader *readerA;
+  TMVA::Reader *readerB;
+  TMVA::Reader *readerC;
+  TMVA::Reader *readerBarrel;
+  TMVA::Reader *readerEndcap;
 
   Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
   Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
@@ -108,5 +164,26 @@ class MinBiasSelector : public Selection {
   Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
   Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
   Float_t var_tauMass;
+  Float_t var_MuMu_mindR;
+  Float_t var_RelPt_Mu1Tau;
+  Float_t var_Eta_au;
+  Float_t var_MuMu_minKFChi2;
+  Float_t var_maxdca;
+  Float_t var_MuTau_maxdR;
+  Float_t var_MaxD0Significance;
+  Float_t var_IsolationMinDist;
+
+
+  Float_t m3m;
+  Float_t dataMCtype;
+  Float_t event_weight;
+  Float_t bdt;
+  Float_t category;
+  Float_t rapidity;
+  Float_t LumiScale;
+
+
+
+
 };
 #endif
