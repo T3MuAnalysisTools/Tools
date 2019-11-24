@@ -236,6 +236,8 @@ class Ntuple_Controller{
    double Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
 	double   Muon_dxy_beamSpot(unsigned int i){return Ntp->Muon_dxy_beamSpot->at(i);}
 	double   Muon_dz_beamSpot(unsigned int i){return Ntp->Muon_dz_beamSpot->at(i);}
+	double   Muon_dxyError(unsigned int i){return Ntp->Muon_dzError->at(i);}
+	double   Muon_dzError(unsigned int i){return Ntp->Muon_dzError->at(i);}
    double Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
    double Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
 
@@ -303,7 +305,12 @@ class Ntuple_Controller{
 
    int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
    int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
-
+   int	  Muon_simPdgId(unsigned int i){return Ntp->Muon_simPdgId->at(i);}
+   int	  Muon_simMotherPdgId(unsigned int i){return Ntp->Muon_simMotherPdgId->at(i);}
+ 	int 	  Muon_simFlavour(unsigned int i){return Ntp->Muon_simFlavour->at(i);}
+ 	int 	  Muon_simType(unsigned int i){return Ntp->Muon_simType->at(i);}
+ 	int 	  Muon_simBX(unsigned int i){return Ntp->Muon_simBX->at(i);}
+  	TLorentzVector	Muon_simP4(unsigned int i){return TLorentzVector(Ntp->Muon_simP4->at(i).at(0),Ntp->Muon_simP4->at(i).at(1),Ntp->Muon_simP4->at(i).at(2),Ntp->Muon_simP4->at(i).at(3));}
 
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
