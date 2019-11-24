@@ -253,10 +253,10 @@ void Selection::Finish() {
 		Plots P;
 		P.Plot1D(Nminus1, colour, legend);
 		for (unsigned int i = 0; i < Nminus1.size(); i++) {
-			P.Plot1DSignificance(Nminus1.at(i), true, false, colour, legend);
-			P.Plot1DSignificance(Nminus1.at(i), false, true, colour, legend);
-			P.Plot1Dsigtobkg(Nminus1.at(i), true, false, colour, legend);
-			P.Plot1Dsigtobkg(Nminus1.at(i), false, true, colour, legend);
+		  //	P.Plot1DSignificance(Nminus1.at(i), true, false, colour, legend);
+		  //	P.Plot1DSignificance(Nminus1.at(i), false, true, colour, legend);
+		  //	P.Plot1Dsigtobkg(Nminus1.at(i), true, false, colour, legend);
+		  //	P.Plot1Dsigtobkg(Nminus1.at(i), false, true, colour, legend);
 			P.Plot1D_DataMC_Compare(Nminus1.at(i), colour, legend);
 		}
 		P.Plot1D(Nminus0, colour, legend);
@@ -266,10 +266,10 @@ void Selection::Finish() {
 		for (unsigned int i = 0; i < Extradist1d.size(); i++) {
 			P.Plot1D((*Extradist1d.at(i)), colour, legend);
 			if (Lumi > 0) {
-				P.Plot1DSignificance((*Extradist1d.at(i)), true, false, colour, legend);
-				P.Plot1DSignificance((*Extradist1d.at(i)), false, true, colour, legend);
-				P.Plot1Dsigtobkg((*Extradist1d.at(i)), true, false, colour, legend);
-				P.Plot1Dsigtobkg((*Extradist1d.at(i)), false, true, colour, legend);
+			  //	P.Plot1DSignificance((*Extradist1d.at(i)), true, false, colour, legend);
+			  //	P.Plot1DSignificance((*Extradist1d.at(i)), false, true, colour, legend);
+			  //    P.Plot1Dsigtobkg((*Extradist1d.at(i)), true, false, colour, legend);
+			  //    P.Plot1Dsigtobkg((*Extradist1d.at(i)), false, true, colour, legend);
 				P.Plot1D_DataMC_Compare((*Extradist1d.at(i)), colour, legend);
 			}
 		}

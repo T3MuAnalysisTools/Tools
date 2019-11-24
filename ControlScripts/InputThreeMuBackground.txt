@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoScaletoLumi.txt
+Analysis: BackgroundSelector
+UncertType: default
+SkimInfo: InputData/SkimSummaryLog_October2019.log
+Lumi: 36442
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}

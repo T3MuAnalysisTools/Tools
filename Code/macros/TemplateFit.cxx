@@ -19,8 +19,8 @@ void TemplateFit()
   TH1F * fraction2 = new TH1F("fraction2","fraction2",40,-20.,20);
 
   for(int ij=0;ij<10000;ij++) {// Filling the histograms with no of Gaussian Distribution 
-    fraction1->Fill(gRandom->Gaus(3.,4.));  // mean  =3, sigma = 4.
-    fraction2->Fill(gRandom->Gaus(-1.,2.)); // mean = -1 sigma = 2.
+    fraction1->Fill(gRandom->Gaus(4.,4.));  // mean  =3, sigma = 4.
+    fraction2->Fill(gRandom->Gaus(-1.,6.)); // mean = -1 sigma = 2.
   }
 
 
@@ -36,7 +36,7 @@ void TemplateFit()
   TH1F * template1 = new TH1F("template1","template1",40,-20.,20);
   TH1F * template2 = new TH1F("template2","template2",40,-20.,20);
 
-  for (int i=0;i<50000;i++) // 
+  for (int i=0;i<150000;i++) // 
     {
       Double_t life1=fraction1->GetRandom();
       template1->Fill(life1); //  fill template 1 according to fraction1 
@@ -76,7 +76,7 @@ void TemplateFit()
   mc2.plotOn(mc2frame);
 
 
-  TCanvas* c = new TCanvas("roofit_example","RooFit FractionFit Example",800,600);
+  TCanvas* c = new TCanvas("c","Templates Example",800,600);
   c->Divide(1,3);
   gROOT->SetStyle("Plain"); // Removes gray background from plot
   c->cd(1) ; gPad->SetLeftMargin(0.15) ;   dframe->GetYaxis()->SetTitleOffset(1.4) ;   dframe->Draw();
@@ -89,22 +89,30 @@ void TemplateFit()
 
 
   // plot fit resutls
-  RooPlot* fitFrame=x.frame(Bins(50), Title("Fit Model"));
+  RooPlot* fitFrame=x.frame(Bins(50));
   model.paramOn(fitFrame);
   data.plotOn(fitFrame, RooFit::LineColor(kRed));
   model.plotOn(fitFrame, LineStyle(kDashed));
   model.plotOn(fitFrame, Components("modelmc1"), LineColor(kGreen));
   model.plotOn(fitFrame, Components("modelmc2"), LineColor(kBlue));
+  fitFrame->chiSquare() ;
+
+
 
   TCanvas* c6 = new TCanvas("c6","Fit Model",800,600);
   gROOT->SetStyle("Plain"); // Removes gray background from plots
   gPad->SetLeftMargin(0.15) ;   
+
+  c6->SetFrameLineWidth(3);
+  c6->SetTickx();
+  c6->SetTicky();
+
   fitFrame->GetYaxis()->SetTitleOffset(1.4) ;   
   fitFrame->Draw();  
 
  
   // ---  add legend 
-  TLegend *legmc = new TLegend(0.12,0.70,0.43,0.86);
+  TLegend *legmc = new TLegend(0.16,0.70,0.43,0.86);
   legmc->AddEntry(fitFrame->getObject(1),"Data (sum of templates 2:1)","LPE");
   legmc->AddEntry(fitFrame->getObject(2),"Fit","LPE");
   legmc->AddEntry(fitFrame->getObject(3),"Template 1","LPE");
