@@ -14,7 +14,7 @@ class ThreeMu : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, ThreeMuMass,NCuts}; 
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut, GenMatch, NCuts}; 
 
 
  protected:
@@ -25,6 +25,8 @@ class ThreeMu : public Selection {
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
 
+  TFile *PUWeights;
+  TH1D *h1_weights;
 
   // Selection Variables
   // Initializhere your analysis histograms
@@ -162,6 +164,7 @@ class ThreeMu : public Selection {
   std::vector<TH1D> Isolation_Mu3RelPt;
 
   std::vector<TH1D> FlightLengthSig;
-
+  std::vector<TH1D> NVtx_puReweighed;
+  std::vector<TH1D> NVtx;
 };
 #endif

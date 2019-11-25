@@ -90,6 +90,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
+  else if(Analysis.Contains("triggerstudy"))s = new TriggerStudy(Analysis,UncertType);
   
 #endif
 

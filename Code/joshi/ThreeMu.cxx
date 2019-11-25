@@ -16,6 +16,9 @@ ThreeMu::ThreeMu(TString Name_, TString id_):
   tauMaxSideBand_(2.0)
 {
   // This is a class constructor;
+  TString basedir = "";
+  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/Collisions2018/";
+  PUWeights = new TFile(basedir+"/PUWeights_Run2017B.root");
 }
 
 ThreeMu::~ThreeMu(){
@@ -34,14 +37,15 @@ void  ThreeMu::Configure(){
     pass.push_back(false);
     if(i==TriggerOk)          cut.at(TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.5;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.5;
-    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.5;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
     if(i==MuonID)             cut.at(MuonID)=1;
-    if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
-    if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
+    if(i==PhiVeto)            cut.at(PhiVeto)=1; // defined below
+    if(i==OmegaVeto)          cut.at(OmegaVeto)=1; // defined below
     if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
-    if(i==ThreeMuMass)        cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
+    if(i==TauMassCut)        cut.at(TauMassCut)=1;// true for MC and mass side band for data
+	 if(i==GenMatch)	  		  cut.at(GenMatch)=1;
   }
 
   TString hlabel;
@@ -105,12 +109,18 @@ void  ThreeMu::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
     }
-    else if(i==ThreeMuMass){
+    else if(i==TauMassCut){
       title.at(i)="Tau Mass";
       hlabel="three mu mass, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,80,1.4,2.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TauMassCut_",htitle,80,1.4,2.2,hlabel,"Events"));
     }
+	else if(i==GenMatch){
+     title.at(i)="GEN matching";
+     hlabel="GEN match";
+     Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+     Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+     }
 
 
   } 
@@ -399,13 +409,16 @@ void  ThreeMu::Store_ExtraDist(){
 void  ThreeMu::doEvent(){ 
   unsigned int t;
   int id(Ntp->GetMCID());
+  bool hlt_pass = false;
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
+    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)==1) hlt_pass = true;
+	 if(HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)==1) hlt_pass = true;
   }
-
+  
+  value.at(TriggerOk) = hlt_pass;
   pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
   unsigned int  final_idx=0;
   
@@ -418,7 +431,7 @@ void  ThreeMu::doEvent(){
   value.at(OmegaVeto)=0;
   value.at(TriggerMatch)=0;
   value.at(MuonID)=0;
-  value.at(ThreeMuMass)=0;
+  value.at(TauMassCut)=0;
 
   if(Ntp->NThreeMuons()>0){
     value.at(SignalCandidate) = Ntp->NThreeMuons();
@@ -435,7 +448,7 @@ void  ThreeMu::doEvent(){
     //
     value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-    			Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+    			( Ntp->Muon_isGlobalMuon(mu3_pt_idx) || Ntp->Muon_isTrackerMuon(mu3_pt_idx)));
     //------------------------------------------------------------------------------------------------------
   
     value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
@@ -457,26 +470,31 @@ void  ThreeMu::doEvent(){
     double M_osss1 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss1_idx)).M();
     double M_osss2 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss2_idx)).M();
 
-    value.at(PhiVeto)   = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
-    value.at(OmegaVeto) = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+    value.at(PhiVeto) = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
+     value.at(OmegaVeto) = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
 
-    for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(final_idx)){
-      value.at(TriggerMatch)+=i; 
+     for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(final_idx)){
+        value.at(TriggerMatch)+=i; 
+        }
+        value.at(TauMassCut) = TauLV.M();
     }
-    
-    value.at(ThreeMuMass) = TauLV.M();
-  }
-  pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
-  pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
-  pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
-  pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
-  pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
-  pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-  pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
 
-  if(id!=1) pass.at(ThreeMuMass) = true;
-  else  pass.at(ThreeMuMass) = ( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  ||   (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
+	 if (id!=1) value.at(GenMatch) = Ntp->TauGenMatch(final_idx);
+	 else value.at(GenMatch) = 1;
+    
+	 pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
+    pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
+    pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
+    pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
+    pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
+    pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
+	 pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 9*PDG_Var::Phi_width());
+	 pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
+	 
+	 pass.at(GenMatch) = value.at(GenMatch);
+
+    if(id!=1) pass.at(TauMassCut) = true;
+    else  pass.at(TauMassCut) = ( (value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMinMass_)  || (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_));
 
 
   double wobs=1;
