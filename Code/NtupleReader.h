@@ -121,6 +121,8 @@ public :
    std::vector<double>  *Muon_etaError;
 	std::vector<double>	*Muon_dxy_beamSpot;
 	std::vector<double>	*Muon_dz_beamSpot;
+   std::vector<double>	*Muon_dxyError;
+   std::vector<double>	*Muon_dzError;
    std::vector<std::vector<double> > *Muon_outerTrack_p4;
    std::vector<std::vector<double> > *Muon_innerTrack_p4;
    std::vector<double>  *Muon_innerTrack_quality;
@@ -160,6 +162,12 @@ public :
    std::vector<double>  *Muon_M;
    std::vector<std::vector<double> > *Muon_par;
    std::vector<std::vector<double> > *Muon_cov;
+   std::vector<int> 		*Muon_simPdgId;
+   std::vector<int> 		*Muon_simMotherPdgId;
+   std::vector<int>		*Muon_simFlavour;
+   std::vector<int> 		*Muon_simType;
+   std::vector<int> 		*Muon_simBX;
+   std::vector<std::vector<double>> *Muon_simP4;
    std::vector<std::vector<float> > *MC_p4;
    std::vector<int>     *MC_pdgid;
    std::vector<int>     *MC_charge;
@@ -309,6 +317,8 @@ public :
    TBranch        *b_Muon_trackerLayersWithMeasurement;   //!
 	TBranch			*b_Muon_dxy_beamSpot; //!
 	TBranch			*b_Muon_dz_beamSpot; //!
+   TBranch			*b_Muon_dxyError;
+   TBranch			*b_Muon_dz_Error;
    TBranch        *b_Muon_combinedQuality_updatedSta;   //!
    TBranch        *b_Muon_combinedQuality_trkKink;   //!
    TBranch        *b_Muon_combinedQuality_glbKink;   //!
@@ -363,6 +373,12 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
+   TBranch			*b_Muon_simPdgId;
+   TBranch			*b_Muon_simMotherPdgId;
+   TBranch			*b_Muon_simFlavour;
+   TBranch			*b_Muon_simType;
+   TBranch			*b_Muon_simBX;
+   TBranch			*b_Muon_simP4;
    TBranch        *b_MC_p4;   //!
    TBranch        *b_MC_pdgid;   //!
    TBranch        *b_MC_charge;   //!
@@ -593,6 +609,8 @@ void NtupleReader::Init(TTree *tree)
    Muon_etaError = 0;
 	Muon_dxy_beamSpot = 0;
 	Muon_dz_beamSpot = 0;
+   Muon_dxyError = 0;
+   Muon_dxyError = 0;
    Muon_outerTrack_p4 = 0;
    Muon_innerTrack_p4 = 0;
    Muon_innerTrack_quality = 0;
@@ -632,7 +650,14 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
-   MC_p4 = 0;
+   Muon_simPdgId = 0;
+   Muon_simMotherPdgId = 0;
+   Muon_simFlavour = 0;
+   Muon_simType = 0;
+   Muon_simBX = 0;
+   Muon_simP4 = 0; 
+
+	MC_p4 = 0;
    MC_pdgid = 0;
    MC_charge = 0;
    MC_midx = 0;
@@ -797,6 +822,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_etaError",&Muon_etaError, &b_Muon_etaError);
 	fChain->SetBranchAddress("Muon_dxy_beamSpot", &Muon_dxy_beamSpot);
 	fChain->SetBranchAddress("Muon_dz_beamSpot", &Muon_dz_beamSpot);
+	fChain->SetBranchAddress("Muon_dxyError", &Muon_dxyError);
+	fChain->SetBranchAddress("Muon_dzError", &Muon_dzError);
    fChain->SetBranchAddress("Muon_outerTrack_p4", &Muon_outerTrack_p4, &b_Muon_outerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_p4", &Muon_innerTrack_p4, &b_Muon_innerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_quality", &Muon_innerTrack_quality, &b_Muon_innerTrack_quality);
@@ -836,6 +863,13 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
+   fChain->SetBranchAddress("Muon_simPdgId", &Muon_simPdgId, &b_Muon_simPdgId);
+   fChain->SetBranchAddress("Muon_simMotherPdgId", &Muon_simMotherPdgId, &b_Muon_simMotherPdgId);
+   fChain->SetBranchAddress("Muon_simFlavour", &Muon_simFlavour, &b_Muon_simFlavour);
+   fChain->SetBranchAddress("Muon_simType", &Muon_simType, &b_Muon_simType);
+   fChain->SetBranchAddress("Muon_simBX", &Muon_simBX, &b_Muon_simBX);
+   fChain->SetBranchAddress("Muon_simP4", &Muon_simP4, &b_Muon_simP4);
+
    fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
    fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
    fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
