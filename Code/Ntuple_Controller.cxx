@@ -6,6 +6,7 @@
 #include "PDGInfo.h"
 using namespace std;
 
+
 // External code
 
 ///////////////////////////////////////////////////////////////////////
@@ -626,6 +627,24 @@ double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, 
   return deltaTauM/Tau.M();
 
 }
+
+
+
+TMatrixTSym<float> Ntuple_Controller::SecondaryVertexCovariance(unsigned int i){
+  TMatrixTSym<float> V_cov(3);
+  int l=0;
+
+  for(int j=0;j<3;j++){
+    for(int k=j;k<3;k++){
+      V_cov(j,k)=Ntp->SV_PosCovariance->at(i).at(l);
+      V_cov(k,j)=Ntp->SV_PosCovariance->at(i).at(l);
+      l++;
+    }
+  }
+  return  V_cov;
+}
+
+
 
 
 TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i){

@@ -52,8 +52,6 @@ public :
    std::vector<double>  *Track_dxyError;
    std::vector<double>  *Track_dzError;
    std::vector<std::vector<double> > *Muon_p4;
-	std::vector<double>	*Track_dxy_beamSpot;
-	std::vector<double>	*Track_dz_beamSpot;
    std::vector<std::vector<double> > *Muon_Poca;
    std::vector<bool>    *Muon_isGlobalMuon;
    std::vector<bool>    *Muon_isStandAloneMuon;
@@ -119,10 +117,6 @@ public :
    std::vector<double>  *Muon_ptError;
    std::vector<double>  *Muon_phiError;
    std::vector<double>  *Muon_etaError;
-	std::vector<double>	*Muon_dxy_beamSpot;
-	std::vector<double>	*Muon_dz_beamSpot;
-   std::vector<double>	*Muon_dxyError;
-   std::vector<double>	*Muon_dzError;
    std::vector<std::vector<double> > *Muon_outerTrack_p4;
    std::vector<std::vector<double> > *Muon_innerTrack_p4;
    std::vector<double>  *Muon_innerTrack_quality;
@@ -162,12 +156,6 @@ public :
    std::vector<double>  *Muon_M;
    std::vector<std::vector<double> > *Muon_par;
    std::vector<std::vector<double> > *Muon_cov;
-   std::vector<int> 		*Muon_simPdgId;
-   std::vector<int> 		*Muon_simMotherPdgId;
-   std::vector<int>		*Muon_simFlavour;
-   std::vector<int> 		*Muon_simType;
-   std::vector<int> 		*Muon_simBX;
-   std::vector<std::vector<double>> *Muon_simP4;
    std::vector<std::vector<float> > *MC_p4;
    std::vector<int>     *MC_pdgid;
    std::vector<int>     *MC_charge;
@@ -236,6 +224,34 @@ public :
    std::vector<std::vector<float> > *Vertex_Isolation2;
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
+
+   std::vector<std::vector<std::vector<float> > > *IsolationBranch_Trackp4;
+
+   std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
+   std::vector<std::vector<float> > *IsolationTrack_charge;
+   std::vector<std::vector<float> > *IsolationTrack_quality;
+
+   std::vector<std::vector<float> > *IsolationTrack_dxySV;
+   std::vector<std::vector<float> > *IsolationTrack_dzSV;
+
+   std::vector<std::vector<float> > *IsolationTrack_dxyPV;
+   std::vector<std::vector<float> > *IsolationTrack_dzPV;
+
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu1;
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu2;
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu3;
+
+
+   std::vector<std::vector<float> > *SV_pos;
+   std::vector<float>               *SV_Mass;
+   std::vector<std::vector<float> > *SV_PosCovariance;
+   std::vector<std::vector<std::vector<float> > >  *SV_Track_P4;
+
+
+
+
+
+
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
@@ -263,8 +279,6 @@ public :
    TBranch        *b_Track_dxyError;   //!
    TBranch        *b_Track_dzError;   //!
    TBranch        *b_Muon_p4;   //!
-	TBranch			*b_Track_dxy_beamSpot; //!
-	TBranch			*b_Track_dz_beamSpot; //!
    TBranch        *b_Muon_Poca;   //!
    TBranch        *b_Muon_isGlobalMuon;   //!
    TBranch        *b_Muon_isStandAloneMuon;   //!
@@ -315,10 +329,6 @@ public :
    TBranch        *b_Muon_isRPCMuon;   //!
    TBranch        *b_Muon_numberofValidPixelHits;   //!
    TBranch        *b_Muon_trackerLayersWithMeasurement;   //!
-	TBranch			*b_Muon_dxy_beamSpot; //!
-	TBranch			*b_Muon_dz_beamSpot; //!
-   TBranch			*b_Muon_dxyError;
-   TBranch			*b_Muon_dz_Error;
    TBranch        *b_Muon_combinedQuality_updatedSta;   //!
    TBranch        *b_Muon_combinedQuality_trkKink;   //!
    TBranch        *b_Muon_combinedQuality_glbKink;   //!
@@ -373,12 +383,6 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
-   TBranch			*b_Muon_simPdgId;
-   TBranch			*b_Muon_simMotherPdgId;
-   TBranch			*b_Muon_simFlavour;
-   TBranch			*b_Muon_simType;
-   TBranch			*b_Muon_simBX;
-   TBranch			*b_Muon_simP4;
    TBranch        *b_MC_p4;   //!
    TBranch        *b_MC_pdgid;   //!
    TBranch        *b_MC_charge;   //!
@@ -446,6 +450,41 @@ public :
    TBranch        *b_Vertex_Isolation2;   //!
    TBranch        *b_Vertex_Isolation3;   //!
    TBranch        *b_Vertex_Isolation4;   //!
+
+
+
+   TBranch        *b_IsolationBranch_Trackp4;   //!
+   TBranch        *b_IsolationTrack_p4;
+   TBranch        *b_IsolationTrack_charge;
+   TBranch        *b_IsolationTrack_quality;
+
+   TBranch        *b_IsolationTrack_dxySV;
+   TBranch        *b_IsolationTrack_dzSV;
+
+   TBranch        *b_IsolationTrack_dxyPV;
+   TBranch        *b_IsolationTrack_dzPV;
+
+   TBranch        *b_IsolationTrack_DocaMu1;
+   TBranch        *b_IsolationTrack_DocaMu2;
+   TBranch        *b_IsolationTrack_DocaMu3;
+
+
+   TBranch        *b_SV_pos;
+   TBranch        *b_SV_Mass;
+   TBranch        *b_SV_PosCovariance;
+   TBranch        *b_SV_Track_P4;
+
+
+
+
+
+
+
+
+
+
+
+
    TBranch        *b_Trigger_l1name;   //!
    TBranch        *b_Trigger_l1decision;   //!
    TBranch        *b_Trigger_l1prescale;   //!
@@ -539,8 +578,6 @@ void NtupleReader::Init(TTree *tree)
    Track_poca = 0;
    Track_dxyError = 0;
    Track_dzError = 0;
-	Track_dxy_beamSpot = 0;
-	Track_dz_beamSpot = 0;
    Muon_p4 = 0;
    Muon_Poca = 0;
    Muon_isGlobalMuon = 0;
@@ -607,10 +644,6 @@ void NtupleReader::Init(TTree *tree)
    Muon_ptError = 0;
    Muon_phiError = 0;
    Muon_etaError = 0;
-	Muon_dxy_beamSpot = 0;
-	Muon_dz_beamSpot = 0;
-   Muon_dxyError = 0;
-   Muon_dxyError = 0;
    Muon_outerTrack_p4 = 0;
    Muon_innerTrack_p4 = 0;
    Muon_innerTrack_quality = 0;
@@ -650,14 +683,7 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
-   Muon_simPdgId = 0;
-   Muon_simMotherPdgId = 0;
-   Muon_simFlavour = 0;
-   Muon_simType = 0;
-   Muon_simBX = 0;
-   Muon_simP4 = 0; 
-
-	MC_p4 = 0;
+   MC_p4 = 0;
    MC_pdgid = 0;
    MC_charge = 0;
    MC_midx = 0;
@@ -722,6 +748,31 @@ void NtupleReader::Init(TTree *tree)
    Vertex_Isolation2 = 0;
    Vertex_Isolation3 = 0;
    Vertex_Isolation4 = 0;
+   IsolationBranch_Trackp4 = 0;
+   IsolationTrack_p4 = 0;
+   IsolationTrack_charge = 0;
+   IsolationTrack_quality = 0;
+
+   IsolationTrack_dxySV = 0;
+   IsolationTrack_dzSV = 0;
+
+   IsolationTrack_dxyPV = 0;
+   IsolationTrack_dzPV = 0;
+
+   IsolationTrack_DocaMu1 = 0;
+   IsolationTrack_DocaMu2 = 0;
+   IsolationTrack_DocaMu3 = 0;
+
+   SV_pos = 0;
+   SV_Mass = 0;
+   SV_PosCovariance = 0;
+   SV_Track_P4 = 0;
+
+
+
+
+
+
    Trigger_l1name = 0;
    Trigger_l1decision = 0;
    Trigger_l1prescale = 0;
@@ -752,8 +803,6 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Track_poca", &Track_poca, &b_Track_poca);
    fChain->SetBranchAddress("Track_dxyError", &Track_dxyError, &b_Track_dxyError);
    fChain->SetBranchAddress("Track_dzError", &Track_dzError, &b_Track_dzError);
-	fChain->SetBranchAddress("Track_dxy_beamSpot", &Track_dxy_beamSpot);
-	fChain->SetBranchAddress("Track_dz_beamSpot", &Track_dz_beamSpot);
    fChain->SetBranchAddress("Muon_p4", &Muon_p4, &b_Muon_p4);
    fChain->SetBranchAddress("Muon_Poca", &Muon_Poca, &b_Muon_Poca);
    fChain->SetBranchAddress("Muon_isGlobalMuon", &Muon_isGlobalMuon, &b_Muon_isGlobalMuon);
@@ -820,10 +869,6 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_ptError",&Muon_ptError,&b_Muon_ptError);
    fChain->SetBranchAddress("Muon_phiError",&Muon_phiError, &b_Muon_phiError);
    fChain->SetBranchAddress("Muon_etaError",&Muon_etaError, &b_Muon_etaError);
-	fChain->SetBranchAddress("Muon_dxy_beamSpot", &Muon_dxy_beamSpot);
-	fChain->SetBranchAddress("Muon_dz_beamSpot", &Muon_dz_beamSpot);
-	fChain->SetBranchAddress("Muon_dxyError", &Muon_dxyError);
-	fChain->SetBranchAddress("Muon_dzError", &Muon_dzError);
    fChain->SetBranchAddress("Muon_outerTrack_p4", &Muon_outerTrack_p4, &b_Muon_outerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_p4", &Muon_innerTrack_p4, &b_Muon_innerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_quality", &Muon_innerTrack_quality, &b_Muon_innerTrack_quality);
@@ -863,13 +908,6 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
-   fChain->SetBranchAddress("Muon_simPdgId", &Muon_simPdgId, &b_Muon_simPdgId);
-   fChain->SetBranchAddress("Muon_simMotherPdgId", &Muon_simMotherPdgId, &b_Muon_simMotherPdgId);
-   fChain->SetBranchAddress("Muon_simFlavour", &Muon_simFlavour, &b_Muon_simFlavour);
-   fChain->SetBranchAddress("Muon_simType", &Muon_simType, &b_Muon_simType);
-   fChain->SetBranchAddress("Muon_simBX", &Muon_simBX, &b_Muon_simBX);
-   fChain->SetBranchAddress("Muon_simP4", &Muon_simP4, &b_Muon_simP4);
-
    fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
    fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
    fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
@@ -942,6 +980,36 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_Isolation2", &Vertex_Isolation2, &b_Vertex_Isolation2);
    fChain->SetBranchAddress("Vertex_Isolation3", &Vertex_Isolation3, &b_Vertex_Isolation3);
    fChain->SetBranchAddress("Vertex_Isolation4", &Vertex_Isolation4, &b_Vertex_Isolation4);
+
+
+   fChain->SetBranchAddress("IsolationBranch_Trackp4",&IsolationBranch_Trackp4, &b_IsolationBranch_Trackp4);  
+
+   fChain->SetBranchAddress("IsolationTrack_p4",&IsolationTrack_p4,&b_IsolationTrack_p4);
+   fChain->SetBranchAddress("IsolationTrack_charge",&IsolationTrack_charge,&b_IsolationTrack_charge);
+   fChain->SetBranchAddress("IsolationTrack_quality",&IsolationTrack_quality,&b_IsolationTrack_quality);
+
+   fChain->SetBranchAddress("IsolationTrack_dxySV",&IsolationTrack_dxySV,&b_IsolationTrack_dxySV);
+   fChain->SetBranchAddress("IsolationTrack_dzSV",&IsolationTrack_dzSV,&b_IsolationTrack_dzSV);
+
+   fChain->SetBranchAddress("IsolationTrack_dxyPV",&IsolationTrack_dxyPV,&b_IsolationTrack_dxyPV);
+   fChain->SetBranchAddress("IsolationTrack_dzPV",&IsolationTrack_dzPV,&b_IsolationTrack_dzPV);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu1",&IsolationTrack_DocaMu1,&b_IsolationTrack_DocaMu1);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu2",&IsolationTrack_DocaMu2,&b_IsolationTrack_DocaMu2);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu3",&IsolationTrack_DocaMu3,&b_IsolationTrack_DocaMu3);
+
+   fChain->SetBranchAddress("SV_pos",&SV_pos,&b_SV_pos);
+   fChain->SetBranchAddress("SV_Mass",&SV_Mass,&b_SV_Mass);
+   fChain->SetBranchAddress("SV_PosCovariance",&SV_PosCovariance,&b_SV_PosCovariance);
+   fChain->SetBranchAddress("SV_Track_P4",&SV_Track_P4,&b_SV_Track_P4);
+
+
+
+
+
+
+
+
+
    fChain->SetBranchAddress("Trigger_l1name", &Trigger_l1name, &b_Trigger_l1name);
    fChain->SetBranchAddress("Trigger_l1decision", &Trigger_l1decision, &b_Trigger_l1decision);
    fChain->SetBranchAddress("Trigger_l1prescale", &Trigger_l1prescale, &b_Trigger_l1prescale);

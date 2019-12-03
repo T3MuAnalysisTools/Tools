@@ -190,8 +190,7 @@ class Ntuple_Controller{
    double         Track_dz(unsigned int i){return  Ntp->Track_dz->at(i);}
    double         Track_dxyError(unsigned int i){return  Ntp->Track_dxyError->at(i);}
    double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
- 	double			Track_dxy_beamSpot(unsigned int i){return Ntp->Track_dxy_beamSpot->at(i);}
- 	double			Track_dz_beamSpot(unsigned int i){return Ntp->Track_dz_beamSpot->at(i);}
+
    unsigned int   NMuons(){return Ntp->Muon_p4->size();}
    TLorentzVector Muon_P4(unsigned int i){return TLorentzVector(Ntp->Muon_p4->at(i).at(1),Ntp->Muon_p4->at(i).at(2), Ntp->Muon_p4->at(i).at(3), Ntp->Muon_p4->at(i).at(0));}
    TVector3       Muon_Poca(unsigned int i){return TVector3(Ntp->Muon_Poca->at(i).at(0),Ntp->Muon_Poca->at(i).at(1),Ntp->Muon_Poca->at(i).at(2));}
@@ -234,10 +233,6 @@ class Ntuple_Controller{
    float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
    double Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
-	double   Muon_dxy_beamSpot(unsigned int i){return Ntp->Muon_dxy_beamSpot->at(i);}
-	double   Muon_dz_beamSpot(unsigned int i){return Ntp->Muon_dz_beamSpot->at(i);}
-	double   Muon_dxyError(unsigned int i){return Ntp->Muon_dzError->at(i);}
-	double   Muon_dzError(unsigned int i){return Ntp->Muon_dzError->at(i);}
    double Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
    double Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
 
@@ -305,12 +300,7 @@ class Ntuple_Controller{
 
    int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
    int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
-   int	  Muon_simPdgId(unsigned int i){return Ntp->Muon_simPdgId->at(i);}
-   int	  Muon_simMotherPdgId(unsigned int i){return Ntp->Muon_simMotherPdgId->at(i);}
- 	int 	  Muon_simFlavour(unsigned int i){return Ntp->Muon_simFlavour->at(i);}
- 	int 	  Muon_simType(unsigned int i){return Ntp->Muon_simType->at(i);}
- 	int 	  Muon_simBX(unsigned int i){return Ntp->Muon_simBX->at(i);}
-  	TLorentzVector	Muon_simP4(unsigned int i){return TLorentzVector(Ntp->Muon_simP4->at(i).at(0),Ntp->Muon_simP4->at(i).at(1),Ntp->Muon_simP4->at(i).at(2),Ntp->Muon_simP4->at(i).at(3));}
+
 
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
@@ -339,6 +329,7 @@ class Ntuple_Controller{
    std::vector<float> ThreeMuons_TriggerMatch_dR(unsigned int i){return Ntp->ThreeMuons_TriggerMatch_dR->at(i);}
 
 
+
    double TwoMuonsTrack_SV_Chi2(unsigned int i){return Ntp->TwoMuonsTrack_SV_Chi2->at(i);}
    std::vector<float> TwoMuonsTrack_TriggerMatch_dR(unsigned int i){return Ntp->TwoMuonsTrack_TriggerMatch_dR->at(i);}
 
@@ -352,6 +343,48 @@ class Ntuple_Controller{
    TVector3   Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
    TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i);
    TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i);
+
+
+   //   int NTracksInThePV(unsigned int i){return Ntp->IsolationBranch_Trackp4->at(i).size();}
+   //   TLorentzVector PrimaryVertexTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationBranch_Trackp4->at(i).at(j).at(1), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(2), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(3), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(0));}
+
+
+   int            NIsolationTrack(unsigned int i){return Ntp->IsolationTrack_p4->at(i).size();}
+   TLorentzVector IsolationTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationTrack_p4->at(i).at(j).at(1), 
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(2),
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(3),
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(0));}
+
+
+
+   double IsolationTrack_charge(unsigned int i, unsigned int j){return Ntp->IsolationTrack_charge->at(i).at(j);}
+   double IsolationTrack_dxySV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxySV->at(i).at(j);}
+   double IsolationTrack_dzSV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dzSV->at(i).at(j);}
+   double IsolationTrack_dxyPV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxyPV->at(i).at(j);}
+   double IsolationTrack_dzPV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dzPV->at(i).at(j);}
+   double IsolationTrack_DocaMu1(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu1->at(i).at(j);}
+   double IsolationTrack_DocaMu2(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu2->at(i).at(j);}
+   double IsolationTrack_DocaMu3(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu3->at(i).at(j);}
+
+
+   unsigned int   NSecondaryVertices(){return Ntp->SV_pos->size();}
+   unsigned int   NTracksAtSecondaryVertex(unsigned int i){return Ntp->SV_Track_P4->at(i).size();}
+   float          SecondaryVertexMass(unsigned int i){return Ntp->SV_Mass->at(i);}
+   TVector3       SecondaryVertexPosition(unsigned int i){return TVector3(Ntp->SV_pos->at(i).at(0), Ntp->SV_pos->at(i).at(1), Ntp->SV_pos->at(i).at(2));}
+   TLorentzVector SecondaryVertexTrack_P4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->SV_Track_P4->at(i).at(j).at(1),
+												Ntp->SV_Track_P4->at(i).at(j).at(2),
+												Ntp->SV_Track_P4->at(i).at(j).at(3),
+												Ntp->SV_Track_P4->at(i).at(j).at(0));}
+   TMatrixTSym<float>   SecondaryVertexCovariance(unsigned int i);
+
+
+
+
+
+
 
    ///// closest distance between the tracks of a candidate
    double     Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
