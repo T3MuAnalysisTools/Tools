@@ -823,6 +823,7 @@ void  MinBiasSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
 
       if(readerA->EvaluateMVA("BDT") > 0){
+	std::cout<<" Event Number:  " << Ntp->EventNumber()<< std::endl;
 	std::cout<<" Category A: indices of gen muons matched to reconstructed ------------------------------- "<< std::endl;
 	std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -852,6 +853,7 @@ void  MinBiasSelector::doEvent(){
 
 
       if(readerB->EvaluateMVA("BDT") > 0){
+	std::cout<<" Event Number:  " << Ntp->EventNumber()<< std::endl;
 	std::cout<<" Category B: indices of gen muons matched to reconstructed ------------------------------- "<< std::endl;
 	std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -885,7 +887,8 @@ void  MinBiasSelector::doEvent(){
 
 
       if(readerC->EvaluateMVA("BDT") > 0){
-	std::cout<<" Category B: indices of gen muons matched to reconstructed ------------------------------- "<< std::endl;
+	std::cout<<" Event Number:  " << Ntp->EventNumber()<< std::endl;
+	std::cout<<" Category C: indices of gen muons matched to reconstructed ------------------------------- "<< std::endl;
 	std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
 	std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
