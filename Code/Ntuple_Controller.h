@@ -360,7 +360,7 @@ class Ntuple_Controller{
 
 
 
-   double IsolationTrack_charge(unsigned int i, unsigned int j){return Ntp->IsolationTrack_charge->at(i).at(j);}
+   int IsolationTrack_charge(unsigned int i, unsigned int j){return Ntp->IsolationTrack_charge->at(i).at(j);}
    double IsolationTrack_dxySV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxySV->at(i).at(j);}
    double IsolationTrack_dzSV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dzSV->at(i).at(j);}
    double IsolationTrack_dxyPV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxyPV->at(i).at(j);}
@@ -409,7 +409,13 @@ class Ntuple_Controller{
    double     Vertex_signal_AF_Ndf(unsigned int i){return Ntp->Vertex_signal_AF_Ndf->at(i); }
    TVector3   Vertex_MatchedPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedPrimaryVertex->at(i).at(2));}
    bool       Vertex_RefitPVisValid(unsigned int i){return Ntp->Vertex_RefitPVisValid->at(i);}
-   TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
+   TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), 
+									       Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),
+									       Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
+
+   TVector3   Vertex_SecondBestPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(0),
+									   Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(1),
+									   Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(2));}
 
    TVector3   SVPVDirection(TVector3 SV, TVector3 PV);
 
@@ -463,6 +469,13 @@ class Ntuple_Controller{
 
    unsigned int               NMCSignalParticles(){return Ntp->MCSignalParticle_p4->size();}
    TLorentzVector             MCSignalParticle_p4(unsigned int i){return TLorentzVector(Ntp->MCSignalParticle_p4->at(i).at(1),Ntp->MCSignalParticle_p4->at(i).at(2),Ntp->MCSignalParticle_p4->at(i).at(3),Ntp->MCSignalParticle_p4->at(i).at(0));}
+   TVector3                      MCSignalParticle_SourceVertex(unsigned int i){return TVector3(Ntp->MCSignalParticle_SourceVertex->at(i).at(0),
+											       Ntp->MCSignalParticle_SourceVertex->at(i).at(1),
+											       Ntp->MCSignalParticle_SourceVertex->at(i).at(2));}
+   TVector3                      MCSignalParticle_Vertex(unsigned int i){return TVector3(Ntp->MCSignalParticle_Vertex->at(i).at(0),
+											 Ntp->MCSignalParticle_Vertex->at(i).at(1),
+											 Ntp->MCSignalParticle_Vertex->at(i).at(2));}
+
    int                        MCSignalParticle_pdgid(unsigned int i){return Ntp->MCSignalParticle_pdgid->at(i);}
    int                        MCSignalParticle_charge(unsigned int i){return Ntp->MCSignalParticle_charge->at(i);}
    std::vector<unsigned int>  MCSignalParticle_Tauidx(unsigned int i){return Ntp->MCSignalParticle_Tauidx->at(i);}

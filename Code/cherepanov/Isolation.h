@@ -53,6 +53,7 @@ class Isolation : public Selection {
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
   std::vector<TH1D> SVPVTauDirAngle;
+  std::vector<TH1D> SVSecondPVTauDirAngle;
 
   std::vector<TH1D> TauMassRefitA1;
   std::vector<TH1D> TauMassA1;
@@ -114,6 +115,10 @@ class Isolation : public Selection {
   std::vector<TH1D> Iso18;
   std::vector<TH1D> Iso2;
 
+  std::vector<TH2D> Iso18VSPU;
+  std::vector<TH2D> Iso12VSPU;
+  std::vector<TH2D> Iso02VSPU;
+
 
 
   std::vector<TH1D> Iso02Mu1;
@@ -126,7 +131,9 @@ class Isolation : public Selection {
   std::vector<TH1D> Iso16Mu1;
   std::vector<TH1D> Iso18Mu1;
   std::vector<TH1D> Iso2Mu1;
-
+  std::vector<TH2D> Iso12Mu1VSPU;
+  std::vector<TH2D> Iso02Mu1VSPU;
+  std::vector<TH2D> Iso18Mu1VSPU;
 
   std::vector<TH1D> Iso02Mu2;
   std::vector<TH1D> Iso04Mu2;
@@ -152,15 +159,22 @@ class Isolation : public Selection {
 
 
   std::vector<TH1D> MindcaTrackSV;
+  std::vector<TH2D> MindcaTrackSVNPU;
   std::vector<TH1D> MindcaTrackSV2;
   std::vector<TH1D> dcaTrackPV;
-
-
+  std::vector<TH1D> PVVerticesDeltaZ;
+  std::vector<TH1D> PVZResolution;
+  std::vector<TH1D> PV2ZResolution;
+  std::vector<TH1D> SVDeltaR;
+  std::vector<TH1D> SVDistance;
+  std::vector<TH1D> NSV;
+  std::vector<TH2D> MatchedSV_Mass;
 
 
   std::vector<TH1D> PVTrackDz;
   std::vector<TH1D> NtracksClose;
-
+  std::vector<TH2D> NtracksCloseVSPU;
+  std::vector<TH1D> MuMatchedTrackMass;
 
 
   std::vector<TH1D> Muon1isGlob;
@@ -196,7 +210,7 @@ class Isolation : public Selection {
   std::vector<TH1D> Mu1TrackMass;
   std::vector<TH1D> Mu2TrackMass;
   std::vector<TH1D> Mu3TrackMass;
-  std::vector<TH1D> TrackTrackMass;
+  std::vector<TH1D> SV_Mass;
 
 
 
