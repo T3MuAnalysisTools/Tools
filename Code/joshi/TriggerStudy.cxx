@@ -73,33 +73,35 @@ void  TriggerStudy::doEvent(){
   unsigned int t;
   bool doubleMu_flag = false;
   bool singleMu_flag = false;
+  bool muon_flag = false;
 
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) {
+    if((HLT.Contains("DoubleMu3_Trk_Tau3mu_v") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu_v"))) {
 		if (Ntp->HLTDecision(iTrigger)) doubleMu_flag = true;
 		}
-	if(HLT.Contains("HLT_Mu8")) {
-		if (Ntp->HLTDecision(iTrigger)) doubleMu_flag = true;
+	if(HLT.Contains("HLT_Mu8_v")) {
+		if (Ntp->HLTDecision(iTrigger)) singleMu_flag = true;
 		}
 	 }
   
-  for (unsigned int iMuon=0; iMuon<Ntp->NMuons(); iMuon++){
-  	//if ( abs(Ntp->Muon_simPdgId(iMuon))!=13 ) continue;
+  for (unsigned int iMuon=0; iMuon<Ntp->NMuons()-1; iMuon++){
+	for (unsigned int jMuon=iMuon+1; jMuon<Ntp->NMuons(); jMuon++){
+  	// Mu_pt8_eta1p5_dxySig5
+	/*
+	if ( abs(Ntp->Muon_simPdgId(iMuon))!=13 ) continue;
 	if ( Ntp->Muon_P4(iMuon).Pt()<=8.0 ) continue;
 	if ( abs(Ntp->Muon_P4(iMuon).Eta()>=1.5) ) continue;
 	if ( Ntp->Muon_innerTrack_numberofValidHits(iMuon)<1 ) continue;
-	if ( Ntp->Muon_dxy_beamSpot(iMuon)<=5) continue;
-	for (unsigned int j=0; j<Ntp->NMCParticles(); ++j) {
-	   if (abs(Ntp->MCParticle_pdgid(j))!=13) continue;
-		double dr = Ntp->deltaR(Ntp->MCParticle_p4(j).Eta(), Ntp->MCParticle_p4(j).Phi(), Ntp->Muon_P4(iMuon).Eta(), Ntp->Muon_P4(iMuon).Phi());
-		if (dr<0.03){
-  			singleMu_flag = 1;
-			break;
-		}
+   if ( Ntp->Muon_dxyError(iMuon)==0) continue;
+	if ( (Ntp->Muon_dxy_beamSpot(iMuon))/(Ntp->Muon_dxyError(iMuon))<=5) continue;
+	*/
+   if (Ntp->Muon_simPdgId(iMuon)!=13 || Ntp->Muon_simPdgId(jMuon)==13) continue;
+   if (!((Ntp->Muon_P4(iMuon).Pt()>3.0 && Ntp->Muon_P4(jMuon).Pt()>2.5) || (Ntp->Muon_P4(iMuon).Pt()>2.5 && Ntp->Muon_P4(jMuon).Pt()>3.0))) continue; // find a muon pair (3,2.5) GeV
+   muon_flag = true;
 	}
   }
   
@@ -117,7 +119,7 @@ void  TriggerStudy::doEvent(){
 
   bool status=AnalysisCuts(t,w,wobs);
 
-  if(status){
+  if(status && muon_flag){
 		if (doubleMu_flag) n_doubleMu++;
   		if (singleMu_flag) n_singleMu++;
   		if (doubleMu_flag && singleMu_flag) n_overlap++;

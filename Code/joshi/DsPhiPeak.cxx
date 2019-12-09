@@ -1,4 +1,4 @@
-#include "MCEfficiency.h"
+#include "DsPhiPi.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -12,7 +12,7 @@ void printVec(int size, T& vec){
     cout<<endl;
 }
 
-double MCEfficiency::deltaR(double eta1, double phi1, double eta2, double phi2)
+double DsPhiPi::deltaR(double eta1, double phi1, double eta2, double phi2)
 {
     double deta = eta1 - eta2;
     double dphi = phi1 - phi2;
@@ -22,7 +22,7 @@ double MCEfficiency::deltaR(double eta1, double phi1, double eta2, double phi2)
     return sqrt(deta*deta + dphi*dphi);
 }
 
-MCEfficiency::MCEfficiency(TString Name_, TString id_):
+DsPhiPi::DsPhiPi(TString Name_, TString id_):
     Selection(Name_,id_)
 {
 
@@ -30,7 +30,7 @@ MCEfficiency::MCEfficiency(TString Name_, TString id_):
     // This is a class constructor;
 }
 
-MCEfficiency::~MCEfficiency(){
+DsPhiPi::~DsPhiPi(){
     for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
         << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -41,7 +41,7 @@ MCEfficiency::~MCEfficiency(){
     Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  MCEfficiency::Configure(){
+void  DsPhiPi::Configure(){
 
     for(int i=0; i<NCuts;i++){
       cut.push_back(0);
@@ -67,88 +67,77 @@ void  MCEfficiency::Configure(){
       distindx.push_back(false);
       dist.push_back(std::vector<float>());
       TString c="_Cut_";c+=i;
-      // book here the N-1 and N-0 histrogramms for each cut
-      if(i==PrimeVtx){
-        title.at(i)="Number of Prime Vertices $(N>$";
-        title.at(i)+=cut.at(PrimeVtx);
-        title.at(i)+=")";
-        htitle=title.at(i);
-        htitle.ReplaceAll("$","");
-        htitle.ReplaceAll("\\","#");
-        hlabel="Number of Prime Vertices";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,61,-0.5,60.5,hlabel,"Events"));
-      }
-
-      else if(i==L1SeedOk){
-        title.at(i)="L1 seed ";
-        hlabel="L1 triggers";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1SeedOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1SeedOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      }
-
-      else if(i==is2MuTrk){
-        title.at(i)="Catrgory: 2Mu+Trk ";
-        hlabel="2muon + track category";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_mumuMass_",htitle,2,-0.5,1.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_mumuMass_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      }
-
-      else if(i==mumuMass){
-        title.at(i)="MuMu Invariant Mass within (1.0,1.04) GeV";
-        hlabel="mumuMass";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_mumuMass_",htitle,80,0.8,1.6,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_mumuMass_",htitle,80,0.8,1.6,hlabel,"Events"));
-      }
-
-      else if(i==HLTOk){
-        title.at(i)="HLT trigger ";
+      if(i==TriggerOk){
+        title.at(i)="Pass HLT";
         hlabel="DoubleMu3_Trk_Tau3mu";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       }
-
-      else if(i==trkPt){
-        title.at(i)="Track pt $(pt>$";
-        title.at(i)+=cut.at(trkPt);
-        title.at(i)+=")";
-        hlabel="pT of the track";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_trkPt_",htitle,100,-0.5,9.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_trkPt_",htitle,100,-0.5,9.5,hlabel,"Events"));
+      else if(i==NormalizationCandidate){
+        title.at(i)="is dimu+trk candidate";
+        hlabel="is 2mu+trk candidate";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
       }
-
-      else if(i==nTrkHits){
-        title.at(i)="Number of hits in the tracker $(N>$";
-        title.at(i)+=cut.at(nTrkHits);
-        title.at(i)+=")";
-        hlabel="Number of hits in the tracker";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_nTrkHits_",htitle,11,-1,10,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_nTrkHits_",htitle,11,-1,10,hlabel,"Events"));
+      else if(i==Mu1PtCut){
+        title.at(i)="Mu1 Pt $>$ ";
+		  title.at(i)+=cut.at(Mu1PtCut);
+		  title.at(i)+=" GeV";
+        hlabel="Muon1 PT, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
       }
-
-      else if(i==fitVtxChiSq){
-        title.at(i)="Normalized chi sq of the vertex fit $(<$";
-        title.at(i)+=cut.at(fitVtxChiSq);
-        title.at(i)+=")";
-        hlabel="Normalized chi square of the vertex fit";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_fitVtxChiSq_",htitle,100,-0.5,9.5,hlabel,"Events"));
+      else if(i==Mu2PtCut){
+        title.at(i)="Mu2 Pt $>$ ";
+		  title.at(i)+=cut.at(Mu2PtCut);
+		  title.at(i)+=" GeV";
+        hlabel="Muon2 PT, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
       }
-		
-		else if(i==trigObjMatch){
-        title.at(i)="2mu+trk matched to trigger object";
-        title.at(i)+=cut.at(trigObjMatch);
-        hlabel="Trigger Object Match";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_trigObjMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_trigObjMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      else if(i==Mu3PtCut){
+        title.at(i)="Mu3 Pt $>$ ";
+		  title.at(i)+=cut.at(Mu3PtCut);
+		  title.at(i)+=" GeV";
+        hlabel="Muon3 PT, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
       }
-		
-		else if(i==genMatch){
-        title.at(i)="2mu+trk matched to GEN particles";
-        title.at(i)+=cut.at(genMatch);
-        hlabel="GEN particle match";
-        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_genMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
-        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_NMinus0_genMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      else if(i==MuonID){
+        title.at(i)="All mu pass ID";
+        hlabel="pass MuonID";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      }
+      else if(i==PhiVeto){
+        title.at(i)="phi mass veto";
+        hlabel="Phi mass Veto, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
+      }
+      else if(i==OmegaVeto){
+        title.at(i)="omega mass veto";
+        hlabel="Omega mass veto, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
+      }
+      else if(i==TriggerMatch){
+        title.at(i)="Trigger Matching";
+        hlabel="Sum of dR_{reco-trigger}";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+      }
+      else if(i==TauMassCut){
+        title.at(i)="Tau Mass";
+        hlabel="three mu mass, GeV";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TauMassCut_",htitle,80,1.4,2.2,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TauMassCut_",htitle,80,1.4,2.2,hlabel,"Events"));
+      }
+		else if(i==GenMatch){
+        title.at(i)="GEN matching";
+        hlabel="GEN match";
+        Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+        Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
       }
     }
 
@@ -221,7 +210,7 @@ void  MCEfficiency::Configure(){
     HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  MCEfficiency::Store_ExtraDist(){ 
+void  DsPhiPi::Store_ExtraDist(){ 
     //Track candidate variables 
     Extradist1d.push_back(&Track_P);
     Extradist1d.push_back(&Track_E);
@@ -284,7 +273,7 @@ void  MCEfficiency::Store_ExtraDist(){
     Extradist1d.push_back(&NVtx);
 }
 
-void  MCEfficiency::doEvent(){ 
+void  DsPhiPi::doEvent(){ 
     unsigned int t;
     int id(Ntp->GetMCID());
     double phidM = 0.02;
@@ -597,7 +586,7 @@ void  MCEfficiency::doEvent(){
     }
 }
 
-void  MCEfficiency::Finish(){
+void  DsPhiPi::Finish(){
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 

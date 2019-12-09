@@ -10,18 +10,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f1", "--first-file",help="Input root file with data tree", type = str, action="store", default = '')
     parser.add_argument("-f2", "--second-file",help="Input root file with  MC tree", type = str, action="store", default = '')
+    parser.add_argument("-o",  "--output-file", help="Output root file", type = str, action="store", default='TMVATress.root')
     args = parser.parse_args()
     cwd = os.getcwd()
 
     input_file_1 = ROOT.TFile(args.first_file, "READ")
     tree1 = input_file_1.Get("tree")
 
-
     input_file_2 = ROOT.TFile(args.second_file, "READ")
     tree2 = input_file_2.Get("tree")
 
-
-    output_file = ROOT.TFile("TMVATrees.root", "RECREATE")
+    output_file = ROOT.TFile(args.output_file, "RECREATE")
 
     new_tree1=tree1.CloneTree()
     new_tree1.SetName("TreeB")
