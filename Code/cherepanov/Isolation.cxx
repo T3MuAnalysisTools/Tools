@@ -701,7 +701,7 @@ void  Isolation::doEvent(){
 
   bool DoubleMuFired(0);
   bool TripleMuFired(0);
-  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
     
     if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
@@ -1012,7 +1012,7 @@ void  Isolation::doEvent(){
     int TrackIndex(0);
     double dca_temp(999.);
     int NcloseTracksCount(0);
-    for(unsigned int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
+    for(int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
 
 
       if(Ntp->IsolationTrack_p4(signal_idx,i).Pt()> 0.5  && sqrt(  pow(Ntp->IsolationTrack_dzSV(signal_idx,i),2)   +   pow(Ntp->IsolationTrack_dxySV(signal_idx,i),2)) < 0.03)
@@ -1098,7 +1098,7 @@ void  Isolation::doEvent(){
    // Extradist1d.push_back(&Mu3TrackMass);
 
     SumPT02=0;SumPT04=0;SumPT06=0;SumPT08=0;SumPT1=0;SumPT12=0;SumPT14=0;SumPT16=0;SumPT18=0;SumPT2=0;
-    for(unsigned int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
+    for(int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
 
       if(Ntp->IsolationTrack_p4(signal_idx,i).Pt()> 0.7 && fabs(Ntp->IsolationTrack_dzPV(signal_idx,i)) < 0.05
 	 && Ntp->IsolationTrack_DocaMu1(signal_idx,i) < 0.1){
@@ -1157,7 +1157,7 @@ void  Isolation::doEvent(){
   // ---------------------- I_mu2
 
     SumPT02=0;SumPT04=0;SumPT06=0;SumPT08=0;SumPT1=0;SumPT12=0;SumPT14=0;SumPT16=0;SumPT18=0;SumPT2=0;
-    for(unsigned int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
+    for(int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
 
       if(Ntp->IsolationTrack_p4(signal_idx,i).Pt()> 0.7 && fabs(Ntp->IsolationTrack_dzPV(signal_idx,i)) < 0.05
 	 && Ntp->IsolationTrack_DocaMu2(signal_idx,i) < 0.1){
@@ -1219,7 +1219,7 @@ void  Isolation::doEvent(){
   // ---------------------- I_mu3
 
     SumPT02=0;SumPT04=0;SumPT06=0;SumPT08=0;SumPT1=0;SumPT12=0;SumPT14=0;SumPT16=0;SumPT18=0;SumPT2=0;
-    for(unsigned int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
+    for(int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
 
       if(Ntp->IsolationTrack_p4(signal_idx,i).Pt()> 0.7 && fabs(Ntp->IsolationTrack_dzPV(signal_idx,i)) < 0.05
 	 && Ntp->IsolationTrack_DocaMu3(signal_idx,i) < 0.1){
@@ -1558,7 +1558,7 @@ void  Isolation::Finish(){
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
     //    int id(Ntp->GetMCID());
-    double scale(1.);
+    //    double scale(1.);
     //    double scaleDsTau(0.637);
     //    double scaleBpTau(0.262);
     //    double scaleB0Tau(0.099);
