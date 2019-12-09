@@ -936,6 +936,7 @@ void  Isolation::doEvent(){
 	  //	  std::cout<<"dR1 "<<Muon1LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
 	  //	  std::cout<<"dR2 "<<Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
 	  //	  std::cout<<"dR3 "<<Muon3LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
+	  std::cout<<"SV Tracks charge and Pt   "<< Ntp->SecondaryVertexTrackCharge(l,iTrack) <<"  pT   " << Ntp->SecondaryVertexTrack_P4(l,iTrack).Pt() << std::endl;
 	  if(Muon1LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001 or
 	     Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001 or 
 	     Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001)SuspiciousVertexIndex = l;
@@ -1379,6 +1380,18 @@ void  Isolation::doEvent(){
     float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(signal_idx,0),
 	  Ntp->Vertex_d0sig_reco(signal_idx,1),
 	  Ntp->Vertex_d0sig_reco(signal_idx,2)});
+
+
+
+    std::cout<<"Vertex_dz_reco  "<< std::max({Ntp->Vertex_dz_reco(signal_idx,0) , Ntp->Vertex_dz_reco(signal_idx,1)  , Ntp->Vertex_dz_reco(signal_idx,2)})<< std::endl;
+    std::cout<<"Vertex_d0SV_reco  "<< std::max({Ntp->Vertex_d0SV_reco(signal_idx,0) , Ntp->Vertex_d0SV_reco(signal_idx,1)  , Ntp->Vertex_d0SV_reco(signal_idx,2) })<< std::endl;
+    std::cout<<">Vertex_dzSV_rec  "<< std::max({Ntp->Vertex_dzSV_reco(signal_idx,0) , Ntp->Vertex_dzSV_reco(signal_idx,1)  , Ntp->Vertex_dzSV_reco(signal_idx,2) })<< std::endl;
+
+    std::cout<<"Vertex_d0sigSV  "<< std::max({Ntp->Vertex_d0sigSV_reco(signal_idx,0) , Ntp->Vertex_d0sigSV_reco(signal_idx,1)  , Ntp->Vertex_d0sigSV_reco(signal_idx,2) })<< std::endl;
+    std::cout<<"Vertex_d0BeamSpot_rec  "<< std::max({Ntp->Vertex_d0BeamSpot_reco(signal_idx,0) , Ntp->Vertex_d0BeamSpot_reco(signal_idx,1)  , Ntp->Vertex_d0BeamSpot_reco(signal_idx,2) })<< std::endl;
+    std::cout<<"Vertex_d0BeamSpot_rec  "<< std::max({Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,0) , Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,1)  , Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,2) })<< std::endl;
+
+
 
     var_MaxD0Significance = MaxD0Significance;
     var_IsolationMinDist = Ntp->Isolation_MinDist(signal_idx);
