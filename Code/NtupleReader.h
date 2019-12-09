@@ -164,6 +164,14 @@ public :
    std::vector<std::vector<int> > *MC_childidx;
    std::vector<int>     *MC_status;
 
+	//Muon SIM information
+   std::vector<int> *Muon_simPdgId;
+   std::vector<int> *Muon_simMotherPdgId;
+   std::vector<int> *Muon_simFlavour;
+   std::vector<int> *Muon_simType;
+   std::vector<int> *Muon_simBX;
+   std::vector<std::vector<double>> *Muon_simP4;
+
    std::vector<int> *signalTau_charge;
    std::vector<int> *signalTau_pdgid;
    std::vector<double> *signalTau_B;
@@ -411,7 +419,12 @@ public :
    TBranch        *b_MCSignalParticle_Vertex;    //!
    TBranch        *b_MCSignalParticle_SourceVertex;    //!
 
-
+   TBranch 			*b_Muon_simPdgId;
+   TBranch 			*b_Muon_simMotherPdgId;
+   TBranch 			*b_Muon_simFlavour;
+   TBranch 			*b_Muon_simType;
+   TBranch 			*b_Muon_simBX;
+   TBranch 			*b_Muon_simP4;
 
    TBranch        *b_MCSignalParticle_childpdgid;   //!
    TBranch        *b_MCSignalParticle_childp4;   //!
@@ -715,7 +728,12 @@ void NtupleReader::Init(TTree *tree)
    MCSignalParticle_Vertex = 0;
    MCSignalParticle_SourceVertex = 0;
 
-
+   Muon_simPdgId = 0;
+   Muon_simMotherPdgId = 0;
+   Muon_simFlavour = 0;
+   Muon_simType = 0;
+   Muon_simBX = 0;
+   Muon_simP4 = 0;
 
 
    MCSignalParticle_childpdgid = 0;
@@ -949,7 +967,12 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCSignalParticle_Vertex",&MCSignalParticle_Vertex,&b_MCSignalParticle_Vertex);
    fChain->SetBranchAddress("MCSignalParticle_SourceVertex",&MCSignalParticle_SourceVertex,&b_MCSignalParticle_SourceVertex);
 
-
+   fChain->SetBranchAddress("Muon_simPdgId",&Muon_simPdgId,&b_Muon_simPdgId);
+   fChain->SetBranchAddress("Muon_simMotherPdgId",&Muon_simMotherPdgId,&b_Muon_simMotherPdgId);
+   fChain->SetBranchAddress("Muon_simFlavour",&Muon_simFlavour,&b_Muon_simFlavour);
+   fChain->SetBranchAddress("Muon_simType",&Muon_simType,&b_Muon_simType);
+   fChain->SetBranchAddress("Muon_simBX",&Muon_simBX,&b_Muon_simBX);
+   fChain->SetBranchAddress("Muon_simP4",&Muon_simP4,&b_Muon_simP4);
 
 
 

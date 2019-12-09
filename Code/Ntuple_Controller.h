@@ -300,7 +300,12 @@ class Ntuple_Controller{
 
    int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
    int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
-
+   int     Muon_simPdgId(unsigned int i){return Ntp->Muon_simPdgId->at(i);}
+   int     Muon_simMotherPdgId(unsigned int i){return Ntp->Muon_simMotherPdgId->at(i);}
+   int     Muon_simFlavour(unsigned int i){return Ntp->Muon_simFlavour->at(i);}
+   int     Muon_simType(unsigned int i){return Ntp->Muon_simType->at(i);}
+   int     Muon_simBX(unsigned int i){return Ntp->Muon_simBX->at(i);}
+   TLorentzVector     Muon_simP4(unsigned int i){return TLorentzVector(Ntp->Muon_simP4->at(i).at(1),Ntp->Muon_simP4->at(i).at(2),Ntp->Muon_simP4->at(i).at(3),Ntp->Muon_simP4->at(i).at(0));}
 
    /*    will be fixed later
    bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
