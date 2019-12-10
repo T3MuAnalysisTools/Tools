@@ -933,6 +933,16 @@ TString Ntuple_Controller::WhichEra(int year){
     
     if(RunNumber() >=305040 and RunNumber() <=306460) return out = "RunF";
   }
+  
+  if(year == 2018){
+    if (RunNumber() >=316239 and RunNumber() <=316944) return out = "RunA";
+    
+	 if (RunNumber() >=318070 and RunNumber() <=319310) return out = "RunB";
+    
+	 if (RunNumber() >=319449 and RunNumber() <=319756) return out = "RunC";
+    
+	 if (RunNumber() >=320500 and RunNumber() <=325175) return out = "RunD";
+	}
   return out;
 }
 

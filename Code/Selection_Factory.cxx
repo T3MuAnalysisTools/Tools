@@ -22,7 +22,6 @@
 
 #ifdef USE_joshi
 #include "joshi/MyTest.h"
-//#include "joshi/Validation.h"
 #include "joshi/DimuTrk.h"
 #include "joshi/ThreeMu.h"
 #include "joshi/TMVASignal.h"
@@ -30,7 +29,8 @@
 #include "joshi/MCEfficiency.h"
 #include "joshi/TriggerStudy.h"
 #include "joshi/FillMVATree.h"
-
+#include "joshi/BParkingSelector.h"
+#include "joshi/SignalSelector.h"
 #endif
 
 
@@ -86,14 +86,14 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 #ifdef USE_joshi
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
   else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); //  three mu id cuts
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
   else if(Analysis.Contains("triggerstudy"))s = new TriggerStudy(Analysis,UncertType);
-  
+  else if(Analysis.Contains("bparkingselector"))s = new BParkingSelector(Analysis,UncertType);
+  else if(Analysis.Contains("signalselector"))s = new SignalSelector(Analysis,UncertType); 
 #endif
 
 
