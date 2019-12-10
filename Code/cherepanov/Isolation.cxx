@@ -156,8 +156,8 @@ void  Isolation::Configure(){
     if(i==TriggerOk)          cut.at(TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     //    if(i==VertChi2)           cut.at(VertChi2)=20.0;
-    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.0;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
     if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
@@ -198,10 +198,8 @@ void  Isolation::Configure(){
 
 
 
-
-
     else if(i==Mu1PtCut){
-      title.at(i)="$p_{T}(\\mu_{1}) >$ 2.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{1}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -211,7 +209,7 @@ void  Isolation::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
     }
     else if(i==Mu2PtCut){
-      title.at(i)="$p_{T}(\\mu_{2}) >$ 2.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{2}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -222,7 +220,7 @@ void  Isolation::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
     }
     else if(i==Mu3PtCut){
-      title.at(i)="$p_{T}(\\mu_{3}) >$ 1 GeV";
+      title.at(i)="$p_{T}(\\mu_{3}) >$ 2 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -359,7 +357,7 @@ void  Isolation::Configure(){
 
 
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
-  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
+  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
 
   SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
   SVSecondPVTauDirAngle=HConfig.GetTH1D(Name+"_SVSecondPVTauDirAngle","SVSecondPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV}(second closest) and #vec{#tau}, rad","Events");
@@ -456,15 +454,54 @@ void  Isolation::Configure(){
   NtracksCloseVSPU=HConfig.GetTH2D(Name+"_NtracksCloseVSPU","NtracksCloseVSPU",40,10,50,8,-0.5,7.5,"NPV","Number of tracks close to SV");
 
 
+  MaxD0SigPV=HConfig.GetTH1D(Name+"_MaxD0SigPV","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
+  MinD0SigPV=HConfig.GetTH1D(Name+"_MinD0SigPV","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
 
-  Mu1TrackMass=HConfig.GetTH1D(Name+"_Mu1TrackMass","Mu1TrackMass",50,0.4,2.5,"M_{#mu1-track}, GeV","");
-  Mu2TrackMass=HConfig.GetTH1D(Name+"_Mu2TrackMass","Mu2TrackMass",50,0.4,2.5,"M_{#mu2-track}, GeV","");
-  Mu3TrackMass=HConfig.GetTH1D(Name+"_Mu3TrackMass","Mu3TrackMass",50,0.4,2.5,"M_{#mu3-track}, GeV","");
-  SV_Mass=HConfig.GetTH1D(Name+"_SV_Mass","SV_Mass",50,0.4,2.5,"VertexMass, GeV","");
+  MaxD0SigBS=HConfig.GetTH1D(Name+"_MaxD0SigBS","MaxD0SigBS",20,0,20,"Max Transverse Impact significance w.r.t BS","");
+  MinD0SigBS=HConfig.GetTH1D(Name+"_MinD0SigBS","MinD0SigBS",20,0,20,"Min Transverse Impact significance w.r.t BS","");
+
+  MaxD0SigSV=HConfig.GetTH1D(Name+"_MaxD0SigSV","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
+  MinD0SigSV=HConfig.GetTH1D(Name+"_MinD0SigSV","MinD0SigSV",20,0,5,"Min Transverse Impact significance w.r.t SV","");
+
+  Mu1TrackMass=HConfig.GetTH1D(Name+"_Mu1TrackMass","Mu1TrackMass",60,0.2,4.5,"M_{#mu1-track}, GeV","");
+  Mu2TrackMass=HConfig.GetTH1D(Name+"_Mu2TrackMass","Mu2TrackMass",60,0.2,4.5,"M_{#mu2-track}, GeV","");
+  Mu3TrackMass=HConfig.GetTH1D(Name+"_Mu3TrackMass","Mu3TrackMass",60,0.2,4.5,"M_{#mu3-track}, GeV","");
+
+
+  OS1_muon_Mass=HConfig.GetTH1D(Name+"_OS1_muon_Mass","OS1_muon_Mass",40,0.2,2.6,"M_{#mu#mu} OS1, GeV","");
+  OS2_muon_Mass=HConfig.GetTH1D(Name+"_OS2_muon_Mass","OS2_muon_Mass",40,0.2,2.6,"M_{#mu#mu} OS2, GeV","");
+  SS2_muon_Mass=HConfig.GetTH1D(Name+"_SS2_muon_Mass","SS2_muon_Mass",40,0.2,2.6,"M_{#mu#mu} SS, GeV","");
+  OS_muon_Mass_max=HConfig.GetTH1D(Name+"_OS_muon_Mass_max","OS_muon_Mass_max",40,0.2,2.6,"max OS M_{#mu#mu}, GeV","");
+
+
+  SV_Mass=HConfig.GetTH1D(Name+"_SV_Mass","SV_Mass",50,0.2,2.5,"VertexMass, GeV","");
+  SV_Mass2OS=HConfig.GetTH1D(Name+"_SV_Mass2OS","SV_Mass2OS",50,0.2,2.5,"VertexMass, GeV (2 tracks OS)","");
+
+  MuMuMindR=HConfig.GetTH1D(Name+"_MuMuMindR","MuMuMindR",50,0,0.5,"Min #Delta R(#mu-#mu)","");
+  MuMuMaxdR=HConfig.GetTH1D(Name+"_MuMuMaxdR","MuMuMaxdR",50,0,0.5,"Max #Delta R(#mu-#mu)","");
+
+  MaxDca=HConfig.GetTH1D(Name+"_MaxDca","MaxDca",50,0,0.15,"Max distance between muons","");
+  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.15,"Min distance between muons","");
+  MinSegmentCompatibility=HConfig.GetTH1D(Name+"_MinSegmentCompatibility","MinSegmentCompatibility",50,0,1,"Min muon segment compatibility","");
+
+  MinMatchedStations= HConfig.GetTH1D(Name+"_MinMatchedStations","MinMatchedStations",8,-0.5,7.5,"Min muon matched stations","");
+  MinTrackerLayers=HConfig.GetTH1D(Name+"_MinTrackerLayers","MinTrackerLayers",8,-0.5,7.5,"Min tracker layers","");
+
+
+  MintrkKink= HConfig.GetTH1D(Name+"_MintrkKink","MintrkKink",30,0,30,"Min Tracker Kink","");
+  MaxtrkKink= HConfig.GetTH1D(Name+"_MaxtrkKink","MaxtrkKink",30,0,30,"Max Tracker Kink","");
+  MinglbKink= HConfig.GetTH1D(Name+"_MinglbKink","MinglbKink",30,0,30,"Min Global  Kink","");
+  MaxglbKink= HConfig.GetTH1D(Name+"_MaxglbKink","MaxglbKink",30,0,30,"Max Global  Kink","");
+
+
+
+  MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,5,"Max Inner/Outer track #chi^{2}","");
+  MaxMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalPosition","MaxMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
 
   //  MatchedSV_Mass=HConfig.GetTH1D(Name+"_MatchedSV_Mass","MatchedSV_Mass",50,0.4,2.5,"Vertex Mass, GeV","");
-  MuMatchedTrackMass=HConfig.GetTH1D(Name+"_MuMatchedTrackMass","MuMatchedTrackMass",50,0.3,2,"M_{#mu-track}, GeV (if muon matched to this vertex)","");
+  MuMatchedTrackMass=HConfig.GetTH1D(Name+"_MuMatchedTrackMass","MuMatchedTrackMass",50,0.2,2,"M_{#mu-track}, GeV (if muon matched to this vertex)","");
   MatchedSV_Mass=HConfig.GetTH2D(Name+"_MatchedSV_Mass","MatchedSV_Mass",60,0.3,4.5,4,1.5,5.5,"Vertex Mass, GeV","N Tracks in the Vertex");
+  MatchedSV_MassOS=HConfig.GetTH1D(Name+"_MatchedSV_MassOS","MatchedSV_MassOS",60,0.3,4.5,"Vertex Mass (2 OS tracks), GeV","");
   SVDeltaR=HConfig.GetTH1D(Name+"_SVDeltaR","SVDeltaR",50,0,1,"#Delat R (#vec{#tau}  - VertexPV)","");
   SVDistance=HConfig.GetTH1D(Name+"_SVDistance","SVDistance",50,0,1,"Distance(SV  - Vertex),cm",""); 
   NSV=HConfig.GetTH1D(Name+"_NSV","NSV",8,-0.5,7.5,"N vertices in the tau cone","");
@@ -475,6 +512,17 @@ void  Isolation::Configure(){
   PVZResolution= HConfig.GetTH1D(Name+"_PVZResolution","PVZResolution",30,-0.05,0.05,"#Delta z (PV1)  Reco - MC","");
   PV2ZResolution= HConfig.GetTH1D(Name+"_PV2ZResolution","PV2ZResolution",30,-0.05,0.05,"#Delta z (PV2)  Reco - MC","");
 
+  deltaMuZ12 = HConfig.GetTH1D(Name+"_deltaMuZ12","deltaMuZ12",30,0,0.6,"#Delta z (#mu_{1}-#mu_{2}), cm","");
+  deltaMuZ13 = HConfig.GetTH1D(Name+"_deltaMuZ13","deltaMuZ13",30,0,0.6,"#Delta z (#mu_{1}-#mu_{3}), cm","");
+  deltaMuZ23 = HConfig.GetTH1D(Name+"_deltaMuZ23","deltaMuZ23",30,0,0.6,"#Delta z (#mu_{2}-#mu_{3}), cm","");
+  MaxdeltaMuZ = HConfig.GetTH1D(Name+"_MaxdeltaMuZ","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm","");
+  MindeltaMuZ = HConfig.GetTH1D(Name+"_MindeltaMuZ","MindeltaMuZ",30,0,0.6,"Min #Delta z (#mu-#mu), cm","");
+
+
+
+  MaxVertexPairQuality=HConfig.GetTH1D(Name+"_MaxVertexPairQuality","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
+  MinVertexPairQuality=HConfig.GetTH1D(Name+"_MinVertexPairQuality","MinVertexPairQuality",20,0,5,"minvertex pair quality","Events");
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -484,9 +532,22 @@ void  Isolation::Configure(){
 void  Isolation::Store_ExtraDist(){ 
 
 
-  // Extradist1d.push_back(&Muon1Pt);
-  // Extradist1d.push_back(&Muon2Pt);
-  // Extradist1d.push_back(&Muon3Pt);
+   Extradist1d.push_back(&Muon1Pt);
+   Extradist1d.push_back(&Muon2Pt);
+   Extradist1d.push_back(&Muon3Pt);
+
+   Extradist1d.push_back(&MuMuMindR);
+   Extradist1d.push_back(&MuMuMaxdR);
+
+   Extradist1d.push_back(&deltaMuZ12);
+   Extradist1d.push_back(&deltaMuZ13);
+   Extradist1d.push_back(&deltaMuZ23);
+   Extradist1d.push_back(&MaxdeltaMuZ);
+   Extradist1d.push_back(&MindeltaMuZ);
+
+
+   Extradist1d.push_back(&MinMatchedStations);
+   Extradist1d.push_back(&MinTrackerLayers);
 
   // Extradist1d.push_back(&Muon1Eta);
   // Extradist1d.push_back(&Muon2Eta);
@@ -506,8 +567,16 @@ void  Isolation::Store_ExtraDist(){
   //Extradist1d.push_back(&Muon2isTrack);
   //Extradist1d.push_back(&Muon3isTrack);
 
-  // Extradist1d.push_back(&TauEta);
-  // Extradist1d.push_back(&TauPt);
+  Extradist1d.push_back(&MintrkKink);
+  Extradist1d.push_back(&MaxtrkKink);
+  Extradist1d.push_back(&MinglbKink);
+  Extradist1d.push_back(&MaxglbKink);
+
+
+
+
+  Extradist1d.push_back(&TauEta);
+  Extradist1d.push_back(&TauPt);
   // Extradist1d.push_back(&TauP);
 
 
@@ -531,7 +600,10 @@ void  Isolation::Store_ExtraDist(){
   // Extradist1d.push_back(&TauMassRefitC2);
 
 
-
+  Extradist1d.push_back(&OS1_muon_Mass);
+  Extradist1d.push_back(&OS2_muon_Mass);
+  Extradist1d.push_back(&SS2_muon_Mass);
+  Extradist1d.push_back(&OS_muon_Mass_max);
 
   // Extradist1d.push_back(&TauMassBarrel1);
   // Extradist1d.push_back(&TauMassRefitBarrel1);
@@ -564,6 +636,14 @@ void  Isolation::Store_ExtraDist(){
   //  Extradist1d.push_back(&Muon1DRToTruth);
   //  Extradist1d.push_back(&Muon2DRToTruth);
   //  Extradist1d.push_back(&Muon3DRToTruth);
+  Extradist1d.push_back(&MaxD0SigPV);
+  Extradist1d.push_back(&MinD0SigPV);
+
+  Extradist1d.push_back(&MaxD0SigBS);
+  Extradist1d.push_back(&MinD0SigBS);
+
+  Extradist1d.push_back(&MaxD0SigSV);
+  Extradist1d.push_back(&MinD0SigSV);
 
 
   // Extradist1d.push_back(&TriggerMatchdR1);
@@ -571,10 +651,10 @@ void  Isolation::Store_ExtraDist(){
   //  Extradist1d.push_back(&TriggerMatchdR3);
 
 
-  // Extradist1d.push_back(&FLSignificance);
+  Extradist1d.push_back(&FLSignificance);
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
 
-  //Extradist1d.push_back(&VertexChi2KF);
+  Extradist1d.push_back(&VertexChi2KF);
   // Extradist1d.push_back(&NSignalCandidates);
 
 
@@ -609,9 +689,6 @@ void  Isolation::Store_ExtraDist(){
   Extradist2d.push_back(&Iso18VSPU);
   Extradist2d.push_back(&Iso12VSPU);
   Extradist2d.push_back(&Iso02VSPU);
-
-
-
 
 
   Extradist1d.push_back(&PVTrackDz);
@@ -664,12 +741,21 @@ void  Isolation::Store_ExtraDist(){
   Extradist1d.push_back(&Mu2TrackMass);
   Extradist1d.push_back(&Mu3TrackMass);
   Extradist1d.push_back(&SV_Mass);
+  Extradist1d.push_back(&SV_Mass2OS);
   Extradist2d.push_back(&MatchedSV_Mass);
+  Extradist1d.push_back(&MatchedSV_MassOS);
   Extradist1d.push_back(&SVDeltaR);
   Extradist1d.push_back(&SVDistance);
   Extradist1d.push_back(&NSV);
+  Extradist1d.push_back(&MaxDca);
+  Extradist1d.push_back(&MinDca);
 
+  Extradist1d.push_back(&MinSegmentCompatibility);
 
+  Extradist1d.push_back(&MinMuon_chi2LocalPosition);
+  Extradist1d.push_back(&MaxMuon_chi2LocalPosition);
+  Extradist1d.push_back(&MaxVertexPairQuality);
+  Extradist1d.push_back(&MinVertexPairQuality);
 }
 
 
@@ -800,8 +886,8 @@ void  Isolation::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-  pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
-  pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
+  pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
+  pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
   else  pass.at(TauMassCut) =( (value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ ));
@@ -861,14 +947,14 @@ void  Isolation::doEvent(){
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
-
+    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
     std::vector<unsigned int> EtaSortedIndices;
 
     
     EtaSortedIndices.push_back(Muon_Eta_index_1);
     EtaSortedIndices.push_back(Muon_Eta_index_2);
     EtaSortedIndices.push_back(Muon_Eta_index_3);
-
+    EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
     EventMassResolution_PtEtaPhi.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),w);
 
 
@@ -903,40 +989,53 @@ void  Isolation::doEvent(){
       if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007)
       {
 
+	OS1_muon_Mass.at(t).Fill( (MuonOS + MuonSS1).M(),1);
+	OS2_muon_Mass.at(t).Fill( (MuonOS + MuonSS2).M(),1);
+	SS2_muon_Mass.at(t).Fill( (MuonSS2 + MuonSS1).M(),1);
 
-    int Nvertices(0);
-    int SuspiciousVertexIndex(-1);
-    int SuspiciousVertexIndex1(-1);
-    int SuspiciousVertexIndex2(-1);
-    int SuspiciousVertexIndex3(-1);
-    int SecondCloseTrackIndex1(-1);
-    TLorentzVector MatchedMuon1(0,0,0,0);
 
-    int SecondCloseTrackIndex2(-1);
-    TLorentzVector MatchedMuon2(0,0,0,0);
+	OS_muon_Mass_max.at(t).Fill(std::max({(MuonOS + MuonSS1).M(),(MuonOS + MuonSS2).M() }),1  ) ;
 
-    int SecondCloseTrackIndex3(-1);
-    TLorentzVector MatchedMuon3(0,0,0,0);
-    for(unsigned int l=0; l < Ntp->NSecondaryVertices(); l++){
 
-      SV_Mass.at(t).Fill(Ntp->SecondaryVertexMass(l),1);
-      TVector3 SVsignalPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
-      TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
-
-      //      std::cout<<"deltaR  "<< SVfakePV.DeltaR(SVsignalPV) << " dist  " << (Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag()<<std::endl;
+	int Nvertices(0);
+	int SuspiciousVertexIndex(-1);
+	int SuspiciousVertexIndex1(-1);
+	int SuspiciousVertexIndex2(-1);
+	int SuspiciousVertexIndex3(-1);
+	int SecondCloseTrackIndex1(-1);
+	TLorentzVector MatchedMuon1(0,0,0,0);
 	
-      SVDeltaR.at(t).Fill(SVfakePV.DeltaR(SVsignalPV),1);
-      SVDistance.at(t).Fill((Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag(),1);
+	int SecondCloseTrackIndex2(-1);
+	TLorentzVector MatchedMuon2(0,0,0,0);
+	
+	int SecondCloseTrackIndex3(-1);
+	TLorentzVector MatchedMuon3(0,0,0,0);
+	for(unsigned int l=0; l < Ntp->NSecondaryVertices(); l++){
+	  
+	  SV_Mass.at(t).Fill(Ntp->SecondaryVertexMass(l),1);
+	  TVector3 SVsignalPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+	  TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
 
-      if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag() > 0.05){
-	Nvertices++;
+	  //      std::cout<<"deltaR  "<< SVfakePV.DeltaR(SVsignalPV) << " dist  " << (Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag()<<std::endl;
+	  
+	  SVDeltaR.at(t).Fill(SVfakePV.DeltaR(SVsignalPV),1);
+	  SVDistance.at(t).Fill((Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag(),1);
+	  
+	  if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag() > 0.05){
+	    Nvertices++;
+	    
+	    if(Ntp->NTracksAtSecondaryVertex(l)==2&& Ntp->SecondaryVertexTrackCharge(l,0)!= Ntp->SecondaryVertexTrackCharge(l,1)){
+
+	      SV_Mass2OS.at(t).Fill(Ntp->SecondaryVertexMass(l),1);	
+	    }
+
 
 	for(unsigned int iTrack =0; iTrack < Ntp->NTracksAtSecondaryVertex(l); iTrack++){
 	  //	  std::cout<<"dist  " << (Ntp->Vertex_Signal_KF_pos(signal_idx) - Ntp->SecondaryVertexPosition(l)).Mag() << std::endl;
 	  //	  std::cout<<"dR1 "<<Muon1LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
 	  //	  std::cout<<"dR2 "<<Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
 	  //	  std::cout<<"dR3 "<<Muon3LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack))<< std::endl;
-	  std::cout<<"SV Tracks charge and Pt   "<< Ntp->SecondaryVertexTrackCharge(l,iTrack) <<"  pT   " << Ntp->SecondaryVertexTrack_P4(l,iTrack).Pt() << std::endl;
+	  //	  std::cout<<"SV Tracks charge and Pt   "<< Ntp->SecondaryVertexTrackCharge(l,iTrack) <<"  pT   " << Ntp->SecondaryVertexTrack_P4(l,iTrack).Pt() << std::endl;
 	  if(Muon1LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001 or
 	     Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001 or 
 	     Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(l,iTrack)) < 0.001)SuspiciousVertexIndex = l;
@@ -948,10 +1047,12 @@ void  Isolation::doEvent(){
 	    double temp_dR(99.);
 	    for(unsigned int iTrack2 =0; iTrack2 < Ntp->NTracksAtSecondaryVertex(l); iTrack2++){
 	      if(iTrack2==iTrack) continue;
-	      if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon1) < temp_dR){
-		temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon1);
-		SecondCloseTrackIndex1= iTrack2;
-		SuspiciousVertexIndex1=l;
+	      if(Ntp->SecondaryVertexTrackCharge(l,iTrack2) != Ntp->Muon_charge(Muon_index_1)){
+		if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon1) < temp_dR){
+		  temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon1);
+		  SecondCloseTrackIndex1= iTrack2;
+		  SuspiciousVertexIndex1=l;
+		}
 	      }
 	    }
 	  }
@@ -961,10 +1062,12 @@ void  Isolation::doEvent(){
 	    double temp_dR(99.);
 	    for(unsigned int iTrack2 =0; iTrack2 < Ntp->NTracksAtSecondaryVertex(l); iTrack2++){
 	      if(iTrack2==iTrack) continue;
-	      if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon2) < temp_dR){
-		temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon2);
-		SecondCloseTrackIndex2= iTrack2;
-		SuspiciousVertexIndex2=l;
+	      if(Ntp->SecondaryVertexTrackCharge(l,iTrack2) != Ntp->Muon_charge(Muon_index_2)){
+		if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon2) < temp_dR){
+		  temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon2);
+		  SecondCloseTrackIndex2= iTrack2;
+		  SuspiciousVertexIndex2=l;
+		}
 	      }
 	    }
 	  }
@@ -975,10 +1078,12 @@ void  Isolation::doEvent(){
 	    double temp_dR(99.);
 	    for(unsigned int iTrack2 =0; iTrack2 < Ntp->NTracksAtSecondaryVertex(l); iTrack2++){
 	      if(iTrack2==iTrack) continue;
-	      if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon3) < temp_dR){
-		temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon3);
-		SecondCloseTrackIndex3= iTrack2;
-		SuspiciousVertexIndex3=l;
+	      if(Ntp->SecondaryVertexTrackCharge(l,iTrack2) != Ntp->Muon_charge(Muon_index_3)){
+		if(Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon3) < temp_dR){
+		  temp_dR = Ntp->SecondaryVertexTrack_P4(l,iTrack2).DeltaR(MatchedMuon3);
+		  SecondCloseTrackIndex3= iTrack2;
+		  SuspiciousVertexIndex3=l;
+		}
 	      }
 	    }
 	  }
@@ -989,7 +1094,13 @@ void  Isolation::doEvent(){
     }
 
     NSV.at(t).Fill(Nvertices,1);
-    if(SuspiciousVertexIndex!=-1)  MatchedSV_Mass.at(t).Fill(Ntp->SecondaryVertexMass(SuspiciousVertexIndex),Ntp->NTracksAtSecondaryVertex(SuspiciousVertexIndex));
+    if(SuspiciousVertexIndex!=-1){  
+      MatchedSV_Mass.at(t).Fill(Ntp->SecondaryVertexMass(SuspiciousVertexIndex),Ntp->NTracksAtSecondaryVertex(SuspiciousVertexIndex));
+      if(Ntp->NTracksAtSecondaryVertex(SuspiciousVertexIndex)==2 && Ntp->SecondaryVertexTrackCharge(SuspiciousVertexIndex,0)!= Ntp->SecondaryVertexTrackCharge(SuspiciousVertexIndex,1)){
+	MatchedSV_MassOS.at(t).Fill(Ntp->SecondaryVertexMass(SuspiciousVertexIndex));
+      }
+    }
+    
 
 
     if(SecondCloseTrackIndex1!=-1 && SuspiciousVertexIndex1!=-1) MuMatchedTrackMass.at(t).Fill((MatchedMuon1+Ntp->SecondaryVertexTrack_P4(SuspiciousVertexIndex1,SecondCloseTrackIndex1)).M(),1);
@@ -1227,9 +1338,7 @@ void  Isolation::doEvent(){
 
 
 	if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(signal_idx).at(2))* Ntp->IsolationTrack_charge(signal_idx,i)==-1 ){
-
 	  Mu3TrackMass.at(t).Fill(  (Muon3LV +Ntp->IsolationTrack_p4(signal_idx,i)).M(),1 );
-
 	}
 
 
@@ -1281,7 +1390,7 @@ void  Isolation::doEvent(){
 
 
 
-    }
+      
 
 
     /*    for(unsigned int idr=0; idr < 19; idr++){
@@ -1312,7 +1421,7 @@ void  Isolation::doEvent(){
     if(id!=1)L1Triggers.at(t).Fill(DoubleMuFired,TripleMuFired);
 
 
-
+  
 
     Muon1Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),1);
     Muon2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),1);
@@ -1322,12 +1431,12 @@ void  Isolation::doEvent(){
     Muon2Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),1);
     Muon3Eta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),1);
 
-    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
+ 
     TauEta.at(t).Fill(TauLV.Eta(),1);
     TauPt.at(t).Fill(TauLV.Pt(),1);
     TauP.at(t).Fill(TauLV.P(),1);
-
-    EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
+      
+    
     //    TauMass.at(t).Fill(TauLV.M(),1);
     //    TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
 
@@ -1351,7 +1460,7 @@ void  Isolation::doEvent(){
     TriggerMatchdR3.at(t).Fill(Ntp->ThreeMuons_TriggerMatch_dR(signal_idx).at(2),1);
 
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),w);
-    FLSignificance.at(t).Fill(sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
+    FLSignificance.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
 								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx))),w);
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
     TVector3 SV2PV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_SecondBestPrimaryVertex(signal_idx));
@@ -1377,35 +1486,103 @@ void  Isolation::doEvent(){
     var_maxdca = std::max({Ntp->Vertex_DCA12(signal_idx),Ntp->Vertex_DCA23(signal_idx),Ntp->Vertex_DCA31(signal_idx)});
     var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
 
+    MuMuMindR.at(t).Fill(std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)}),1);
+    MuMuMaxdR.at(t).Fill(std::max({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)}),1);
+
+    deltaMuZ12.at(t).Fill(fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_2).Z()),1);
+    deltaMuZ13.at(t).Fill(fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_3).Z()),1);
+    deltaMuZ23.at(t).Fill(fabs(Ntp->Muon_Poca(Muon_index_2).Z()  - Ntp->Muon_Poca(Muon_index_3).Z()),1);
+
+
+    MaxdeltaMuZ.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_2).Z()),
+	    fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_3).Z()),
+	    fabs(Ntp->Muon_Poca(Muon_index_2).Z()  - Ntp->Muon_Poca(Muon_index_3).Z())}),1);
+
+    MindeltaMuZ.at(t).Fill( std::min({fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_2).Z()),
+	    fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_3).Z()),
+	    fabs(Ntp->Muon_Poca(Muon_index_2).Z()  - Ntp->Muon_Poca(Muon_index_3).Z())}),1);
+
+
+
+    MaxDca.at(t).Fill(std::max({Ntp->Vertex_DCA12(signal_idx),Ntp->Vertex_DCA23(signal_idx),Ntp->Vertex_DCA31(signal_idx)}),1);
+    MinDca.at(t).Fill(std::min({Ntp->Vertex_DCA12(signal_idx),Ntp->Vertex_DCA23(signal_idx),Ntp->Vertex_DCA31(signal_idx)}),1);
+    MinSegmentCompatibility.at(t).Fill(std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)}),1);
+
+    MinMuon_chi2LocalPosition.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  }));
+    MaxMuon_chi2LocalPosition.at(t).Fill(std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  }));
+
+
+    MintrkKink.at(t).Fill(std::min({Ntp->Muon_combinedQuality_trkKink(Muon_index_1),Ntp->Muon_combinedQuality_trkKink(Muon_index_2),Ntp->Muon_combinedQuality_trkKink(Muon_index_3)}),1);
+    MaxtrkKink.at(t).Fill(std::max({Ntp->Muon_combinedQuality_trkKink(Muon_index_1),Ntp->Muon_combinedQuality_trkKink(Muon_index_2),Ntp->Muon_combinedQuality_trkKink(Muon_index_3)}),1);
+    MinglbKink.at(t).Fill(std::min({Ntp->Muon_combinedQuality_glbKink(Muon_index_1),Ntp->Muon_combinedQuality_glbKink(Muon_index_2),Ntp->Muon_combinedQuality_glbKink(Muon_index_3)}),1);
+    MaxglbKink.at(t).Fill(std::max({Ntp->Muon_combinedQuality_glbKink(Muon_index_1),Ntp->Muon_combinedQuality_glbKink(Muon_index_2),Ntp->Muon_combinedQuality_glbKink(Muon_index_3)}),1);
+
+    MaxVertexPairQuality.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(signal_idx,0),Ntp->Vertex_pair_quality(signal_idx,1),Ntp->Vertex_pair_quality(signal_idx,2)}),1);
+    MinVertexPairQuality.at(t).Fill(  std::min({Ntp->Vertex_pair_quality(signal_idx,0),Ntp->Vertex_pair_quality(signal_idx,1),Ntp->Vertex_pair_quality(signal_idx,2)}),1);
+
+
+   // double  Muon_combinedQuality_trkKink(unsigned int i){return Ntp->Muon_combinedQuality_trkKink->at(i);}
+   // double  Muon_combinedQuality_glbKink(unsigned int i){return Ntp->Muon_combinedQuality_glbKink->at(i);}
+   // double  Muon_combinedQuality_trkRelChi2(unsigned int i){return Ntp->Muon_combinedQuality_trkRelChi2->at(i);}
+
+
+    MinMatchedStations.at(t).Fill(std::min({Ntp->Muon_numberOfMatchedStations(Muon_index_1) ,Ntp->Muon_numberOfMatchedStations(Muon_index_2) , Ntp->Muon_numberOfMatchedStations(Muon_index_3)}),1);
+    MinTrackerLayers.at(t).Fill(std::min({Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1),Ntp->Muon_trackerLayersWithMeasurement(Muon_index_2),Ntp->Muon_trackerLayersWithMeasurement(Muon_index_3) }),1);
+
     float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(signal_idx,0),
 	  Ntp->Vertex_d0sig_reco(signal_idx,1),
 	  Ntp->Vertex_d0sig_reco(signal_idx,2)});
 
 
+    float MinD0Significance = std::min({Ntp->Vertex_d0sig_reco(signal_idx,0),
+	  Ntp->Vertex_d0sig_reco(signal_idx,1),
+	  Ntp->Vertex_d0sig_reco(signal_idx,2)});
 
-    std::cout<<"Vertex_dz_reco  "<< std::max({Ntp->Vertex_dz_reco(signal_idx,0) , Ntp->Vertex_dz_reco(signal_idx,1)  , Ntp->Vertex_dz_reco(signal_idx,2)})<< std::endl;
-    std::cout<<"Vertex_d0SV_reco  "<< std::max({Ntp->Vertex_d0SV_reco(signal_idx,0) , Ntp->Vertex_d0SV_reco(signal_idx,1)  , Ntp->Vertex_d0SV_reco(signal_idx,2) })<< std::endl;
-    std::cout<<">Vertex_dzSV_rec  "<< std::max({Ntp->Vertex_dzSV_reco(signal_idx,0) , Ntp->Vertex_dzSV_reco(signal_idx,1)  , Ntp->Vertex_dzSV_reco(signal_idx,2) })<< std::endl;
 
-    std::cout<<"Vertex_d0sigSV  "<< std::max({Ntp->Vertex_d0sigSV_reco(signal_idx,0) , Ntp->Vertex_d0sigSV_reco(signal_idx,1)  , Ntp->Vertex_d0sigSV_reco(signal_idx,2) })<< std::endl;
-    std::cout<<"Vertex_d0BeamSpot_rec  "<< std::max({Ntp->Vertex_d0BeamSpot_reco(signal_idx,0) , Ntp->Vertex_d0BeamSpot_reco(signal_idx,1)  , Ntp->Vertex_d0BeamSpot_reco(signal_idx,2) })<< std::endl;
-    std::cout<<"Vertex_d0BeamSpot_rec  "<< std::max({Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,0) , Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,1)  , Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,2) })<< std::endl;
+    float MaxD0BSSignificance = std::max({Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,0),
+	  Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,1),
+	  Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,2)});
 
+
+    float MinD0BSSignificance = std::min({Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,0),
+	  Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,1),
+	  Ntp->Vertex_d0BeamSpot_reco_sig(signal_idx,2)});
+
+
+
+    float MaxD0SVSignificance = std::max({Ntp->Vertex_d0sigSV_reco(signal_idx,0),
+          Ntp->Vertex_d0sigSV_reco(signal_idx,1),
+          Ntp->Vertex_d0sigSV_reco(signal_idx,2)});
+
+
+    float MinD0SVSignificance = std::min({Ntp->Vertex_d0sigSV_reco(signal_idx,0),
+          Ntp->Vertex_d0sigSV_reco(signal_idx,1),
+          Ntp->Vertex_d0sigSV_reco(signal_idx,2)});
+
+
+    MaxD0SigPV.at(t).Fill(MaxD0Significance,1);
+    MinD0SigPV.at(t).Fill(MinD0Significance,1);
+
+    MaxD0SigBS.at(t).Fill(MaxD0BSSignificance,1);
+    MinD0SigBS.at(t).Fill(MinD0BSSignificance,1);
+
+    MaxD0SigSV.at(t).Fill(MaxD0SVSignificance,1);
+    MinD0SigSV.at(t).Fill(MinD0SVSignificance,1);
 
 
     var_MaxD0Significance = MaxD0Significance;
     var_IsolationMinDist = Ntp->Isolation_MinDist(signal_idx);
 
-
+      }
 
     var_tauMass=TauRefitLV.M();
     TauMass_all.at(t).Fill(TauRefitLV.M(),1);
 
-    m3m = TauRefitLV.M();
-    dataMCtype = id;
-    event_weight = w;
-    rapidity = TauLV.Eta();
-    LumiScale=1;
+    // m3m = TauRefitLV.M();
+    // dataMCtype = id;
+    // event_weight = w;
+    // rapidity = TauLV.Eta();
+    // LumiScale=1;
 
     //---------------- define per event resolution categroies 
     //Category A1
@@ -1662,6 +1839,58 @@ void  Isolation::Finish(){
 
 
 
+
+    SV_Mass2OS.at(1).Scale(SV_Mass2OS.at(0).Integral()/SV_Mass2OS.at(1).Integral());
+    MuMuMindR.at(1).Scale(MuMuMindR.at(0).Integral()/MuMuMindR.at(1).Integral());
+    MuMuMaxdR.at(1).Scale(MuMuMaxdR.at(0).Integral()/MuMuMaxdR.at(1).Integral());
+
+    deltaMuZ12.at(1).Scale(deltaMuZ12.at(0).Integral()/deltaMuZ12.at(1).Integral());
+    deltaMuZ13.at(1).Scale(deltaMuZ13.at(0).Integral()/deltaMuZ13.at(1).Integral());
+    deltaMuZ23.at(1).Scale(deltaMuZ23.at(0).Integral()/deltaMuZ23.at(1).Integral());
+
+
+    MaxdeltaMuZ.at(1).Scale(MaxdeltaMuZ.at(0).Integral()/MaxdeltaMuZ.at(1).Integral());
+    MindeltaMuZ.at(1).Scale(MindeltaMuZ.at(0).Integral()/MindeltaMuZ.at(1).Integral());
+    MaxDca.at(1).Scale(MaxDca.at(0).Integral()/MaxDca.at(1).Integral());
+    MinDca.at(1).Scale(MinDca.at(0).Integral()/MinDca.at(1).Integral());
+    MinSegmentCompatibility.at(1).Scale(MinSegmentCompatibility.at(0).Integral()/MinSegmentCompatibility.at(1).Integral());
+    MinMuon_chi2LocalPosition.at(1).Scale(MinMuon_chi2LocalPosition.at(0).Integral()/MinMuon_chi2LocalPosition.at(1).Integral());
+    MaxMuon_chi2LocalPosition.at(1).Scale(MaxMuon_chi2LocalPosition.at(0).Integral()/MaxMuon_chi2LocalPosition.at(1).Integral());
+    MintrkKink.at(1).Scale(MintrkKink.at(0).Integral()/MintrkKink.at(1).Integral());
+    MaxtrkKink.at(1).Scale(MaxtrkKink.at(0).Integral()/MaxtrkKink.at(1).Integral());
+    MinglbKink.at(1).Scale(MinglbKink.at(0).Integral()/MinglbKink.at(1).Integral());
+    MaxglbKink.at(1).Scale(MaxglbKink.at(0).Integral()/MaxglbKink.at(1).Integral());
+    MaxVertexPairQuality.at(1).Scale(MaxVertexPairQuality.at(0).Integral()/MaxVertexPairQuality.at(1).Integral());
+    MinVertexPairQuality.at(1).Scale(MinVertexPairQuality.at(0).Integral()/MinVertexPairQuality.at(1).Integral());
+    MinMatchedStations.at(1).Scale(MinMatchedStations.at(0).Integral()/MinMatchedStations.at(1).Integral());
+    MinTrackerLayers.at(1).Scale(MinTrackerLayers.at(0).Integral()/MinTrackerLayers.at(1).Integral());
+
+    MaxD0SigPV.at(1).Scale(MaxD0SigPV.at(0).Integral()/MaxD0SigPV.at(1).Integral());
+    MinD0SigPV.at(1).Scale(MinD0SigPV.at(0).Integral()/MinD0SigPV.at(1).Integral());
+
+    MaxD0SigBS.at(1).Scale(MaxD0SigBS.at(0).Integral()/MaxD0SigBS.at(1).Integral());
+    MinD0SigBS.at(1).Scale(MinD0SigBS.at(0).Integral()/MinD0SigBS.at(1).Integral());
+
+    MaxD0SigSV.at(1).Scale(MaxD0SigSV.at(0).Integral()/MaxD0SigSV.at(1).Integral());
+    MinD0SigSV.at(1).Scale(MinD0SigSV.at(0).Integral()/MinD0SigSV.at(1).Integral());
+
+    VertexChi2KF.at(1).Scale(VertexChi2KF.at(0).Integral()/VertexChi2KF.at(1).Integral());
+    FLSignificance.at(1).Scale(FLSignificance.at(0).Integral()/FLSignificance.at(1).Integral());
+    MatchedSV_Mass.at(1).Scale(MatchedSV_Mass.at(0).Integral()/MatchedSV_Mass.at(1).Integral());
+    MatchedSV_MassOS.at(1).Scale(MatchedSV_MassOS.at(0).Integral()/MatchedSV_MassOS.at(1).Integral());
+  
+    OS1_muon_Mass.at(1).Scale(OS1_muon_Mass.at(0).Integral()/OS1_muon_Mass.at(1).Integral());
+    OS2_muon_Mass.at(1).Scale(OS2_muon_Mass.at(0).Integral()/OS2_muon_Mass.at(1).Integral());
+    SS2_muon_Mass.at(1).Scale(SS2_muon_Mass.at(0).Integral()/SS2_muon_Mass.at(1).Integral());
+    OS_muon_Mass_max.at(1).Scale(OS_muon_Mass_max.at(0).Integral()/OS_muon_Mass_max.at(1).Integral());
+
+
+    Muon1Pt.at(1).Scale(Muon1Pt.at(0).Integral()/Muon1Pt.at(1).Integral());
+    Muon2Pt.at(1).Scale(Muon2Pt.at(0).Integral()/Muon2Pt.at(1).Integral());
+    Muon3Pt.at(1).Scale(Muon3Pt.at(0).Integral()/Muon3Pt.at(1).Integral());
+
+    TauEta.at(1).Scale(TauEta.at(0).Integral()/TauEta.at(1).Integral());
+    TauPt.at(1).Scale(TauPt.at(0).Integral()/TauPt.at(1).Integral());
 
 
     //if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();

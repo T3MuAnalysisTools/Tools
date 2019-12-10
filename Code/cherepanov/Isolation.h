@@ -169,6 +169,24 @@ class Isolation : public Selection {
   std::vector<TH1D> SVDistance;
   std::vector<TH1D> NSV;
   std::vector<TH2D> MatchedSV_Mass;
+  std::vector<TH1D> MatchedSV_MassOS;
+
+  std::vector<TH1D> MaxD0SigPV;
+  std::vector<TH1D> MinD0SigPV;
+
+  std::vector<TH1D> MaxD0SigBS;
+  std::vector<TH1D> MinD0SigBS;
+
+  std::vector<TH1D> MaxD0SigSV;
+  std::vector<TH1D> MinD0SigSV;
+
+
+  std::vector<TH1D> deltaMuZ12;
+  std::vector<TH1D> deltaMuZ13;
+  std::vector<TH1D> deltaMuZ23;
+  std::vector<TH1D> MaxdeltaMuZ;
+  std::vector<TH1D> MindeltaMuZ;
+
 
 
   std::vector<TH1D> PVTrackDz;
@@ -176,11 +194,17 @@ class Isolation : public Selection {
   std::vector<TH2D> NtracksCloseVSPU;
   std::vector<TH1D> MuMatchedTrackMass;
 
+  std::vector<TH1D> MuMuMindR;
+  std::vector<TH1D> MuMuMaxdR;
 
   std::vector<TH1D> Muon1isGlob;
   std::vector<TH1D> Muon2isGlob;
   std::vector<TH1D> Muon3isGlob;
 
+  std::vector<TH1D> OS1_muon_Mass;
+  std::vector<TH1D> OS2_muon_Mass;
+  std::vector<TH1D> SS2_muon_Mass;
+  std::vector<TH1D> OS_muon_Mass_max;
 
 
   std::vector<TH1D> Muon1isStand;
@@ -192,6 +216,8 @@ class Isolation : public Selection {
   std::vector<TH1D> Muon2isTrack;
   std::vector<TH1D> Muon3isTrack;
 
+  std::vector<TH1D> MaxVertexPairQuality;
+  std::vector<TH1D> MinVertexPairQuality;
 
 
   std::vector<TH1D> Muon1PtResolution;
@@ -211,6 +237,21 @@ class Isolation : public Selection {
   std::vector<TH1D> Mu2TrackMass;
   std::vector<TH1D> Mu3TrackMass;
   std::vector<TH1D> SV_Mass;
+  std::vector<TH1D> SV_Mass2OS;
+  std::vector<TH1D> MinSegmentCompatibility;
+  std::vector<TH1D> MinMuon_chi2LocalPosition;
+  std::vector<TH1D> MaxMuon_chi2LocalPosition;
+
+  std::vector<TH1D> MaxDca;
+  std::vector<TH1D> MinDca;
+  std::vector<TH1D> MinMatchedStations;
+  std::vector<TH1D> MinTrackerLayers;
+ 
+  std::vector<TH1D> MintrkKink;
+  std::vector<TH1D> MaxtrkKink;
+  std::vector<TH1D> MinglbKink;
+  std::vector<TH1D> MaxglbKink;
+
 
 
 
