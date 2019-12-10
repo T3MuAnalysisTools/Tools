@@ -517,7 +517,6 @@ class Ntuple_Controller{
    int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
    int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
 
-   double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
@@ -534,7 +533,9 @@ class Ntuple_Controller{
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
    std::vector<int> MuonCustomID(unsigned int MuonIndex);
-
+   double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
+   TLorentzVector Boost(TLorentzVector pB, TLorentzVector frame);
+   TMatrixT<double> convertToMatrix(TVectorT<double> V);
 
    std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
 	template<typename T>
