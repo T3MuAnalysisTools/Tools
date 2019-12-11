@@ -480,8 +480,8 @@ void  Isolation::Configure(){
   MuMuMindR=HConfig.GetTH1D(Name+"_MuMuMindR","MuMuMindR",50,0,0.5,"Min #Delta R(#mu-#mu)","");
   MuMuMaxdR=HConfig.GetTH1D(Name+"_MuMuMaxdR","MuMuMaxdR",50,0,0.5,"Max #Delta R(#mu-#mu)","");
 
-  MaxDca=HConfig.GetTH1D(Name+"_MaxDca","MaxDca",50,0,0.15,"Max distance between muons","");
-  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.15,"Min distance between muons","");
+  MaxDca=HConfig.GetTH1D(Name+"_MaxDca","MaxDca",50,0,0.10,"Max distance between muons","");
+  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.04,"Min distance between muons","");
   MinSegmentCompatibility=HConfig.GetTH1D(Name+"_MinSegmentCompatibility","MinSegmentCompatibility",50,0,1,"Min muon segment compatibility","");
 
   MinMatchedStations= HConfig.GetTH1D(Name+"_MinMatchedStations","MinMatchedStations",8,-0.5,7.5,"Min muon matched stations","");
@@ -495,14 +495,14 @@ void  Isolation::Configure(){
 
 
 
-  MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,5,"Max Inner/Outer track #chi^{2}","");
-  MaxMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalPosition","MaxMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
+  MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
+  MaxMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalPosition","MaxMuon_chi2LocalPosition",50,0,5,"Max Inner/Outer track #chi^{2}","");
 
   //  MatchedSV_Mass=HConfig.GetTH1D(Name+"_MatchedSV_Mass","MatchedSV_Mass",50,0.4,2.5,"Vertex Mass, GeV","");
   MuMatchedTrackMass=HConfig.GetTH1D(Name+"_MuMatchedTrackMass","MuMatchedTrackMass",50,0.2,2,"M_{#mu-track}, GeV (if muon matched to this vertex)","");
   MatchedSV_Mass=HConfig.GetTH2D(Name+"_MatchedSV_Mass","MatchedSV_Mass",60,0.3,4.5,4,1.5,5.5,"Vertex Mass, GeV","N Tracks in the Vertex");
   MatchedSV_MassOS=HConfig.GetTH1D(Name+"_MatchedSV_MassOS","MatchedSV_MassOS",60,0.3,4.5,"Vertex Mass (2 OS tracks), GeV","");
-  SVDeltaR=HConfig.GetTH1D(Name+"_SVDeltaR","SVDeltaR",50,0,1,"#Delat R (#vec{#tau}  - VertexPV)","");
+  SVDeltaR=HConfig.GetTH1D(Name+"_SVDeltaR","SVDeltaR",50,0,1,"#Delta R (#vec{#tau}  - VertexPV)","");
   SVDistance=HConfig.GetTH1D(Name+"_SVDistance","SVDistance",50,0,1,"Distance(SV  - Vertex),cm",""); 
   NSV=HConfig.GetTH1D(Name+"_NSV","NSV",8,-0.5,7.5,"N vertices in the tau cone","");
 
@@ -633,9 +633,9 @@ void  Isolation::Store_ExtraDist(){
   Extradist1d.push_back(&SVPVTauDirAngle);
   Extradist1d.push_back(&SVSecondPVTauDirAngle);
 
-  //  Extradist1d.push_back(&Muon1DRToTruth);
-  //  Extradist1d.push_back(&Muon2DRToTruth);
-  //  Extradist1d.push_back(&Muon3DRToTruth);
+  Extradist1d.push_back(&Muon1DRToTruth);
+  Extradist1d.push_back(&Muon2DRToTruth);
+  Extradist1d.push_back(&Muon3DRToTruth);
   Extradist1d.push_back(&MaxD0SigPV);
   Extradist1d.push_back(&MinD0SigPV);
 
@@ -890,7 +890,7 @@ void  Isolation::doEvent(){
   pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
   if(id!=1) pass.at(TauMassCut) = true;
-  else  pass.at(TauMassCut) =( (value.at(TauMassCut) < tauMinMass_)  ||   (value.at(TauMassCut)> tauMaxMass_ ));
+  else  pass.at(TauMassCut) =( (value.at(TauMassCut) < tauMinMass_ && value.at(TauMassCut) > tauMinSideBand_)  ||   (value.at(TauMassCut)> tauMaxMass_ && value.at(TauMassCut) < tauMaxSideBand_ ));
 
   std::vector<unsigned int> exclude_cuts;
   exclude_cuts.push_back(PhiVeto);
@@ -947,7 +947,12 @@ void  Isolation::doEvent(){
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
-    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
+
+    TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
+    TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
+    TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
+
+    TLorentzVector TauLV = Muon1LV + Muon2LV + Muon3LV;
     std::vector<unsigned int> EtaSortedIndices;
 
     
@@ -958,9 +963,17 @@ void  Isolation::doEvent(){
     EventMassResolution_PtEtaPhi.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),w);
 
 
-     TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
-     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
-     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
+    TLorentzVector Muon1LV_TRF = Ntp->Boost(Muon1LV,TauLV);
+    TLorentzVector Muon2LV_TRF = Ntp->Boost(Muon2LV,TauLV);
+    TLorentzVector Muon3LV_TRF = Ntp->Boost(Muon3LV,TauLV);
+    TLorentzVector TauLV_TRF = Ntp->Boost(TauLV,TauLV);
+
+
+    //    std::cout<<"---"<< std::endl;
+    //    Muon1LV_TRF.Print();
+    //    Muon2LV_TRF.Print();
+    //    Muon3LV_TRF.Print();
+    //    TauLV_TRF.Print();
 
 
      // TLorentzVector Muon1LV = Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0));
@@ -1713,21 +1726,22 @@ void  Isolation::doEvent(){
     }
 
     //---------------  Fill MC plots 
-    /*    if(id==40 || id == 60 || id ==90){
-      if(Ntp->MCEventIsReconstructed()){
-	TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
-	TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
-	TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2)));
-	TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
-
-	TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
-	TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
-
-	Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
-	Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
-	Muon3DRToTruth.at(t).Fill(Muon3LV.DeltaR(MCMuon3LV),1);
-      }
-      }*/
+    //    if(id==40 || id == 60 || id ==90){
+	  if(id==40 || id == 60 || id ==90){
+	    if(Ntp->MCEventIsReconstructed()){
+	      TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
+	      TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
+	      TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2)));
+	      TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
+	      
+	      TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
+	      TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
+	      
+	      Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
+	      Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
+	      Muon3DRToTruth.at(t).Fill(Muon3LV.DeltaR(MCMuon3LV),1);
+	    }
+	  }
 
 
 
@@ -1826,18 +1840,12 @@ void  Isolation::Finish(){
     SV_Mass.at(1).Scale(SV_Mass.at(0).Integral()/SV_Mass.at(1).Integral());
     MuMatchedTrackMass.at(1).Scale(MuMatchedTrackMass.at(0).Integral()/MuMatchedTrackMass.at(1).Integral());
 
-
-
     NSV.at(1).Scale(NSV.at(0).Integral()/NSV.at(1).Integral());
     SVDeltaR.at(1).Scale(SVDeltaR.at(0).Integral()/SVDeltaR.at(1).Integral());
     SVDistance.at(1).Scale(SVDistance.at(0).Integral()/SVDistance.at(1).Integral());
 
     SVPVTauDirAngle.at(1).Scale(SVPVTauDirAngle.at(0).Integral()/SVPVTauDirAngle.at(1).Integral());
     SVSecondPVTauDirAngle.at(1).Scale(SVSecondPVTauDirAngle.at(0).Integral()/SVSecondPVTauDirAngle.at(1).Integral());
-
-
-
-
 
 
     SV_Mass2OS.at(1).Scale(SV_Mass2OS.at(0).Integral()/SV_Mass2OS.at(1).Integral());
