@@ -178,13 +178,16 @@ public :
    std::vector<int>     *MCSignalParticle_pdgid;
    std::vector<std::vector<int> >   *MCSignalParticle_Sourcepdgid;
    std::vector<std::vector<std::vector<double> > > *MCSignalParticle_Sourcep4;
-
    std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
-
    std::vector<std::vector<std::vector<double> > > *MCSignalParticle_childp4;
    std::vector<int>     *MCSignalParticle_charge;
    std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
-   std::vector<std::vector<std::vector<double> > > *MCTauandProd_p4;
+   std::vector<std::vector<float> > *MCSignalParticle_Vertex;
+   std::vector<std::vector<float> > *MCSignalParticle_SourceVertex;
+
+
+   std::vector<std::vector<std::vector<float> > > *MCTauandProd_p4;
+   std::vector<std::vector<std::vector<float> > >  *MCTauandProd_Vertex;
    std::vector<std::vector<int> > *MCTauandProd_pdgid;
    std::vector<unsigned int> *MCTauandProd_midx;
    std::vector<std::vector<int> > *MCTauandProd_charge;
@@ -216,7 +219,20 @@ public :
    std::vector<bool>    *Vertex_RefitPVisValid;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex_covariance;
+   std::vector<std::vector<double> > *Vertex_SecondBestPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_d0_reco;
+
+
+
+
+   std::vector<std::vector<double> > *Vertex_dz_reco;
+   std::vector<std::vector<double> > *Vertex_d0SV_reco;
+   std::vector<std::vector<double> > *Vertex_dzSV_reco;
+   std::vector<std::vector<double> > *Vertex_d0sigSV_reco;
+   std::vector<std::vector<double> > *Vertex_d0BeamSpot_reco;
+   std::vector<std::vector<double> > *Vertex_d0BeamSpot_reco_sig;
+
+
    std::vector<std::vector<double> > *Vertex_d0sig_reco;
    std::vector<std::vector<double> > *Vertex_2Ddisplacement;
    std::vector<std::vector<double> > *Vertex_3Ddisplacement;
@@ -224,6 +240,30 @@ public :
    std::vector<std::vector<float> > *Vertex_Isolation2;
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
+
+   std::vector<std::vector<std::vector<float> > > *IsolationBranch_Trackp4;
+
+   std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
+   std::vector<std::vector<int> > *IsolationTrack_charge;
+   std::vector<std::vector<float> > *IsolationTrack_quality;
+
+   std::vector<std::vector<float> > *IsolationTrack_dxySV;
+   std::vector<std::vector<float> > *IsolationTrack_dzSV;
+
+   std::vector<std::vector<float> > *IsolationTrack_dxyPV;
+   std::vector<std::vector<float> > *IsolationTrack_dzPV;
+
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu1;
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu2;
+   std::vector<std::vector<float> > *IsolationTrack_DocaMu3;
+
+
+   std::vector<std::vector<float> > *SV_pos;
+   std::vector<float>               *SV_Mass;
+   std::vector<std::vector<float> > *SV_PosCovariance;
+   std::vector<std::vector<std::vector<float> > >  *SV_Track_P4;
+   std::vector<std::vector<int> > *SV_TrackCharge;
+
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
@@ -377,12 +417,17 @@ public :
 
    TBranch        *b_MCSignalParticle_Sourcepdgid;    //!
    TBranch        *b_MCSignalParticle_Sourcep4;    //!
+   TBranch        *b_MCSignalParticle_Vertex;    //!
+   TBranch        *b_MCSignalParticle_SourceVertex;    //!
+
+
 
    TBranch        *b_MCSignalParticle_childpdgid;   //!
    TBranch        *b_MCSignalParticle_childp4;   //!
    TBranch        *b_MCSignalParticle_charge;   //!
    TBranch        *b_MCSignalParticle_Tauidx;   //!
    TBranch        *b_MCTauandProd_p4;   //!
+   TBranch        *b_MCTauandProd_Vertex;   //!
    TBranch        *b_MCTauandProd_pdgid;   //!
    TBranch        *b_MCTauandProd_midx;   //!
    TBranch        *b_MCTauandProd_charge;   //!
@@ -413,15 +458,53 @@ public :
    TBranch        *b_Vertex_MatchedPrimaryVertex;   //!
    TBranch        *b_Vertex_RefitPVisValid;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex;   //!
+   TBranch        *b_Vertex_SecondBestPrimaryVertex;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex_covariance;   //!
    TBranch        *b_Vertex_d0_reco;   //!
    TBranch        *b_Vertex_d0sig_reco;   //!
+
+   TBranch        *b_Vertex_dz_reco;   //!
+   TBranch        *b_Vertex_d0SV_reco;   //!
+   TBranch        *b_Vertex_dzSV_reco;   //!
+   TBranch        *b_Vertex_d0sigSV_reco;   //!
+   TBranch        *b_Vertex_d0BeamSpot_reco;   //!
+   TBranch        *b_Vertex_d0BeamSpot_reco_sig;   //!
+
+
+
+
    TBranch        *b_Vertex_2Ddisplacement;   //!
    TBranch        *b_Vertex_3Ddisplacement;   //!
    TBranch        *b_Vertex_Isolation1;   //!
    TBranch        *b_Vertex_Isolation2;   //!
    TBranch        *b_Vertex_Isolation3;   //!
    TBranch        *b_Vertex_Isolation4;   //!
+
+
+
+   TBranch        *b_IsolationBranch_Trackp4;   //!
+   TBranch        *b_IsolationTrack_p4;   //!
+   TBranch        *b_IsolationTrack_charge;   //!
+   TBranch        *b_IsolationTrack_quality;   //!
+
+   TBranch        *b_IsolationTrack_dxySV;   //!
+   TBranch        *b_IsolationTrack_dzSV;   //!
+
+   TBranch        *b_IsolationTrack_dxyPV;   //!
+   TBranch        *b_IsolationTrack_dzPV;   //!
+
+   TBranch        *b_IsolationTrack_DocaMu1;   //!
+   TBranch        *b_IsolationTrack_DocaMu2;   //!
+   TBranch        *b_IsolationTrack_DocaMu3;   //!
+
+
+   TBranch        *b_SV_pos;   //!
+   TBranch        *b_SV_Mass;   //!
+   TBranch        *b_SV_PosCovariance;   //!
+   TBranch        *b_SV_Track_P4;   //!
+   TBranch        *b_SV_TrackCharge;    //!
+
+
    TBranch        *b_Trigger_l1name;   //!
    TBranch        *b_Trigger_l1decision;   //!
    TBranch        *b_Trigger_l1prescale;   //!
@@ -641,12 +724,18 @@ void NtupleReader::Init(TTree *tree)
    MCSignalParticle_pdgid = 0;
    MCSignalParticle_Sourcepdgid = 0;
    MCSignalParticle_Sourcep4 = 0;
+   MCSignalParticle_Vertex = 0;
+   MCSignalParticle_SourceVertex = 0;
+
+
+
 
    MCSignalParticle_childpdgid = 0;
    MCSignalParticle_childp4 = 0;
    MCSignalParticle_charge = 0;
    MCSignalParticle_Tauidx = 0;
    MCTauandProd_p4 = 0;
+   MCTauandProd_Vertex = 0;
    MCTauandProd_pdgid = 0;
    MCTauandProd_midx = 0;
    MCTauandProd_charge = 0;
@@ -676,15 +765,48 @@ void NtupleReader::Init(TTree *tree)
    Vertex_MatchedPrimaryVertex = 0;
    Vertex_RefitPVisValid = 0;
    Vertex_MatchedRefitPrimaryVertex = 0;
+   Vertex_SecondBestPrimaryVertex = 0;
    Vertex_MatchedRefitPrimaryVertex_covariance = 0;
    Vertex_d0_reco = 0;
    Vertex_d0sig_reco = 0;
+
+   Vertex_dz_reco = 0;
+   Vertex_d0SV_reco = 0;
+   Vertex_dzSV_reco = 0;
+   Vertex_d0sigSV_reco = 0;
+   Vertex_d0BeamSpot_reco = 0;
+   Vertex_d0BeamSpot_reco_sig = 0;
+
+
+
    Vertex_2Ddisplacement = 0;
    Vertex_3Ddisplacement = 0;
    Vertex_Isolation1 = 0;
    Vertex_Isolation2 = 0;
    Vertex_Isolation3 = 0;
    Vertex_Isolation4 = 0;
+   IsolationBranch_Trackp4 = 0;
+   IsolationTrack_p4 = 0;
+   IsolationTrack_charge = 0;
+   IsolationTrack_quality = 0;
+
+   IsolationTrack_dxySV = 0;
+   IsolationTrack_dzSV = 0;
+
+   IsolationTrack_dxyPV = 0;
+   IsolationTrack_dzPV = 0;
+
+   IsolationTrack_DocaMu1 = 0;
+   IsolationTrack_DocaMu2 = 0;
+   IsolationTrack_DocaMu3 = 0;
+
+   SV_pos = 0;
+   SV_Mass = 0;
+   SV_PosCovariance = 0;
+   SV_Track_P4 = 0;
+   SV_TrackCharge = 0;
+
+
    Trigger_l1name = 0;
    Trigger_l1decision = 0;
    Trigger_l1prescale = 0;
@@ -844,6 +966,9 @@ void NtupleReader::Init(TTree *tree)
 
    fChain->SetBranchAddress("MCSignalParticle_Sourcepdgid",&MCSignalParticle_Sourcepdgid, &b_MCSignalParticle_Sourcepdgid);
    fChain->SetBranchAddress("MCSignalParticle_Sourcep4",&MCSignalParticle_Sourcep4, &b_MCSignalParticle_Sourcep4);
+   fChain->SetBranchAddress("MCSignalParticle_Vertex",&MCSignalParticle_Vertex,&b_MCSignalParticle_Vertex);
+   fChain->SetBranchAddress("MCSignalParticle_SourceVertex",&MCSignalParticle_SourceVertex,&b_MCSignalParticle_SourceVertex);
+
 
 
 
@@ -853,6 +978,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
    fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
    fChain->SetBranchAddress("MCTauandProd_p4", &MCTauandProd_p4, &b_MCTauandProd_p4);
+   fChain->SetBranchAddress("MCTauandProd_Vertex", &MCTauandProd_Vertex, &b_MCTauandProd_Vertex);
    fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
    fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
    fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);
@@ -884,14 +1010,49 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex", &Vertex_MatchedRefitPrimaryVertex, &b_Vertex_MatchedRefitPrimaryVertex);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex_covariance", &Vertex_MatchedRefitPrimaryVertex_covariance, &b_Vertex_MatchedRefitPrimaryVertex_covariance);
+   fChain->SetBranchAddress("Vertex_SecondBestPrimaryVertex", &Vertex_SecondBestPrimaryVertex,&b_Vertex_SecondBestPrimaryVertex);
    fChain->SetBranchAddress("Vertex_d0_reco", &Vertex_d0_reco, &b_Vertex_d0_reco);
    fChain->SetBranchAddress("Vertex_d0sig_reco", &Vertex_d0sig_reco, &b_Vertex_d0sig_reco);
+
+   fChain->SetBranchAddress("Vertex_dz_reco", &Vertex_dz_reco, &b_Vertex_dz_reco);
+   fChain->SetBranchAddress("Vertex_d0SV_reco", &Vertex_d0SV_reco, &b_Vertex_d0SV_reco);
+   fChain->SetBranchAddress("Vertex_dzSV_reco", &Vertex_dzSV_reco, &b_Vertex_dzSV_reco);
+   fChain->SetBranchAddress("Vertex_d0sigSV_reco", &Vertex_d0sigSV_reco, &b_Vertex_d0sigSV_reco);
+   fChain->SetBranchAddress("Vertex_d0BeamSpot_reco", &Vertex_d0BeamSpot_reco, &b_Vertex_d0BeamSpot_reco);
+   fChain->SetBranchAddress("Vertex_d0BeamSpot_reco_sig", &Vertex_d0BeamSpot_reco_sig, &b_Vertex_d0BeamSpot_reco_sig);
+
+
+
+
    fChain->SetBranchAddress("Vertex_2Ddisplacement", &Vertex_2Ddisplacement, &b_Vertex_2Ddisplacement);
    fChain->SetBranchAddress("Vertex_3Ddisplacement", &Vertex_3Ddisplacement, &b_Vertex_3Ddisplacement);
    fChain->SetBranchAddress("Vertex_Isolation1", &Vertex_Isolation1, &b_Vertex_Isolation1);
    fChain->SetBranchAddress("Vertex_Isolation2", &Vertex_Isolation2, &b_Vertex_Isolation2);
    fChain->SetBranchAddress("Vertex_Isolation3", &Vertex_Isolation3, &b_Vertex_Isolation3);
    fChain->SetBranchAddress("Vertex_Isolation4", &Vertex_Isolation4, &b_Vertex_Isolation4);
+
+
+   fChain->SetBranchAddress("IsolationBranch_Trackp4",&IsolationBranch_Trackp4, &b_IsolationBranch_Trackp4);  
+
+   fChain->SetBranchAddress("IsolationTrack_p4",&IsolationTrack_p4,&b_IsolationTrack_p4);
+   fChain->SetBranchAddress("IsolationTrack_charge",&IsolationTrack_charge,&b_IsolationTrack_charge);
+   fChain->SetBranchAddress("IsolationTrack_quality",&IsolationTrack_quality,&b_IsolationTrack_quality);
+
+   fChain->SetBranchAddress("IsolationTrack_dxySV",&IsolationTrack_dxySV,&b_IsolationTrack_dxySV);
+   fChain->SetBranchAddress("IsolationTrack_dzSV",&IsolationTrack_dzSV,&b_IsolationTrack_dzSV);
+
+   fChain->SetBranchAddress("IsolationTrack_dxyPV",&IsolationTrack_dxyPV,&b_IsolationTrack_dxyPV);
+   fChain->SetBranchAddress("IsolationTrack_dzPV",&IsolationTrack_dzPV,&b_IsolationTrack_dzPV);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu1",&IsolationTrack_DocaMu1,&b_IsolationTrack_DocaMu1);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu2",&IsolationTrack_DocaMu2,&b_IsolationTrack_DocaMu2);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu3",&IsolationTrack_DocaMu3,&b_IsolationTrack_DocaMu3);
+
+   fChain->SetBranchAddress("SV_pos",&SV_pos,&b_SV_pos);
+   fChain->SetBranchAddress("SV_Mass",&SV_Mass,&b_SV_Mass);
+   fChain->SetBranchAddress("SV_PosCovariance",&SV_PosCovariance,&b_SV_PosCovariance);
+   fChain->SetBranchAddress("SV_Track_P4",&SV_Track_P4,&b_SV_Track_P4);
+   fChain->SetBranchAddress("SV_TrackCharge",&SV_TrackCharge, &b_SV_TrackCharge);
+
    fChain->SetBranchAddress("Trigger_l1name", &Trigger_l1name, &b_Trigger_l1name);
    fChain->SetBranchAddress("Trigger_l1decision", &Trigger_l1decision, &b_Trigger_l1decision);
    fChain->SetBranchAddress("Trigger_l1prescale", &Trigger_l1prescale, &b_Trigger_l1prescale);

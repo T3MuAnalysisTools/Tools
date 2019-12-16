@@ -76,6 +76,7 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
  float var_MuMu_minKFChi2;
  float var_MuTau_maxdR;
  float var_sumMuTrkKinkChi2; // sum of chi square of STA-TRK matching of 3 muons
+ float var_MaxD0Significance; // Minimum of the transverse IP significance of the 3 muons
  
  float var_Eta_Tau; 
  float var_tauMassRes;

@@ -633,7 +633,7 @@
 
 
 
-   if(DoubleMuFired  or TripleMuFired) L1Ok = true;
+   //   if(DoubleMuFired  or TripleMuFired) L1Ok = true;
    value.at(TriggerOk)=(HLTOk);
    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
 
@@ -781,7 +781,7 @@
 	 
 	 //std::cout<< "   N childs   for Ds  "<<Ntp->MCSignalParticle_Nchilds(j)  <<std::endl;
 	 
-	 for(unsigned int i = 0; i < Ntp->MCSignalParticle_Nchilds(j); i++){
+	 for(int i = 0; i < Ntp->MCSignalParticle_Nchilds(j); i++){
 	   std::cout<<"  "<< PDGInfo::pdgIdToName(Ntp->MCSignalParticle_childpdgid(j,i)) << std::endl;
 	   if(TString(PDGInfo::pdgIdToName(Ntp->MCSignalParticle_childpdgid(j,i))).Contains("eta_prime")){
 	     etaprime = true;
@@ -1132,9 +1132,9 @@
 
 	TLorentzVector MuSumLV(0,0,0,0);
         TLorentzVector TauSumLV(0,0,0,0);
-        for(unsigned int i=0; i<Ntp->NMCTaus(); i++){
+        for(int i=0; i<Ntp->NMCTaus(); i++){
 	  //	  std::cout<<" tau id   "<< Ntp->MCTau_pdgid(i) <<std::endl;
-          for(unsigned int j =0; j < Ntp->NMCTauDecayProducts(i); j++){
+          for(int j =0; j < Ntp->NMCTauDecayProducts(i); j++){
             if(abs(Ntp-> MCTauandProd_pdgid(i,j)) ==13) MuSumLV+=Ntp->MCTauandProd_p4(i,j) ;
             if(abs(Ntp-> MCTauandProd_pdgid(i,j)) !=15) TauSumLV+=Ntp->MCTauandProd_p4(i,j);
 	    //	    std::cout<<"  " <<Ntp-> MCTauandProd_pdgid(i,j) <<std::endl;

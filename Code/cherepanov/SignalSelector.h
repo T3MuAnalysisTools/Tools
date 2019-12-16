@@ -19,7 +19,7 @@ class SignalSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch1, TriggerMatch2,TriggerMatch3,TauMassCut,NCuts}; 
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut,NCuts}; 
 
 
  protected:
@@ -157,26 +157,20 @@ class SignalSelector : public Selection {
   TMVA::Reader *readerBarrel;
   TMVA::Reader *readerEndcap;
 
-  Float_t var_vertexKFChi2;
-  Float_t var_svpvTauAngle;
-  Float_t var_flightLenSig;
-
-  Float_t var_segCompMuMin;
-  Float_t var_MuMu_minKFChi2;
-  Float_t var_sumMuTrkKinkChi2;
-  Float_t var_MaxD0Significance;
-  Float_t var_MinMIPLikelihood;
-  Float_t var_maxdca;
-  Float_t var_mindca_iso;
-  Float_t var_pmin;
+  Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
+  Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
+  Float_t var_flightLenSig;// (Flight length significance of the tau candidate)
+  Float_t var_sumMuTrkKinkChi2;// (sum of chi sq of the kink of all three muons)
+  Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
+  Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
   Float_t var_tauMass;
-  Float_t var_tauMassRes;
-  Float_t var_Eta_Tau;
-
   Float_t var_MuMu_mindR;
   Float_t var_RelPt_Mu1Tau;
   Float_t var_Eta_au;
+  Float_t var_MuMu_minKFChi2;
+  Float_t var_maxdca;
   Float_t var_MuTau_maxdR;
+  Float_t var_MaxD0Significance;
   Float_t var_IsolationMinDist;
 
 

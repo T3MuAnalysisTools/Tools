@@ -449,7 +449,7 @@ void  MuIDStudy::doEvent(){
 
   bool DoubleMuFired(0);
   bool TripleMuFired(0);
-  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
     
     if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
@@ -899,7 +899,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance3C.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData3C.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData3C.at(0).GetNbinsX()+1; j++){
       CustMuonIdData3C.at(0).SetBinContent(j, sqrt(CustMuonIdData3C.at(0).GetBinContent(j)));
       CustMuonIdData3C.at(0).SetBinError(j, sqrt(CustMuonIdData3C.at(0).GetBinContent(j)));
     }
@@ -907,7 +907,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance2C.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData2C.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData2C.at(0).GetNbinsX()+1; j++){
       CustMuonIdData2C.at(0).SetBinContent(j, sqrt(CustMuonIdData2C.at(0).GetBinContent(j)));
       CustMuonIdData2C.at(0).SetBinError(j, sqrt(CustMuonIdData2C.at(0).GetBinContent(j)));
     }
@@ -915,7 +915,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance1C.at(1).Reset();
-    for(unsigned int j=0; j< CustMuonIdData1C.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData1C.at(0).GetNbinsX()+1; j++){
       CustMuonIdData1C.at(0).SetBinContent(j, sqrt(CustMuonIdData1C.at(0).GetBinContent(j)));
       CustMuonIdData1C.at(0).SetBinError(j, sqrt(CustMuonIdData1C.at(0).GetBinContent(j)));
     }
@@ -927,7 +927,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance3B.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData3B.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData3B.at(0).GetNbinsX()+1; j++){
       CustMuonIdData3B.at(0).SetBinContent(j, sqrt(CustMuonIdData3B.at(0).GetBinContent(j)));
       CustMuonIdData3B.at(0).SetBinError(j, sqrt(CustMuonIdData3B.at(0).GetBinContent(j)));
     }
@@ -935,7 +935,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance2B.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData2B.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData2B.at(0).GetNbinsX()+1; j++){
       CustMuonIdData2B.at(0).SetBinContent(j, sqrt(CustMuonIdData2B.at(0).GetBinContent(j)));
       CustMuonIdData2B.at(0).SetBinError(j, sqrt(CustMuonIdData2B.at(0).GetBinContent(j)));
     }
@@ -944,7 +944,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance1B.at(1).Reset();
-    for(unsigned int j=0; j< CustMuonIdData1B.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData1B.at(0).GetNbinsX()+1; j++){
       CustMuonIdData1B.at(0).SetBinContent(j, sqrt(CustMuonIdData1B.at(0).GetBinContent(j)));
       CustMuonIdData1B.at(0).SetBinError(j, sqrt(CustMuonIdData1B.at(0).GetBinContent(j)));
     }
@@ -953,7 +953,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance3A.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData3A.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData3A.at(0).GetNbinsX()+1; j++){
       CustMuonIdData3A.at(0).SetBinContent(j, sqrt(CustMuonIdData3A.at(0).GetBinContent(j)));
       CustMuonIdData3A.at(0).SetBinError(j, sqrt(CustMuonIdData3A.at(0).GetBinContent(j)));
     }
@@ -961,7 +961,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance2A.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData2A.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData2A.at(0).GetNbinsX()+1; j++){
       CustMuonIdData2A.at(0).SetBinContent(j, sqrt(CustMuonIdData2A.at(0).GetBinContent(j)));
       CustMuonIdData2A.at(0).SetBinError(j, sqrt(CustMuonIdData2A.at(0).GetBinContent(j)));
     }
@@ -970,7 +970,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance1A.at(1).Reset();
-    for(unsigned int j=0; j< CustMuonIdData1A.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData1A.at(0).GetNbinsX()+1; j++){
       CustMuonIdData1A.at(0).SetBinContent(j, sqrt(CustMuonIdData1A.at(0).GetBinContent(j)));
       CustMuonIdData1A.at(0).SetBinError(j, sqrt(CustMuonIdData1A.at(0).GetBinContent(j)));
     }
@@ -979,7 +979,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance3.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData3.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData3.at(0).GetNbinsX()+1; j++){
       CustMuonIdData3.at(0).SetBinContent(j, sqrt(CustMuonIdData3.at(0).GetBinContent(j)));
       CustMuonIdData3.at(0).SetBinError(j, sqrt(CustMuonIdData3.at(0).GetBinContent(j)));
     }
@@ -987,7 +987,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance2.at(2).Reset();
-    for(unsigned int j=0; j< CustMuonIdData2.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData2.at(0).GetNbinsX()+1; j++){
       CustMuonIdData2.at(0).SetBinContent(j, sqrt(CustMuonIdData2.at(0).GetBinContent(j)));
       CustMuonIdData2.at(0).SetBinError(j, sqrt(CustMuonIdData2.at(0).GetBinContent(j)));
     }
@@ -996,7 +996,7 @@ void  MuIDStudy::Finish(){
 
 
     Significance1.at(1).Reset();
-    for(unsigned int j=0; j< CustMuonIdData1.at(0).GetNbinsX()+1; j++){
+    for(int j=0; j< CustMuonIdData1.at(0).GetNbinsX()+1; j++){
       CustMuonIdData1.at(0).SetBinContent(j, sqrt(CustMuonIdData1.at(0).GetBinContent(j)));
       CustMuonIdData1.at(0).SetBinError(j, sqrt(CustMuonIdData1.at(0).GetBinContent(j)));
     }

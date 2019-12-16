@@ -194,43 +194,43 @@ class Ntuple_Controller{
    unsigned int   NMuons(){return Ntp->Muon_p4->size();}
    TLorentzVector Muon_P4(unsigned int i){return TLorentzVector(Ntp->Muon_p4->at(i).at(1),Ntp->Muon_p4->at(i).at(2), Ntp->Muon_p4->at(i).at(3), Ntp->Muon_p4->at(i).at(0));}
    TVector3       Muon_Poca(unsigned int i){return TVector3(Ntp->Muon_Poca->at(i).at(0),Ntp->Muon_Poca->at(i).at(1),Ntp->Muon_Poca->at(i).at(2));}
-   bool    Muon_isGlobalMuon(unsigned int i){return Ntp->Muon_isGlobalMuon->at(i);} 
-   bool    Muon_isStandAloneMuon(unsigned int i){return Ntp->Muon_isStandAloneMuon->at(i);}
-   bool    Muon_isTrackerMuon(unsigned int i){return Ntp->Muon_isTrackerMuon->at(i);}
-   bool    Muon_isCaloMuon(unsigned int i){return Ntp->Muon_isCaloMuon->at(i);}
-   bool    Muon_isIsolationValid(unsigned int i){return Ntp->Muon_isIsolationValid->at(i);}
-   bool    Muon_isQualityValid(unsigned int i){return Ntp->Muon_isQualityValid->at(i);}
-   bool    Muon_isTimeValid(unsigned int i){return Ntp->Muon_isTimeValid->at(i);}
-   float   Muon_emEt03(unsigned int i){return Ntp->Muon_emEt03->at(i);}
-   float   Muon_emVetoEt03(unsigned int i){return Ntp->Muon_emVetoEt03->at(i);}
-   float   Muon_hadEt03(unsigned int i){return Ntp->Muon_hadEt03->at(i);}
-   float   Muon_hadVetoEt03(unsigned int i){return Ntp->Muon_hadVetoEt03->at(i);}
-   int     Muon_nJets03(unsigned int i){return Ntp->Muon_nJets03->at(i);}
-   int     Muon_nTracks03(unsigned int i){return Ntp->Muon_nTracks03->at(i);}
-   float   Muon_sumPt03(unsigned int i){return Ntp->Muon_sumPt03->at(i);}
-   float   Muon_trackerVetoPt03(unsigned int i){return Ntp->Muon_trackerVetoPt03->at(i);}
-   float   Muon_emEt05(unsigned int i){return Ntp->Muon_emEt05->at(i);}
-   float   Muon_emVetoEt05(unsigned int i){return Ntp->Muon_emVetoEt05->at(i);}
-   float   Muon_hadEt05(unsigned int i){return Ntp->Muon_hadEt05->at(i);}
-   float   Muon_hadVetoEt05(unsigned int i){return Ntp->Muon_hadVetoEt05->at(i);}
-   int     Muon_nJets05(unsigned int i){return Ntp->Muon_nJets05->at(i);}
-   int     Muon_nTracks05(unsigned int i){return Ntp->Muon_nTracks05->at(i);}
-   float   Muon_sumPt05(unsigned int i){return Ntp->Muon_sumPt05->at(i);}
-   float   Muon_trackerVetoPt05(unsigned int i){return Ntp->Muon_trackerVetoPt05->at(i);}
-   float   Muon_sumChargedHadronPt03(unsigned int i){return Ntp->Muon_sumChargedHadronPt03->at(i);}
-   float   Muon_sumChargedParticlePt03(unsigned int i){return Ntp->Muon_sumChargedParticlePt03->at(i);}
-   float   Muon_sumNeutralHadronEt03(unsigned int i){return Ntp->Muon_sumNeutralHadronEt03->at(i);}
-   float   Muon_sumNeutralHadronEtHighThreshold03(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold03->at(i);}
-   float   Muon_sumPhotonEt03(unsigned int i){return Ntp->Muon_sumPhotonEt03->at(i);}
-   float   Muon_sumPhotonEtHighThreshold03(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold03->at(i);}
-   float   Muon_sumPUPt03(unsigned int i){return Ntp->Muon_sumPUPt03->at(i);}
-   float   Muon_sumChargedHadronPt04(unsigned int i){return Ntp->Muon_sumChargedHadronPt04->at(i);}
-   float   Muon_sumChargedParticlePt04(unsigned int i){return Ntp->Muon_sumChargedParticlePt04->at(i);}
-   float   Muon_sumNeutralHadronEt04(unsigned int i){return Ntp->Muon_sumNeutralHadronEt04->at(i);}
-   float   Muon_sumNeutralHadronEtHighThreshold04(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold04->at(i);}
-   float   Muon_sumPhotonEt04(unsigned int i){return Ntp->Muon_sumPhotonEt04->at(i);}
-   float   Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
-   float   Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
+   bool           Muon_isGlobalMuon(unsigned int i){return Ntp->Muon_isGlobalMuon->at(i);} 
+   bool           Muon_isStandAloneMuon(unsigned int i){return Ntp->Muon_isStandAloneMuon->at(i);}
+   bool           Muon_isTrackerMuon(unsigned int i){return Ntp->Muon_isTrackerMuon->at(i);}
+   bool           Muon_isCaloMuon(unsigned int i){return Ntp->Muon_isCaloMuon->at(i);}
+   bool           Muon_isIsolationValid(unsigned int i){return Ntp->Muon_isIsolationValid->at(i);}
+   bool           Muon_isQualityValid(unsigned int i){return Ntp->Muon_isQualityValid->at(i);}
+   bool           Muon_isTimeValid(unsigned int i){return Ntp->Muon_isTimeValid->at(i);}
+   float          Muon_emEt03(unsigned int i){return Ntp->Muon_emEt03->at(i);}
+   float          Muon_emVetoEt03(unsigned int i){return Ntp->Muon_emVetoEt03->at(i);}
+   float          Muon_hadEt03(unsigned int i){return Ntp->Muon_hadEt03->at(i);}
+   float          Muon_hadVetoEt03(unsigned int i){return Ntp->Muon_hadVetoEt03->at(i);}
+   int            Muon_nJets03(unsigned int i){return Ntp->Muon_nJets03->at(i);}
+   int            Muon_nTracks03(unsigned int i){return Ntp->Muon_nTracks03->at(i);}
+   float          Muon_sumPt03(unsigned int i){return Ntp->Muon_sumPt03->at(i);}
+   float          Muon_trackerVetoPt03(unsigned int i){return Ntp->Muon_trackerVetoPt03->at(i);}
+   float          Muon_emEt05(unsigned int i){return Ntp->Muon_emEt05->at(i);}
+   float          Muon_emVetoEt05(unsigned int i){return Ntp->Muon_emVetoEt05->at(i);}
+   float          Muon_hadEt05(unsigned int i){return Ntp->Muon_hadEt05->at(i);}
+   float          Muon_hadVetoEt05(unsigned int i){return Ntp->Muon_hadVetoEt05->at(i);}
+   int            Muon_nJets05(unsigned int i){return Ntp->Muon_nJets05->at(i);}
+   int            Muon_nTracks05(unsigned int i){return Ntp->Muon_nTracks05->at(i);}
+   float          Muon_sumPt05(unsigned int i){return Ntp->Muon_sumPt05->at(i);}
+   float          Muon_trackerVetoPt05(unsigned int i){return Ntp->Muon_trackerVetoPt05->at(i);}
+   float          Muon_sumChargedHadronPt03(unsigned int i){return Ntp->Muon_sumChargedHadronPt03->at(i);}
+   float          Muon_sumChargedParticlePt03(unsigned int i){return Ntp->Muon_sumChargedParticlePt03->at(i);}
+   float          Muon_sumNeutralHadronEt03(unsigned int i){return Ntp->Muon_sumNeutralHadronEt03->at(i);}
+   float          Muon_sumNeutralHadronEtHighThreshold03(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold03->at(i);}
+   float          Muon_sumPhotonEt03(unsigned int i){return Ntp->Muon_sumPhotonEt03->at(i);}
+   float          Muon_sumPhotonEtHighThreshold03(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold03->at(i);}
+   float          Muon_sumPUPt03(unsigned int i){return Ntp->Muon_sumPUPt03->at(i);}
+   float          Muon_sumChargedHadronPt04(unsigned int i){return Ntp->Muon_sumChargedHadronPt04->at(i);}
+   float          Muon_sumChargedParticlePt04(unsigned int i){return Ntp->Muon_sumChargedParticlePt04->at(i);}
+   float          Muon_sumNeutralHadronEt04(unsigned int i){return Ntp->Muon_sumNeutralHadronEt04->at(i);}
+   float          Muon_sumNeutralHadronEtHighThreshold04(unsigned int i){return Ntp->Muon_sumNeutralHadronEtHighThreshold04->at(i);}
+   float          Muon_sumPhotonEt04(unsigned int i){return Ntp->Muon_sumPhotonEt04->at(i);}
+   float          Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
+   float          Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
 
    double Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
    double Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
@@ -321,17 +321,14 @@ class Ntuple_Controller{
 
    bool MCEventIsReconstructed(){return Ntp->MC_isReco;}
 
-
    unsigned int   NThreeMuons(){return Ntp->ThreeMuons_index->size();}
    std::vector<unsigned int> ThreeMuonIndices(unsigned int i){return Ntp->ThreeMuons_index->at(i);}
 
    double ThreeMuons_SV_Chi2(unsigned int i){return Ntp->ThreeMuons_SV_Chi2->at(i);}
    std::vector<float> ThreeMuons_TriggerMatch_dR(unsigned int i){return Ntp->ThreeMuons_TriggerMatch_dR->at(i);}
 
-
    double TwoMuonsTrack_SV_Chi2(unsigned int i){return Ntp->TwoMuonsTrack_SV_Chi2->at(i);}
    std::vector<float> TwoMuonsTrack_TriggerMatch_dR(unsigned int i){return Ntp->TwoMuonsTrack_TriggerMatch_dR->at(i);}
-
 
    unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
    std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
@@ -342,6 +339,45 @@ class Ntuple_Controller{
    TVector3   Vertex_Signal_KF_pos(unsigned int i){return TVector3(Ntp->Vertex_signal_KF_pos->at(i).at(0), Ntp->Vertex_signal_KF_pos->at(i).at(1),Ntp->Vertex_signal_KF_pos->at(i).at(2));}
    TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i);
    TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i);
+
+
+   //   int NTracksInThePV(unsigned int i){return Ntp->IsolationBranch_Trackp4->at(i).size();}
+   //   TLorentzVector PrimaryVertexTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationBranch_Trackp4->at(i).at(j).at(1), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(2), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(3), 
+   //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(0));}
+
+   // ----------  Tracks in the signal tau cone
+   int            NIsolationTrack(unsigned int i){return Ntp->IsolationTrack_p4->at(i).size();}
+   TLorentzVector IsolationTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationTrack_p4->at(i).at(j).at(1), 
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(2),
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(3),
+											  Ntp->IsolationTrack_p4->at(i).at(j).at(0));}
+
+
+   int IsolationTrack_charge(unsigned int i, unsigned int j){return Ntp->IsolationTrack_charge->at(i).at(j);}
+   double IsolationTrack_dxySV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxySV->at(i).at(j);}
+   double IsolationTrack_dzSV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dzSV->at(i).at(j);}
+   double IsolationTrack_dxyPV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dxyPV->at(i).at(j);}
+   double IsolationTrack_dzPV(unsigned int i, unsigned int j){return Ntp->IsolationTrack_dzPV->at(i).at(j);}
+   double IsolationTrack_DocaMu1(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu1->at(i).at(j);}
+   double IsolationTrack_DocaMu2(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu2->at(i).at(j);}
+   double IsolationTrack_DocaMu3(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu3->at(i).at(j);}
+
+   // --------------------  secondary vertices found by the secondray vertex finder; Note: this is not the signal SV, but the signal SV is included.
+   unsigned int   NSecondaryVertices(){return Ntp->SV_pos->size();}
+   unsigned int   NTracksAtSecondaryVertex(unsigned int i){return Ntp->SV_Track_P4->at(i).size();}
+   float          SecondaryVertexMass(unsigned int i){return Ntp->SV_Mass->at(i);}
+
+   TVector3       SecondaryVertexPosition(unsigned int i){return TVector3(Ntp->SV_pos->at(i).at(0), Ntp->SV_pos->at(i).at(1), Ntp->SV_pos->at(i).at(2));}
+   TLorentzVector SecondaryVertexTrack_P4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->SV_Track_P4->at(i).at(j).at(1),
+												Ntp->SV_Track_P4->at(i).at(j).at(2),
+												Ntp->SV_Track_P4->at(i).at(j).at(3),
+												Ntp->SV_Track_P4->at(i).at(j).at(0));}
+
+   int            SecondaryVertexTrackCharge(unsigned int i, unsigned int j){return Ntp->SV_TrackCharge->at(i).at(j);}
+   TMatrixTSym<float>   SecondaryVertexCovariance(unsigned int i);
+
 
    ///// closest distance between the tracks of a candidate
    double     Vertex_DCA12(unsigned int i) {return Ntp->Vertex_signal_dca_reco->at(i).at(0);}
@@ -355,6 +391,17 @@ class Ntuple_Controller{
 
    double     Vertex_d0_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
    double     Vertex_d0sig_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0sig_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+
+   double     Vertex_dz_reco(unsigned int i, unsigned int j){return Ntp->Vertex_dz_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+
+   double     Vertex_d0SV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0SV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+   double     Vertex_dzSV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_dzSV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+
+   double     Vertex_d0sigSV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0sigSV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+   double     Vertex_d0BeamSpot_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0BeamSpot_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+   double     Vertex_d0BeamSpot_reco_sig(unsigned int i, unsigned int j){return Ntp->Vertex_d0BeamSpot_reco_sig->at(i).at(j);}//  j - is a track number; j=0,1,2
+
+
    double     Vertex_2Ddisplacement(unsigned int i, unsigned int j){return Ntp->Vertex_2Ddisplacement->at(i).at(j);}// j=0 - value, j=1 - significane, j=3 - distance
    double     Vertex_3Ddisplacement(unsigned int i, unsigned int j){return Ntp->Vertex_3Ddisplacement->at(i).at(j);}// j=0 - value, j=1 - significane, j=3 - distance
 
@@ -366,7 +413,13 @@ class Ntuple_Controller{
    double     Vertex_signal_AF_Ndf(unsigned int i){return Ntp->Vertex_signal_AF_Ndf->at(i); }
    TVector3   Vertex_MatchedPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedPrimaryVertex->at(i).at(2));}
    bool       Vertex_RefitPVisValid(unsigned int i){return Ntp->Vertex_RefitPVisValid->at(i);}
-   TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
+   TVector3   Vertex_MatchedRefitPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(0), 
+									       Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(1),
+									       Ntp->Vertex_MatchedRefitPrimaryVertex->at(i).at(2));}
+
+   TVector3   Vertex_SecondBestPrimaryVertex(unsigned int i){return TVector3(Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(0),
+									   Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(1),
+									   Ntp->Vertex_SecondBestPrimaryVertex->at(i).at(2));}
 
    TVector3   SVPVDirection(TVector3 SV, TVector3 PV);
 
@@ -407,7 +460,7 @@ class Ntuple_Controller{
    TLorentzVector             MCParticle_p4(unsigned int i){return TLorentzVector(Ntp->MC_p4->at(i).at(1),Ntp->MC_p4->at(i).at(2),Ntp->MC_p4->at(i).at(3),Ntp->MC_p4->at(i).at(0));}
    int                        MCParticle_pdgid(unsigned int i){return Ntp->MC_pdgid->at(i);}
    int                        MCParticle_charge(unsigned int i){return Ntp->MC_charge->at(i);}
-   int                MCParticle_midx(unsigned int i){return Ntp->MC_midx->at(i);}
+   int                        MCParticle_midx(unsigned int i){return Ntp->MC_midx->at(i);}
    std::vector<int>           MCParticle_childpdgid(unsigned int i){return Ntp->MC_childpdgid->at(i);}
    std::vector<int>           MCParticle_childidx(unsigned int i){return Ntp->MC_childidx->at(i);}
    int  MCParticle_status(unsigned int i){return Ntp->MC_status->at(i);}
@@ -420,6 +473,13 @@ class Ntuple_Controller{
 
    unsigned int               NMCSignalParticles(){return Ntp->MCSignalParticle_p4->size();}
    TLorentzVector             MCSignalParticle_p4(unsigned int i){return TLorentzVector(Ntp->MCSignalParticle_p4->at(i).at(1),Ntp->MCSignalParticle_p4->at(i).at(2),Ntp->MCSignalParticle_p4->at(i).at(3),Ntp->MCSignalParticle_p4->at(i).at(0));}
+   TVector3                      MCSignalParticle_SourceVertex(unsigned int i){return TVector3(Ntp->MCSignalParticle_SourceVertex->at(i).at(0),
+											       Ntp->MCSignalParticle_SourceVertex->at(i).at(1),
+											       Ntp->MCSignalParticle_SourceVertex->at(i).at(2));}
+   TVector3                      MCSignalParticle_Vertex(unsigned int i){return TVector3(Ntp->MCSignalParticle_Vertex->at(i).at(0),
+											 Ntp->MCSignalParticle_Vertex->at(i).at(1),
+											 Ntp->MCSignalParticle_Vertex->at(i).at(2));}
+
    int                        MCSignalParticle_pdgid(unsigned int i){return Ntp->MCSignalParticle_pdgid->at(i);}
    int                        MCSignalParticle_charge(unsigned int i){return Ntp->MCSignalParticle_charge->at(i);}
    std::vector<unsigned int>  MCSignalParticle_Tauidx(unsigned int i){return Ntp->MCSignalParticle_Tauidx->at(i);}
@@ -438,7 +498,7 @@ class Ntuple_Controller{
 			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(2),
 			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(3),
 			   Ntp->MCSignalParticle_childp4->at(i).at(j).at(0));}
-
+   
 
 
    // Tau decays (Tau is first element of vector)
@@ -451,10 +511,13 @@ class Ntuple_Controller{
    //Tau and decay products
    int NMCTauDecayProducts(unsigned int i){if(0<=i && i<(unsigned int)NMCTaus()) return Ntp->MCTauandProd_p4->at(i).size(); return 0;}
    TLorentzVector MCTauandProd_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->MCTauandProd_p4->at(i).at(j).at(1),Ntp->MCTauandProd_p4->at(i).at(j).at(2),Ntp->MCTauandProd_p4->at(i).at(j).at(3),Ntp->MCTauandProd_p4->at(i).at(j).at(0));}
+
+   TVector3 MCTauandProd_Vertex(unsigned int i, unsigned int j){return TVector3(Ntp->MCTauandProd_Vertex->at(i).at(j).at(0), 
+										Ntp->MCTauandProd_Vertex->at(i).at(j).at(1),
+										Ntp->MCTauandProd_Vertex->at(i).at(j).at(2));}
    int MCTauandProd_pdgid(unsigned int i, unsigned int j){return Ntp->MCTauandProd_pdgid->at(i).at(j);}
    int MCTauandProd_charge(unsigned int i, unsigned int j){return Ntp->MCTauandProd_charge->at(i).at(j);}
 
-   double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
 
    //Tool functions
    std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
@@ -471,7 +534,9 @@ class Ntuple_Controller{
    TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
    std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
    std::vector<int> MuonCustomID(unsigned int MuonIndex);
-
+   double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
+   TLorentzVector Boost(TLorentzVector pB, TLorentzVector frame);
+   TMatrixT<double> convertToMatrix(TVectorT<double> V);
 
    std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
 	template<typename T>

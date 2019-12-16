@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description='Check for each object type if all 
 parser.add_argument('headerFile', help="Location of the header code file. This is used to determine the vector names.")
 parser.add_argument('sourceFile', help="Location of the source code file.")
 parser.add_argument('NtupleFile', help="Location of the input root file containing the Ntuple.")
-parser.add_argument('--treeName', dest="treeName", default="t",help="Name of the tree in the Ntuple file.")
+parser.add_argument('--treeName', dest="treeName", default="t3mtree",help="Name of the tree in the Ntuple file.")
 parser.add_argument('--verbose', action='store_true',help="Print more stuff.")
 args = parser.parse_args()
 

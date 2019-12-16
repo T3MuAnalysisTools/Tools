@@ -14,7 +14,8 @@
 #include "cherepanov/SignalSelector.h"
 #include "cherepanov/BackgroundSelector.h"
 #include "cherepanov/MuIDStudy.h"
-
+#include "cherepanov/MinBiasSelector.h"
+#include "cherepanov/Isolation.h"
 
 #endif
 
@@ -77,6 +78,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
   else if(Analysis.Contains("backgroundselector"))s=new BackgroundSelector(Analysis,UncertType);
   else if(Analysis.Contains("muidstudy"))s=new MuIDStudy(Analysis,UncertType);
+  else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
 
 
 
@@ -90,6 +92,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
   else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
+  else if(Analysis.Contains("triggerstudy"))s = new TriggerStudy(Analysis,UncertType);
   
 #endif
 
