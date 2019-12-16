@@ -231,18 +231,18 @@ void  DsToPhiPi::Configure(){
   //NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
  
   DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
-  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"p_{T} (Ds)", "Events");
-  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"p_{T} (Ds)", "Events");
-  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"p_{T} (Ds)", "Events");
-  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"p (Ds)", "Events");
-  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"p (Ds)", "Events");
-  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse Pt (Ds)",51,-0.5,50.5,"p (Ds)", "Events");
+  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
+  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
+  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
+  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events");
+  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events");
+  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events");
   DsM_peak=HConfig.GetTH1D(Name+"_DsM_peak","Ds invariant mass in Ds Peak",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
   DsM_sideband=HConfig.GetTH1D(Name+"_DsM_sideband","Ds invariant mass in Ds Sideband",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
   Ds_M=HConfig.GetTH1D(Name+"_Ds_M","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
-  DsL_peak=HConfig.GetTH1D(Name+"_DsL_peak","Length of Ds Decay in Ds Peak",100,0,2,"L_{Ds} (GeV)", "Events");
-  DsL_sideband=HConfig.GetTH1D(Name+"_DsL_sideband","Length of Ds Decay in Ds Sideband",100,0,2,"L_{Ds} (GeV)", "Events");
-  Ds_L=HConfig.GetTH1D(Name+"_Ds_L","Length of Ds Decay",100,0,2,"L_{Ds} (GeV)", "Events");
+  DsL_peak=HConfig.GetTH1D(Name+"_DsL_peak","Length of Ds Decay in Ds Peak",25,0,1,"L_{Ds} (cm)", "Events");
+  DsL_sideband=HConfig.GetTH1D(Name+"_DsL_sideband","Length of Ds Decay in Ds Sideband",25,0,1,"L_{Ds} (cm)", "Events");
+  Ds_L=HConfig.GetTH1D(Name+"_Ds_L","Length of Ds Decay",25,0,1,"L_{Ds} (cm)", "Events");
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
@@ -334,6 +334,8 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&DecayLength_prompt);
   Extradist1d.push_back(&DecayLength_non_prompt);
   Extradist1d.push_back(&DecayLength);
+  Extradist1d.push_back(&DecayLength_peak);
+  Extradist1d.push_back(&DecayLength_sideband);
 
   Extradist1d.push_back(&control_Muon1_Pt);
   Extradist1d.push_back(&control_Muon1_Eta);
