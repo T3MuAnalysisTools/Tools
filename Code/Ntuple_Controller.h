@@ -347,13 +347,12 @@ class Ntuple_Controller{
    //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(3), 
    //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(0));}
 
-
+   // ----------  Tracks in the signal tau cone
    int            NIsolationTrack(unsigned int i){return Ntp->IsolationTrack_p4->at(i).size();}
    TLorentzVector IsolationTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationTrack_p4->at(i).at(j).at(1), 
 											  Ntp->IsolationTrack_p4->at(i).at(j).at(2),
 											  Ntp->IsolationTrack_p4->at(i).at(j).at(3),
 											  Ntp->IsolationTrack_p4->at(i).at(j).at(0));}
-
 
 
    int IsolationTrack_charge(unsigned int i, unsigned int j){return Ntp->IsolationTrack_charge->at(i).at(j);}
@@ -365,7 +364,7 @@ class Ntuple_Controller{
    double IsolationTrack_DocaMu2(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu2->at(i).at(j);}
    double IsolationTrack_DocaMu3(unsigned int i, unsigned int j){return Ntp->IsolationTrack_DocaMu3->at(i).at(j);}
 
-
+   // --------------------  secondary vertices found by the secondray vertex finder; Note: this is not the signal SV, but the signal SV is included.
    unsigned int   NSecondaryVertices(){return Ntp->SV_pos->size();}
    unsigned int   NTracksAtSecondaryVertex(unsigned int i){return Ntp->SV_Track_P4->at(i).size();}
    float          SecondaryVertexMass(unsigned int i){return Ntp->SV_Mass->at(i);}
@@ -394,8 +393,10 @@ class Ntuple_Controller{
    double     Vertex_d0sig_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0sig_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
 
    double     Vertex_dz_reco(unsigned int i, unsigned int j){return Ntp->Vertex_dz_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+
    double     Vertex_d0SV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0SV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
    double     Vertex_dzSV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_dzSV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
+
    double     Vertex_d0sigSV_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0sigSV_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
    double     Vertex_d0BeamSpot_reco(unsigned int i, unsigned int j){return Ntp->Vertex_d0BeamSpot_reco->at(i).at(j);}//  j - is a track number; j=0,1,2
    double     Vertex_d0BeamSpot_reco_sig(unsigned int i, unsigned int j){return Ntp->Vertex_d0BeamSpot_reco_sig->at(i).at(j);}//  j - is a track number; j=0,1,2
