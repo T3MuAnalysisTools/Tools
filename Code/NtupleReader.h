@@ -194,7 +194,7 @@ public :
    std::vector<std::vector<float> > *MCSignalParticle_SourceVertex;
 
 
-   std::vector<std::vector<std::vector<double> > > *MCTauandProd_p4;
+   std::vector<std::vector<std::vector<float> > > *MCTauandProd_p4;
    std::vector<std::vector<std::vector<float> > >  *MCTauandProd_Vertex;
    std::vector<std::vector<int> > *MCTauandProd_pdgid;
    std::vector<unsigned int> *MCTauandProd_midx;
