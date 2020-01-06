@@ -379,7 +379,9 @@ void  DsToPhiPi::doEvent(){
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1)value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1){
+      value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
+    }
   }
 
   value.at(L1TOk) = 0;
@@ -400,7 +402,7 @@ void  DsToPhiPi::doEvent(){
     }
   }
   if(DoubleMuFired) value.at(L1TOk)=1;
-    
+   
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
   double tmp_chisq = 999.0;
@@ -413,7 +415,11 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0) value.at(is2MuTrk) = 1;
+  std::cout << "NTwoMuonsTrack() = " << Ntp->NTwoMuonsTrack() << std::endl;
+  if(Ntp->NTwoMuonsTrack()!=0 /*&& Ntp->NThreeMuons() == 0*/){
+    value.at(is2MuTrk) = 1;
+    std::cout << "There is a 2MuTrk" << std::endl;
+  }
 
   if (value.at(is2MuTrk)==1){
     for(unsigned int i2M=0; i2M < Ntp->NTwoMuonsTrack(); i2M++){
@@ -423,8 +429,8 @@ void  DsToPhiPi::doEvent(){
       double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
 
       if (abs(tmp_PhiMass-1.01)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
-      if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
-	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
+      if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons())){
+	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons());
         check_PhiMass = abs(tmp_PhiMass-1.01);
 	mu1 = tmp_mu1;
 	mu2 = tmp_mu2;
@@ -448,8 +454,8 @@ void  DsToPhiPi::doEvent(){
   }
 
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
-  pass.at(L1TOk)= (value.at(L1TOk)==cut.at(L1TOk));
-  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(L1TOk)= (value.at(L1TOk)/*==cut.at(L1TOk)*/);
+  pass.at(HLTOk)= (value.at(HLTOk)/*==cut.at(HLTOk)*/);
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Chi2Cut) = value.at(Chi2Cut) > 0 && value.at(Chi2Cut) < 15;
   pass.at(Mass2Mu) = value.at(Mass2Mu) >= 1 && value.at(Mass2Mu) <= 1.04;
@@ -529,7 +535,8 @@ void  DsToPhiPi::doEvent(){
 
     }
 
-    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx));
+    int vertex_idx = tmp_idx + Ntp->NThreeMuons();
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(vertex_idx),Ntp->Vertex_MatchedPrimaryVertex(vertex_idx));
     double DecayL = SVPV.Mag()*dsmass/dsP;
     if(dsmass > 1.93 && dsmass < 2.01){
       DecayLength_peak.at(t).Fill(DecayL,w);
