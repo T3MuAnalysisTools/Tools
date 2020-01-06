@@ -48,7 +48,7 @@ class BParkingSelector : public Selection {
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
-
+  std::vector<TH2D> TriggersDecision;
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
@@ -166,7 +166,7 @@ class BParkingSelector : public Selection {
   Float_t var_svpvTauAngle;
   Float_t var_flightLenSig;
   Float_t var_segCompMuMin;
-  Float_t var_MaxD0Significance;
+  Float_t var_MinD0Significance;
   Float_t var_mindca_iso;
   
   Float_t var_pmin;

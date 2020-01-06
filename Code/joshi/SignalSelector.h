@@ -1,5 +1,5 @@
-#ifndef BParkingSelector_h
-#define BParkingSelector_h
+#ifndef SignalSelector_h
+#define SignalSelector_h
 
 #include "Selection.h"
 #include <vector>
@@ -10,11 +10,11 @@
 #include "TMVA/MethodCuts.h"
 
 
-class BParkingSelector : public Selection {
+class SignalSelector : public Selection {
 
  public:
-  BParkingSelector(TString Name_, TString id_);
-  virtual ~BParkingSelector();
+  SignalSelector(TString Name_, TString id_);
+  virtual ~SignalSelector();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -166,7 +166,7 @@ class BParkingSelector : public Selection {
   Float_t var_svpvTauAngle;
   Float_t var_flightLenSig;
   Float_t var_segCompMuMin;
-  Float_t var_MaxD0Significance;
+  Float_t var_MinD0Significance;
   Float_t var_mindca_iso;
   
   Float_t var_pmin;

@@ -47,45 +47,40 @@ void  BParkingSelector::Configure(){
 
 
   TString basedir = "";
-  basedir = (TString)std::getenv("workdir")+"/Code/CommonUtils/tmva/";
+  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/";
 
   readerA_3glb = new TMVA::Reader( "!Color:!Silent" );
   readerA_3glb->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
   readerA_3glb->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerA_3glb->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerA_3glb->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerA_3glb->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerA_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerA_3glb->AddVariable( "var_pmin", &var_pmin);
-  readerA_3glb->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerA_3glb->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerA_3glb->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerA_3glb->AddVariable( "var_max_cLP", &var_max_cLP);
+  readerA_3glb->AddVariable( "var_max_tKink", &var_max_tKink);
+  readerA_3glb->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerA_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerA_3glb->AddVariable( "var_trk_relPt", &var_trk_relPt );
   readerA_3glb->AddSpectator("var_tauMass",&var_tauMass);
   readerA_3glb->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerA_3glb->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
-
-
-
-  readerA_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_A/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_A.xml" ); // weights xml file after training, place it to CommonFiles
-
+  readerA_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_A/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_A_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+  
   readerB_3glb = new TMVA::Reader( "!Color:!Silent" );
   readerB_3glb->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
   readerB_3glb->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerB_3glb->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerB_3glb->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerB_3glb->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerB_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerB_3glb->AddVariable( "var_pmin", &var_pmin);
-  readerB_3glb->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerB_3glb->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerB_3glb->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerB_3glb->AddVariable( "var_max_cLP", &var_max_cLP);
+  readerB_3glb->AddVariable( "var_max_tKink", &var_max_tKink);
+  readerB_3glb->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerB_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerB_3glb->AddVariable( "var_trk_relPt", &var_trk_relPt );
   readerB_3glb->AddSpectator("var_tauMass",&var_tauMass);
   readerB_3glb->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerB_3glb->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
 
-
-
-  readerB_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_B/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_B.xml" ); // weights xml file after training, place it to CommonFiles
+  readerB_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_B/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_B_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
 
   readerC_3glb = new TMVA::Reader( "!Color:!Silent" );
@@ -93,57 +88,60 @@ void  BParkingSelector::Configure(){
   readerC_3glb->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerC_3glb->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerC_3glb->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerC_3glb->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerC_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerC_3glb->AddVariable( "var_pmin", &var_pmin);
-  readerC_3glb->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerC_3glb->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerC_3glb->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerC_3glb->AddVariable( "var_max_cLP", &var_max_cLP);
+  readerC_3glb->AddVariable( "var_max_tKink", &var_max_tKink);
+  readerC_3glb->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerC_3glb->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerC_3glb->AddVariable( "var_trk_relPt", &var_trk_relPt );
   readerC_3glb->AddSpectator("var_tauMass",&var_tauMass);
   readerC_3glb->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerC_3glb->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
 
 
 
-  readerC_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_C/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_C.xml" ); // weights xml file after training, place it to CommonFiles
+
+  readerC_3glb->BookMVA( "BDT", basedir+"TMVAClassification_ThreeGlbMu_Veto_2016vars_C/weights/TMVAClassification_ThreeGlbMu_Veto_2016vars_C_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
   readerA_2glbTrk = new TMVA::Reader( "!Color:!Silent" );
   readerA_2glbTrk->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
   readerA_2glbTrk->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerA_2glbTrk->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerA_2glbTrk->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerA_2glbTrk->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerA_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerA_2glbTrk->AddVariable( "var_pmin", &var_pmin);
-  readerA_2glbTrk->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerA_2glbTrk->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerA_2glbTrk->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerA_2glbTrk->AddVariable("var_max_cLP", &var_max_cLP);
+  readerA_2glbTrk->AddVariable("var_max_tKink", &var_max_tKink);
+  readerA_2glbTrk->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerA_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerA_2glbTrk->AddVariable("var_trk_relPt", &var_trk_relPt );
   readerA_2glbTrk->AddSpectator("var_tauMass",&var_tauMass);
   readerA_2glbTrk->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerA_2glbTrk->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
 
 
 
-  readerA_2glbTrk->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_A/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_A.xml" ); // weights xml file after training, place it to CommonFiles
+  readerA_2glbTrk->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_A/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_A_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
   readerB_2glbTrk = new TMVA::Reader( "!Color:!Silent" );
   readerB_2glbTrk->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2 );
   readerB_2glbTrk->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerB_2glbTrk->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerB_2glbTrk->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerB_2glbTrk->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerB_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerB_2glbTrk->AddVariable( "var_pmin", &var_pmin);
-  readerB_2glbTrk->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerB_2glbTrk->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerB_2glbTrk->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerB_2glbTrk->AddVariable("var_max_cLP", &var_max_cLP);
+  readerB_2glbTrk->AddVariable("var_max_tKink", &var_max_tKink);
+  readerB_2glbTrk->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerB_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerB_2glbTrk->AddVariable("var_trk_relPt", &var_trk_relPt );
   readerB_2glbTrk->AddSpectator("var_tauMass",&var_tauMass);
   readerB_2glbTrk->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerB_2glbTrk->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
 
 
 
-  readerB_2glbTrk->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_B/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_B.xml" ); // weights xml file after training, place it to CommonFiles
+
+
+  readerB_2glbTrk->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_B/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_B_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
 
   readerC_2glbTrk = new TMVA::Reader( "!Color:!Silent" );
@@ -151,19 +149,17 @@ void  BParkingSelector::Configure(){
   readerC_2glbTrk->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle );
   readerC_2glbTrk->AddVariable( "var_flightLenSig", &var_flightLenSig );
   readerC_2glbTrk->AddVariable( "var_segCompMuMin", &var_segCompMuMin );
-  readerC_2glbTrk->AddVariable( "var_MaxD0Significance", &var_MaxD0Significance );
-  readerC_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
   readerC_2glbTrk->AddVariable( "var_pmin", &var_pmin);
-  readerC_2glbTrk->AddVariable("var_max_cLP","Variable max_cLP","units", 'F' );
-  readerC_2glbTrk->AddVariable("var_max_tKink","Variable max_tKink","units", 'F' );
-  readerC_2glbTrk->AddVariable("var_trk_relPt","Variable trk_relPt","units", 'F' );
+  readerC_2glbTrk->AddVariable("var_max_cLP", &var_max_cLP);
+  readerC_2glbTrk->AddVariable("var_max_tKink", &var_max_tKink);
+  readerC_2glbTrk->AddVariable( "var_MinD0Significance", &var_MinD0Significance );
+  readerC_2glbTrk->AddVariable( "var_mindca_iso", &var_mindca_iso );
+  readerC_2glbTrk->AddVariable("var_trk_relPt", &var_trk_relPt );
   readerC_2glbTrk->AddSpectator("var_tauMass",&var_tauMass);
   readerC_2glbTrk->AddSpectator("var_tauMassRes",&var_tauMassRes);
   readerC_2glbTrk->AddSpectator("var_Eta_Tau",&var_Eta_Tau);
 
-
-
-  readerC_3glb->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_C/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_C.xml" ); // weights xml file after training, place it to CommonFiles
+  readerC_2glbTrk->BookMVA( "BDT", basedir+"TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_C/weights/TMVAClassification_TwoGlbMuOneTrk_Veto_2016vars_C_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // dataloader->AddVariable("var_vertexKFChi2","Variable vertexKFChi2","units", 'F' );
    // dataloader->AddVariable("var_svpvTauAngle","Variable svpvTauAngle","units", 'F' );
@@ -174,7 +170,7 @@ void  BParkingSelector::Configure(){
    // dataloader->AddSpectator("var_tauMass","Variable tauMass","units", 'F' );
    // dataloader->AddVariable("var_maxdca","Variable maxdca","units", 'F' );
    // dataloader->AddVariable("var_RelPt_Mu1Tau","Variable RelPt_Mu1Tau","units", 'F' );
-   // dataloader->AddVariable("var_MaxD0Significance","Variable MaxD0Significance","units", 'F' );
+   // dataloader->AddVariable("var_MinD0Significance","Variable MinD0Significance","units", 'F' );
    // dataloader->AddVariable("var_IsolationMinDist","Variable IsolationMinDist","units", 'F' );
 
 
@@ -326,6 +322,8 @@ void  BParkingSelector::Configure(){
   // Setup NPassed Histogams
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
+
+  TriggersDecision = HConfig.GetTH2D(Name+"_TriggersDecision","TriggersDecision",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu trigger","SingleMu");
 
   Muon1isGlob =HConfig.GetTH1D(Name+"_Muon1isGlob","Muon1isGlob",2,-0.5,1.5,"  #mu_{1} is global muon","Events");
   Muon2isGlob =HConfig.GetTH1D(Name+"_Muon2isGlob","Muon2isGlob",2,-0.5,1.5,"  #mu_{2} is global muon","Events");
@@ -524,7 +522,7 @@ void  BParkingSelector::Store_ExtraDist(){
 
 
   Extradist1d.push_back(&SVPVTauDirAngle);
-
+  Extradist2d.push_back(&TriggersDecision);
   //  Extradist1d.push_back(&Muon1DRToTruth);
   //  Extradist1d.push_back(&Muon2DRToTruth);
   //  Extradist1d.push_back(&Muon3DRToTruth);
@@ -550,12 +548,16 @@ void  BParkingSelector::Store_ExtraDist(){
 
   Extradist2d.push_back(&L1Triggers);
 
-  Extradist2d.push_back(&L1TriggersB);
-  Extradist2d.push_back(&L1TriggersC);
-  Extradist2d.push_back(&L1TriggersD);
-  Extradist2d.push_back(&L1TriggersE);
-  Extradist2d.push_back(&L1TriggersF);
+  Extradist2d.push_back(&L1Triggers2017B);
+  Extradist2d.push_back(&L1Triggers2017C);
+  Extradist2d.push_back(&L1Triggers2017D);
+  Extradist2d.push_back(&L1Triggers2017E);
+  Extradist2d.push_back(&L1Triggers2017F);
 
+  Extradist2d.push_back(&L1Triggers2018A);
+  Extradist2d.push_back(&L1Triggers2018B);
+  Extradist2d.push_back(&L1Triggers2018C);
+  Extradist2d.push_back(&L1Triggers2018D);
 }
 
 
@@ -569,12 +571,14 @@ void  BParkingSelector::doEvent(){
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   bool HLTOk(false);
   bool L1Ok(false);
+  bool DoubleMu_fired(false);
+  bool Parked_fired(false);
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
 	 TRegexp parkingHLT("HLT_Mu*_IP*_v");
        if(id==1){
-         if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
-         if(HLT.Contains(parkingHLT) && Ntp->HLTDecision(iTrigger)  ) HLTOk = true;
+	 if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ){ HLTOk=true; DoubleMu_fired = true;}
+         if(HLT.Contains(parkingHLT) && Ntp->HLTDecision(iTrigger)  ) {HLTOk = true; Parked_fired = true;}
 		 }
    //    if(id==1 && Ntp->WhichEra(2017).Contains("RunF")){
     //      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
@@ -582,8 +586,8 @@ void  BParkingSelector::doEvent(){
     //    if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" )  ) HLTOk=Ntp->HLTDecision(iTrigger);
 
         if(id!=1){
-         if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
-         if(HLT.Contains(parkingHLT) && Ntp->HLTDecision(iTrigger)  ) HLTOk = true;
+	  if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) {HLTOk=true; DoubleMu_fired =true;}
+	  if(HLT.Contains(parkingHLT) && Ntp->HLTDecision(iTrigger)  ) {HLTOk = true; Parked_fired = true;}
        }
     
   }
@@ -637,7 +641,7 @@ void  BParkingSelector::doEvent(){
 
 
   NSignalCandidates.at(t).Fill(Ntp->NThreeMuons(),1);
-  if(Ntp->NThreeMuons()>0){
+  if(Ntp->NThreeMuons()>0){ 
     value.at(SignalCandidate) = Ntp->NThreeMuons();
     //    value.at(VertChi2) = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
     unsigned int mu1_idx = Ntp->ThreeMuonIndices(signal_idx).at(0); 
@@ -653,7 +657,7 @@ void  BParkingSelector::doEvent(){
     //
     value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-    			(Ntp->Muon_isGlobalMuon(mu3_pt_idx) || Ntp->Muon_isTracker(mu3_pt_idx)));
+    			(Ntp->Muon_isGlobalMuon(mu3_pt_idx) || Ntp->Muon_isTrackerMuon(mu3_pt_idx)));
 
 	 if (Ntp->Muon_isGlobalMuon(mu3_pt_idx)) threeGlobal = true;
     //------------------------------------------------------------------------------------------------------
@@ -688,19 +692,18 @@ void  BParkingSelector::doEvent(){
     value.at(TriggerMatch1) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(0);
     value.at(TriggerMatch2) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(1);
     value.at(TriggerMatch3) = Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx).at(2);
-    //    std::cout<<"Trigger Match  "<< value.at(TriggerMatch1) << std::endl;
     //    value.at(TauMassCut) = TauLV.M();
     value.at(TauMassCut) = TauRefittedLV.M();
-  }
+  
   pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
   //  pass.at(VertChi2) = (value.at(VertChi2) <= cut.at(VertChi2));
   pass.at(Mu1PtCut) = (value.at(Mu1PtCut) >= cut.at(Mu1PtCut));
   pass.at(Mu2PtCut) = (value.at(Mu2PtCut) >= cut.at(Mu2PtCut));
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
-  pass.at(TriggerMatch1) = (value.at(TriggerMatch1)  <  cut.at(TriggerMatch1));
-  pass.at(TriggerMatch2) = (value.at(TriggerMatch2)  <  cut.at(TriggerMatch2));
-  pass.at(TriggerMatch3) = (value.at(TriggerMatch3)  <  cut.at(TriggerMatch3));
+  pass.at(TriggerMatch1) = true;//(value.at(TriggerMatch1)  <  cut.at(TriggerMatch1));
+  pass.at(TriggerMatch2) = true;//(value.at(TriggerMatch2)  <  cut.at(TriggerMatch2));
+  pass.at(TriggerMatch3) = true;//(value.at(TriggerMatch3)  <  cut.at(TriggerMatch3));
   pass.at(PhiVeto)      = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
   pass.at(OmegaVeto)    = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
 
@@ -746,12 +749,9 @@ void  BParkingSelector::doEvent(){
   bool status=AnalysisCuts(t,w,wobs);
 
   if(status){
+    
+    TriggersDecision.at(t).Fill(DoubleMu_fired, Parked_fired);
 
-
-
-
-
-    //    std::cout<<" mindist   "<< Ntp->Isolation_MinDist(signal_idx) << std::endl;
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -790,8 +790,6 @@ void  BParkingSelector::doEvent(){
 
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,2);
 
-
-
     if(id==1){
       if((TauRefitLV.M() > 1.65 && TauRefitLV.M() < 1.73 )  ||   (TauRefitLV.M() > 1.82 && TauRefitLV.M() < 1.9)){
 	L1Triggers.at(t).Fill(DoubleMuFired,TripleMuFired);
@@ -800,7 +798,7 @@ void  BParkingSelector::doEvent(){
 	if(Ntp->WhichEra(2017).Contains("RunD"))L1Triggers2017D.at(t).Fill(DoubleMuFired,TripleMuFired);
 	if(Ntp->WhichEra(2017).Contains("RunE"))L1Triggers2017E.at(t).Fill(DoubleMuFired,TripleMuFired);
 	if(Ntp->WhichEra(2017).Contains("RunF"))L1Triggers2017F.at(t).Fill(DoubleMuFired,TripleMuFired);
-	if(Ntp->WhichEra(2018).Contains("RunA"))L1Triggers2018A.at(t).Fill(DoubleMuFired,TripleMuFired);
+      	if(Ntp->WhichEra(2018).Contains("RunA"))L1Triggers2018A.at(t).Fill(DoubleMuFired,TripleMuFired);
 	if(Ntp->WhichEra(2018).Contains("RunB"))L1Triggers2018B.at(t).Fill(DoubleMuFired,TripleMuFired);
 	if(Ntp->WhichEra(2018).Contains("RunC"))L1Triggers2018C.at(t).Fill(DoubleMuFired,TripleMuFired);
 	if(Ntp->WhichEra(2018).Contains("RunD"))L1Triggers2018D.at(t).Fill(DoubleMuFired,TripleMuFired);
@@ -856,18 +854,27 @@ void  BParkingSelector::doEvent(){
     var_svpvTauAngle = SVPV.Angle(TauLV.Vect());
     var_flightLenSig = sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
 							    Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
-    var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
-    var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_1), std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_2), Ntp->Muon_combinedQuality_trkKink(Muon_index_3)));
+Ntp->Muon_segComCheck();
+   if (threeGlobal){ 
+
+     //var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(mu1_pt_idx),Ntp->Muon_segmentCompatibility(mu2_pt_idx),Ntp->Muon_segmentCompatibility(mu3_pt_idx)});
+     var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(mu1_pt_idx), std::max(Ntp->Muon_combinedQuality_trkKink(mu2_pt_idx), Ntp->Muon_combinedQuality_trkKink(mu3_pt_idx)));
+   }
+else {
+   //var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(mu1_pt_idx),Ntp->Muon_segmentCompatibility(mu2_pt_idx)});
+   var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(mu1_pt_idx), Ntp->Muon_combinedQuality_trkKink(mu2_pt_idx));
+}
+
     var_max_cLP = std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1), std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2), Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)));
     var_pmin = std::min(Ntp->Muon_P4(Muon_index_1).P(), std::min(Ntp->Muon_P4(Muon_index_2).P(), Ntp->Muon_P4(Muon_index_3).P()));
     var_mindca_iso = Ntp->Isolation_MinDist(signal_idx);
 
 
-    float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(signal_idx,0),
+    float MinD0Significance = std::max({Ntp->Vertex_d0sig_reco(signal_idx,0),
 	  Ntp->Vertex_d0sig_reco(signal_idx,1),
 	  Ntp->Vertex_d0sig_reco(signal_idx,2)});
 
-    var_MaxD0Significance = MaxD0Significance;
+    var_MinD0Significance = MinD0Significance;
 
 
     var_tauMass=TauRefitLV.M();
@@ -928,7 +935,7 @@ void  BParkingSelector::doEvent(){
       }
   
    
-     //Category B2(3 global)
+     //Category B2(3
       if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
         if(readerB_3glb->EvaluateMVA("BDT") > 0.0668544925093 && readerB_3glb->EvaluateMVA("BDT") < 0.0127777643976){
   		    TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
@@ -957,7 +964,7 @@ void  BParkingSelector::doEvent(){
       if(readerA_2glbTrk->EvaluateMVA("BDT") > 0.147629725692){
 		  TauMassRefitA1.at(t).Fill(TauRefitLV.M(),1);    
 		  TauMassA1.at(t).Fill(TauLV.M(),1);
-		  category=1;
+		  category=7;
 		  bdt = readerA_2glbTrk->EvaluateMVA("BDT");
       }
     }
@@ -969,7 +976,7 @@ void  BParkingSelector::doEvent(){
       if(readerB_2glbTrk->EvaluateMVA("BDT") > 0.0745167711418){
 	TauMassRefitB1.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB1.at(t).Fill(TauLV.M(),1);
-	category =2 ;
+	category =8 ;
 	bdt = readerB_2glbTrk->EvaluateMVA("BDT");
       }
     }
@@ -981,7 +988,7 @@ void  BParkingSelector::doEvent(){
       if(readerC_2glbTrk->EvaluateMVA("BDT") > 0.121108058178){
 	TauMassRefitC1.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC1.at(t).Fill(TauLV.M(),1);
-	category = 3;
+	category = 9;
 	bdt = readerC_2glbTrk->EvaluateMVA("BDT");
       }
     }
@@ -991,7 +998,7 @@ void  BParkingSelector::doEvent(){
       if(readerA_2glbTrk->EvaluateMVA("BDT") > -0.00190483084183 && readerA_2glbTrk->EvaluateMVA("BDT") < 0.147629725692){
 	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA2.at(t).Fill(TauLV.M(),1);
-	category=4;
+	category=10;
 	bdt = readerA_2glbTrk->EvaluateMVA("BDT");
       }
     }
@@ -999,28 +1006,28 @@ void  BParkingSelector::doEvent(){
  
    //Category B2(2 global)
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
-      if(readerB_3glb->EvaluateMVA("BDT") >  -0.040602412133 && readerB_3glb->EvaluateMVA("BDT") < 0.0745167711418){
+      if(readerB_2glbTrk->EvaluateMVA("BDT") >  -0.040602412133 && readerB_3glb->EvaluateMVA("BDT") < 0.0745167711418){
 	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB2.at(t).Fill(TauLV.M(),1);
-	category =5 ;
-	bdt = readerB_3glb->EvaluateMVA("BDT");
+	category =11 ;
+	bdt = readerB_2glbTrk->EvaluateMVA("BDT");
       }
     }
 
     //Category C2(2 global)
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
-      if(readerC_3glb->EvaluateMVA("BDT") > -0.0241806939129 && readerC_3glb->EvaluateMVA("BDT")< 0.121108058178){
+      if(readerC_2glbTrk->EvaluateMVA("BDT") > -0.0241806939129 && readerC_3glb->EvaluateMVA("BDT")< 0.121108058178){
 	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC2.at(t).Fill(TauLV.M(),1);
-	category = 6;
-	bdt = readerC_3glb->EvaluateMVA("BDT");
+	category = 12;
+	bdt = readerC_2glbTrk->EvaluateMVA("BDT");
       }
     }
     }
 	 T3MMiniTree->Fill();
 
     //---------------  Fill MC plots 
-    if(id==40 || id == 60 || id ==90){
+	 /*    if(id==40 || id == 60 || id ==90){
       if(Ntp->MCEventIsReconstructed()){
 	TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
 	TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
@@ -1034,8 +1041,11 @@ void  BParkingSelector::doEvent(){
 	Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
 	Muon3DRToTruth.at(t).Fill(Muon3LV.DeltaR(MCMuon3LV),1);
       }
-    }
+      }*/
+
+
   }
+ }
 }
 
 

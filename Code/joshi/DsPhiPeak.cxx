@@ -15,9 +15,8 @@ void printVec(int size, T& vec){
 double DsPhiPi::deltaR(double eta1, double phi1, double eta2, double phi2)
 {
     double deta = eta1 - eta2;
-    double dphi = phi1 - phi2;
-    while (dphi > TMath::Pi()) dphi -= 2*TMath::Pi();
-    while (dphi <= -TMath::Pi()) dphi += 2*TMath::Pi();
+    double dphi = abs(phi1 - phi2);
+    if (dphi > TMath::Pi()) dphi -= TMath::Pi();
 
     return sqrt(deta*deta + dphi*dphi);
 }
@@ -43,22 +42,22 @@ DsPhiPi::~DsPhiPi(){
 
 void  DsPhiPi::Configure(){
 
-    for(int i=0; i<NCuts;i++){
-      cut.push_back(0);
-      value.push_back(0);
-      pass.push_back(false);
-      if(i==L1SeedOk)  cut.at(L1SeedOk)=1;
-      if(i==HLTOk)  cut.at(HLTOk)=1;
-      if(i==is2MuTrk)   cut.at(is2MuTrk)=1;
-      if(i==PrimeVtx)   cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
-      if(i==trkPt)   cut.at(trkPt)=1.2;
-      if(i==nTrkHits)  cut.at(nTrkHits)=12;
-      if(i==mumuMass)  cut.at(mumuMass)=PDG_Var::Phi_mass();
-      if(i==fitVtxChiSq) cut.at(fitVtxChiSq)=5.0;
-		if(i==trigObjMatch) cut.at(trigObjMatch)=1;
-		if(i==genMatch) cut.at(genMatch)=1;
-    }
-
+  for(int i=0; i<NCuts;i++){
+    cut.push_back(0);
+    value.push_back(0);
+    pass.push_back(false);
+    if(i==TriggerOk)          cut.at(TriggerOk)=1;
+    if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
+    if(i==MuonID)             cut.at(MuonID)=1;
+    if(i==PhiVeto)            cut.at(PhiVeto)=1; // defined below
+    if(i==OmegaVeto)          cut.at(OmegaVeto)=1; // defined below
+    if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
+    if(i==TauMassCut)        cut.at(TauMassCut)=1;// true for MC and mass side band for data
+	 if(i==GenMatch)	  		  cut.at(GenMatch)=1;
+  }
     TString hlabel;
     TString htitle;
 

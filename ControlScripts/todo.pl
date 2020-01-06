@@ -528,9 +528,12 @@ if( $ARGV[0] eq "--DCache" ){
 		system(sprintf("touch junk2"));
 		system(sprintf("touch junk"));
 
-		system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cms/data$DS/ \" | grep .root >&junk0"));
-		system(sprintf("cat junk0 | awk '{print \$9}' >& junk1")); 
-
+		#system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cms/data$DS/ \" | grep .root >&junk0"));
+		#system(sprintf("cat junk0 | awk '{print \$9}' >& junk1")); 
+      my @folders = split /\//, $DS;
+      my $tmpfile = "$folders[5].txt";
+		printf("$tmpfile\n");
+      system(sprintf("cp $tmpfile junk1"));
 
 		system(sprintf("junk1")); 
 
