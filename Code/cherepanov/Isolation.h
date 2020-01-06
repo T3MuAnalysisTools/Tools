@@ -157,6 +157,8 @@ class Isolation : public Selection {
   std::vector<TH1D> Iso18Mu3;
   std::vector<TH1D> Iso2Mu3;
 
+  std::vector<TH1D> Iso08MuMax;
+  std::vector<TH1D> Iso08MuMin;
 
   std::vector<TH1D> MindcaTrackSV;
   std::vector<TH2D> MindcaTrackSVNPU;
@@ -169,6 +171,7 @@ class Isolation : public Selection {
   std::vector<TH1D> SVDistance;
   std::vector<TH1D> NSV;
   std::vector<TH2D> MatchedSV_Mass;
+  std::vector<TH2D> SVMassVsDistanceToSV;
   std::vector<TH1D> MatchedSV_MassOS;
 
   std::vector<TH1D> MaxD0SigPV;
@@ -241,6 +244,9 @@ class Isolation : public Selection {
   std::vector<TH1D> MinSegmentCompatibility;
   std::vector<TH1D> MinMuon_chi2LocalPosition;
   std::vector<TH1D> MaxMuon_chi2LocalPosition;
+
+  std::vector<TH1D> MinMuon_chi2LocalMomentum;
+  std::vector<TH1D> MaxMuon_chi2LocalMomentum;
 
   std::vector<TH1D> MaxDca;
   std::vector<TH1D> MinDca;
