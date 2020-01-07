@@ -14,17 +14,19 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,is2MuTrk,GlobalMu,Chi2Cut,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {HLTOk=0,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
 
 
  protected:
   virtual void doEvent();  
   virtual void Store_ExtraDist();
 
+  TFile * file;
+  TTree * Sync_tree;
+
  private:
-  // Selection Variables
+ // Selection Variables
   // Initializhere your analysis histograms
-  double RelLumiB,RelLumiC, RelLumiD, RelLumiE, RelLumiF;
   std::vector<TH1D> NVtx;
 
   std::vector<TH1D> DimuondR;
@@ -34,12 +36,6 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> PhiPlusTrackMass;
   std::vector<TH2D> PhiMassVsDsMass;
   std::vector<TH1D> DsMass;
-  std::vector<TH1D> DsMassB;
-  std::vector<TH1D> DsMassC;
-  std::vector<TH1D> DsMassD;
-  std::vector<TH1D> DsMassE;
-  std::vector<TH1D> DsMassF;
-
   std::vector<TH1D> Category;
   std::vector<TH1D> DsGenMatch;
 
@@ -79,53 +75,42 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Muon2_TriggerMatchdR;
   std::vector<TH1D> Track_TriggerMatchdR;
 
+  std::vector<TH1D> DecayLength_peak;
+  std::vector<TH1D> DecayLength_sideband;
+  std::vector<TH1D> DecayLength_prompt;
+  std::vector<TH1D> DecayLength_non_prompt;
 
+  std::vector<TH1D> Muon1_Pt_peak;
+  std::vector<TH1D> Muon1_Pt_sideband;
+  std::vector<TH1D> Muon1_Pt_compare;
+  std::vector<TH1D> Muon1_Eta_peak;
+  std::vector<TH1D> Muon1_Eta_sideband;
+  std::vector<TH1D> Muon1_Eta_compare;
 
-  std::vector<TH1D> Track_PtB;
-  std::vector<TH1D> Track_EtaB;
-  std::vector<TH1D> Muon1_PtB;
-  std::vector<TH1D> Muon1_EtaB;
-  std::vector<TH1D> Muon2_PtB;
-  std::vector<TH1D> Muon2_EtaB;
-  
+  //Sync variables
+  double sync_pt_1;
+  double sync_pt_2;
+  double sync_pt_3;
 
-  std::vector<TH1D> Track_PtC;
-  std::vector<TH1D> Track_EtaC;
-  std::vector<TH1D> Muon1_PtC;
-  std::vector<TH1D> Muon1_EtaC;
-  std::vector<TH1D> Muon2_PtC;
-  std::vector<TH1D> Muon2_EtaC;
-  
+  double sync_eta_1;
+  double sync_eta_2;
+  double sync_eta_3;
 
-  std::vector<TH1D> Track_PtD;
-  std::vector<TH1D> Track_EtaD;
-  std::vector<TH1D> Muon1_PtD;
-  std::vector<TH1D> Muon1_EtaD;
-  std::vector<TH1D> Muon2_PtD;
-  std::vector<TH1D> Muon2_EtaD;
- 
- 
-  std::vector<TH1D> Track_PtE;
-  std::vector<TH1D> Track_EtaE;
-  std::vector<TH1D> Muon1_PtE;
-  std::vector<TH1D> Muon1_EtaE;
-  std::vector<TH1D> Muon2_PtE;
-  std::vector<TH1D> Muon2_EtaE;
- 
- 
-  std::vector<TH1D> Track_PtF;
-  std::vector<TH1D> Track_EtaF;
-  std::vector<TH1D> Muon1_PtF;
-  std::vector<TH1D> Muon1_EtaF;
-  std::vector<TH1D> Muon2_PtF;
-  std::vector<TH1D> Muon2_EtaF;
- 
-  std::vector<TH1D> Muon1_PtF_peak;
-  std::vector<TH1D> Muon1_PtF_sideband;
-  std::vector<TH1D> Muon1_PtF_substracted;
+  double muon_1_isGlob;
+  double muon_2_isGlob;
 
-  std::vector<TH1D> DsDecayL;
+  double muon_1_isTrack;
+  double muon_2_isTrack;
 
- 
+  double phi_mass;
+  double ds_mass;
+
+  double evt,run,lumi;
+
+  double sync_DsPhiPiVtx_x;
+  double sync_DsPhiPiVtx_y;
+  double sync_DsPhiPiVtx_z;
+  double sync_DsPhiPiVtx_Chi2;
+
 };
 #endif
