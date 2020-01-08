@@ -48,7 +48,7 @@ $InputDir="/afs/cern.ch/work/$letter/$UserID/InputTest";
 $OutputDir="/afs/cern.ch/work/$letter/$UserID/Analysis";
 $CodeDir="../Code";
 $set="ControlSample_";
-$CMSSWRel="10_2_5";
+$CMSSWRel="10_2_18";
 $maxdata=20;
 $maxmc=5;
 $maxemb=20;
@@ -65,7 +65,7 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n                                                                        --Branch <branch> developing branch; Default: master ");
     printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
     printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc7_amd64_gcc700 ");
-    printf("\n                                                    --CMSSWRel <X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_10_2_5  \n\n");
+    printf("\n                                                    --CMSSWRel <X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_10_2_18  \n\n");
     printf("\n./todo.pl --Local <Input.txt>                      INTENTED FOR SMALL SCALE TESTS ONLY");  
     printf("\n                                                   Configure a directory to run locally. <InputPar.txt> name of file that");
     printf("\n                                                   contains input command template.");
