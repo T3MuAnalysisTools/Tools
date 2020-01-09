@@ -415,10 +415,8 @@ void  DsToPhiPi::doEvent(){
   value.at(Mu1dR) = 0;
   value.at(Mu2dR) = 0;
   value.at(TrkdR) = 0;
-  std::cout << "NTwoMuonsTrack() = " << Ntp->NTwoMuonsTrack() << std::endl;
-  if(Ntp->NTwoMuonsTrack()!=0 /*&& Ntp->NThreeMuons() == 0*/){
+  if(Ntp->NTwoMuonsTrack()!=0 && Ntp->NThreeMuons() == 0){
     value.at(is2MuTrk) = 1;
-    std::cout << "There is a 2MuTrk" << std::endl;
   }
 
   if (value.at(is2MuTrk)==1){
