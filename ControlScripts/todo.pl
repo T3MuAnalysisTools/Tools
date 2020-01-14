@@ -262,6 +262,9 @@ if( $ARGV[0] eq "--Local" ){
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
 
+
+
+
     # generate compile script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));
@@ -459,6 +462,10 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"gmake all \" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/compile")) ;
  
+    # copy helpers
+    system(sprintf("cp scripts/run_rest.py  $OutputDir/workdir$set/"));
+
+
     # Generate Combine script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Combine")) ;
     system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Combine"));
