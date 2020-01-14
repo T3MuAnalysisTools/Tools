@@ -1,9 +1,9 @@
 Thin: False
 Skim: False
 HistoFile: InputData/HistoScaletoLumi.txt
-Analysis: SignalSelector
+Analysis: FillTMVATrees
 UncertType: default
-SkimInfo: InputData/SkimSummary_2018Data.txt
+SkimInfo: InputData/SkimSummary_2017_Production_08_01_20.log
 Lumi: 58111.142
 PlotStyle: style2
 
