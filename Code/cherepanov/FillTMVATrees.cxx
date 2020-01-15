@@ -1064,8 +1064,8 @@ void  FillTMVATrees::doEvent(){
 	     sqrt(  pow(Ntp->IsolationTrack_dzSV(final_idx,i),2)   +   pow(Ntp->IsolationTrack_dxySV(final_idx,i),2)) < 0.05){
 
 
-	    if( sqrt(  pow(Ntp->IsolationTrack_dzPV(final_idx,i),2)   +   pow(Ntp->IsolationTrack_dxyPV(final_idx,i),2) ) <  dca_temp){
-	      dca_temp = sqrt(  pow(Ntp->IsolationTrack_dzPV(final_idx,i),2)   +   pow(Ntp->IsolationTrack_dxyPV(final_idx,i),2));
+	    if( sqrt(  pow(Ntp->IsolationTrack_dzPV(final_idx,i),2)   +   pow(Ntp->IsolationTrack_dxyPV(final_idx,i),2) ) <  dcaPV_temp){
+	      dcaPV_temp = sqrt(  pow(Ntp->IsolationTrack_dzPV(final_idx,i),2)   +   pow(Ntp->IsolationTrack_dxyPV(final_idx,i),2));
 	      TrackIndex_closestToPV = i;
 	    }
 
