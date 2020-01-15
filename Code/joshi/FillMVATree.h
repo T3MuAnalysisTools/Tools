@@ -4,6 +4,7 @@
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
+#include "TRandom.h"
 
 class FillMVATree : public Selection {
 
@@ -14,7 +15,7 @@ class FillMVATree : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut, GenMatch, NCuts};
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut, GenMatch, NCuts};
 
  protected:
   virtual void doEvent();  
@@ -23,6 +24,22 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   TTree * TMVA_Tree;
 
  private:
+  
+  int getHLTPath(float);
+  
+  // trigger selector
+  TString hlt_map[5] = {
+  "HLT_Mu12_IP6",
+  "HLT_Mu9_IP6",
+  "HLT_Mu9_IP5",
+  "HLT_Mu8_IP5",
+  "HLT_Mu7_IP4",
+  };
+
+  float cumlumi[5] = {0.215, 0.370, 0.689, 0.904, 1.0};
+  //float cumlumi[] = {5.8, 10.0, 18.6, 24.4, 27.0}; 
+  TRandom rand;
+  
   // Selection Variables
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
@@ -50,11 +67,14 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
   std::vector<TH1D> Isolation_MinDist;
   std::vector<TH1D> VertexMuMaxD0SigReco;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
-
+  
+  std::vector<TH2D> HLT_overlap;
 
  // categorization variables
  bool MC;
  float category;
+ bool threeGlobal;
+ int hltpath;
 
  //commmon variables (2016 + 2017)
  float var_vertexKFChi2; // <= should be changed to normalized KF chi2
@@ -85,5 +105,8 @@ enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, Ph
  float var_RelPt_Mu1Ta;
  float var_maxdca;
  float var_RelPt_Mu1Tau;
+
+ unsigned int doubleMu_counter;
+unsigned int singleMu_counter;
 };
 #endif

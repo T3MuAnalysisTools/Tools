@@ -18,6 +18,9 @@ FillMVATree::FillMVATree(TString Name_, TString id_):
 	 tauMassResCutHigh(0.01)
 {
     // This is a class constructor;
+    doubleMu_counter = 0;
+    singleMu_counter = 0;
+    rand.SetSeed(6745);
 }
 
 
@@ -35,6 +38,8 @@ void  FillMVATree::Configure(){
 	 TMVA_Tree= new TTree("tree","tree");
 	 TMVA_Tree->Branch("MC",&MC);
 	 TMVA_Tree->Branch("category",&category);
+    TMVA_Tree->Branch("threeGlobal",&threeGlobal);
+    TMVA_Tree->Branch("hltpath",&hltpath);
 
 	 //commmon variables (2016 + 2017)
 	 TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2); // <= should be changed to normalized KF chi2
@@ -168,12 +173,12 @@ void  FillMVATree::Configure(){
 
     } 
 
-    Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
-    VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
-    MuonglbkinkSum  =HConfig.GetTH1D(Name+"_MuonglbkinkSum","MuonglbkinkSum",50,0.,50," #sum  #mu glb kink #chi^{2}","Events");
-    FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
-    SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
-
+  Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
+  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
+  MuonglbkinkSum  =HConfig.GetTH1D(Name+"_MuonglbkinkSum","MuonglbkinkSum",50,0.,50," #sum  #mu glb kink #chi^{2}","Events");
+  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
+  SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
+  HLT_overlap=HConfig.GetTH2D(Name+"_HLT_overlap","HLT overlap",2,-0.5,1.5,2,-0.5,1.5,"SingleMu","DoubleMu");
   Muon_segmentCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_segmentCompatibility_min","Muon_segmentCompatibility_min",50,0.,1,"Inner Track and muon segment match min ","Events");
   Muon_HCALCompatibility_min  = HConfig.GetTH1D(Name+"_Muon_HCALCompatibility_min","Muon_ECALCompatibility_min",50,0.,1,"MIP Likelihood min ","Events");
   //New variables
@@ -208,33 +213,97 @@ void  FillMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&VertexDCAMax);
   Extradist1d.push_back(&Isolation_MinDist);
   Extradist1d.push_back(&VertexMuMaxD0SigReco);
+  Extradist2d.push_back(&HLT_overlap);
 
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
   
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  ///t/////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
 void  FillMVATree::doEvent(){ 
-    unsigned int t;
-    int id(Ntp->GetMCID());
-	 bool hlt_pass = false;
+  unsigned int t;
+  
+  bool threeGlobal = false;
+  int id(Ntp->GetMCID());
 
-    if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
-
-    for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
-      TString HLT = Ntp->HLTName(iTrigger);
-      if( HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger)==1) hlt_pass = true;
-		if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) hlt_pass = true;
+  if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
+  bool HLTOk(false);
+  bool L1Ok(false);
+  bool DoubleMu_fired(false);
+  bool Parked_fired(false);
+  int randomIdx = getHLTPath(rand.Rndm());
+  
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLT = Ntp->HLTName(iTrigger);
+    if(id==1){
+ 	   if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ){ doubleMu_counter++; DoubleMu_fired = true;}
+      if(HLT.Contains("HLT_Mu") && HLT.Contains("IP") && Ntp->HLTDecision(iTrigger)  ) {singleMu_counter++; HLTOk = true; Parked_fired = true;}
+ 	   }
+	  if(id!=1){
+ 	    //if (HLT.Contains(hlt_map[randomIdx]) && Ntp->HLTDecision(iTrigger) ) { singleMu_counter++; HLTOk = true; Parked_fired = true;} 
+       if(HLT.Contains("HLT_Mu") && HLT.Contains("IP") && Ntp->HLTDecision(iTrigger)  ) {singleMu_counter++; HLTOk = true; Parked_fired = true;}
+       if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) { doubleMu_counter++; DoubleMu_fired =true;}
+       }
     }
+  
+  hltpath = randomIdx;
+  if(!DoubleMu_fired && Parked_fired) cout<<hlt_map[randomIdx]<<" fired!"<<endl;
+ 
+  bool DoubleMuFired(0);
+  bool TripleMuFired(0);
 
-	 value.at(TriggerOk) = hlt_pass;
-    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
-    unsigned int final_idx = 0;
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    
+    if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+      if(L1TriggerName.Contains("L1_TripleMu_5_3_0_DoubleMu_5_3_OS_Mass_Max17"))      TripleMuFired = Ntp-> L1Decision(il1);
+      }
+ 
+    if(id!=1){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+      if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))TripleMuFired = Ntp-> L1Decision(il1);
+      }
+ 
+    if(id==1 && (Ntp->WhichEra(2017).Contains("RunC") or Ntp->WhichEra(2017).Contains("RunD") or Ntp->WhichEra(2017).Contains("RunF")  or Ntp->WhichEra(2017).Contains("RunE"))){
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
+      if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))TripleMuFired = Ntp-> L1Decision(il1);
+      }
+    }
+  
+  //if(DoubleMuFired  or TripleMuFired) L1Ok = true;
+  L1Ok = true;
+  //value.at(TriggerOk)=(HLTOk && L1Ok);
+  value.at(TriggerOk) = (!DoubleMu_fired && Parked_fired);
+  pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
+
+  unsigned int final_idx = 0;
+  double min_chi2(99.);
+  double mindca_iso05 = 99.0;
+  double mindca_iso = 99.0;
+  double mindca_tau = 99.0;
+
+  double sumPtTracks_mu1 = 0;
+  double sumPtTracks_mu2 = 0;
+  double sumPtTracks_mu3 = 0;
+  
+  double sumPtTracks_tau = 0.;
+  double sumPtTracks_iso05 = 0.;
+
+  int nTracks_iso05 = 0;
+  int nTracks_tau = 0;
+
+  for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
+    if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
+      min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
+      final_idx = i_idx;
+      }
+    }
 
     value.at(TriggerMatch)=0;
     value.at(SignalCandidate)=0;
@@ -245,25 +314,29 @@ void  FillMVATree::doEvent(){
     value.at(TriggerMatch)=0;
     value.at(MuonID)=0;
     value.at(TauMassCut)=0;
-
     if(Ntp->NThreeMuons()>0){
       value.at(SignalCandidate) = Ntp->NThreeMuons();
       unsigned int mu1_idx = Ntp->ThreeMuonIndices(final_idx).at(0); 
       unsigned int mu2_idx = Ntp->ThreeMuonIndices(final_idx).at(1); 
       unsigned int mu3_idx = Ntp->ThreeMuonIndices(final_idx).at(2);
-      // value.at(MuonID) =  (Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu1_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
+      
+		// value.at(MuonID) =  (Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu1_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
       //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu2_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
       //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu3_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium));
-      //----------------  alternatively require two leading muons to be global and trailing muon to be tracker 
+      //----------------  alternatively require two leading muons to be global and trailing muon to be tracker
+
       unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
       unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
-      //
+      
+		//
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
             Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
             (Ntp->Muon_isGlobalMuon(mu3_pt_idx) || Ntp->Muon_isTrackerMuon(mu3_pt_idx)));
       //------------------------------------------------------------------------------------------------------
 
+	   if (Ntp->Muon_isGlobalMuon(mu3_pt_idx)) threeGlobal = true;
+      
       value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
       value.at(Mu2PtCut) = Ntp->Muon_P4(mu2_pt_idx).Pt();
       value.at(Mu3PtCut) = Ntp->Muon_P4(mu3_pt_idx).Pt();
@@ -292,8 +365,7 @@ void  FillMVATree::doEvent(){
       }
       value.at(TauMassCut) = TauLV.M();
     }
-
-	 if (id!=1) value.at(GenMatch) = Ntp->TauGenMatch(final_idx);
+	 if (id!=1 && Ntp->NThreeMuons()>0) value.at(GenMatch) = Ntp->TauGenMatch(final_idx);
 	 else value.at(GenMatch) = 1;
     
 	 pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
@@ -302,9 +374,8 @@ void  FillMVATree::doEvent(){
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-	 pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 9*PDG_Var::Phi_width());
-	 pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width());
-	 
+	 pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 8*PDG_Var::Phi_width());
+	 pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 3*PDG_Var::Omega_width()); 
 	 pass.at(GenMatch) = value.at(GenMatch);
 
     if(id!=1) pass.at(TauMassCut) = true;
@@ -319,7 +390,6 @@ void  FillMVATree::doEvent(){
     bool status=AnalysisCuts(t,w,wobs);
     
 	 if(status){
-    //    std::cout<<" mindist   "<< Ntp->Isolation_MinDist(final_idx) << std::endl;
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
@@ -355,7 +425,6 @@ void  FillMVATree::doEvent(){
     TLorentzVector MuonSS2 = Ntp->Muon_P4(ss2_mu_idx);
 
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
-    
     TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
 
     //    TauMass.at(t).Fill(TauLV.M(),1);
@@ -372,33 +441,85 @@ void  FillMVATree::doEvent(){
 								   Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx))),w);
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
+	
+   double maxMuondR = std::max({Muon1LV.DeltaR(TauLV), Muon2LV.DeltaR(TauLV), Muon3LV.DeltaR(TauLV)});
+	double minMuonPt = std::min({Muon1LV.Pt(), Muon2LV.Pt(), Muon3LV.Pt()});
 
+    // Isolation algorithm
+	 for (int it=0; it<Ntp->NIsolationTrack(final_idx); it++){
+	    double dxy_track = Ntp->IsolationTrack_dxySV(final_idx, it);
+		 double dz_track = Ntp->IsolationTrack_dzSV(final_idx, it);
+		 TLorentzVector TrackLV = Ntp->IsolationTrack_p4(final_idx, it);
+		 double dca_fv = TMath::Sqrt(pow(dxy_track, 2)+ pow(dz_track, 2));
+		 
+		 double dr_tau = TauLV.DeltaR(TrackLV); 
+		 double dr_mu1 = Muon1LV.DeltaR(TrackLV);
+		 double dr_mu2 = Muon2LV.DeltaR(TrackLV);
+		 double dr_mu3 = Muon3LV.DeltaR(TrackLV);
+		 
+		 // Isolation 1
+		 if ( dca_fv<0.5 && TrackLV.Pt()<0.33*minMuonPt && dr_tau<3*maxMuondR ){
+		    sumPtTracks_tau += TrackLV.Pt();
+			 nTracks_tau++;
+			 if (dca_fv < mindca_tau) mindca_tau = dca_fv;
+		 }
+		 
+		 // Isolation 2
+		 if (TrackLV.Pt()<1.0) {
+		    continue;
+			 }
 
-    var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(final_idx);
+		 if (dca_fv < mindca_iso) mindca_iso = dca_fv;
+       
+		 // Isolation 3 (within dR = 0.5 of tau)
+		 if (dr_tau<0.5 && dca_fv<0.5){
+		    sumPtTracks_iso05 += TrackLV.Pt();
+			 nTracks_iso05++;
+		    if(dca_fv<mindca_iso05) mindca_iso05 = dca_fv;
+		    }
+		 
+		 // Isolation 4 (Muon isolation)
+		 if (dr_mu1 < 0.3 && Ntp->IsolationTrack_DocaMu1(final_idx, it) < 0.1 ) sumPtTracks_mu1 += TrackLV.Pt();
+		 if (dr_mu2 < 0.3 && Ntp->IsolationTrack_DocaMu2(final_idx, it) < 0.1 ) sumPtTracks_mu2 += TrackLV.Pt();
+		 if (dr_mu3 < 0.3 && Ntp->IsolationTrack_DocaMu3(final_idx, it) < 0.1 ) sumPtTracks_mu3 += TrackLV.Pt();
+		 }
+	 // Relative Pt calculation
+	 double mu1_relPt = sumPtTracks_mu1/Muon1LV.Pt();
+	 double mu2_relPt = sumPtTracks_mu2/Muon2LV.Pt();
+	 double mu3_relPt = sumPtTracks_mu3/Muon3LV.Pt();
+
+	 // Categorization variables
+    var_Eta_Tau = TauLV.Eta();
+	 var_tauMassRes = tauMassRes;
+
+	 // Muon/Tau kinematic variables
+	 var_pmin = std::min(Ntp->Muon_P4(Muon_index_1).P(), std::min(Ntp->Muon_P4(Muon_index_2).P(), Ntp->Muon_P4(Muon_index_3).P()));
+    var_RelPt_Mu1Tau = Ntp->Muon_P4(Muon_index_1).Pt()/TauLV.Pt();
+    var_MuMu_mindR = std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)});
+    var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
+
+	 // Muon ID variables
+    var_max_cLP = std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1), std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2), Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)));
+    var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_1), std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_2), Ntp->Muon_combinedQuality_trkKink(Muon_index_3)));
+    var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
+    var_MinMIPLikelihood = std::min({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
+    var_sumMuTrkKinkChi2= (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
+    
+	 // vertex variables
+	 var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
+    var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)});
     var_svpvTauAngle = SVPV.Angle(TauLV.Vect());
     var_flightLenSig = sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
 							    Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx)));
-    var_sumMuTrkKinkChi2= (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
-    var_segCompMuMin  = std::min({Ntp->Muon_segmentCompatibility(Muon_index_1),Ntp->Muon_segmentCompatibility(Muon_index_2),Ntp->Muon_segmentCompatibility(Muon_index_3)});
-    var_MinMIPLikelihood = std::min({Ntp->Muon_caloCompatibility(Muon_index_1),Ntp->Muon_caloCompatibility(Muon_index_2),Ntp->Muon_caloCompatibility(Muon_index_3)});
-
-
-    var_MuMu_mindR = std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)});
-    var_RelPt_Mu1Tau = Ntp->Muon_P4(Muon_index_1).Pt()/TauLV.Pt();
-    var_Eta_Tau = TauLV.Eta();
-    var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)});
-    var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
-    var_MuTau_maxdR = std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)});
-	 var_tauMassRes = tauMassRes;
-	 var_tauMass = TauLV.M();
-    
-	 var_pmin = std::min(Ntp->Muon_P4(Muon_index_1).P(), std::min(Ntp->Muon_P4(Muon_index_2).P(), Ntp->Muon_P4(Muon_index_3).P()));
-    var_max_cLP = std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1), std::max(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2), Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)));
-    var_max_tKink = std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_1), std::max(Ntp->Muon_combinedQuality_trkKink(Muon_index_2), Ntp->Muon_combinedQuality_trkKink(Muon_index_3)));
-    var_MinD0Significance = MinD0Significance;
+    var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(final_idx);
+	 // Isolation variables
+	 var_MinD0Significance = MinD0Significance;
     var_MaxD0Significance = MaxD0Significance;
-    var_mindca_iso = Ntp->Isolation_MinDist(final_idx);
-    var_trk_relPt = Ntp->Isolation_MuMaxRelIso(final_idx);
+    var_mindca_iso = mindca_iso05;
+    var_trk_relPt = std::max({mu1_relPt, mu2_relPt, mu3_relPt});
+	 
+	 // Spectator variables
+	 var_tauMass = TauLV.M();
 
 	 if (id==1) MC=0;
 	 else  MC=1;
@@ -416,12 +537,12 @@ void  FillMVATree::doEvent(){
 		 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh) category = 2;
 		 	if (tauMassRes>tauMassResCutHigh) category = 3;
 			}
-	 if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
-	 	
+	 
+    if (Ntp->Vertex_RefitPVisValid(final_idx)==1){
 		TMVA_Tree->Fill();
 
 		 // ----- Fill the histograms -----
-    	 VertexDCAMax.at(t).Fill(var_maxdca,w);
+   	 VertexDCAMax.at(t).Fill(var_maxdca,w);
 		 SVPVTauDirAngle.at(t).Fill(var_svpvTauAngle);
        FLSignificance.at(t).Fill(var_flightLenSig);
        VertexChi2KF.at(t).Fill(var_vertexKFChi2);
@@ -435,8 +556,9 @@ void  FillMVATree::doEvent(){
 		 TauEta.at(t).Fill(TauLV.Eta());
 		 VertexDCAMax.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)}));
 		 Isolation_MinDist.at(t).Fill(Ntp->Isolation_MinDist(final_idx),w);
-		 VertexMuMaxD0SigReco.at(t).Fill(MaxD0Significance,1);
-	    }
+		 VertexMuMaxD0SigReco.at(t).Fill(MaxD0Significance,w);
+       HLT_overlap.at(t).Fill(Parked_fired, DoubleMu_fired,w);
+		}
     }
 }
 
@@ -463,6 +585,8 @@ void  FillMVATree::Finish(){
     //    }
   }
   */
+    cout<<singleMu_counter<<endl;
+    cout<<doubleMu_counter<<endl;
     file= new TFile("FillMVATreeInput.root","recreate");
     TMVA_Tree->SetDirectory(file);
 
@@ -471,4 +595,11 @@ void  FillMVATree::Finish(){
 
     Selection::Finish();
 
+}
+
+int FillMVATree::getHLTPath(float num){
+   for (int j=0; j<5; j++){
+      if (num < cumlumi[j]) return j;
+ 	}
+ 	return -1;
 }
