@@ -48,12 +48,11 @@ $InputDir="/afs/cern.ch/work/$letter/$UserID/InputTest";
 $OutputDir="/afs/cern.ch/work/$letter/$UserID/Analysis";
 $CodeDir="../Code";
 $set="ControlSample_";
-$CMSSWRel="10_4_0";
-$Cleaning ="NO";
+$CMSSWRel="10_2_18";
 $maxdata=20;
 $maxmc=5;
 $maxemb=20;
-$ARCH="slc6_amd64_gcc630";
+$ARCH="slc7_amd64_gcc700";
 $PWD=getcwd;
 $DsdevBranch = "master";
 
@@ -65,8 +64,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n./todo.pl --DsTauTo3MNtuple <dir>                  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
     printf("\n                                                                        --Branch <branch> developing branch; Default: master ");
     printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
-    printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc6_amd64_gcc630 ");
-    printf("\n                                                    --CMSSWRel <CMSSW_X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_9_4_4  \n\n");
+    printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc7_amd64_gcc700 ");
+    printf("\n                                                    --CMSSWRel <X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_10_2_18  \n\n");
     printf("\n./todo.pl --Local <Input.txt>                      INTENTED FOR SMALL SCALE TESTS ONLY");  
     printf("\n                                                   Configure a directory to run locally. <InputPar.txt> name of file that");
     printf("\n                                                   contains input command template.");
@@ -262,6 +261,9 @@ if( $ARGV[0] eq "--Local" ){
     # generate init script 
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
+
+
+
 
     # generate compile script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
@@ -460,6 +462,10 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"gmake all \" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd $OutputDir/workdir$set/ \" >> $OutputDir/workdir$set/compile")) ;
  
+    # copy helpers
+    system(sprintf("cp scripts/run_rest.py  $OutputDir/workdir$set/"));
+
+
     # Generate Combine script 
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/Combine")) ;
     system(sprintf("echo \"export workdir=\\\"$OutputDir/workdir$set/\\\"\" >> $OutputDir/workdir$set/Combine"));
