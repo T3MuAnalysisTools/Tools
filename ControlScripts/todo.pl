@@ -482,7 +482,7 @@ if( $ARGV[0] eq "--DCache" ){
 
     # Generate SubmitManual and set_env 
     system(sprintf("cp  subs  $OutputDir/workdir$set/;"));
-
+    system(sprintf("cp  SubmitManual  $OutputDir/workdir$set/;"));
 
     # Setup Condor Combine scripts
     system(sprintf("echo \"universe     = vanilla      \"  >> $OutputDir/workdir$set/Condor_Combine"));
