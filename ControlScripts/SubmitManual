@@ -4,11 +4,7 @@ verbosity=$(grep SetLevel Code/Analysis.cxx | grep -c -e Debug -e Verbose)
     echo 'ERROR: Please make sure to set the verbosity level to Info in Analysis.cxx, otherwise your log-files will break condor! Abort...' 
     exit ${verbosity}
   fi
-
   BASEDIR="$PWD"
-
-  echo $BASEDIR
-
   if [ "${1}"  == "--help" ]; then
       echo "Options for running this configuration file:"
       echo "--help                    Prints this message"
