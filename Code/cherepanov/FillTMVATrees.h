@@ -176,6 +176,32 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> Iso08MuMax;
   std::vector<TH1D> Iso08MuMin;
 
+  std::vector<TH1D> MinMatchedStations;
+  std::vector<TH1D> MaxMatchedStations;
+  std::vector<TH1D> Mu1MatchedStations;
+  std::vector<TH1D> Mu2MatchedStations;
+  std::vector<TH1D> Mu3MatchedStations;
+
+
+  std::vector<TH1D> MinMuon_numberOfChambers;
+  std::vector<TH1D> MaxMuon_numberOfChambers;
+  std::vector<TH1D> Mu1Muon_numberOfChambers;
+  std::vector<TH1D> Mu2Muon_numberOfChambers;
+  std::vector<TH1D> Mu3Muon_numberOfChambers;
+	  
+
+
+  std::vector<TH1D> MinMuon_numberOfMatches;
+  std::vector<TH1D> MaxMuon_numberOfMatches;
+  std::vector<TH1D> Mu1Muon_numberOfMatches;
+  std::vector<TH1D> Mu2Muon_numberOfMatches;
+  std::vector<TH1D> Mu3Muon_numberOfMatches;
+  
+  std::vector<TH1D> MinMuon_hitPattern_numberOfValidMuonHits;
+  std::vector<TH1D> MaxMuon_hitPattern_numberOfValidMuonHits;
+  std::vector<TH1D> Mu1Muon_hitPattern_numberOfValidMuonHits;
+  std::vector<TH1D> Mu2Muon_hitPattern_numberOfValidMuonHits;
+  std::vector<TH1D> Mu3Muon_hitPattern_numberOfValidMuonHits;
 
   //------------ Mini MVA tree variables
 
@@ -201,8 +227,6 @@ class FillTMVATrees : public Selection {
   float var_ntracks;
   float var_relPt;
   float var_isoMax;
-  float var_mu3d0VertexSig;
-  float var_maxdca;
 
   float var_MaxdeltaMuZ;
   float var_MindeltaMuZ;
@@ -210,5 +234,128 @@ class FillTMVATrees : public Selection {
   float var_minMuonsDca;
   float var_nsv;
 
+
+  float var_VertexMu1D0SigPVReco;
+  float var_VertexMu2D0SigPVReco;
+  float var_VertexMu3D0SigPVReco;
+	
+  float var_MaxD0SigPV;
+  float var_MinD0SigPV;
+	
+
+
+  float var_VertexMu1D0SigBSReco;
+  float var_VertexMu2D0SigBSReco;
+  float var_VertexMu3D0SigBSReco;
+
+  float var_MaxD0SigBS;
+  float var_MinD0SigBS;
+	
+
+
+  float var_VertexMu1D0SigSVReco;
+  float var_VertexMu2D0SigSVReco;
+  float var_VertexMu3D0SigSVReco;
+
+
+  float var_MaxD0SigSV;
+  float var_MinD0SigSV;
+	
+
+  float var_MinMuon_chi2LocalPosition;
+  float var_MaxMuon_chi2LocalPosition;
+	
+	
+  float var_MinMuon_chi2LocalMomentum;
+  float var_MaxMuon_chi2LocalMomentum;
+	
+	
+	
+  float var_MintrkKink;
+  float var_MaxtrkKink;
+  float var_MinglbKink;
+  float var_MaxglbKink;
+	
+  float var_MuonglbkinkSum;
+
+  float var_MaxVertexPairQuality;
+  float var_MinVertexPairQuality;
+	
+
+
+
+
+  float var_Iso02;
+  float var_Iso04;
+  float var_Iso06;
+  float var_Iso08;
+  float var_Iso1;
+  float var_Iso12;
+
+  float var_Iso02Mu1;
+  float var_Iso04Mu1;
+  float var_Iso06Mu1;
+  float var_Iso08Mu1;
+  float var_Iso1Mu1;
+  float var_Iso12Mu1;
+
+
+
+  float var_Iso02Mu2;
+  float var_Iso04Mu2;
+  float var_Iso06Mu2;
+  float var_Iso08Mu2;
+  float var_Iso1Mu2;
+  float var_Iso12Mu2;
+
+  float var_Iso02Mu3;
+  float var_Iso04Mu3;
+  float var_Iso06Mu3;
+  float var_Iso08Mu3;
+  float var_Iso1Mu3;
+  float var_Iso12Mu3;
+
+  float var_Iso08MuMax;
+  float var_Iso08MuMin;
+
+  float var_NtracksClose;
+  float var_Muon1Pt;
+  float var_Muon2Pt;
+  float var_Muon3Pt;
+  float var_MindcaTrackSV;
+
+  float var_Mu1TrackMass;
+  float var_Mu2TrackMass;
+  float var_Mu3TrackMass;
+ 
+  float var_MinMatchedStations;
+  float var_MaxMatchedStations;
+  float var_Mu1MatchedStations;
+  float var_Mu2MatchedStations;
+  float var_Mu3MatchedStations;
+
+
+  float var_MinMuon_numberOfChambers;
+  float var_MaxMuon_numberOfChambers;
+  float var_Mu1Muon_numberOfChambers;
+  float var_Mu2Muon_numberOfChambers;
+  float var_Mu3Muon_numberOfChambers;
+
+
+
+  float var_MinMuon_numberOfMatches;
+  float var_MaxMuon_numberOfMatches;
+  float var_Mu1Muon_numberOfMatches;
+  float var_Mu2Muon_numberOfMatches;
+  float var_Mu3Muon_numberOfMatches;
+	
+  float var_MinMuon_hitPattern_numberOfValidMuonHits;
+  float var_MaxMuon_hitPattern_numberOfValidMuonHits;
+  float var_Mu1Muon_hitPattern_numberOfValidMuonHits;
+  float var_Mu2Muon_hitPattern_numberOfValidMuonHits;
+  float var_Mu3Muon_hitPattern_numberOfValidMuonHits;
+
+
+  float var_dcaTrackPV;
 };
 #endif
