@@ -8,7 +8,7 @@ BASE_DIR = ''
 parser = argparse.ArgumentParser()
 
 #parser.add_argument("--verbose", help="print event by event output", action="store_true")
-parser.add_argument("--classifier", help="name of the ouput classifier", default="MyTMVAClassification.cxx")
+parser.add_argument("--classifier", help="name of the ouput classifier", default="MyTMVAClassification")
 
 args = parser.parse_args()
 # ----------------------------------------
