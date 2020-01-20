@@ -99,8 +99,17 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> MinMuon_chi2LocalMomentum;
   std::vector<TH1D> MaxMuon_chi2LocalMomentum;
 
+  std::vector<TH1D> Muon1_chi2LocalMomentum;
+  std::vector<TH1D> Muon2_chi2LocalMomentum;
+  std::vector<TH1D> Muon3_chi2LocalMomentum;
+
+
   std::vector<TH1D> MaxMuon_chi2LocalPosition;
   std::vector<TH1D> MinMuon_chi2LocalPosition;
+
+  std::vector<TH1D> Muon1_chi2LocalPosition;
+  std::vector<TH1D> Muon2_chi2LocalPosition;
+  std::vector<TH1D> Muon3_chi2LocalPosition;
 
   std::vector<TH1D> MintrkKink;
   std::vector<TH1D> MaxtrkKink;
@@ -203,6 +212,27 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> Mu2Muon_hitPattern_numberOfValidMuonHits;
   std::vector<TH1D> Mu3Muon_hitPattern_numberOfValidMuonHits;
 
+
+  std::vector<TH1D> NBJet4pi;
+  std::vector<TH1D> BTagCSV;
+  std::vector<TH1D> BTagMVA;
+  std::vector<TH1D> BTagCVSB;
+
+
+  std::vector<TH1D> NBJet4piSH;
+  std::vector<TH1D> NBJet4piOH;
+
+  std::vector<TH1D> BTagCSVSH;
+  std::vector<TH1D> BTagMVASH;
+  std::vector<TH1D> BTagCVSBSH;
+
+  std::vector<TH1D> BTagCSVOH;
+  std::vector<TH1D> BTagMVAOH;
+  std::vector<TH1D> BTagCVSBOH;
+
+
+
+
   //------------ Mini MVA tree variables
 
 
@@ -264,15 +294,26 @@ class FillTMVATrees : public Selection {
 
   float var_MinMuon_chi2LocalPosition;
   float var_MaxMuon_chi2LocalPosition;
+
+  float var_Muon1_chi2LocalPosition;
+  float var_Muon2_chi2LocalPosition;
+  float var_Muon3_chi2LocalPosition;
 	
 	
   float var_MinMuon_chi2LocalMomentum;
   float var_MaxMuon_chi2LocalMomentum;
-	
-	
+
+  float var_Muon1_chi2LocalMomentum;
+  float var_Muon2_chi2LocalMomentum;
+  float var_Muon3_chi2LocalMomentum;
 	
   float var_MintrkKink;
   float var_MaxtrkKink;
+
+  float var_Muon1trkKink;
+  float var_Muon2trkKink;
+  float var_Muon3trkKink;
+
   float var_MinglbKink;
   float var_MaxglbKink;
 	
