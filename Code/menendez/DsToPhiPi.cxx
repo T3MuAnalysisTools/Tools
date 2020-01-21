@@ -29,27 +29,6 @@ DsToPhiPi::~DsToPhiPi(){
 
 void  DsToPhiPi::Configure(){
 
-  //Sync_tree= new TTree("tree","tree");
-  //Sync_tree->Branch("sync_pt_1",&sync_pt_1);
-  //Sync_tree->Branch("sync_pt_2",&sync_pt_2);
-  //Sync_tree->Branch("sync_pt_3",&sync_pt_3);
-
-  //Sync_tree->Branch("sync_eta_1",&sync_eta_1);
-  //Sync_tree->Branch("sync_eta_2",&sync_eta_2);
-  //Sync_tree->Branch("sync_eta_3",&sync_eta_3);
-
-  //Sync_tree->Branch("phi_mass",&phi_mass);
-  //Sync_tree->Branch("ds_mass",&ds_mass);
-
-  //Sync_tree->Branch("evt",&evt);
-  //Sync_tree->Branch("run",&run);
-  //Sync_tree->Branch("lumi",&lumi);
-
-  //Sync_tree->Branch("sync_DsPhiPiVtx_x",&sync_DsPhiPiVtx_x);
-  //Sync_tree->Branch("sync_DsPhiPiVtx_y",&sync_DsPhiPiVtx_y);
-  //Sync_tree->Branch("sync_DsPhiPiVtx_z",&sync_DsPhiPiVtx_z);
-  //Sync_tree->Branch("sync_DsPhiPiVtx_Chi2",&sync_DsPhiPiVtx_Chi2);
-
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -58,7 +37,6 @@ void  DsToPhiPi::Configure(){
     if(i==HLTOk)           cut.at(HLTOk)=1;
     if(i==is2MuTrk)        cut.at(is2MuTrk)=1;
     if(i==GlobalMu)        cut.at(GlobalMu)=1;
-    if(i==Chi2Cut)         cut.at(Chi2Cut)=1;
     if(i==MuCharge)        cut.at(MuCharge)=1;
     if(i==Mass2Mu)         cut.at(Mass2Mu)=1;
     if(i==Mu1dR)           cut.at(Mu1dR)=1;
@@ -102,15 +80,6 @@ void  DsToPhiPi::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GlobalMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GlobalMu_",htitle,2,-0.5,1.5,hlabel,"Events"));
     } 
-    else if(i==Chi2Cut){
-      title.at(i)="Triple Vertex Chi Squared $<$ 15";
-      htitle=title.at(i);
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      hlabel="Chi squared of triple vertex";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Chi2Cut_",htitle,50,0,25,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Chi2Cut_",htitle,50,0,25,hlabel,"Events"));
-    }
     else if(i==MuCharge){
       title.at(i)="Muons opposite charge";
       hlabel="Muons have opposite charge";
@@ -283,6 +252,8 @@ void  DsToPhiPi::Configure(){
   control_Track_Eta=HConfig.GetTH1D(Name+"_control_Track_Eta","Psuedorapidity (Track)",60,-2,2,"Track #eta","Events");
   control_Track_Phi=HConfig.GetTH1D(Name+"_control_Track_Phi","Azimuthal angle of (Track)",25,-3.4,3.4,"Track #phi","Events");
 
+  
+
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -409,7 +380,6 @@ void  DsToPhiPi::doEvent(){
   double check_PhiMass = 999.0; 
 
   value.at(is2MuTrk) = 0; 
-  value.at(Chi2Cut) = 0;
   value.at(Mass2Mu) = 0;
   value.at(MuCharge) = 0;
   value.at(Mu1dR) = 0;
@@ -439,7 +409,6 @@ void  DsToPhiPi::doEvent(){
     }
 
     value.at(GlobalMu) = Ntp->Muon_isGlobalMuon(mu1)==1 && Ntp->Muon_isGlobalMuon(mu2)==1;
-    value.at(Chi2Cut) = tmp_chisq;
     value.at(Mass2Mu) = (Ntp->Muon_P4(mu1) + Ntp->Muon_P4(mu2)).M();
     value.at(MuCharge) = Ntp->Muon_charge(mu1)!=Ntp->Muon_charge(mu2);
     value.at(Mu1dR) = (Ntp->TwoMuonsTrack_TriggerMatch_dR(tmp_idx)).at(0);
@@ -455,7 +424,6 @@ void  DsToPhiPi::doEvent(){
   pass.at(L1TOk)= (value.at(L1TOk)/*==cut.at(L1TOk)*/);
   pass.at(HLTOk)= (value.at(HLTOk)/*==cut.at(HLTOk)*/);
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
-  pass.at(Chi2Cut) = value.at(Chi2Cut) > 0 && value.at(Chi2Cut) < 15;
   pass.at(Mass2Mu) = value.at(Mass2Mu) >= 1 && value.at(Mass2Mu) <= 1.04;
   pass.at(MuCharge) = value.at(MuCharge)==cut.at(MuCharge);
   pass.at(Mu1dR) = value.at(Mu1dR) < .03;
@@ -603,49 +571,10 @@ void  DsToPhiPi::doEvent(){
     }
 
 
-    // Fill Sync Plots
-    //TLorentzVector Mu1LV;
-    //TLorentzVector Mu2LV;
-    //TLorentzVector TrackLV = Ntp->Track_P4(track);
-
-    //if(Ntp->Muon_P4(mu1).Pt() > Ntp->Muon_P4(mu2).Pt()){
-    //  Mu1LV = Ntp->Muon_P4(mu1);
-    //  Mu2LV = Ntp->Muon_P4(mu2);
-
-    //}
-    //else {
-
-    //  Mu1LV = Ntp->Muon_P4(mu2);
-    //  Mu2LV = Ntp->Muon_P4(mu1);
-    //}
-
-    //sync_pt_1 = Mu1LV.Pt();
-    //sync_pt_2 = Mu2LV.Pt();
-    //sync_pt_3 = TrackLV.Pt();
-
-    //sync_eta_1 = Mu1LV.Eta();
-    //sync_eta_2 = Mu2LV.Eta();
-    //sync_eta_3 = TrackLV.Eta();
-
-    //phi_mass  = (Mu1LV+Mu2LV).M();
-    //ds_mass  = (Mu1LV+Mu2LV  + TrackLV).M();
-
-    //evt = Ntp->EventNumber();
-    //run = Ntp->RunNumber();
-    //lumi = Ntp->LuminosityBlock();
-
-    //sync_DsPhiPiVtx_Chi2 = Ntp->TwoMuonsTrack_SV_Chi2(tmp_idx);
-
   }
 }
 
 void  DsToPhiPi::Finish(){
-
-  //file= new TFile("Sync_dsphipi_tree_UF.root","recreate");
-  //Sync_tree->SetDirectory(file);
-
-  //file->Write();
-  //file->Close();
 
   int id(Ntp->GetMCID());
   if (id==1) {

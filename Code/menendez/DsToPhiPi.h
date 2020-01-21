@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,Chi2Cut,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
 
 
  protected:
@@ -123,31 +123,6 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> control_Track_Pt;
   std::vector<TH1D> control_Track_Eta;
   std::vector<TH1D> control_Track_Phi;
-
-  //Sync variables
-  double sync_pt_1;
-  double sync_pt_2;
-  double sync_pt_3;
-
-  double sync_eta_1;
-  double sync_eta_2;
-  double sync_eta_3;
-
-  double muon_1_isGlob;
-  double muon_2_isGlob;
-
-  double muon_1_isTrack;
-  double muon_2_isTrack;
-
-  double phi_mass;
-  double ds_mass;
-
-  double evt,run,lumi;
-
-  double sync_DsPhiPiVtx_x;
-  double sync_DsPhiPiVtx_y;
-  double sync_DsPhiPiVtx_z;
-  double sync_DsPhiPiVtx_Chi2;
 
 };
 #endif
