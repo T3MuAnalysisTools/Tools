@@ -3,8 +3,8 @@ Skim: False
 HistoFile: InputData/HistoScaletoLumi.txt
 Analysis: SignalSelector
 UncertType: default
-SkimInfo: InputData/SkimSummaryLog_October2019.log
-Lumi: 36442
+SkimInfo: InputData/SkimSummary_2018Data.txt
+Lumi: 58111.142
 PlotStyle: style2
 
 

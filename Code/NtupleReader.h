@@ -179,7 +179,7 @@ public :
    std::vector<std::vector<int> >   *MCSignalParticle_Sourcepdgid;
    std::vector<std::vector<std::vector<double> > > *MCSignalParticle_Sourcep4;
    std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
-   std::vector<std::vector<std::vector<double> > > *MCSignalParticle_childp4;
+   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_childp4;
    std::vector<int>     *MCSignalParticle_charge;
    std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
    std::vector<std::vector<float> > *MCSignalParticle_Vertex;

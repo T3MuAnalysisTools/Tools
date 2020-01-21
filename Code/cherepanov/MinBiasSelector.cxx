@@ -536,7 +536,7 @@ void  MinBiasSelector::doEvent(){
 
   bool DoubleMuFired(0);
   bool TripleMuFired(0);
-  for(unsigned int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
     
     if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
