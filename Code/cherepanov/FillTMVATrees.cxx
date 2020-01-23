@@ -62,14 +62,12 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_nsv",&var_nsv);
 
 
-
   TMVA_Tree->Branch("var_VertexMu1D0SigPVReco",&var_VertexMu1D0SigPVReco);
   TMVA_Tree->Branch("var_VertexMu2D0SigPVReco",&var_VertexMu2D0SigPVReco);
   TMVA_Tree->Branch("var_VertexMu3D0SigPVReco",&var_VertexMu3D0SigPVReco);
 
   TMVA_Tree->Branch("var_MaxD0SigPV",&var_MaxD0SigPV);
   TMVA_Tree->Branch("var_MinD0SigPV",&var_MinD0SigPV);
-
 
 
   TMVA_Tree->Branch("var_VertexMu1D0SigBSReco",&var_VertexMu1D0SigBSReco);
@@ -500,6 +498,22 @@ void  FillTMVATrees::Configure(){
 
 
 
+      BTagCSVSHVsNJets =HConfig.GetTH2D(Name+"_BTagCSVSHVsNJets","BTagCSVSHVsNJets",50,0.,1.,10,-0.5,9.5,"BTagCSV SH","N");
+      BTagMVASHVsNJets =HConfig.GetTH2D(Name+"_BTagMVASHVsNJets","BTagMVASHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagMVA SH","N");
+      BTagCVSBSHVsNJets=HConfig.GetTH2D(Name+"_BTagCVSBSHVsNJets","BTagCVSBSHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagCVSB SH","N");
+
+      BTagCSVOHVsNJets =HConfig.GetTH2D(Name+"_BTagCSVOHVsNJets","BTagCSVOHVsNJets",50,0.,1.,10,-0.5,9.5,"BTagCSV OH ","N");
+      BTagMVAOHVsNJets =HConfig.GetTH2D(Name+"_BTagMVAOHVsNJets","BTagMVAOHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagMVA OH","N");
+      BTagCVSBOHVsNJets=HConfig.GetTH2D(Name+"_BTagCVSBOHVsNJets","BTagCVSBOHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagCVSB OH","N");
+
+      Muon1ImpactAngle =HConfig.GetTH1D(Name+"_Muon1ImpactAngle","Muon1ImpactAngle",30,-1,1,"#mu_{1} impact angle","");
+      Muon2ImpactAngle =HConfig.GetTH1D(Name+"_Muon2ImpactAngle","Muon2ImpactAngle",30,-1,1,"#mu_{2} impact angle","");
+      Muon3ImpactAngle =HConfig.GetTH1D(Name+"_Muon3ImpactAngle","Muon3ImpactAngle",30,-1,1,"#mu_{3} impact angle","");
+      MinMuonImpacAngle =HConfig.GetTH1D(Name+"_MinMuonImpactAngle","MinMuonImpactAngle",30,-1,1,"Min #mu impact angle","");
+      MaxMuonImpacAngle =HConfig.GetTH1D(Name+"_MaxMuonImpactAngle","MaxMuonImpactAngle",30,-1,1,"Max #mu impact angle","");
+
+
+
 
 
 
@@ -704,9 +718,20 @@ void  FillTMVATrees::Store_ExtraDist(){
   Extradist1d.push_back(&BTagMVAOH);
   Extradist1d.push_back(&BTagCVSBOH);
 
+  Extradist2d.push_back(&BTagCSVSHVsNJets);
+  Extradist2d.push_back(&BTagMVASHVsNJets);
+  Extradist2d.push_back(&BTagCVSBSHVsNJets);
+  
+  Extradist2d.push_back(&BTagCSVOHVsNJets);
+  Extradist2d.push_back(&BTagMVAOHVsNJets);
+  Extradist2d.push_back(&BTagCVSBOHVsNJets);
 
-
-
+  
+  Extradist1d.push_back(&Muon1ImpactAngle);
+  Extradist1d.push_back(&Muon2ImpactAngle);
+  Extradist1d.push_back(&Muon3ImpactAngle);
+  Extradist1d.push_back(&MinMuonImpacAngle);
+  Extradist1d.push_back(&MaxMuonImpacAngle);
 
 }
 
@@ -875,6 +900,16 @@ void  FillTMVATrees::doEvent(){
       NBJet4piOH.at(t).Fill(OH_jet_count,w);
 
 
+ // std::vector<TH2D> BTagCSVSHVsNJets;
+ //  std::vector<TH2D> BTagMVASHVsNJets;
+ //  std::vector<TH2D> BTagCVSBSHVsNJets;
+
+ //  std::vector<TH2D> BTagCSVOHVsNJets;
+ //  std::vector<TH2D> BTagMVAOHVsNJets;
+ //  std::vector<TH2D> BTagCVSBOHVsNJets;
+
+
+
       unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
       unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
@@ -918,7 +953,15 @@ void  FillTMVATrees::doEvent(){
       }
       TVector3 vec_tau = TauLV.Vect();
       TVector3 d_pvsv = vec_sv - vec_pv;
+
       TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+
+      TVector3 Mu1ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_1),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+      TVector3 Mu2ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_2),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+      TVector3 Mu3ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_3),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+
+
+
       //---------------------------------------------------------------
       //------------------ calculate var_flightLenSig ---------------------
       TMatrixTSym<double> fls_PVcov = Ntp->Vertex_PrimaryVertex_Covariance(final_idx);
@@ -929,7 +972,11 @@ void  FillTMVATrees::doEvent(){
       //      if (Ntp->Vertex_RefitPVisValid(final_idx)==1)
 	{
 	
-
+	  Muon1ImpactAngle.at(t).Fill(SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),w );
+	  Muon2ImpactAngle.at(t).Fill(SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),w );
+	  Muon3ImpactAngle.at(t).Fill(SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag()),w );
+	  MinMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
+	  MaxMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
 	
 	// ----- Fill the histograms -----
 	SVPVTauDirAngle.at(t).Fill(var_svpvTauAngle,w);
