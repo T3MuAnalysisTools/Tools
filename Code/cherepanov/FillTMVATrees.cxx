@@ -62,14 +62,12 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_nsv",&var_nsv);
 
 
-
   TMVA_Tree->Branch("var_VertexMu1D0SigPVReco",&var_VertexMu1D0SigPVReco);
   TMVA_Tree->Branch("var_VertexMu2D0SigPVReco",&var_VertexMu2D0SigPVReco);
   TMVA_Tree->Branch("var_VertexMu3D0SigPVReco",&var_VertexMu3D0SigPVReco);
 
   TMVA_Tree->Branch("var_MaxD0SigPV",&var_MaxD0SigPV);
   TMVA_Tree->Branch("var_MinD0SigPV",&var_MinD0SigPV);
-
 
 
   TMVA_Tree->Branch("var_VertexMu1D0SigBSReco",&var_VertexMu1D0SigBSReco);
@@ -93,9 +91,19 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_MinMuon_chi2LocalPosition",&var_MinMuon_chi2LocalPosition);
   TMVA_Tree->Branch("var_MaxMuon_chi2LocalPosition",&var_MaxMuon_chi2LocalPosition);
 
+  TMVA_Tree->Branch("var_Muon1_chi2LocalPosition",&var_Muon1_chi2LocalPosition);
+  TMVA_Tree->Branch("var_Muon2_chi2LocalPosition",&var_Muon2_chi2LocalPosition);
+  TMVA_Tree->Branch("var_Muon3_chi2LocalPosition",&var_Muon3_chi2LocalPosition);
+
 
   TMVA_Tree->Branch("var_MinMuon_chi2LocalMomentum",&var_MinMuon_chi2LocalMomentum);
   TMVA_Tree->Branch("var_MaxMuon_chi2LocalMomentum",&var_MaxMuon_chi2LocalMomentum);
+
+  TMVA_Tree->Branch("var_Muon1_chi2LocalMomentum",&var_Muon1_chi2LocalMomentum);
+  TMVA_Tree->Branch("var_Muon2_chi2LocalMomentum",&var_Muon2_chi2LocalMomentum);
+  TMVA_Tree->Branch("var_Muon3_chi2LocalMomentum",&var_Muon3_chi2LocalMomentum);
+
+
 
 
 
@@ -108,9 +116,6 @@ void  FillTMVATrees::Configure(){
 
   TMVA_Tree->Branch("var_MaxVertexPairQuality",&var_MaxVertexPairQuality);
   TMVA_Tree->Branch("var_MinVertexPairQuality",&var_MinVertexPairQuality);
-	
-
-
 
   TMVA_Tree->Branch("var_Iso02",&var_Iso02);
   TMVA_Tree->Branch("var_Iso04",&var_Iso04);
@@ -348,9 +353,17 @@ void  FillTMVATrees::Configure(){
       MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,2,"Min Inner/Outer track #chi^{2}","");
       MaxMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalPosition","MaxMuon_chi2LocalPosition",50,0,30,"Max Inner/Outer track #chi^{2}","");
 
+      Muon1_chi2LocalPosition=HConfig.GetTH1D(Name+"_Muon1_chi2LocalPosition","Muon1_chi2LocalPosition",50,0,30,"#mu_{1} Inner/Outer track #chi^{2}","");
+      Muon2_chi2LocalPosition=HConfig.GetTH1D(Name+"_Muon2_chi2LocalPosition","Muon2_chi2LocalPosition",50,0,30,"#mu_{2} Inner/Outer track #chi^{2}","");
+      Muon3_chi2LocalPosition=HConfig.GetTH1D(Name+"_Muon3_chi2LocalPosition","Muon3_chi2LocalPosition",50,0,30,"#mu_{3} Inner/Outer track #chi^{2}","");
+
       
       MinMuon_chi2LocalMomentum=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalMomentum","MinMuon_chi2LocalMomentum",50,0,5,"Min Inner/Outer track momentum #chi^{2}","");
-      MaxMuon_chi2LocalMomentum=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalMomentum","MaxMuon_chi2LocalMomentum",50,0,30,"Max Inner/Outer track momentum #chi^{2}","");
+      MaxMuon_chi2LocalMomentum=HConfig.GetTH1D(Name+"_MaxMuon_chi2LocalMomentum","MaxMuon_chi2LocalMomentum",50,0,50,"Max Inner/Outer track momentum #chi^{2}","");
+
+      Muon1_chi2LocalMomentum=HConfig.GetTH1D(Name+"_Muon1_chi2LocalMomentum","Muon1_chi2LocalMomentum",50,0,50,"#mu_{1} Inner/Outer track momentum #chi^{2}","");
+      Muon2_chi2LocalMomentum=HConfig.GetTH1D(Name+"_Muon2_chi2LocalMomentum","Muon2_chi2LocalMomentum",50,0,50,"#mu_{2} Inner/Outer track momentum #chi^{2}","");
+      Muon3_chi2LocalMomentum=HConfig.GetTH1D(Name+"_Muon3_chi2LocalMomentum","Muon3_chi2LocalMomentum",50,0,50,"#mu_{3} Inner/Outer track momentum #chi^{2}","");
 
 
       MinMatchedStations=HConfig.GetTH1D(Name+"_MinMatchedStations","MinMatchedStations",10,-0.5,9.5,"min matched stations","");
@@ -384,7 +397,6 @@ void  FillTMVATrees::Configure(){
 
       MaxVertexPairQuality=HConfig.GetTH1D(Name+"_MaxVertexPairQuality","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
       MinVertexPairQuality=HConfig.GetTH1D(Name+"_MinVertexPairQuality","MinVertexPairQuality",20,0,2,"minvertex pair quality","Events");
-
 
 
       deltaMuZ12 = HConfig.GetTH1D(Name+"_deltaMuZ12","deltaMuZ12",30,0,0.6,"#Delta z (#mu_{1}-#mu_{2}), cm","");
@@ -466,6 +478,45 @@ void  FillTMVATrees::Configure(){
       MindcaTrackSV=HConfig.GetTH1D(Name+"_MindcaTrackSV","MindcaTrackSV",50,0,0.1,"Min distance of track to SV","");
       dcaTrackPV=HConfig.GetTH1D(Name+"_dcaTrackPV","dcaTrackPV",50,0,0.1,"distance of closest approach to PV","");
 
+      NBJet4pi=HConfig.GetTH1D(Name+"_NBJet4pi","NBJet4pi",10,-0.5,9.5,"N Jets","");
+
+
+      BTagCSV =HConfig.GetTH1D(Name+"_BTagCSV","BTagCSV",50,0.,1.,"BTagCSV ","");
+      BTagMVA =HConfig.GetTH1D(Name+"_BTagMVA","BTagMVA",50,-1.,1.,"BTagMVA ","");
+      BTagCVSB=HConfig.GetTH1D(Name+"_BTagCVSB","BTagCVSB",50,-1.,1.,"BTagCVSB ","");
+
+      NBJet4piSH=HConfig.GetTH1D(Name+"_NBJet4piSH","NBJet4piSH",10,-0.5,9.5,"N Jets SH","");
+      NBJet4piOH=HConfig.GetTH1D(Name+"_NBJet4piOH","NBJet4piOH",10,-0.5,9.5,"N Jets OH","");
+
+      BTagCSVSH =HConfig.GetTH1D(Name+"_BTagCSVSH","BTagCSVSH",50,0.,1.,"BTagCSV SH","");
+      BTagMVASH =HConfig.GetTH1D(Name+"_BTagMVASH","BTagMVASH",50,-1.,1.,"BTagMVA SH","");
+      BTagCVSBSH=HConfig.GetTH1D(Name+"_BTagCVSBSH","BTagCVSBSH",50,-1.,1.,"BTagCVSB SH","");
+
+      BTagCSVOH =HConfig.GetTH1D(Name+"_BTagCSVOH","BTagCSVOH",50,0.,1.,"BTagCSV OH ","");
+      BTagMVAOH =HConfig.GetTH1D(Name+"_BTagMVAOH","BTagMVAOH",50,-1.,1.,"BTagMVA OH","");
+      BTagCVSBOH=HConfig.GetTH1D(Name+"_BTagCVSBOH","BTagCVSBOH",50,-1.,1.,"BTagCVSB OH","");
+
+
+
+      BTagCSVSHVsNJets =HConfig.GetTH2D(Name+"_BTagCSVSHVsNJets","BTagCSVSHVsNJets",50,0.,1.,10,-0.5,9.5,"BTagCSV SH","N");
+      BTagMVASHVsNJets =HConfig.GetTH2D(Name+"_BTagMVASHVsNJets","BTagMVASHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagMVA SH","N");
+      BTagCVSBSHVsNJets=HConfig.GetTH2D(Name+"_BTagCVSBSHVsNJets","BTagCVSBSHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagCVSB SH","N");
+
+      BTagCSVOHVsNJets =HConfig.GetTH2D(Name+"_BTagCSVOHVsNJets","BTagCSVOHVsNJets",50,0.,1.,10,-0.5,9.5,"BTagCSV OH ","N");
+      BTagMVAOHVsNJets =HConfig.GetTH2D(Name+"_BTagMVAOHVsNJets","BTagMVAOHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagMVA OH","N");
+      BTagCVSBOHVsNJets=HConfig.GetTH2D(Name+"_BTagCVSBOHVsNJets","BTagCVSBOHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagCVSB OH","N");
+
+      Muon1ImpactAngle =HConfig.GetTH1D(Name+"_Muon1ImpactAngle","Muon1ImpactAngle",30,-1,1,"#mu_{1} impact angle","");
+      Muon2ImpactAngle =HConfig.GetTH1D(Name+"_Muon2ImpactAngle","Muon2ImpactAngle",30,-1,1,"#mu_{2} impact angle","");
+      Muon3ImpactAngle =HConfig.GetTH1D(Name+"_Muon3ImpactAngle","Muon3ImpactAngle",30,-1,1,"#mu_{3} impact angle","");
+      MinMuonImpacAngle =HConfig.GetTH1D(Name+"_MinMuonImpactAngle","MinMuonImpactAngle",30,-1,1,"Min #mu impact angle","");
+      MaxMuonImpacAngle =HConfig.GetTH1D(Name+"_MaxMuonImpactAngle","MaxMuonImpactAngle",30,-1,1,"Max #mu impact angle","");
+
+
+
+
+
+
       Selection::ConfigureHistograms(); //do not remove
       HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
       
@@ -544,10 +595,18 @@ void  FillTMVATrees::Store_ExtraDist(){
 
   Extradist1d.push_back(&MinMuon_chi2LocalPosition);
   Extradist1d.push_back(&MaxMuon_chi2LocalPosition);
+
+  Extradist1d.push_back(&Muon1_chi2LocalPosition);
+  Extradist1d.push_back(&Muon2_chi2LocalPosition);
+  Extradist1d.push_back(&Muon3_chi2LocalPosition);
   
 	
   Extradist1d.push_back(&MinMuon_chi2LocalMomentum);
   Extradist1d.push_back(&MaxMuon_chi2LocalMomentum);
+
+  Extradist1d.push_back(&Muon1_chi2LocalMomentum);
+  Extradist1d.push_back(&Muon2_chi2LocalMomentum);
+  Extradist1d.push_back(&Muon3_chi2LocalMomentum);
   
   Extradist1d.push_back(&MintrkKink);
   Extradist1d.push_back(&MaxtrkKink);
@@ -643,14 +702,36 @@ void  FillTMVATrees::Store_ExtraDist(){
   Extradist1d.push_back(&Mu3Muon_hitPattern_numberOfValidMuonHits);
 
 
+  //  Extradist1d.push_back(&NBJet4pi);
+  //  Extradist1d.push_back(&BTagCSV);
+  //  Extradist1d.push_back(&BTagMVA);
+  //  Extradist1d.push_back(&BTagCVSB);
 
+  Extradist1d.push_back(&NBJet4piSH);
+  Extradist1d.push_back(&NBJet4piOH);
 
+  Extradist1d.push_back(&BTagCSVSH);
+  Extradist1d.push_back(&BTagMVASH);
+  Extradist1d.push_back(&BTagCVSBSH);
 
+  Extradist1d.push_back(&BTagCSVOH);
+  Extradist1d.push_back(&BTagMVAOH);
+  Extradist1d.push_back(&BTagCVSBOH);
 
+  Extradist2d.push_back(&BTagCSVSHVsNJets);
+  Extradist2d.push_back(&BTagMVASHVsNJets);
+  Extradist2d.push_back(&BTagCVSBSHVsNJets);
+  
+  Extradist2d.push_back(&BTagCSVOHVsNJets);
+  Extradist2d.push_back(&BTagMVAOHVsNJets);
+  Extradist2d.push_back(&BTagCVSBOHVsNJets);
 
-
-
-
+  
+  Extradist1d.push_back(&Muon1ImpactAngle);
+  Extradist1d.push_back(&Muon2ImpactAngle);
+  Extradist1d.push_back(&Muon3ImpactAngle);
+  Extradist1d.push_back(&MinMuonImpacAngle);
+  Extradist1d.push_back(&MaxMuonImpacAngle);
 
 }
 
@@ -717,6 +798,8 @@ void  FillTMVATrees::doEvent(){
 
       TLorentzVector TauLV = Ntp->Muon_P4(mu1_idx)+Ntp->Muon_P4(mu2_idx)+Ntp->Muon_P4(mu3_idx);
 
+
+
       double M_osss1 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss1_idx)).M();
       double M_osss2 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss2_idx)).M();
 
@@ -753,6 +836,18 @@ void  FillTMVATrees::doEvent(){
     
     if(status){
 
+      /*
+      int NJets(){return Ntp->Jet_p4->size();}
+      TLorentzVector Jet_P4(unsigned int i){return TLorentzVector(Ntp->Jet_p4->at(i)->at(1), Ntp->Jet_p4->at(i)->at(2), Ntp->Jet_p4->at(i)->at(3), Ntp->Jet_p4->at(i)->at(0));}
+      double JetBTagCVSB(unsigned int i){return Ntp->Jet_BTagCVSB->at(i);}
+      double JetBTagMVA(unsigned int i){return Ntp->Jet_BTagMVA->at(i);}
+      double JetBTagCSV(unsigned int i){return Ntp->Jet_BTagCSV->at(i);}
+      */
+
+
+
+
+
       // unsigned int Muon_index_1 =  Ntp->ThreeMuonIndices(final_idx).at(0);
       // unsigned int Muon_index_2 =  Ntp->ThreeMuonIndices(final_idx).at(1);
       // unsigned int Muon_index_3 =  Ntp->ThreeMuonIndices(final_idx).at(2);
@@ -774,6 +869,44 @@ void  FillTMVATrees::doEvent(){
       TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
       TLorentzVector TauLV = Muon1LV + Muon2LV + Muon3LV;
       TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
+
+
+      int SH_jet_count(0);
+      for(int ijet= 0; ijet <  Ntp->NJets(); ijet++){
+	if(fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) < TMath::Pi() ){
+	  SH_jet_count++;
+	  BTagCSVSH.at(t).Fill(Ntp->JetBTagCSV(ijet),w);
+	  BTagMVASH.at(t).Fill(Ntp->JetBTagMVA(ijet),w);
+	  BTagCVSBSH.at(t).Fill(Ntp->JetBTagCVSB(ijet),w);
+
+	}
+      }
+      NBJet4piSH.at(t).Fill(SH_jet_count,w);
+
+      int OH_jet_count(0);
+      for(int ijet= 0; ijet <  Ntp->NJets(); ijet++){
+
+	std::cout<<"  Tau Phi  "<< TauLV.Phi() <<" Jet  "<< Ntp->Jet_P4(ijet).Phi() << std::endl;
+	if(fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) > TMath::Pi() ){
+	  std::cout<<"  Delta Phi  "<< Ntp->Jet_P4(ijet).Phi() <<  fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) << std::endl;
+
+	  OH_jet_count++;  
+	  BTagCSVOH.at(t).Fill(Ntp->JetBTagCSV(ijet),w);
+	  BTagMVAOH.at(t).Fill(Ntp->JetBTagMVA(ijet),w);
+	  BTagCVSBOH.at(t).Fill(Ntp->JetBTagCVSB(ijet),w);
+	}
+	
+      }
+      NBJet4piOH.at(t).Fill(OH_jet_count,w);
+
+
+ // std::vector<TH2D> BTagCSVSHVsNJets;
+ //  std::vector<TH2D> BTagMVASHVsNJets;
+ //  std::vector<TH2D> BTagCVSBSHVsNJets;
+
+ //  std::vector<TH2D> BTagCSVOHVsNJets;
+ //  std::vector<TH2D> BTagMVAOHVsNJets;
+ //  std::vector<TH2D> BTagCVSBOHVsNJets;
 
 
 
@@ -820,7 +953,15 @@ void  FillTMVATrees::doEvent(){
       }
       TVector3 vec_tau = TauLV.Vect();
       TVector3 d_pvsv = vec_sv - vec_pv;
+
       TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+
+      TVector3 Mu1ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_1),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+      TVector3 Mu2ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_2),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+      TVector3 Mu3ImpactPV = Ntp->SVPVDirection(Ntp->Muon_Poca(Muon_index_3),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
+
+
+
       //---------------------------------------------------------------
       //------------------ calculate var_flightLenSig ---------------------
       TMatrixTSym<double> fls_PVcov = Ntp->Vertex_PrimaryVertex_Covariance(final_idx);
@@ -831,7 +972,11 @@ void  FillTMVATrees::doEvent(){
       //      if (Ntp->Vertex_RefitPVisValid(final_idx)==1)
 	{
 	
-
+	  Muon1ImpactAngle.at(t).Fill(SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),w );
+	  Muon2ImpactAngle.at(t).Fill(SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),w );
+	  Muon3ImpactAngle.at(t).Fill(SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag()),w );
+	  MinMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
+	  MaxMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
 	
 	// ----- Fill the histograms -----
 	SVPVTauDirAngle.at(t).Fill(var_svpvTauAngle,w);
@@ -995,10 +1140,20 @@ void  FillTMVATrees::doEvent(){
 
 	MinMuon_chi2LocalPosition.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  }));
 	MaxMuon_chi2LocalPosition.at(t).Fill(std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  }));
+
+
+	Muon1_chi2LocalPosition.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),1);
+	Muon2_chi2LocalPosition.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),1);
+	Muon3_chi2LocalPosition.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3),1);
 	
 	
 	MinMuon_chi2LocalMomentum.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3)  }));
 	MaxMuon_chi2LocalMomentum.at(t).Fill(std::max({Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3)  }));
+
+
+	Muon1_chi2LocalMomentum.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1), 1);
+	Muon2_chi2LocalMomentum.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2), 1);
+	Muon3_chi2LocalMomentum.at(t).Fill(Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3), 1);
 	
 	
 	
@@ -1408,10 +1563,21 @@ void  FillTMVATrees::doEvent(){
 
 	var_MinMuon_chi2LocalPosition =   std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
 	var_MaxMuon_chi2LocalPosition = std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
+
+
+	var_Muon1_chi2LocalPosition = Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1);
+	var_Muon2_chi2LocalPosition = Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2);
+	var_Muon3_chi2LocalPosition = Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3);
 	
 	
 	var_MinMuon_chi2LocalMomentum = std::min({Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3)  });
 	var_MaxMuon_chi2LocalMomentum = std::max({Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3)  });
+
+
+
+	var_Muon1_chi2LocalMomentum = Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_1);
+	var_Muon2_chi2LocalMomentum = Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_2);
+	var_Muon3_chi2LocalMomentum = Ntp->Muon_combinedQuality_chi2LocalMomentum(Muon_index_3);
 	
 	
 	

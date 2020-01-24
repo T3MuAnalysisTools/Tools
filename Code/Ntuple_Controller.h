@@ -446,6 +446,14 @@ class Ntuple_Controller{
    float      Isolation_maxdy(unsigned int i){return Ntp->Vertex_Isolation4->at(i).at(6);}
 
 
+   int NJets(){return Ntp->Jet_p4->size();}
+   TLorentzVector Jet_P4(unsigned int i){return TLorentzVector(Ntp->Jet_p4->at(i).at(1), Ntp->Jet_p4->at(i).at(2), Ntp->Jet_p4->at(i).at(3), Ntp->Jet_p4->at(i).at(0));}
+   double JetBTagCVSB(unsigned int i){return Ntp->Jet_BTagCVSB->at(i);}
+   double JetBTagMVA(unsigned int i){return Ntp->Jet_BTagMVA->at(i);}
+   double JetBTagCSV(unsigned int i){return Ntp->Jet_BTagCSV->at(i);}
+
+
+
    int        NL1Seeds(){return Ntp->Trigger_l1name->size();}
    std::string     L1Name(unsigned int i){return Ntp->Trigger_l1name->at(i);}
    int        L1Decision(unsigned int i){return Ntp->Trigger_l1decision->at(i);}
