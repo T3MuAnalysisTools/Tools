@@ -154,9 +154,9 @@ void  SyncDsPhiPi::doEvent(){
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
 
-  std::vector<int> misses{80586988,98764233,48390993,25573281,15034108,13262859,12};
+  std::vector<unsigned int> misses{80586988,98764233,48390993,25573281,15034108,13262859,12};
 
-  for (int i=0;i<misses.size();i++) {
+  for (unsigned int i=0;i<misses.size();i++) {
     if (Ntp->EventNumber() == misses[i]) {
       std::cout << "///////////////////////////////////////////////////////////" << std::endl;
       std::cout << "For Event Number " << Ntp->EventNumber() << " , passes are: PhiMassCut=" << pass.at(PhiMassCut) << ", is2MuTrk=" << pass.at(is2MuTrk) << ", HLTOk=" << pass.at(HLTOk) << ". PhiMassCut value = " << value.at(PhiMassCut) << std::endl;

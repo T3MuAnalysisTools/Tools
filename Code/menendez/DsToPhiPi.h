@@ -51,6 +51,9 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> DsL_peak;
   std::vector<TH1D> DsL_sideband;
   std::vector<TH1D> Ds_L;
+  std::vector<TH1D> DsEta_peak;
+  std::vector<TH1D> DsEta_sideband;
+  std::vector<TH1D> Ds_eta;
 
   //Muon variables
   
@@ -123,6 +126,67 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> control_Track_Pt;
   std::vector<TH1D> control_Track_Eta;
   std::vector<TH1D> control_Track_Phi;
+
+  std::vector<TH1D> VertexKFChi2_peak;
+  std::vector<TH1D> VertexKFChi2_sideband;
+  std::vector<TH1D> VertexKFChi2;
+
+  std::vector<TH1D> SVPVDsDirAngle_peak;
+  std::vector<TH1D> SVPVDsDirAngle_sideband;
+  std::vector<TH1D> SVPVDsDirAngle;
+
+  std::vector<TH1D> NtracksClose_peak;
+  std::vector<TH1D> NtracksClose_sideband;
+  std::vector<TH1D> NtracksClose;
+  
+  std::vector<TH1D> NSV_peak;
+  std::vector<TH1D> NSV_sideband;
+  std::vector<TH1D> NSV;
+
+  std::vector<TH1D> MinMuon_chi2LocalPosition_peak;
+  std::vector<TH1D> MinMuon_chi2LocalPosition_sideband;
+  std::vector<TH1D> MinMuon_chi2LocalPosition;
+  
+  std::vector<TH1D> MindcaTrackSV_peak;
+  std::vector<TH1D> MindcaTrackSV_sideband;
+  std::vector<TH1D> MindcaTrackSV;
+
+  std::vector<TH1D> MinDca_peak;
+  std::vector<TH1D> MinDca_sideband;
+  std::vector<TH1D> MinDca;
+
+  std::vector<TH1D> MinD0SigSV_peak;
+  std::vector<TH1D> MinD0SigSV_sideband;
+  std::vector<TH1D> MinD0SigSV;
+
+  std::vector<TH1D> MinD0SigPV_peak;
+  std::vector<TH1D> MinD0SigPV_sideband;
+  std::vector<TH1D> MinD0SigPV;
+
+  std::vector<TH1D> MaxVertexPairQuality_peak;
+  std::vector<TH1D> MaxVertexPairQuality_sideband;
+  std::vector<TH1D> MaxVertexPairQuality;
+
+  std::vector<TH1D> MaxdeltaMuZ_peak;
+  std::vector<TH1D> MaxdeltaMuZ_sideband;
+  std::vector<TH1D> MaxdeltaMuZ;
+
+  std::vector<TH1D> MaxDca_peak;
+  std::vector<TH1D> MaxDca_sideband;
+  std::vector<TH1D> MaxDca;
+
+  std::vector<TH1D> MaxD0SigSV_peak;
+  std::vector<TH1D> MaxD0SigSV_sideband;
+  std::vector<TH1D> MaxD0SigSV;
+
+  std::vector<TH1D> Iso1_peak;
+  std::vector<TH1D> Iso1_sideband;
+  std::vector<TH1D> Iso1;
+
+  std::vector<TH1D> FLSignificance_peak;
+  std::vector<TH1D> FLSignificance_sideband;
+  std::vector<TH1D> FLSignificance;
+
 
 };
 #endif
