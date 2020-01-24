@@ -231,6 +231,24 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> BTagCVSBOH;
 
 
+  std::vector<TH2D> BTagCSVSHVsNJets;
+  std::vector<TH2D> BTagMVASHVsNJets;
+  std::vector<TH2D> BTagCVSBSHVsNJets;
+
+  std::vector<TH2D> BTagCSVOHVsNJets;
+  std::vector<TH2D> BTagMVAOHVsNJets;
+  std::vector<TH2D> BTagCVSBOHVsNJets;
+
+
+  std::vector<TH1D> Muon1ImpactAngle;
+  std::vector<TH1D> Muon2ImpactAngle;
+  std::vector<TH1D> Muon3ImpactAngle;
+  std::vector<TH1D> MinMuonImpacAngle;
+  std::vector<TH1D> MaxMuonImpacAngle;
+
+
+
+
 
 
   //------------ Mini MVA tree variables
