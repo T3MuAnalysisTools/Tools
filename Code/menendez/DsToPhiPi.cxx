@@ -200,21 +200,21 @@ void  DsToPhiPi::Configure(){
   //NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
  
   DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
-  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events");
-  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events");
-  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events");
+  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
+  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
+  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
+  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse P (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events");
+  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse P (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events");
+  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse P (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events");
   DsM_peak=HConfig.GetTH1D(Name+"_DsM_peak","Ds invariant mass in Ds Peak",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
   DsM_sideband=HConfig.GetTH1D(Name+"_DsM_sideband","Ds invariant mass in Ds Sideband",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
   Ds_M=HConfig.GetTH1D(Name+"_Ds_M","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
   DsL_peak=HConfig.GetTH1D(Name+"_DsL_peak","Length of Ds Decay in Ds Peak",25,0,1,"L_{Ds} (cm)", "Events");
   DsL_sideband=HConfig.GetTH1D(Name+"_DsL_sideband","Length of Ds Decay in Ds Sideband",25,0,1,"L_{Ds} (cm)", "Events");
   Ds_L=HConfig.GetTH1D(Name+"_Ds_L","Length of Ds Decay",25,0,1,"L_{Ds} (cm)", "Events");
-  DsEta_peak=HConfig.GetTH1D(Name+"_DsEta_peak","Psuedorapidity (Ds)",60,-2,2,"Ds #eta","Events");
-  DsEta_sideband=HConfig.GetTH1D(Name+"_DsEta_sideband","Psuedorapidity (Ds)",60,-2,2,"Ds #eta","Events");
-  Ds_eta=HConfig.GetTH1D(Name+"_Ds_eta","Psuedorapidity (Ds)",60,-2,2,"Ds #eta","Events");
+  DsEta_peak=HConfig.GetTH1D(Name+"_DsEta_peak","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
+  DsEta_sideband=HConfig.GetTH1D(Name+"_DsEta_sideband","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
+  Ds_eta=HConfig.GetTH1D(Name+"_Ds_eta","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
@@ -225,43 +225,43 @@ void  DsToPhiPi::Configure(){
   DecayLength_non_prompt=HConfig.GetTH1D(Name+"_DecayLength_non_prompt","Proper Decay Length of Non-Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
   DecayLength=HConfig.GetTH1D(Name+"_DecayLength","Proper Decay Length of Ds",20,0,.1,"Proper Decay Length (cm)","Events");
 
-  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
-  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
-  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",60,-2,2,"#mu_{1} #eta","Events");
-  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",60,-2,2,"#mu_{1} #eta","Events");
+  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
+  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
+  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
   Muon1_Phi_peak=HConfig.GetTH1D(Name+"_Muon1_Phi_peak","Azimuthal angle in Ds Peak of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
   Muon1_Phi_sideband=HConfig.GetTH1D(Name+"_Muon1_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
-  control_Muon1_Pt=HConfig.GetTH1D(Name+"_control_Muon1_Pt","Transverse Pt (muon 1)",25,0,30,"#mu_{1} p_{T} (GeV)","Events");
-  control_Muon1_Eta=HConfig.GetTH1D(Name+"_control_Muon1_Eta","Psuedorapidity (muon 1)",60,-2,2,"#mu_{1} #eta","Events");
+  control_Muon1_Pt=HConfig.GetTH1D(Name+"_control_Muon1_Pt","Transverse Pt (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
+  control_Muon1_Eta=HConfig.GetTH1D(Name+"_control_Muon1_Eta","Psuedorapidity (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
   control_Muon1_Phi=HConfig.GetTH1D(Name+"_control_Muon1_Phi","Azimuthal angle of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
 
-  Muon2_Pt_peak=HConfig.GetTH1D(Name+"_Muon2_Pt_peak","Transverse Pt in Ds Peak (muon 2)",25,0,30,"#mu_{2} p_{T} (GeV)","Events");
-  Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt in Ds Sideband (muon 2)",25,0,30,"#mu_{2} p_{T} (GeV)","Events");
-  Muon2_Eta_peak=HConfig.GetTH1D(Name+"_Muon2_Eta_peak","Psuedorapidity in Ds Peak (muon 2)",60,-2,2,"#mu_{2} #eta","Events");
-  Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity in Ds Sideband (muon 2)",60,-2,2,"#mu_{2} #eta","Events");
+  Muon2_Pt_peak=HConfig.GetTH1D(Name+"_Muon2_Pt_peak","Transverse Pt in Ds Peak (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
+  Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt in Ds Sideband (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
+  Muon2_Eta_peak=HConfig.GetTH1D(Name+"_Muon2_Eta_peak","Psuedorapidity in Ds Peak (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
+  Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity in Ds Sideband (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
   Muon2_Phi_peak=HConfig.GetTH1D(Name+"_Muon2_Phi_peak","Azimuthal angle in Ds Peak of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
   Muon2_Phi_sideband=HConfig.GetTH1D(Name+"_Muon2_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
-  control_Muon2_Pt=HConfig.GetTH1D(Name+"_control_Muon2_Pt","Transverse Pt (muon 2)",25,0,30,"#mu_{2} p_{T} (GeV)","Events");
-  control_Muon2_Eta=HConfig.GetTH1D(Name+"_control_Muon2_Eta","Psuedorapidity (muon 2)",60,-2,2,"#mu_{2} #eta","Events");
+  control_Muon2_Pt=HConfig.GetTH1D(Name+"_control_Muon2_Pt","Transverse Pt (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
+  control_Muon2_Eta=HConfig.GetTH1D(Name+"_control_Muon2_Eta","Psuedorapidity (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
   control_Muon2_Phi=HConfig.GetTH1D(Name+"_control_Muon2_Phi","Azimuthal angle of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
 
-  Track_Pt_peak=HConfig.GetTH1D(Name+"_Track_Pt_peak","Transverse Pt in Ds Peak (Track)",25,0,30,"Track p_{T} (GeV)","Events");
-  Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse Pt in Ds Sideband (Track)",25,0,30,"Track p_{T} (GeV)","Events");
-  Track_Eta_peak=HConfig.GetTH1D(Name+"_Track_Eta_peak","Psuedorapidity in Ds Peak (Track)",60,-2,2,"Track #eta","Events");
-  Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity in Ds Sideband (Track)",60,-2,2,"Track #eta","Events");
+  Track_Pt_peak=HConfig.GetTH1D(Name+"_Track_Pt_peak","Transverse Pt in Ds Peak (Track)",25,0,20,"Track p_{T} (GeV)","Events");
+  Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse Pt in Ds Sideband (Track)",25,0,20,"Track p_{T} (GeV)","Events");
+  Track_Eta_peak=HConfig.GetTH1D(Name+"_Track_Eta_peak","Psuedorapidity in Ds Peak (Track)",30,-2,2,"Track #eta","Events");
+  Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity in Ds Sideband (Track)",30,-2,2,"Track #eta","Events");
   Track_Phi_peak=HConfig.GetTH1D(Name+"_Track_Phi_peak","Azimuthal angle in Ds Peak of (Track)",25,-3.4,3.4,"Track #phi","Events");
   Track_Phi_sideband=HConfig.GetTH1D(Name+"_Track_Phi_sideband","Azimuthal angle in Ds Sideband of (Track)",25,-3.4,3.4,"Track #phi","Events");
-  control_Track_Pt=HConfig.GetTH1D(Name+"_control_Track_Pt","Transverse Pt (Track)",25,0,30,"Track p_{T} (GeV)","Events");
-  control_Track_Eta=HConfig.GetTH1D(Name+"_control_Track_Eta","Psuedorapidity (Track)",60,-2,2,"Track #eta","Events");
+  control_Track_Pt=HConfig.GetTH1D(Name+"_control_Track_Pt","Transverse Pt (Track)",25,0,20,"Track p_{T} (GeV)","Events");
+  control_Track_Eta=HConfig.GetTH1D(Name+"_control_Track_Eta","Psuedorapidity (Track)",30,-2,2,"Track #eta","Events");
   control_Track_Phi=HConfig.GetTH1D(Name+"_control_Track_Phi","Azimuthal angle of (Track)",25,-3.4,3.4,"Track #phi","Events");
 
-  VertexKFChi2_peak=HConfig.GetTH1D(Name+"VertexKFChi2_peak","KF Vertex Chi Squared",100,0,20,"KF vertex #chi^{2}","Events");
-  VertexKFChi2_sideband=HConfig.GetTH1D(Name+"VertexKFChi2_sideband","KF Vertex Chi Squared",100,0,20,"KF vertex #chi^{2}","Events");
-  VertexKFChi2=HConfig.GetTH1D(Name+"VertexKFChi2","KF Vertex Chi Squared",100,0,20,"KF vertex #chi^{2}","Events");
+  VertexKFChi2_peak=HConfig.GetTH1D(Name+"VertexKFChi2_peak","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
+  VertexKFChi2_sideband=HConfig.GetTH1D(Name+"VertexKFChi2_sideband","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
+  VertexKFChi2=HConfig.GetTH1D(Name+"VertexKFChi2","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
 
-  SVPVDsDirAngle_peak=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_peak","SVPVDsDirAngle",100,0,0.5,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
-  SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle",100,0,0.5,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
-  SVPVDsDirAngle=HConfig.GetTH1D(Name+"_SVPVDsDirAngle","SVPVDsDirAngle",100,0,0.5,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
+  SVPVDsDirAngle_peak=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_peak","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
+  SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
+  SVPVDsDirAngle=HConfig.GetTH1D(Name+"_SVPVDsDirAngle","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
 
   NtracksClose_peak=HConfig.GetTH1D(Name+"_NtracksClose_peak","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV","");
   NtracksClose_sideband=HConfig.GetTH1D(Name+"_NtracksClose_sideband","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV","");
@@ -279,13 +279,13 @@ void  DsToPhiPi::Configure(){
   MindcaTrackSV_sideband=HConfig.GetTH1D(Name+"_MindcaTrackSV_sideband","MindcaTrackSV",50,0,0.1,"Min distance of track to SV","");
   MindcaTrackSV=HConfig.GetTH1D(Name+"_MindcaTrackSV","MindcaTrackSV",50,0,0.1,"Min distance of track to SV",""); 
 
-  MinDca_peak=HConfig.GetTH1D(Name+"_MinDca_peak","MinDca",50,0,0.04,"Min distance between muons and track","");
-  MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca",50,0,0.04,"Min distance between muons and track","");
-  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.04,"Min distance between muons and track","");
+  MinDca_peak=HConfig.GetTH1D(Name+"_MinDca_peak","MinDca",50,0,0.02,"Min distance between muons and track","");
+  MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca",50,0,0.02,"Min distance between muons and track","");
+  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.02,"Min distance between muons and track","");
 
-  MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV",20,0,5,"Min Transverse Impact significance w.r.t SV","");
-  MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV",20,0,5,"Min Transverse Impact significance w.r.t SV","");
-  MinD0SigSV=HConfig.GetTH1D(Name+"_MinD0SigSV","MinD0SigSV",20,0,5,"Min Transverse Impact significance w.r.t SV","");
+  MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
+  MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
+  MinD0SigSV=HConfig.GetTH1D(Name+"_MinD0SigSV","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
 
   MinD0SigPV_peak=HConfig.GetTH1D(Name+"_MinD0SigPV_peak","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
   MinD0SigPV_sideband=HConfig.GetTH1D(Name+"_MinD0SigPV_sideband","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
@@ -307,9 +307,13 @@ void  DsToPhiPi::Configure(){
   MaxD0SigSV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigSV_sideband","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
   MaxD0SigSV=HConfig.GetTH1D(Name+"_MaxD0SigSV","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
 
-  Iso1_peak=HConfig.GetTH1D(Name+"_Iso1_peak","Iso1",30,0,1.0,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1_sideband=HConfig.GetTH1D(Name+"_Iso1_sideband","Iso1",30,0,1.0,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1=HConfig.GetTH1D(Name+"_Iso1","Iso1",30,0,1.0,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  MaxD0SigPV_peak=HConfig.GetTH1D(Name+"_MaxD0SigPV_peak","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
+  MaxD0SigPV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigPV_sideband","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
+  MaxD0SigPV=HConfig.GetTH1D(Name+"_MaxD0SigPV","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
+
+  Iso1_peak=HConfig.GetTH1D(Name+"_Iso1_peak","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1_sideband=HConfig.GetTH1D(Name+"_Iso1_sideband","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1=HConfig.GetTH1D(Name+"_Iso1","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
 
   FLSignificance_peak=HConfig.GetTH1D(Name+"_FLSignificance_peak","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
   FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
@@ -352,9 +356,9 @@ void  DsToPhiPi::Store_ExtraDist(){
   //Extradist1d.push_back(&Muon2_isTracker);
   //Extradist1d.push_back(&Muon1_isCalo);
   //Extradist1d.push_back(&Muon2_isCalo);
-  Extradist1d.push_back(&Track_TriggerMatchdR);
-  Extradist1d.push_back(&Muon1_TriggerMatchdR);
-  Extradist1d.push_back(&Muon2_TriggerMatchdR);
+  //Extradist1d.push_back(&Track_TriggerMatchdR);
+  //Extradist1d.push_back(&Muon1_TriggerMatchdR);
+  //Extradist1d.push_back(&Muon2_TriggerMatchdR);
   //Extradist1d.push_back(&NVtx);
   Extradist1d.push_back(&DsMass);
   Extradist1d.push_back(&Ds_Pt);
@@ -414,6 +418,7 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&MaxdeltaMuZ);
   Extradist1d.push_back(&MaxDca);
   Extradist1d.push_back(&MaxD0SigSV);
+  Extradist1d.push_back(&MaxD0SigPV);
   Extradist1d.push_back(&Iso1);
   Extradist1d.push_back(&FLSignificance);
 
@@ -505,9 +510,9 @@ void  DsToPhiPi::doEvent(){
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Mass2Mu) = value.at(Mass2Mu) >= 1 && value.at(Mass2Mu) <= 1.04;
   pass.at(MuCharge) = value.at(MuCharge)==cut.at(MuCharge);
-  pass.at(Mu1dR) = value.at(Mu1dR) < .03;
-  pass.at(Mu2dR) = value.at(Mu2dR) < .03;
-  pass.at(TrkdR) = value.at(TrkdR) < .03;
+  pass.at(Mu1dR) = 1; //value.at(Mu1dR) < .03;
+  pass.at(Mu2dR) = 1; //value.at(Mu2dR) < .03;
+  pass.at(TrkdR) = 1; //value.at(TrkdR) < .03;
   pass.at(Mu1pt) = value.at(Mu1pt) > 3;
   pass.at(Mu2pt) = value.at(Mu2pt) > 3;
   pass.at(Trkpt) = value.at(Trkpt) > 2;
@@ -516,7 +521,7 @@ void  DsToPhiPi::doEvent(){
   double w;  
   double w_peak;     
 
-  if(!Ntp->isData()){w = 1; w_peak = .82;}//Ntp->PUReweight(); } //  No weights to data
+  if(!Ntp->isData()){w = 1; w_peak = .8016;}//Ntp->PUReweight(); } //  No weights to data
   else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
@@ -615,6 +620,10 @@ void  DsToPhiPi::doEvent(){
 	  Ntp->Vertex_d0sig_reco(tmp_idx,1),
 	  Ntp->Vertex_d0sig_reco(tmp_idx,2)});
 
+    float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(tmp_idx,0),
+	  Ntp->Vertex_d0sig_reco(tmp_idx,1),
+	  Ntp->Vertex_d0sig_reco(tmp_idx,2)});
+
     float MinD0SVSignificance = std::min({Ntp->Vertex_d0sigSV_reco(tmp_idx,0),
           Ntp->Vertex_d0sigSV_reco(tmp_idx,1),
           Ntp->Vertex_d0sigSV_reco(tmp_idx,2)});
@@ -665,6 +674,7 @@ void  DsToPhiPi::doEvent(){
 //	    fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1);
       MaxDca_peak.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1);
       MaxD0SigSV_peak.at(t).Fill(MaxD0SVSignificance,1);
+      MaxD0SigPV_peak.at(t).Fill(MaxD0Significance,1);
       Iso1_peak.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1);
       FLSignificance_peak.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
 								   Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w);
@@ -703,6 +713,7 @@ void  DsToPhiPi::doEvent(){
 //            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1);
       MaxDca_sideband.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1);
       MaxD0SigSV_sideband.at(t).Fill(MaxD0SVSignificance,1);
+      MaxD0SigPV_sideband.at(t).Fill(MaxD0Significance,1);
       Iso1_sideband.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1);
       FLSignificance_sideband.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
                                                                    Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w);
@@ -743,6 +754,7 @@ void  DsToPhiPi::doEvent(){
 //            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1*w_peak);
       MaxDca.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1*w_peak);
       MaxD0SigSV.at(t).Fill(MaxD0SVSignificance,1*w_peak);
+      MaxD0SigPV.at(t).Fill(MaxD0Significance,1*w_peak);
       Iso1.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1*w_peak);
       FLSignificance.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
                                                                    Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w*w_peak);
@@ -814,6 +826,7 @@ void  DsToPhiPi::Finish(){
 //    MaxdeltaMuZ_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxDca_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    MaxD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     Iso1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     FLSignificance.at(0).Scale(scaleRun[0]/scaleRun[1]);
 
@@ -868,6 +881,8 @@ void  DsToPhiPi::Finish(){
     MaxDca.at(0).Add(&MaxDca_sideband.at(0),-1);
     MaxD0SigSV.at(0).Add(&MaxD0SigSV_peak.at(0));
     MaxD0SigSV.at(0).Add(&MaxD0SigSV_sideband.at(0),-1);
+    MaxD0SigPV.at(0).Add(&MaxD0SigPV_peak.at(0),-1);
+    MaxD0SigPV.at(0).Add(&MaxD0SigPV_sideband.at(0),-1);
     Iso1.at(0).Add(&Iso1_peak.at(0));
     Iso1.at(0).Add(&Iso1_sideband.at(0),-1);
     FLSignificance.at(0).Add(&FLSignificance_peak.at(0));
