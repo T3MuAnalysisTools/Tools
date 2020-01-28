@@ -50,13 +50,10 @@ void  SyncSignal::Configure(){
   Sync_tree->Branch("muon_2_isTrack",&muon_2_isTrack);
   Sync_tree->Branch("muon_3_isTrack",&muon_3_isTrack);
 
-
   Sync_tree->Branch("sync_ThreeMuVtx_x",&sync_ThreeMuVtx_x);
   Sync_tree->Branch("sync_ThreeMuVtx_y",&sync_ThreeMuVtx_y);
   Sync_tree->Branch("sync_ThreeMuVtx_z",&sync_ThreeMuVtx_z);
   Sync_tree->Branch("sync_ThreeMuVtx_Chi2",&sync_ThreeMuVtx_Chi2);
-
-
 
 
   for(int i=0; i<NCuts;i++){
@@ -74,7 +71,7 @@ void  SyncSignal::Configure(){
     if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
     if(i==TauMassCut)         cut.at(TauMassCut)=1;// true for MC and mass side band for data
   }
-
+  
   TString hlabel;
   TString htitle;
   for(int i=0; i<NCuts; i++){
@@ -109,8 +106,6 @@ void  SyncSignal::Configure(){
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
-
-
       hlabel="Muon2 PT, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
@@ -181,9 +176,6 @@ void  SyncSignal::Configure(){
 
 
 void  SyncSignal::Store_ExtraDist(){ 
-
-
-
 
 }
 
@@ -323,8 +315,6 @@ void  SyncSignal::doEvent(){
     sync_ThreeMuVtx_y = Ntp->Vertex_Signal_KF_pos(signal_idx).Y();
     sync_ThreeMuVtx_z = Ntp->Vertex_Signal_KF_pos(signal_idx).Z();
     sync_ThreeMuVtx_Chi2 = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
-
-
 
     Sync_tree->Fill();
     
