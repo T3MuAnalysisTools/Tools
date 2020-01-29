@@ -34,11 +34,21 @@ void  SyncSignal::Configure(){
   Sync_tree->Branch("run",&run);
   Sync_tree->Branch("lumi",&lumi);
 
-  Sync_tree->Branch("sync_pt_1",&sync_pt_1);
-  Sync_tree->Branch("sync_pt_2",&sync_pt_2);
-  Sync_tree->Branch("sync_pt_3",&sync_pt_3);
+  Sync_tree->Branch("Ptmu1",&Ptmu1);
+  Sync_tree->Branch("Ptmu2",&Ptmu2);
+  Sync_tree->Branch("Ptmu3",&Ptmu3);
 
-  Sync_tree->Branch("sync_eta_1",&sync_eta_1);
+  Sync_tree->Branch("Pmu1",&Pmu1);
+  Sync_tree->Branch("Pmu2",&Pmu2);
+  Sync_tree->Branch("Pmu3",&Pmu3);
+
+
+  Sync_tree->Branch("Etamu1",&Etamu1);
+  Sync_tree->Branch("Etamu2",&Etamu2);
+  Sync_tree->Branch("Etamu3",&Etamu3);
+
+
+  /*  Sync_tree->Branch("sync_eta_1",&sync_eta_1);
   Sync_tree->Branch("sync_eta_2",&sync_eta_2);
   Sync_tree->Branch("sync_eta_3",&sync_eta_3);
 
@@ -49,11 +59,14 @@ void  SyncSignal::Configure(){
   Sync_tree->Branch("muon_1_isTrack",&muon_1_isTrack);
   Sync_tree->Branch("muon_2_isTrack",&muon_2_isTrack);
   Sync_tree->Branch("muon_3_isTrack",&muon_3_isTrack);
+  */
 
-  Sync_tree->Branch("sync_ThreeMuVtx_x",&sync_ThreeMuVtx_x);
-  Sync_tree->Branch("sync_ThreeMuVtx_y",&sync_ThreeMuVtx_y);
-  Sync_tree->Branch("sync_ThreeMuVtx_z",&sync_ThreeMuVtx_z);
-  Sync_tree->Branch("sync_ThreeMuVtx_Chi2",&sync_ThreeMuVtx_Chi2);
+  Sync_tree->Branch("SVx",&SVx);
+  Sync_tree->Branch("SVy",&SVy);
+  Sync_tree->Branch("SVz",&SVz);
+  Sync_tree->Branch("fv_nC",&fv_nC);
+  Sync_tree->Branch("fv_dphi3D",&fv_dphi3D);
+
 
 
   for(int i=0; i<NCuts;i++){
@@ -62,16 +75,16 @@ void  SyncSignal::Configure(){
     pass.push_back(false);
     if(i==TriggerOk)          cut.at(TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=2.0;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
-    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=1.5;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
     if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
     if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
     if(i==TauMassCut)         cut.at(TauMassCut)=1;// true for MC and mass side band for data
   }
-  
+
   TString hlabel;
   TString htitle;
   for(int i=0; i<NCuts; i++){
@@ -92,7 +105,7 @@ void  SyncSignal::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==Mu1PtCut){
-      title.at(i)="$p_{T}(\\mu_{1}) >$ 2.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{1}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -102,16 +115,18 @@ void  SyncSignal::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
     }
     else if(i==Mu2PtCut){
-      title.at(i)="$p_{T}(\\mu_{2}) >$ 2.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{2}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
+
+
       hlabel="Muon2 PT, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
     }
     else if(i==Mu3PtCut){
-      title.at(i)="$p_{T}(\\mu_{3}) >$ 1 GeV";
+      title.at(i)="$p_{T}(\\mu_{3}) >$ 2 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -166,6 +181,13 @@ void  SyncSignal::Configure(){
   } 
   // Setup NPassed Histogams
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
+  NSignalCandidates=HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"N candidates","Events");
+  KFChi2 =HConfig.GetTH2D(Name+"_KFChi2","KFChi2",20,0,0.1,20,0,0.1,"#Delta R (mc -first) ","#Delta R (mc - second)");
+
+  Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.1,"reco - mc #mu_{1} #Delta R","Events");
+  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.1,"reco - mc #mu_{2} #Delta R","Events");
+  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.1,"reco - mc #mu_{3} #Delta R","Events");
+
   // Setup Extra Histograms
 
 
@@ -177,23 +199,37 @@ void  SyncSignal::Configure(){
 
 void  SyncSignal::Store_ExtraDist(){ 
 
+  Extradist1d.push_back(&NSignalCandidates);
+  Extradist1d.push_back(&Muon1DRToTruth);
+  Extradist1d.push_back(&Muon2DRToTruth);
+  Extradist1d.push_back(&Muon3DRToTruth);
+
+  Extradist2d.push_back(&KFChi2);
+
 }
 
 
 void  SyncSignal::doEvent(){ 
 
-  
+
+
   unsigned int t;
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
-
+  value.at(TriggerOk)=0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
     //    if((HLT.Contains("DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu"))) value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
-    if(HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu_v"))value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
+    //    if((HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu")   or  HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu")  or HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass"))  and Ntp->HLTDecision(iTrigger)  )
+
+    if(HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu")  && Ntp->HLTDecision(iTrigger)) value.at(TriggerOk)=true;//
+    
+    //DoubleMu3_Trk_Tau3mu
+    
+    //value.at(TriggerOk)=Ntp->HLTDecision(iTrigger);
 
   }
-
+  
   pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
   value.at(SignalCandidate)=0;
   unsigned int  signal_idx=0;
@@ -276,12 +312,40 @@ void  SyncSignal::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
-  if(Ntp->EventNumber()==6510923){
-    std::cout<<"status "<< status << std::endl;
-    std::cout<<"  N candidates  "<< Ntp-> NThreeMuons()<< " trigger:  "<< pass.at(TriggerOk) << " signal   "<< pass.at(SignalCandidate) << std::endl;
+
+
+  //  if(Ntp->EventNumber()==  2132441755 or  Ntp->EventNumber()==2132442503 or  Ntp->EventNumber()==2216999905 or  Ntp->EventNumber()==2218018017 or  Ntp->EventNumber()==2218153836 or  Ntp->EventNumber()==2224367468 or  Ntp->EventNumber()==41571595 or  Ntp->EventNumber()==58447138 or  Ntp->EventNumber()==60544639 or  Ntp->EventNumber()==61679792 or  Ntp->EventNumber()==61764355 or  Ntp->EventNumber()==61953079 or  Ntp->EventNumber()==73515741 or  Ntp->EventNumber()==77540867 or  Ntp->EventNumber()==77688484 or  Ntp->EventNumber()==79478760 or  Ntp->EventNumber()==82606776 or  Ntp->EventNumber()==82622592 or  Ntp->EventNumber()==244383799 or  Ntp->EventNumber()==247314349 or  Ntp->EventNumber()==249332949 or  Ntp->EventNumber()==251563711 or  Ntp->EventNumber()==254191727 or  Ntp->EventNumber()==254932255 or  Ntp->EventNumber()==330051129 or  Ntp->EventNumber()==330446387 or  Ntp->EventNumber()==336362564 or  Ntp->EventNumber()==351321174 or  Ntp->EventNumber()==1885381355 or  Ntp->EventNumber()==1885637011 or  Ntp->EventNumber()==1908089549 or  Ntp->EventNumber()==1908162449 or  Ntp->EventNumber()==2175517428 or  Ntp->EventNumber()==2211403491 or  Ntp->EventNumber()==2213054018 or  Ntp->EventNumber()==2213935135 or  Ntp->EventNumber()==2214639779 or  Ntp->EventNumber()==2214844207 or  Ntp->EventNumber()==2215333651 or  Ntp->EventNumber()==2215692202 or  Ntp->EventNumber()==337004381 or  Ntp->EventNumber()==2836236016 or  Ntp->EventNumber()==2891478798 or  Ntp->EventNumber()==2892333356 or  Ntp->EventNumber()==2892485321 or  Ntp->EventNumber()==2905102182 or  Ntp->EventNumber()==2984100754 or  Ntp->EventNumber()==2984128642 or  Ntp->EventNumber()==2932977849 or  Ntp->EventNumber()==3666838055 or  Ntp->EventNumber()==3668909240 or  Ntp->EventNumber()==1044803226 or  Ntp->EventNumber()==1052984755 or  Ntp->EventNumber()==1065922170 or  Ntp->EventNumber()==1066066748 or  Ntp->EventNumber()==1066156777 or  Ntp->EventNumber()==1070543292 or  Ntp->EventNumber()==1091453148 or  Ntp->EventNumber()==1093002932 or  Ntp->EventNumber()==3762072241 or  Ntp->EventNumber()==3769424927 or  Ntp->EventNumber()==3774427758 or  Ntp->EventNumber()==3775170225 or  Ntp->EventNumber()==3775315149 or  Ntp->EventNumber()==3777258633 or  Ntp->EventNumber()==3795863837 or  Ntp->EventNumber()==3796093483 or  Ntp->EventNumber()==3796380512 or  Ntp->EventNumber()==3796611059 or  Ntp->EventNumber()==3805532781 or  Ntp->EventNumber()==3805600582 or  Ntp->EventNumber()==3805727172 or  Ntp->EventNumber()==3808944919 or  Ntp->EventNumber()==3812717658 or  Ntp->EventNumber()==3814520986 or  Ntp->EventNumber()==3815192506 or  Ntp->EventNumber()==3818120062 or  Ntp->EventNumber()==3818597616 or  Ntp->EventNumber()==3819472164 or  Ntp->EventNumber()==3821621232 or  Ntp->EventNumber()==3821929754 or  Ntp->EventNumber()==3821966898 or  Ntp->EventNumber()==3822260627 or  Ntp->EventNumber()==3830371384 or  Ntp->EventNumber()==3834572121 or  Ntp->EventNumber()==3837597884 or  Ntp->EventNumber()==3839158403 or  Ntp->EventNumber()==3847710495 or  Ntp->EventNumber()==1178627079 or  Ntp->EventNumber()==1247838103 or  Ntp->EventNumber()==2911636352 or  Ntp->EventNumber()==2912023250 or  Ntp->EventNumber()==2962227502 or  Ntp->EventNumber()==2965959367 or  Ntp->EventNumber()==2968060926 or  Ntp->EventNumber()==2975740897 or  Ntp->EventNumber()==2977185040 or  Ntp->EventNumber()==2978035514 or  Ntp->EventNumber()==2982321151 or  Ntp->EventNumber()==2985544485 or  Ntp->EventNumber()==1045688150 or  Ntp->EventNumber()==1092716992 or  Ntp->EventNumber()==1096339395 or  Ntp->EventNumber()==1097999561 or  Ntp->EventNumber()==1099035935 or  Ntp->EventNumber()==1100059313 or  Ntp->EventNumber()==1166692433 or  Ntp->EventNumber()==1166789026 or  Ntp->EventNumber()==1167061228 or  Ntp->EventNumber()==1168608430 or  Ntp->EventNumber()==1170668839 or  Ntp->EventNumber()==1170810737 or  Ntp->EventNumber()==1172887630){
+
+
+
+    if(Ntp->EventNumber()==  41529489 or  Ntp->EventNumber()==82515382 or  Ntp->EventNumber()==250715270 or  Ntp->EventNumber()==255043546 or  Ntp->EventNumber()==2135865441 or  Ntp->EventNumber()==2892411351 or  Ntp->EventNumber()==2984144772 or  Ntp->EventNumber()==1065641651 or  Ntp->EventNumber()==1091471246 or  Ntp->EventNumber()==1094939126 or  Ntp->EventNumber()==3759433684 or  Ntp->EventNumber()==3774594172 or  Ntp->EventNumber()==3778240220 or  Ntp->EventNumber()==3797652855 or  Ntp->EventNumber()==3814552384 or  Ntp->EventNumber()==3819375874 or  Ntp->EventNumber()==3836387841 or  Ntp->EventNumber()==2977321169 or  Ntp->EventNumber()==1092217350 or  Ntp->EventNumber()==1092681120){
+
+
+
+    //  if(Ntp->EventNumber()==3778090386 or  Ntp->EventNumber()==2988198475){
+
+    std::cout<<"status (passed selection? ) "<< status << std::endl;
+    std::cout<<"  EventNumber   "  << Ntp->EventNumber() <<"  N candidates  "<< Ntp-> NThreeMuons()<< " trigger:  "<< pass.at(TriggerOk) << " signal   "<< pass.at(SignalCandidate) << std::endl;
+    
+    std::cout<<" ----   Print Out HLT's for this event     "	<< std::endl;
+    for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+      //      std::cout<<"   trigger  "<<   iTrigger << std::endl;
+      if(Ntp->HLTDecision(iTrigger))      std::cout<<" Trigger Name:   "<<  Ntp->HLTName(iTrigger)<< "     "<< Ntp->HLTDecision(iTrigger) << std::endl;
+    }
+
+    std::cout<<" loop over signal candidates in this event: "<< std::endl;
+    for(unsigned int icand=0; icand < Ntp-> NThreeMuons(); icand++){
+
+      std::cout<<"candidate:  "<< icand<< "  Muon1_pt  "<< Ntp->Muon_P4(Ntp->ThreeMuonIndices(icand).at(0)).Pt()<< "  Muon2_pt  "<< Ntp->Muon_P4(Ntp->ThreeMuonIndices(icand).at(1)).Pt()<< " Muon3_pt   "<< Ntp->Muon_P4(Ntp->ThreeMuonIndices(icand).at(2)).Pt()<< std::endl;
+
+
+    }
 
   }
   if(status){
+
+
+    NSignalCandidates.at(t).Fill(Ntp->NThreeMuons(),1);
 
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
@@ -291,13 +355,20 @@ void  SyncSignal::doEvent(){
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
 
-    sync_pt_1 =  Muon1LV.Pt();
-    sync_pt_2 =  Muon2LV.Pt();
-    sync_pt_3 =  Muon3LV.Pt();
+    TLorentzVector TauLV = Muon1LV+Muon2LV+Muon3LV;
 
-    sync_eta_1 =  Muon1LV.Eta();
-    sync_eta_2 =  Muon2LV.Eta();
-    sync_eta_3 =  Muon3LV.Eta();
+    Ptmu1 =  Muon1LV.Pt();
+    Ptmu2 =  Muon2LV.Pt();
+    Ptmu3 =  Muon3LV.Pt();
+
+
+    Pmu1 =  Muon1LV.P();
+    Pmu2 =  Muon2LV.P();
+    Pmu3 =  Muon3LV.P();
+
+    Etamu1 =  Muon1LV.Eta();
+    Etamu2 =  Muon2LV.Eta();
+    Etamu3 =  Muon3LV.Eta();
 
     muon_1_isGlob = Ntp->Muon_isGlobalMuon(Muon_index_1);
     muon_2_isGlob = Ntp->Muon_isGlobalMuon(Muon_index_2);
@@ -310,13 +381,51 @@ void  SyncSignal::doEvent(){
     evt = Ntp->EventNumber();
     run = Ntp->RunNumber();
     lumi = Ntp->LuminosityBlock();
-    std::cout<<"evt:  "<< evt<< std::endl;
-    sync_ThreeMuVtx_x = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
-    sync_ThreeMuVtx_y = Ntp->Vertex_Signal_KF_pos(signal_idx).Y();
-    sync_ThreeMuVtx_z = Ntp->Vertex_Signal_KF_pos(signal_idx).Z();
-    sync_ThreeMuVtx_Chi2 = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
+    //    std::cout<<"evt:  "<< evt<< std::endl;
+    SVx = Ntp->Vertex_Signal_KF_pos(signal_idx).X();
+    SVy = Ntp->Vertex_Signal_KF_pos(signal_idx).Y();
+    SVz = Ntp->Vertex_Signal_KF_pos(signal_idx).Z();
+    fv_nC = Ntp->Vertex_Signal_KF_Chi2(signal_idx);
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+    fv_dphi3D=    SVPV.Angle(TauLV.Vect());
 
+      //    if(Ntp->NThreeMuons()==1) Sync_tree->Fill();
     Sync_tree->Fill();
+
+    /*
+    if(id==40 || id == 60 || id ==90){
+      if(Ntp->MCEventIsReconstructed()){
+	TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
+	TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
+	TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2)));
+	TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
+
+
+	Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
+	Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
+	Muon3DRToTruth.at(t).Fill(Muon3LV.DeltaR(MCMuon3LV),1);
+
+		if(Ntp->NThreeMuons()==2){
+	  int index1,index2;
+	  if(signal_idx==0){index1 = 0; index2=1;}
+	  if(signal_idx==1){index1 = 1; index2=0;}
+
+	  TLorentzVector Tau1 = Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index1)).at(0)))+
+	    Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index1)).at(1)))+
+	    Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index1)).at(2)));
+	  TLorentzVector Tau2 = Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index2)).at(0)))+
+	    Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index2)).at(1)))+
+	    Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(index2)).at(2)));
+	  
+
+	  KFChi2.at(t).Fill(Tau1.DeltaR(MCTauLV),Tau2.DeltaR(MCTauLV));
+	  
+	}
+	
+
+      }
+    }
+    */
     
   }
 }
