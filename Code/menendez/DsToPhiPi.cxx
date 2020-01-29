@@ -200,9 +200,9 @@ void  DsToPhiPi::Configure(){
   //NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
  
   DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
-  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
-  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
-  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,20.5,"Ds p_{T} (GeV)", "Events");
+  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
+  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
+  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
   DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse P (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events");
   DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse P (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events");
   Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse P (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events");
@@ -521,7 +521,7 @@ void  DsToPhiPi::doEvent(){
   double w;  
   double w_peak;     
 
-  if(!Ntp->isData()){w = 1; w_peak = .8016;}//Ntp->PUReweight(); } //  No weights to data
+  if(!Ntp->isData()){w = 1; w_peak = .76;} //.8016;}//Ntp->PUReweight(); } //  No weights to data
   else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
@@ -881,7 +881,7 @@ void  DsToPhiPi::Finish(){
     MaxDca.at(0).Add(&MaxDca_sideband.at(0),-1);
     MaxD0SigSV.at(0).Add(&MaxD0SigSV_peak.at(0));
     MaxD0SigSV.at(0).Add(&MaxD0SigSV_sideband.at(0),-1);
-    MaxD0SigPV.at(0).Add(&MaxD0SigPV_peak.at(0),-1);
+    MaxD0SigPV.at(0).Add(&MaxD0SigPV_peak.at(0));
     MaxD0SigPV.at(0).Add(&MaxD0SigPV_sideband.at(0),-1);
     Iso1.at(0).Add(&Iso1_peak.at(0));
     Iso1.at(0).Add(&Iso1_sideband.at(0),-1);
