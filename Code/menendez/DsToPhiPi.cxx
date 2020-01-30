@@ -669,9 +669,9 @@ void  DsToPhiPi::doEvent(){
       MinD0SigSV_peak.at(t).Fill(MinD0SVSignificance,1);
       MinD0SigPV_peak.at(t).Fill(MinD0Significance,1);
       MaxVertexPairQuality_peak.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(tmp_idx,0),Ntp->Vertex_pair_quality(tmp_idx,1),Ntp->Vertex_pair_quality(tmp_idx,2)}),1);
-//      MaxdeltaMuZ_peak.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//	    fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//	    fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1);
+      MaxdeltaMuZ_peak.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+	    fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+	    fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Track_Poca(track).Z())}),1);
       MaxDca_peak.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1);
       MaxD0SigSV_peak.at(t).Fill(MaxD0SVSignificance,1);
       MaxD0SigPV_peak.at(t).Fill(MaxD0Significance,1);
@@ -708,9 +708,9 @@ void  DsToPhiPi::doEvent(){
       MinD0SigSV_sideband.at(t).Fill(MinD0SVSignificance,1);
       MinD0SigPV_sideband.at(t).Fill(MinD0Significance,1);
       MaxVertexPairQuality_sideband.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(tmp_idx,0),Ntp->Vertex_pair_quality(tmp_idx,1),Ntp->Vertex_pair_quality(tmp_idx,2)}),1);
-//      MaxdeltaMuZ_sideband.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//            fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1);
+      MaxdeltaMuZ_sideband.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+            fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Track_Poca(track).Z())}),1);
       MaxDca_sideband.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1);
       MaxD0SigSV_sideband.at(t).Fill(MaxD0SVSignificance,1);
       MaxD0SigPV_sideband.at(t).Fill(MaxD0Significance,1);
@@ -749,9 +749,9 @@ void  DsToPhiPi::doEvent(){
       MinD0SigSV.at(t).Fill(MinD0SVSignificance,1*w_peak);
       MinD0SigPV.at(t).Fill(MinD0Significance,1*w_peak);
       MaxVertexPairQuality.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(tmp_idx,0),Ntp->Vertex_pair_quality(tmp_idx,1),Ntp->Vertex_pair_quality(tmp_idx,2)}),1*w_peak);
-//      MaxdeltaMuZ.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//            fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(track).Z()),
-//            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Muon_Poca(track).Z())}),1*w_peak);
+      MaxdeltaMuZ.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Muon_Poca(mu2).Z()),fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+            fabs(Ntp->Muon_Poca(mu1).Z()  - Ntp->Track_Poca(track).Z()),
+            fabs(Ntp->Muon_Poca(mu2).Z()  - Ntp->Track_Poca(track).Z())}),1*w_peak);
       MaxDca.at(t).Fill(std::max({Ntp->Vertex_DCA12(tmp_idx),Ntp->Vertex_DCA23(tmp_idx),Ntp->Vertex_DCA31(tmp_idx)}),1*w_peak);
       MaxD0SigSV.at(t).Fill(MaxD0SVSignificance,1*w_peak);
       MaxD0SigPV.at(t).Fill(MaxD0Significance,1*w_peak);
@@ -782,22 +782,22 @@ void  DsToPhiPi::Finish(){
   if (id==1) {
 
     std::vector<double> scaleRun;
-    //
-    //if(Ntp->WhichEra(2017).Contains("RunB") ){
-    //  scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);
-    //}
-    //if(Ntp->WhichEra(2017).Contains("RunC") ){
-    //  scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);
-    //}
-    //if(Ntp->WhichEra(2017).Contains("RunD") ){
+    
+    if(Ntp->WhichEra(2017).Contains("RunB") ){
+      scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);
+    }
+    if(Ntp->WhichEra(2017).Contains("RunC") ){
+      scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);
+    }
+    if(Ntp->WhichEra(2017).Contains("RunD") ){
       scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);
-    //}
-    //if(Ntp->WhichEra(2017).Contains("RunE") ){
-    //  scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);
-    //}
-    //if(Ntp->WhichEra(2017).Contains("RunF") ){
-    //  scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);
-    //}
+    }
+    if(Ntp->WhichEra(2017).Contains("RunE") ){
+      scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);
+    }
+    if(Ntp->WhichEra(2017).Contains("RunF") ){
+      scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);
+    }
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
     Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     Muon1_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
@@ -823,7 +823,7 @@ void  DsToPhiPi::Finish(){
     MinD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MinD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxVertexPairQuality_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-//    MaxdeltaMuZ_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    MaxdeltaMuZ_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxDca_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
@@ -875,8 +875,8 @@ void  DsToPhiPi::Finish(){
     MinD0SigPV.at(0).Add(&MinD0SigPV_sideband.at(0),-1);
     MaxVertexPairQuality.at(0).Add(&MaxVertexPairQuality_peak.at(0));
     MaxVertexPairQuality.at(0).Add(&MaxVertexPairQuality_sideband.at(0),-1);
-//    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_peak.at(0));
-//    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_sideband.at(0),-1);
+    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_peak.at(0));
+    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_sideband.at(0),-1);
     MaxDca.at(0).Add(&MaxDca_peak.at(0));
     MaxDca.at(0).Add(&MaxDca_sideband.at(0),-1);
     MaxD0SigSV.at(0).Add(&MaxD0SigSV_peak.at(0));
