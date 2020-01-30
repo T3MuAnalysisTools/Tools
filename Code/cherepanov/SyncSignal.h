@@ -34,6 +34,21 @@ class SyncSignal : public Selection {
 
   double evt,run,lumi;
 
+  double Ptmu1;
+  double Ptmu2;
+  double Ptmu3;
+
+  double Pmu1;
+  double Pmu2;
+  double Pmu3;
+
+
+  double Etamu1;
+  double Etamu2;
+  double Etamu3;
+
+
+
   double sync_pt_1;
   double sync_pt_2;
   double sync_pt_3;
@@ -56,6 +71,22 @@ class SyncSignal : public Selection {
   double sync_ThreeMuVtx_y;
   double sync_ThreeMuVtx_z;
   double sync_ThreeMuVtx_Chi2;
+
+  double   SVx;
+  double   SVy;
+  double   SVz;
+  double   fv_nC;
+  double fv_dphi3D;
+
+
+
+  std::vector<TH1D> NSignalCandidates;
+
+  std::vector<TH1D> Muon1DRToTruth;
+  std::vector<TH1D> Muon2DRToTruth;
+  std::vector<TH1D> Muon3DRToTruth;
+
+  std::vector<TH2D> KFChi2;
 
 };
 #endif
