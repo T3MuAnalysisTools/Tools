@@ -379,6 +379,7 @@ if( $ARGV[0] eq "--Local" ){
 			system(sprintf("echo \"log          = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"getenv       = True\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));		
+                        system(sprintf("echo \"+JobFlavour = 'microcentury'\" >> $OutputDir/workdir$set/Condor_Combine"));
 			system(sprintf("echo \"queue  1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 
 	
