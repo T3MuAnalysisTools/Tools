@@ -168,6 +168,7 @@ if( $ARGV[0] eq "--MuonPogNtuple"){
     system(sprintf("echo \"cmsrel CMSSW_$CMSSWRel\" >>  Install_MuPoGNtuple_$time")); 
     system(sprintf("echo \"cd CMSSW_$CMSSWRel/src\" >> Install_MuPoGNtuple_$time")); 
     system(sprintf("echo \"cmsenv\" >> Install_MuPoGNtuple_$time")); 
+
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/MuonPOGtreeProducer.git\" >> Install_MuPoGNtuple_$time"));
     system(sprintf("echo \"cd MuonPOGtreeProducer; git checkout 9X_tau3mu;\" >> Install_MuPoGNtuple_$time"));
     system(sprintf("echo \"cd $currentdir/$CMSSW_BASE/src\" >> Install_MuPoGNtuple_$time")); 
@@ -216,6 +217,11 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
     system(sprintf("echo \"cmsrel CMSSW_$CMSSWRel\" >>  Install_DsTNtuple_$time"));
     system(sprintf("echo \"cd CMSSW_$CMSSWRel/src\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"cmsenv\" >> Install_DsTNtuple_$time"));
+
+    system(sprintf("echo \"git cms-init\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"git cms-addpkg RecoVertex/AdaptiveVertexFinder\" >> Install_DsTNtuple_$time"));
+
+
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/DsTau23Mu.git\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"cd DsTau23Mu; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
 
