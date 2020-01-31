@@ -296,6 +296,7 @@ if( $ARGV[0] eq "--Local" ){
     system(sprintf("echo \"error        = Combine-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Condor_Combine")); 
     system(sprintf("echo \"log          = Combine-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Condor_Combine")); 			
     system(sprintf("echo \"getenv       = True\" >> $OutputDir/workdir$set/Condor_Combine"));
+    system(sprintf("echo \"+JobFlavour = 'microcentury'\" >> $OutputDir/workdir$set/Condor_Combine"));
     system(sprintf("echo \"queue  1 \" >> $OutputDir/workdir$set/Condor_Combine"));
 
     # Start Submit script

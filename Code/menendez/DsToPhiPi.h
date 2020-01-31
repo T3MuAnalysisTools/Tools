@@ -26,6 +26,7 @@ class DsToPhiPi : public Selection {
 
  private:
  // Selection Variables
+ bool RunB, RunC, RunD, RunE, RunF = 0;
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
 

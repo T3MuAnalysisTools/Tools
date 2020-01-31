@@ -3,7 +3,7 @@ Skim: False
 HistoFile: InputData/HistoScaletoLumi.txt
 Analysis: DsToPhiPi
 UncertType: default
-SkimInfo: InputData/SkimSummaryLog_October2019.log
+SkimInfo: InputData/SkimSummaryLog_2017Data_ProductionJanuary2020.log
 Lumi: 36441.98
 PlotStyle: style2
 

@@ -431,6 +431,13 @@ void  DsToPhiPi::doEvent(){
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
 
+  //bool RunB, RunC, RunD, RunE, RunF = 0;
+  if(id==1 && Ntp->WhichEra(2017).Contains("RunB") ){ RunB=1;} 
+  if(id==1 && Ntp->WhichEra(2017).Contains("RunC") ){ RunC=1;} 
+  if(id==1 && Ntp->WhichEra(2017).Contains("RunD") ){ RunD=1;} 
+  if(id==1 && Ntp->WhichEra(2017).Contains("RunE") ){ RunE=1;}
+  if(id==1 && Ntp->WhichEra(2017).Contains("RunF") ){ RunF=1;}
+
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLT = Ntp->HLTName(iTrigger);
@@ -782,22 +789,13 @@ void  DsToPhiPi::Finish(){
   if (id==1) {
 
     std::vector<double> scaleRun;
-    
-    if(Ntp->WhichEra(2017).Contains("RunB") ){
-      scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);
-    }
-    if(Ntp->WhichEra(2017).Contains("RunC") ){
-      scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);
-    }
-    if(Ntp->WhichEra(2017).Contains("RunD") ){
-      scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);
-    }
-    if(Ntp->WhichEra(2017).Contains("RunE") ){
-      scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);
-    }
-    if(Ntp->WhichEra(2017).Contains("RunF") ){
-      scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);
-    }
+
+    if(RunB){scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);} 
+    if(RunC){scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);}
+    if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
+    if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
+    if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
+
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
     Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     Muon1_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
