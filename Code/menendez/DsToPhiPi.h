@@ -26,6 +26,7 @@ class DsToPhiPi : public Selection {
 
  private:
  // Selection Variables
+ bool RunB, RunC, RunD, RunE, RunF = 0;
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
 
@@ -178,6 +179,10 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> MaxD0SigSV_peak;
   std::vector<TH1D> MaxD0SigSV_sideband;
   std::vector<TH1D> MaxD0SigSV;
+
+  std::vector<TH1D> MaxD0SigPV_peak;
+  std::vector<TH1D> MaxD0SigPV_sideband;
+  std::vector<TH1D> MaxD0SigPV;
 
   std::vector<TH1D> Iso1_peak;
   std::vector<TH1D> Iso1_sideband;
