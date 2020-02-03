@@ -104,9 +104,6 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Muon3_chi2LocalMomentum",&var_Muon3_chi2LocalMomentum);
 
 
-
-
-
   TMVA_Tree->Branch("var_MintrkKink",&var_MintrkKink);
   TMVA_Tree->Branch("var_MaxtrkKink",&var_MaxtrkKink);
   TMVA_Tree->Branch("var_MinglbKink",&var_MinglbKink);
@@ -498,6 +495,17 @@ void  FillTMVATrees::Configure(){
 
 
 
+
+      BTagCSVSHMatchedToTau =HConfig.GetTH1D(Name+"_BTagCSVSHMatchedToTau","BTagCSVSHMatchedToTau",50,0.,1.,"BTagCSV SH","");
+      BTagMVASHMatchedToTau =HConfig.GetTH1D(Name+"_BTagMVASHMatchedToTau","BTagMVASHMatchedToTau",50,-1.,1.,"BTagMVA SH","");
+      BTagCVSBSHMatchedToTau=HConfig.GetTH1D(Name+"_BTagCVSBSHMatchedToTau","BTagCVSBSHMatchedToTau",50,-1.,1.,"BTagCVSB SH","");
+
+      BTagCSVOHMatchedToTau =HConfig.GetTH1D(Name+"_BTagCSVOHMatchedToTau","BTagCSVOHMatchedToTau",50,0.,1.,"BTagCSV OH ","");
+      BTagMVAOHMatchedToTau =HConfig.GetTH1D(Name+"_BTagMVAOHMatchedToTau","BTagMVAOHMatchedToTau",50,-1.,1.,"BTagMVA OH","");
+      BTagCVSBOHMatchedToTau=HConfig.GetTH1D(Name+"_BTagCVSBOHMatchedToTau","BTagCVSBOHMatchedToTau",50,-1.,1.,"BTagCVSB OH","");
+
+
+
       BTagCSVSHVsNJets =HConfig.GetTH2D(Name+"_BTagCSVSHVsNJets","BTagCSVSHVsNJets",50,0.,1.,10,-0.5,9.5,"BTagCSV SH","N");
       BTagMVASHVsNJets =HConfig.GetTH2D(Name+"_BTagMVASHVsNJets","BTagMVASHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagMVA SH","N");
       BTagCVSBSHVsNJets=HConfig.GetTH2D(Name+"_BTagCVSBSHVsNJets","BTagCVSBSHVsNJets",50,-1.,1.,10,-0.5,9.5,"BTagCVSB SH","N");
@@ -513,6 +521,13 @@ void  FillTMVATrees::Configure(){
       MaxMuonImpacAngle =HConfig.GetTH1D(Name+"_MaxMuonImpactAngle","MaxMuonImpactAngle",30,-1,1,"Max #mu impact angle","");
 
 
+      Muon1StandardSelectorPass=HConfig.GetTH1D(Name+"_Muon1StandardSelectorPass","Muon1StandardSelectorPass",23,-0.5,22.5,"#mu_{1} standard selector(pass); bin 0 - no ID","Events");
+      Muon2StandardSelectorPass=HConfig.GetTH1D(Name+"_Muon2StandardSelectorPass","Muon2StandardSelectorPass",23,-0.5,22.5,"#mu_{2} standard selector(pass); bin 0 - no ID","Events");
+      Muon3StandardSelectorPass=HConfig.GetTH1D(Name+"_Muon3StandardSelectorPass","Muon3StandardSelectorPass",23,-0.5,22.5,"#mu_{3} standard selector(pass); bin 0 - no ID","Events");
+
+      Muon1StandardSelectorFail=HConfig.GetTH1D(Name+"_Muon1StandardSelectorFail","Muon1StandardSelectorFail",23,-0.5,22.5,"#mu_{1} standard selector(fail); bin 0 - no ID","Events");
+      Muon2StandardSelectorFail=HConfig.GetTH1D(Name+"_Muon2StandardSelectorFail","Muon2StandardSelectorFail",23,-0.5,22.5,"#mu_{2} standard selector(fail); bin 0 - no ID","Events");
+      Muon3StandardSelectorFail=HConfig.GetTH1D(Name+"_Muon3StandardSelectorFail","Muon3StandardSelectorFail",23,-0.5,22.5,"#mu_{3} standard selector(fail); bin 0 - no ID","Events");
 
 
 
@@ -718,6 +733,18 @@ void  FillTMVATrees::Store_ExtraDist(){
   Extradist1d.push_back(&BTagMVAOH);
   Extradist1d.push_back(&BTagCVSBOH);
 
+  Extradist1d.push_back(&BTagCSVSHMatchedToTau);
+  Extradist1d.push_back(&BTagMVASHMatchedToTau);
+  Extradist1d.push_back(&BTagCVSBSHMatchedToTau);
+
+  Extradist1d.push_back(&BTagCSVOHMatchedToTau);
+  Extradist1d.push_back(&BTagMVAOHMatchedToTau);
+  Extradist1d.push_back(&BTagCVSBOHMatchedToTau);
+
+
+
+
+
   Extradist2d.push_back(&BTagCSVSHVsNJets);
   Extradist2d.push_back(&BTagMVASHVsNJets);
   Extradist2d.push_back(&BTagCVSBSHVsNJets);
@@ -726,12 +753,29 @@ void  FillTMVATrees::Store_ExtraDist(){
   Extradist2d.push_back(&BTagMVAOHVsNJets);
   Extradist2d.push_back(&BTagCVSBOHVsNJets);
 
+
+
+
   
   Extradist1d.push_back(&Muon1ImpactAngle);
   Extradist1d.push_back(&Muon2ImpactAngle);
   Extradist1d.push_back(&Muon3ImpactAngle);
   Extradist1d.push_back(&MinMuonImpacAngle);
   Extradist1d.push_back(&MaxMuonImpacAngle);
+
+
+
+  Extradist1d.push_back(&Muon1StandardSelectorPass);
+  Extradist1d.push_back(&Muon2StandardSelectorPass);
+  Extradist1d.push_back(&Muon3StandardSelectorPass);
+
+  Extradist1d.push_back(&Muon1StandardSelectorFail);
+  Extradist1d.push_back(&Muon2StandardSelectorFail);
+  Extradist1d.push_back(&Muon3StandardSelectorFail);
+
+
+
+
 
 }
 
@@ -818,7 +862,7 @@ void  FillTMVATrees::doEvent(){
     pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
-    pass.at(TriggerMatch) = (value.at(TriggerMatch)  <  cut.at(TriggerMatch));
+    pass.at(TriggerMatch) = true;//(value.at(TriggerMatch)  <  cut.at(TriggerMatch));
     pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
     pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
 
@@ -870,43 +914,87 @@ void  FillTMVATrees::doEvent(){
       TLorentzVector TauLV = Muon1LV + Muon2LV + Muon3LV;
       TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
 
-
+      int OH_jet_count(0);
       int SH_jet_count(0);
+      int jet_index_closest_to_tau(-1);
+      int jet_index_closest_to_tau_opposite_in_phi(-1);
+      double TJDeltaR(99.);
+      double OHDeltaPhi(TMath::Pi());
       for(int ijet= 0; ijet <  Ntp->NJets(); ijet++){
+	if(TauLV.DeltaR(Ntp->Jet_P4(ijet)) < TJDeltaR){
+
+	  TJDeltaR = TauLV.DeltaR(Ntp->Jet_P4(ijet));
+	  jet_index_closest_to_tau = ijet;
+
+	}
+
+
+
 	if(fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) < TMath::Pi() ){
 	  SH_jet_count++;
 	  BTagCSVSH.at(t).Fill(Ntp->JetBTagCSV(ijet),w);
 	  BTagMVASH.at(t).Fill(Ntp->JetBTagMVA(ijet),w);
 	  BTagCVSBSH.at(t).Fill(Ntp->JetBTagCVSB(ijet),w);
-
 	}
-      }
-      NBJet4piSH.at(t).Fill(SH_jet_count,w);
 
-      int OH_jet_count(0);
-      for(int ijet= 0; ijet <  Ntp->NJets(); ijet++){
 
-	std::cout<<"  Tau Phi  "<< TauLV.Phi() <<" Jet  "<< Ntp->Jet_P4(ijet).Phi() << std::endl;
 	if(fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) > TMath::Pi() ){
-	  std::cout<<"  Delta Phi  "<< Ntp->Jet_P4(ijet).Phi() <<  fabs(Ntp->Jet_P4(ijet).Phi()  - TauLV.Phi()) << std::endl;
-
 	  OH_jet_count++;  
 	  BTagCSVOH.at(t).Fill(Ntp->JetBTagCSV(ijet),w);
 	  BTagMVAOH.at(t).Fill(Ntp->JetBTagMVA(ijet),w);
 	  BTagCVSBOH.at(t).Fill(Ntp->JetBTagCVSB(ijet),w);
 	}
-	
+
+
       }
+      for(int ijet= 0; ijet <  Ntp->NJets(); ijet++){
+	if(jet_index_closest_to_tau!=-1){
+	  //	  if(fabs(Ntp->Jet_P4(ijet).Phi() - fabs(Ntp->Jet_P4(jet_index_closest_to_tau).Phi() - TMath::Pi())) < OHDeltaPhi  )  {
+	  if(fabs(TMath::Pi() - fabs(Ntp->Jet_P4(ijet).Phi() - Ntp->Jet_P4(jet_index_closest_to_tau).Phi() )) < OHDeltaPhi  )  {
+	    OHDeltaPhi = fabs(TMath::Pi() - fabs(Ntp->Jet_P4(ijet).Phi() - Ntp->Jet_P4(jet_index_closest_to_tau).Phi() ));
+	    jet_index_closest_to_tau_opposite_in_phi = ijet;
+	  }
+
+	}
+      }
+      NBJet4piSH.at(t).Fill(SH_jet_count,w);
       NBJet4piOH.at(t).Fill(OH_jet_count,w);
+      
+      if(jet_index_closest_to_tau!=-1){
+	BTagCSVSHMatchedToTau.at(t).Fill(Ntp->JetBTagCSV(jet_index_closest_to_tau),w);
+	BTagMVASHMatchedToTau.at(t).Fill(Ntp->JetBTagMVA(jet_index_closest_to_tau),w);
+	BTagCVSBSHMatchedToTau.at(t).Fill(Ntp->JetBTagCVSB(jet_index_closest_to_tau),w);
+      }
+      if(jet_index_closest_to_tau_opposite_in_phi!=-1){
+	BTagCSVOHMatchedToTau.at(t).Fill(Ntp->JetBTagCSV(jet_index_closest_to_tau_opposite_in_phi),w);
+	BTagMVAOHMatchedToTau.at(t).Fill(Ntp->JetBTagMVA(jet_index_closest_to_tau_opposite_in_phi),w);
+	BTagCVSBOHMatchedToTau.at(t).Fill(Ntp->JetBTagCVSB(jet_index_closest_to_tau_opposite_in_phi),w);
+      }
 
 
- // std::vector<TH2D> BTagCSVSHVsNJets;
- //  std::vector<TH2D> BTagMVASHVsNJets;
- //  std::vector<TH2D> BTagCVSBSHVsNJets;
 
- //  std::vector<TH2D> BTagCSVOHVsNJets;
- //  std::vector<TH2D> BTagMVAOHVsNJets;
- //  std::vector<TH2D> BTagCVSBOHVsNJets;
+
+      //------------- Muon ID
+
+      for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_1).size(); iMuSelector++ ){
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_1).at(iMuSelector)==1)  Muon1StandardSelectorPass.at(t).Fill(iMuSelector,1);
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_1).at(iMuSelector)!=1)  Muon1StandardSelectorFail.at(t).Fill(iMuSelector,1);
+      }
+
+      for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_2).size(); iMuSelector++ ){
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_2).at(iMuSelector)==1)  Muon2StandardSelectorPass.at(t).Fill(iMuSelector,1);
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_2).at(iMuSelector)!=1)  Muon2StandardSelectorFail.at(t).Fill(iMuSelector,1);
+      }
+
+      for(unsigned int iMuSelector=0; iMuSelector< Ntp->MuonStandardSelectorBitMask(Muon_index_3).size(); iMuSelector++ ){
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_3).at(iMuSelector)==1)  Muon3StandardSelectorPass.at(t).Fill(iMuSelector,1);
+	if(Ntp->MuonStandardSelectorBitMask(Muon_index_3).at(iMuSelector)!=1)  Muon3StandardSelectorFail.at(t).Fill(iMuSelector,1);
+      }
+
+
+
+      //------------- Muon ID
+
 
 
 
@@ -1632,7 +1720,7 @@ void  FillTMVATrees::Finish(){
   
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-    int id(Ntp->GetMCID());
+    //    int id(Ntp->GetMCID());
     double scale(1.);
     double scaleDsTau(0.637);
     double scaleBpTau(0.262);
