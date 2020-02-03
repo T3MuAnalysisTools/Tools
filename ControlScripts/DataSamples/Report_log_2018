@@ -1,0 +1,118 @@
+[cherepan@lxplus715]/afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB%   source ReportAllByCrab.sh Report
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018A-17Sep2018-v1/results
+Summary from jobs in status 'finished':
+  Number of files processed: 3921
+  Number of events read: 38382612
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+  Warning: 'notFinished' lumis written to notFinishedLumis.json
+           The 'notFinished' lumis were calculated as: the lumis to process minus the processed lumis.
+Additional report lumi files:
+  Input dataset lumis (from DBS, at task submission time) written to inputDatasetLumis.json
+  Lumis to process written to lumisToProcess.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018A-17Sep2018-v1/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018B-17Sep2018-v1/results
+Summary from jobs in status 'finished':
+  Number of files processed: 1797
+  Number of events read: 19121431
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+Additional report lumi files:
+  Input dataset lumis (from DBS, at task submission time) written to inputDatasetLumis.json
+  Lumis to process written to lumisToProcess.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018B-17Sep2018-v1/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018C-17Sep2018-v1/results
+Summary from jobs in status 'finished':
+  Number of files processed: 1952
+  Number of events read: 19679674
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+  Warning: 'notFinished' lumis written to notFinishedLumis.json
+           The 'notFinished' lumis were calculated as: the lumis to process minus the processed lumis.
+Additional report lumi files:
+  Input dataset lumis (from DBS, at task submission time) written to inputDatasetLumis.json
+  Lumis to process written to lumisToProcess.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018C-17Sep2018-v1/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018D-PromptReco-v2/results
+Summary from jobs in status 'finished':
+  Number of files processed: 8807
+  Number of events read: 94063839
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+  Warning: 'notFinished' lumis written to notFinishedLumis.json
+           The 'notFinished' lumis were calculated as: the lumis to process minus the processed lumis.
+Additional report lumi files:
+  Input dataset lumis (from DBS, at task submission time) written to inputDatasetLumis.json
+  Lumis to process written to lumisToProcess.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DoubleMuonLowMass__Run2018D-PromptReco-v2/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsEtaMuNu_EtaMuMuGamma__wangjian-CRAB3_RunIIAutumn18DR_AODSIM-c5ffe086db9ac96902dde93cd44a5aa0/results
+Summary from jobs in status 'finished':
+  Number of files processed: 498
+  Number of events read: 111350
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+  Warning: Duplicate lumis in output files written to outputFilesDuplicateLumis.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsEtaMuNu_EtaMuMuGamma__wangjian-CRAB3_RunIIAutumn18DR_AODSIM-c5ffe086db9ac96902dde93cd44a5aa0/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsToTau_TauTo3Mu__wangjian-CRAB3_RunIIAutumn18DR_AODSIM-87600497c2c6a5767aee5d92666e59c3/results
+Summary from jobs in status 'finished':
+  Number of files processed: 887
+  Number of events read: 1052150
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsToTau_TauTo3Mu__wangjian-CRAB3_RunIIAutumn18DR_AODSIM-87600497c2c6a5767aee5d92666e59c3/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_BdTau3Mu__bjoshi-CRAB3_MC2018_BdTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/results
+Summary from jobs in status 'finished':
+  Number of files processed: 213
+  Number of events read: 655475
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_BdTau3Mu__bjoshi-CRAB3_MC2018_BdTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/crab.log
+Running crab status first to fetch necessary information.
+
+
+
+
+
+
+
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_BuTau3Mu__bjoshi-CRAB3_MC2018_BuTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/results
+Summary from jobs in status 'finished':
+  Number of files processed: 440
+  Number of events read: 1331143
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+  Warning: Duplicate lumis in output files written to outputFilesDuplicateLumis.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_BuTau3Mu__bjoshi-CRAB3_MC2018_BuTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/crab.log
+Running crab status first to fetch necessary information.
+Will save lumi files into output directory /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsToPhiMuMuPi_CMSSW_10_2_X_2018__rosma-DsToPhiMuMuPi_CMSSW_10_2_X_2018_RECO_v1-fd6b33a813d01b1040d6/results
+Summary from jobs in status 'finished':
+  Number of files processed: 880
+  Number of events read: 900506
+  Number of events written in EDM files: 0
+  Number of events written in TFileService files: 0
+  Number of events written in other type of files: 0
+  Processed lumis written to processedLumis.json
+Log file is /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/Production_2018_Data/CMSSW_10_2_18/src/SkimProduction/CRAB/January2020/crab_DsToPhiMuMuPi_CMSSW_10_2_X_2018__rosma-DsToPhiMuMuPi_CMSSW_10_2_X_2018_RECO_v1-fd6b33a813d01b1040d6/crab.log
