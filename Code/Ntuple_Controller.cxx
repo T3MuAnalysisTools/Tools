@@ -276,14 +276,12 @@ TLorentzVector Ntuple_Controller::GENMatchedLV(TLorentzVector vec){
 // the dimuon to a daughter Phi separately. If both matches are found, then it saves the dR.
 // 
 float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
-
 	float ds_dR = 999.0;
 
 	if (tmp_idx>=NTwoMuonsTrack()) {
 		cout<<"Index out of range!"<<endl;
 		return ds_dR;
 		}
-   
    for (unsigned int ngen=0; ngen<NMCSignalParticles(); ngen++){
       bool dspi_flag = 0, dsphi_flag = 0;
 		float tmp_phi_dR = 999.0, tmp_pi_dR = 999.0;
@@ -306,20 +304,19 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
             if(fabs(MCSignalParticle_childpdgid(ngen,nchild))==211){
                unsigned int tmp_track_idx = TwoMuonsTrackTrackIndex(tmp_idx).at(0);
                float dR = Track_P4(tmp_track_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild));
-               if (dR<0.01 && dR<tmp_pi_dR) { 
+               if (dR<0.03 && dR<tmp_pi_dR) { 
                   dspi_flag = 1;
 						tmp_pi_dR = dR;
 						tmp_pi_p4 = MCSignalParticle_child_p4(ngen,nchild);
 						track_idx = tmp_track_idx;
                   }
               }
-
               //Find a phi that is a decay product of Ds
               if (fabs(MCSignalParticle_childpdgid(ngen,nchild))==333){
                 unsigned int tmp_mu1_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(0);
                 unsigned int tmp_mu2_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(1);
                 float dR = MCSignalParticle_child_p4(ngen,nchild).DeltaR(Muon_P4(tmp_mu1_idx)+Muon_P4(tmp_mu2_idx));
-                if (dR<0.01 && dR<tmp_phi_dR) { 
+					 if (dR<0.03 && dR<tmp_phi_dR) { 
                   dsphi_flag = 1;
 					 	tmp_phi_dR = dR;
 						tmp_phi_p4 = MCSignalParticle_child_p4(ngen,nchild);
@@ -327,7 +324,6 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
 						mu2_idx = tmp_mu2_idx;
                   }
               }
-
             }
 
             if (dspi_flag && dsphi_flag){
@@ -371,7 +367,6 @@ float Ntuple_Controller::TauGenMatch(unsigned int tmp_idx){
    float tau_dR = 999.0;
 
 	if (tmp_idx>=NThreeMuons()){
-		cout<<"Index out of range!"<<endl;
 		return tau_dR;
 	}
 	
@@ -381,10 +376,8 @@ float Ntuple_Controller::TauGenMatch(unsigned int tmp_idx){
 
 	TLorentzVector tau_p4 = Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Muon_P4(mu3_idx);
 
-	for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
+	for (unsigned int ngen=0; ngen<NMCTaus(); ++ngen){
 	   
-		if (!(fabs(MCSignalParticle_pdgid(ngen))==15)) continue;
-
 		int gen_mu1_idx = -1, gen_mu2_idx = -1, gen_mu3_idx = -1;
 
 		bool mu1_match = false;
@@ -393,24 +386,24 @@ float Ntuple_Controller::TauGenMatch(unsigned int tmp_idx){
 
 		float tmp_dR = 999.0;
 
-      for (int nchild=0; nchild<MCSignalParticle_Nchilds(ngen); nchild++){
+      for (int nchild=1; nchild<NMCTauDecayProducts(ngen); nchild++){
 		   
-			if (Muon_P4(mu1_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu1_match) {
+			if (Muon_P4(mu1_idx).DeltaR(MCTauandProd_p4(ngen,nchild))<0.03 && !mu1_match) {
 				mu1_match = true;
 				gen_mu1_idx = nchild;
 				}
-			if (Muon_P4(mu2_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu2_match) {
+			if (Muon_P4(mu2_idx).DeltaR(MCTauandProd_p4(ngen,nchild))<0.03 && !mu2_match) {
 				mu2_match = true;
 				gen_mu2_idx = nchild;
 				}
-			if (Muon_P4(mu3_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild))<0.01 && !mu3_match) {
+			if (Muon_P4(mu3_idx).DeltaR(MCTauandProd_p4(ngen,nchild))<0.03 && !mu3_match) {
 				mu3_match = true;
 				gen_mu3_idx = nchild;
 				}
 		   }
 		
 		if (mu1_match && mu2_match && mu3_match) {
-		TLorentzVector gen_tau_p4 = (MCSignalParticle_child_p4(ngen,gen_mu1_idx)+MCSignalParticle_child_p4(ngen,gen_mu2_idx)+MCSignalParticle_child_p4(ngen,gen_mu3_idx));
+		TLorentzVector gen_tau_p4 = (MCTauandProd_p4(ngen,gen_mu1_idx)+MCTauandProd_p4(ngen,gen_mu2_idx)+MCTauandProd_p4(ngen,gen_mu3_idx));
 		tmp_dR = gen_tau_p4.DeltaR(tau_p4);
 		if (tmp_dR<tau_dR) tau_dR = tmp_dR;
 		}
@@ -962,6 +955,16 @@ TString Ntuple_Controller::WhichEra(int year){
     
     if(RunNumber() >=305040 and RunNumber() <=306460) return out = "RunF";
   }
+  
+  if(year == 2018){
+    if (RunNumber() >=316239 and RunNumber() <=316944) return out = "RunA";
+    
+	 if (RunNumber() >=318070 and RunNumber() <=319310) return out = "RunB";
+    
+	 if (RunNumber() >=319449 and RunNumber() <=319756) return out = "RunC";
+    
+	 if (RunNumber() >=320500 and RunNumber() <=325175) return out = "RunD";
+	}
   return out;
 }
 
