@@ -528,7 +528,7 @@ void  DsToPhiPi::doEvent(){
   double w;  
   double w_peak;     
 
-  if(!Ntp->isData()){w = 1; w_peak = .64;} //Ntp->PUReweight(); } //  No weights to data
+  if(!Ntp->isData()){w = 1; w_peak = .64;} //.8016;}//Ntp->PUReweight(); } //  No weights to data
   else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
