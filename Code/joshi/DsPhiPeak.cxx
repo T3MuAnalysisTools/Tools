@@ -849,15 +849,15 @@ void  DsPhiPeak::doEvent(){
 
       double phimass = (mu1_p4+mu2_p4).M();
       double dsmass = (mu1_p4+mu2_p4+track_p4).M();
-      TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx,true));
+      TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx,true),Ntp->Vertex_MatchedPrimaryVertex(final_idx,true));
       double DecayL = SVPV.Mag()*dsmass/DsLV.E();
 
       int Nvertices(0);
 
       for(unsigned int l=0; l < Ntp->NSecondaryVertices(); l++){
-         TVector3 SVsignalPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
-         TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
-         if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(final_idx) - Ntp->SecondaryVertexPosition(l)).Mag() > 0.05){
+         TVector3 SVsignalPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx,true),Ntp->Vertex_MatchedPrimaryVertex(final_idx,true));
+         TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l),Ntp->Vertex_MatchedPrimaryVertex(final_idx,true));
+         if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(final_idx,true) - Ntp->SecondaryVertexPosition(l)).Mag() > 0.05){
             Nvertices++;
          }
       }
@@ -1028,7 +1028,7 @@ void  DsPhiPeak::doEvent(){
          NtracksClose_peak.at(t).Fill(nTracks_ds,w);
          NSV_peak.at(t).Fill(Nvertices,w);
          MinMuon_chi2LocalPosition_peak.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_1_idx),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_2_idx)}),w);
-         if(Ntp->NIsolationTrack(final_idx)!=0) MindcaTrackSV_peak.at(t).Fill(sqrt( pow(Ntp->IsolationTrack_dzSV(final_idx, true),2)   +   pow(Ntp->IsolationTrack_dxySV(final_idx, true),2)),w);
+         if(Ntp->NIsolationTrack(final_idx,true)!=0) MindcaTrackSV_peak.at(t).Fill(sqrt( pow(Ntp->IsolationTrack_dzSV(final_idx, true),2)   +   pow(Ntp->IsolationTrack_dxySV(final_idx, true),2)),w);
          MinDca_peak.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MinD0SigSV_peak.at(t).Fill(MinD0SVSignificance,w);
          MinD0SigPV_peak.at(t).Fill(MinD0Significance,w);
