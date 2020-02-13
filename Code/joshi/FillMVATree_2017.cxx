@@ -838,22 +838,22 @@ void  FillMVATree::doEvent(){
       //    TauMass.at(t).Fill(TauLV.M(),1);
       //    TauMassRefit.at(t).Fill(TauRefitLV.M(),1);    
       double tauMassRes = Ntp->TauMassResolution(EtaSortedIndices,1,false);
-      float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(final_idx,0,false),
-            Ntp->Vertex_d0sig_reco(final_idx,1,false),
-            Ntp->Vertex_d0sig_reco(final_idx,2,false)});
+      float MaxD0Significance = std::max({Ntp->Vertex_d0sig_reco(final_idx,0),
+            Ntp->Vertex_d0sig_reco(final_idx,1),
+            Ntp->Vertex_d0sig_reco(final_idx,2)});
       float MinD0Significance = std::min({Ntp->Vertex_d0sig_reco(final_idx,0),
-            Ntp->Vertex_d0sig_reco(final_idx,1,false),
-            Ntp->Vertex_d0sig_reco(final_idx,2,false)});
-      TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx,false),Ntp->Vertex_MatchedPrimaryVertex(final_idx,false));
+            Ntp->Vertex_d0sig_reco(final_idx,1),
+            Ntp->Vertex_d0sig_reco(final_idx,2)});
+      TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_MatchedPrimaryVertex(final_idx));
 
       double maxMuondR = std::max({Muon1LV.DeltaR(TauLV), Muon2LV.DeltaR(TauLV), Muon3LV.DeltaR(TauLV)});
       double minMuonPt = std::min({Muon1LV.Pt(), Muon2LV.Pt(), Muon3LV.Pt()});
 
       // Isolation algorithm
-      for (int it=0; it<Ntp->NIsolationTrack(final_idx, false); it++){
-         double dxy_track = Ntp->IsolationTrack_dxySV(final_idx, it, false);
-         double dz_track = Ntp->IsolationTrack_dzSV(final_idx, it, false);
-         TLorentzVector TrackLV = Ntp->IsolationTrack_p4(final_idx, it, false);
+      for (int it=0; it<Ntp->NIsolationTrack(final_idx); it++){
+         double dxy_track = Ntp->IsolationTrack_dxySV(final_idx, it);
+         double dz_track = Ntp->IsolationTrack_dzSV(final_idx, it);
+         TLorentzVector TrackLV = Ntp->IsolationTrack_p4(final_idx, it);
          double dca_fv = TMath::Sqrt(pow(dxy_track, 2)+ pow(dz_track, 2));
 
          double dr_tau = TauLV.DeltaR(TrackLV); 
@@ -883,9 +883,9 @@ void  FillMVATree::doEvent(){
          }
 
          // Isolation 4 (Muon isolation)
-         if (dr_mu1 < 0.3 && Ntp->IsolationTrack_DocaMu1(final_idx, it, false) < 0.1 ) sumPtTracks_mu1 += TrackLV.Pt();
-         if (dr_mu2 < 0.3 && Ntp->IsolationTrack_DocaMu2(final_idx, it, false) < 0.1 ) sumPtTracks_mu2 += TrackLV.Pt();
-         if (dr_mu3 < 0.3 && Ntp->IsolationTrack_DocaMu3(final_idx, it, false) < 0.1 ) sumPtTracks_mu3 += TrackLV.Pt();
+         if (dr_mu1 < 0.3 && Ntp->IsolationTrack_DocaMu1(final_idx, it) < 0.1 ) sumPtTracks_mu1 += TrackLV.Pt();
+         if (dr_mu2 < 0.3 && Ntp->IsolationTrack_DocaMu2(final_idx, it) < 0.1 ) sumPtTracks_mu2 += TrackLV.Pt();
+         if (dr_mu3 < 0.3 && Ntp->IsolationTrack_DocaMu3(final_idx, it) < 0.1 ) sumPtTracks_mu3 += TrackLV.Pt();
       }
       // Relative Pt calculation
       double mu1_relPt = sumPtTracks_mu1/Muon1LV.Pt();
@@ -911,12 +911,12 @@ void  FillMVATree::doEvent(){
       var_sumMuTrkKinkChi2= (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
 
       // vertex variables
-      var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx, false),Ntp->Vertex_DCA23(final_idx, false),Ntp->Vertex_DCA31(final_idx, false)});
-      var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx, 0, false), Ntp->Vertex_pair_quality(final_idx, 1, false), Ntp->Vertex_pair_quality(final_idx, 2, false)});
+      var_maxdca = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
+      var_MuMu_minKFChi2 = std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)});
       var_svpvTauAngle = SVPV.Angle(TauLV.Vect());
-      var_flightLenSig = sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx, false),Ntp->Vertex_PrimaryVertex_Covariance(final_idx, false),
-               Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx, false)));
-      var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(final_idx, false);
+      var_flightLenSig = sqrt( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
+               Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx)));
+      var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(final_idx);
       // Isolation variables
       var_MinD0Significance = MinD0Significance;
       var_MaxD0Significance = MaxD0Significance;
@@ -949,7 +949,7 @@ void  FillMVATree::doEvent(){
       minMudR.at(t).Fill(std::min({Muon1LV.DeltaR(Muon2LV),Muon2LV.DeltaR(Muon3LV),Muon1LV.DeltaR(Muon3LV)}));
       Mu1TauPTRatio.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt()/TauLV.Pt());
       dRMaxMuTau.at(t).Fill(std::max({Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV),Muon1LV.DeltaR(TauLV)}));
-      MuPair_vertex_chi2_min.at(t).Fill(std::min({Ntp->Vertex_pair_quality(final_idx, 0, false), Ntp->Vertex_pair_quality(final_idx, 1, false), Ntp->Vertex_pair_quality(final_idx, 2, false)}));
+      MuPair_vertex_chi2_min.at(t).Fill(std::min({Ntp->Vertex_pair_quality(final_idx,0), Ntp->Vertex_pair_quality(final_idx,1), Ntp->Vertex_pair_quality(final_idx,2)}));
       TauEta.at(t).Fill(TauLV.Eta(),w);
       VertexMuMaxD0SigReco.at(t).Fill(MaxD0Significance,w);
 
@@ -1032,29 +1032,29 @@ void  FillMVATree::doEvent(){
       VertexDCA12.at(t).Fill(Ntp->Vertex_DCA12(final_idx),w);
       VertexDCA23.at(t).Fill(Ntp->Vertex_DCA23(final_idx),w);
       VertexDCA31.at(t).Fill(Ntp->Vertex_DCA31(final_idx),w);
-      VertexSignalKFRefittedMu1P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0,false).P(),w);
-      VertexSignalKFRefittedMu1Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0,false).Pt(),w);
-      VertexSignalKFRefittedMu1Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0,false).Eta(),w);
-      VertexSignalKFRefittedMu1Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0,false).Phi(),w);
-      VertexSignalKFRefittedMu2P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1,false).P(),w);
-      VertexSignalKFRefittedMu2Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1,false).Pt(),w);
-      VertexSignalKFRefittedMu2Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1,false).Eta(),w);
-      VertexSignalKFRefittedMu2Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1,false).Phi(),w);
-      VertexSignalKFRefittedMu3P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2,false).P(),w);
-      VertexSignalKFRefittedMu3Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2,false).Pt(),w);
-      VertexSignalKFRefittedMu3Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2,false).Eta(),w);
-      VertexSignalKFRefittedMu3Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2,false).Phi(),w);
-      VertexMu1D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,0,false),w);
-      VertexMu1D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,0,false),w);
-      VertexMu2D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,1,false),w);
-      VertexMu2D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,1,false),w);
-      VertexMu3D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,2,false),w);
-      VertexMu3D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,2,false),w);
-      Vertex2DDisplacement.at(t).Fill(Ntp->Vertex_2Ddisplacement(final_idx,0,false),w);
-      Vertex3DDisplacement.at(t).Fill(Ntp->Vertex_3Ddisplacement(final_idx,0,false),w);
-      VertexPairQuality.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,0,false),w);
-      VertexPairfitStatus.at(t).Fill(Ntp->Vertex_pairfit_status(final_idx,0,false),w);
-      VertexSignalKFChi2.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx,false),w);
+      VertexSignalKFRefittedMu1P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0).P(),w);
+      VertexSignalKFRefittedMu1Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0).Pt(),w);
+      VertexSignalKFRefittedMu1Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0).Eta(),w);
+      VertexSignalKFRefittedMu1Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0).Phi(),w);
+      VertexSignalKFRefittedMu2P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1).P(),w);
+      VertexSignalKFRefittedMu2Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1).Pt(),w);
+      VertexSignalKFRefittedMu2Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1).Eta(),w);
+      VertexSignalKFRefittedMu2Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1).Phi(),w);
+      VertexSignalKFRefittedMu3P.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2).P(),w);
+      VertexSignalKFRefittedMu3Pt.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2).Pt(),w);
+      VertexSignalKFRefittedMu3Eta.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2).Eta(),w);
+      VertexSignalKFRefittedMu3Phi.at(t).Fill(Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2).Phi(),w);
+      VertexMu1D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,0),w);
+      VertexMu1D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,0),w);
+      VertexMu2D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,1),w);
+      VertexMu2D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,1),w);
+      VertexMu3D0Reco.at(t).Fill(Ntp->Vertex_d0_reco(final_idx,2),w);
+      VertexMu3D0SigReco.at(t).Fill(Ntp->Vertex_d0sig_reco(final_idx,2),w);
+      Vertex2DDisplacement.at(t).Fill(Ntp->Vertex_2Ddisplacement(final_idx,0),w);
+      Vertex3DDisplacement.at(t).Fill(Ntp->Vertex_3Ddisplacement(final_idx,0),w);
+      VertexPairQuality.at(t).Fill(Ntp->Vertex_pair_quality(final_idx,0),w);
+      VertexPairfitStatus.at(t).Fill(Ntp->Vertex_pairfit_status(final_idx,0),w);
+      VertexSignalKFChi2.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx),w);
 
       //---------------  Fill MC plots 
       if(id==40 || id == 60 || id ==90){
