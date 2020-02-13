@@ -1,16 +1,16 @@
-#ifndef FillMVATree_h
-#define FillMVATree_h
+#ifndef MuonIdSelection_h
+#define MuonIdSelection_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree : public Selection {
+class MuonIdSelection : public Selection {
 
  public:
-  FillMVATree(TString Name_, TString id_);
-  virtual ~FillMVATree();
+  MuonIdSelection(TString Name_, TString id_);
+  virtual ~MuonIdSelection();
 
   virtual void  Configure();
   virtual void  Finish();
