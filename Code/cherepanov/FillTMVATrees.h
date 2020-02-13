@@ -239,6 +239,16 @@ class FillTMVATrees : public Selection {
   std::vector<TH2D> BTagMVAOHVsNJets;
   std::vector<TH2D> BTagCVSBOHVsNJets;
 
+  std::vector<TH1D> BTagCSVSHMatchedToTau;
+  std::vector<TH1D> BTagMVASHMatchedToTau;
+  std::vector<TH1D> BTagCVSBSHMatchedToTau;
+
+  std::vector<TH1D> BTagCSVOHMatchedToTau;
+  std::vector<TH1D> BTagMVAOHMatchedToTau;
+  std::vector<TH1D> BTagCVSBOHMatchedToTau;
+
+
+
 
   std::vector<TH1D> Muon1ImpactAngle;
   std::vector<TH1D> Muon2ImpactAngle;
@@ -246,6 +256,14 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> MinMuonImpacAngle;
   std::vector<TH1D> MaxMuonImpacAngle;
 
+
+  std::vector<TH1D>  Muon1StandardSelectorPass;
+  std::vector<TH1D> Muon2StandardSelectorPass;
+  std::vector<TH1D> Muon3StandardSelectorPass;
+
+  std::vector<TH1D> Muon1StandardSelectorFail;
+  std::vector<TH1D> Muon2StandardSelectorFail;
+  std::vector<TH1D> Muon3StandardSelectorFail;
 
 
 
