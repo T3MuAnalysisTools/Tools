@@ -315,6 +315,14 @@ void  DsToPhiPi::Configure(){
   Iso1_sideband=HConfig.GetTH1D(Name+"_Iso1_sideband","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
   Iso1=HConfig.GetTH1D(Name+"_Iso1","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
 
+  Iso1Mu1_peak=HConfig.GetTH1D(Name+"_Iso1Mu1_peak","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1Mu1_sideband=HConfig.GetTH1D(Name+"_Iso1Mu1_sideband","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1Mu1=HConfig.GetTH1D(Name+"_Iso1Mu1","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
+
+  Iso8Mu1_peak=HConfig.GetTH1D(Name+"_Iso8Mu1_peak","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
+  Iso8Mu1_sideband=HConfig.GetTH1D(Name+"_Iso8Mu1_sideband","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
+  Iso8Mu1=HConfig.GetTH1D(Name+"_Iso8Mu1","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
+
   FLSignificance_peak=HConfig.GetTH1D(Name+"_FLSignificance_peak","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
   FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
   FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
@@ -420,6 +428,8 @@ void  DsToPhiPi::Store_ExtraDist(){
   Extradist1d.push_back(&MaxD0SigSV);
   Extradist1d.push_back(&MaxD0SigPV);
   Extradist1d.push_back(&Iso1);
+  Extradist1d.push_back(&Iso1Mu1);
+  Extradist1d.push_back(&Iso8Mu1);
   Extradist1d.push_back(&FLSignificance);
 
 }
@@ -491,8 +501,13 @@ void  DsToPhiPi::doEvent(){
       if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons())){
 	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons());
         check_PhiMass = abs(tmp_PhiMass-1.01);
-	mu1 = tmp_mu1;
-	mu2 = tmp_mu2;
+        if (Ntp->Muon_P4(tmp_mu1).Pt() > Ntp->Muon_P4(tmp_mu2).Pt()) {
+	  mu1 = tmp_mu1;
+	  mu2 = tmp_mu2;
+        } else {
+          mu1 = tmp_mu2;
+          mu2 = tmp_mu1;
+        }
 	track = tmp_track;
         tmp_idx = i2M;
       }
@@ -597,12 +612,15 @@ void  DsToPhiPi::doEvent(){
     TLorentzVector DsLV = (Ntp->Muon_P4( Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(0))  + Ntp->Muon_P4(Ntp-> TwoMuonsTrackMuonIndices(tmp_idx).at(1))+
                      Ntp->Track_P4(Ntp->TwoMuonsTrackTrackIndex(tmp_idx).at(0)));
     TLorentzVector DsRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(tmp_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(tmp_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(tmp_idx,2);
+    TLorentzVector Muon1LV = Ntp->Muon_P4(mu1);
+    TLorentzVector Muon2LV = Ntp->Muon_P4(mu2);
+
 
     PhiMassVsDsMass.at(t).Fill(phimass, dsmass);
 
     DsMass.at(t).Fill(dsmass,w);
 
-    double SumPT1(0);
+    double SumPT1(0), SumPT8(0);
     int NcloseTracksCount(0);
     int TrackIndex(0);
     double dca_temp(999.);
@@ -619,6 +637,9 @@ void  DsToPhiPi::doEvent(){
 	 sqrt(  pow(Ntp->IsolationTrack_dzSV(tmp_idx,i),2)   +   pow(Ntp->IsolationTrack_dxySV(tmp_idx,i),2)) < 0.05){
         if(Ntp->IsolationTrack_p4(tmp_idx,i).DeltaR(DsRefitLV) < 1.0){
 	  SumPT1 += Ntp->IsolationTrack_p4(tmp_idx,i).Pt();
+	}
+        if(Ntp->IsolationTrack_p4(tmp_idx,i).DeltaR(DsRefitLV) < 0.8){
+	  SumPT8 += Ntp->IsolationTrack_p4(tmp_idx,i).Pt();
 	}
       }
     }
@@ -683,6 +704,8 @@ void  DsToPhiPi::doEvent(){
       MaxD0SigSV_peak.at(t).Fill(MaxD0SVSignificance,1);
       MaxD0SigPV_peak.at(t).Fill(MaxD0Significance,1);
       Iso1_peak.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1);
+      Iso1Mu1_peak.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT1),1);
+      Iso8Mu1_peak.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT8),1);
       FLSignificance_peak.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
 								   Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w);
 
@@ -722,6 +745,8 @@ void  DsToPhiPi::doEvent(){
       MaxD0SigSV_sideband.at(t).Fill(MaxD0SVSignificance,1);
       MaxD0SigPV_sideband.at(t).Fill(MaxD0Significance,1);
       Iso1_sideband.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1);
+      Iso1Mu1_sideband.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT1),1);
+      Iso8Mu1_sideband.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT8),1);
       FLSignificance_sideband.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
                                                                    Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w);
 
@@ -763,6 +788,8 @@ void  DsToPhiPi::doEvent(){
       MaxD0SigSV.at(t).Fill(MaxD0SVSignificance,1*w_peak);
       MaxD0SigPV.at(t).Fill(MaxD0Significance,1*w_peak);
       Iso1.at(t).Fill(DsRefitLV.Pt()/  (DsRefitLV.Pt() + SumPT1),1*w_peak);
+      Iso1Mu1.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT1),1*w_peak);
+      Iso8Mu1.at(t).Fill(Muon1LV.Pt()/  (Muon1LV.Pt() + SumPT8),1*w_peak);
       FLSignificance.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(tmp_idx),Ntp->Vertex_PrimaryVertex_Covariance(tmp_idx),
                                                                    Ntp->Vertex_Signal_KF_pos(tmp_idx),Ntp->Vertex_Signal_KF_Covariance(tmp_idx))),w*w_peak);
 
@@ -826,6 +853,8 @@ void  DsToPhiPi::Finish(){
     MaxD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     MaxD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     Iso1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    Iso1Mu1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    Iso8Mu1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
     FLSignificance.at(0).Scale(scaleRun[0]/scaleRun[1]);
 
     DecayLength_prompt.at(0).Add(&DecayLength_peak.at(0));
@@ -883,6 +912,10 @@ void  DsToPhiPi::Finish(){
     MaxD0SigPV.at(0).Add(&MaxD0SigPV_sideband.at(0),-1);
     Iso1.at(0).Add(&Iso1_peak.at(0));
     Iso1.at(0).Add(&Iso1_sideband.at(0),-1);
+    Iso1Mu1.at(0).Add(&Iso1Mu1_peak.at(0));
+    Iso1Mu1.at(0).Add(&Iso1Mu1_sideband.at(0),-1);
+    Iso8Mu1.at(0).Add(&Iso8Mu1_peak.at(0));
+    Iso8Mu1.at(0).Add(&Iso8Mu1_sideband.at(0),-1);
     FLSignificance.at(0).Add(&FLSignificance_peak.at(0));
     FLSignificance.at(0).Add(&FLSignificance_sideband.at(0),-1);
 

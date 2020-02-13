@@ -188,6 +188,14 @@ class DsToPhiPi : public Selection {
   std::vector<TH1D> Iso1_sideband;
   std::vector<TH1D> Iso1;
 
+  std::vector<TH1D> Iso1Mu1_peak;
+  std::vector<TH1D> Iso1Mu1_sideband;
+  std::vector<TH1D> Iso1Mu1;
+
+  std::vector<TH1D> Iso8Mu1_peak;
+  std::vector<TH1D> Iso8Mu1_sideband;
+  std::vector<TH1D> Iso8Mu1;
+
   std::vector<TH1D> FLSignificance_peak;
   std::vector<TH1D> FLSignificance_sideband;
   std::vector<TH1D> FLSignificance;
