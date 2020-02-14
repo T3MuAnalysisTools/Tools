@@ -601,6 +601,8 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"cp -r * $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"cd  $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe 2>&1 | tee >(sed -r \\\"s/\\\\x1B\\\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\\\" > Set_$B.output) \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+         system(sprintf("echo \"echo 'Cleaning EPS' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+			system(sprintf("echo \"rm EPS/*eps  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"cp -r *  $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"rm -r   $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
@@ -619,8 +621,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"#! /bin/bash\"         >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 			system(sprintf("echo \"cd $RemoteDir \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh")); 
 			system(sprintf("echo \"cd $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh")) ;
-			system(sprintf("echo \"echo 'Cleaning EPS' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
-			system(sprintf("echo \"rm EPS/*eps  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+
 
 			# Setup Input.txt
 			system(sprintf("cp $InputFile $OutputDir/workdir$set/Set_$B/Input.txt ")); 
@@ -637,7 +638,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"error        = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"log          = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"getenv       = True\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
-			system(sprintf("echo \"+JobFlavour  = 'microcentury'\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"+JobFlavour  = 'longlunch'\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 			system(sprintf("echo \"queue  1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 		    
