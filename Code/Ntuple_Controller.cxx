@@ -343,7 +343,7 @@ bool Ntuple_Controller::isPromptDs(){
    // Check if the candidate is a prompt Ds
    bool isPrompt = true;
 
-   for (unsigned int ngen=0; ngen<NMCParticles(); ++ngen){
+   for (unsigned int ngen=0; ngen<NMCSignalParticles(); ++ngen){
       if (!(abs(MCSignalParticle_pdgid(ngen))==431)) continue;
       for (int nmom=0; nmom<NMCSignalParticleSources(ngen); ++nmom){
          if ( (abs(MCSignalParticle_Sourcepdgid(ngen,nmom))==511) || (abs(MCSignalParticle_Sourcepdgid(ngen,nmom))==521) || (abs(MCSignalParticle_Sourcepdgid(ngen,nmom))==531)) isPrompt = false;
