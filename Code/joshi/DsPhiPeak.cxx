@@ -45,19 +45,19 @@ void  DsPhiPeak::Configure(){
       pass.push_back(false);
       if(i==TriggerOk)          cut.at(TriggerOk)=1;
       if(i==TwoMuTrkCandidate)  cut.at(TwoMuTrkCandidate)=1;
-      if(i==OSMuons)    cut.at(OSMuons)=0.1;
+      if(i==OSMuons)            cut.at(OSMuons)=0.1;
       if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
       if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
-      if(i==MuonID)             cut.at(MuonID)=1;
-      if(i==MuMuMassCut)   cut.at(MuMuMassCut)=1;
-      if(i==TrackPtCut)   cut.at(TrackPtCut)=2.0;
-      if(i==NTrackHits)   cut.at(NTrackHits)=6;
-      //if(i==ChiSqCut)    cut.at(ChiSqCut)=15; // Remove chi sqaure cut
       if(i==TriggerMatchMu1)    cut.at(TriggerMatchMu1)=0.03;
       if(i==TriggerMatchMu2)    cut.at(TriggerMatchMu2)=0.03;
       if(i==TriggerMatchTrack)  cut.at(TriggerMatchTrack)=0.03;
+      if(i==MuonID)             cut.at(MuonID)=1;
+      if(i==MuMuMassCut)        cut.at(MuMuMassCut)=1;
+      if(i==TrackPtCut)         cut.at(TrackPtCut)=2.0;
+      if(i==NTrackHits)         cut.at(NTrackHits)=6;
+      //if(i==ChiSqCut)         cut.at(ChiSqCut)=15; // Remove chi sqaure cut
       if(i==DsMassCut)          cut.at(DsMassCut)=1;
-      if(i==GenMatch)        cut.at(GenMatch)=0.03;
+      if(i==GenMatch)           cut.at(GenMatch)=0.03;
    }
    TString hlabel;
    TString htitle;
@@ -90,8 +90,8 @@ void  DsPhiPeak::Configure(){
       else if(i==OSMuons){
          title.at(i)="abs(Mu1+Mu2 Charge) < 0.1 ";
          hlabel="Sum of muon charges";
-         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OSMuons_",htitle,3,-1.5,1.5,hlabel,"Events"));
-         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OSMuons_",htitle,3,-1.5,1.5,hlabel,"Events"));
+         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OSMuons_",htitle,5,-2.5,2.5,hlabel,"Events"));
+         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OSMuons_",htitle,5,-2.5,2.5,hlabel,"Events"));
       }
       else if(i==Mu2PtCut){
          title.at(i)="Mu2 Pt $>$ ";
@@ -111,8 +111,8 @@ void  DsPhiPeak::Configure(){
          title.at(i)+="MuMuMass";
          title.at(i)+=" GeV";
          hlabel="InvMass(MuMu), GeV";
-         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuMuMassCut_",htitle,40,0,2,hlabel,"Events"));
-         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuMuMassCut_",htitle,40,0,2,hlabel,"Events"));
+         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuMuMassCut_",htitle,40,0.8,1.2,hlabel,"Events"));
+         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuMuMassCut_",htitle,40,0.8,1.2,hlabel,"Events"));
       }
       else if(i==TrackPtCut){
          title.at(i)="Trk Pt $>$ ";
@@ -159,8 +159,8 @@ void  DsPhiPeak::Configure(){
       else if(i==GenMatch){
          title.at(i)="GEN matching";
          hlabel="GEN match";
-         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
-         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GENMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_GENMatch_",htitle,30,0,0.03,hlabel,"Events"));
+         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_GENMatch_",htitle,30,0,0.03,hlabel,"Events"));
       }
       else if(i==DsMassCut){
          title.at(i)="Ds Mass Cut [1.68, 2.02]";
@@ -175,31 +175,10 @@ void  DsPhiPeak::Configure(){
 
    // Setup Extra Histograms
 
-   // Unscaled histograms
-   Muon1_isGlobal=HConfig.GetTH1D(Name+"_Muon1_isGlobal","Global muons status ",2,-.5,1.5,"#mu_{1} isGlb","Events");
-   Muon2_isGlobal=HConfig.GetTH1D(Name+"_Muon2_isGlobal","",2,-0.5,0.5,"#mu_{2} isGlb","Events");
-   Muon1_isStandAlone=HConfig.GetTH1D(Name+"_Muon1_isStandAlone","",2,-0.5,1.5,"#mu_{1} isStandAlone","Events");
-   Muon2_isStandAlone=HConfig.GetTH1D(Name+"_Muon2_isStandAlone","",2,-0.5,1.5,"#mu_{2} isStandAlone","Events");
-   Muon1_isTracker=HConfig.GetTH1D(Name+"_Muon1_isTracker","",2,-0.5,1.5,"#mu_{1} isTracker","Events");
-   Muon2_isTracker=HConfig.GetTH1D(Name+"_Muon2_isTracker","",2,-0.5,1.5,"#mu_{2} isTracker","Events");
-   Muon1_isCalo=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon","",2,-0.5,1.5,"#mu_{1} isCalo","Events");
-   Muon2_isCalo=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon","",2,-0.5,1.5,"#mu_{2} isCalo","Events");
-   Muon1_isIsolationValid=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid","#mu_{1} isIsoValid",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events");
-   Muon2_isIsolationValid=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid","#mu_{2} isIsoValid",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events");
-
-   //Trigger Matching
-   Track_TriggerMatchdR=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR","track dR (trigger match)",10,-0.5,9.5,"track dR (trigger match)","Events");
-   Muon1_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR","#mu_{1} dR (trigger match)",10,-0.5,9.5,"#mu_{1} dR (trigger match)","Events");
-   Muon2_TriggerMatchdR=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR","#mu_{2} dR (trigger match)",10,-0.5,9.5,"#mu_{2} dR (trigger match)","Events");
-
-
-   PhiMass=HConfig.GetTH1D(Name+"_PhiMass","#mu#mu mass",50,0.77,1.27,"Invariant mass of the #mu#mu pair","Events");
-   TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",42,1.68,2.1,"Invariant mass of the #mu#mu + track","Events");
-   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Invariant mass vs. #mu#mu + track Invariant mass",50,0.77,1.27,42,1.68,2.1,"M_{#mu#mu} GeV","M_{#mu#mu + track}, GeV");
-
    // Book here your analysis histrogramms, a good style is to follow selfexplanatory convention
-   NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",100,0,100,"Number of Vertices (after reweighing)","Events");
-   NVtx_woPUWeights=HConfig.GetTH1D(Name+"_NVtx_","NVtx",100,0,100,"Number of Vertices (before reweighing)","Events"); 
+   // Unscaled histograms
+   PhiMassVsDsMass=HConfig.GetTH2D(Name+"_PhiMassVsDsMass","#mu#mu Invariant mass vs. #mu#mu + track Invariant mass",50,0.77,1.27,42,1.68,2.1,"M_{#mu#mu} GeV","M_{#mu#mu + track}, GeV");
+   TripleMass=HConfig.GetTH1D(Name+"_TripleMass","#mu#mu + track mass",42,1.68,2.1,"Invariant mass of the #mu#mu + track","Events");
 
    // ChargeMisId and Trigger efficiency measurement
    ChargeMisId=HConfig.GetTH1D(Name+"_ChargeMisId","Charge MisId",42,1.68,2.1,"M_{#mu#mu} GeV","Events");
@@ -209,19 +188,88 @@ void  DsPhiPeak::Configure(){
    // Validation plots
    //*****************
 
+   // Muon ID (peak) 
+   Muon1_isGlobal_peak=HConfig.GetTH1D(Name+"_Muon1_isGlobal_peak","Global muons status (peak)",2,-.5,1.5,"#mu_{1} isGlb","Events"); peakCollection.push_back(&Muon1_isGlobal_peak);
+   Muon2_isGlobal_peak=HConfig.GetTH1D(Name+"_Muon2_isGlobal_peak","(peak)",2,-0.5,0.5,"#mu_{2} isGlb","Events"); peakCollection.push_back(&Muon2_isGlobal_peak);
+   Muon1_isStandAlone_peak=HConfig.GetTH1D(Name+"_Muon1_isStandAlone_peak","(peak)",2,-0.5,1.5,"#mu_{1} isStandAlone","Events"); peakCollection.push_back(&Muon1_isStandAlone_peak);
+   Muon2_isStandAlone_peak=HConfig.GetTH1D(Name+"_Muon2_isStandAlone_peak","(peak)",2,-0.5,1.5,"#mu_{2} isStandAlone","Events"); peakCollection.push_back(&Muon2_isStandAlone_peak);
+   Muon1_isTracker_peak=HConfig.GetTH1D(Name+"_Muon1_isTracker_peak","(peak)",2,-0.5,1.5,"#mu_{1} isTracker","Events"); peakCollection.push_back(&Muon1_isTracker_peak);
+   Muon2_isTracker_peak=HConfig.GetTH1D(Name+"_Muon2_isTracker_peak","(peak)",2,-0.5,1.5,"#mu_{2} isTracker","Events"); peakCollection.push_back(&Muon2_isTracker_peak);
+   Muon1_isCalo_peak=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon_peak","(peak)",2,-0.5,1.5,"#mu_{1} isCalo","Events"); peakCollection.push_back(&Muon1_isCalo_peak);
+   Muon2_isCalo_peak=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon_peak","(peak)",2,-0.5,1.5,"#mu_{2} isCalo","Events"); peakCollection.push_back(&Muon2_isCalo_peak);
+   Muon1_isIsolationValid_peak=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid_peak","#mu_{1} isIsoValid(peak)",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events"); peakCollection.push_back(&Muon1_isIsolationValid_peak);
+   Muon2_isIsolationValid_peak=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid_peak","#mu_{2} isIsoValid(peak)",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events"); peakCollection.push_back(&Muon2_isIsolationValid_peak);
+
+   // Muon ID (sideband) 
+   Muon1_isGlobal_sideband=HConfig.GetTH1D(Name+"_Muon1_isGlobal_sideband","Global muons status (sideband)",2,-.5,1.5,"#mu_{1} isGlb","Events"); sidebandCollection.push_back(&Muon1_isGlobal_sideband);
+   Muon2_isGlobal_sideband=HConfig.GetTH1D(Name+"_Muon2_isGlobal_sideband","(sideband)",2,-0.5,0.5,"#mu_{2} isGlb","Events"); sidebandCollection.push_back(&Muon2_isGlobal_sideband);
+   Muon1_isStandAlone_sideband=HConfig.GetTH1D(Name+"_Muon1_isStandAlone_sideband","(sideband)",2,-0.5,1.5,"#mu_{1} isStandAlone","Events"); sidebandCollection.push_back(&Muon1_isStandAlone_sideband);
+   Muon2_isStandAlone_sideband=HConfig.GetTH1D(Name+"_Muon2_isStandAlone_sideband","(sideband)",2,-0.5,1.5,"#mu_{2} isStandAlone","Events"); sidebandCollection.push_back(&Muon2_isStandAlone_sideband);
+   Muon1_isTracker_sideband=HConfig.GetTH1D(Name+"_Muon1_isTracker_sideband","(sideband)",2,-0.5,1.5,"#mu_{1} isTracker","Events"); sidebandCollection.push_back(&Muon1_isTracker_sideband);
+   Muon2_isTracker_sideband=HConfig.GetTH1D(Name+"_Muon2_isTracker_sideband","(sideband)",2,-0.5,1.5,"#mu_{2} isTracker","Events"); sidebandCollection.push_back(&Muon2_isTracker_sideband);
+   Muon1_isCalo_sideband=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon_sideband","(sideband)",2,-0.5,1.5,"#mu_{1} isCalo","Events"); sidebandCollection.push_back(&Muon1_isCalo_sideband);
+   Muon2_isCalo_sideband=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon_sideband","(sideband)",2,-0.5,1.5,"#mu_{2} isCalo","Events"); sidebandCollection.push_back(&Muon2_isCalo_sideband);
+   Muon1_isIsolationValid_sideband=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid_sideband","#mu_{1} isIsoValid(sideband)",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events"); sidebandCollection.push_back(&Muon1_isIsolationValid_sideband);
+   Muon2_isIsolationValid_sideband=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid_sideband","#mu_{2} isIsoValid(sideband)",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events"); sidebandCollection.push_back(&Muon2_isIsolationValid_sideband);
+
+   // Muon ID (peak) 
+   Muon1_isGlobal_validation=HConfig.GetTH1D(Name+"_Muon1_isGlobal_validation","Global muons status (validation)",2,-.5,1.5,"#mu_{1} isGlb","Events"); validationCollection.push_back(&Muon1_isGlobal_validation);
+   Muon2_isGlobal_validation=HConfig.GetTH1D(Name+"_Muon2_isGlobal_validation","(validation)",2,-0.5,0.5,"#mu_{2} isGlb","Events"); validationCollection.push_back(&Muon2_isGlobal_validation);
+   Muon1_isStandAlone_validation=HConfig.GetTH1D(Name+"_Muon1_isStandAlone_validation","(validation)",2,-0.5,1.5,"#mu_{1} isStandAlone","Events"); validationCollection.push_back(&Muon1_isStandAlone_validation);
+   Muon2_isStandAlone_validation=HConfig.GetTH1D(Name+"_Muon2_isStandAlone_validation","(validation)",2,-0.5,1.5,"#mu_{2} isStandAlone","Events"); validationCollection.push_back(&Muon2_isStandAlone_validation);
+   Muon1_isTracker_validation=HConfig.GetTH1D(Name+"_Muon1_isTracker_validation","(validation)",2,-0.5,1.5,"#mu_{1} isTracker","Events"); validationCollection.push_back(&Muon1_isTracker_validation);
+   Muon2_isTracker_validation=HConfig.GetTH1D(Name+"_Muon2_isTracker_validation","(validation)",2,-0.5,1.5,"#mu_{2} isTracker","Events"); validationCollection.push_back(&Muon2_isTracker_validation);
+   Muon1_isCalo_validation=HConfig.GetTH1D(Name+"_Muon1_isCaloMuon_validation","(validation)",2,-0.5,1.5,"#mu_{1} isCalo","Events"); validationCollection.push_back(&Muon1_isCalo_validation);
+   Muon2_isCalo_validation=HConfig.GetTH1D(Name+"_Muon2_isCaloMuon_validation","(validation)",2,-0.5,1.5,"#mu_{2} isCalo","Events"); validationCollection.push_back(&Muon2_isCalo_validation);
+   Muon1_isIsolationValid_validation=HConfig.GetTH1D(Name+"_Muon1_isIsolationValid_validation","#mu_{1} isIsoValid(validation)",2,-0.5,1.5,"#mu_{1} isIsolationValid","Events"); validationCollection.push_back(&Muon1_isIsolationValid_validation);
+   Muon2_isIsolationValid_validation=HConfig.GetTH1D(Name+"_Muon2_isIsolationValid_validation","#mu_{2} isIsoValid(validation)",2,-0.5,1.5,"#mu_{2} isIsolationValid","Events"); validationCollection.push_back(&Muon2_isIsolationValid_validation);
+
+   // Trigger Matching (peak)
+   Track_TriggerMatchdR_peak=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR_peak","track dR (trigger match)(peak)",30,0,0.03,"track dR (trigger match)","Events"); peakCollection.push_back(&Track_TriggerMatchdR_peak);
+   Muon1_TriggerMatchdR_peak=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR_peak","#mu_{1} dR (trigger match)(peak)",30,0,0.03,"#mu_{1} dR (trigger match)","Events"); peakCollection.push_back(&Muon1_TriggerMatchdR_peak);
+   Muon2_TriggerMatchdR_peak=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR_peak","#mu_{2} dR (trigger match)(peak)",30,0,0.03,"#mu_{2} dR (trigger match)","Events"); peakCollection.push_back(&Muon2_TriggerMatchdR_peak);
+
+   PhiMass_peak=HConfig.GetTH1D(Name+"_PhiMass_peak","#mu#mu mass(peak)",50,0.77,1.27,"Invariant mass of the #mu#mu pair","Events"); peakCollection.push_back(&PhiMass_peak);
+
+   // Trigger Matching (sideband)
+   Track_TriggerMatchdR_sideband=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR_sideband","track dR (trigger match)(sideband)",30,0,0.03,"track dR (trigger match)","Events"); sidebandCollection.push_back(&Track_TriggerMatchdR_sideband);
+   Muon1_TriggerMatchdR_sideband=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR_sideband","#mu_{1} dR (trigger match)(sideband)",30,0,0.03,"#mu_{1} dR (trigger match)","Events"); sidebandCollection.push_back(&Muon1_TriggerMatchdR_sideband);
+   Muon2_TriggerMatchdR_sideband=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR_sideband","#mu_{2} dR (trigger match)(sideband)",30,0,0.03,"#mu_{2} dR (trigger match)","Events"); sidebandCollection.push_back(&Muon2_TriggerMatchdR_sideband);
+
+   PhiMass_sideband=HConfig.GetTH1D(Name+"_PhiMass_sideband","#mu#mu mass(sideband)",50,0.77,1.27,"Invariant mass of the #mu#mu pair","Events"); sidebandCollection.push_back(&PhiMass_sideband);
+
+   // Trigger Matching (validation)
+   Track_TriggerMatchdR_validation=HConfig.GetTH1D(Name+"_Track_TriggerMatchdR_validation","track dR (trigger match)(validation)",30,0,0.03,"track dR (trigger match)","Events"); validationCollection.push_back(&Track_TriggerMatchdR_validation);
+   Muon1_TriggerMatchdR_validation=HConfig.GetTH1D(Name+"_Muon1_TriggerMatchdR_validation","#mu_{1} dR (trigger match)(validation)",30,0,0.03,"#mu_{1} dR (trigger match)","Events"); validationCollection.push_back(&Muon1_TriggerMatchdR_validation);
+   Muon2_TriggerMatchdR_validation=HConfig.GetTH1D(Name+"_Muon2_TriggerMatchdR_validation","#mu_{2} dR (trigger match)(validation)",30,0,0.03,"#mu_{2} dR (trigger match)","Events"); validationCollection.push_back(&Muon2_TriggerMatchdR_validation);
+
+   PhiMass_validation=HConfig.GetTH1D(Name+"_PhiMass_validation","#mu#mu mass(validation)",50,0.77,1.27,"Invariant mass of the #mu#mu pair","Events"); validationCollection.push_back(&PhiMass_validation);
+
+   // Number of vertices (peak)
+   NVtx_peak=HConfig.GetTH1D(Name+"_NVtx_peak","NVtx(peak)",100,0,100,"Number of Vertices (after reweighing)","Events"); peakCollection.push_back(&NVtx_peak);
+   NVtx_woPUWeights_peak=HConfig.GetTH1D(Name+"_NVtx__peak","NVtx(peak)",100,0,100,"Number of Vertices (before reweighing)","Events");  peakCollection.push_back(&NVtx_woPUWeights_peak);
+
+   // Number of vertices (sideband)
+   NVtx_sideband=HConfig.GetTH1D(Name+"_NVtx_sideband","NVtx(sideband)",100,0,100,"Number of Vertices (after reweighing)","Events"); sidebandCollection.push_back(&NVtx_sideband);
+   NVtx_woPUWeights_sideband=HConfig.GetTH1D(Name+"_NVtx__sideband","NVtx(sideband)",100,0,100,"Number of Vertices (before reweighing)","Events");  sidebandCollection.push_back(&NVtx_woPUWeights_sideband);
+
+   // Number of vertices (validation)
+   NVtx_validation=HConfig.GetTH1D(Name+"_NVtx_validation","NVtx(validation)",100,0,100,"Number of Vertices (after reweighing)","Events"); validationCollection.push_back(&NVtx_validation);
+   NVtx_woPUWeights_validation=HConfig.GetTH1D(Name+"_NVtx__validation","NVtx(validation)",100,0,100,"Number of Vertices (before reweighing)","Events");  validationCollection.push_back(&NVtx_woPUWeights_validation);
+
    //Dimuon Information (Muons from dimuon + track candidates) (validation)
-   DimuondR_validation=HConfig.GetTH1D(Name+"_DimuondR_validation","dR between the muon pair (validation)",20,0,1,"dR","Events"); validationCollection.push_back(&DimuondR_validation);
+   DimuondR_validation=HConfig.GetTH1D(Name+"_DimuondR_validation","dR between the muon pair (validation)",17,0,0.34,"dR","Events"); validationCollection.push_back(&DimuondR_validation);
    Muon1TrkdR_validation=HConfig.GetTH1D(Name+"_Muon1TrkdR_validation","dR between the highest p muon and the track (validation)",20,0,1,"dR (#mu_{1},track)","Events"); validationCollection.push_back(&Muon1TrkdR_validation);
    Muon2TrkdR_validation=HConfig.GetTH1D(Name+"_Muon2TrkdR_validation","dR between the lowest p muon and the track (validation)",20,0,1,"dR (#mu_{2},track)","Events"); validationCollection.push_back(&Muon2TrkdR_validation);
 
-   //Dimuon Information (Muons from dimuon + track candidates) (sidebands)
-   DimuondR_sideband=HConfig.GetTH1D(Name+"_DimuondR_sideband","dR between the muon pair (sidebands)",20,0,1,"dR","Events"); sidebandCollection.push_back(&DimuondR_sideband);
-   Muon1TrkdR_sideband=HConfig.GetTH1D(Name+"_Muon1TrkdR_sideband","dR between the highest p muon and the track (sidebands)",20,0,1,"dR (#mu_{1},track)","Events"); sidebandCollection.push_back(&Muon1TrkdR_sideband);
-   Muon2TrkdR_sideband=HConfig.GetTH1D(Name+"_Muon2TrkdR_sideband","dR between the lowest p muon and the track (sidebands)",20,0,1,"dR (#mu_{2},track)","Events");
+   //Dimuon Information (Muons from dimuon + track candidates) (sideband)
+   DimuondR_sideband=HConfig.GetTH1D(Name+"_DimuondR_sideband","dR between the muon pair (sideband)",17,0,0.34,"dR","Events"); sidebandCollection.push_back(&DimuondR_sideband);
+   Muon1TrkdR_sideband=HConfig.GetTH1D(Name+"_Muon1TrkdR_sideband","dR between the highest p muon and the track (sideband)",20,0,1,"dR (#mu_{1},track)","Events"); sidebandCollection.push_back(&Muon1TrkdR_sideband);
+   Muon2TrkdR_sideband=HConfig.GetTH1D(Name+"_Muon2TrkdR_sideband","dR between the lowest p muon and the track (sideband)",20,0,1,"dR (#mu_{2},track)","Events");
    sidebandCollection.push_back(&Muon2TrkdR_sideband);
 
    //Dimuon Information (Muons from dimuon + track candidates) (peak)
-   DimuondR_peak=HConfig.GetTH1D(Name+"_DimuondR_peak","dR between the muon pair (peak)",20,0,1,"dR","Events"); peakCollection.push_back(&DimuondR_peak);
+   DimuondR_peak=HConfig.GetTH1D(Name+"_DimuondR_peak","dR between the muon pair (peak)",17,0,0.34,"dR","Events"); peakCollection.push_back(&DimuondR_peak);
    Muon1TrkdR_peak=HConfig.GetTH1D(Name+"_Muon1TrkdR_peak","dR between the highest p muon and the track (peak)",20,0,1,"dR (#mu_{1},track)","Events"); peakCollection.push_back(&Muon1TrkdR_peak);
    Muon2TrkdR_peak=HConfig.GetTH1D(Name+"_Muon2TrkdR_peak","dR between the lowest p muon and the track (peak)",20,0,1,"dR (#mu_{2},track)","Events");   peakCollection.push_back(&Muon2TrkdR_peak);
 
@@ -229,82 +277,82 @@ void  DsPhiPeak::Configure(){
    Track_Pt_peak=HConfig.GetTH1D(Name+"_Track_Pt_peak","Transverse momentum of track (2mu+trk track candidate) (peak)",50,0,50,"p_{T} (track)","Events"); peakCollection.push_back(&Track_Pt_peak);
    Track_Eta_peak=HConfig.GetTH1D(Name+"_Track_Eta_peak","Psuedorapidity of track (2mu+trk track candidate) (peak)",50,-2.5,2.5,"#eta","Events"); peakCollection.push_back(&Track_Eta_peak);
    Track_Phi_peak=HConfig.GetTH1D(Name+"_Track_Phi_peak","Azimuthal angle of track (2mu+trk track candidate) (peak)",63,-3.15,3.15,"#phi","Events"); peakCollection.push_back(&Track_Phi_peak);
-   Track_vx_peak=HConfig.GetTH1D(Name+"_Track_vx_peak","X coordinate of the parent vertex (2mu+trk track candidate) (peak)",50,0,10,"Parent vertex x coordinate (cm)","Events"); peakCollection.push_back(&Track_vx_peak);
-   Track_vy_peak=HConfig.GetTH1D(Name+"_Track_vy_peak","Y coordinate of the parent vertex (2mu+trk track candidate) (peak)",50,0,10,"Parent vertex y coordinate (cm)","Events"); peakCollection.push_back(&Track_vy_peak);
+   Track_vx_peak=HConfig.GetTH1D(Name+"_Track_vx_peak","X coordinate of the parent vertex (2mu+trk track candidate) (peak)",50,0,0.2,"Parent vertex x coordinate (cm)","Events"); peakCollection.push_back(&Track_vx_peak);
+   Track_vy_peak=HConfig.GetTH1D(Name+"_Track_vy_peak","Y coordinate of the parent vertex (2mu+trk track candidate) (peak)",50,0,0.2,"Parent vertex y coordinate (cm)","Events"); peakCollection.push_back(&Track_vy_peak);
    Track_vz_peak=HConfig.GetTH1D(Name+"_Track_vz_peak","Z coordinate of the parent vertex (2mu+trk track candidate) (peak)",50,0,10,"Parent vertex z coordinate (cm)","Events"); peakCollection.push_back(&Track_vz_peak);
    Track_normalizedChi2_peak=HConfig.GetTH1D(Name+"_Track_normalizedChi2_peak","Normalized chi square (peak)",20,0,10,"#chi^{2}/ndf (track fit)","Events"); peakCollection.push_back(&Track_normalizedChi2_peak);
    Track_numberOfValidHits_peak=HConfig.GetTH1D(Name+"_Track_numberOfValidHits_peak","number of valid hits in the tracker (peak)",50,0,50,"n valid track hits","Events"); peakCollection.push_back(&Track_numberOfValidHits_peak);
    Track_charge_peak=HConfig.GetTH1D(Name+"_Track_charge_peak","Charge of the track (peak)",3,-1.0,1.0,"Number of Vertices","Events"); peakCollection.push_back(&Track_charge_peak);
-   Track_dxy_peak=HConfig.GetTH1D(Name+"_Track_dxy_peak","Transverse displacement of the parent vertex from the bs (peak)",50,0,10,"dxy (cm)","Events"); peakCollection.push_back(&Track_dxy_peak);
+   Track_dxy_peak=HConfig.GetTH1D(Name+"_Track_dxy_peak","Transverse displacement of the parent vertex from the bs (peak)",60,0,0.3,"dxy (cm)","Events"); peakCollection.push_back(&Track_dxy_peak);
    Track_dz_peak=HConfig.GetTH1D(Name+"_Track_dz_peak","Longitudnal displacement of the parent vertex from the bs (peak)",50,0,10,"dz (cm)","Events"); peakCollection.push_back(&Track_dz_peak);
 
-   // Track Candidate Information (sidebands)
-   Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse momentum of track (2mu+trk track candidate) (sidebands)",50,0,50,"p_{T} (track)","Events"); sidebandCollection.push_back(&Track_Pt_sideband);
-   Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity of track (2mu+trk track candidate) (sidebands)",50,-2.5,2.5,"#eta","Events"); sidebandCollection.push_back(&Track_Eta_sideband);
-   Track_Phi_sideband=HConfig.GetTH1D(Name+"_Track_Phi_sideband","Azimuthal angle of track (2mu+trk track candidate) (sidebands)",63,-3.15,3.15,"#phi","Events"); sidebandCollection.push_back(&Track_Phi_sideband);
-   Track_vx_sideband=HConfig.GetTH1D(Name+"_Track_vx_sideband","X coordinate of the parent vertex (2mu+trk track candidate) (sidebands)",50,0,10,"Parent vertex x coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vx_sideband);
-   Track_vy_sideband=HConfig.GetTH1D(Name+"_Track_vy_sideband","Y coordinate of the parent vertex (2mu+trk track candidate) (sidebands)",50,0,10,"Parent vertex y coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vy_sideband);
-   Track_vz_sideband=HConfig.GetTH1D(Name+"_Track_vz_sideband","Z coordinate of the parent vertex (2mu+trk track candidate) (sidebands)",50,0,10,"Parent vertex z coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vz_sideband);
-   Track_normalizedChi2_sideband=HConfig.GetTH1D(Name+"_Track_normalizedChi2_sideband","Normalized chi square (sidebands)",20,0,10,"#chi^{2}/ndf (track fit)","Events"); sidebandCollection.push_back(&Track_normalizedChi2_sideband);
-   Track_numberOfValidHits_sideband=HConfig.GetTH1D(Name+"_Track_numberOfValidHits_sideband","number of valid hits in the tracker (sidebands)",50,0,50,"n valid track hits","Events"); sidebandCollection.push_back(&Track_numberOfValidHits_sideband);
-   Track_charge_sideband=HConfig.GetTH1D(Name+"_Track_charge_sideband","Charge of the track (sidebands)",3,-1.0,1.0,"Number of Vertices","Events"); sidebandCollection.push_back(&Track_charge_sideband);
-   Track_dxy_sideband=HConfig.GetTH1D(Name+"_Track_dxy_sideband","Transverse displacement of the parent vertex from the bs (sidebands)",50,0,10,"dxy (cm)","Events"); sidebandCollection.push_back(&Track_dxy_sideband);
-   Track_dz_sideband=HConfig.GetTH1D(Name+"_Track_dz_sideband","Longitudnal displacement of the parent vertex from the bs (sidebands)",50,0,10,"dz (cm)","Events"); sidebandCollection.push_back(&Track_dz_sideband);
+   // Track Candidate Information (sideband)
+   Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse momentum of track (2mu+trk track candidate) (sideband)",50,0,50,"p_{T} (track)","Events"); sidebandCollection.push_back(&Track_Pt_sideband);
+   Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity of track (2mu+trk track candidate) (sideband)",50,-2.5,2.5,"#eta","Events"); sidebandCollection.push_back(&Track_Eta_sideband);
+   Track_Phi_sideband=HConfig.GetTH1D(Name+"_Track_Phi_sideband","Azimuthal angle of track (2mu+trk track candidate) (sideband)",63,-3.15,3.15,"#phi","Events"); sidebandCollection.push_back(&Track_Phi_sideband);
+   Track_vx_sideband=HConfig.GetTH1D(Name+"_Track_vx_sideband","X coordinate of the parent vertex (2mu+trk track candidate) (sideband)",50,0,0.2,"Parent vertex x coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vx_sideband);
+   Track_vy_sideband=HConfig.GetTH1D(Name+"_Track_vy_sideband","Y coordinate of the parent vertex (2mu+trk track candidate) (sideband)",50,0,0.2,"Parent vertex y coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vy_sideband);
+   Track_vz_sideband=HConfig.GetTH1D(Name+"_Track_vz_sideband","Z coordinate of the parent vertex (2mu+trk track candidate) (sideband)",50,0,10,"Parent vertex z coordinate (cm)","Events"); sidebandCollection.push_back(&Track_vz_sideband);
+   Track_normalizedChi2_sideband=HConfig.GetTH1D(Name+"_Track_normalizedChi2_sideband","Normalized chi square (sideband)",20,0,10,"#chi^{2}/ndf (track fit)","Events"); sidebandCollection.push_back(&Track_normalizedChi2_sideband);
+   Track_numberOfValidHits_sideband=HConfig.GetTH1D(Name+"_Track_numberOfValidHits_sideband","number of valid hits in the tracker (sideband)",50,0,50,"n valid track hits","Events"); sidebandCollection.push_back(&Track_numberOfValidHits_sideband);
+   Track_charge_sideband=HConfig.GetTH1D(Name+"_Track_charge_sideband","Charge of the track (sideband)",3,-1.0,1.0,"Number of Vertices","Events"); sidebandCollection.push_back(&Track_charge_sideband);
+   Track_dxy_sideband=HConfig.GetTH1D(Name+"_Track_dxy_sideband","Transverse displacement of the parent vertex from the bs (sideband)",60,0,0.3,"dxy (cm)","Events"); sidebandCollection.push_back(&Track_dxy_sideband);
+   Track_dz_sideband=HConfig.GetTH1D(Name+"_Track_dz_sideband","Longitudnal displacement of the parent vertex from the bs (sideband)",50,0,10,"dz (cm)","Events"); sidebandCollection.push_back(&Track_dz_sideband);
 
    // Track Candidate Information (validation)
    Track_Pt_validation=HConfig.GetTH1D(Name+"_Track_Pt_validation","Transverse momentum of track (2mu+trk track candidate) (validation)",50,0,50,"p_{T} (track)","Events"); validationCollection.push_back(&Track_Pt_validation);
    Track_Eta_validation=HConfig.GetTH1D(Name+"_Track_Eta_validation","Psuedorapidity of track (2mu+trk track candidate) (validation)",50,-2.5,2.5,"#eta","Events"); validationCollection.push_back(&Track_Eta_validation);
    Track_Phi_validation=HConfig.GetTH1D(Name+"_Track_Phi_validation","Azimuthal angle of track (2mu+trk track candidate) (validation)",63,-3.15,3.15,"#phi","Events"); validationCollection.push_back(&Track_Phi_validation);
-   Track_vx_validation=HConfig.GetTH1D(Name+"_Track_vx_validation","X coordinate of the parent vertex (2mu+trk track candidate) (validation)",50,0,10,"Parent vertex x coordinate (cm)","Events"); validationCollection.push_back(&Track_vx_validation);
-   Track_vy_validation=HConfig.GetTH1D(Name+"_Track_vy_validation","Y coordinate of the parent vertex (2mu+trk track candidate) (validation)",50,0,10,"Parent vertex y coordinate (cm)","Events"); validationCollection.push_back(&Track_vy_validation);
+   Track_vx_validation=HConfig.GetTH1D(Name+"_Track_vx_validation","X coordinate of the parent vertex (2mu+trk track candidate) (validation)",50,0,0.2,"Parent vertex x coordinate (cm)","Events"); validationCollection.push_back(&Track_vx_validation);
+   Track_vy_validation=HConfig.GetTH1D(Name+"_Track_vy_validation","Y coordinate of the parent vertex (2mu+trk track candidate) (validation)",50,0,0.2,"Parent vertex y coordinate (cm)","Events"); validationCollection.push_back(&Track_vy_validation);
    Track_vz_validation=HConfig.GetTH1D(Name+"_Track_vz_validation","Z coordinate of the parent vertex (2mu+trk track candidate) (validation)",50,0,10,"Parent vertex z coordinate (cm)","Events"); validationCollection.push_back(&Track_vz_validation);
    Track_normalizedChi2_validation=HConfig.GetTH1D(Name+"_Track_normalizedChi2_validation","Normalized chi square (validation)",20,0,10,"#chi^{2}/ndf (track fit)","Events"); validationCollection.push_back(&Track_normalizedChi2_validation);
    Track_numberOfValidHits_validation=HConfig.GetTH1D(Name+"_Track_numberOfValidHits_validation","number of valid hits in the tracker (validation)",50,0,50,"n valid track hits","Events"); validationCollection.push_back(&Track_numberOfValidHits_validation);
    Track_charge_validation=HConfig.GetTH1D(Name+"_Track_charge_validation","Charge of the track (validation)",3,-1.0,1.0,"Number of Vertices","Events"); validationCollection.push_back(&Track_charge_validation);
-   Track_dxy_validation=HConfig.GetTH1D(Name+"_Track_dxy_validation","Transverse displacement of the parent vertex from the bs (validation)",50,0,10,"dxy (cm)","Events"); validationCollection.push_back(&Track_dxy_validation);
+   Track_dxy_validation=HConfig.GetTH1D(Name+"_Track_dxy_validation","Transverse displacement of the parent vertex from the bs (validation)",60,0,0.3,"dxy (cm)","Events"); validationCollection.push_back(&Track_dxy_validation);
    Track_dz_validation=HConfig.GetTH1D(Name+"_Track_dz_validation","Longitudnal displacement of the parent vertex from the bs (validation)",50,0,10,"dz (cm)","Events"); validationCollection.push_back(&Track_dz_validation);
 
    // Muon variables (Muons from dimuon + track candidates) (peak)
    Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt (muon 1) (peak)",25,0,50,"#mu_{1} p_{T} (GeV)","Events"); peakCollection.push_back(&Muon1_Pt_peak);
    Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity (muon 1) (peak)",25,-2.5,2.5,"#mu_{1} #eta","Events"); peakCollection.push_back(&Muon1_Eta_peak);
    Muon1_Phi_peak=HConfig.GetTH1D(Name+"_Muon1_Phi_peak","Azimuthal angle of (muons 1) (peak)",63,-3.15,3.15,"#mu_{1} #phi","Events");  peakCollection.push_back(&Muon1_Phi_peak);
-   Muon1_vx_peak=HConfig.GetTH1D(Name+"_Muon1_Vx_peak","X coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{1} vx","Events");  peakCollection.push_back(&Muon1_vx_peak);
-   Muon1_vy_peak=HConfig.GetTH1D(Name+"_Muon1_Vy_peak","Y coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{1} vy","Events");  peakCollection.push_back(&Muon1_vy_peak);
-   Muon1_vz_peak=HConfig.GetTH1D(Name+"_Muon1_Vz_peak","Z coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{1} vz","Events"); peakCollection.push_back(&Muon1_vz_peak);
+   Muon1_vx_peak=HConfig.GetTH1D(Name+"_Muon1_Vx_peak","X coordinate of the parent vertex all muons (peak)",50,0,0.2,"#mu_{1} vx","Events");  peakCollection.push_back(&Muon1_vx_peak);
+   Muon1_vy_peak=HConfig.GetTH1D(Name+"_Muon1_Vy_peak","Y coordinate of the parent vertex all muons (peak)",50,0,0.2,"#mu_{1} vy","Events");  peakCollection.push_back(&Muon1_vy_peak);
+   Muon1_vz_peak=HConfig.GetTH1D(Name+"_Muon1_Vz_peak","Z coordinate of the parent vertex all muons (peak)",50,0,10,"#mu_{1} vz","Events"); peakCollection.push_back(&Muon1_vz_peak);
    Muon2_Pt_peak=HConfig.GetTH1D(Name+"_Muon2_Pt_peak","Transverse Pt (muon 2) (peak)",25,0,50,"#mu_{2} p_{T} (GeV)","Events"); peakCollection.push_back(&Muon2_Pt_peak);
    Muon2_Eta_peak=HConfig.GetTH1D(Name+"_Muon2_Eta_peak","Psuedorapidity (muon 2) (peak)",25,-2.5,2.5,"#mu_{2} #eta","Events"); peakCollection.push_back(&Muon2_Eta_peak);
    Muon2_Phi_peak=HConfig.GetTH1D(Name+"_Muon2_Phi_peak","Azimuthal angle of (muons 1) (peak)",63,-3.15,3.15,"#mu_{2} #phi","Events");  peakCollection.push_back(&Muon2_Phi_peak);
-   Muon2_vx_peak=HConfig.GetTH1D(Name+"_Muon2_Vx_peak","X coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{2} vx","Events");  peakCollection.push_back(&Muon2_vx_peak);
-   Muon2_vy_peak=HConfig.GetTH1D(Name+"_Muon2_Vy_peak","Y coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{2} vy","Events");  peakCollection.push_back(&Muon2_vy_peak);
-   Muon2_vz_peak=HConfig.GetTH1D(Name+"_Muon2_Vz_peak","Z coordinate of the parent vertex all muons (peak)",100,0,5,"#mu_{2} vz","Events"); peakCollection.push_back(&Muon2_vz_peak);
+   Muon2_vx_peak=HConfig.GetTH1D(Name+"_Muon2_Vx_peak","X coordinate of the parent vertex all muons (peak)",50,0,0.2,"#mu_{2} vx","Events");  peakCollection.push_back(&Muon2_vx_peak);
+   Muon2_vy_peak=HConfig.GetTH1D(Name+"_Muon2_Vy_peak","Y coordinate of the parent vertex all muons (peak)",50,0,0.2,"#mu_{2} vy","Events");  peakCollection.push_back(&Muon2_vy_peak);
+   Muon2_vz_peak=HConfig.GetTH1D(Name+"_Muon2_Vz_peak","Z coordinate of the parent vertex all muons (peak)",50,0,10,"#mu_{2} vz","Events"); peakCollection.push_back(&Muon2_vz_peak);
 
-   // Muon variables (Muons from dimuon + track candidates) (sidebands)
-   Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt (muon 1) (sidebands)",25,0,50,"#mu_{1} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon1_Pt_sideband);
-   Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity (muon 1) (sidebands)",25,-2.5,2.5,"#mu_{1} #eta","Events"); sidebandCollection.push_back(&Muon1_Eta_sideband);
-   Muon1_Phi_sideband=HConfig.GetTH1D(Name+"_Muon1_Phi_sideband","Azimuthal angle of (muons 1) (sidebands)",63,-3.15,3.15,"#mu_{1} #phi","Events");  sidebandCollection.push_back(&Muon1_Phi_sideband);
-   Muon1_vx_sideband=HConfig.GetTH1D(Name+"_Muon1_Vx_sideband","X coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{1} vx","Events");  sidebandCollection.push_back(&Muon1_vx_sideband);
-   Muon1_vy_sideband=HConfig.GetTH1D(Name+"_Muon1_Vy_sideband","Y coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{1} vy","Events");  sidebandCollection.push_back(&Muon1_vy_sideband);
-   Muon1_vz_sideband=HConfig.GetTH1D(Name+"_Muon1_Vz_sideband","Z coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{1} vz","Events"); sidebandCollection.push_back(&Muon1_vz_sideband);
-   Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt (muon 2) (sidebands)",25,0,50,"#mu_{2} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon2_Pt_sideband);
-   Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity (muon 2) (sidebands)",25,-2.5,2.5,"#mu_{2} #eta","Events"); sidebandCollection.push_back(&Muon2_Eta_sideband);
-   Muon2_Phi_sideband=HConfig.GetTH1D(Name+"_Muon2_Phi_sideband","Azimuthal angle of (muons 1) (sidebands)",63,-3.15,3.15,"#mu_{2} #phi","Events");  sidebandCollection.push_back(&Muon2_Phi_sideband);
-   Muon2_vx_sideband=HConfig.GetTH1D(Name+"_Muon2_Vx_sideband","X coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{2} vx","Events");  sidebandCollection.push_back(&Muon2_vx_sideband);
-   Muon2_vy_sideband=HConfig.GetTH1D(Name+"_Muon2_Vy_sideband","Y coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{2} vy","Events");  sidebandCollection.push_back(&Muon2_vy_sideband);
-   Muon2_vz_sideband=HConfig.GetTH1D(Name+"_Muon2_Vz_sideband","Z coordinate of the parent vertex all muons (sidebands)",100,0,5,"#mu_{2} vz","Events"); sidebandCollection.push_back(&Muon2_vz_sideband);
+   // Muon variables (Muons from dimuon + track candidates) (sideband)
+   Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt (muon 1) (sideband)",25,0,50,"#mu_{1} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon1_Pt_sideband);
+   Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity (muon 1) (sideband)",25,-2.5,2.5,"#mu_{1} #eta","Events"); sidebandCollection.push_back(&Muon1_Eta_sideband);
+   Muon1_Phi_sideband=HConfig.GetTH1D(Name+"_Muon1_Phi_sideband","Azimuthal angle of (muons 1) (sideband)",63,-3.15,3.15,"#mu_{1} #phi","Events");  sidebandCollection.push_back(&Muon1_Phi_sideband);
+   Muon1_vx_sideband=HConfig.GetTH1D(Name+"_Muon1_Vx_sideband","X coordinate of the parent vertex all muons (sideband)",50,0,0.2,"#mu_{1} vx","Events");  sidebandCollection.push_back(&Muon1_vx_sideband);
+   Muon1_vy_sideband=HConfig.GetTH1D(Name+"_Muon1_Vy_sideband","Y coordinate of the parent vertex all muons (sideband)",50,0,0.2,"#mu_{1} vy","Events");  sidebandCollection.push_back(&Muon1_vy_sideband);
+   Muon1_vz_sideband=HConfig.GetTH1D(Name+"_Muon1_Vz_sideband","Z coordinate of the parent vertex all muons (sideband)",50,0,10,"#mu_{1} vz","Events"); sidebandCollection.push_back(&Muon1_vz_sideband);
+   Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt (muon 2) (sideband)",25,0,50,"#mu_{2} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon2_Pt_sideband);
+   Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity (muon 2) (sideband)",25,-2.5,2.5,"#mu_{2} #eta","Events"); sidebandCollection.push_back(&Muon2_Eta_sideband);
+   Muon2_Phi_sideband=HConfig.GetTH1D(Name+"_Muon2_Phi_sideband","Azimuthal angle of (muons 1) (sideband)",63,-3.15,3.15,"#mu_{2} #phi","Events");  sidebandCollection.push_back(&Muon2_Phi_sideband);
+   Muon2_vx_sideband=HConfig.GetTH1D(Name+"_Muon2_Vx_sideband","X coordinate of the parent vertex all muons (sideband)",50,0,0.2,"#mu_{2} vx","Events");  sidebandCollection.push_back(&Muon2_vx_sideband);
+   Muon2_vy_sideband=HConfig.GetTH1D(Name+"_Muon2_Vy_sideband","Y coordinate of the parent vertex all muons (sideband)",50,0,0.2,"#mu_{2} vy","Events");  sidebandCollection.push_back(&Muon2_vy_sideband);
+   Muon2_vz_sideband=HConfig.GetTH1D(Name+"_Muon2_Vz_sideband","Z coordinate of the parent vertex all muons (sideband)",50,0,10,"#mu_{2} vz","Events"); sidebandCollection.push_back(&Muon2_vz_sideband);
 
    // Muon variables (Muons from dimuon + track candidates) (validation)
    Muon1_Pt_validation=HConfig.GetTH1D(Name+"_Muon1_Pt_validation","Transverse Pt (muon 1) (validation)",25,0,50,"#mu_{1} p_{T} (GeV)","Events"); validationCollection.push_back(&Muon1_Pt_validation);
    Muon1_Eta_validation=HConfig.GetTH1D(Name+"_Muon1_Eta_validation","Psuedorapidity (muon 1) (validation)",25,-2.5,2.5,"#mu_{1} #eta","Events"); validationCollection.push_back(&Muon1_Eta_validation);
    Muon1_Phi_validation=HConfig.GetTH1D(Name+"_Muon1_Phi_validation","Azimuthal angle of (muons 1) (validation)",63,-3.15,3.15,"#mu_{1} #phi","Events");  validationCollection.push_back(&Muon1_Phi_validation);
-   Muon1_vx_validation=HConfig.GetTH1D(Name+"_Muon1_Vx_validation","X coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{1} vx","Events");  validationCollection.push_back(&Muon1_vx_validation);
-   Muon1_vy_validation=HConfig.GetTH1D(Name+"_Muon1_Vy_validation","Y coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{1} vy","Events");  validationCollection.push_back(&Muon1_vy_validation);
+   Muon1_vx_validation=HConfig.GetTH1D(Name+"_Muon1_Vx_validation","X coordinate of the parent vertex all muons (validation)",50,0,0.2,"#mu_{1} vx","Events");  validationCollection.push_back(&Muon1_vx_validation);
+   Muon1_vy_validation=HConfig.GetTH1D(Name+"_Muon1_Vy_validation","Y coordinate of the parent vertex all muons (validation)",50,0,0.2,"#mu_{1} vy","Events");  validationCollection.push_back(&Muon1_vy_validation);
    Muon1_vz_validation=HConfig.GetTH1D(Name+"_Muon1_Vz_validation","Z coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{1} vz","Events"); validationCollection.push_back(&Muon1_vz_validation);
    Muon2_Pt_validation=HConfig.GetTH1D(Name+"_Muon2_Pt_validation","Transverse Pt (muon 2) (validation)",25,0,50,"#mu_{2} p_{T} (GeV)","Events"); validationCollection.push_back(&Muon2_Pt_validation);
    Muon2_Eta_validation=HConfig.GetTH1D(Name+"_Muon2_Eta_validation","Psuedorapidity (muon 2) (validation)",25,-2.5,2.5,"#mu_{2} #eta","Events"); validationCollection.push_back(&Muon2_Eta_validation);
    Muon2_Phi_validation=HConfig.GetTH1D(Name+"_Muon2_Phi_validation","Azimuthal angle of (muons 1) (validation)",63,-3.15,3.15,"#mu_{2} #phi","Events");  validationCollection.push_back(&Muon2_Phi_validation);
-   Muon2_vx_validation=HConfig.GetTH1D(Name+"_Muon2_Vx_validation","X coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{2} vx","Events");  validationCollection.push_back(&Muon2_vx_validation);
-   Muon2_vy_validation=HConfig.GetTH1D(Name+"_Muon2_Vy_validation","Y coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{2} vy","Events");  validationCollection.push_back(&Muon2_vy_validation);
-   Muon2_vz_validation=HConfig.GetTH1D(Name+"_Muon2_Vz_validation","Z coordinate of the parent vertex all muons (validation)",100,0,5,"#mu_{2} vz","Events"); validationCollection.push_back(&Muon2_vz_validation);
+   Muon2_vx_validation=HConfig.GetTH1D(Name+"_Muon2_Vx_validation","X coordinate of the parent vertex all muons (validation)",50,0,0.2,"#mu_{2} vx","Events");  validationCollection.push_back(&Muon2_vx_validation);
+   Muon2_vy_validation=HConfig.GetTH1D(Name+"_Muon2_Vy_validation","Y coordinate of the parent vertex all muons (validation)",50,0,0.2,"#mu_{2} vy","Events");  validationCollection.push_back(&Muon2_vy_validation);
+   Muon2_vz_validation=HConfig.GetTH1D(Name+"_Muon2_Vz_validation","Z coordinate of the parent vertex all muons (validation)",50,0,10,"#mu_{2} vz","Events"); validationCollection.push_back(&Muon2_vz_validation);
 
    //*****************
    // plots from Nick
@@ -318,31 +366,31 @@ void  DsPhiPeak::Configure(){
    MinMuon_chi2LocalPosition_peak=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_peak","MinMuon_chi2LocalPosition (peak)",50,0,5,"Min Inner/Outer track #chi^{2}",""); peakCollection.push_back(&MinMuon_chi2LocalPosition_peak);
    MindcaTrackSV_peak=HConfig.GetTH1D(Name+"_MindcaTrackSV_peak","MindcaTrackSV (peak)",50,0,0.1,"Min distance of track to SV","");  peakCollection.push_back(&MindcaTrackSV_peak);
    MinDca_peak=HConfig.GetTH1D(Name+"_MinDca_peak","MinDca (peak)",50,0,0.02,"Min distance between muons and track",""); peakCollection.push_back(&MinDca_peak);
-   MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV (peak)",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MinD0SigSV_peak);
-   MinD0SigPV_peak=HConfig.GetTH1D(Name+"_MinD0SigPV_peak","MinD0SigPV (peak)",20,0,20,"Min Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MinD0SigPV_peak);
+   MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV (peak)",30,0,30,"Min Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MinD0SigSV_peak);
+   MinD0SigPV_peak=HConfig.GetTH1D(Name+"_MinD0SigPV_peak","MinD0SigPV (peak)",30,0,30,"Min Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MinD0SigPV_peak);
    MaxVertexPairQuality_peak=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_peak","MaxVertexPairQuality (peak)",30,0,10,"max vertex pair quality","Events"); peakCollection.push_back(&MaxVertexPairQuality_peak);
    MaxdeltaMuZ_peak= HConfig.GetTH1D(Name+"_MaxdeltaMuZ_peak","MaxdeltaMuZ (peak)",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); peakCollection.push_back(&MaxdeltaMuZ_peak);
    MaxDca_peak=HConfig.GetTH1D(Name+"_MaxDca_peak","MaxDca (peak)",50,0,0.10,"Max distance between muons",""); peakCollection.push_back(&MaxDca_peak);
-   MaxD0SigSV_peak=HConfig.GetTH1D(Name+"_MaxD0SigSV_peak","MaxD0SigSV (peak)",20,0,5,"Max Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MaxD0SigSV_peak);
-   MaxD0SigPV_peak=HConfig.GetTH1D(Name+"_MaxD0SigPV_peak","MaxD0SigPV (peak)",20,0,20,"Max Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MaxD0SigPV_peak);
+   MaxD0SigSV_peak=HConfig.GetTH1D(Name+"_MaxD0SigSV_peak","MaxD0SigSV (peak)",30,0,30,"Max Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MaxD0SigSV_peak);
+   MaxD0SigPV_peak=HConfig.GetTH1D(Name+"_MaxD0SigPV_peak","MaxD0SigPV (peak)",30,0,30,"Max Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MaxD0SigPV_peak);
    FLSignificance_peak=HConfig.GetTH1D(Name+"_FLSignificance_peak","FLSignificance",60,0,60,"PV - SV distance  significance","Events"); peakCollection.push_back(&FLSignificance_peak);
 
-   // Vertex (PV, SV) variables (sidebads)
-   VertexKFChi2_sideband=HConfig.GetTH1D(Name+"_VertexKFChi2_sideband","KF Vertex Chi Squared (sidebands)",50,0,20,"KF vertex #chi^{2}","Events"); sidebandCollection.push_back(&VertexKFChi2_sideband);
-   SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle (sidebands)",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events"); sidebandCollection.push_back(&SVPVDsDirAngle_sideband);
-   NtracksClose_sideband=HConfig.GetTH1D(Name+"_NtracksClose_sideband","NtracksClose (sidebands)",8,-0.5,7.5,"Number of tracks close to SV",""); sidebandCollection.push_back(&NtracksClose_sideband);
-   NSV_sideband=HConfig.GetTH1D(Name+"_NSV_sideband","NSV (sidebands)",8,-0.5,7.5,"N vertices in the Ds cone",""); sidebandCollection.push_back(&NSV_sideband);
-   MinMuon_chi2LocalPosition_sideband=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_sideband","MinMuon_chi2LocalPosition (sidebands)",50,0,5,"Min Inner/Outer track #chi^{2}",""); sidebandCollection.push_back(&MinMuon_chi2LocalPosition_sideband);
-   MindcaTrackSV_sideband=HConfig.GetTH1D(Name+"_MindcaTrackSV_sideband","MindcaTrackSV (sidebands)",50,0,0.1,"Min distance of track to SV","");  sidebandCollection.push_back(&MindcaTrackSV_sideband);
-   MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca (sidebands)",50,0,0.02,"Min distance between muons and track",""); sidebandCollection.push_back(&MinDca_sideband);
-   MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV (sidebands)",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MinD0SigSV_sideband);
-   MinD0SigPV_sideband=HConfig.GetTH1D(Name+"_MinD0SigPV_sideband","MinD0SigPV (sidebands)",20,0,20,"Min Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MinD0SigPV_sideband);
-   MaxVertexPairQuality_sideband=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_sideband","MaxVertexPairQuality (sidebands)",30,0,10,"max vertex pair quality","Events"); sidebandCollection.push_back(&MaxVertexPairQuality_sideband);
-   MaxdeltaMuZ_sideband= HConfig.GetTH1D(Name+"_MaxdeltaMuZ_sideband","MaxdeltaMuZ (sidebands)",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); sidebandCollection.push_back(&MaxdeltaMuZ_sideband);
-   MaxDca_sideband=HConfig.GetTH1D(Name+"_MaxDca_sideband","MaxDca (sidebands)",50,0,0.10,"Max distance between muons",""); sidebandCollection.push_back(&MaxDca_sideband);
-   MaxD0SigSV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigSV_sideband","MaxD0SigSV (sidebands)",20,0,5,"Max Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MaxD0SigSV_sideband);
-   MaxD0SigPV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigPV_sideband","MaxD0SigPV (sidebands)",20,0,20,"Max Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MaxD0SigPV_sideband);
-   FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance (sidebands)",60,0,60,"PV - SV distance  significance","Events"); sidebandCollection.push_back(&FLSignificance_sideband);
+   // Vertex (PV, SV) variables (sideband)
+   VertexKFChi2_sideband=HConfig.GetTH1D(Name+"_VertexKFChi2_sideband","KF Vertex Chi Squared (sideband)",50,0,20,"KF vertex #chi^{2}","Events"); sidebandCollection.push_back(&VertexKFChi2_sideband);
+   SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle (sideband)",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events"); sidebandCollection.push_back(&SVPVDsDirAngle_sideband);
+   NtracksClose_sideband=HConfig.GetTH1D(Name+"_NtracksClose_sideband","NtracksClose (sideband)",8,-0.5,7.5,"Number of tracks close to SV",""); sidebandCollection.push_back(&NtracksClose_sideband);
+   NSV_sideband=HConfig.GetTH1D(Name+"_NSV_sideband","NSV (sideband)",8,-0.5,7.5,"N vertices in the Ds cone",""); sidebandCollection.push_back(&NSV_sideband);
+   MinMuon_chi2LocalPosition_sideband=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_sideband","MinMuon_chi2LocalPosition (sideband)",50,0,5,"Min Inner/Outer track #chi^{2}",""); sidebandCollection.push_back(&MinMuon_chi2LocalPosition_sideband);
+   MindcaTrackSV_sideband=HConfig.GetTH1D(Name+"_MindcaTrackSV_sideband","MindcaTrackSV (sideband)",50,0,0.1,"Min distance of track to SV","");  sidebandCollection.push_back(&MindcaTrackSV_sideband);
+   MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca (sideband)",50,0,0.02,"Min distance between muons and track",""); sidebandCollection.push_back(&MinDca_sideband);
+   MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV (sideband)",30,0,30,"Min Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MinD0SigSV_sideband);
+   MinD0SigPV_sideband=HConfig.GetTH1D(Name+"_MinD0SigPV_sideband","MinD0SigPV (sideband)",30,0,30,"Min Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MinD0SigPV_sideband);
+   MaxVertexPairQuality_sideband=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_sideband","MaxVertexPairQuality (sideband)",30,0,10,"max vertex pair quality","Events"); sidebandCollection.push_back(&MaxVertexPairQuality_sideband);
+   MaxdeltaMuZ_sideband= HConfig.GetTH1D(Name+"_MaxdeltaMuZ_sideband","MaxdeltaMuZ (sideband)",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); sidebandCollection.push_back(&MaxdeltaMuZ_sideband);
+   MaxDca_sideband=HConfig.GetTH1D(Name+"_MaxDca_sideband","MaxDca (sideband)",50,0,0.10,"Max distance between muons",""); sidebandCollection.push_back(&MaxDca_sideband);
+   MaxD0SigSV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigSV_sideband","MaxD0SigSV (sideband)",30,0,30,"Max Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MaxD0SigSV_sideband);
+   MaxD0SigPV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigPV_sideband","MaxD0SigPV (sideband)",30,0,30,"Max Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MaxD0SigPV_sideband);
+   FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance (sideband)",60,0,60,"PV - SV distance  significance","Events"); sidebandCollection.push_back(&FLSignificance_sideband);
 
    // Vertex (PV, SV) variables (validation)
    VertexKFChi2_validation=HConfig.GetTH1D(Name+"_VertexKFChi2_validation","KF Vertex Chi Squared (validation)",50,0,20,"KF vertex #chi^{2}","Events"); validationCollection.push_back(&VertexKFChi2_validation);
@@ -352,29 +400,39 @@ void  DsPhiPeak::Configure(){
    MinMuon_chi2LocalPosition_validation=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_validation","MinMuon_chi2LocalPosition (validation)",50,0,5,"Min Inner/Outer track #chi^{2}",""); validationCollection.push_back(&MinMuon_chi2LocalPosition_validation);
    MindcaTrackSV_validation=HConfig.GetTH1D(Name+"_MindcaTrackSV_validation","MindcaTrackSV (validation)",50,0,0.1,"Min distance of track to SV","");  validationCollection.push_back(&MindcaTrackSV_validation);
    MinDca_validation=HConfig.GetTH1D(Name+"_MinDca_validation","MinDca (validation)",50,0,0.02,"Min distance between muons and track",""); validationCollection.push_back(&MinDca_validation);
-   MinD0SigSV_validation=HConfig.GetTH1D(Name+"_MinD0SigSV_validation","MinD0SigSV (validation)",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MinD0SigSV_validation);
-   MinD0SigPV_validation=HConfig.GetTH1D(Name+"_MinD0SigPV_validation","MinD0SigPV (validation)",20,0,20,"Min Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MinD0SigPV_validation);
+   MinD0SigSV_validation=HConfig.GetTH1D(Name+"_MinD0SigSV_validation","MinD0SigSV (validation)",30,0,30,"Min Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MinD0SigSV_validation);
+   MinD0SigPV_validation=HConfig.GetTH1D(Name+"_MinD0SigPV_validation","MinD0SigPV (validation)",30,0,30,"Min Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MinD0SigPV_validation);
    MaxVertexPairQuality_validation=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_validation","MaxVertexPairQuality (validation)",30,0,10,"max vertex pair quality","Events"); validationCollection.push_back(&MaxVertexPairQuality_validation);
    MaxdeltaMuZ_validation= HConfig.GetTH1D(Name+"_MaxdeltaMuZ_validation","MaxdeltaMuZ (validation)",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); validationCollection.push_back(&MaxdeltaMuZ_validation);
    MaxDca_validation=HConfig.GetTH1D(Name+"_MaxDca_validation","MaxDca (validation)",50,0,0.10,"Max distance between muons",""); validationCollection.push_back(&MaxDca_validation);
-   MaxD0SigSV_validation=HConfig.GetTH1D(Name+"_MaxD0SigSV_validation","MaxD0SigSV (validation)",20,0,5,"Max Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MaxD0SigSV_validation);
-   MaxD0SigPV_validation=HConfig.GetTH1D(Name+"_MaxD0SigPV_validation","MaxD0SigPV (validation)",20,0,20,"Max Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MaxD0SigPV_validation);
+   MaxD0SigSV_validation=HConfig.GetTH1D(Name+"_MaxD0SigSV_validation","MaxD0SigSV (validation)",30,0,30,"Max Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MaxD0SigSV_validation);
+   MaxD0SigPV_validation=HConfig.GetTH1D(Name+"_MaxD0SigPV_validation","MaxD0SigPV (validation)",30,0,30,"Max Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MaxD0SigPV_validation);
    FLSignificance_validation=HConfig.GetTH1D(Name+"_FLSignificance_validation","FLSignificance (validation)",60,0,60,"PV - SV distance  significance","Events"); validationCollection.push_back(&FLSignificance_validation);
 
-   // Decay length (peak)
+   // Decay length (validation)
    DecayLength_prompt_validation=HConfig.GetTH1D(Name+"_DecayLength_prompt_validation","Proper Decay Length of Prompt Ds (validation)",20,0,.1,"Proper Decay Length (cm)","Events"); validationCollection.push_back(&DecayLength_prompt_validation);
    DecayLength_non_prompt_validation=HConfig.GetTH1D(Name+"_DecayLength_non_prompt_validation","Proper Decay Length of Non-Prompt Ds (validation)",20,0,.1,"Proper Decay Length (cm)","Events"); validationCollection.push_back(&DecayLength_non_prompt_validation);
    DecayLength_validation=HConfig.GetTH1D(Name+"_DecayLength_validation","Proper Decay Length of Ds (validation)",20,0,.1,"Proper Decay Length (cm)","Events"); validationCollection.push_back(&DecayLength_validation);
 
-   // Decay length (sidebands)
-   DecayLength_prompt_sideband=HConfig.GetTH1D(Name+"_DecayLength_prompt_sideband","Proper Decay Length of Prompt Ds (sidebands)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_prompt_sideband);
-   DecayLength_non_prompt_sideband=HConfig.GetTH1D(Name+"_DecayLength_non_prompt_sideband","Proper Decay Length of Non-Prompt Ds (sidebands)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_non_prompt_sideband);
-   DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds (sidebands)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_sideband);
+   // Decay length (sideband)
+   DecayLength_prompt_sideband=HConfig.GetTH1D(Name+"_DecayLength_prompt_sideband","Proper Decay Length of Prompt Ds (sideband)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_prompt_sideband);
+   DecayLength_non_prompt_sideband=HConfig.GetTH1D(Name+"_DecayLength_non_prompt_sideband","Proper Decay Length of Non-Prompt Ds (sideband)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_non_prompt_sideband);
+   DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds (sideband)",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_sideband);
 
-   // Decay length (validation)
+   // Decay length (peak)
    DecayLength_prompt_peak=HConfig.GetTH1D(Name+"_DecayLength_prompt_peak","Proper Decay Length of Prompt Ds (peak)",20,0,.1,"Proper Decay Length (cm)","Events"); peakCollection.push_back(&DecayLength_prompt_peak);
    DecayLength_non_prompt_peak=HConfig.GetTH1D(Name+"_DecayLength_non_prompt_peak","Proper Decay Length of Non-Prompt Ds (peak)",20,0,.1,"Proper Decay Length (cm)","Events"); peakCollection.push_back(&DecayLength_non_prompt_peak);
    DecayLength_peak=HConfig.GetTH1D(Name+"_DecayLength_peak","Proper Decay Length of Ds (peak)",20,0,.1,"Proper Decay Length (cm)","Events"); peakCollection.push_back(&DecayLength_peak);
+
+   // Invariant mass plot for validation
+
+   TripleMass_peak=HConfig.GetTH1D(Name+"_TripleMass_peak","#mu#mu + track mass",42,1.68,2.1,"Invariant mass of the #mu#mu + track (peak)","Events");
+   TripleMass_sideband=HConfig.GetTH1D(Name+"_TripleMass_sideband","#mu#mu + track mass",42,1.68,2.1,"Invariant mass of the #mu#mu + track (sideband)","Events");
+   TripleMass_validation=HConfig.GetTH1D(Name+"_TripleMass_validation","#mu#mu + track mass",42,1.68,2.1,"Invariant mass of the #mu#mu + track (validation)","Events");
+
+   peakCollection.push_back(&TripleMass_peak);
+   sidebandCollection.push_back(&TripleMass_sideband);
+   validationCollection.push_back(&TripleMass_validation);
 
    Selection::ConfigureHistograms(); //do not remove
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -384,199 +442,26 @@ void  DsPhiPeak::Store_ExtraDist(){
 
 
    // Unscaled 
-   
-   Extradist1d.push_back(&Muon1_isGlobal);
-   Extradist1d.push_back(&Muon2_isGlobal);
-   Extradist1d.push_back(&Muon1_isStandAlone);
-   Extradist1d.push_back(&Muon2_isStandAlone);
-   Extradist1d.push_back(&Muon1_isTracker);
-   Extradist1d.push_back(&Muon2_isTracker);
-   Extradist1d.push_back(&Muon1_isCalo);
-   Extradist1d.push_back(&Muon2_isCalo);
-   Extradist1d.push_back(&Muon1_isIsolationValid);
-   Extradist1d.push_back(&Muon2_isIsolationValid);
-
-   Extradist1d.push_back(&Track_TriggerMatchdR);
-   Extradist1d.push_back(&Muon1_TriggerMatchdR);
-   Extradist1d.push_back(&Muon2_TriggerMatchdR);
-   Extradist1d.push_back(&PhiMass);
    Extradist1d.push_back(&TripleMass);
    Extradist2d.push_back(&PhiMassVsDsMass);
-
    // Charge MisId and trigger efficiency
    Extradist1d.push_back(&ChargeMisId);
-   Extradist1d.push_back(&TriggerEfficiency);
+   Extradist1d.push_back(&TriggerEfficiency);  
 
    ////////////////////
    // validation plots  
    ////////////////////
 
-   //Track candidate variables (validation)
-   Extradist1d.push_back(&Track_Pt_validation);
-   Extradist1d.push_back(&Track_Eta_validation);
-   Extradist1d.push_back(&Track_Phi_validation);
-   Extradist1d.push_back(&Track_vx_validation);
-   Extradist1d.push_back(&Track_vy_validation);
-   Extradist1d.push_back(&Track_vz_validation);
-   Extradist1d.push_back(&Track_normalizedChi2_validation);
-   Extradist1d.push_back(&Track_numberOfValidHits_validation);
-   Extradist1d.push_back(&Track_charge_validation);
-   Extradist1d.push_back(&Track_dxy_validation);
-   Extradist1d.push_back(&Track_dz_validation);
-   /*  
-   //Track candidate variables (sidebands)
-   Extradist1d.push_back(&Track_Pt_sideband);
-   Extradist1d.push_back(&Track_Eta_sideband);
-   Extradist1d.push_back(&Track_Phi_sideband);
-   Extradist1d.push_back(&Track_vx_sideband);
-   Extradist1d.push_back(&Track_vy_sideband);
-   Extradist1d.push_back(&Track_vz_sideband);
-   Extradist1d.push_back(&Track_normalizedChi2_sideband);
-   Extradist1d.push_back(&Track_numberOfValidHits_sideband);
-   Extradist1d.push_back(&Track_charge_sideband);
-   Extradist1d.push_back(&Track_dxy_sideband);
-   Extradist1d.push_back(&Track_dz_sideband);
-
-   //Track candidate variables (peak)
-   Extradist1d.push_back(&Track_Pt_peak);
-   Extradist1d.push_back(&Track_Eta_peak);
-   Extradist1d.push_back(&Track_Phi_peak);
-   Extradist1d.push_back(&Track_vx_peak);
-   Extradist1d.push_back(&Track_vy_peak);
-   Extradist1d.push_back(&Track_vz_peak);
-   Extradist1d.push_back(&Track_normalizedChi2_peak);
-   Extradist1d.push_back(&Track_numberOfValidHits_peak);
-   Extradist1d.push_back(&Track_charge_peak);
-   Extradist1d.push_back(&Track_dxy_peak);
-   Extradist1d.push_back(&Track_dz_peak);
-   */
-   //Dimuon variable (validation)
-   Extradist1d.push_back(&Muon1_Pt_validation);
-   Extradist1d.push_back(&Muon1_Phi_validation);
-   Extradist1d.push_back(&Muon1_Eta_validation);
-   Extradist1d.push_back(&Muon1_vx_validation);
-   Extradist1d.push_back(&Muon1_vy_validation);
-   Extradist1d.push_back(&Muon1_vz_validation);
-   Extradist1d.push_back(&Muon2_Pt_validation);
-   Extradist1d.push_back(&Muon2_Phi_validation);
-   Extradist1d.push_back(&Muon2_Eta_validation);
-   Extradist1d.push_back(&Muon2_vx_validation);
-   Extradist1d.push_back(&Muon2_vy_validation);
-   Extradist1d.push_back(&Muon2_vz_validation);
-   Extradist1d.push_back(&DimuondR_validation);
-   Extradist1d.push_back(&Muon1TrkdR_validation);
-   Extradist1d.push_back(&Muon2TrkdR_validation);
-   /*
-   //Dimuon variable (sidebands)
-   Extradist1d.push_back(&Muon1_Pt_sideband);
-   Extradist1d.push_back(&Muon1_Phi_sideband);
-   Extradist1d.push_back(&Muon1_Eta_sideband);
-   Extradist1d.push_back(&Muon1_vx_sideband);
-   Extradist1d.push_back(&Muon1_vy_sideband);
-   Extradist1d.push_back(&Muon1_vz_sideband);
-   Extradist1d.push_back(&Muon2_Pt_sideband);
-   Extradist1d.push_back(&Muon2_Phi_sideband);
-   Extradist1d.push_back(&Muon2_Eta_sideband);
-   Extradist1d.push_back(&Muon2_vx_sideband);
-   Extradist1d.push_back(&Muon2_vy_sideband);
-   Extradist1d.push_back(&Muon2_vz_sideband);
-   Extradist1d.push_back(&DimuondR_sideband);
-   Extradist1d.push_back(&Muon1TrkdR_sideband);
-   Extradist1d.push_back(&Muon2TrkdR_sideband);
-
-   //Dimuon variable (peak)
-   Extradist1d.push_back(&Muon1_Pt_peak);
-   Extradist1d.push_back(&Muon1_Phi_peak);
-   Extradist1d.push_back(&Muon1_Eta_peak);
-   Extradist1d.push_back(&Muon1_vx_peak);
-   Extradist1d.push_back(&Muon1_vy_peak);
-   Extradist1d.push_back(&Muon1_vz_peak);
-   Extradist1d.push_back(&Muon2_Pt_peak);
-   Extradist1d.push_back(&Muon2_Phi_peak);
-   Extradist1d.push_back(&Muon2_Eta_peak);
-   Extradist1d.push_back(&Muon2_vx_peak);
-   Extradist1d.push_back(&Muon2_vy_peak);
-   Extradist1d.push_back(&Muon2_vz_peak);
-   Extradist1d.push_back(&DimuondR_peak);
-   Extradist1d.push_back(&Muon1TrkdR_peak);
-   Extradist1d.push_back(&Muon2TrkdR_peak);
-   */
-   //*****************
-   // plots from Nick
-   //*****************
-
-   // Vertex and Isolation (peak)
-   Extradist1d.push_back(&VertexKFChi2_peak);
-   Extradist1d.push_back(&SVPVDsDirAngle_peak);
-   Extradist1d.push_back(&NtracksClose_peak);
-   Extradist1d.push_back(&NSV_peak);
-   Extradist1d.push_back(&MinMuon_chi2LocalPosition_peak);
-   Extradist1d.push_back(&MindcaTrackSV_peak);
-   Extradist1d.push_back(&MinDca_peak);
-   Extradist1d.push_back(&MinD0SigSV_peak);
-   Extradist1d.push_back(&MinD0SigPV_peak);
-   Extradist1d.push_back(&MaxVertexPairQuality_peak);
-   Extradist1d.push_back(&MaxdeltaMuZ_peak);
-   Extradist1d.push_back(&MaxDca_peak);
-   Extradist1d.push_back(&MaxD0SigSV_peak);
-   Extradist1d.push_back(&MaxD0SigPV_peak);
-   Extradist1d.push_back(&FLSignificance_peak);
-
-   // Vertex and Isolation (sidebands)
-   Extradist1d.push_back(&VertexKFChi2_sideband);
-   Extradist1d.push_back(&SVPVDsDirAngle_sideband);
-   Extradist1d.push_back(&NtracksClose_sideband);
-   Extradist1d.push_back(&NSV_sideband);
-   Extradist1d.push_back(&MinMuon_chi2LocalPosition_sideband);
-   Extradist1d.push_back(&MindcaTrackSV_sideband);
-   Extradist1d.push_back(&MinDca_sideband);
-   Extradist1d.push_back(&MinD0SigSV_sideband);
-   Extradist1d.push_back(&MinD0SigPV_sideband);
-   Extradist1d.push_back(&MaxVertexPairQuality_sideband);
-   Extradist1d.push_back(&MaxdeltaMuZ_sideband);
-   Extradist1d.push_back(&MaxDca_sideband);
-   Extradist1d.push_back(&MaxD0SigSV_sideband);
-   Extradist1d.push_back(&MaxD0SigPV_sideband);
-   Extradist1d.push_back(&FLSignificance_sideband);
-
-   // Vertex and Isolation (validation)
-   Extradist1d.push_back(&VertexKFChi2_validation);
-   Extradist1d.push_back(&SVPVDsDirAngle_validation);
-   Extradist1d.push_back(&NtracksClose_validation);
-   Extradist1d.push_back(&NSV_validation);
-   Extradist1d.push_back(&MinMuon_chi2LocalPosition_validation);
-   Extradist1d.push_back(&MindcaTrackSV_validation);
-   Extradist1d.push_back(&MinDca_validation);
-   Extradist1d.push_back(&MinD0SigSV_validation);
-   Extradist1d.push_back(&MinD0SigPV_validation);
-   Extradist1d.push_back(&MaxVertexPairQuality_validation);
-   Extradist1d.push_back(&MaxdeltaMuZ_validation);
-   Extradist1d.push_back(&MaxDca_validation);
-   Extradist1d.push_back(&MaxD0SigSV_validation);
-   Extradist1d.push_back(&MaxD0SigPV_validation);
-   Extradist1d.push_back(&FLSignificance_validation);
-   /*
-   // Decay length (peak)
-   Extradist1d.push_back(&DecayLength_prompt_peak);
-   Extradist1d.push_back(&DecayLength_non_prompt_peak);
-   Extradist1d.push_back(&DecayLength_peak);
-
-   // Decay length (sidebands)
-   Extradist1d.push_back(&DecayLength_prompt_sideband);
-   Extradist1d.push_back(&DecayLength_non_prompt_sideband);
-   Extradist1d.push_back(&DecayLength_sideband);
-   */  
-   // Decay length (validation)
-   Extradist1d.push_back(&DecayLength_prompt_validation);
-   Extradist1d.push_back(&DecayLength_non_prompt_validation);
-   Extradist1d.push_back(&DecayLength_validation);
+   for (int j=0; j<peakCollection.size(); ++j){
+      Extradist1d.push_back(peakCollection.at(j));
+      Extradist1d.push_back(sidebandCollection.at(j));
+      Extradist1d.push_back(validationCollection.at(j));
+   }
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////
    // Here you must push back all analysis histograms, otherwise they wont be propagated to the output //
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-   Extradist1d.push_back(&NVtx);
-   Extradist1d.push_back(&NVtx_woPUWeights);
 }
 
 void  DsPhiPeak::doEvent(){ 
@@ -623,8 +508,9 @@ void  DsPhiPeak::doEvent(){
    value.at(TriggerMatchTrack)=1.0;
    value.at(DsMassCut)=0;
    value.at(GenMatch)=1;   
+
    if(!Ntp->isData()){
-      w = w_normalization*puWeights->GetBinContent(Ntp->TruthNumberOfInteraction()); // Weight MC according to truth number of vertices
+     w = w_normalization*(puWeights->GetBinContent(Ntp->TruthNumberOfInteraction())); // Weight MC according to truth number of vertices
    } 
    //  No weights to data
    else{w=1;}
@@ -634,7 +520,7 @@ void  DsPhiPeak::doEvent(){
    // Apply Selection
    for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-      if( HLT.Contains("DoubleMu3_Trk_Tau3mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
+      if( HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
       //if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
    }
 
@@ -655,12 +541,11 @@ void  DsPhiPeak::doEvent(){
          if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
          if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))TripleMuFired = Ntp-> L1Decision(il1);
       }
-
    }
 
    if (DoubleMuFired || TripleMuFired) L1Ok = true; // Remove all the events seeded by triple mu
    if (L1Ok && HLTOk) value.at(TriggerOk) = true; // HLT requirement
-   else value.at(TriggerOk) = false;
+   else value.at(TriggerOk) = 0;
 
    value.at(TwoMuTrkCandidate) = Ntp->NTwoMuonsTrack(); // Number of two muons + track candidates
    pass.at(TriggerOk) = ( value.at(TriggerOk) == cut.at(TriggerOk) );
@@ -695,14 +580,14 @@ void  DsPhiPeak::doEvent(){
          value.at(OSMuons) = abs(Ntp->Muon_charge(Mu1_pt_idx)+Ntp->Muon_charge(Mu2_pt_idx));
 
          float PhiMass = (mu1_p4+mu2_p4).M(); 
-         value.at(MuMuMassCut) = ( (PhiMass < PhiMassHigh) && (PhiMass >= PhiMassLow) );
+         value.at(MuMuMassCut) = PhiMass;
          value.at(TrackPtCut) = track_p4.Pt();
          value.at(NTrackHits) = Ntp->Track_numberOfValidHits(Track_idx);
          //value.at(ChiSqCut) = Ntp->TwoMuonsTrack_SV_Chi2(j);
          value.at(TriggerMatchMu1) = Ntp->TwoMuonsTrack_TriggerMatch_dR(j).at(0);
          value.at(TriggerMatchMu2) = Ntp->TwoMuonsTrack_TriggerMatch_dR(j).at(1);
          value.at(TriggerMatchTrack) = Ntp->TwoMuonsTrack_TriggerMatch_dR(j).at(2);
-         value.at(DsMassCut) = ( mumutrkmass < dsMassMax && mumutrkmass > dsMassMin );
+         value.at(DsMassCut) = mumutrkmass;
          if (id==1) value.at(GenMatch) = 0;
          else value.at(GenMatch) = Ntp->DsGenMatch(j); 
 
@@ -711,15 +596,15 @@ void  DsPhiPeak::doEvent(){
          pass.at(Mu1PtCut) = (value.at(Mu1PtCut) >= cut.at(Mu1PtCut) );
          pass.at(Mu2PtCut) = (value.at(Mu2PtCut) >= cut.at(Mu2PtCut) );
          pass.at(MuonID) = ( value.at(MuonID) == cut.at(MuonID) );
-         pass.at(MuMuMassCut) = ( value.at(MuMuMassCut) == cut.at(MuMuMassCut) );
+         pass.at(MuMuMassCut) = ( ( value.at(MuMuMassCut)< PhiMassHigh) && (value.at(MuMuMassCut) >= PhiMassLow) );
          pass.at(TrackPtCut) = ( value.at(TrackPtCut) > cut.at(TrackPtCut) );
          pass.at(NTrackHits) = ( value.at(NTrackHits) > cut.at(NTrackHits) );
          //pass.at(ChiSqCut) = ( value.at(ChiSqCut) < cut.at(ChiSqCut) );
          pass.at(TriggerMatchMu1) = ( value.at(TriggerMatchMu1) < cut.at(TriggerMatchMu1) );
          pass.at(TriggerMatchMu2) = ( value.at(TriggerMatchMu2) < cut.at(TriggerMatchMu2) );
          pass.at(TriggerMatchTrack) = ( value.at(TriggerMatchTrack) < cut.at(TriggerMatchTrack) );
-         pass.at(DsMassCut) = ( value.at(DsMassCut) == cut.at(DsMassCut) );
          pass.at(GenMatch) = ( value.at(GenMatch) < cut.at(GenMatch) );
+         pass.at(DsMassCut) = ( value.at(DsMassCut) < dsMassMax && value.at(DsMassCut) >= dsMassMin );
 
          unsigned int score = 0;
          for (unsigned int k=0; k<NCuts; ++k) if (pass.at(k)) score++;
@@ -759,14 +644,14 @@ void  DsPhiPeak::doEvent(){
       value.at(OSMuons) = abs(Ntp->Muon_charge(Mu1_pt_idx)+Ntp->Muon_charge(Mu2_pt_idx));
 
       float PhiMass = (mu1_p4+mu2_p4).M(); 
-
-      value.at(MuMuMassCut) = ( (PhiMass < PhiMassHigh) && (PhiMass >= PhiMassLow) );
+      value.at(MuMuMassCut) = PhiMass;
       value.at(TrackPtCut) = track_p4.Pt();
       value.at(NTrackHits) = Ntp->Track_numberOfValidHits(Track_idx);
       //value.at(ChiSqCut) = Ntp->TwoMuonsTrack_SV_Chi2(final_idx);
       value.at(TriggerMatchMu1) = Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx).at(0);
       value.at(TriggerMatchMu2) = Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx).at(1);
       value.at(TriggerMatchTrack) = Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx).at(2);
+      value.at(DsMassCut) = mumutrkmass;
       if (id==1) value.at(GenMatch) = 0;
       else value.at(GenMatch) = Ntp->DsGenMatch(final_idx); 
 
@@ -774,15 +659,15 @@ void  DsPhiPeak::doEvent(){
       pass.at(Mu1PtCut) = (value.at(Mu1PtCut) >= cut.at(Mu1PtCut) );
       pass.at(Mu2PtCut) = (value.at(Mu2PtCut) >= cut.at(Mu2PtCut) );
       pass.at(MuonID) = ( value.at(MuonID) == cut.at(MuonID) );
-      pass.at(MuMuMassCut) = ( value.at(MuMuMassCut) == cut.at(MuMuMassCut) );
+      pass.at(MuMuMassCut) = ( ( value.at(MuMuMassCut)< PhiMassHigh) && (value.at(MuMuMassCut) >= PhiMassLow) );
       pass.at(TrackPtCut) = ( value.at(TrackPtCut) > cut.at(TrackPtCut) );
       pass.at(NTrackHits) = ( value.at(NTrackHits) > cut.at(NTrackHits) );
       //pass.at(ChiSqCut) = ( value.at(ChiSqCut) < cut.at(ChiSqCut) );
       pass.at(TriggerMatchMu1) = ( value.at(TriggerMatchMu1) < cut.at(TriggerMatchMu1) );
       pass.at(TriggerMatchMu2) = ( value.at(TriggerMatchMu2) < cut.at(TriggerMatchMu2) );
       pass.at(TriggerMatchTrack) = ( value.at(TriggerMatchTrack) < cut.at(TriggerMatchTrack) );
-      pass.at(DsMassCut) = ( value.at(DsMassCut)==cut.at(DsMassCut) );
       pass.at(GenMatch) = ( value.at(GenMatch) < cut.at(GenMatch) );
+      pass.at(DsMassCut) = ( value.at(DsMassCut) >= dsMassMin && value.at(DsMassCut) < dsMassMax );
 
       // charge misid
       if(passAllBut(OSMuons)){
@@ -919,20 +804,35 @@ void  DsPhiPeak::doEvent(){
       double relPt_iso05 = sumPtTracks_ds/DsLV.Pt();
 
       // Fill histograms
-      NVtx_woPUWeights.at(t).Fill(Ntp->NVtx(),w_normalization); 
-      NVtx.at(t).Fill(Ntp->NVtx(),w);
-
-      PhiMass.at(t).Fill(phimass, w);
       TripleMass.at(t).Fill(dsmass, w);
       PhiMassVsDsMass.at(t).Fill(phimass, dsmass, w);
 
-      Muon1_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(0),w);
-      Muon2_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(1),w);
-      Track_TriggerMatchdR.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(2),w);
 
+      //* ----------------
       // Validation block
-      // fill peak mass
+      //* ----------------
+
+      // fill sideband mass
       if (dsmass<sidebandDsMax && dsmass>=sidebandDsMin){
+
+         Muon1_TriggerMatchdR_sideband.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(0),w);
+         Muon2_TriggerMatchdR_sideband.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(1),w);
+         Track_TriggerMatchdR_sideband.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(2),w);
+         Muon1_isGlobal_sideband.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_1_idx),w);
+         Muon2_isGlobal_sideband.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_2_idx),w);
+         Muon1_isStandAlone_sideband.at(t).Fill(Ntp->Muon_isStandAloneMuon(Muon_1_idx),w);
+         Muon2_isStandAlone_sideband.at(t).Fill(Ntp->Muon_isStandAloneMuon(Muon_2_idx),w);
+         Muon1_isTracker_sideband.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_1_idx),w);
+         Muon2_isTracker_sideband.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_2_idx),w);
+         Muon1_isCalo_sideband.at(t).Fill(Ntp->Muon_isCaloMuon(Muon_1_idx),w);
+         Muon2_isCalo_sideband.at(t).Fill(Ntp->Muon_isCaloMuon(Muon_2_idx),w);
+         Muon1_isIsolationValid_sideband.at(t).Fill(Ntp->Muon_isIsolationValid(Muon_1_idx),w);
+         Muon2_isIsolationValid_sideband.at(t).Fill(Ntp->Muon_isIsolationValid(Muon_2_idx),w);
+         NVtx_woPUWeights_sideband.at(t).Fill(Ntp->NVtx(),w_normalization); 
+         NVtx_sideband.at(t).Fill(Ntp->NVtx(),w);
+         PhiMass_sideband.at(t).Fill(phimass, w);
+         TripleMass_sideband.at(t).Fill(dsmass, w);
+
          Track_Pt_sideband.at(t).Fill(Ntp->Track_P4(Track_idx).Pt(),w);
          Track_Eta_sideband.at(t).Fill(Ntp->Track_P4(Track_idx).Eta(),w);
          Track_Phi_sideband.at(t).Fill(Ntp->Track_P4(Track_idx).Phi(),w);
@@ -968,7 +868,6 @@ void  DsPhiPeak::doEvent(){
          NtracksClose_sideband.at(t).Fill(nTracks_ds,w);
          NSV_sideband.at(t).Fill(Nvertices,w);
          MinMuon_chi2LocalPosition_sideband.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_1_idx),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_2_idx)}),w);
-         if(Ntp->NIsolationTrack(final_idx,true)!=0) MindcaTrackSV_sideband.at(t).Fill(sqrt( pow(Ntp->IsolationTrack_dzSV(final_idx,true),2)   +   pow(Ntp->IsolationTrack_dxySV(final_idx,true),2)),w);
          MinDca_sideband.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MinD0SigSV_sideband.at(t).Fill(MinD0SVSignificance,w);
          MinD0SigPV_sideband.at(t).Fill(MinD0Significance,w);
@@ -990,8 +889,28 @@ void  DsPhiPeak::doEvent(){
             }
             else DecayLength_non_prompt_sideband.at(t).Fill(DecayL);
          }
-      }    
+      }
+
+      // fill peak mass
       else if (dsmass<peakDsMax && dsmass>=peakDsMin){
+
+         Muon1_TriggerMatchdR_peak.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(0),w);
+         Muon2_TriggerMatchdR_peak.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(1),w);
+         Track_TriggerMatchdR_peak.at(t).Fill((Ntp->TwoMuonsTrack_TriggerMatch_dR(final_idx)).at(2),w);
+         Muon1_isGlobal_peak.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_1_idx),w);
+         Muon2_isGlobal_peak.at(t).Fill(Ntp->Muon_isGlobalMuon(Muon_2_idx),w);
+         Muon1_isStandAlone_peak.at(t).Fill(Ntp->Muon_isStandAloneMuon(Muon_1_idx),w);
+         Muon2_isStandAlone_peak.at(t).Fill(Ntp->Muon_isStandAloneMuon(Muon_2_idx),w);
+         Muon1_isTracker_peak.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_1_idx),w);
+         Muon2_isTracker_peak.at(t).Fill(Ntp->Muon_isTrackerMuon(Muon_2_idx),w);
+         Muon1_isCalo_peak.at(t).Fill(Ntp->Muon_isCaloMuon(Muon_1_idx),w);
+         Muon2_isCalo_peak.at(t).Fill(Ntp->Muon_isCaloMuon(Muon_2_idx),w);
+         Muon1_isIsolationValid_peak.at(t).Fill(Ntp->Muon_isIsolationValid(Muon_1_idx),w);
+         Muon2_isIsolationValid_peak.at(t).Fill(Ntp->Muon_isIsolationValid(Muon_2_idx),w);
+         NVtx_woPUWeights_peak.at(t).Fill(Ntp->NVtx(),w_normalization); 
+         NVtx_peak.at(t).Fill(Ntp->NVtx(),w);
+         PhiMass_peak.at(t).Fill(phimass, w);
+         TripleMass_peak.at(t).Fill(dsmass, w);
 
          Track_Pt_peak.at(t).Fill(Ntp->Track_P4(Track_idx).Pt(),w);
          Track_Eta_peak.at(t).Fill(Ntp->Track_P4(Track_idx).Eta(),w);
@@ -1028,7 +947,6 @@ void  DsPhiPeak::doEvent(){
          NtracksClose_peak.at(t).Fill(nTracks_ds,w);
          NSV_peak.at(t).Fill(Nvertices,w);
          MinMuon_chi2LocalPosition_peak.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_1_idx),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_2_idx)}),w);
-         if(Ntp->NIsolationTrack(final_idx,true)!=0) MindcaTrackSV_peak.at(t).Fill(sqrt( pow(Ntp->IsolationTrack_dzSV(final_idx, true),2)   +   pow(Ntp->IsolationTrack_dxySV(final_idx, true),2)),w);
          MinDca_peak.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MinD0SigSV_peak.at(t).Fill(MinD0SVSignificance,w);
          MinD0SigPV_peak.at(t).Fill(MinD0Significance,w);
@@ -1058,47 +976,31 @@ void  DsPhiPeak::Finish(){
 
    int id(Ntp->GetMCID());
    if (id==1) {   
-      if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 2265.07; nSidebands = 4586.64;} 
-      if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 15965.4; nSidebands = 24220.4;}
-      if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 5952.73; nSidebands = 11303.6;}
-      if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 10661.2; nSidebands = 19461.1;}
-      if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 10093.0; nSidebands = 19046.7;}
+      if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 1068.8; nSidebands = 3092.7;} 
+      if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 9835.4; nSidebands = 18105.0;}
+      if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 4133.2; nSidebands = 10613.9;}
+      if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 6023.6; nSidebands = 19461.1;}
+      if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 10853.6; nSidebands = 23501.0;}
    }
    else {nPeak=1; nSidebands=1;}
 
-   for ( unsigned int j=0; j<sidebandCollection.size(); ++j){
-      sidebandCollection.at(j)->at(0).Scale(nPeak/nSidebands); 
-   }
-
    for ( unsigned int j=0; j<validationCollection.size(); ++j){
-      validationCollection.at(j)->at(0).Add(&(peakCollection.at(j)->at(0)),1);
-      validationCollection.at(j)->at(0).Add(&(sidebandCollection.at(j)->at(0)),-1);
-      validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1);
+      validationCollection.at(j)->at(0).Add(&(peakCollection.at(j)->at(0)),1.0);
+      validationCollection.at(j)->at(0).Add(&(sidebandCollection.at(j)->at(0)),-(nPeak/nSidebands));
+      validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1.0);
    }
 
-   //cout<<peakCollection.size()<<" "<<sidebandCollection.size()<<" "<<validationCollection.size()<<endl;
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   /* 
-      if(mode == RECONSTRUCT){
-   //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-   int id(Ntp->GetMCID());
-   double scale(1.);
-   double scaleDsTau(0.637);
-   double scaleBpTau(0.262);
-   double scaleB0Tau(0.099);
-
-   if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
-   ScaleAllHistOfType(2,scale*scaleDsTau);
-
-   if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
-   ScaleAllHistOfType(3,scale*scaleB0Tau);
-
-   if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
-   ScaleAllHistOfType(4,scale*scaleBpTau);
-
-   //    }
+   /*
+   if(mode == RECONSTRUCT){
+      for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+         int id(Ntp->GetMCID());
+         double scaleDsPhiPi(0.76);
+         if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      }  
+      ScaleAllHistOfType(1,scaleDsPhiPi);
    }
    */
    Selection::Finish();
