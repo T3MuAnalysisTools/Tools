@@ -43,8 +43,8 @@ class DsPhiPeak : public Selection {
   float dsMassMin;
   float dsMassMax;
 
-  double nSidebands = 1;
-  double nPeak = 1;
+  double nSidebands;
+  double nPeak;
 
   unsigned int Muon_1_idx, Muon_2_idx, Track_idx;
 
