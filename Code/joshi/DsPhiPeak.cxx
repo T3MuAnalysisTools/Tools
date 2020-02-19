@@ -247,15 +247,15 @@ void  DsPhiPeak::Configure(){
 
    // Number of vertices (peak)
    NVtx_peak=HConfig.GetTH1D(Name+"_NVtx_peak","NVtx(peak)",100,0,100,"Number of Vertices (after reweighing)","Events"); peakCollection.push_back(&NVtx_peak);
-   NVtx_woPUWeights_peak=HConfig.GetTH1D(Name+"_NVtx__peak","NVtx(peak)",100,0,100,"Number of Vertices (before reweighing)","Events");  peakCollection.push_back(&NVtx_woPUWeights_peak);
+   NVtx_woPUWeights_peak=HConfig.GetTH1D(Name+"_NVtx_woPUWeights_peak","NVtx(peak)",100,0,100,"Number of Vertices (before reweighing)","Events");  peakCollection.push_back(&NVtx_woPUWeights_peak);
 
    // Number of vertices (sideband)
    NVtx_sideband=HConfig.GetTH1D(Name+"_NVtx_sideband","NVtx(sideband)",100,0,100,"Number of Vertices (after reweighing)","Events"); sidebandCollection.push_back(&NVtx_sideband);
-   NVtx_woPUWeights_sideband=HConfig.GetTH1D(Name+"_NVtx__sideband","NVtx(sideband)",100,0,100,"Number of Vertices (before reweighing)","Events");  sidebandCollection.push_back(&NVtx_woPUWeights_sideband);
+   NVtx_woPUWeights_sideband=HConfig.GetTH1D(Name+"_NVtx_woPUWeights_sideband","NVtx(sideband)",100,0,100,"Number of Vertices (before reweighing)","Events");  sidebandCollection.push_back(&NVtx_woPUWeights_sideband);
 
    // Number of vertices (validation)
    NVtx_validation=HConfig.GetTH1D(Name+"_NVtx_validation","NVtx(validation)",100,0,100,"Number of Vertices (after reweighing)","Events"); validationCollection.push_back(&NVtx_validation);
-   NVtx_woPUWeights_validation=HConfig.GetTH1D(Name+"_NVtx__validation","NVtx(validation)",100,0,100,"Number of Vertices (before reweighing)","Events");  validationCollection.push_back(&NVtx_woPUWeights_validation);
+   NVtx_woPUWeights_validation=HConfig.GetTH1D(Name+"_NVtx_woPUWeights_validation","NVtx(validation)",100,0,100,"Number of Vertices (before reweighing)","Events");  validationCollection.push_back(&NVtx_woPUWeights_validation);
 
    //Dimuon Information (Muons from dimuon + track candidates) (validation)
    DimuondR_validation=HConfig.GetTH1D(Name+"_DimuondR_validation","dR between the muon pair (validation)",17,0,0.34,"dR","Events"); validationCollection.push_back(&DimuondR_validation);
@@ -440,7 +440,6 @@ void  DsPhiPeak::Configure(){
 
 void  DsPhiPeak::Store_ExtraDist(){ 
 
-
    // Unscaled 
    Extradist1d.push_back(&TripleMass);
    Extradist2d.push_back(&PhiMassVsDsMass);
@@ -467,6 +466,12 @@ void  DsPhiPeak::Store_ExtraDist(){
 void  DsPhiPeak::doEvent(){ 
    unsigned int t;
    int id(Ntp->GetMCID());
+
+   if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 2265.07; nSidebands = 4586.64;} 
+   if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 15965.4; nSidebands = 24220.;}
+   if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 5952.73; nSidebands = 11303.6;}
+   if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 10661.2; nSidebands = 19461.1;}
+   if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 10853.6; nSidebands = 19046.7;}
 
    bool DEBUG = false;
    bool HLTOk(false);
@@ -510,7 +515,7 @@ void  DsPhiPeak::doEvent(){
    value.at(GenMatch)=1;   
 
    if(!Ntp->isData()){
-     w = w_normalization*(puWeights->GetBinContent(Ntp->TruthNumberOfInteraction())); // Weight MC according to truth number of vertices
+      w = w_normalization*(puWeights->GetBinContent(Ntp->TruthNumberOfInteraction())); // Weight MC according to truth number of vertices
    } 
    //  No weights to data
    else{w=1;}
@@ -859,11 +864,11 @@ void  DsPhiPeak::doEvent(){
          Muon2_vy_sideband.at(t).Fill(Ntp->Muon_Poca(Muon_2_idx).Y(),w);
          Muon2_vz_sideband.at(t).Fill(Ntp->Muon_Poca(Muon_2_idx).Z(),w);
 
-         DimuondR_sideband.at(t).Fill(mu1_p4.DeltaR(mu2_p4));
-         Muon1TrkdR_sideband.at(t).Fill(mu1_p4.DeltaR(track_p4));
-         Muon2TrkdR_sideband.at(t).Fill(mu2_p4.DeltaR(track_p4));
+         DimuondR_sideband.at(t).Fill(mu1_p4.DeltaR(mu2_p4),w);
+         Muon1TrkdR_sideband.at(t).Fill(mu1_p4.DeltaR(track_p4),w);
+         Muon2TrkdR_sideband.at(t).Fill(mu2_p4.DeltaR(track_p4),w);
 
-         VertexKFChi2_sideband.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx,true));
+         VertexKFChi2_sideband.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx,true),w);
          SVPVDsDirAngle_sideband.at(t).Fill(SVPV.Angle(DsLV.Vect()),w);
          NtracksClose_sideband.at(t).Fill(nTracks_ds,w);
          NSV_sideband.at(t).Fill(Nvertices,w);
@@ -871,23 +876,25 @@ void  DsPhiPeak::doEvent(){
          MinDca_sideband.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MinD0SigSV_sideband.at(t).Fill(MinD0SVSignificance,w);
          MinD0SigPV_sideband.at(t).Fill(MinD0Significance,w);
-         MaxVertexPairQuality_sideband.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(final_idx,true),Ntp->Vertex_pair_quality(final_idx,true),Ntp->Vertex_pair_quality(final_idx,true)}),1);
-         MaxdeltaMuZ_sideband.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Muon_Poca(Muon_2_idx).Z()),fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Track_Poca(Track_idx).Z()),
+         MaxVertexPairQuality_sideband.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(final_idx,true),
+                  Ntp->Vertex_pair_quality(final_idx,true),
+                  Ntp->Vertex_pair_quality(final_idx,true)}),w);
+         MaxdeltaMuZ_sideband.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Muon_Poca(Muon_2_idx).Z()),
                   fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Track_Poca(Track_idx).Z()),
                   fabs(Ntp->Muon_Poca(Muon_2_idx).Z()  - Ntp->Track_Poca(Track_idx).Z())}),w);
-         MaxDca_sideband.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),1);
+         MaxDca_sideband.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MaxD0SigSV_sideband.at(t).Fill(MaxD0SVSignificance,w);
          MaxD0SigPV_sideband.at(t).Fill(MaxD0Significance,w);
          FLSignificance_sideband.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx,true),
                      Ntp->Vertex_PrimaryVertex_Covariance(final_idx,true),
                      Ntp->Vertex_Signal_KF_pos(final_idx,true),
                      Ntp->Vertex_Signal_KF_Covariance(final_idx,true))),w);
-         DecayLength_sideband.at(t).Fill(DecayL);
+         DecayLength_sideband.at(t).Fill(DecayL,w);
          if (id!=1){
             if(Ntp->isPromptDs()){
-               DecayLength_prompt_sideband.at(t).Fill(DecayL);
+               DecayLength_prompt_sideband.at(t).Fill(DecayL,w);
             }
-            else DecayLength_non_prompt_sideband.at(t).Fill(DecayL);
+            else DecayLength_non_prompt_sideband.at(t).Fill(DecayL,w);
          }
       }
 
@@ -938,35 +945,38 @@ void  DsPhiPeak::doEvent(){
          Muon2_vy_peak.at(t).Fill(Ntp->Muon_Poca(Muon_2_idx).Y(),w);
          Muon2_vz_peak.at(t).Fill(Ntp->Muon_Poca(Muon_2_idx).Z(),w);
 
-         DimuondR_peak.at(t).Fill(mu1_p4.DeltaR(mu2_p4));
-         Muon1TrkdR_peak.at(t).Fill(mu1_p4.DeltaR(track_p4));
-         Muon2TrkdR_peak.at(t).Fill(mu2_p4.DeltaR(track_p4));
+         DimuondR_peak.at(t).Fill(mu1_p4.DeltaR(mu2_p4),w);
+         Muon1TrkdR_peak.at(t).Fill(mu1_p4.DeltaR(track_p4),w);
+         Muon2TrkdR_peak.at(t).Fill(mu2_p4.DeltaR(track_p4),w);
 
-         VertexKFChi2_peak.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx,true));
+         VertexKFChi2_peak.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(final_idx,true),w);
          SVPVDsDirAngle_peak.at(t).Fill(SVPV.Angle(DsLV.Vect()),w);
          NtracksClose_peak.at(t).Fill(nTracks_ds,w);
          NSV_peak.at(t).Fill(Nvertices,w);
-         MinMuon_chi2LocalPosition_peak.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_1_idx),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_2_idx)}),w);
+         MinMuon_chi2LocalPosition_peak.at(t).Fill(std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_1_idx),
+                  Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_2_idx)}),w);
          MinDca_peak.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MinD0SigSV_peak.at(t).Fill(MinD0SVSignificance,w);
          MinD0SigPV_peak.at(t).Fill(MinD0Significance,w);
-         MaxVertexPairQuality_peak.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(final_idx,true),Ntp->Vertex_pair_quality(final_idx,true),Ntp->Vertex_pair_quality(final_idx,true)}),1);
-         MaxdeltaMuZ_peak.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Muon_Poca(Muon_2_idx).Z()),fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Track_Poca(Track_idx).Z()),
+         MaxVertexPairQuality_peak.at(t).Fill(  std::max({Ntp->Vertex_pair_quality(final_idx,true),
+                  Ntp->Vertex_pair_quality(final_idx,true),
+                  Ntp->Vertex_pair_quality(final_idx,true)}),w);
+         MaxdeltaMuZ_peak.at(t).Fill( std::max({fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Muon_Poca(Muon_2_idx).Z()),
                   fabs(Ntp->Muon_Poca(Muon_1_idx).Z()  - Ntp->Track_Poca(Track_idx).Z()),
                   fabs(Ntp->Muon_Poca(Muon_2_idx).Z()  - Ntp->Track_Poca(Track_idx).Z())}),w);
-         MaxDca_peak.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),1);
+         MaxDca_peak.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx,true),Ntp->Vertex_DCA23(final_idx,true),Ntp->Vertex_DCA31(final_idx,true)}),w);
          MaxD0SigSV_peak.at(t).Fill(MaxD0SVSignificance,w);
          MaxD0SigPV_peak.at(t).Fill(MaxD0Significance,w);
          FLSignificance_peak.at(t).Fill(( Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx,true),
                      Ntp->Vertex_PrimaryVertex_Covariance(final_idx,true),
                      Ntp->Vertex_Signal_KF_pos(final_idx,true),
                      Ntp->Vertex_Signal_KF_Covariance(final_idx,true))),w);
-         DecayLength_peak.at(t).Fill(DecayL);
+         DecayLength_peak.at(t).Fill(DecayL,w);
          if (id!=1){    
             if(Ntp->isPromptDs()){
-               DecayLength_prompt_peak.at(t).Fill(DecayL);
+               DecayLength_prompt_peak.at(t).Fill(DecayL,w);
             }
-            else DecayLength_non_prompt_peak.at(t).Fill(DecayL);
+            else DecayLength_non_prompt_peak.at(t).Fill(DecayL,w);
          }
       }
    }
@@ -974,32 +984,34 @@ void  DsPhiPeak::doEvent(){
 
 void  DsPhiPeak::Finish(){   
 
+   if (mode==ANALYSIS){
    int id(Ntp->GetMCID());
    if (id==1) {   
-      if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 1068.8; nSidebands = 3092.7;} 
-      if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 9835.4; nSidebands = 18105.0;}
-      if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 4133.2; nSidebands = 10613.9;}
-      if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 6023.6; nSidebands = 19461.1;}
-      if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 10853.6; nSidebands = 23501.0;}
-   }
-   else {nPeak=1; nSidebands=1;}
 
-   for ( unsigned int j=0; j<validationCollection.size(); ++j){
-      validationCollection.at(j)->at(0).Add(&(peakCollection.at(j)->at(0)),1.0);
-      validationCollection.at(j)->at(0).Add(&(sidebandCollection.at(j)->at(0)),-(nPeak/nSidebands));
-      validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1.0);
-   }
 
+      for ( unsigned int j=0; j<validationCollection.size(); ++j){
+         (validationCollection.at(j)->at(0)).Add(&(peakCollection.at(j)->at(0)),1.0);
+         (validationCollection.at(j)->at(0)).Add(&(sidebandCollection.at(j)->at(0)),-(nPeak/nSidebands));
+         cout<<"Ratio: "<<nPeak/nSidebands<<endl;
+      }
+   }
+   else if (id==30){
+      for ( unsigned int j=0; j<validationCollection.size(); ++j){
+         validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1.0);
+      }
+   }
+   }
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   /*
+   /* 
    if(mode == RECONSTRUCT){
-      for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-         int id(Ntp->GetMCID());
-         double scaleDsPhiPi(0.76);
-         if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
-      }  
+      //   for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+      //      int id(Ntp->GetMCID());
+      //      double scaleDsPhiPi(0.2);
+      //      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      //   }  
+      double scaleDsPhiPi(1/0.843);
       ScaleAllHistOfType(1,scaleDsPhiPi);
    }
    */
