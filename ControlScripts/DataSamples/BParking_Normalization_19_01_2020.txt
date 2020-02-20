@@ -1,0 +1,7 @@
+/store/user/bjoshi/ParkingBPH2/BParking_19_01_20_ParkingBPH2__Run2018D-05May2019promptD-v1/200120_150353/0001
+/store/user/bjoshi/ParkingBPH2/BParking_19_01_20_ParkingBPH2__Run2018D-05May2019promptD-v1/200120_150353/0000
+/store/user/bjoshi/ParkingBPH3/BParking_19_01_20_ParkingBPH3__Run2018D-05May2019promptD-v1/200120_090807/0000
+/store/user/bjoshi/ParkingBPH4/BParking_19_01_20_ParkingBPH4__Run2018D-05May2019promptD-v1/200120_150359/0000
+/store/user/bjoshi/ParkingBPH5/BParking_19_01_20_ParkingBPH5__Run2018D-05May2019promptD-v1/200120_150405/0000
+/store/user/bjoshi/ParkingBPH5/BParking_19_01_20_ParkingBPH5__Run2018D-05May2019promptD-v1/200120_150405/0001
+/store/user/cherepan/DsToPhiMuMuPi_CMSSW_10_2_X_2018/January2020_DsToPhiMuMuPi_CMSSW_10_2_X_2018__rosma-DsToPhiMuMuPi_CMSSW_10_2_X_2018_RECO_v1-fd6b33a813d01b1040d6/200131_152316/0000
