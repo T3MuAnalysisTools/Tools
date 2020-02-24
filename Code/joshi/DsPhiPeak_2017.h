@@ -21,7 +21,7 @@ class DsPhiPeak : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {TriggerOk,TwoMuTrkCandidate,OSMuons,Mu1PtCut,Mu2PtCut,MuonID,MuMuMassCut,TrackPtCut,NTrackHits, /*ChiSqCut,*/ TriggerMatchMu1,TriggerMatchMu2,TriggerMatchTrack,DsMassCut,GenMatch,NCuts}; 
+  enum cuts {TriggerOk,TwoMuTrkCandidate,OSMuons,Mu1PtCut,Mu2PtCut,MuonID,MuMuMassCut,TrackPtCut,NTrackHits, /*ChiSqCut,*/ DsMassCut,TriggerMatchMu1,TriggerMatchMu2,TriggerMatchTrack,GenMatch,NCuts}; 
 
  protected:
   virtual void doEvent();  
@@ -43,8 +43,8 @@ class DsPhiPeak : public Selection {
   float dsMassMin;
   float dsMassMax;
 
-  double nSidebands = 1;
-  double nPeak = 1;
+  double nSidebands;
+  double nPeak;
 
   unsigned int Muon_1_idx, Muon_2_idx, Track_idx;
 
@@ -54,27 +54,71 @@ class DsPhiPeak : public Selection {
   std::vector<std::vector<TH1D>*> validationCollection;
 
   // Initializhere your analysis histograms
-  std::vector<TH1D> NVtx;
-  std::vector<TH1D> NVtx_woPUWeights;
-  std::vector<TH1D> MuonsPt;
-  std::vector<TH1D> MuonsEta;
-  std::vector<TH1D> MuonsPhi;
 
-  std::vector<TH1D> PhiMass;
   std::vector<TH1D> TripleMass;
   std::vector<TH2D> PhiMassVsDsMass;
 
   std::vector<TH1D> ChargeMisId;
   std::vector<TH1D> TriggerEfficiency;
   
-  std::vector<TH1D> Muon1_TriggerMatchdR;
-  std::vector<TH1D> Muon2_TriggerMatchdR;
-  std::vector<TH1D> Track_TriggerMatchdR;
+
 
   ///////////////////
   // validation block
   ///////////////////
   
+  // More plots
+  std::vector<TH1D> Muon1_isGlobal_peak;
+  std::vector<TH1D> Muon2_isGlobal_peak;
+  std::vector<TH1D> Muon1_isStandAlone_peak;
+  std::vector<TH1D> Muon2_isStandAlone_peak;
+  std::vector<TH1D> Muon1_isTracker_peak;
+  std::vector<TH1D> Muon2_isTracker_peak;
+  std::vector<TH1D> Muon1_isCalo_peak;
+  std::vector<TH1D> Muon2_isCalo_peak;
+  std::vector<TH1D> Muon1_isIsolationValid_peak;
+  std::vector<TH1D> Muon2_isIsolationValid_peak;
+  std::vector<TH1D> Muon1_TriggerMatchdR_peak;
+  std::vector<TH1D> Muon2_TriggerMatchdR_peak;
+  std::vector<TH1D> Track_TriggerMatchdR_peak;
+  std::vector<TH1D> NVtx_peak;
+  std::vector<TH1D> NVtx_woPUWeights_peak;
+  std::vector<TH1D> PhiMass_peak;
+
+  std::vector<TH1D> Muon1_isGlobal_sideband;
+  std::vector<TH1D> Muon2_isGlobal_sideband;
+  std::vector<TH1D> Muon1_isStandAlone_sideband;
+  std::vector<TH1D> Muon2_isStandAlone_sideband;
+  std::vector<TH1D> Muon1_isTracker_sideband;
+  std::vector<TH1D> Muon2_isTracker_sideband;
+  std::vector<TH1D> Muon1_isCalo_sideband;
+  std::vector<TH1D> Muon2_isCalo_sideband;
+  std::vector<TH1D> Muon1_isIsolationValid_sideband;
+  std::vector<TH1D> Muon2_isIsolationValid_sideband;
+  std::vector<TH1D> Muon1_TriggerMatchdR_sideband;
+  std::vector<TH1D> Muon2_TriggerMatchdR_sideband;
+  std::vector<TH1D> Track_TriggerMatchdR_sideband;
+  std::vector<TH1D> NVtx_sideband;
+  std::vector<TH1D> NVtx_woPUWeights_sideband;
+  std::vector<TH1D> PhiMass_sideband;
+
+  std::vector<TH1D> Muon1_isGlobal_validation;
+  std::vector<TH1D> Muon2_isGlobal_validation;
+  std::vector<TH1D> Muon1_isStandAlone_validation;
+  std::vector<TH1D> Muon2_isStandAlone_validation;
+  std::vector<TH1D> Muon1_isTracker_validation;
+  std::vector<TH1D> Muon2_isTracker_validation;
+  std::vector<TH1D> Muon1_isCalo_validation;
+  std::vector<TH1D> Muon2_isCalo_validation;
+  std::vector<TH1D> Muon1_isIsolationValid_validation;
+  std::vector<TH1D> Muon2_isIsolationValid_validation;
+  std::vector<TH1D> Muon1_TriggerMatchdR_validation;
+  std::vector<TH1D> Muon2_TriggerMatchdR_validation;
+  std::vector<TH1D> Track_TriggerMatchdR_validation;
+  std::vector<TH1D> NVtx_validation;
+  std::vector<TH1D> NVtx_woPUWeights_validation;
+  std::vector<TH1D> PhiMass_validation;
+
   std::vector<TH1D> DimuondR_peak;
   std::vector<TH1D> Muon1TrkdR_peak;
   std::vector<TH1D> Muon2TrkdR_peak;
@@ -176,16 +220,7 @@ class DsPhiPeak : public Selection {
   std::vector<TH1D> Muon2_vy_validation;
   std::vector<TH1D> Muon2_vz_validation;
 
-  std::vector<TH1D> Muon1_isGlobal;
-  std::vector<TH1D> Muon2_isGlobal;
-  std::vector<TH1D> Muon1_isStandAlone;
-  std::vector<TH1D> Muon2_isStandAlone;
-  std::vector<TH1D> Muon1_isTracker;
-  std::vector<TH1D> Muon2_isTracker;
-  std::vector<TH1D> Muon1_isCalo;
-  std::vector<TH1D> Muon2_isCalo;
-  std::vector<TH1D> Muon1_isIsolationValid;
-  std::vector<TH1D> Muon2_isIsolationValid;
+
   
   std::vector<TH1D> VertexKFChi2_peak;
   std::vector<TH1D> VertexKFChi2_sideband;
@@ -262,6 +297,10 @@ class DsPhiPeak : public Selection {
   std::vector<TH1D> DecayLength_validation;
   std::vector<TH1D> DecayLength_prompt_validation;
   std::vector<TH1D> DecayLength_non_prompt_validation;
+
+  std::vector<TH1D> TripleMass_sideband;
+  std::vector<TH1D> TripleMass_peak;
+  std::vector<TH1D> TripleMass_validation;
 
 /*
   std::vector<TH1D> Muon1_isTimeValid;
