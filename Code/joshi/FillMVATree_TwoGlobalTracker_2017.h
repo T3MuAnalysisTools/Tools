@@ -1,16 +1,16 @@
-#ifndef FillMVATree_TwoGlobalTracker_h
-#define FillMVATree_TwoGlobalTracker_h
+#ifndef FillMVATree_h
+#define FillMVATree_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree_TwoGlobalTracker : public Selection {
+class FillMVATree : public Selection {
 
    public:
-      FillMVATree_TwoGlobalTracker(TString Name_, TString id_);
-      virtual ~FillMVATree_TwoGlobalTracker();
+      FillMVATree(TString Name_, TString id_);
+      virtual ~FillMVATree();
 
       virtual void  Configure();
       virtual void  Finish();
@@ -69,6 +69,7 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       bool MC;
       float category;
       bool threeGlobal;
+      int l1seed;
 
       //commmon variables (2016 + 2017)
       float var_vertexKFChi2; // <= should be changed to normalized KF chi2

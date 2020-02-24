@@ -1,4 +1,4 @@
-#include "FillMVATree_ThreeGlobal.h"
+#include "FillMVATree.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,12 +8,12 @@
 
 using namespace std;
 
-FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
+FillMVATree::FillMVATree(TString Name_, TString id_):
    Selection(Name_,id_),
-   tauMinMass_(1.73),
-   tauMaxMass_(1.82),
+   tauMinMass_(1.75),
+   tauMaxMass_(1.80),
    tauMinSideBand_(1.65),
-   tauMaxSideBand_(2.02),
+   tauMaxSideBand_(1.90),
    tauMassResCutLow(0.007),
    tauMassResCutHigh(0.01),
    phiVetoSigma(0.03),
@@ -22,7 +22,7 @@ FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
    // This is a class constructor;
 }
 
-FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
+FillMVATree::~FillMVATree(){
    for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
          << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -31,12 +31,13 @@ FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
    Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  FillMVATree_ThreeGlobal::Configure(){
+void  FillMVATree::Configure(){
    // Set tree branches
    TMVA_Tree= new TTree("tree","tree");
    TMVA_Tree->Branch("MC",&MC);
    TMVA_Tree->Branch("category",&category);
    TMVA_Tree->Branch("threeGlobal",&threeGlobal);
+   TMVA_Tree->Branch("l1seed",&l1seed);
 
    //commmon variables (2016 + 2017)
    TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2); // <= should be changed to normalized KF chi2
@@ -393,7 +394,7 @@ void  FillMVATree_ThreeGlobal::Configure(){
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  FillMVATree_ThreeGlobal::Store_ExtraDist(){ 
+void  FillMVATree::Store_ExtraDist(){ 
 
    Extradist1d.push_back(&L1Seed);
    Extradist1d.push_back(&SVPVTauDirAngle);
@@ -561,7 +562,7 @@ void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  FillMVATree_ThreeGlobal::doEvent(){ 
+void  FillMVATree::doEvent(){ 
 
    value.at(TriggerOk)=0;
    value.at(SignalCandidate)=0;
@@ -633,6 +634,10 @@ void  FillMVATree_ThreeGlobal::doEvent(){
    if (L1Ok && HLTOk) value.at(TriggerOk) = true;
    else value.at(TriggerOk) = false;
    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
+
+   if (DoubleMuFired && !TripleMuFired) l1seed = 1;
+   if (DoubleMuFired && TripleMuFired) l1seed = 1;
+   if (!DoubleMuFired && TripleMuFired) l1seed = 1;
 
    double mindca_iso05 = 99.0;
    double mindca_iso = 99.0;
@@ -721,7 +726,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          //
          value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
                Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-               (Ntp->Muon_isGlobalMuon(Muon_index_3)));
+               Ntp->Muon_isGlobalMuon(Muon_index_3) );
          //------------------------------------------------------------------------------------------------------
 
          if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -858,7 +863,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       //
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
             Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-            (Ntp->Muon_isGlobalMuon(Muon_index_3) ));
+            Ntp->Muon_isGlobalMuon(Muon_index_3));
       //------------------------------------------------------------------------------------------------------
 
       if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -1262,7 +1267,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
+int FillMVATree::minQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)<=vec.at(1) && vec.at(0)<=vec.at(2)) return 0;
    if (vec.at(1)<=vec.at(2) && vec.at(1)<=vec.at(0)) return 1;
    if (vec.at(2)<=vec.at(0) && vec.at(2)<=vec.at(1)) return 2;
@@ -1270,14 +1275,14 @@ int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::maxQuantityIndex(std::vector<T>& vec){
+int FillMVATree::maxQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)>=vec.at(1) && vec.at(0)>=vec.at(2)) return 0;
    if (vec.at(1)>=vec.at(2) && vec.at(1)>=vec.at(0)) return 1;
    if (vec.at(2)>=vec.at(0) && vec.at(2)>=vec.at(1)) return 2;
    return -1;
 }
 
-void  FillMVATree_ThreeGlobal::Finish(){
+void  FillMVATree::Finish(){
    /* 
       if(mode == RECONSTRUCT){
    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
@@ -1299,7 +1304,7 @@ void  FillMVATree_ThreeGlobal::Finish(){
    //    }
    }
    */
-   file= new TFile("FillMVATree_ThreeGlobalInput.root","recreate");
+   file= new TFile("FillMVATreeInput.root","recreate");
    TMVA_Tree->SetDirectory(file);
 
    file->Write();
