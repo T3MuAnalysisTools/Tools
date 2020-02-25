@@ -474,7 +474,7 @@ void  DsToPhiPi::doEvent(){
     }
   }
   if(DoubleMuFired) value.at(L1TOk)=1;
-   
+
   int mu1=-1, mu2=-1, track=-1;
   int tmp_idx = -1;
   double tmp_chisq = 999.0;
@@ -496,11 +496,12 @@ void  DsToPhiPi::doEvent(){
       int tmp_mu2 = Ntp->TwoMuonsTrackMuonIndices(i2M).at(1);
       int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
       double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
-
+      
       if (abs(tmp_PhiMass-1.01)<=check_PhiMass || (tmp_PhiMass > .95 && tmp_PhiMass < 1.1)) {
-      if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons())){
-	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M+Ntp->NThreeMuons());
+      if (tmp_chisq>Ntp->TwoMuonsTrack_SV_Chi2(i2M)){
+	tmp_chisq = Ntp->TwoMuonsTrack_SV_Chi2(i2M);
         check_PhiMass = abs(tmp_PhiMass-1.01);
+        
         if (Ntp->Muon_P4(tmp_mu1).Pt() > Ntp->Muon_P4(tmp_mu2).Pt()) {
 	  mu1 = tmp_mu1;
 	  mu2 = tmp_mu2;
@@ -551,8 +552,8 @@ void  DsToPhiPi::doEvent(){
     int Nvertices(0);
     for(unsigned int l=0; l < Ntp->NSecondaryVertices(); l++){
       TVector3 SVsignalPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(tmp_idx,true),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx,true));
-      TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l,true),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx,true));
-      if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(tmp_idx,true) - Ntp->SecondaryVertexPosition(l,true)).Mag() > 0.05){
+      TVector3 SVfakePV = Ntp->SVPVDirection(Ntp->SecondaryVertexPosition(l),Ntp->Vertex_MatchedPrimaryVertex(tmp_idx,true));
+      if(SVfakePV.DeltaR(SVsignalPV) < 1 && (Ntp->Vertex_Signal_KF_pos(tmp_idx,true) - Ntp->SecondaryVertexPosition(l)).Mag() > 0.05){
 	    Nvertices++;
       }
     }
@@ -822,6 +823,7 @@ void  DsToPhiPi::Finish(){
     if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
     if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
     if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
+    else{scaleRun.push_back(1);scaleRun.push_back(2);}
 
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
     Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
