@@ -466,12 +466,13 @@ void  DsPhiPeak::Store_ExtraDist(){
 void  DsPhiPeak::doEvent(){ 
    unsigned int t;
    int id(Ntp->GetMCID());
-
-   if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 2265.07; nSidebands = 4586.64;} 
-   if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 15965.4; nSidebands = 24220.;}
-   if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 5952.73; nSidebands = 11303.6;}
-   if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 10661.2; nSidebands = 19461.1;}
-   if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 10853.6; nSidebands = 19046.7;}
+   if (id==1){
+      if(Ntp->WhichEra(2017).Contains("RunB")){ nPeak = 6319.5; nSidebands = 11697.48;} 
+      if(Ntp->WhichEra(2017).Contains("RunC")){ nPeak = 40415.2; nSidebands = 68770.17;}
+      if(Ntp->WhichEra(2017).Contains("RunD")){ nPeak = 22634.6; nSidebands = 32617.1;}
+      if(Ntp->WhichEra(2017).Contains("RunE")){ nPeak = 32235.4; nSidebands = 52562.9;}
+      if(Ntp->WhichEra(2017).Contains("RunF")){ nPeak = 26404.7; nSidebands = 41624.7;}
+   }
 
    bool DEBUG = false;
    bool HLTOk(false);
@@ -985,34 +986,34 @@ void  DsPhiPeak::doEvent(){
 void  DsPhiPeak::Finish(){   
 
    if (mode==ANALYSIS){
-   int id(Ntp->GetMCID());
-   if (id==1) {   
+      int id(Ntp->GetMCID());
+      if (id==1) {   
 
 
-      for ( unsigned int j=0; j<validationCollection.size(); ++j){
-         (validationCollection.at(j)->at(0)).Add(&(peakCollection.at(j)->at(0)),1.0);
-         (validationCollection.at(j)->at(0)).Add(&(sidebandCollection.at(j)->at(0)),-(nPeak/nSidebands));
-         cout<<"Ratio: "<<nPeak/nSidebands<<endl;
+         for ( unsigned int j=0; j<validationCollection.size(); ++j){
+            (validationCollection.at(j)->at(0)).Add(&(peakCollection.at(j)->at(0)),1.0);
+            (validationCollection.at(j)->at(0)).Add(&(sidebandCollection.at(j)->at(0)),-(nPeak/nSidebands));
+            cout<<"Ratio: "<<nPeak/nSidebands<<endl;
+         }
       }
-   }
-   else if (id==30){
-      for ( unsigned int j=0; j<validationCollection.size(); ++j){
-         validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1.0);
+      else if (id==30){
+         for ( unsigned int j=0; j<validationCollection.size(); ++j){
+            validationCollection.at(j)->at(1).Add(&(peakCollection.at(j)->at(1)),1.0);
+         }
       }
-   }
    }
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // This function is called after the event loop and you can code here any analysis with already filled analysis histograms 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    /* 
-   if(mode == RECONSTRUCT){
-      //   for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-      //      int id(Ntp->GetMCID());
-      //      double scaleDsPhiPi(0.2);
-      //      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
-      //   }  
-      double scaleDsPhiPi(1/0.843);
-      ScaleAllHistOfType(1,scaleDsPhiPi);
+      if(mode == RECONSTRUCT){
+   //   for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+   //      int id(Ntp->GetMCID());
+   //      double scaleDsPhiPi(0.2);
+   //      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+   //   }  
+   double scaleDsPhiPi(1/0.843);
+   ScaleAllHistOfType(1,scaleDsPhiPi);
    }
    */
    Selection::Finish();

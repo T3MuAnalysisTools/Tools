@@ -32,9 +32,7 @@
 #include "joshi/FillMVATree_ThreeGlobal.h"
 #include "joshi/FillMVATree_TwoGlobalTracker.h"
 #include "joshi/DsPhiPeak.h"
-#include "joshi/MuonIdSelection.h"
 #include "joshi/SignalSelector.h"
-#include "joshi/BsXBackgroundStudy.h"
 #endif
 
 
@@ -100,9 +98,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
   else if(Analysis.Contains("signalselector"))s = new SignalSelector(Analysis,UncertType); 
   else if(Analysis.Contains("dsphipeak"))s = new DsPhiPeak(Analysis,UncertType); 
-  else if(Analysis.Contains("muonidselection"))s=new MuonIdSelection(Analysis, UncertType);
   else if(Analysis.Contains("SignalSelector"))s=new SignalSelector(Analysis, UncertType);
-  else if(Analysis.Contains("bsxbackgroundstudy"))s=new BsXBackgroundStudy(Analysis, UncertType);
   
 #endif
 
