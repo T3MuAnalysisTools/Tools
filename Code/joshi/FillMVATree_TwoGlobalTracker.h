@@ -69,7 +69,6 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       bool MC;
       float category;
       bool threeGlobal;
-      int l1seed;
 
       //commmon variables (2016 + 2017)
       float var_vertexKFChi2; // <= should be changed to normalized KF chi2
