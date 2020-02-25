@@ -1,4 +1,4 @@
-#include "FillMVATree.h"
+#include "FillMVATree_ThreeGlobal.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-FillMVATree::FillMVATree(TString Name_, TString id_):
+FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
    Selection(Name_,id_),
    tauMinMass_(1.75),
    tauMaxMass_(1.80),
@@ -22,7 +22,7 @@ FillMVATree::FillMVATree(TString Name_, TString id_):
    // This is a class constructor;
 }
 
-FillMVATree::~FillMVATree(){
+FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
    for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
          << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -31,7 +31,7 @@ FillMVATree::~FillMVATree(){
    Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  FillMVATree::Configure(){
+void  FillMVATree_ThreeGlobal::Configure(){
    // Set tree branches
    TMVA_Tree= new TTree("tree","tree");
    TMVA_Tree->Branch("MC",&MC);
@@ -394,7 +394,7 @@ void  FillMVATree::Configure(){
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  FillMVATree::Store_ExtraDist(){ 
+void  FillMVATree_ThreeGlobal::Store_ExtraDist(){ 
 
    Extradist1d.push_back(&L1Seed);
    Extradist1d.push_back(&SVPVTauDirAngle);
@@ -562,7 +562,7 @@ void  FillMVATree::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  FillMVATree::doEvent(){ 
+void  FillMVATree_ThreeGlobal::doEvent(){ 
 
    value.at(TriggerOk)=0;
    value.at(SignalCandidate)=0;
@@ -636,8 +636,8 @@ void  FillMVATree::doEvent(){
    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
 
    if (DoubleMuFired && !TripleMuFired) l1seed = 1;
-   if (DoubleMuFired && TripleMuFired) l1seed = 1;
-   if (!DoubleMuFired && TripleMuFired) l1seed = 1;
+   if (DoubleMuFired && TripleMuFired) l1seed = 2;
+   if (!DoubleMuFired && TripleMuFired) l1seed = 3;
 
    double mindca_iso05 = 99.0;
    double mindca_iso = 99.0;
@@ -1267,7 +1267,7 @@ void  FillMVATree::doEvent(){
 }
 
 template <typename T>
-int FillMVATree::minQuantityIndex(std::vector<T>& vec){
+int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)<=vec.at(1) && vec.at(0)<=vec.at(2)) return 0;
    if (vec.at(1)<=vec.at(2) && vec.at(1)<=vec.at(0)) return 1;
    if (vec.at(2)<=vec.at(0) && vec.at(2)<=vec.at(1)) return 2;
@@ -1275,14 +1275,14 @@ int FillMVATree::minQuantityIndex(std::vector<T>& vec){
 }
 
 template <typename T>
-int FillMVATree::maxQuantityIndex(std::vector<T>& vec){
+int FillMVATree_ThreeGlobal::maxQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)>=vec.at(1) && vec.at(0)>=vec.at(2)) return 0;
    if (vec.at(1)>=vec.at(2) && vec.at(1)>=vec.at(0)) return 1;
    if (vec.at(2)>=vec.at(0) && vec.at(2)>=vec.at(1)) return 2;
    return -1;
 }
 
-void  FillMVATree::Finish(){
+void  FillMVATree_ThreeGlobal::Finish(){
    /* 
       if(mode == RECONSTRUCT){
    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
@@ -1304,7 +1304,7 @@ void  FillMVATree::Finish(){
    //    }
    }
    */
-   file= new TFile("FillMVATreeInput.root","recreate");
+   file= new TFile("FillMVATree_ThreeGlobalInput.root","recreate");
    TMVA_Tree->SetDirectory(file);
 
    file->Write();

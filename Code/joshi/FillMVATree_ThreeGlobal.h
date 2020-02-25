@@ -1,16 +1,16 @@
-#ifndef FillMVATree_h
-#define FillMVATree_h
+#ifndef FillMVATree_ThreeGlobal_h
+#define FillMVATree_ThreeGlobal_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree : public Selection {
+class FillMVATree_ThreeGlobal : public Selection {
 
    public:
-      FillMVATree(TString Name_, TString id_);
-      virtual ~FillMVATree();
+      FillMVATree_ThreeGlobal(TString Name_, TString id_);
+      virtual ~FillMVATree_ThreeGlobal();
 
       virtual void  Configure();
       virtual void  Finish();

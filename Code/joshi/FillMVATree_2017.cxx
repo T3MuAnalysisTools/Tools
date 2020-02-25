@@ -636,8 +636,8 @@ void  FillMVATree::doEvent(){
    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
 
    if (DoubleMuFired && !TripleMuFired) l1seed = 1;
-   if (DoubleMuFired && TripleMuFired) l1seed = 1;
-   if (!DoubleMuFired && TripleMuFired) l1seed = 1;
+   if (DoubleMuFired && TripleMuFired) l1seed = 2;
+   if (!DoubleMuFired && TripleMuFired) l1seed = 3;
 
    double mindca_iso05 = 99.0;
    double mindca_iso = 99.0;

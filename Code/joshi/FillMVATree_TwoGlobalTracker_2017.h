@@ -1,16 +1,16 @@
-#ifndef FillMVATree_h
-#define FillMVATree_h
+#ifndef FillMVATree_TwoGlobalTracker_h
+#define FillMVATree_TwoGlobalTracker_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree : public Selection {
+class FillMVATree_TwoGlobalTracker : public Selection {
 
    public:
-      FillMVATree(TString Name_, TString id_);
-      virtual ~FillMVATree();
+      FillMVATree_TwoGlobalTracker(TString Name_, TString id_);
+      virtual ~FillMVATree_TwoGlobalTracker();
 
       virtual void  Configure();
       virtual void  Finish();
