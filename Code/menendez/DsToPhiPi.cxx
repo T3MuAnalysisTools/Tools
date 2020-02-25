@@ -527,7 +527,7 @@ void  DsToPhiPi::doEvent(){
   }
 
   pass.at(is2MuTrk) = (value.at(is2MuTrk)==cut.at(is2MuTrk));
-  pass.at(L1TOk)= (value.at(L1TOk)/*==cut.at(L1TOk)*/);
+  pass.at(L1TOk)= 1; //(value.at(L1TOk)/*==cut.at(L1TOk)*/);
   pass.at(HLTOk)= (value.at(HLTOk)/*==cut.at(HLTOk)*/);
   pass.at(GlobalMu) = value.at(GlobalMu)==cut.at(GlobalMu);
   pass.at(Mass2Mu) = value.at(Mass2Mu) >= 1 && value.at(Mass2Mu) <= 1.04;
