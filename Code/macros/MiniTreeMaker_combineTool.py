@@ -7,26 +7,27 @@ from array import array
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--filename", help="Input file used for MVA training", default="MVATrees/2017/FillMVATreeInput_combined.root", type=str)
+parser.add_argument("--filename", help="Input file used for MVA training", default="FillMVATreeInput_combined.root", type=str)
 args = parser.parse_args()
 
-BASEDIR = 'MVAWeights/2017/'
+BASEDIR = '../CommonFiles/weights/'
 filename = args.filename
 print "Opening file: "+filename
 # define and initialize cuts
-bdt_cuts = {};
-for Type in ['3glb', '2glbTrk']:
-    for cat in ['A','B','C']:
-        for rank in ['1','2']: bdt_cuts['bdt_cut'+cat+rank+'_'+Type] = -99.0;
+bdt_cuts = {}
+for cat in ['A','B','C']:
+   for Type in ['3glb', '2glbTrk']:
+        for rank in ['2','1']: bdt_cuts['bdt_cut'+cat+rank+'_'+Type] = -99.0;
 
 # import cuts from a card
-_ = open(BASEDIR+'bdt_cuts.dat')
+_ = open('bdt_cuts.dat')
 cutValues = _.readlines()
 _.close()
 
 print("Reading bdt cuts...")
-for i, cut in enumerate(bdt_cuts): bdt_cuts[cut] = float(cutValues[i].strip('\n'))
+for line in cutValues: bdt_cuts[line.split(' ')[0]] = float(line.split(' ')[1].strip('\n'))
 
+print bdt_cuts
 def fileStr(str):
     category = str.split('_')[0].replace('reader','')
     Type = str.split('_')[1]
@@ -83,7 +84,8 @@ for branchName in varlist_train:
     tree_bkg.SetBranchAddress(branchName, branches[branchName])
 
 for branchName in varlist_spec:
-    branches[branchName] = array('f', [-999])
+    if 'threeGlobal' in branchName: branches[branchName] = array('i', [0])
+    else: branches[branchName] = array('f', [-999])
     for reader in mvaReaders: mvaReaders[reader].AddSpectator(branchName, branches[branchName])
     tree_ds.SetBranchAddress(branchName, branches[branchName])
     tree_bu.SetBranchAddress(branchName, branches[branchName])
@@ -108,13 +110,13 @@ def invMassCut(branches, isData):
     Type = ''
     passed = False
     if (branches['var_tauMassRes'][0] <= 0.007): category = 'A'
-    elif (branches['var_tauMassRes'][0] > 0.007 and branches['var_tauMassRes'][0] <= 0.1): category = 'B'
-    elif (branches['var_tauMassRes'][0] > 0.1): category = 'C'
+    elif (branches['var_tauMassRes'][0] > 0.007 and branches['var_tauMassRes'][0] <= 0.01): category = 'B'
+    elif (branches['var_tauMassRes'][0] > 0.01): category = 'C'
     if (branches['threeGlobal'][0]==1): Type = '3glb'
     else: Type = '2glbTrk'
     reader = 'reader'+category+'_'+Type
     tauMass = branches['var_tauMass'][0]
-    if ( isData and ( (tauMass > 1.65 and tauMass < 1.73) or (tauMass > 1.82 and tauMass<1.90) ) ): passed = True
+    if ( isData and ( (tauMass > 1.65 and tauMass < 1.75) or (tauMass > 1.80 and tauMass<1.90) ) ): passed = True
     elif (( not isData ) and ( tauMass < 1.80 and tauMass > 1.75 ) ): passed = True
     return (passed, reader)
 
@@ -122,6 +124,7 @@ print branches_miniTree
 
 # print some example classifications
 print('Classifying signal events (Ds)')
+print("Total number of events in Ds: ", tree_ds.GetEntriesFast())
 for i in range(tree_ds.GetEntriesFast()):
     tree_ds.GetEntry(i)
     branches_miniTree['dataMCType'][0] = 40
@@ -134,13 +137,13 @@ for i in range(tree_ds.GetEntriesFast()):
             if (i%1000==0): print('BDT Score: ',score)
             branches_miniTree['category'][0] = 2*mvaReaderList.index(reader)+rank
 	    branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-	    branches_miniTree['event_weight'][0] = 0.637
+	    branches_miniTree['event_weight'][0] = 0.11970
             branches_miniTree['eta'][0] = branches['var_Eta_Tau'][0]
-            branches_miniTree['LumiScale'][0] = 1.0
+            branches_miniTree['LumiScale'][0] = 0.0225
             T3MMiniTree.Fill()
 
-
 print('Classifying signal events (Bu)')
+print("Total number of events in Bu: ", tree_bu.GetEntriesFast())
 for i in range(tree_bu.GetEntriesFast()):
     tree_bu.GetEntry(i)
     branches_miniTree['dataMCType'][0] = 60
@@ -154,12 +157,13 @@ for i in range(tree_bu.GetEntriesFast()):
             type(branches_miniTree['category'][0])
             branches_miniTree['category'][0] = 2*mvaReaderList.index(reader)+rank
 	    branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-	    branches_miniTree['event_weight'][0] = 0.262
+	    branches_miniTree['event_weight'][0] = 0.03067
 	    branches_miniTree['eta'][0] = branches['var_Eta_Tau'][0]
-	    branches_miniTree['LumiScale'][0] = 1.0
+	    branches_miniTree['LumiScale'][0] = 0.01372
 	    T3MMiniTree.Fill()
 
 print('Classifying signal events (Bd)')
+print("Total number of events in Bd: ", tree_bd.GetEntriesFast())
 for i in range(tree_bd.GetEntriesFast()):
     tree_bd.GetEntry(i)
     branches_miniTree['dataMCType'][0] = 90
@@ -172,14 +176,14 @@ for i in range(tree_bd.GetEntriesFast()):
             if (i%1000==0): print('BDT Score: ',score)
             branches_miniTree['category'][0] = 2*mvaReaderList.index(reader)+rank
 	    branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-	    branches_miniTree['event_weight'][0] = 0.099
+	    branches_miniTree['event_weight'][0] = 0.02963
 	    branches_miniTree['eta'][0] = branches['var_Eta_Tau'][0]
-	    branches_miniTree['LumiScale'][0] = 1.0
+	    branches_miniTree['LumiScale'][0] = 0.020555
 	    T3MMiniTree.Fill()
- 
 print('Classifying background events')
+print("Total number of background events: ",tree_bkg.GetEntriesFast())
 for i in range(tree_bkg.GetEntriesFast()):
-    tree_bu.GetEntry(i)
+    tree_bkg.GetEntry(i)
     branches_miniTree['dataMCType'][0] = 1
     (passed, reader) = invMassCut(branches, 1)
     if (passed):
@@ -187,7 +191,7 @@ for i in range(tree_bkg.GetEntriesFast()):
         branches_miniTree['bdt'][0] = score
         rank = getRank(reader, score)
         if (rank < 3):
-            if (i%1000==0): print('BDT Score: ',score)
+            if (i%1000==0): print('Reader, BDT score, rank: ', reader, score, rank)
             branches_miniTree['category'][0] = 2*mvaReaderList.index(reader)+rank
 	    branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
 	    branches_miniTree['event_weight'][0] = 1.0

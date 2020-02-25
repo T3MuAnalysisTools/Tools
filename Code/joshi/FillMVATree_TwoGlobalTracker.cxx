@@ -10,10 +10,10 @@ using namespace std;
 
 FillMVATree_TwoGlobalTracker::FillMVATree_TwoGlobalTracker(TString Name_, TString id_):
    Selection(Name_,id_),
-   tauMinMass_(1.73),
-   tauMaxMass_(1.82),
+   tauMinMass_(1.75),
+   tauMaxMass_(1.80),
    tauMinSideBand_(1.65),
-   tauMaxSideBand_(2.02),
+   tauMaxSideBand_(1.90),
    tauMassResCutLow(0.007),
    tauMassResCutHigh(0.01),
    phiVetoSigma(0.03),
@@ -37,6 +37,7 @@ void  FillMVATree_TwoGlobalTracker::Configure(){
    TMVA_Tree->Branch("MC",&MC);
    TMVA_Tree->Branch("category",&category);
    TMVA_Tree->Branch("threeGlobal",&threeGlobal);
+   TMVA_Tree->Branch("l1seed",&l1seed);
 
    //commmon variables (2016 + 2017)
    TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2); // <= should be changed to normalized KF chi2
@@ -633,6 +634,10 @@ void  FillMVATree_TwoGlobalTracker::doEvent(){
    if (L1Ok && HLTOk) value.at(TriggerOk) = true;
    else value.at(TriggerOk) = false;
    pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
+
+   if (DoubleMuFired && !TripleMuFired) l1seed = 1;
+   if (DoubleMuFired && TripleMuFired) l1seed = 2;
+   if (!DoubleMuFired && TripleMuFired) l1seed = 3;
 
    double mindca_iso05 = 99.0;
    double mindca_iso = 99.0;

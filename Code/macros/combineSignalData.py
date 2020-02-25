@@ -8,11 +8,11 @@ import os
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f1", "--first-file",help="Input root file with data tree", type = str, action="store", default = '')
-    parser.add_argument("-f2", "--second-file",help="Input root file with  MC (DsTau) tree", type = str, action="store", default = '')
-    parser.add_argument("-f3", "--third-file",help="Input root file with  MC (BuTau) tree", type = str, action="store", default = '')
-    parser.add_argument("-f4", "--fourth-file",help="Input root file with  MC (BdTau) tree", type = str, action="store", default = '')
-    parser.add_argument("-o",  "--output-file", help="Output root file", type = str, action="store", default='TMVATress.root')
+    parser.add_argument("-f1", "--first-file",help="Input root file with data tree", type = str, action="store", default = 'FillMVATree_2017_merged.root')
+    parser.add_argument("-f2", "--second-file",help="Input root file with  MC (DsTau) tree", type = str, action="store", default = 'FillMVATree_DsToTau_merged.root')
+    parser.add_argument("-f3", "--third-file",help="Input root file with  MC (BuTau) tree", type = str, action="store", default = 'FillMVATree_BuToTau_merged.root')
+    parser.add_argument("-f4", "--fourth-file",help="Input root file with  MC (BdTau) tree", type = str, action="store", default = 'FillMVATree_BdToTau_merged.root')
+    parser.add_argument("-o",  "--output-file", help="Output root file", type = str, action="store", default='FillMVATreeInput_combined.root')
     args = parser.parse_args()
     cwd = os.getcwd()
 
