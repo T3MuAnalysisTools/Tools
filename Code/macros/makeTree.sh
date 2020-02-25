@@ -1,0 +1,7 @@
+./add_files.py --instanceName FillMVATree_ThreeGlobal --inputFile FillMVATree_ThreeGlobalInput.root
+./add_files.py --instanceName FillMVATree_TwoGlobalTracker --inputFile FillMVATree_TwoGlobalTrackerInput.root
+hadd FillMVATree_2017_merged.root FillMVATree_ThreeGlobal_DoubleMuonLowMass_merged.root FillMVATree_TwoGlobalTracker_DoubleMuonLowMass_merged.root
+hadd FillMVATree_BuToTau_merged.root FillMVATree_ThreeGlobal_BuToTau_merged.root FillMVATree_TwoGlobalTracker_BuToTau.root
+hadd FillMVATree_BdToTau_merged.root FillMVATree_ThreeGlobal_BdToTau_merged.root FillMVATree_TwoGlobalTracker_BdToTau.root
+hadd FillMVATree_DsToTau_merged.root FillMVATree_ThreeGlobal_DsToTau_merged.root FillMVATree_TwoGlobalTracker_DsToTau.root
+./combineSignalData.py -f1 FillMVATree_DoubleMuonLowMass_merged.root -f2 FillMVATree_DsToTau_merged.root -f3 FillMVATree_BuToTau_merged.root -f4 FillMVATree_BdToTau_merged.root -o FillMVATreeInput_combined.root
