@@ -818,12 +818,12 @@ void  DsToPhiPi::Finish(){
 
     std::vector<double> scaleRun;
 
-    if(RunB){scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);} 
-    if(RunC){scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);}
-    if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
-    if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
-    if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
-    else{scaleRun.push_back(1);scaleRun.push_back(2);}
+    //if(RunB){scaleRun.push_back(2265.07);scaleRun.push_back(4586.64);} 
+    //if(RunC){scaleRun.push_back(15965.4);scaleRun.push_back(24220.4);}
+    //if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
+    //if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
+    //if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
+    scaleRun.push_back(83020.2);scaleRun.push_back(39899.9);
 
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
     Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
