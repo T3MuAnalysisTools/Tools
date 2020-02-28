@@ -544,7 +544,7 @@ void  DsToPhiPi::doEvent(){
   double w;  
   double w_peak;     
 
-  if(!Ntp->isData()){w = 1; w_peak = .64;} //.8016;}//Ntp->PUReweight(); } //  No weights to data
+  if(!Ntp->isData()){w = 1; w_peak = .27;} //.8016;}//Ntp->PUReweight(); } //  No weights to data
   else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
@@ -823,7 +823,7 @@ void  DsToPhiPi::Finish(){
     //if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
     //if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
     //if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
-    scaleRun.push_back(83020.2);scaleRun.push_back(39899.9);
+    scaleRun.push_back(39899.9);scaleRun.push_back(83020.2);
 
     DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
     Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
