@@ -1,16 +1,16 @@
-#ifndef FillMVATree_h
-#define FillMVATree_h
+#ifndef FillMVATree_ThreeGlobal_h
+#define FillMVATree_ThreeGlobal_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree : public Selection {
+class FillMVATree_ThreeGlobal : public Selection {
 
    public:
-      FillMVATree(TString Name_, TString id_);
-      virtual ~FillMVATree();
+      FillMVATree_ThreeGlobal(TString Name_, TString id_);
+      virtual ~FillMVATree_ThreeGlobal();
 
       virtual void  Configure();
       virtual void  Finish();
@@ -31,7 +31,11 @@ class FillMVATree : public Selection {
       TTree * TMVA_Tree;
 
    private:
-
+      
+      // PU Weights
+      TFile* PUWeightFile;
+      TH1D* puWeights;
+      
       // Selection Variables
       double tauMinMass_, tauMaxMass_;
       double tauMinSideBand_,tauMaxSideBand_;
@@ -104,6 +108,31 @@ class FillMVATree : public Selection {
       float var_tauMassRefit;
 
       // Additional plots
+      // Tracker Muon plots
+      std::vector<TH1D> Muon1TrackerPt;
+      std::vector<TH1D> Muon1TrackerEta;
+      std::vector<TH2D> Muon1TrackerPtEta;
+      
+      std::vector<TH1D> Muon2TrackerPt;
+      std::vector<TH1D> Muon2TrackerEta;
+      std::vector<TH2D> Muon2TrackerPtEta;
+
+      std::vector<TH1D> Muon3TrackerPt;
+      std::vector<TH1D> Muon3TrackerEta;
+      std::vector<TH2D> Muon3TrackerPtEta;
+      
+      std::vector<TH1D> Muon1NotLoosePt;
+      std::vector<TH1D> Muon1NotLooseEta;
+      std::vector<TH2D> Muon1NotLoosePtEta;
+      
+      std::vector<TH1D> Muon2NotLoosePt;
+      std::vector<TH1D> Muon2NotLooseEta;
+      std::vector<TH2D> Muon2NotLoosePtEta;
+
+      std::vector<TH1D> Muon3NotLoosePt;
+      std::vector<TH1D> Muon3NotLooseEta;
+      std::vector<TH2D> Muon3NotLoosePtEta;
+
       std::vector<TH1D> Mu3_isGlobal;
       std::vector<TH1D> Mu2_isGlobal;
       std::vector<TH2D> L1TriggerMatch;
@@ -120,6 +149,21 @@ class FillMVATree : public Selection {
       std::vector<TH1D> Muon1Eta;
       std::vector<TH1D> Muon2Eta;
       std::vector<TH1D> Muon3Eta;
+      
+      std::vector<TH1D> Muon1P;
+      std::vector<TH1D> Muon1SegmentCompatibility;
+      std::vector<TH1D> Muon1NumberOfMatches;
+      std::vector<TH2D> Muon1NumberOfMatchesVsEta;
+
+      std::vector<TH1D> Muon2P;
+      std::vector<TH1D> Muon2SegmentCompatibility;
+      std::vector<TH1D> Muon2NumberOfMatches;
+      std::vector<TH2D> Muon2NumberOfMatchesVsEta;
+
+      std::vector<TH1D> Muon3P;
+      std::vector<TH1D> Muon3SegmentCompatibility;
+      std::vector<TH1D> Muon3NumberOfMatches;
+      std::vector<TH2D> Muon3NumberOfMatchesVsEta;
 
       std::vector<TH1D> TauPt;
       std::vector<TH1D> TauP;

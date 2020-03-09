@@ -1,4 +1,4 @@
-#include "FillMVATree_ThreeGlobal.h"
+#include "FillMVATree_ThreeGlobal_TrackerOnly.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
+FillMVATree_ThreeGlobal_TrackerOnly::FillMVATree_ThreeGlobal_TrackerOnly(TString Name_, TString id_):
    Selection(Name_,id_),
    tauMinMass_(1.75),
    tauMaxMass_(1.80),
@@ -26,7 +26,7 @@ FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
    puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
 }
 
-FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
+FillMVATree_ThreeGlobal_TrackerOnly::~FillMVATree_ThreeGlobal_TrackerOnly(){
    for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
          << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -35,7 +35,7 @@ FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
    Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  FillMVATree_ThreeGlobal::Configure(){
+void  FillMVATree_ThreeGlobal_TrackerOnly::Configure(){
 
    // Set tree branches
    TMVA_Tree= new TTree("tree","tree");
@@ -156,7 +156,7 @@ void  FillMVATree_ThreeGlobal::Configure(){
       }
       else if(i==MuonID){
          title.at(i)="All mu pass ID";
-         hlabel="gl,gl,gl";
+         hlabel="(gl and tr),(gl and tr),(gl and tr)";
          Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
          Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
       }
@@ -441,7 +441,7 @@ void  FillMVATree_ThreeGlobal::Configure(){
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
+void  FillMVATree_ThreeGlobal_TrackerOnly::Store_ExtraDist(){
 
    // Distribution of tracker muons
    Extradist1d.push_back(&Muon1TrackerPt);
@@ -646,13 +646,13 @@ void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
 
    ////////////////////////////////////////////////////////////////////////////////////////////////
    // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-   ////////////////////////////////////////////////////////////////////////////////////////////////
+   ///t/////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  FillMVATree_ThreeGlobal::doEvent(){
+void  FillMVATree_ThreeGlobal_TrackerOnly::doEvent(){ 
 
    value.at(TriggerOk)=0;
    value.at(SignalCandidate)=0;
@@ -773,6 +773,14 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::CutBasedIdMedium));
          //----------------  alternatively require two leading muons to be global and trailing muon to be tracker
 
+         // Older version of OS pairs
+         //vector<unsigned int> idx_vec;
+         //idx_vec.push_back(Muon_index_1);
+         //idx_vec.push_back(Muon_index_2);
+         //idx_vec.push_back(Muon_index_3);
+         //unsigned int os_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
+         //unsigned int ss1_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
+         //unsigned int ss2_idx = Ntp->SortedChargeMuons(idx_vec).at(2);
          unsigned int os_idx=Muon_index_1, ss1_idx=Muon_index_1, ss2_idx=Muon_index_3;
 
          if (Ntp->Muon_charge(Muon_index_1)!=Ntp->Muon_charge(Muon_index_2) && Ntp->Muon_charge(Muon_index_1)!=Ntp->Muon_charge(Muon_index_3)){
@@ -819,7 +827,11 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          //
          value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
                Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-               Ntp->Muon_isGlobalMuon(Muon_index_3) );
+               Ntp->Muon_isGlobalMuon(Muon_index_3) &&
+               Ntp->Muon_isTrackerMuon(Muon_index_1) &&
+               Ntp->Muon_isTrackerMuon(Muon_index_2) &&
+               Ntp->Muon_isTrackerMuon(Muon_index_3)
+               );
          //------------------------------------------------------------------------------------------------------
 
          if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -943,7 +955,11 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       //
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
             Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-            Ntp->Muon_isGlobalMuon(Muon_index_3));
+            Ntp->Muon_isGlobalMuon(Muon_index_3) &&
+            Ntp->Muon_isTrackerMuon(Muon_index_1) &&
+            Ntp->Muon_isTrackerMuon(Muon_index_2) &&
+            Ntp->Muon_isTrackerMuon(Muon_index_3)
+            );
       //------------------------------------------------------------------------------------------------------
 
       if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -1018,6 +1034,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          Test.at(t).Fill(nTriggerMatches,l1,w);
       }
    }
+
 
    bool status=AnalysisCuts(t,w,wobs);
 
@@ -1402,7 +1419,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
+int FillMVATree_ThreeGlobal_TrackerOnly::minQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)<=vec.at(1) && vec.at(0)<=vec.at(2)) return 0;
    if (vec.at(1)<=vec.at(2) && vec.at(1)<=vec.at(0)) return 1;
    if (vec.at(2)<=vec.at(0) && vec.at(2)<=vec.at(1)) return 2;
@@ -1410,15 +1427,14 @@ int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::maxQuantityIndex(std::vector<T>& vec){
+int FillMVATree_ThreeGlobal_TrackerOnly::maxQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)>=vec.at(1) && vec.at(0)>=vec.at(2)) return 0;
    if (vec.at(1)>=vec.at(2) && vec.at(1)>=vec.at(0)) return 1;
    if (vec.at(2)>=vec.at(0) && vec.at(2)>=vec.at(1)) return 2;
    return -1;
 }
 
-void  FillMVATree_ThreeGlobal::Finish(){
-  
+void  FillMVATree_ThreeGlobal_TrackerOnly::Finish(){
       if(mode == RECONSTRUCT){
       double scale(1.);
       double scaleDsTau(0.7206);
@@ -1429,8 +1445,7 @@ void  FillMVATree_ThreeGlobal::Finish(){
       ScaleAllHistOfType(3,scale*scaleB0Tau/Nminus0.at(0).at(3).Integral());
       ScaleAllHistOfType(4,scale*scaleBpTau/Nminus0.at(0).at(4).Integral());
       }
-     
-   file= new TFile("FillMVATree_ThreeGlobalInput.root","recreate");
+   file= new TFile("FillMVATree_ThreeGlobal_TrackerOnlyInput.root","recreate");
    TMVA_Tree->SetDirectory(file);
 
    file->Write();
