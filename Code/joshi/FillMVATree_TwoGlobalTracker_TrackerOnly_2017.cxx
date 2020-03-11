@@ -1,4 +1,4 @@
-#include "FillMVATree_ThreeGlobal.h"
+#include "FillMVATree_TwoGlobalTracker_TrackerOnly.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
+FillMVATree_TwoGlobalTracker_TrackerOnly::FillMVATree_TwoGlobalTracker_TrackerOnly(TString Name_, TString id_):
    Selection(Name_,id_),
    tauMinMass_(1.75),
    tauMaxMass_(1.80),
@@ -26,7 +26,7 @@ FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
    puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
 }
 
-FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
+FillMVATree_TwoGlobalTracker_TrackerOnly::~FillMVATree_TwoGlobalTracker_TrackerOnly(){
    for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
          << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -35,7 +35,7 @@ FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
    Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  FillMVATree_ThreeGlobal::Configure(){
+void  FillMVATree_TwoGlobalTracker_TrackerOnly::Configure(){
 
    // Set tree branches
    TMVA_Tree= new TTree("tree","tree");
@@ -156,7 +156,7 @@ void  FillMVATree_ThreeGlobal::Configure(){
       }
       else if(i==MuonID){
          title.at(i)="All mu pass ID";
-         hlabel="gl,gl,gl";
+         hlabel="(gl and tr),(gl and tr),(trk and !gl)";
          Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
          Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
       }
@@ -411,62 +411,11 @@ void  FillMVATree_ThreeGlobal::Configure(){
    Muon2NumberOfMatchesVsEta=HConfig.GetTH2D(Name+"_Muon2NumberOfMatchesVsEta","Number of matches vs eta (Muon2)",50,-2.5,2.5,10,0,10,"#eta","NMatches (#mu_{2})");
    Muon3NumberOfMatchesVsEta=HConfig.GetTH2D(Name+"_Muon3NumberOfMatchesVsEta","Number of matches vs eta (Muon3)",50,-2.5,2.5,10,0,10,"#eta","NMatches (#mu_{3})");
 
-   // Muon Id histograms
-
-   Muon1TrackerPt=HConfig.GetTH1D(Name+"_Muon1TrackerPt","Muon1 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{1})","Entries");
-   Muon1TrackerEta=HConfig.GetTH1D(Name+"_Muon1TrackerEta","Muon1 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{1})","Entries");
-   Muon1TrackerPtEta=HConfig.GetTH2D(Name+"_Muon1TrackerPtEta","Muon1 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{1})","p_{T} (GeV)");
-
-   Muon2TrackerPt=HConfig.GetTH1D(Name+"_Muon2TrackerPt","Muon2 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{2})","Entries");
-   Muon2TrackerEta=HConfig.GetTH1D(Name+"_Muon2TrackerEta","Muon2 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{2})","Entries");
-   Muon2TrackerPtEta=HConfig.GetTH2D(Name+"_Muon2TrackerPtEta","Muon2 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{2})","p_{T} (GeV)");
-
-   Muon3TrackerPt=HConfig.GetTH1D(Name+"_Muon3TrackerPt","Muon3 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{3})","Entries");
-   Muon3TrackerEta=HConfig.GetTH1D(Name+"_Muon3TrackerEta","Muon3 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{3})","Entries");
-   Muon3TrackerPtEta=HConfig.GetTH2D(Name+"_Muon3TrackerPtEta","Muon3 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{3})","p_{T} GeV");
-
-   Muon1NotLoosePt=HConfig.GetTH1D(Name+"_Muon1NotLoosePt","Muon1 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{1})","Entries");
-   Muon1NotLooseEta=HConfig.GetTH1D(Name+"_Muon1NotLooseEta","Muon1 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{1})","Entries");
-   Muon1NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon1NotLoosePtEta","Muon1 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{1})","p_{T} (GeV)");
-
-   Muon2NotLoosePt=HConfig.GetTH1D(Name+"_Muon2NotLoosePt","Muon2 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{2})","Entries");
-   Muon2NotLooseEta=HConfig.GetTH1D(Name+"_Muon2NotLooseEta","Muon2 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{2})","Entries");
-   Muon2NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon2NotLoosePtEta","Muon2 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{2})","p_{T} (GeV)");
-
-   Muon3NotLoosePt=HConfig.GetTH1D(Name+"_Muon3NotLoosePt","Muon3 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{3})","Entries");
-   Muon3NotLooseEta=HConfig.GetTH1D(Name+"_Muon3NotLooseEta","Muon3 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{3})","Entries");
-   Muon3NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon3NotLoosePtEta","Muon3 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{3})","p_{T} GeV");
-
    Selection::ConfigureHistograms(); //do not remove
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
-
-   // Distribution of tracker muons
-   Extradist1d.push_back(&Muon1TrackerPt);
-   Extradist1d.push_back(&Muon1TrackerEta);
-   Extradist2d.push_back(&Muon1TrackerPtEta);
-
-   Extradist1d.push_back(&Muon2TrackerPt);
-   Extradist1d.push_back(&Muon2TrackerEta);
-   Extradist2d.push_back(&Muon2TrackerPtEta);
-
-   Extradist1d.push_back(&Muon3TrackerPt);
-   Extradist1d.push_back(&Muon3TrackerEta);
-   Extradist2d.push_back(&Muon3TrackerPtEta);
-
-   Extradist1d.push_back(&Muon1NotLoosePt);
-   Extradist1d.push_back(&Muon1NotLooseEta);
-   Extradist2d.push_back(&Muon1NotLoosePtEta);
-
-   Extradist1d.push_back(&Muon2NotLoosePt);
-   Extradist1d.push_back(&Muon2NotLooseEta);
-   Extradist2d.push_back(&Muon2NotLoosePtEta);
-
-   Extradist1d.push_back(&Muon3NotLoosePt);
-   Extradist1d.push_back(&Muon3NotLooseEta);
-   Extradist2d.push_back(&Muon3NotLoosePtEta);
+void  FillMVATree_TwoGlobalTracker_TrackerOnly::Store_ExtraDist(){ 
    // Muon histograms
    Extradist1d.push_back(&Muon1P);
    Extradist1d.push_back(&Muon1SegmentCompatibility);
@@ -646,13 +595,13 @@ void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
 
    ////////////////////////////////////////////////////////////////////////////////////////////////
    // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-   ////////////////////////////////////////////////////////////////////////////////////////////////
+   ///t/////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  FillMVATree_ThreeGlobal::doEvent(){
+void  FillMVATree_TwoGlobalTracker_TrackerOnly::doEvent(){ 
 
    value.at(TriggerOk)=0;
    value.at(SignalCandidate)=0;
@@ -819,7 +768,10 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          //
          value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
                Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-               Ntp->Muon_isGlobalMuon(Muon_index_3) );
+               (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)) &&
+               Ntp->Muon_isTrackerMuon(Muon_index_1) &&
+               Ntp->Muon_isTrackerMuon(Muon_index_2)
+               );
          //------------------------------------------------------------------------------------------------------
 
          if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -943,7 +895,10 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       //
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
             Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-            Ntp->Muon_isGlobalMuon(Muon_index_3));
+            (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)) &&
+            Ntp->Muon_isTrackerMuon(Muon_index_1) &&
+            Ntp->Muon_isTrackerMuon(Muon_index_2)
+            );
       //------------------------------------------------------------------------------------------------------
 
       if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -1019,48 +974,8 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       }
    }
 
+
    bool status=AnalysisCuts(t,w,wobs);
-
-   if (passAllBut(MuonID)){
-      // Make Histograms for events failing the cut
-
-      // muon 1
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_1) && Ntp->Muon_isTrackerMuon(Muon_index_1)){
-         Muon1TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),w);
-         Muon1TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),w);
-         Muon1TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),Ntp->Muon_P4(Muon_index_1).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_1) && !Ntp->Muon_isTrackerMuon(Muon_index_1)){
-         Muon1NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),w);
-         Muon1NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),w);
-         Muon1NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),Ntp->Muon_P4(Muon_index_1).Pt(),w);
-      }
-
-      // muon 2
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_2) && Ntp->Muon_isTrackerMuon(Muon_index_2)){
-         Muon2TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),w);
-         Muon2TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),w);
-         Muon2TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),Ntp->Muon_P4(Muon_index_2).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_2) && !Ntp->Muon_isTrackerMuon(Muon_index_2)){
-         Muon2NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),w);
-         Muon2NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),w);
-         Muon2NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),Ntp->Muon_P4(Muon_index_2).Pt(),w);
-      }
-
-      // muon 3
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)){
-         Muon3TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),w);
-         Muon3TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),w);
-         Muon3TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),Ntp->Muon_P4(Muon_index_3).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_3) && !Ntp->Muon_isTrackerMuon(Muon_index_3)){
-         Muon3NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),w);
-         Muon3NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),w);
-         Muon3NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),Ntp->Muon_P4(Muon_index_3).Pt(),w);
-      }
-
-   }
 
    if(status){
 
@@ -1402,7 +1317,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
+int FillMVATree_TwoGlobalTracker_TrackerOnly::minQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)<=vec.at(1) && vec.at(0)<=vec.at(2)) return 0;
    if (vec.at(1)<=vec.at(2) && vec.at(1)<=vec.at(0)) return 1;
    if (vec.at(2)<=vec.at(0) && vec.at(2)<=vec.at(1)) return 2;
@@ -1410,15 +1325,14 @@ int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::maxQuantityIndex(std::vector<T>& vec){
+int FillMVATree_TwoGlobalTracker_TrackerOnly::maxQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)>=vec.at(1) && vec.at(0)>=vec.at(2)) return 0;
    if (vec.at(1)>=vec.at(2) && vec.at(1)>=vec.at(0)) return 1;
    if (vec.at(2)>=vec.at(0) && vec.at(2)>=vec.at(1)) return 2;
    return -1;
 }
 
-void  FillMVATree_ThreeGlobal::Finish(){
-  
+void  FillMVATree_TwoGlobalTracker_TrackerOnly::Finish(){
       if(mode == RECONSTRUCT){
       double scale(1.);
       double scaleDsTau(0.7206);
@@ -1429,8 +1343,7 @@ void  FillMVATree_ThreeGlobal::Finish(){
       ScaleAllHistOfType(3,scale*scaleB0Tau/Nminus0.at(0).at(3).Integral());
       ScaleAllHistOfType(4,scale*scaleBpTau/Nminus0.at(0).at(4).Integral());
       }
-     
-   file= new TFile("FillMVATree_ThreeGlobalInput.root","recreate");
+   file= new TFile("FillMVATree_TwoGlobalTracker_TrackerOnlyInput.root","recreate");
    TMVA_Tree->SetDirectory(file);
 
    file->Write();

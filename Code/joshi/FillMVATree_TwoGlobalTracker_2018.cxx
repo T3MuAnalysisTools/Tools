@@ -1,4 +1,4 @@
-#include "FillMVATree_ThreeGlobal.h"
+#include "FillMVATree_TwoGlobalTracker.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
+FillMVATree_TwoGlobalTracker::FillMVATree_TwoGlobalTracker(TString Name_, TString id_):
    Selection(Name_,id_),
    tauMinMass_(1.75),
    tauMaxMass_(1.80),
@@ -26,7 +26,7 @@ FillMVATree_ThreeGlobal::FillMVATree_ThreeGlobal(TString Name_, TString id_):
    puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
 }
 
-FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
+FillMVATree_TwoGlobalTracker::~FillMVATree_TwoGlobalTracker(){
    for(unsigned int j=0; j<Npassed.size(); j++){
       Logger(Logger::Info) << "Selection Summary before: "
          << Npassed.at(j).GetBinContent(1)  << " +/- " << Npassed.at(j).GetBinError(1)  << " after: "
@@ -35,7 +35,7 @@ FillMVATree_ThreeGlobal::~FillMVATree_ThreeGlobal(){
    Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  FillMVATree_ThreeGlobal::Configure(){
+void  FillMVATree_TwoGlobalTracker::Configure(){
 
    // Set tree branches
    TMVA_Tree= new TTree("tree","tree");
@@ -85,6 +85,12 @@ void  FillMVATree_ThreeGlobal::Configure(){
       pass.push_back(false);
       if(i==TriggerOk)          cut.at(TriggerOk)=1;
       if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
+      if(i==Mu1Mu2dR)           cut.at(Mu1Mu2dR)=0.8;
+      if(i==Mu2Mu3dR)           cut.at(Mu2Mu3dR)=0.8;
+      if(i==Mu3Mu1dR)           cut.at(Mu3Mu1dR)=0.8;
+      if(i==Mu1Mu2dz)           cut.at(Mu1Mu2dz)=0.5;
+      if(i==Mu2Mu3dz)           cut.at(Mu2Mu3dz)=0.5;
+      if(i==Mu3Mu1dz)           cut.at(Mu3Mu1dz)=0.5;
       if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
       if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
       if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
@@ -118,8 +124,8 @@ void  FillMVATree_ThreeGlobal::Configure(){
       else if(i==SignalCandidate){
          title.at(i)="signal candidates";
          hlabel="3mu candidates";
-         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidates_",htitle,9,1.0,10.0,hlabel,"Entries"));
-         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidates_",htitle,9,1.0,10.0,hlabel,"Entries"));
+         Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidates_",htitle,19,1.0,20.0,hlabel,"Entries"));
+         Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidates_",htitle,19,1.0,20.0,hlabel,"Entries"));
       }
       else if(i==Mu1PtCut){
          title.at(i)="$p_{T}(\\mu_{1}) >$";
@@ -156,7 +162,7 @@ void  FillMVATree_ThreeGlobal::Configure(){
       }
       else if(i==MuonID){
          title.at(i)="All mu pass ID";
-         hlabel="gl,gl,gl";
+         hlabel="gl,gl,(trk and !gl)";
          Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
          Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Entries"));
       }
@@ -411,62 +417,11 @@ void  FillMVATree_ThreeGlobal::Configure(){
    Muon2NumberOfMatchesVsEta=HConfig.GetTH2D(Name+"_Muon2NumberOfMatchesVsEta","Number of matches vs eta (Muon2)",50,-2.5,2.5,10,0,10,"#eta","NMatches (#mu_{2})");
    Muon3NumberOfMatchesVsEta=HConfig.GetTH2D(Name+"_Muon3NumberOfMatchesVsEta","Number of matches vs eta (Muon3)",50,-2.5,2.5,10,0,10,"#eta","NMatches (#mu_{3})");
 
-   // Muon Id histograms
-
-   Muon1TrackerPt=HConfig.GetTH1D(Name+"_Muon1TrackerPt","Muon1 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{1})","Entries");
-   Muon1TrackerEta=HConfig.GetTH1D(Name+"_Muon1TrackerEta","Muon1 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{1})","Entries");
-   Muon1TrackerPtEta=HConfig.GetTH2D(Name+"_Muon1TrackerPtEta","Muon1 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{1})","p_{T} (GeV)");
-
-   Muon2TrackerPt=HConfig.GetTH1D(Name+"_Muon2TrackerPt","Muon2 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{2})","Entries");
-   Muon2TrackerEta=HConfig.GetTH1D(Name+"_Muon2TrackerEta","Muon2 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{2})","Entries");
-   Muon2TrackerPtEta=HConfig.GetTH2D(Name+"_Muon2TrackerPtEta","Muon2 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{2})","p_{T} (GeV)");
-
-   Muon3TrackerPt=HConfig.GetTH1D(Name+"_Muon3TrackerPt","Muon3 Tracker Pt",50,0,25,"TrackerMu Pt (#mu_{3})","Entries");
-   Muon3TrackerEta=HConfig.GetTH1D(Name+"_Muon3TrackerEta","Muon3 Tracker Eta",50,-2.5,2.5,"TrackerMu #eta (#mu_{3})","Entries");
-   Muon3TrackerPtEta=HConfig.GetTH2D(Name+"_Muon3TrackerPtEta","Muon3 Tracker Pt vs. Eta",50,-2.5,2.5,50,0,25,"TrackerMu #eta (#mu_{3})","p_{T} GeV");
-
-   Muon1NotLoosePt=HConfig.GetTH1D(Name+"_Muon1NotLoosePt","Muon1 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{1})","Entries");
-   Muon1NotLooseEta=HConfig.GetTH1D(Name+"_Muon1NotLooseEta","Muon1 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{1})","Entries");
-   Muon1NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon1NotLoosePtEta","Muon1 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{1})","p_{T} (GeV)");
-
-   Muon2NotLoosePt=HConfig.GetTH1D(Name+"_Muon2NotLoosePt","Muon2 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{2})","Entries");
-   Muon2NotLooseEta=HConfig.GetTH1D(Name+"_Muon2NotLooseEta","Muon2 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{2})","Entries");
-   Muon2NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon2NotLoosePtEta","Muon2 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{2})","p_{T} (GeV)");
-
-   Muon3NotLoosePt=HConfig.GetTH1D(Name+"_Muon3NotLoosePt","Muon3 NotLoose Pt",50,0,25,"NotLooseMu Pt (#mu_{3})","Entries");
-   Muon3NotLooseEta=HConfig.GetTH1D(Name+"_Muon3NotLooseEta","Muon3 NotLoose Eta",50,-2.5,2.5,"NotLooseMu #eta (#mu_{3})","Entries");
-   Muon3NotLoosePtEta=HConfig.GetTH2D(Name+"_Muon3NotLoosePtEta","Muon3 NotLoose Pt vs. Eta",50,-2.5,2.5,50,0,25,"NotLooseMu #eta (#mu_{3})","p_{T} GeV");
-
    Selection::ConfigureHistograms(); //do not remove
    HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
 
-void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
-
-   // Distribution of tracker muons
-   Extradist1d.push_back(&Muon1TrackerPt);
-   Extradist1d.push_back(&Muon1TrackerEta);
-   Extradist2d.push_back(&Muon1TrackerPtEta);
-
-   Extradist1d.push_back(&Muon2TrackerPt);
-   Extradist1d.push_back(&Muon2TrackerEta);
-   Extradist2d.push_back(&Muon2TrackerPtEta);
-
-   Extradist1d.push_back(&Muon3TrackerPt);
-   Extradist1d.push_back(&Muon3TrackerEta);
-   Extradist2d.push_back(&Muon3TrackerPtEta);
-
-   Extradist1d.push_back(&Muon1NotLoosePt);
-   Extradist1d.push_back(&Muon1NotLooseEta);
-   Extradist2d.push_back(&Muon1NotLoosePtEta);
-
-   Extradist1d.push_back(&Muon2NotLoosePt);
-   Extradist1d.push_back(&Muon2NotLooseEta);
-   Extradist2d.push_back(&Muon2NotLoosePtEta);
-
-   Extradist1d.push_back(&Muon3NotLoosePt);
-   Extradist1d.push_back(&Muon3NotLooseEta);
-   Extradist2d.push_back(&Muon3NotLoosePtEta);
+void  FillMVATree_TwoGlobalTracker::Store_ExtraDist(){
    // Muon histograms
    Extradist1d.push_back(&Muon1P);
    Extradist1d.push_back(&Muon1SegmentCompatibility);
@@ -646,13 +601,13 @@ void  FillMVATree_ThreeGlobal::Store_ExtraDist(){
 
    ////////////////////////////////////////////////////////////////////////////////////////////////
    // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
-   ////////////////////////////////////////////////////////////////////////////////////////////////
+   ///t/////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  FillMVATree_ThreeGlobal::doEvent(){
+void  FillMVATree_TwoGlobalTracker::doEvent(){ 
 
    value.at(TriggerOk)=0;
    value.at(SignalCandidate)=0;
@@ -672,13 +627,15 @@ void  FillMVATree_ThreeGlobal::doEvent(){
    value.at(DsGenMatch)=1;
    value.at(GenMatch)=1;
 
+   random_num = rndm.Rndm();
+
    unsigned int t;
    int id(Ntp->GetMCID());
 
    // Weights
    double wobs=1;
    double w;
-   double w_normalization=0.76;
+   double w_normalization=1.0;
 
    if(!Ntp->isData()){
       w = w_normalization*(puWeights->GetBinContent(Ntp->TruthNumberOfInteraction())); // Weight MC according to truth number of vertices
@@ -694,40 +651,14 @@ void  FillMVATree_ThreeGlobal::doEvent(){
 
    for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-
-      if(id==1){
-         if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
-      }
-      if( (id==1 && Ntp->WhichEra(2017).Contains("RunF")) || (id==1 && Ntp->WhichEra(2018).Contains("Run")) ){
-         if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu_v") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
-      }
-      if(id!=1){
-         if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
-      }
-
+      if(HLT.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
    }
 
    for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
       TString L1TriggerName = Ntp->L1Name(il1);
-
-      if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
-         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
-         if(L1TriggerName.Contains("L1_TripleMu_5_3_0_DoubleMu_5_3_OS_Mass_Max17"))      TripleMuFired = Ntp-> L1Decision(il1);
-      }
-
-      if(id!=1){
-         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
-         if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))TripleMuFired = Ntp-> L1Decision(il1);
-      }
-      if (id==1 && Ntp->WhichEra(2018).Contains("Run")){
-         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))							DoubleMuFired = Ntp->L1Decision(il1);
-         if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))	TripleMuFired = Ntp->L1Decision(il1);
-         if(L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2"))								DoubleMuFired = Ntp->L1Decision(il1);
-      }
-      if(id==1 && (Ntp->WhichEra(2017).Contains("RunC") or Ntp->WhichEra(2017).Contains("RunD") or Ntp->WhichEra(2017).Contains("RunF")  or Ntp->WhichEra(2017).Contains("RunE"))){
-         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
-         if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9"))TripleMuFired = Ntp-> L1Decision(il1);
-      }
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+      if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
+      if( random_num>0.3516 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
    }
 
 
@@ -767,6 +698,14 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          Muon_index_1 = Ntp->ThreeMuonIndices(j).at(0); 
          Muon_index_2 = Ntp->ThreeMuonIndices(j).at(1); 
          Muon_index_3 = Ntp->ThreeMuonIndices(j).at(2);
+
+         value.at(Mu1Mu2dR) = Ntp->Muon_P4(Muon_index_1).DeltaR(Ntp->Muon_P4(Muon_index_2));
+         value.at(Mu2Mu3dR) = Ntp->Muon_P4(Muon_index_2).DeltaR(Ntp->Muon_P4(Muon_index_3));
+         value.at(Mu3Mu1dR) = Ntp->Muon_P4(Muon_index_3).DeltaR(Ntp->Muon_P4(Muon_index_1));
+
+         value.at(Mu1Mu2dz) = abs(Ntp->Muon_Poca(Muon_index_1).Z()-Ntp->Muon_Poca(Muon_index_2).Z());
+         value.at(Mu2Mu3dz) = abs(Ntp->Muon_Poca(Muon_index_2).Z()-Ntp->Muon_Poca(Muon_index_3).Z());
+         value.at(Mu3Mu1dz) = abs(Ntp->Muon_Poca(Muon_index_3).Z()-Ntp->Muon_Poca(Muon_index_1).Z());
 
          // value.at(MuonID) =  (Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
          //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
@@ -819,7 +758,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          //
          value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
                Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-               Ntp->Muon_isGlobalMuon(Muon_index_3) );
+               (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)));
          //------------------------------------------------------------------------------------------------------
 
          if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -848,6 +787,12 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          else value.at(GenMatch) = 0;
 
          pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
+         pass.at(Mu1Mu2dR) = (value.at(Mu1Mu2dR) < cut.at(Mu1Mu2dR));
+         pass.at(Mu2Mu3dR) = (value.at(Mu2Mu3dR) < cut.at(Mu2Mu3dR));
+         pass.at(Mu3Mu1dR) = (value.at(Mu3Mu1dR) < cut.at(Mu3Mu1dR));
+         pass.at(Mu1Mu2dz) = (value.at(Mu1Mu2dz) < cut.at(Mu1Mu2dz));
+         pass.at(Mu2Mu3dz) = (value.at(Mu2Mu3dz) < cut.at(Mu2Mu3dz));
+         pass.at(Mu3Mu1dz) = (value.at(Mu3Mu1dz) < cut.at(Mu3Mu1dz));
          pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
          pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
          pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
@@ -856,13 +801,16 @@ void  FillMVATree_ThreeGlobal::doEvent(){
          pass.at(TriggerMatchMu1) = (value.at(TriggerMatchMu1) <  cut.at(TriggerMatchMu1));
          pass.at(TriggerMatchMu2) = (value.at(TriggerMatchMu2) <  cut.at(TriggerMatchMu2));
          pass.at(TriggerMatchMu3) = (value.at(TriggerMatchMu3) <  cut.at(TriggerMatchMu3));
+         pass.at(TriggerMatchMu1) = true;
+         pass.at(TriggerMatchMu2) = true;
+         pass.at(TriggerMatchMu3) = true;
          pass.at(PhiVetoOS1) = (fabs(value.at(PhiVetoOS1)-PDG_Var::Phi_mass()) > phiVetoSigma);
          pass.at(PhiVetoOS2) = (fabs(value.at(PhiVetoOS2)-PDG_Var::Phi_mass()) > phiVetoSigma);
          pass.at(OmegaVetoOS1) = (fabs(value.at(OmegaVetoOS1)-PDG_Var::Omega_mass())> omegaVetoSigma);
          pass.at(OmegaVetoOS2) = (fabs(value.at(OmegaVetoOS2)-PDG_Var::Omega_mass())> omegaVetoSigma);
          pass.at(DsGenMatch) = ( value.at(DsGenMatch) < cut.at(DsGenMatch) );
          pass.at(GenMatch) = ( value.at(GenMatch) < cut.at(GenMatch) );
-         pass.at(TauMassCut) = ( value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) <  tauMaxSideBand_);
+         pass.at(TauMassCut) = ( value.at(TauMassCut) > tauMinSideBand_ && value.at(TauMassCut) < tauMaxSideBand_);
          unsigned int score = 0;
          for (unsigned int k=0; k<NCuts; ++k) if (pass.at(k)) score++;
 
@@ -886,6 +834,13 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       Muon_index_2 = Ntp->ThreeMuonIndices(final_idx).at(1); 
       Muon_index_3 = Ntp->ThreeMuonIndices(final_idx).at(2);
 
+      value.at(Mu1Mu2dR) = Ntp->Muon_P4(Muon_index_1).DeltaR(Ntp->Muon_P4(Muon_index_2));
+      value.at(Mu2Mu3dR) = Ntp->Muon_P4(Muon_index_2).DeltaR(Ntp->Muon_P4(Muon_index_3));
+      value.at(Mu3Mu1dR) = Ntp->Muon_P4(Muon_index_3).DeltaR(Ntp->Muon_P4(Muon_index_1));
+
+      value.at(Mu1Mu2dz) = abs(Ntp->Muon_Poca(Muon_index_1).Z()-Ntp->Muon_Poca(Muon_index_2).Z());
+      value.at(Mu2Mu3dz) = abs(Ntp->Muon_Poca(Muon_index_2).Z()-Ntp->Muon_Poca(Muon_index_3).Z());
+      value.at(Mu3Mu1dz) = abs(Ntp->Muon_Poca(Muon_index_3).Z()-Ntp->Muon_Poca(Muon_index_1).Z());
       // value.at(MuonID) =  (Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
       //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
       //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::CutBasedIdMedium));
@@ -943,7 +898,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       //
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(Muon_index_1) && 
             Ntp->Muon_isGlobalMuon(Muon_index_2) &&
-            Ntp->Muon_isGlobalMuon(Muon_index_3));
+            (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)));
       //------------------------------------------------------------------------------------------------------
 
       if (Ntp->Muon_isGlobalMuon(Muon_index_3)) threeGlobal = true;
@@ -951,7 +906,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       value.at(Mu1PtCut) = Ntp->Muon_P4(Muon_index_1).Pt();
       value.at(Mu2PtCut) = Ntp->Muon_P4(Muon_index_2).Pt();
       value.at(Mu3PtCut) = Ntp->Muon_P4(Muon_index_3).Pt();
-      value.at(PVRefit) = Ntp->Vertex_RefitPVisValid(final_idx);
+      value.at(PVRefit) = Ntp->Vertex_RefitPVisValid(final_idx,false);
 
       /*
          vector<unsigned int> idx_vec;
@@ -981,6 +936,12 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       else value.at(GenMatch) = 0;
 
       pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
+      pass.at(Mu1Mu2dR) = (value.at(Mu1Mu2dR) < cut.at(Mu1Mu2dR));
+      pass.at(Mu2Mu3dR) = (value.at(Mu2Mu3dR) < cut.at(Mu2Mu3dR));
+      pass.at(Mu3Mu1dR) = (value.at(Mu3Mu1dR) < cut.at(Mu3Mu1dR));
+      pass.at(Mu1Mu2dz) = (value.at(Mu1Mu2dz) < cut.at(Mu1Mu2dz));
+      pass.at(Mu2Mu3dz) = (value.at(Mu2Mu3dz) < cut.at(Mu2Mu3dz));
+      pass.at(Mu3Mu1dz) = (value.at(Mu3Mu1dz) < cut.at(Mu3Mu1dz));
       pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
       pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
       pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
@@ -989,6 +950,9 @@ void  FillMVATree_ThreeGlobal::doEvent(){
       pass.at(TriggerMatchMu1) = (value.at(TriggerMatchMu1) <  cut.at(TriggerMatchMu1));
       pass.at(TriggerMatchMu2) = (value.at(TriggerMatchMu2) <  cut.at(TriggerMatchMu2));
       pass.at(TriggerMatchMu3) = (value.at(TriggerMatchMu3) <  cut.at(TriggerMatchMu3));
+      pass.at(TriggerMatchMu1) = true;
+      pass.at(TriggerMatchMu2) = true;
+      pass.at(TriggerMatchMu3) = true;
       pass.at(PhiVetoOS1) = (fabs(value.at(PhiVetoOS1)-PDG_Var::Phi_mass()) > phiVetoSigma);
       pass.at(PhiVetoOS2) = (fabs(value.at(PhiVetoOS2)-PDG_Var::Phi_mass()) > phiVetoSigma);
       pass.at(OmegaVetoOS1) = (fabs(value.at(OmegaVetoOS1)-PDG_Var::Omega_mass())> omegaVetoSigma);
@@ -1020,47 +984,6 @@ void  FillMVATree_ThreeGlobal::doEvent(){
    }
 
    bool status=AnalysisCuts(t,w,wobs);
-
-   if (passAllBut(MuonID)){
-      // Make Histograms for events failing the cut
-
-      // muon 1
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_1) && Ntp->Muon_isTrackerMuon(Muon_index_1)){
-         Muon1TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),w);
-         Muon1TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),w);
-         Muon1TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),Ntp->Muon_P4(Muon_index_1).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_1) && !Ntp->Muon_isTrackerMuon(Muon_index_1)){
-         Muon1NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Pt(),w);
-         Muon1NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),w);
-         Muon1NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_1).Eta(),Ntp->Muon_P4(Muon_index_1).Pt(),w);
-      }
-
-      // muon 2
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_2) && Ntp->Muon_isTrackerMuon(Muon_index_2)){
-         Muon2TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),w);
-         Muon2TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),w);
-         Muon2TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),Ntp->Muon_P4(Muon_index_2).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_2) && !Ntp->Muon_isTrackerMuon(Muon_index_2)){
-         Muon2NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),w);
-         Muon2NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),w);
-         Muon2NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Eta(),Ntp->Muon_P4(Muon_index_2).Pt(),w);
-      }
-
-      // muon 3
-      if (!Ntp->Muon_isGlobalMuon(Muon_index_3) && Ntp->Muon_isTrackerMuon(Muon_index_3)){
-         Muon3TrackerPt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),w);
-         Muon3TrackerEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),w);
-         Muon3TrackerPtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),Ntp->Muon_P4(Muon_index_3).Pt(),w);
-      }
-      else if (!Ntp->Muon_isGlobalMuon(Muon_index_3) && !Ntp->Muon_isTrackerMuon(Muon_index_3)){
-         Muon3NotLoosePt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),w);
-         Muon3NotLooseEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),w);
-         Muon3NotLoosePtEta.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Eta(),Ntp->Muon_P4(Muon_index_3).Pt(),w);
-      }
-
-   }
 
    if(status){
 
@@ -1402,7 +1325,7 @@ void  FillMVATree_ThreeGlobal::doEvent(){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
+int FillMVATree_TwoGlobalTracker::minQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)<=vec.at(1) && vec.at(0)<=vec.at(2)) return 0;
    if (vec.at(1)<=vec.at(2) && vec.at(1)<=vec.at(0)) return 1;
    if (vec.at(2)<=vec.at(0) && vec.at(2)<=vec.at(1)) return 2;
@@ -1410,16 +1333,16 @@ int FillMVATree_ThreeGlobal::minQuantityIndex(std::vector<T>& vec){
 }
 
 template <typename T>
-int FillMVATree_ThreeGlobal::maxQuantityIndex(std::vector<T>& vec){
+int FillMVATree_TwoGlobalTracker::maxQuantityIndex(std::vector<T>& vec){
    if (vec.at(0)>=vec.at(1) && vec.at(0)>=vec.at(2)) return 0;
    if (vec.at(1)>=vec.at(2) && vec.at(1)>=vec.at(0)) return 1;
    if (vec.at(2)>=vec.at(0) && vec.at(2)>=vec.at(1)) return 2;
    return -1;
 }
 
-void  FillMVATree_ThreeGlobal::Finish(){
-  
-      if(mode == RECONSTRUCT){
+void  FillMVATree_TwoGlobalTracker::Finish(){
+
+   if(mode == RECONSTRUCT){
       double scale(1.);
       double scaleDsTau(0.7206);
       double scaleBpTau(0.1077);
@@ -1428,9 +1351,9 @@ void  FillMVATree_ThreeGlobal::Finish(){
       ScaleAllHistOfType(2,scale*scaleDsTau/Nminus0.at(0).at(2).Integral());
       ScaleAllHistOfType(3,scale*scaleB0Tau/Nminus0.at(0).at(3).Integral());
       ScaleAllHistOfType(4,scale*scaleBpTau/Nminus0.at(0).at(4).Integral());
-      }
-     
-   file= new TFile("FillMVATree_ThreeGlobalInput.root","recreate");
+   }
+
+   file= new TFile("FillMVATree_TwoGlobalTrackerInput.root","recreate");
    TMVA_Tree->SetDirectory(file);
 
    file->Write();

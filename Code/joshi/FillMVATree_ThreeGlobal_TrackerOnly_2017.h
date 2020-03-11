@@ -1,16 +1,16 @@
-#ifndef FillMVATree_TwoGlobalTracker_h
-#define FillMVATree_TwoGlobalTracker_h
+#ifndef FillMVATree_ThreeGlobal_TrackerOnly_h
+#define FillMVATree_ThreeGlobal_TrackerOnly_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree_TwoGlobalTracker : public Selection {
+class FillMVATree_ThreeGlobal_TrackerOnly : public Selection {
 
    public:
-      FillMVATree_TwoGlobalTracker(TString Name_, TString id_);
-      virtual ~FillMVATree_TwoGlobalTracker();
+      FillMVATree_ThreeGlobal_TrackerOnly(TString Name_, TString id_);
+      virtual ~FillMVATree_ThreeGlobal_TrackerOnly();
 
       virtual void  Configure();
       virtual void  Finish();
@@ -31,6 +31,7 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       TTree * TMVA_Tree;
 
    private:
+      
       // PU Weights
       TFile* PUWeightFile;
       TH1D* puWeights;
@@ -107,6 +108,31 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       float var_tauMassRefit;
 
       // Additional plots
+      // Tracker Muon plots
+      std::vector<TH1D> Muon1TrackerPt;
+      std::vector<TH1D> Muon1TrackerEta;
+      std::vector<TH2D> Muon1TrackerPtEta;
+      
+      std::vector<TH1D> Muon2TrackerPt;
+      std::vector<TH1D> Muon2TrackerEta;
+      std::vector<TH2D> Muon2TrackerPtEta;
+
+      std::vector<TH1D> Muon3TrackerPt;
+      std::vector<TH1D> Muon3TrackerEta;
+      std::vector<TH2D> Muon3TrackerPtEta;
+      
+      std::vector<TH1D> Muon1NotLoosePt;
+      std::vector<TH1D> Muon1NotLooseEta;
+      std::vector<TH2D> Muon1NotLoosePtEta;
+      
+      std::vector<TH1D> Muon2NotLoosePt;
+      std::vector<TH1D> Muon2NotLooseEta;
+      std::vector<TH2D> Muon2NotLoosePtEta;
+
+      std::vector<TH1D> Muon3NotLoosePt;
+      std::vector<TH1D> Muon3NotLooseEta;
+      std::vector<TH2D> Muon3NotLoosePtEta;
+
       std::vector<TH1D> Mu3_isGlobal;
       std::vector<TH1D> Mu2_isGlobal;
       std::vector<TH2D> L1TriggerMatch;
@@ -123,7 +149,7 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       std::vector<TH1D> Muon1Eta;
       std::vector<TH1D> Muon2Eta;
       std::vector<TH1D> Muon3Eta;
-
+      
       std::vector<TH1D> Muon1P;
       std::vector<TH1D> Muon1SegmentCompatibility;
       std::vector<TH1D> Muon1NumberOfMatches;
