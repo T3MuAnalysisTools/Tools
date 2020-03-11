@@ -1,21 +1,21 @@
-#ifndef FillMVATree_TwoGlobalTracker_h
-#define FillMVATree_TwoGlobalTracker_h
+#ifndef FillMVATree_ThreeGlobal_h
+#define FillMVATree_ThreeGlobal_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
 
-class FillMVATree_TwoGlobalTracker : public Selection {
+class FillMVATree_ThreeGlobal : public Selection {
 
    public:
-      FillMVATree_TwoGlobalTracker(TString Name_, TString id_);
-      virtual ~FillMVATree_TwoGlobalTracker();
+      FillMVATree_ThreeGlobal(TString Name_, TString id_);
+      virtual ~FillMVATree_ThreeGlobal();
 
       virtual void  Configure();
       virtual void  Finish();
 
-      enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
+      enum cuts {TriggerOk=0,SignalCandidate, Mu1Mu2dR, Mu2Mu3dR, Mu3Mu1dR, Mu1Mu2dz, Mu2Mu3dz, Mu3Mu1dz, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
 
    protected:
       virtual void doEvent();  
@@ -31,6 +31,12 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       TTree * TMVA_Tree;
 
    private:
+
+      // random number generator
+      TRandom rndm;
+      int random_num;
+
+   
       // PU Weights
       TFile* PUWeightFile;
       TH1D* puWeights;
@@ -107,6 +113,31 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       float var_tauMassRefit;
 
       // Additional plots
+      // Tracker Muon plots
+      std::vector<TH1D> Muon1TrackerPt;
+      std::vector<TH1D> Muon1TrackerEta;
+      std::vector<TH2D> Muon1TrackerPtEta;
+      
+      std::vector<TH1D> Muon2TrackerPt;
+      std::vector<TH1D> Muon2TrackerEta;
+      std::vector<TH2D> Muon2TrackerPtEta;
+
+      std::vector<TH1D> Muon3TrackerPt;
+      std::vector<TH1D> Muon3TrackerEta;
+      std::vector<TH2D> Muon3TrackerPtEta;
+      
+      std::vector<TH1D> Muon1NotLoosePt;
+      std::vector<TH1D> Muon1NotLooseEta;
+      std::vector<TH2D> Muon1NotLoosePtEta;
+      
+      std::vector<TH1D> Muon2NotLoosePt;
+      std::vector<TH1D> Muon2NotLooseEta;
+      std::vector<TH2D> Muon2NotLoosePtEta;
+
+      std::vector<TH1D> Muon3NotLoosePt;
+      std::vector<TH1D> Muon3NotLooseEta;
+      std::vector<TH2D> Muon3NotLoosePtEta;
+
       std::vector<TH1D> Mu3_isGlobal;
       std::vector<TH1D> Mu2_isGlobal;
       std::vector<TH2D> L1TriggerMatch;

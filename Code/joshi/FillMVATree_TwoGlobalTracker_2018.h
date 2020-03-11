@@ -15,7 +15,7 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       virtual void  Configure();
       virtual void  Finish();
 
-      enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
+      enum cuts {TriggerOk=0,SignalCandidate, Mu1Mu2dR, Mu2Mu3dR, Mu3Mu1dR, Mu1Mu2dz, Mu2Mu3dz, Mu3Mu1dz, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
 
    protected:
       virtual void doEvent();  
@@ -31,6 +31,12 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       TTree * TMVA_Tree;
 
    private:
+      
+      // random number generator
+      TRandom rndm;
+      int random_num;
+
+   
       // PU Weights
       TFile* PUWeightFile;
       TH1D* puWeights;
