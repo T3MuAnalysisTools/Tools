@@ -15,7 +15,7 @@ using namespace RooFit;
 void DecayFit()
 {
 
-  TFile *f = new TFile("/afs/cern.ch/work/n/nimenend/Analysis/workdir_Decay_Length_2018_Feb_27_2020/LOCAL_COMBINED_dstophipi_default.root", "READ");
+  TFile *f = new TFile("../../LOCAL_COMBINED_dstophipi_default.root", "READ");
   TH1F *template1, *template2, *h_data;
   template1 = (TH1F*)f->Get("dstophipi_default_DecayLength_promptMC1");
   template2 = (TH1F*)f->Get("dstophipi_default_DecayLength_non_promptMC1");

@@ -12,9 +12,9 @@ using namespace RooFit;
 
 void dsphipi_fit() 
 {
-    TFile *f = new TFile("AnalysedTree_2loose_DsPhiPi_Data2017C_all.root","READ");
+    TFile *f = new TFile("../../LOCAL_COMBINED_dstophipi_default.root","READ");
     TH1F *h_tripletmass;
-    h_tripletmass = (TH1F*)f->Get("StepByStep/Triplet/Mass triplet_cut8");
+    h_tripletmass = (TH1F*)f->Get("dstophipi_default_PhiPlusTrackMassData");
 
     // Declare observable x
     TCanvas *c5 = new TCanvas("c5","c5",150,10,990,660);
