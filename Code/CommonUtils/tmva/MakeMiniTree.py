@@ -9,6 +9,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--input-file",help="input file root file with MVA tree; [Default: %(default)s] ", action="store", default = 'TMVATress.root')
 parser.add_argument("-w", "--weights-prefix",help="The BDT weight prefix; [Default: %(default)s] ", action="store", default = 'MyTMVAClassification_Test_vars_')
+parser.add_argument("-ls", "--lumi-scale",help="The BDT weight prefix; [Default: %(default)s] ", action="store", default = 'MyTMVAClassification_Test_vars_')
 args = parser.parse_args()
 
 BASEDIR = 'datasets/weights'
@@ -18,6 +19,13 @@ print "Opening file: "+filename
 def fileStr(str):
     category = str.split('_')[0].replace('reader','')
     return category
+
+
+
+DsScale = 0.001241
+B0Scale = 0.000388
+BpScale = 0.000056
+
 
 
 # list of variables
@@ -32,10 +40,7 @@ varlist_train = ['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 varlist_help = ['category']
 
 
-# List of branches
-branches = {}
-branchList_miniTree = ['m3m','dataMCType','event_weight','bdt','category','LumiScale']
-branches_miniTree = {}
+
 
 print "Initializing TMVA..."
 # Setup TMVA
@@ -49,7 +54,10 @@ for reader in mvaReaderList:
     mvaReaders[reader] = TMVA.Reader('Color:!Silent')
     tmpstr = 'MyTMVAClassification_Test_vars_'+fileStr(reader)
     mvaWeights[reader] = TString(BASEDIR+'/'+tmpstr+'_BDT.weights.xml') # weights weights.xml file after training, place it to CommonFiles
-#print mvaReaderList[0]
+
+
+
+
 
 # Open input file and set branch addresses
 rootfile = TFile(filename, 'READ')
@@ -59,6 +67,11 @@ tree_ds  = rootfile.Get('TreeS_Ds')
 tree_bu  = rootfile.Get('TreeS_Bu')
 tree_bd  = rootfile.Get('TreeS_Bd')
 
+
+# List of branches
+branches = {}
+branchList_miniTree = ['m3m','dataMCType','event_weight','bdt','category','LumiScale']
+branches_miniTree = {}
 
 for branchName in varlist_train:
     branches[branchName] = array('f', [-999])
@@ -134,9 +147,10 @@ for i in range(tree_ds.GetEntriesFast()):
     branches_miniTree['bdt'][0] = score
     branches_miniTree['category'][0] = branches['category'][0]
     branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-    branches_miniTree['event_weight'][0] = 0.637
+    branches_miniTree['event_weight'][0] = DsScale
     branches_miniTree['LumiScale'][0] = 1.0
     T3MMiniTree.Fill()
+
 
 
 print('Classifying signal events (Bu)')
@@ -158,7 +172,7 @@ for i in range(tree_bu.GetEntriesFast()):
     branches_miniTree['bdt'][0] = score
     branches_miniTree['category'][0] = branches['category'][0]
     branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-    branches_miniTree['event_weight'][0] = 0.262
+    branches_miniTree['event_weight'][0] = B0Scale
     branches_miniTree['LumiScale'][0] = 1.0
     T3MMiniTree.Fill()
 
@@ -183,7 +197,7 @@ for i in range(tree_bd.GetEntriesFast()):
     branches_miniTree['bdt'][0] = score
     branches_miniTree['category'][0] = branches['category'][0]
     branches_miniTree['m3m'][0] = branches['var_tauMass'][0]
-    branches_miniTree['event_weight'][0] = 0.099
+    branches_miniTree['event_weight'][0] = BpScale
     branches_miniTree['LumiScale'][0] = 1.0
     T3MMiniTree.Fill()
 
