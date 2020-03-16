@@ -200,132 +200,132 @@ void  DsToPhiPi::Configure(){
   //NVtx=HConfig.GetTH1D(Name+"_NVtx","NVtx",66,-0.5,65.5,"Number of Vertices","Events");
  
   DsMass=HConfig.GetTH1D(Name+"_DsMass","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); 
-  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events");
-  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse P (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events");
-  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse P (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events");
-  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse P (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events");
-  DsM_peak=HConfig.GetTH1D(Name+"_DsM_peak","Ds invariant mass in Ds Peak",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
-  DsM_sideband=HConfig.GetTH1D(Name+"_DsM_sideband","Ds invariant mass in Ds Sideband",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
-  Ds_M=HConfig.GetTH1D(Name+"_Ds_M","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events");
-  DsL_peak=HConfig.GetTH1D(Name+"_DsL_peak","Length of Ds Decay in Ds Peak",25,0,1,"L_{Ds} (cm)", "Events");
-  DsL_sideband=HConfig.GetTH1D(Name+"_DsL_sideband","Length of Ds Decay in Ds Sideband",25,0,1,"L_{Ds} (cm)", "Events");
-  Ds_L=HConfig.GetTH1D(Name+"_Ds_L","Length of Ds Decay",25,0,1,"L_{Ds} (cm)", "Events");
-  DsEta_peak=HConfig.GetTH1D(Name+"_DsEta_peak","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
-  DsEta_sideband=HConfig.GetTH1D(Name+"_DsEta_sideband","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
-  Ds_eta=HConfig.GetTH1D(Name+"_Ds_eta","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events");
+  DsPt_peak=HConfig.GetTH1D(Name+"_DsPt_peak","Transverse Pt (Ds) in Ds Peak",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events"); peakCollection.push_back(&DsPt_peak);
+  DsPt_sideband=HConfig.GetTH1D(Name+"_DsPt_sideband","Transverse Pt (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events"); sidebandCollection.push_back(&DsPt_sideband);
+  Ds_Pt=HConfig.GetTH1D(Name+"_DsPt","Transverse Pt (Ds)",51,-0.5,50.5,"Ds p_{T} (GeV)", "Events"); validationCollection.push_back(&Ds_Pt);
+  DsP_peak=HConfig.GetTH1D(Name+"_DsP_peak","Transverse P (Ds) in Ds Peak",51,-0.5,50.5,"Ds p (GeV)", "Events"); peakCollection.push_back(&DsP_peak);
+  DsP_sideband=HConfig.GetTH1D(Name+"_DsP_sideband","Transverse P (Ds) in Ds Sideband",51,-0.5,50.5,"Ds p (GeV)", "Events"); sidebandCollection.push_back(&DsP_sideband);
+  Ds_P=HConfig.GetTH1D(Name+"_Ds_P","Transverse P (Ds)",51,-0.5,50.5,"Ds p (GeV)", "Events"); validationCollection.push_back(&Ds_P);
+  DsM_peak=HConfig.GetTH1D(Name+"_DsM_peak","Ds invariant mass in Ds Peak",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); peakCollection.push_back(&DsM_peak);
+  DsM_sideband=HConfig.GetTH1D(Name+"_DsM_sideband","Ds invariant mass in Ds Sideband",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); sidebandCollection.push_back(&DsM_sideband);
+  Ds_M=HConfig.GetTH1D(Name+"_Ds_M","Ds invariant mass",100,1.7,2.1,"M_{Ds} (GeV)", "Events"); validationCollection.push_back(&Ds_M);
+  DsL_peak=HConfig.GetTH1D(Name+"_DsL_peak","Length of Ds Decay in Ds Peak",25,0,1,"L_{Ds} (cm)", "Events"); peakCollection.push_back(&DsL_peak);
+  DsL_sideband=HConfig.GetTH1D(Name+"_DsL_sideband","Length of Ds Decay in Ds Sideband",25,0,1,"L_{Ds} (cm)", "Events"); sidebandCollection.push_back(&DsL_sideband);
+  Ds_L=HConfig.GetTH1D(Name+"_Ds_L","Length of Ds Decay",25,0,1,"L_{Ds} (cm)", "Events"); validationCollection.push_back(&Ds_L);
+  DsEta_peak=HConfig.GetTH1D(Name+"_DsEta_peak","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events"); peakCollection.push_back(&DsEta_peak);
+  DsEta_sideband=HConfig.GetTH1D(Name+"_DsEta_sideband","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events"); sidebandCollection.push_back(&DsEta_sideband);
+  Ds_eta=HConfig.GetTH1D(Name+"_Ds_eta","Psuedorapidity (Ds)",30,-2,2,"Ds #eta","Events"); validationCollection.push_back(&Ds_eta);
 
   DsGenMatch=HConfig.GetTH1D(Name+"_DsGenMatch","dR between Gen Ds to Track",50,0,.1,"dR","Events");
 
 
-  DecayLength_peak=HConfig.GetTH1D(Name+"_DecayLength_peak","Proper Decay Length of Ds in Ds Peak",20,0,.1,"Proper Decay Length (cm)","Events");
-  DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds in sideband",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength_peak=HConfig.GetTH1D(Name+"_DecayLength_peak","Proper Decay Length of Ds in Ds Peak",20,0,.1,"Proper Decay Length (cm)","Events"); peakCollection.push_back(&DecayLength_peak);
+  DecayLength_sideband=HConfig.GetTH1D(Name+"_DecayLength_sideband","Proper Decay Length of Ds in sideband",20,0,.1,"Proper Decay Length (cm)","Events"); sidebandCollection.push_back(&DecayLength_sideband);
   DecayLength_prompt=HConfig.GetTH1D(Name+"_DecayLength_prompt","Proper Decay Length of Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
   DecayLength_non_prompt=HConfig.GetTH1D(Name+"_DecayLength_non_prompt","Proper Decay Length of Non-Prompt Ds",20,0,.1,"Proper Decay Length (cm)","Events");
-  DecayLength=HConfig.GetTH1D(Name+"_DecayLength","Proper Decay Length of Ds",20,0,.1,"Proper Decay Length (cm)","Events");
+  DecayLength=HConfig.GetTH1D(Name+"_DecayLength","Proper Decay Length of Ds",20,0,.1,"Proper Decay Length (cm)","Events"); validationCollection.push_back(&DecayLength);
 
-  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
-  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
-  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
-  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
-  Muon1_Phi_peak=HConfig.GetTH1D(Name+"_Muon1_Phi_peak","Azimuthal angle in Ds Peak of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
-  Muon1_Phi_sideband=HConfig.GetTH1D(Name+"_Muon1_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
-  control_Muon1_Pt=HConfig.GetTH1D(Name+"_control_Muon1_Pt","Transverse Pt (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events");
-  control_Muon1_Eta=HConfig.GetTH1D(Name+"_control_Muon1_Eta","Psuedorapidity (muon 1)",30,-2,2,"#mu_{1} #eta","Events");
-  control_Muon1_Phi=HConfig.GetTH1D(Name+"_control_Muon1_Phi","Azimuthal angle of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events");
+  Muon1_Pt_peak=HConfig.GetTH1D(Name+"_Muon1_Pt_peak","Transverse Pt in Ds Peak (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events"); peakCollection.push_back(&Muon1_Pt_peak);
+  Muon1_Pt_sideband=HConfig.GetTH1D(Name+"_Muon1_Pt_sideband","Transverse Pt in Ds Sideband (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon1_Pt_sideband);
+  Muon1_Eta_peak=HConfig.GetTH1D(Name+"_Muon1_Eta_peak","Psuedorapidity in Ds Peak (muon 1)",30,-2,2,"#mu_{1} #eta","Events"); peakCollection.push_back(&Muon1_Eta_peak);
+  Muon1_Eta_sideband=HConfig.GetTH1D(Name+"_Muon1_Eta_sideband","Psuedorapidity in Ds Sideband (muon 1)",30,-2,2,"#mu_{1} #eta","Events"); sidebandCollection.push_back(&Muon1_Eta_sideband);
+  Muon1_Phi_peak=HConfig.GetTH1D(Name+"_Muon1_Phi_peak","Azimuthal angle in Ds Peak of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events"); peakCollection.push_back(&Muon1_Phi_peak);
+  Muon1_Phi_sideband=HConfig.GetTH1D(Name+"_Muon1_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events"); sidebandCollection.push_back(&Muon1_Phi_sideband);
+  control_Muon1_Pt=HConfig.GetTH1D(Name+"_control_Muon1_Pt","Transverse Pt (muon 1)",25,0,20,"#mu_{1} p_{T} (GeV)","Events"); validationCollection.push_back(&control_Muon1_Pt);
+  control_Muon1_Eta=HConfig.GetTH1D(Name+"_control_Muon1_Eta","Psuedorapidity (muon 1)",30,-2,2,"#mu_{1} #eta","Events"); validationCollection.push_back(&control_Muon1_Eta);
+  control_Muon1_Phi=HConfig.GetTH1D(Name+"_control_Muon1_Phi","Azimuthal angle of (muons 1)",25,-3.4,3.4,"#mu_{1} #phi","Events"); validationCollection.push_back(&control_Muon1_Phi);
 
-  Muon2_Pt_peak=HConfig.GetTH1D(Name+"_Muon2_Pt_peak","Transverse Pt in Ds Peak (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
-  Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt in Ds Sideband (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
-  Muon2_Eta_peak=HConfig.GetTH1D(Name+"_Muon2_Eta_peak","Psuedorapidity in Ds Peak (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
-  Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity in Ds Sideband (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
-  Muon2_Phi_peak=HConfig.GetTH1D(Name+"_Muon2_Phi_peak","Azimuthal angle in Ds Peak of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
-  Muon2_Phi_sideband=HConfig.GetTH1D(Name+"_Muon2_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
-  control_Muon2_Pt=HConfig.GetTH1D(Name+"_control_Muon2_Pt","Transverse Pt (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events");
-  control_Muon2_Eta=HConfig.GetTH1D(Name+"_control_Muon2_Eta","Psuedorapidity (muon 2)",30,-2,2,"#mu_{2} #eta","Events");
-  control_Muon2_Phi=HConfig.GetTH1D(Name+"_control_Muon2_Phi","Azimuthal angle of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events");
+  Muon2_Pt_peak=HConfig.GetTH1D(Name+"_Muon2_Pt_peak","Transverse Pt in Ds Peak (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events"); peakCollection.push_back(&Muon2_Pt_peak);
+  Muon2_Pt_sideband=HConfig.GetTH1D(Name+"_Muon2_Pt_sideband","Transverse Pt in Ds Sideband (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events"); sidebandCollection.push_back(&Muon2_Pt_sideband);
+  Muon2_Eta_peak=HConfig.GetTH1D(Name+"_Muon2_Eta_peak","Psuedorapidity in Ds Peak (muon 2)",30,-2,2,"#mu_{2} #eta","Events"); peakCollection.push_back(&Muon2_Eta_peak);
+  Muon2_Eta_sideband=HConfig.GetTH1D(Name+"_Muon2_Eta_sideband","Psuedorapidity in Ds Sideband (muon 2)",30,-2,2,"#mu_{2} #eta","Events"); sidebandCollection.push_back(&Muon2_Eta_sideband);
+  Muon2_Phi_peak=HConfig.GetTH1D(Name+"_Muon2_Phi_peak","Azimuthal angle in Ds Peak of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events"); peakCollection.push_back(&Muon2_Phi_peak);
+  Muon2_Phi_sideband=HConfig.GetTH1D(Name+"_Muon2_Phi_sideband","Azimuthal angle in Ds Sideband of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events"); sidebandCollection.push_back(&Muon2_Phi_sideband);
+  control_Muon2_Pt=HConfig.GetTH1D(Name+"_control_Muon2_Pt","Transverse Pt (muon 2)",25,0,20,"#mu_{2} p_{T} (GeV)","Events"); validationCollection.push_back(&control_Muon2_Pt);
+  control_Muon2_Eta=HConfig.GetTH1D(Name+"_control_Muon2_Eta","Psuedorapidity (muon 2)",30,-2,2,"#mu_{2} #eta","Events"); validationCollection.push_back(&control_Muon2_Eta);
+  control_Muon2_Phi=HConfig.GetTH1D(Name+"_control_Muon2_Phi","Azimuthal angle of (muons 2)",25,-3.4,3.4,"#mu_{2} #phi","Events"); validationCollection.push_back(&control_Muon2_Phi);
 
-  Track_Pt_peak=HConfig.GetTH1D(Name+"_Track_Pt_peak","Transverse Pt in Ds Peak (Track)",25,0,20,"Track p_{T} (GeV)","Events");
-  Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse Pt in Ds Sideband (Track)",25,0,20,"Track p_{T} (GeV)","Events");
-  Track_Eta_peak=HConfig.GetTH1D(Name+"_Track_Eta_peak","Psuedorapidity in Ds Peak (Track)",30,-2,2,"Track #eta","Events");
-  Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity in Ds Sideband (Track)",30,-2,2,"Track #eta","Events");
-  Track_Phi_peak=HConfig.GetTH1D(Name+"_Track_Phi_peak","Azimuthal angle in Ds Peak of (Track)",25,-3.4,3.4,"Track #phi","Events");
-  Track_Phi_sideband=HConfig.GetTH1D(Name+"_Track_Phi_sideband","Azimuthal angle in Ds Sideband of (Track)",25,-3.4,3.4,"Track #phi","Events");
-  control_Track_Pt=HConfig.GetTH1D(Name+"_control_Track_Pt","Transverse Pt (Track)",25,0,20,"Track p_{T} (GeV)","Events");
-  control_Track_Eta=HConfig.GetTH1D(Name+"_control_Track_Eta","Psuedorapidity (Track)",30,-2,2,"Track #eta","Events");
-  control_Track_Phi=HConfig.GetTH1D(Name+"_control_Track_Phi","Azimuthal angle of (Track)",25,-3.4,3.4,"Track #phi","Events");
+  Track_Pt_peak=HConfig.GetTH1D(Name+"_Track_Pt_peak","Transverse Pt in Ds Peak (Track)",25,0,20,"Track p_{T} (GeV)","Events"); peakCollection.push_back(&Track_Pt_peak);
+  Track_Pt_sideband=HConfig.GetTH1D(Name+"_Track_Pt_sideband","Transverse Pt in Ds Sideband (Track)",25,0,20,"Track p_{T} (GeV)","Events"); sidebandCollection.push_back(&Track_Pt_sideband);
+  Track_Eta_peak=HConfig.GetTH1D(Name+"_Track_Eta_peak","Psuedorapidity in Ds Peak (Track)",30,-2,2,"Track #eta","Events"); peakCollection.push_back(&Track_Eta_peak);
+  Track_Eta_sideband=HConfig.GetTH1D(Name+"_Track_Eta_sideband","Psuedorapidity in Ds Sideband (Track)",30,-2,2,"Track #eta","Events"); sidebandCollection.push_back(&Track_Eta_sideband);
+  Track_Phi_peak=HConfig.GetTH1D(Name+"_Track_Phi_peak","Azimuthal angle in Ds Peak of (Track)",25,-3.4,3.4,"Track #phi","Events"); peakCollection.push_back(&Track_Phi_peak);
+  Track_Phi_sideband=HConfig.GetTH1D(Name+"_Track_Phi_sideband","Azimuthal angle in Ds Sideband of (Track)",25,-3.4,3.4,"Track #phi","Events"); sidebandCollection.push_back(&Track_Phi_sideband);
+  control_Track_Pt=HConfig.GetTH1D(Name+"_control_Track_Pt","Transverse Pt (Track)",25,0,20,"Track p_{T} (GeV)","Events"); validationCollection.push_back(&control_Track_Pt);
+  control_Track_Eta=HConfig.GetTH1D(Name+"_control_Track_Eta","Psuedorapidity (Track)",30,-2,2,"Track #eta","Events"); validationCollection.push_back(&control_Track_Eta);
+  control_Track_Phi=HConfig.GetTH1D(Name+"_control_Track_Phi","Azimuthal angle of (Track)",25,-3.4,3.4,"Track #phi","Events"); validationCollection.push_back(&control_Track_Phi);
 
-  VertexKFChi2_peak=HConfig.GetTH1D(Name+"VertexKFChi2_peak","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
-  VertexKFChi2_sideband=HConfig.GetTH1D(Name+"VertexKFChi2_sideband","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
-  VertexKFChi2=HConfig.GetTH1D(Name+"VertexKFChi2","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events");
+  VertexKFChi2_peak=HConfig.GetTH1D(Name+"VertexKFChi2_peak","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events"); peakCollection.push_back(&VertexKFChi2_peak);
+  VertexKFChi2_sideband=HConfig.GetTH1D(Name+"VertexKFChi2_sideband","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events"); sidebandCollection.push_back(&VertexKFChi2_sideband);
+  VertexKFChi2=HConfig.GetTH1D(Name+"VertexKFChi2","KF Vertex Chi Squared",50,0,20,"KF vertex #chi^{2}","Events"); validationCollection.push_back(&VertexKFChi2);
 
-  SVPVDsDirAngle_peak=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_peak","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
-  SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
-  SVPVDsDirAngle=HConfig.GetTH1D(Name+"_SVPVDsDirAngle","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events");
+  SVPVDsDirAngle_peak=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_peak","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events"); peakCollection.push_back(&SVPVDsDirAngle_peak);
+  SVPVDsDirAngle_sideband=HConfig.GetTH1D(Name+"_SVPVDsDirAngle_sideband","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events"); sidebandCollection.push_back(&SVPVDsDirAngle_sideband);
+  SVPVDsDirAngle=HConfig.GetTH1D(Name+"_SVPVDsDirAngle","SVPVDsDirAngle",100,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{Ds}, rad","Events"); validationCollection.push_back(&SVPVDsDirAngle);
 
-  NtracksClose_peak=HConfig.GetTH1D(Name+"_NtracksClose_peak","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV","");
-  NtracksClose_sideband=HConfig.GetTH1D(Name+"_NtracksClose_sideband","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV","");
-  NtracksClose=HConfig.GetTH1D(Name+"_NtracksClose","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV","");
+  NtracksClose_peak=HConfig.GetTH1D(Name+"_NtracksClose_peak","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV",""); peakCollection.push_back(&NtracksClose_peak);
+  NtracksClose_sideband=HConfig.GetTH1D(Name+"_NtracksClose_sideband","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV",""); sidebandCollection.push_back(&NtracksClose_sideband);
+  NtracksClose=HConfig.GetTH1D(Name+"_NtracksClose","NtracksClose",8,-0.5,7.5,"Number of tracks close to SV",""); validationCollection.push_back(&NtracksClose);
 
-  NSV_peak=HConfig.GetTH1D(Name+"_NSV_peak","NSV",8,-0.5,7.5,"N vertices in the Ds cone","");
-  NSV_sideband=HConfig.GetTH1D(Name+"_NSV_sideband","NSV",8,-0.5,7.5,"N vertices in the Ds cone","");
-  NSV=HConfig.GetTH1D(Name+"_NSV","NSV",8,-0.5,7.5,"N vertices in the Ds cone","");
+  NSV_peak=HConfig.GetTH1D(Name+"_NSV_peak","NSV",8,-0.5,7.5,"N vertices in the Ds cone",""); peakCollection.push_back(&NSV_peak);
+  NSV_sideband=HConfig.GetTH1D(Name+"_NSV_sideband","NSV",8,-0.5,7.5,"N vertices in the Ds cone",""); sidebandCollection.push_back(&NSV_sideband);
+  NSV=HConfig.GetTH1D(Name+"_NSV","NSV",8,-0.5,7.5,"N vertices in the Ds cone",""); validationCollection.push_back(&NSV);
 
-  MinMuon_chi2LocalPosition_peak=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_peak","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
-  MinMuon_chi2LocalPosition_sideband=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_sideband","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
-  MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}","");
+  MinMuon_chi2LocalPosition_peak=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_peak","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}",""); peakCollection.push_back(&MinMuon_chi2LocalPosition_peak);
+  MinMuon_chi2LocalPosition_sideband=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition_sideband","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}",""); sidebandCollection.push_back(&MinMuon_chi2LocalPosition_sideband);
+  MinMuon_chi2LocalPosition=HConfig.GetTH1D(Name+"_MinMuon_chi2LocalPosition","MinMuon_chi2LocalPosition",50,0,5,"Min Inner/Outer track #chi^{2}",""); validationCollection.push_back(&MinMuon_chi2LocalPosition);
  
-  MindcaTrackSV_peak=HConfig.GetTH1D(Name+"_MindcaTrackSV_peak","MindcaTrackSV",50,0,0.1,"Min distance of track to SV","");
-  MindcaTrackSV_sideband=HConfig.GetTH1D(Name+"_MindcaTrackSV_sideband","MindcaTrackSV",50,0,0.1,"Min distance of track to SV","");
-  MindcaTrackSV=HConfig.GetTH1D(Name+"_MindcaTrackSV","MindcaTrackSV",50,0,0.1,"Min distance of track to SV",""); 
+  MindcaTrackSV_peak=HConfig.GetTH1D(Name+"_MindcaTrackSV_peak","MindcaTrackSV",50,0,0.1,"Min distance of track to SV",""); peakCollection.push_back(&MindcaTrackSV_peak);
+  MindcaTrackSV_sideband=HConfig.GetTH1D(Name+"_MindcaTrackSV_sideband","MindcaTrackSV",50,0,0.1,"Min distance of track to SV",""); sidebandCollection.push_back(&MindcaTrackSV_sideband);
+  MindcaTrackSV=HConfig.GetTH1D(Name+"_MindcaTrackSV","MindcaTrackSV",50,0,0.1,"Min distance of track to SV",""); validationCollection.push_back(&MindcaTrackSV); 
 
-  MinDca_peak=HConfig.GetTH1D(Name+"_MinDca_peak","MinDca",50,0,0.02,"Min distance between muons and track","");
-  MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca",50,0,0.02,"Min distance between muons and track","");
-  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.02,"Min distance between muons and track","");
+  MinDca_peak=HConfig.GetTH1D(Name+"_MinDca_peak","MinDca",50,0,0.02,"Min distance between muons and track",""); peakCollection.push_back(&MinDca_peak);
+  MinDca_sideband=HConfig.GetTH1D(Name+"_MinDca_sideband","MinDca",50,0,0.02,"Min distance between muons and track",""); sidebandCollection.push_back(&MinDca_sideband);
+  MinDca=HConfig.GetTH1D(Name+"_MinDca","MinDca",50,0,0.02,"Min distance between muons and track",""); validationCollection.push_back(&MinDca);
 
-  MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
-  MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
-  MinD0SigSV=HConfig.GetTH1D(Name+"_MinD0SigSV","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV","");
+  MinD0SigSV_peak=HConfig.GetTH1D(Name+"_MinD0SigSV_peak","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MinD0SigSV_peak);
+  MinD0SigSV_sideband=HConfig.GetTH1D(Name+"_MinD0SigSV_sideband","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MinD0SigSV_sideband);
+  MinD0SigSV=HConfig.GetTH1D(Name+"_MinD0SigSV","MinD0SigSV",30,0,1.5,"Min Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MinD0SigSV);
 
-  MinD0SigPV_peak=HConfig.GetTH1D(Name+"_MinD0SigPV_peak","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
-  MinD0SigPV_sideband=HConfig.GetTH1D(Name+"_MinD0SigPV_sideband","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
-  MinD0SigPV=HConfig.GetTH1D(Name+"_MinD0SigPV","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV","");
+  MinD0SigPV_peak=HConfig.GetTH1D(Name+"_MinD0SigPV_peak","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MinD0SigPV_peak);
+  MinD0SigPV_sideband=HConfig.GetTH1D(Name+"_MinD0SigPV_sideband","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MinD0SigPV_sideband);
+  MinD0SigPV=HConfig.GetTH1D(Name+"_MinD0SigPV","MinD0SigPV",20,0,20,"Min Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MinD0SigPV);
 
-  MaxVertexPairQuality_peak=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_peak","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
-  MaxVertexPairQuality_sideband=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_sideband","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
-  MaxVertexPairQuality=HConfig.GetTH1D(Name+"_MaxVertexPairQuality","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
+  MaxVertexPairQuality_peak=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_peak","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events"); peakCollection.push_back(&MaxVertexPairQuality_peak);
+  MaxVertexPairQuality_sideband=HConfig.GetTH1D(Name+"_MaxVertexPairQuality_sideband","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events"); sidebandCollection.push_back(&MaxVertexPairQuality_sideband);
+  MaxVertexPairQuality=HConfig.GetTH1D(Name+"_MaxVertexPairQuality","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events"); validationCollection.push_back(&MaxVertexPairQuality);
 
-  MaxdeltaMuZ_peak = HConfig.GetTH1D(Name+"_MaxdeltaMuZ_peak","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm","");
-  MaxdeltaMuZ_sideband = HConfig.GetTH1D(Name+"_MaxdeltaMuZ_sideband","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm","");
-  MaxdeltaMuZ = HConfig.GetTH1D(Name+"_MaxdeltaMuZ","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm","");
+  MaxdeltaMuZ_peak = HConfig.GetTH1D(Name+"_MaxdeltaMuZ_peak","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); peakCollection.push_back(&MaxdeltaMuZ_peak);
+  MaxdeltaMuZ_sideband = HConfig.GetTH1D(Name+"_MaxdeltaMuZ_sideband","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); sidebandCollection.push_back(&MaxdeltaMuZ_sideband);
+  MaxdeltaMuZ = HConfig.GetTH1D(Name+"_MaxdeltaMuZ","MaxdeltaMuZ",30,0,0.6,"Max #Delta z (#mu-#mu), cm",""); validationCollection.push_back(&MaxdeltaMuZ);
 
-  MaxDca_peak=HConfig.GetTH1D(Name+"_MaxDca_peak","MaxDca",50,0,0.10,"Max distance between muons","");
-  MaxDca_sideband=HConfig.GetTH1D(Name+"_MaxDca_sideband","MaxDca",50,0,0.10,"Max distance between muons","");
-  MaxDca=HConfig.GetTH1D(Name+"_MaxDca","MaxDca",50,0,0.10,"Max distance between muons","");
+  MaxDca_peak=HConfig.GetTH1D(Name+"_MaxDca_peak","MaxDca",50,0,0.10,"Max distance between muons",""); peakCollection.push_back(&MaxDca_peak);
+  MaxDca_sideband=HConfig.GetTH1D(Name+"_MaxDca_sideband","MaxDca",50,0,0.10,"Max distance between muons",""); sidebandCollection.push_back(&MaxDca_sideband);
+  MaxDca=HConfig.GetTH1D(Name+"_MaxDca","MaxDca",50,0,0.10,"Max distance between muons",""); validationCollection.push_back(&MaxDca);
 
-  MaxD0SigSV_peak=HConfig.GetTH1D(Name+"_MaxD0SigSV_peak","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
-  MaxD0SigSV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigSV_sideband","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
-  MaxD0SigSV=HConfig.GetTH1D(Name+"_MaxD0SigSV","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV","");
+  MaxD0SigSV_peak=HConfig.GetTH1D(Name+"_MaxD0SigSV_peak","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV",""); peakCollection.push_back(&MaxD0SigSV_peak);
+  MaxD0SigSV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigSV_sideband","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV",""); sidebandCollection.push_back(&MaxD0SigSV_sideband);
+  MaxD0SigSV=HConfig.GetTH1D(Name+"_MaxD0SigSV","MaxD0SigSV",20,0,5,"Max Transverse Impact significance w.r.t SV",""); validationCollection.push_back(&MaxD0SigSV);
 
-  MaxD0SigPV_peak=HConfig.GetTH1D(Name+"_MaxD0SigPV_peak","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
-  MaxD0SigPV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigPV_sideband","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
-  MaxD0SigPV=HConfig.GetTH1D(Name+"_MaxD0SigPV","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV","");
+  MaxD0SigPV_peak=HConfig.GetTH1D(Name+"_MaxD0SigPV_peak","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV",""); peakCollection.push_back(&MaxD0SigPV_peak);
+  MaxD0SigPV_sideband=HConfig.GetTH1D(Name+"_MaxD0SigPV_sideband","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV",""); sidebandCollection.push_back(&MaxD0SigPV_sideband);
+  MaxD0SigPV=HConfig.GetTH1D(Name+"_MaxD0SigPV","MaxD0SigPV",20,0,20,"Max Transverse Impact significance w.r.t PV",""); validationCollection.push_back(&MaxD0SigPV);
 
-  Iso1_peak=HConfig.GetTH1D(Name+"_Iso1_peak","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1_sideband=HConfig.GetTH1D(Name+"_Iso1_sideband","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1=HConfig.GetTH1D(Name+"_Iso1","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1_peak=HConfig.GetTH1D(Name+"_Iso1_peak","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0"); peakCollection.push_back(&Iso1_peak);
+  Iso1_sideband=HConfig.GetTH1D(Name+"_Iso1_sideband","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0"); sidebandCollection.push_back(&Iso1_sideband);
+  Iso1=HConfig.GetTH1D(Name+"_Iso1","Iso1",30,0,1.1,"I= p_{T}(Ds)/(p_{T}(Ds) + #sum p_{T}(tracks))","#Delta R < 1.0"); validationCollection.push_back(&Iso1);
 
-  Iso1Mu1_peak=HConfig.GetTH1D(Name+"_Iso1Mu1_peak","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1Mu1_sideband=HConfig.GetTH1D(Name+"_Iso1Mu1_sideband","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
-  Iso1Mu1=HConfig.GetTH1D(Name+"_Iso1Mu1","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0");
+  Iso1Mu1_peak=HConfig.GetTH1D(Name+"_Iso1Mu1_peak","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0"); peakCollection.push_back(&Iso1Mu1_peak);
+  Iso1Mu1_sideband=HConfig.GetTH1D(Name+"_Iso1Mu1_sideband","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0"); sidebandCollection.push_back(&Iso1Mu1_sideband);
+  Iso1Mu1=HConfig.GetTH1D(Name+"_Iso1Mu1","Iso1Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 1.0"); validationCollection.push_back(&Iso1Mu1);
 
-  Iso8Mu1_peak=HConfig.GetTH1D(Name+"_Iso8Mu1_peak","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
-  Iso8Mu1_sideband=HConfig.GetTH1D(Name+"_Iso8Mu1_sideband","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
-  Iso8Mu1=HConfig.GetTH1D(Name+"_Iso8Mu1","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8");
+  Iso8Mu1_peak=HConfig.GetTH1D(Name+"_Iso8Mu1_peak","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8"); peakCollection.push_back(&Iso8Mu1_peak);
+  Iso8Mu1_sideband=HConfig.GetTH1D(Name+"_Iso8Mu1_sideband","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8"); sidebandCollection.push_back(&Iso8Mu1_sideband);
+  Iso8Mu1=HConfig.GetTH1D(Name+"_Iso8Mu1","Iso8Mu1",30,0,1.1,"I= p_{T}(#mu1)/(p_{T}(#mu1) + #sum p_{T}(tracks))","#Delta R < 0.8"); validationCollection.push_back(&Iso8Mu1);
 
-  FLSignificance_peak=HConfig.GetTH1D(Name+"_FLSignificance_peak","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
-  FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
-  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",60,0,60,"PV - SV distance  significance","Events");
+  //FLSignificance_peak=HConfig.GetTH1D(Name+"_FLSignificance_peak","FLSignificance",60,0,60,"PV - SV distance  significance","Events"); peakCollection.push_back(&FLSignificance_peak);
+  //FLSignificance_sideband=HConfig.GetTH1D(Name+"_FLSignificance_sideband","FLSignificance",60,0,60,"PV - SV distance  significance","Events"); sidebandCollection.push_back(&FLSignificance_sideband);
+  //FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",60,0,60,"PV - SV distance  significance","Events"); validationCollection.push_back(&FLSignificance);
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -333,104 +333,21 @@ void  DsToPhiPi::Configure(){
 
 void  DsToPhiPi::Store_ExtraDist(){ 
   
-  //Extradist1d.push_back(&Track_P);
-  //Extradist1d.push_back(&Track_E);
-  //Extradist1d.push_back(&Track_Pt);
-  //Extradist1d.push_back(&Track_Eta);
-  //Extradist1d.push_back(&Track_Phi);
   Extradist1d.push_back(&Track_normalizedChi2);
-  //Extradist1d.push_back(&Track_numberOfValidHits);
-  //Extradist1d.push_back(&Track_charge);
-  
-  //Extradist1d.push_back(&Muon1_E);
-  //Extradist1d.push_back(&Muon1_Pt);
-  //Extradist1d.push_back(&Muon1_Phi);
-  //Extradist1d.push_back(&Muon1_Eta);
-  //Extradist1d.push_back(&Muon2_E);
-  //Extradist1d.push_back(&Muon2_Pt);
-  //Extradist1d.push_back(&Muon2_Phi);
-  //Extradist1d.push_back(&Muon2_Eta);
-  //Extradist1d.push_back(&DimuondR);
-  //Extradist1d.push_back(&Muon1TrkdR);
-  //Extradist1d.push_back(&Muon2TrkdR);
   Extradist1d.push_back(&PhiMass);
   Extradist1d.push_back(&PhiPlusTrackMass);
   Extradist2d.push_back(&PhiMassVsDsMass);
-  //Extradist1d.push_back(&Muon1_isGlobal);
-  //Extradist1d.push_back(&Muon2_isGlobal);
-  //Extradist1d.push_back(&Muon1_isStandAlone);
-  //Extradist1d.push_back(&Muon2_isStandAlone);
-  //Extradist1d.push_back(&Muon1_isTracker);
-  //Extradist1d.push_back(&Muon2_isTracker);
-  //Extradist1d.push_back(&Muon1_isCalo);
-  //Extradist1d.push_back(&Muon2_isCalo);
-  //Extradist1d.push_back(&Track_TriggerMatchdR);
-  //Extradist1d.push_back(&Muon1_TriggerMatchdR);
-  //Extradist1d.push_back(&Muon2_TriggerMatchdR);
-  //Extradist1d.push_back(&NVtx);
-  Extradist1d.push_back(&DsMass);
-  Extradist1d.push_back(&Ds_Pt);
-  Extradist1d.push_back(&Ds_P);
-  Extradist1d.push_back(&Ds_M);
-  Extradist1d.push_back(&Ds_L);
-  Extradist1d.push_back(&Ds_eta);
-  Extradist1d.push_back(&DsGenMatch);
+  
+  // Validation plots
+
+  for (unsigned int j=0; j<peakCollection.size(); ++j){
+      //Extradist1d.push_back(peakCollection.at(j));
+      //Extradist1d.push_back(sidebandCollection.at(j));
+      Extradist1d.push_back(validationCollection.at(j));
+  }
 
   Extradist1d.push_back(&DecayLength_prompt);
   Extradist1d.push_back(&DecayLength_non_prompt);
-  Extradist1d.push_back(&DecayLength);
-  Extradist1d.push_back(&DecayLength_peak);
-  Extradist1d.push_back(&DecayLength_sideband);
-
-  Extradist1d.push_back(&control_Muon1_Pt);
-  Extradist1d.push_back(&control_Muon1_Eta);
-  Extradist1d.push_back(&control_Muon1_Phi);	 
-  Extradist1d.push_back(&control_Muon2_Pt);
-  Extradist1d.push_back(&control_Muon2_Eta);
-  Extradist1d.push_back(&control_Muon2_Phi);
-  Extradist1d.push_back(&control_Track_Pt);
-  Extradist1d.push_back(&control_Track_Eta);
-  Extradist1d.push_back(&control_Track_Phi);
-
-  //Extradist1d.push_back(&Muon1_Pt_peak);
-  //Extradist1d.push_back(&Muon1_Pt_sideband);
-  //Extradist1d.push_back(&Muon1_Eta_peak);
-  //Extradist1d.push_back(&Muon1_Eta_sideband);
-  //Extradist1d.push_back(&Muon1_Phi_peak);
-  //Extradist1d.push_back(&Muon1_Phi_sideband);
-
-  //Extradist1d.push_back(&Muon2_Pt_peak);
-  //Extradist1d.push_back(&Muon2_Pt_sideband);
-  //Extradist1d.push_back(&Muon2_Eta_peak);
-  //Extradist1d.push_back(&Muon2_Eta_sideband);
-  //Extradist1d.push_back(&Muon2_Phi_peak);
-  //Extradist1d.push_back(&Muon2_Phi_sideband);
-
-  //Extradist1d.push_back(&Track_Pt_peak);
-  //Extradist1d.push_back(&Track_Pt_sideband);
-  //Extradist1d.push_back(&Track_Eta_peak);
-  //Extradist1d.push_back(&Track_Eta_sideband);
-  //Extradist1d.push_back(&Track_Phi_peak);
-  //Extradist1d.push_back(&Track_Phi_sideband);
-
-  Extradist1d.push_back(&VertexKFChi2);
-  Extradist1d.push_back(&SVPVDsDirAngle);
-  Extradist1d.push_back(&NtracksClose);
-  Extradist1d.push_back(&NSV);
-  Extradist1d.push_back(&MinMuon_chi2LocalPosition);
-  Extradist1d.push_back(&MindcaTrackSV);
-  Extradist1d.push_back(&MinDca);
-  Extradist1d.push_back(&MinD0SigSV);
-  Extradist1d.push_back(&MinD0SigPV);
-  Extradist1d.push_back(&MaxVertexPairQuality);
-  Extradist1d.push_back(&MaxdeltaMuZ);
-  Extradist1d.push_back(&MaxDca);
-  Extradist1d.push_back(&MaxD0SigSV);
-  Extradist1d.push_back(&MaxD0SigPV);
-  Extradist1d.push_back(&Iso1);
-  Extradist1d.push_back(&Iso1Mu1);
-  Extradist1d.push_back(&Iso8Mu1);
-  Extradist1d.push_back(&FLSignificance);
 
 }
 
@@ -447,6 +364,8 @@ void  DsToPhiPi::doEvent(){
   if(id==1 && Ntp->WhichEra(2017).Contains("RunD") ){ RunD=1;} 
   if(id==1 && Ntp->WhichEra(2017).Contains("RunE") ){ RunE=1;}
   if(id==1 && Ntp->WhichEra(2017).Contains("RunF") ){ RunF=1;}
+
+  random_num = rndm.Rndm();
 
   value.at(HLTOk) = 0;
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
@@ -549,7 +468,7 @@ void  DsToPhiPi::doEvent(){
   double w;  
   double w_peak;     
 
-  if(!Ntp->isData()){w = 1; w_peak = /*.083;} //*/.358;}//Ntp->PUReweight(); } //  No weights to data
+  if(!Ntp->isData()){w = 1; w_peak = 1;}//.083;} //.358;}//Ntp->PUReweight(); } //  No weights to data
   else{w=1; w_peak=1;}
   bool status=AnalysisCuts(t,w,wobs);
   if(status){
@@ -828,125 +747,35 @@ void  DsToPhiPi::Finish(){
     //if(RunD){scaleRun.push_back(5952.73);scaleRun.push_back(11303.6);}
     //if(RunE){scaleRun.push_back(10661.2);scaleRun.push_back(19461.1);}
     //if(RunF){scaleRun.push_back(10093.0);scaleRun.push_back(19046.7);}
-    //scaleRun.push_back(1122.09);scaleRun.push_back(2246.3);
-    scaleRun.push_back(6875.5);scaleRun.push_back(11641.8);
+    //scaleRun.push_back(1122.09);scaleRun.push_back(2246.3); //For 2017
+    scaleRun.push_back(483.077);scaleRun.push_back(2258.15); //For 2018
 
-    DecayLength_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);//DecayLength_sideband.at(0).Integral());
-    Muon1_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Muon1_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Muon1_Phi_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Muon2_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Muon2_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Muon2_Phi_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Track_Pt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Track_Eta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Track_Phi_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    DsPt_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    DsP_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    DsM_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    DsL_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    DsEta_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    VertexKFChi2_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    SVPVDsDirAngle_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    NtracksClose_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    NSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MinMuon_chi2LocalPosition_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MindcaTrackSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MinDca_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MinD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MinD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MaxVertexPairQuality_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MaxdeltaMuZ_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MaxDca_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MaxD0SigSV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    MaxD0SigPV_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Iso1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Iso1Mu1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    Iso8Mu1_sideband.at(0).Scale(scaleRun[0]/scaleRun[1]);
-    FLSignificance.at(0).Scale(scaleRun[0]/scaleRun[1]);
+    for ( unsigned int j=0; j<validationCollection.size(); ++j){
+      (validationCollection.at(j)->at(0)).Add(&(peakCollection.at(j)->at(0)),1.0);
+      (validationCollection.at(j)->at(0)).Add(&(sidebandCollection.at(j)->at(0)),-(scaleRun[0]/scaleRun[1]));
+    }
 
     DecayLength_prompt.at(0).Add(&DecayLength_peak.at(0));
-    DecayLength_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
+    DecayLength_prompt.at(0).Add(&DecayLength_sideband.at(0),-(scaleRun[0]/scaleRun[1]));
     DecayLength_non_prompt.at(0).Add(&DecayLength_peak.at(0));
-    DecayLength_non_prompt.at(0).Add(&DecayLength_sideband.at(0),-1);
-    DecayLength.at(0).Add(&DecayLength_peak.at(0));
-    DecayLength.at(0).Add(&DecayLength_sideband.at(0),-1); 
+    DecayLength_non_prompt.at(0).Add(&DecayLength_sideband.at(0),-(scaleRun[0]/scaleRun[1]));
+ 
+      }
 
-    control_Muon1_Pt.at(0).Add(&Muon1_Pt_peak.at(0));
-    control_Muon1_Pt.at(0).Add(&Muon1_Pt_sideband.at(0),-1);
-    control_Muon1_Eta.at(0).Add(&Muon1_Eta_peak.at(0));
-    control_Muon1_Eta.at(0).Add(&Muon1_Eta_sideband.at(0),-1);   
-    control_Muon1_Phi.at(0).Add(&Muon1_Phi_peak.at(0));
-    control_Muon1_Phi.at(0).Add(&Muon1_Phi_sideband.at(0),-1);
-    control_Muon2_Pt.at(0).Add(&Muon2_Pt_peak.at(0));
-    control_Muon2_Pt.at(0).Add(&Muon2_Pt_sideband.at(0),-1);
-    control_Muon2_Eta.at(0).Add(&Muon2_Eta_peak.at(0));
-    control_Muon2_Eta.at(0).Add(&Muon2_Eta_sideband.at(0),-1);
-    control_Muon2_Phi.at(0).Add(&Muon2_Phi_peak.at(0));
-    control_Muon2_Phi.at(0).Add(&Muon2_Phi_sideband.at(0),-1);
-    control_Track_Pt.at(0).Add(&Track_Pt_peak.at(0));
-    control_Track_Pt.at(0).Add(&Track_Pt_sideband.at(0),-1);
-    control_Track_Eta.at(0).Add(&Track_Eta_peak.at(0));
-    control_Track_Eta.at(0).Add(&Track_Eta_sideband.at(0),-1);
-    control_Track_Phi.at(0).Add(&Track_Phi_peak.at(0));
-    control_Track_Phi.at(0).Add(&Track_Phi_sideband.at(0),-1);
-    VertexKFChi2.at(0).Add(&VertexKFChi2_peak.at(0));
-    VertexKFChi2.at(0).Add(&VertexKFChi2_sideband.at(0),-1);
-    SVPVDsDirAngle.at(0).Add(&SVPVDsDirAngle_peak.at(0));
-    SVPVDsDirAngle.at(0).Add(&SVPVDsDirAngle_sideband.at(0),-1);
-    NtracksClose.at(0).Add(&NtracksClose_peak.at(0));
-    NtracksClose.at(0).Add(&NtracksClose_sideband.at(0),-1);
-    NSV.at(0).Add(&NSV_peak.at(0));
-    NSV.at(0).Add(&NSV_sideband.at(0),-1);
-    MinMuon_chi2LocalPosition.at(0).Add(&MinMuon_chi2LocalPosition_peak.at(0));
-    MinMuon_chi2LocalPosition.at(0).Add(&MinMuon_chi2LocalPosition_sideband.at(0),-1);
-    MindcaTrackSV.at(0).Add(&MindcaTrackSV_peak.at(0));
-    MindcaTrackSV.at(0).Add(&MindcaTrackSV_sideband.at(0),-1);
-    MinDca.at(0).Add(&MinDca_peak.at(0));
-    MinDca.at(0).Add(&MinDca_sideband.at(0),-1);
-    MinD0SigSV.at(0).Add(&MinD0SigSV_peak.at(0));
-    MinD0SigSV.at(0).Add(&MinD0SigSV_sideband.at(0),-1);
-    MinD0SigPV.at(0).Add(&MinD0SigPV_peak.at(0));
-    MinD0SigPV.at(0).Add(&MinD0SigPV_sideband.at(0),-1);
-    MaxVertexPairQuality.at(0).Add(&MaxVertexPairQuality_peak.at(0));
-    MaxVertexPairQuality.at(0).Add(&MaxVertexPairQuality_sideband.at(0),-1);
-    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_peak.at(0));
-    MaxdeltaMuZ.at(0).Add(&MaxdeltaMuZ_sideband.at(0),-1);
-    MaxDca.at(0).Add(&MaxDca_peak.at(0));
-    MaxDca.at(0).Add(&MaxDca_sideband.at(0),-1);
-    MaxD0SigSV.at(0).Add(&MaxD0SigSV_peak.at(0));
-    MaxD0SigSV.at(0).Add(&MaxD0SigSV_sideband.at(0),-1);
-    MaxD0SigPV.at(0).Add(&MaxD0SigPV_peak.at(0));
-    MaxD0SigPV.at(0).Add(&MaxD0SigPV_sideband.at(0),-1);
-    Iso1.at(0).Add(&Iso1_peak.at(0));
-    Iso1.at(0).Add(&Iso1_sideband.at(0),-1);
-    Iso1Mu1.at(0).Add(&Iso1Mu1_peak.at(0));
-    Iso1Mu1.at(0).Add(&Iso1Mu1_sideband.at(0),-1);
-    Iso8Mu1.at(0).Add(&Iso8Mu1_peak.at(0));
-    Iso8Mu1.at(0).Add(&Iso8Mu1_sideband.at(0),-1);
-    FLSignificance.at(0).Add(&FLSignificance_peak.at(0));
-    FLSignificance.at(0).Add(&FLSignificance_sideband.at(0),-1);
-
-    Ds_Pt.at(0).Add(&DsPt_peak.at(0));
-    Ds_Pt.at(0).Add(&DsPt_sideband.at(0),-1);
-    Ds_P.at(0).Add(&DsP_peak.at(0));
-    Ds_P.at(0).Add(&DsP_sideband.at(0),-1);
-    Ds_M.at(0).Add(&DsM_peak.at(0));
-    Ds_M.at(0).Add(&DsM_sideband.at(0),-1);
-    Ds_L.at(0).Add(&DsL_peak.at(0));
-    Ds_L.at(0).Add(&DsL_sideband.at(0),-1);
-    Ds_eta.at(0).Add(&DsEta_peak.at(0));
-    Ds_eta.at(0).Add(&DsEta_sideband.at(0),-1);
-
-  }
-
-  //if(mode == RECONSTRUCT){
+  if(mode == RECONSTRUCT){
   //  for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
   //    double scale(1.);
   //    if(Nminus0.at(0).at(i).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(i).Integral()/1;
   //    ScaleAllHistOfType(i,scale);
   //  }
-  //}
+
+    for ( unsigned int j=0; j<validationCollection.size(); ++j){
+      std::cout << "Plot " << j << " has data_Int = " << validationCollection.at(j)->at(0).Integral() << ", MC_Int = " << validationCollection.at(j)->at(1).Integral() << ", and ";
+      std::cout << "Scale = " << validationCollection.at(j)->at(0).Integral()/validationCollection.at(j)->at(1).Integral() << std::endl;
+      validationCollection.at(j)->at(1).Scale(validationCollection.at(j)->at(0).Integral()/validationCollection.at(j)->at(1).Integral());
+    }
+
+  }
   Selection::Finish();
 
 }

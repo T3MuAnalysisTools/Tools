@@ -25,8 +25,16 @@ class DsToPhiPi : public Selection {
   TTree * Sync_tree;
 
  private:
- // Selection Variables
- bool RunB, RunC, RunD, RunE, RunF = 0;
+  // Selection Variables
+  bool RunB, RunC, RunD, RunE, RunF = 0;
+
+  TRandom rndm;
+  double random_num;
+
+  std::vector<std::vector<TH1D>*> peakCollection;
+  std::vector<std::vector<TH1D>*> sidebandCollection;
+  std::vector<std::vector<TH1D>*> validationCollection;
+
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
 
