@@ -28,9 +28,11 @@
 #include "joshi/TMVASignal.h"
 #include "joshi/AnalysisWithTMVA.h"
 #include "joshi/MCEfficiency.h"
-#include "joshi/TriggerStudy.h"
 #include "joshi/FillMVATree.h"
-
+#include "joshi/FillMVATree_ThreeGlobal.h"
+#include "joshi/FillMVATree_TwoGlobalTracker.h"
+#include "joshi/DsPhiPeak.h"
+#include "joshi/SignalSelector.h"
 #endif
 
 
@@ -91,8 +93,12 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); //  three mu id cuts
   else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
   else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
+  else if(Analysis.Contains("fillmvatree_threeglobal"))s=new FillMVATree_ThreeGlobal(Analysis,UncertType);
+  else if(Analysis.Contains("fillmvatree_twoglobaltracker"))s=new FillMVATree_TwoGlobalTracker(Analysis,UncertType);
   else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
-  else if(Analysis.Contains("triggerstudy"))s = new TriggerStudy(Analysis,UncertType);
+  else if(Analysis.Contains("signalselector"))s = new SignalSelector(Analysis,UncertType); 
+  else if(Analysis.Contains("dsphipeak"))s = new DsPhiPeak(Analysis,UncertType); 
+  else if(Analysis.Contains("SignalSelector"))s=new SignalSelector(Analysis, UncertType);
   
 #endif
 

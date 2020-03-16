@@ -1,0 +1,8 @@
+/store/user/bjoshi/ParkingBPH2/BParking_19_01_20_ParkingBPH2__Run2018D-05May2019promptD-v1/200120_150353/0001
+/store/user/bjoshi/ParkingBPH2/BParking_19_01_20_ParkingBPH2__Run2018D-05May2019promptD-v1/200120_150353/0000
+/store/user/bjoshi/ParkingBPH3/BParking_19_01_20_ParkingBPH3__Run2018D-05May2019promptD-v1/200120_090807/0000
+/store/user/bjoshi/ParkingBPH4/BParking_19_01_20_ParkingBPH4__Run2018D-05May2019promptD-v1/200120_150359/0000
+/store/user/bjoshi/ParkingBPH5/BParking_19_01_20_ParkingBPH5__Run2018D-05May2019promptD-v1/200120_150405/0000
+/store/user/bjoshi/ParkingBPH5/BParking_19_01_20_ParkingBPH5__Run2018D-05May2019promptD-v1/200120_150405/0001
+/store/user/cherepan/BdTau3Mu/January2020_BdTau3Mu__bjoshi-CRAB3_MC2018_BdTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/200131_152304/0000
+/store/user/cherepan/BuTau3Mu/January2020_BuTau3Mu__bjoshi-CRAB3_MC2018_BuTau3Mu_13TeV_DIGI-87600497c2c6a5767aee5d92666e59c3/200131_152309/0000
