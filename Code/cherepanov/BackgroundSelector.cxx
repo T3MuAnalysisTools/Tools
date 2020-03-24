@@ -529,6 +529,7 @@ void  BackgroundSelector::doEvent(){
   
   unsigned int t;
   int id(Ntp->GetMCID());
+  //  std::cout<<" id   "<< id << std::endl;
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   bool HLTOk(false);
   bool L1Ok(false);
@@ -610,7 +611,8 @@ void  BackgroundSelector::doEvent(){
     //
     value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-    			Ntp->Muon_isGlobalMuon(mu3_pt_idx) or Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+			//    			Ntp->Muon_isGlobalMuon(mu3_pt_idx) or Ntp->Muon_isTrackerMuon(mu3_pt_idx));
+    			Ntp->Muon_isGlobalMuon(mu3_pt_idx));
     //------------------------------------------------------------------------------------------------------
   
     value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
@@ -723,7 +725,7 @@ void  BackgroundSelector::doEvent(){
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
 
-    
+    /*
     std::cout<<"------------------------------- "<< std::endl;
     std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
     std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -737,7 +739,7 @@ void  BackgroundSelector::doEvent(){
     Ntp->printMCDecayChainOfEvent(true, true, true, true);
     std::cout<< "\n\n\n\n\n\n";
 
-    
+    */
 
 
     vector<unsigned int> idx_vec;
