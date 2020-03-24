@@ -345,8 +345,8 @@ class Ntuple_Controller{
          return TVector3(Ntp->Vertex_signal_KF_pos->at(index).at(0), Ntp->Vertex_signal_KF_pos->at(index).at(1),Ntp->Vertex_signal_KF_pos->at(index).at(2));
       }
       
-      TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i, bool channel);
-      TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel);
+      TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i, bool channel=false);
+      TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel=false);
 
 
       //   int NTracksInThePV(unsigned int i){return Ntp->IsolationBranch_Trackp4->at(i).size();}

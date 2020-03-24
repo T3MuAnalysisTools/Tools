@@ -19,7 +19,7 @@ class BackgroundSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch1, TriggerMatch2,TriggerMatch3,TauMassCut,NCuts}; 
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut,NCuts}; 
 
 
  protected:
@@ -55,10 +55,13 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> SVPVTauDirAngle;
 
   std::vector<TH1D> TauMassRefitA1;
+  std::vector<TH1D> TauMassRefitA1MassCut;
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
+  std::vector<TH1D> TauMassRefitB1MassCut;
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
+  std::vector<TH1D> TauMassRefitC1MassCut;
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -102,6 +105,11 @@ class BackgroundSelector : public Selection {
   std::vector<TH2D> L1TriggersE;
   std::vector<TH2D> L1TriggersF;
 
+  std::vector<TH2D> PairMass;
+  std::vector<TH2D> PairMassWithCut;
+  std::vector<TH2D> PairMassEta;
+  std::vector<TH2D> PairMassEtaPrime;
+  std::vector<TH1D> IDOriginOfOSMuon;
 
   std::vector<TH1D> Muon1isGlob;
   std::vector<TH1D> Muon2isGlob;
@@ -151,45 +159,26 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> BDTOutputEndcap;
   std::vector<TH1D> NSignalCandidates;
 
-  std::vector<TH2D> ThreeMuMassVsFu;
-  std::vector<TH2D> MuPairsMassEta;
-  std::vector<TH2D> MuPairsMassEtaPrime;
-
-  std::vector<TH1D> M23;
-  std::vector<TH1D> M12;
-
-  std::vector<TH1D> M23_cut;
-  std::vector<TH1D> M12_cut;
-
-
-
-
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
   TMVA::Reader *readerBarrel;
   TMVA::Reader *readerEndcap;
 
-  Float_t var_vertexKFChi2;
-  Float_t var_svpvTauAngle;
-  Float_t var_flightLenSig;
-
-  Float_t var_segCompMuMin;
-  Float_t var_MuMu_minKFChi2;
-  Float_t var_sumMuTrkKinkChi2;
-  Float_t var_MaxD0Significance;
-  Float_t var_MinMIPLikelihood;
-  Float_t var_maxdca;
-  Float_t var_mindca_iso;
-  Float_t var_pmin;
+  Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
+  Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
+  Float_t var_flightLenSig;// (Flight length significance of the tau candidate)
+  Float_t var_sumMuTrkKinkChi2;// (sum of chi sq of the kink of all three muons)
+  Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
+  Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
   Float_t var_tauMass;
-  Float_t var_tauMassRes;
-  Float_t var_Eta_Tau;
-
   Float_t var_MuMu_mindR;
   Float_t var_RelPt_Mu1Tau;
   Float_t var_Eta_au;
+  Float_t var_MuMu_minKFChi2;
+  Float_t var_maxdca;
   Float_t var_MuTau_maxdR;
+  Float_t var_MaxD0Significance;
   Float_t var_IsolationMinDist;
 
 
