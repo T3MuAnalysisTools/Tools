@@ -51,16 +51,21 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_caloCompMu3",&var_caloCompMu3);
   TMVA_Tree->Branch("var_MinMIPLikelihood",&var_MinMIPLikelihood);
   TMVA_Tree->Branch("var_tauMass",&var_tauMass);
+  TMVA_Tree->Branch("var_tauEta",&var_tauEta);
   TMVA_Tree->Branch("var_ntracks",&var_ntracks);
   TMVA_Tree->Branch("var_relPt",&var_relPt);
   TMVA_Tree->Branch("var_isoMax",&var_isoMax);
   
   TMVA_Tree->Branch("var_MaxdeltaMuZ",&var_MaxdeltaMuZ);
   TMVA_Tree->Branch("var_MindeltaMuZ",&var_MindeltaMuZ);
+  TMVA_Tree->Branch("var_deltaMuZ12",&var_deltaMuZ12);
+  TMVA_Tree->Branch("var_deltaMuZ13",&var_deltaMuZ13);
+  TMVA_Tree->Branch("var_deltaMuZ23",&var_deltaMuZ23);
+
+
   TMVA_Tree->Branch("var_maxMuonsDca",&var_maxMuonsDca);
   TMVA_Tree->Branch("var_minMuonsDca",&var_minMuonsDca);
   TMVA_Tree->Branch("var_nsv",&var_nsv);
-
 
   TMVA_Tree->Branch("var_VertexMu1D0SigPVReco",&var_VertexMu1D0SigPVReco);
   TMVA_Tree->Branch("var_VertexMu2D0SigPVReco",&var_VertexMu2D0SigPVReco);
@@ -69,15 +74,12 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_MaxD0SigPV",&var_MaxD0SigPV);
   TMVA_Tree->Branch("var_MinD0SigPV",&var_MinD0SigPV);
 
-
   TMVA_Tree->Branch("var_VertexMu1D0SigBSReco",&var_VertexMu1D0SigBSReco);
   TMVA_Tree->Branch("var_VertexMu2D0SigBSReco",&var_VertexMu2D0SigBSReco);
   TMVA_Tree->Branch("var_VertexMu3D0SigBSReco",&var_VertexMu3D0SigBSReco);
 
   TMVA_Tree->Branch("var_MaxD0SigBS",&var_MaxD0SigBS);
   TMVA_Tree->Branch("var_MinD0SigBS",&var_MinD0SigBS);
-
-
 
   TMVA_Tree->Branch("var_VertexMu1D0SigSVReco",&var_VertexMu1D0SigSVReco);
   TMVA_Tree->Branch("var_VertexMu2D0SigSVReco",&var_VertexMu2D0SigSVReco);
@@ -174,13 +176,50 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Mu3Muon_numberOfChambers",&var_Mu3Muon_numberOfChambers);
 
 
-
   TMVA_Tree->Branch("var_MinMuon_numberOfMatches",&var_MinMuon_numberOfMatches);
   TMVA_Tree->Branch("var_MaxMuon_numberOfMatches",&var_MaxMuon_numberOfMatches);
   TMVA_Tree->Branch("var_Mu1Muon_numberOfMatches",&var_Mu1Muon_numberOfMatches);
   TMVA_Tree->Branch("var_Mu2Muon_numberOfMatches",&var_Mu2Muon_numberOfMatches);
   TMVA_Tree->Branch("var_Mu3Muon_numberOfMatches",&var_Mu3Muon_numberOfMatches);
 	
+
+  TMVA_Tree->Branch("var_Muon1LooseId",&var_Muon1LooseId);
+  TMVA_Tree->Branch("var_Muon1MediumId",&var_Muon1MediumId);
+  TMVA_Tree->Branch("var_Muon1TightId",&var_Muon1TightId);
+
+  TMVA_Tree->Branch("var_Muon2LooseId",&var_Muon2LooseId);
+  TMVA_Tree->Branch("var_Muon2MediumId",&var_Muon2MediumId);
+  TMVA_Tree->Branch("var_Muon2TightId",&var_Muon2TightId);
+
+  TMVA_Tree->Branch("var_Muon3LooseId",&var_Muon3LooseId);
+  TMVA_Tree->Branch("var_Muon3MediumId",&var_Muon3MediumId);
+  TMVA_Tree->Branch("var_Muon3TightId",&var_Muon3TightId);
+
+  TMVA_Tree->Branch("var_Muon1PFIsoLoose",&var_Muon1PFIsoLoose);
+  TMVA_Tree->Branch("var_Muon1PFIsoMedium",&var_Muon1PFIsoMedium);
+  TMVA_Tree->Branch("var_Muon1PFIsoTight",&var_Muon1PFIsoTight);
+  TMVA_Tree->Branch("var_Muon1PFIsoVTight",&var_Muon1PFIsoVTight);
+
+  TMVA_Tree->Branch("var_Muon2PFIsoLoose",&var_Muon2PFIsoLoose);
+  TMVA_Tree->Branch("var_Muon2PFIsoMedium",&var_Muon2PFIsoMedium);
+  TMVA_Tree->Branch("var_Muon2PFIsoTight",&var_Muon2PFIsoTight);
+  TMVA_Tree->Branch("var_Muon2PFIsoVTight",&var_Muon2PFIsoVTight);
+
+  TMVA_Tree->Branch("var_Muon3PFIsoLoose",&var_Muon3PFIsoLoose);
+  TMVA_Tree->Branch("var_Muon3PFIsoMedium",&var_Muon3PFIsoMedium);
+  TMVA_Tree->Branch("var_Muon3PFIsoTight",&var_Muon3PFIsoTight);
+  TMVA_Tree->Branch("var_Muon3PFIsoVTight",&var_Muon3PFIsoVTight);
+
+  TMVA_Tree->Branch("var_Muon1ImpactAngle",&var_Muon1ImpactAngle);
+  TMVA_Tree->Branch("var_Muon2ImpactAngle",&var_Muon2ImpactAngle);
+  TMVA_Tree->Branch("var_Muon3ImpactAngle",&var_Muon3ImpactAngle);
+  TMVA_Tree->Branch("var_MinMuonImpactAngle",&var_MinMuonImpactAngle);
+  TMVA_Tree->Branch("var_MaxMuonImpactAngle",&var_MaxMuonImpactAngle);
+
+
+  TMVA_Tree->Branch("var_mass12",&var_mass12);
+  TMVA_Tree->Branch("var_mass13",&var_mass13);
+
 
 
   // -----------------
@@ -189,16 +228,19 @@ void  FillTMVATrees::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk) cut.at(TriggerOk)=1;
-    if(i==SignalCandidate) cut.at(SignalCandidate)=1;
-    if(i==Mu1PtCut)  cut.at(Mu1PtCut)=3.0;
-    if(i==Mu2PtCut)  cut.at(Mu2PtCut)=3.0;
-    if(i==Mu3PtCut)  cut.at(Mu3PtCut)=2.0;
-    if(i==MuonID) cut.at(MuonID)=1;
-    if(i==PhiVeto) cut.at(PhiVeto)=0; // defined below
-    if(i==OmegaVeto) cut.at(OmegaVeto)=0; // defined below
-    if(i==TriggerMatch) cut.at(TriggerMatch)=0.03;
-    if(i==ThreeMuMass)  cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
+    if(i==TriggerOk)          cut.at(TriggerOk)=1;
+    if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
+    if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
+    if(i==MuonID)             cut.at(MuonID)=1;
+    if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
+    if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
+    if(i==TriggerMatchMu1)    cut.at(TriggerMatchMu1)=0.03;
+    if(i==TriggerMatchMu2)    cut.at(TriggerMatchMu2)=0.03;
+    if(i==TriggerMatchMu3)    cut.at(TriggerMatchMu3)=0.03;
+    if(i==ThreeMuMass)        cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
+    if(i==CutCategory)        cut.at(CutCategory)=1;// true for MC and mass side band for data
   }
   
   TString hlabel;
@@ -262,17 +304,36 @@ void  FillTMVATrees::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
     }
-    else if(i==TriggerMatch){
-      title.at(i)="Trigger Matching";
-      hlabel="Sum of dR_{reco-trigger}";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+    else if(i==TriggerMatchMu1){
+      title.at(i)="Trigger Matching (mu1)";
+      hlabel="trigger matching dR (#mu1)";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatchMu1_",htitle,20,0,0.1,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatchMu1_",htitle,20,0,0.1,hlabel,"Events"));
+    }
+    else if(i==TriggerMatchMu2){
+      title.at(i)="Trigger Matching (mu2)";
+      hlabel="trigger matching dR (#mu2)";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatchMu2_",htitle,20,0,0.1,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatchMu2_",htitle,20,0,0.1,hlabel,"Events"));
+    }
+    else if(i==TriggerMatchMu3){
+      title.at(i)="Trigger Matching (mu3)";
+      hlabel="trigger matching dR (#mu3)";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatchMu3_",htitle,20,0,0.1,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatchMu3_",htitle,20,0,0.1,hlabel,"Events"));
     }
     else if(i==ThreeMuMass){
       title.at(i)="Tau Mass";
       hlabel="three mu mass, GeV";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
+    }
+
+   else if(i==CutCategory){
+      title.at(i)="CutCategory";
+      hlabel="CutCategory";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_CutCategory_",htitle,3,0.5,3.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_CutCategory_",htitle,3,0.5,3.5,hlabel,"Events"));
     }
   } 
   
@@ -282,6 +343,11 @@ void  FillTMVATrees::Configure(){
       Muon1Pt =HConfig.GetTH1D(Name+"_Muon1Pt","Muon1Pt",50,0,25,"  #mu_{1} p_{T}, GeV","Events");
       Muon2Pt =HConfig.GetTH1D(Name+"_Muon2Pt","Muon2Pt",50,0,20,"  #mu_{2} p_{T}, GeV","Events");
       Muon3Pt =HConfig.GetTH1D(Name+"_Muon3Pt","Muon3Pt",50,0,15,"  #mu_{3} p_{T}, GeV","Events");
+
+
+      Muon1P =HConfig.GetTH1D(Name+"_Muon1P","Muon1P",50,0,25,"  #mu_{1} p, GeV","Events");
+      Muon2P =HConfig.GetTH1D(Name+"_Muon2P","Muon2P",50,0,20,"  #mu_{2} p, GeV","Events");
+      Muon3P =HConfig.GetTH1D(Name+"_Muon3P","Muon3P",50,0,15,"  #mu_{3} p, GeV","Events");
       
       TauEta=HConfig.GetTH1D(Name+"_TauEta","TauEta",30,-2.6,2.6,"#eta(#tau)","Events");
       TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
@@ -544,6 +610,11 @@ void  FillTMVATrees::Store_ExtraDist(){
   Extradist1d.push_back(&Muon2Pt);
   Extradist1d.push_back(&Muon3Pt);
 
+  Extradist1d.push_back(&Muon1P);
+  Extradist1d.push_back(&Muon2P);
+  Extradist1d.push_back(&Muon3P);
+
+
   Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&TauPt);
   Extradist1d.push_back(&TauP);
@@ -785,7 +856,6 @@ void  FillTMVATrees::doEvent(){
     unsigned int t;
     int id(Ntp->GetMCID());
     bool hlt_pass = false;
-
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
     for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
@@ -798,13 +868,16 @@ void  FillTMVATrees::doEvent(){
     pass.at(TriggerOk) = (value.at(TriggerOk) == cut.at(TriggerOk));
     unsigned int final_idx = 0;
 
-    value.at(TriggerMatch)=0;
+    value.at(TriggerMatchMu1)=1.0;
+    value.at(TriggerMatchMu2)=1.0;
+    value.at(TriggerMatchMu3)=1.0;
+
     value.at(SignalCandidate)=0;
     value.at(Mu1PtCut)=0;
     value.at(Mu2PtCut)=0;
     value.at(Mu3PtCut)=0;
 
-    value.at(TriggerMatch)=0;
+
     value.at(MuonID)=0;
     value.at(ThreeMuMass)=0;
 
@@ -847,13 +920,33 @@ void  FillTMVATrees::doEvent(){
       double M_osss1 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss1_idx)).M();
       double M_osss2 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss2_idx)).M();
 
-      value.at(PhiVeto) = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
-      value.at(OmegaVeto) = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
 
-      for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(final_idx)){
-        value.at(TriggerMatch)+=i; 
-      }
-      
+
+      value.at(PhiVeto) = true;// fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
+      value.at(OmegaVeto) = true;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+
+
+      unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+      unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+      unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+
+      std::vector<unsigned int> EtaSortedIndices;
+
+
+      EtaSortedIndices.push_back(Muon_Eta_index_1);
+      EtaSortedIndices.push_back(Muon_Eta_index_2);
+      EtaSortedIndices.push_back(Muon_Eta_index_3);
+      EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007) value.at(CutCategory)=1;
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false)< 0.01) value.at(CutCategory)=2;
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01) value.at(CutCategory)=3;
+
+
+ 
+      value.at(TriggerMatchMu1) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(0);
+      value.at(TriggerMatchMu2) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(1);
+      value.at(TriggerMatchMu3) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(2);
+     
       value.at(ThreeMuMass) = TauLV.M();
     }
     
@@ -862,12 +955,15 @@ void  FillTMVATrees::doEvent(){
     pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID) =(value.at(MuonID)  == cut.at(MuonID));
-    pass.at(TriggerMatch) = true;//(value.at(TriggerMatch)  <  cut.at(TriggerMatch));
-    pass.at(PhiVeto) = (fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto) = (fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(TriggerMatchMu1) = (value.at(TriggerMatchMu1) <  cut.at(TriggerMatchMu1));
+    pass.at(TriggerMatchMu2) = (value.at(TriggerMatchMu2) <  cut.at(TriggerMatchMu2));
+    pass.at(TriggerMatchMu3) = (value.at(TriggerMatchMu3) <  cut.at(TriggerMatchMu3));
+    pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
+    pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(CutCategory) = true;//(value.at(category) == cut.at(category) );
 
     if(id!=1) pass.at(ThreeMuMass) = true;
-    else  pass.at(ThreeMuMass) = ( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
+    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
 
 
     double wobs=1;
@@ -889,9 +985,6 @@ void  FillTMVATrees::doEvent(){
       */
 
 
-
-
-
       // unsigned int Muon_index_1 =  Ntp->ThreeMuonIndices(final_idx).at(0);
       // unsigned int Muon_index_2 =  Ntp->ThreeMuonIndices(final_idx).at(1);
       // unsigned int Muon_index_3 =  Ntp->ThreeMuonIndices(final_idx).at(2);
@@ -899,7 +992,26 @@ void  FillTMVATrees::doEvent(){
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
       unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+      
 
+      vector<unsigned int> idx_vec;
+
+      idx_vec.push_back( Ntp->ThreeMuonIndices(final_idx).at(0));
+      idx_vec.push_back( Ntp->ThreeMuonIndices(final_idx).at(1));
+      idx_vec.push_back( Ntp->ThreeMuonIndices(final_idx).at(2));
+
+
+      unsigned int Muon_index_os  = Ntp->SortedChargeMuons(idx_vec).at(0);
+      unsigned int Muon_index_ss1 = Ntp->SortedChargeMuons(idx_vec).at(1);
+      unsigned int Muon_index_ss2 = Ntp->SortedChargeMuons(idx_vec).at(2);
+
+      TLorentzVector MuonLV_OS  = Ntp->Muon_P4(Muon_index_os);
+      TLorentzVector MuonLV_SS1 = Ntp->Muon_P4(Muon_index_ss1);
+      TLorentzVector MuonLV_SS2 = Ntp->Muon_P4(Muon_index_ss2);
+
+
+      var_mass12 = (MuonLV_OS+MuonLV_SS1).M();
+      var_mass13 = (MuonLV_OS+MuonLV_SS2).M();
 
 
       std::vector<unsigned int> indices;
@@ -913,6 +1025,9 @@ void  FillTMVATrees::doEvent(){
       TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
       TLorentzVector TauLV = Muon1LV + Muon2LV + Muon3LV;
       TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
+
+
+
 
       int OH_jet_count(0);
       int SH_jet_count(0);
@@ -957,6 +1072,7 @@ void  FillTMVATrees::doEvent(){
 
 	}
       }
+
       NBJet4piSH.at(t).Fill(SH_jet_count,w);
       NBJet4piOH.at(t).Fill(OH_jet_count,w);
       
@@ -1021,6 +1137,10 @@ void  FillTMVATrees::doEvent(){
       Muon2Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_2).Pt(),w);
       Muon3Pt.at(t).Fill(Ntp->Muon_P4(Muon_index_3).Pt(),w);
 
+      Muon1P.at(t).Fill(Ntp->Muon_P4(Muon_index_1).P(),w);
+      Muon2P.at(t).Fill(Ntp->Muon_P4(Muon_index_2).P(),w);
+      Muon3P.at(t).Fill(Ntp->Muon_P4(Muon_index_3).P(),w);
+
   
       TauEta.at(t).Fill(TauLV.Eta(),w);
       TauPt.at(t).Fill(TauLV.Pt(),w);
@@ -1066,6 +1186,15 @@ void  FillTMVATrees::doEvent(){
 	  MinMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
 	  MaxMuonImpacAngle.at(t).Fill(std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())}),w);
 	
+	  var_Muon1ImpactAngle  = SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag());
+	  var_Muon2ImpactAngle  = SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag());
+	  var_Muon3ImpactAngle  = SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag());
+	  var_MinMuonImpactAngle = std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())});
+	  var_MaxMuonImpactAngle = std::min({SVPV*Mu1ImpactPV*(1/Mu1ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu2ImpactPV*(1/Mu2ImpactPV.Mag()/SVPV.Mag()),SVPV*Mu3ImpactPV*(1/Mu3ImpactPV.Mag()/SVPV.Mag())});
+
+
+
+
 	// ----- Fill the histograms -----
 	SVPVTauDirAngle.at(t).Fill(var_svpvTauAngle,w);
 	FLSignificance.at(t).Fill(var_flightLenSig,w);
@@ -1101,13 +1230,15 @@ void  FillTMVATrees::doEvent(){
 	MindeltaMuZ.at(t).Fill( std::min({fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_2).Z()),
 		fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_3).Z()),
 		fabs(Ntp->Muon_Poca(Muon_index_2).Z()  - Ntp->Muon_Poca(Muon_index_3).Z())}),1);
-
+	
 	MaxMuonsDca.at(t).Fill(std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)}),1);
 	MinMuonsDca.at(t).Fill(std::min({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)}),1);
 
 	var_MaxdeltaMuZ = std::max({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
 	var_MindeltaMuZ = std::min({Ntp->Vertex_DCA12(final_idx),Ntp->Vertex_DCA23(final_idx),Ntp->Vertex_DCA31(final_idx)});
-
+	var_deltaMuZ12 = fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_2).Z());
+	var_deltaMuZ13 = fabs(Ntp->Muon_Poca(Muon_index_1).Z()  - Ntp->Muon_Poca(Muon_index_3).Z());
+	var_deltaMuZ23 = fabs(Ntp->Muon_Poca(Muon_index_2).Z()  - Ntp->Muon_Poca(Muon_index_3).Z());
 
 
 
@@ -1611,7 +1742,8 @@ void  FillTMVATrees::doEvent(){
 	var_caloCompMu2 = Ntp->Muon_caloCompatibility(Muon_index_2);
 	var_caloCompMu3 = Ntp->Muon_caloCompatibility(Muon_index_3);
 	var_MinMIPLikelihood = MinMIPLikelihood;
-	var_tauMass = TauLV.M();
+	var_tauMass = TauRefitLV.M();
+	var_tauEta = TauRefitLV.Eta();
 	var_ntracks = Ntp->Isolation_NTracks(final_idx);
 	var_relPt = Ntp->Isolation_RelPt(final_idx);
 	var_isoMax = Ntp->Isolation_maxdy(final_idx);
@@ -1630,7 +1762,6 @@ void  FillTMVATrees::doEvent(){
 	var_MinD0SigPV = MinD0Significance;
 	
 
-
 	var_VertexMu1D0SigBSReco = Ntp->Vertex_d0BeamSpot_reco_sig(final_idx,0);
 	var_VertexMu2D0SigBSReco = Ntp->Vertex_d0BeamSpot_reco_sig(final_idx,1);
 	var_VertexMu3D0SigBSReco = Ntp->Vertex_d0BeamSpot_reco_sig(final_idx,2);
@@ -1638,7 +1769,6 @@ void  FillTMVATrees::doEvent(){
 	var_MaxD0SigBS = MaxD0BSSignificance;
 	var_MinD0SigBS = MinD0BSSignificance;
 	
-
 
 	var_VertexMu1D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,0);
 	var_VertexMu2D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,1);
@@ -1685,7 +1815,10 @@ void  FillTMVATrees::doEvent(){
 	var_Muon2Pt = Ntp->Muon_P4(Muon_index_2).Pt();
 	var_Muon3Pt = Ntp->Muon_P4(Muon_index_3).Pt();
 
- 
+ 	var_Muon1P = Ntp->Muon_P4(Muon_index_1).P();
+	var_Muon2P = Ntp->Muon_P4(Muon_index_2).P();
+	var_Muon3P = Ntp->Muon_P4(Muon_index_3).P();
+
 
 
 	if(Ntp->NIsolationTrack(final_idx)!=0){ 
@@ -1705,6 +1838,34 @@ void  FillTMVATrees::doEvent(){
 	if (tauMassRes>tauMassResCutLow && tauMassRes<tauMassResCutHigh) category = 2;
 	if (tauMassRes>tauMassResCutHigh) category = 3;
 	
+	
+	var_Muon1LooseId = Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1),Ntp->MuonQualityBitMask::Bit_MuonLoose);
+	var_Muon1MediumId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1),Ntp->MuonQualityBitMask::Bit_MuonMedium);
+	var_Muon1TightId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_1),Ntp->MuonQualityBitMask::Bit_MuonTight);
+
+	var_Muon2LooseId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2),Ntp->MuonQualityBitMask::Bit_MuonLoose);
+	var_Muon2MediumId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2),Ntp->MuonQualityBitMask::Bit_MuonMedium);
+	var_Muon2TightId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_2),Ntp->MuonQualityBitMask::Bit_MuonTight);
+
+	var_Muon3LooseId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3),Ntp->MuonQualityBitMask::Bit_MuonLoose);
+	var_Muon3MediumId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3),Ntp->MuonQualityBitMask::Bit_MuonMedium);
+	var_Muon3TightId= Ntp->CHECK_BIT(Ntp->Muon_ID(Muon_index_3),Ntp->MuonQualityBitMask::Bit_MuonTight);
+
+	var_Muon1PFIsoLoose = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::PFIsoLoose);
+	var_Muon1PFIsoMedium = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::PFIsoMedium);
+	var_Muon1PFIsoTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::PFIsoTight);
+	var_Muon1PFIsoVTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_1),Ntp->MuonStandardSelectors::PFIsoVeryTight);
+
+	var_Muon2PFIsoLoose = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::PFIsoLoose);
+	var_Muon2PFIsoMedium = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::PFIsoMedium);
+	var_Muon2PFIsoTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::PFIsoTight);
+	var_Muon2PFIsoVTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_2),Ntp->MuonStandardSelectors::PFIsoVeryTight);
+
+	var_Muon3PFIsoLoose = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoLoose);
+	var_Muon3PFIsoMedium = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoMedium);
+	var_Muon3PFIsoTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoTight);
+	var_Muon3PFIsoVTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoVeryTight);
+
 	
 	
 	TMVA_Tree->Fill();
@@ -1726,14 +1887,14 @@ void  FillTMVATrees::Finish(){
     double scaleBpTau(0.262);
     double scaleB0Tau(0.099);
 
-    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
-    ScaleAllHistOfType(2,scale*scaleDsTau);
+    if(Nminus0.at(0).at(1).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+    ScaleAllHistOfType(1,scale*scaleDsTau);
     
-    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
-    ScaleAllHistOfType(3,scale*scaleB0Tau);
+    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
+    ScaleAllHistOfType(2,scale*scaleB0Tau);
 
-    if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
-    ScaleAllHistOfType(4,scale*scaleBpTau);
+    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
+    ScaleAllHistOfType(3,scale*scaleBpTau);
 
     //    }
   }
