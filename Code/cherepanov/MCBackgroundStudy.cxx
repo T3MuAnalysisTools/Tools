@@ -244,7 +244,6 @@ void  MCBackgroundStudy::doEvent(){
 
   }
 
-  std::cout<<"  1  "<<std::endl;
   bool DoubleMuFired(0);
   bool TripleMuFired(0);
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
@@ -362,7 +361,6 @@ void  MCBackgroundStudy::doEvent(){
   bool status=AnalysisCuts(t,w,wobs);
 
   if(status){
-    std::cout<<" 2 "<< std::endl;
 
     //    std::cout<<" mindist   "<< Ntp->Isolation_MinDist(signal_idx) << std::endl;
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
