@@ -85,10 +85,8 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_VertexMu2D0SigSVReco",&var_VertexMu2D0SigSVReco);
   TMVA_Tree->Branch("var_VertexMu3D0SigSVReco",&var_VertexMu3D0SigSVReco);
 
-
   TMVA_Tree->Branch("var_MaxD0SigSV",&var_MaxD0SigSV);
   TMVA_Tree->Branch("var_MinD0SigSV",&var_MinD0SigSV);
-
 
   TMVA_Tree->Branch("var_MinMuon_chi2LocalPosition",&var_MinMuon_chi2LocalPosition);
   TMVA_Tree->Branch("var_MaxMuon_chi2LocalPosition",&var_MaxMuon_chi2LocalPosition);
@@ -97,14 +95,12 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Muon2_chi2LocalPosition",&var_Muon2_chi2LocalPosition);
   TMVA_Tree->Branch("var_Muon3_chi2LocalPosition",&var_Muon3_chi2LocalPosition);
 
-
   TMVA_Tree->Branch("var_MinMuon_chi2LocalMomentum",&var_MinMuon_chi2LocalMomentum);
   TMVA_Tree->Branch("var_MaxMuon_chi2LocalMomentum",&var_MaxMuon_chi2LocalMomentum);
 
   TMVA_Tree->Branch("var_Muon1_chi2LocalMomentum",&var_Muon1_chi2LocalMomentum);
   TMVA_Tree->Branch("var_Muon2_chi2LocalMomentum",&var_Muon2_chi2LocalMomentum);
   TMVA_Tree->Branch("var_Muon3_chi2LocalMomentum",&var_Muon3_chi2LocalMomentum);
-
 
   TMVA_Tree->Branch("var_MintrkKink",&var_MintrkKink);
   TMVA_Tree->Branch("var_MaxtrkKink",&var_MaxtrkKink);
@@ -131,7 +127,6 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Iso12Mu1",&var_Iso12Mu1);
 
 
-
   TMVA_Tree->Branch("var_Iso02Mu2",&var_Iso02Mu2);
   TMVA_Tree->Branch("var_Iso04Mu2",&var_Iso04Mu2);
   TMVA_Tree->Branch("var_Iso06Mu2",&var_Iso06Mu2);
@@ -153,6 +148,11 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Muon1Pt",&var_Muon1Pt);
   TMVA_Tree->Branch("var_Muon2Pt",&var_Muon2Pt);
   TMVA_Tree->Branch("var_Muon3Pt",&var_Muon3Pt);
+
+
+  TMVA_Tree->Branch("var_Muon1P",&var_Muon1P);
+  TMVA_Tree->Branch("var_Muon2P",&var_Muon2P);
+  TMVA_Tree->Branch("var_Muon3P",&var_Muon3P);
 
 
   TMVA_Tree->Branch("var_MindcaTrackSV",&var_MindcaTrackSV);
@@ -181,7 +181,6 @@ void  FillTMVATrees::Configure(){
   TMVA_Tree->Branch("var_Mu1Muon_numberOfMatches",&var_Mu1Muon_numberOfMatches);
   TMVA_Tree->Branch("var_Mu2Muon_numberOfMatches",&var_Mu2Muon_numberOfMatches);
   TMVA_Tree->Branch("var_Mu3Muon_numberOfMatches",&var_Mu3Muon_numberOfMatches);
-	
 
   TMVA_Tree->Branch("var_Muon1LooseId",&var_Muon1LooseId);
   TMVA_Tree->Branch("var_Muon1MediumId",&var_Muon1MediumId);
@@ -234,13 +233,15 @@ void  FillTMVATrees::Configure(){
     if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
     if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
     if(i==MuonID)             cut.at(MuonID)=1;
-    if(i==PhiVeto)            cut.at(PhiVeto)=0; // defined below
-    if(i==OmegaVeto)          cut.at(OmegaVeto)=0; // defined below
+    if(i==PhiVeto1)           cut.at(PhiVeto1)=0; // defined below
+    if(i==OmegaVeto1)         cut.at(OmegaVeto1)=0; // defined below
+    if(i==PhiVeto2)           cut.at(PhiVeto2)=0; // defined below
+    if(i==OmegaVeto2)         cut.at(OmegaVeto2)=0; // defined below
     if(i==TriggerMatchMu1)    cut.at(TriggerMatchMu1)=0.03;
     if(i==TriggerMatchMu2)    cut.at(TriggerMatchMu2)=0.03;
     if(i==TriggerMatchMu3)    cut.at(TriggerMatchMu3)=0.03;
     if(i==ThreeMuMass)        cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
-    if(i==CutCategory)        cut.at(CutCategory)=1;// true for MC and mass side band for data
+    if(i==CutCategory)        cut.at(CutCategory)=3;// true for MC and mass side band for data
   }
   
   TString hlabel;
@@ -292,17 +293,29 @@ void  FillTMVATrees::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==PhiVeto){
+    else if(i==PhiVeto1){
       title.at(i)="phi mass veto";
-      hlabel="Phi mass Veto, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto_",htitle,40,0.8,1.2,hlabel,"Events"));
+      hlabel="Phi mass Veto 1 pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto1_",htitle,40,0.8,1.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto1_",htitle,40,0.8,1.2,hlabel,"Events"));
     }
-    else if(i==OmegaVeto){
+    else if(i==OmegaVeto1){
       title.at(i)="omega mass veto";
-      hlabel="Omega mass veto, GeV";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto_",htitle,50,0.4,0.9,hlabel,"Events"));
+      hlabel="Omega mass veto 1 pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto1_",htitle,50,0.4,0.9,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto1_",htitle,50,0.4,0.9,hlabel,"Events"));
+    }
+    else if(i==PhiVeto2){
+      title.at(i)="phi mass veto";
+      hlabel="Phi mass Veto 2nd pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto2_",htitle,40,0.8,1.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto2_",htitle,40,0.8,1.2,hlabel,"Events"));
+    }
+    else if(i==OmegaVeto2){
+      title.at(i)="omega mass veto";
+      hlabel="Omega mass veto 2nd pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto2_",htitle,50,0.4,0.9,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto2_",htitle,50,0.4,0.9,hlabel,"Events"));
     }
     else if(i==TriggerMatchMu1){
       title.at(i)="Trigger Matching (mu1)";
@@ -922,8 +935,10 @@ void  FillTMVATrees::doEvent(){
 
 
 
-      value.at(PhiVeto) = true;// fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
-      value.at(OmegaVeto) = true;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+      value.at(PhiVeto1) =  M_osss1;//fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
+      value.at(PhiVeto2) =  M_osss2;//fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
+      value.at(OmegaVeto1) = M_osss1;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+      value.at(OmegaVeto2) = M_osss2;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
 
 
       unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
@@ -958,13 +973,15 @@ void  FillTMVATrees::doEvent(){
     pass.at(TriggerMatchMu1) = (value.at(TriggerMatchMu1) <  cut.at(TriggerMatchMu1));
     pass.at(TriggerMatchMu2) = (value.at(TriggerMatchMu2) <  cut.at(TriggerMatchMu2));
     pass.at(TriggerMatchMu3) = (value.at(TriggerMatchMu3) <  cut.at(TriggerMatchMu3));
-    pass.at(PhiVeto) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
-    pass.at(CutCategory) = true;//(value.at(category) == cut.at(category) );
+    pass.at(PhiVeto1) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
+    pass.at(OmegaVeto1) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(PhiVeto2) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
+    pass.at(OmegaVeto2) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
+    pass.at(CutCategory) = true;//( value.at(CutCategory) == cut.at(CutCategory) );
 
-    if(id!=1) pass.at(ThreeMuMass) = true;
-    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
-
+    //    if(id!=1) pass.at(ThreeMuMass) = true;
+    //    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
+    pass.at(ThreeMuMass) =( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
 
     double wobs=1;
     double w; 
@@ -1866,8 +1883,6 @@ void  FillTMVATrees::doEvent(){
 	var_Muon3PFIsoTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoTight);
 	var_Muon3PFIsoVTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoVeryTight);
 
-	
-	
 	TMVA_Tree->Fill();
 	
 

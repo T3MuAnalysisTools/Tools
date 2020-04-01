@@ -14,7 +14,7 @@ class FillTMVATrees : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, ThreeMuMass, CutCategory,NCuts};
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2,TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, ThreeMuMass, CutCategory,NCuts};
 
  protected:
   virtual void doEvent();  
