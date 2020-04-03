@@ -14,7 +14,7 @@ class DsToPhiPi : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NTrackHits,DsMassCut,NCuts}; 
 
 
  protected:
@@ -27,6 +27,8 @@ class DsToPhiPi : public Selection {
  private:
   // Selection Variables
   bool RunB, RunC, RunD, RunE, RunF = 0;
+  float dsMassMin;
+  float dsMassMax;
 
   TRandom rndm;
   double random_num;
