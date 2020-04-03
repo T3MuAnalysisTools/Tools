@@ -14,7 +14,7 @@ class FillTMVATrees : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, ThreeMuMass,NCuts};
+  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2,TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, ThreeMuMass, CutCategory,NCuts};
 
  protected:
   virtual void doEvent();  
@@ -125,6 +125,10 @@ class FillTMVATrees : public Selection {
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;
   std::vector<TH1D> Muon3Pt;
+
+  std::vector<TH1D> Muon1P;
+  std::vector<TH1D> Muon2P;
+  std::vector<TH1D> Muon3P;
 
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
@@ -290,12 +294,19 @@ class FillTMVATrees : public Selection {
   float var_caloCompMu3 ;
   float var_MinMIPLikelihood ;
   float var_tauMass ;
+  float var_tauEta ;
   float var_ntracks;
   float var_relPt;
   float var_isoMax;
 
   float var_MaxdeltaMuZ;
   float var_MindeltaMuZ;
+
+  float var_deltaMuZ12;
+  float	var_deltaMuZ13;
+  float	var_deltaMuZ23;
+
+
   float var_maxMuonsDca;
   float var_minMuonsDca;
   float var_nsv;
@@ -307,17 +318,16 @@ class FillTMVATrees : public Selection {
 	
   float var_MaxD0SigPV;
   float var_MinD0SigPV;
-	
 
 
   float var_VertexMu1D0SigBSReco;
   float var_VertexMu2D0SigBSReco;
   float var_VertexMu3D0SigBSReco;
 
+
   float var_MaxD0SigBS;
   float var_MinD0SigBS;
 	
-
 
   float var_VertexMu1D0SigSVReco;
   float var_VertexMu2D0SigSVReco;
@@ -360,8 +370,6 @@ class FillTMVATrees : public Selection {
 	
 
 
-
-
   float var_Iso02;
   float var_Iso04;
   float var_Iso06;
@@ -399,6 +407,10 @@ class FillTMVATrees : public Selection {
   float var_Muon1Pt;
   float var_Muon2Pt;
   float var_Muon3Pt;
+
+  float var_Muon1P;
+  float var_Muon2P;
+  float var_Muon3P;
   float var_MindcaTrackSV;
 
   float var_Mu1TrackMass;
@@ -418,6 +430,11 @@ class FillTMVATrees : public Selection {
   float var_Mu2Muon_numberOfChambers;
   float var_Mu3Muon_numberOfChambers;
 
+  float  var_Muon1ImpactAngle;
+  float  var_Muon2ImpactAngle;
+  float  var_Muon3ImpactAngle;
+  float  var_MinMuonImpactAngle;
+  float  var_MaxMuonImpactAngle;
 
 
   float var_MinMuon_numberOfMatches;
@@ -432,7 +449,39 @@ class FillTMVATrees : public Selection {
   float var_Mu2Muon_hitPattern_numberOfValidMuonHits;
   float var_Mu3Muon_hitPattern_numberOfValidMuonHits;
 
-
   float var_dcaTrackPV;
+
+  float var_Muon1LooseId;
+  float var_Muon1MediumId;
+  float var_Muon1TightId;
+
+  float var_Muon2LooseId;
+  float var_Muon2MediumId;
+  float var_Muon2TightId;
+
+  float var_Muon3LooseId;
+  float var_Muon3MediumId;
+  float var_Muon3TightId;
+
+  float var_Muon1PFIsoLoose;
+  float var_Muon1PFIsoMedium;
+  float var_Muon1PFIsoTight;
+  float var_Muon1PFIsoVTight;
+
+  float var_Muon2PFIsoLoose;
+  float var_Muon2PFIsoMedium;
+  float var_Muon2PFIsoTight;
+  float var_Muon2PFIsoVTight;
+
+  float var_Muon3PFIsoLoose;
+  float var_Muon3PFIsoMedium;
+  float var_Muon3PFIsoTight;
+  float var_Muon3PFIsoVTight;
+
+  float var_mass12;
+  float var_mass13;
+
+
+
 };
 #endif

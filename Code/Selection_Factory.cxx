@@ -16,6 +16,7 @@
 #include "cherepanov/MuIDStudy.h"
 #include "cherepanov/MinBiasSelector.h"
 #include "cherepanov/Isolation.h"
+#include "cherepanov/MCBackgroundStudy.h"
 
 #endif
 
@@ -81,6 +82,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("backgroundselector"))s=new BackgroundSelector(Analysis,UncertType);
   else if(Analysis.Contains("muidstudy"))s=new MuIDStudy(Analysis,UncertType);
   else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
+  else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
 
 
 
