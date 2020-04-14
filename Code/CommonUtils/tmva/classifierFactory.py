@@ -11,7 +11,7 @@ BASE_DIR = ''
 parser = argparse.ArgumentParser()
 
 #parser.add_argument("--verbose", help="print event by event output", action="store_true")
-parser.add_argument("--classifier", help="name of the ouput classifier", default="MyTMVAClassification")
+parser.add_argument("--classifier", help="name of the ouput classifier;[Default: %(default)s]", default="MyTMVAClassification")
 
 args = parser.parse_args()
 # ----------------------------------------
@@ -116,11 +116,28 @@ var_limits = {  'var_min_p':[0,10],
                 'var_MinMIPLikelihood': [0,1],
                 'var_pmin': [0,10],
                 'var_max_cLP': [0,60]
-                                }
+}
+
+
 
 #varsets = {'2016vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig', 'var_segCompMuMin', 'var_pmin', 'var_max_cLP', 'var_max_tKink', 'var_MinD0Significance', 'var_mindca_iso', 'var_trk_relPt'],
 #        '2017biased':['var_vertexKFChi2','var_svpvTauAngle','var_flightLenSig','var_segCompMuMin','var_MuMu_minKFChi2','var_MuTau_maxdR','var_sumMuTrkKinkChi2','var_MaxD0Significance', 'var_MinMIPLikelihood', 'var_MuMu_mindR', 'var_maxdca', 'var_RelPt_Mu1Tau', 'var_mindca_iso'],
 #        '2017unbiased':['var_vertexKFChi2','var_svpvTauAngle','var_flightLenSig','var_segCompMuMin','var_MuMu_minKFChi2','var_sumMuTrkKinkChi2','var_MaxD0Significance', 'var_MinMIPLikelihood', 'var_maxdca', 'var_mindca_iso']}
+
+#varsets = {'vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig', 'var_segCompMuMin', 'var_Muon3P', 
+#                   'var_MinMuon_chi2LocalPosition', 'var_MaxtrkKink', 'var_MinD0SigPV', 'var_minMuonsDca', 'var_relPt']}
+
+
+#varsets = {'vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig', 'var_segCompMuMin', 'var_Muon3P', 
+#                   'var_MinMuon_chi2LocalPosition', 'var_MaxtrkKink', 'var_MinD0SigPV', 'var_minMuonsDca', 'var_Muon1TightId','var_Muon2TightId','var_Muon3TightId']}
+
+
+
+
+varsets = {'vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                   'var_MaxD0SigBS','var_MaxD0SigSV','var_MindcaTrackSV','var_maxMuonsDca','var_nsv',
+                   'var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_NtracksClose','var_MaxVertexPairQuality','var_Iso08','var_Iso08MuMin',
+                   'var_MaxMuonImpactAngle','var_MaxtrkKink','var_MuonglbkinkSum','var_MinMatchedStations','var_MaxdeltaMuZ']}
 
 
 
@@ -128,23 +145,13 @@ var_limits = {  'var_min_p':[0,10],
 
 
 #varsets = {'vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-#                   'var_MaxD0SigBS','var_maxMuonsDca','var_minMuonsDca','var_nsv',
-#                   'var_segCompMuMin','var_MinMuon_chi2LocalMomentum','var_NtracksClose','var_MaxVertexPairQuality','var_Iso08','var_Iso08MuMin',
+#                   'var_MaxD0SigBS','var_maxMuonsDca','var_minMuonsDca',
+#                   'var_segCompMuMin','var_Iso08MuMin',
 #                   'var_Iso08MuMax','var_MaxdeltaMuZ', 'var_MindeltaMuZ']}
 
 
-
-
-
-
-varsets = {'vars':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-                   'var_MaxD0SigBS','var_maxMuonsDca','var_minMuonsDca',
-                   'var_segCompMuMin','var_Iso08MuMin',
-                   'var_Iso08MuMax','var_MaxdeltaMuZ', 'var_MindeltaMuZ']}
-
-
 categories = ['A','B','C','BC']
-datasets = {'Test':'FillMVATree'}
+datasets = {'Vars':'FillMVATree'}
 
 
 if __name__== "__main__":
@@ -152,15 +159,15 @@ if __name__== "__main__":
       tmpSets = varsets
       for cat in categories:  
          for varset in tmpSets:
-            classifierName = args.classifier+"_"+data+"_"+varset+"_"+cat
+            classifierName = args.classifier+"_"+varset+"_"+cat
             #inputFile =  'Input.root'
             #outputFile = 'Output.root'
-            inputFile = 'MVATrees.root'
+            inputFile = 'FillMVATreeInput_combined.root'
             outputFile = classifierName+"_Output.root"
             makeClassifiers(classifierName, inputFile, outputFile, cat,  varset, 0)
 #            os.system("rm -rf "+classifierName)
 #            os.system("rm TMVATraining.log")
             print classifierName
-#            os.system("root -q -b -l "+classifierName+".cxx\(\\\"BDT\\\"\) &>> TMVATraining.log")
+            os.system("root -q -b -l "+classifierName+".cxx\(\\\"BDT\\\"\) &>> TMVATraining.log")
 #            os.system("mv datasets "+classifierName)
 
