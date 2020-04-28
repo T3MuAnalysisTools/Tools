@@ -542,7 +542,7 @@ if( $ARGV[0] eq "--DCache" ){
 		system(sprintf("touch junk2"));
 		system(sprintf("touch junk"));
 
-		system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cms/data$DS/ \" | grep .root >&junk0"));
+		system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cmsuf/data$DS/ \" | grep .root >&junk0"));
 		system(sprintf("cat junk0 | awk '{print \$9}' >& junk1")); 
 
 
@@ -669,9 +669,9 @@ if( $ARGV[0] eq "--DCache" ){
 		    $ind = rindex($file,"/");
 		    $mypath = substr($file,0,$ind);
 
-#uberftp  cmsio.rc.ufl.edu 'cd /cms/data//store/user/cherepan/DoubleMuonLowMass/Prod_07_10_2019_DoubleMuonLowMass__Run2017F-17Nov2017-v1/191007_093213/0000; get DsT3MNtuple_1.root'
-		    system(sprintf("echo \"    uberftp  cmsio.rc.ufl.edu 'cd /cms/data/$DS/; get $myfiletrunc ' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
-	#	    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cms/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+#uberftp  cmsio.rc.ufl.edu 'cd /cmsuf/data//store/user/cherepan/DoubleMuonLowMass/Prod_07_10_2019_DoubleMuonLowMass__Run2017F-17Nov2017-v1/191007_093213/0000; get DsT3MNtuple_1.root'
+		    system(sprintf("echo \"    uberftp  cmsio.rc.ufl.edu 'cd /cmsuf/data/$DS/; get $myfiletrunc ' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+	#	    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cmsuf/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 		    system(sprintf("echo \" File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $Filedir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 
