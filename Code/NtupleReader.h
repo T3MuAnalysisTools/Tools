@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Apr 17 13:12:55 2019 by ROOT version 6.10/05
+// Mon Apr 27 17:03:46 2020 by ROOT version 6.10/05
 // from TTree t3mtree/
-// found on file: DsT3MNtuple_39.root
+// found on file: /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/TestLast/CMSSW_10_2_18/src/DsTau23Mu/T3MNtuple/test/DsT3MNtuple.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleReader_h
@@ -60,6 +60,7 @@ public :
    std::vector<bool>    *Muon_isIsolationValid;
    std::vector<bool>    *Muon_isQualityValid;
    std::vector<bool>    *Muon_isTimeValid;
+   std::vector<int>     *Muon_expectedNnumberOfMatchedStations;
    std::vector<float>   *Muon_emEt03;
    std::vector<float>   *Muon_emVetoEt03;
    std::vector<float>   *Muon_hadEt03;
@@ -75,6 +76,8 @@ public :
    std::vector<int>     *Muon_nJets05;
    std::vector<int>     *Muon_nTracks05;
    std::vector<float>   *Muon_sumPt05;
+   std::vector<float>   *Muon_timeAtIpInOut;
+   std::vector<float>   *Muon_timeAtIpInOutErr;
    std::vector<float>   *Muon_trackerVetoPt05;
    std::vector<float>   *Muon_sumChargedHadronPt03;
    std::vector<float>   *Muon_sumChargedParticlePt03;
@@ -114,9 +117,6 @@ public :
    std::vector<bool>    *Muon_combinedQuality_tightMatch;
    std::vector<double>  *Muon_combinedQuality_glbTrackProbability;
    std::vector<double>  *Muon_prod_inner_outer_charge;
-   std::vector<double>  *Muon_ptError;
-   std::vector<double>  *Muon_phiError;
-   std::vector<double>  *Muon_etaError;
    std::vector<std::vector<double> > *Muon_outerTrack_p4;
    std::vector<std::vector<double> > *Muon_innerTrack_p4;
    std::vector<double>  *Muon_innerTrack_quality;
@@ -126,8 +126,20 @@ public :
    std::vector<double>  *Muon_calEnergy_emS25;
    std::vector<double>  *Muon_calEnergy_emS9;
    std::vector<double>  *Muon_calEnergy_em;
-   std::vector<double>    *Muon_segmentCompatibility;
-   std::vector<double>    *Muon_caloCompatibility;
+   std::vector<std::vector<float> > *Muon_dDxDz;
+   std::vector<std::vector<float> > *Muon_dDyDz;
+   std::vector<std::vector<float> > *Muon_dX;
+   std::vector<std::vector<float> > *Muon_dY;
+   std::vector<std::vector<float> > *Muon_pullX;
+   std::vector<std::vector<float> > *Muon_pullY;
+   std::vector<std::vector<float> > *Muon_pullDxDz;
+   std::vector<std::vector<float> > *Muon_pullDyDz;
+   std::vector<std::vector<float> > *numberOfSegments;
+   std::vector<double>  *Muon_ptError;
+   std::vector<double>  *Muon_phiError;
+   std::vector<double>  *Muon_etaError;
+   std::vector<double>  *Muon_segmentCompatibility;
+   std::vector<double>  *Muon_caloCompatibility;
    std::vector<bool>    *Muon_isGoodMuon_TM2DCompatibility;
    std::vector<double>  *Muon_innerTrack_validFraction;
    std::vector<double>  *Muon_innerTrack_pixelLayersWithMeasurement;
@@ -156,21 +168,30 @@ public :
    std::vector<double>  *Muon_M;
    std::vector<std::vector<double> > *Muon_par;
    std::vector<std::vector<double> > *Muon_cov;
-   std::vector<std::vector<float> > *MC_p4;
-   std::vector<int>     *MC_pdgid;
-   std::vector<int>     *MC_charge;
-   std::vector<int>     *MC_midx;
-   std::vector<std::vector<int> > *MC_childpdgid;
-   std::vector<std::vector<int> > *MC_childidx;
-   std::vector<int>     *MC_status;
-
-   std::vector<int> *signalTau_charge;
-   std::vector<int> *signalTau_pdgid;
-   std::vector<double> *signalTau_B;
-   std::vector<double> *signalTau_M;
+   std::vector<std::vector<float> > *Gamma_P4;
+   std::vector<int>     *Gamma_hasPixelSeed;
+   std::vector<int>     *Gamma_hasConversionTracks;
+   std::vector<float>   *Gamma_e1x5;
+   std::vector<float>   *Gamma_e2x5;
+   std::vector<float>   *Gamma_e3x3;
+   std::vector<float>   *Gamma_e5x5;
+   std::vector<int>     *Gamma_isPFPhoton;
+   std::vector<std::vector<unsigned int> > *ThreeMuons_index;
+   std::vector<double>  *ThreeMuons_SV_Chi2;
+   std::vector<double>  *ThreeMuons_SV_NDF;
+   std::vector<std::vector<float> > *ThreeMuons_TriggerMatch_dR;
+   std::vector<int>     *signalTau_charge;
+   std::vector<int>     *signalTau_isLVP;
+   std::vector<int>     *signalTau_pdgid;
+   std::vector<double>  *signalTau_B;
+   std::vector<double>  *signalTau_M;
    std::vector<std::vector<double> > *signalTau_lvp;
    std::vector<std::vector<double> > *signalTau_cov;
-   std::vector<int> *signalTau_isLVP;
+   std::vector<std::vector<unsigned int> > *TwoMuonsTrack_Muonsindex;
+   std::vector<std::vector<unsigned int> > *TwoMuonsTrack_Trackindex;
+   std::vector<double>  *TwoMuonsTrack_SV_Chi2;
+   std::vector<double>  *TwoMuonsTrack_SV_NDF;
+   std::vector<std::vector<float> > *TwoMuonsTrack_TriggerMatch_dR;
 
 
    Bool_t          MC_isReco;
@@ -191,15 +212,21 @@ public :
    std::vector<std::vector<int> > *MCTauandProd_pdgid;
    std::vector<unsigned int> *MCTauandProd_midx;
    std::vector<std::vector<int> > *MCTauandProd_charge;
-   std::vector<std::vector<unsigned int> > *ThreeMuons_index;
-   std::vector<double>  *ThreeMuons_SV_Chi2;
-   std::vector<double>  *ThreeMuons_SV_NDF;
-   std::vector<std::vector<float> > *ThreeMuons_TriggerMatch_dR;
-   std::vector<std::vector<unsigned int> > *TwoMuonsTrack_Muonsindex;
-   std::vector<std::vector<unsigned int> > *TwoMuonsTrack_Trackindex;
-   std::vector<double>  *TwoMuonsTrack_SV_Chi2;
-   std::vector<double>  *TwoMuonsTrack_SV_NDF;
-   std::vector<std::vector<float> > *TwoMuonsTrack_TriggerMatch_dR;
+   std::vector<std::vector<float> > *MC_p4;
+   std::vector<int>     *MC_pdgid;
+   std::vector<int>     *MC_charge;
+   std::vector<int>     *MC_midx;
+   std::vector<std::vector<int> > *MC_childpdgid;
+   std::vector<std::vector<int> > *MC_childidx;
+   std::vector<int>     *MC_status;
+
+
+
+
+
+
+
+
    std::vector<double>  *Jet_BTagCVSB;
    std::vector<double>  *Jet_BTagMVA;
    std::vector<double>  *Jet_BTagCSV;
@@ -216,54 +243,40 @@ public :
    std::vector<std::vector<double> > *Vertex_pair_quality;
    std::vector<std::vector<double> > *Vertex_pairfit_status;
    std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;
+   std::vector<std::vector<double> > *Vertex_SecondBestPrimaryVertex;
    std::vector<bool>    *Vertex_RefitPVisValid;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex_covariance;
-   std::vector<std::vector<double> > *Vertex_SecondBestPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_d0_reco;
-
-
-
-
    std::vector<std::vector<double> > *Vertex_dz_reco;
    std::vector<std::vector<double> > *Vertex_d0SV_reco;
    std::vector<std::vector<double> > *Vertex_dzSV_reco;
-   std::vector<std::vector<double> > *Vertex_d0sigSV_reco;
    std::vector<std::vector<double> > *Vertex_d0BeamSpot_reco;
    std::vector<std::vector<double> > *Vertex_d0BeamSpot_reco_sig;
-
-
    std::vector<std::vector<double> > *Vertex_d0sig_reco;
+   std::vector<std::vector<double> > *Vertex_d0sigSV_reco;
    std::vector<std::vector<double> > *Vertex_2Ddisplacement;
    std::vector<std::vector<double> > *Vertex_3Ddisplacement;
    std::vector<std::vector<float> > *Vertex_Isolation1;
    std::vector<std::vector<float> > *Vertex_Isolation2;
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
-
-   std::vector<std::vector<std::vector<float> > > *IsolationBranch_Trackp4;
-
+   std::vector<int>     *Vertex_NMuonsAssocWithPV;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
    std::vector<std::vector<int> > *IsolationTrack_charge;
    std::vector<std::vector<float> > *IsolationTrack_quality;
-
    std::vector<std::vector<float> > *IsolationTrack_dxySV;
    std::vector<std::vector<float> > *IsolationTrack_dzSV;
-
    std::vector<std::vector<float> > *IsolationTrack_dxyPV;
    std::vector<std::vector<float> > *IsolationTrack_dzPV;
-
    std::vector<std::vector<float> > *IsolationTrack_DocaMu1;
    std::vector<std::vector<float> > *IsolationTrack_DocaMu2;
    std::vector<std::vector<float> > *IsolationTrack_DocaMu3;
-
-
+   std::vector<std::vector<std::vector<float> > > *SV_Track_P4;
    std::vector<std::vector<float> > *SV_pos;
-   std::vector<float>               *SV_Mass;
-   std::vector<std::vector<float> > *SV_PosCovariance;
-   std::vector<std::vector<std::vector<float> > >  *SV_Track_P4;
    std::vector<std::vector<int> > *SV_TrackCharge;
-
+   std::vector<float>   *SV_Mass;
+   std::vector<std::vector<float> > *SV_PosCovariance;
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
@@ -299,6 +312,7 @@ public :
    TBranch        *b_Muon_isIsolationValid;   //!
    TBranch        *b_Muon_isQualityValid;   //!
    TBranch        *b_Muon_isTimeValid;   //!
+   TBranch        *b_Muon_expectedNnumberOfMatchedStations;   //!
    TBranch        *b_Muon_emEt03;   //!
    TBranch        *b_Muon_emVetoEt03;   //!
    TBranch        *b_Muon_hadEt03;   //!
@@ -314,6 +328,8 @@ public :
    TBranch        *b_Muon_nJets05;   //!
    TBranch        *b_Muon_nTracks05;   //!
    TBranch        *b_Muon_sumPt05;   //!
+   TBranch        *b_Muon_timeAtIpInOut;   //!
+   TBranch        *b_Muon_timeAtIpInOutErr;   //!
    TBranch        *b_Muon_trackerVetoPt05;   //!
    TBranch        *b_Muon_sumChargedHadronPt03;   //!
    TBranch        *b_Muon_sumChargedParticlePt03;   //!
@@ -353,9 +369,6 @@ public :
    TBranch        *b_Muon_combinedQuality_tightMatch;   //!
    TBranch        *b_Muon_combinedQuality_glbTrackProbability;   //!
    TBranch        *b_Muon_prod_inner_outer_charge;   //!
-   TBranch        *b_Muon_ptError;   //!
-   TBranch        *b_Muon_phiError; //!
-   TBranch        *b_Muon_etaError;   //!
    TBranch        *b_Muon_outerTrack_p4;   //!
    TBranch        *b_Muon_innerTrack_p4;   //!
    TBranch        *b_Muon_innerTrack_quality;   //!
@@ -365,6 +378,18 @@ public :
    TBranch        *b_Muon_calEnergy_emS25;   //!
    TBranch        *b_Muon_calEnergy_emS9;   //!
    TBranch        *b_Muon_calEnergy_em;   //!
+   TBranch        *b_Muon_dDxDz;   //!
+   TBranch        *b_Muon_dDyDz;   //!
+   TBranch        *b_Muon_dX;   //!
+   TBranch        *b_Muon_dY;   //!
+   TBranch        *b_Muon_pullX;   //!
+   TBranch        *b_Muon_pullY;   //!
+   TBranch        *b_Muon_pullDxDz;   //!
+   TBranch        *b_Muon_pullDyDz;   //!
+   TBranch        *b_numberOfSegments;   //!
+   TBranch        *b_Muon_ptError;   //!
+   TBranch        *b_Muon_phiError;   //!
+   TBranch        *b_Muon_etaError;   //!
    TBranch        *b_Muon_segmentCompatibility;   //!
    TBranch        *b_Muon_caloCompatibility;   //!
    TBranch        *b_Muon_isGoodMuon_TM2DCompatibility;   //!
@@ -395,22 +420,25 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
-   TBranch        *b_MC_p4;   //!
-   TBranch        *b_MC_pdgid;   //!
-   TBranch        *b_MC_charge;   //!
-   TBranch        *b_MC_midx;   //!
-   TBranch        *b_MC_childpdgid;   //!
-   TBranch        *b_MC_childidx;   //!
-   TBranch        *b_MC_status;   //!
-   TBranch        *b_MC_isReco;   //!
-
-   TBranch        *b_signalTau_charge;   //!  
+   TBranch        *b_Gamma_P4;   //!
+   TBranch        *b_Gamma_hasPixelSeed;   //!
+   TBranch        *b_Gamma_hasConversionTracks;   //!
+   TBranch        *b_Gamma_e1x5;   //!
+   TBranch        *b_Gamma_e2x5;   //!
+   TBranch        *b_Gamma_e3x3;   //!
+   TBranch        *b_Gamma_e5x5;   //!
+   TBranch        *b_Gamma_isPFPhoton;   //!
+   TBranch        *b_ThreeMuons_index;   //!
+   TBranch        *b_ThreeMuons_SV_Chi2;   //!
+   TBranch        *b_ThreeMuons_SV_NDF;   //!
+   TBranch        *b_ThreeMuons_TriggerMatch_dR;   //!
+   TBranch        *b_signalTau_charge;   //!
+   TBranch        *b_signalTau_isLVP;   //!
    TBranch        *b_signalTau_pdgid;   //!
    TBranch        *b_signalTau_B;   //!
    TBranch        *b_signalTau_M;   //!
    TBranch        *b_signalTau_lvp;   //!
    TBranch        *b_signalTau_cov;   //!
-   TBranch        *b_signalTau_isLVP;   //!
 
    TBranch        *b_MCSignalParticle_p4;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
@@ -431,10 +459,19 @@ public :
    TBranch        *b_MCTauandProd_pdgid;   //!
    TBranch        *b_MCTauandProd_midx;   //!
    TBranch        *b_MCTauandProd_charge;   //!
-   TBranch        *b_ThreeMuons_index;   //!
-   TBranch        *b_ThreeMuons_SV_Chi2;   //!
-   TBranch        *b_ThreeMuons_SV_NDF;   //!
-   TBranch        *b_ThreeMuons_TriggerMatch_dR;   //!
+   TBranch        *b_MC_p4;   //!
+   TBranch        *b_MC_pdgid;   //!
+   TBranch        *b_MC_charge;   //!
+   TBranch        *b_MC_midx;   //!
+   TBranch        *b_MC_childpdgid;   //!
+   TBranch        *b_MC_childidx;   //!
+   TBranch        *b_MC_status;   //!
+   TBranch        *b_MC_isReco;   //!
+
+
+
+
+
    TBranch        *b_TwoMuonsTrack_Muonsindex;   //!
    TBranch        *b_TwoMuonsTrack_Trackindex;   //!
    TBranch        *b_TwoMuonsTrack_SV_Chi2;   //!
@@ -456,55 +493,40 @@ public :
    TBranch        *b_Vertex_pair_quality;   //!
    TBranch        *b_Vertex_pairfit_status;   //!
    TBranch        *b_Vertex_MatchedPrimaryVertex;   //!
+   TBranch        *b_Vertex_SecondBestPrimaryVertex;   //!
    TBranch        *b_Vertex_RefitPVisValid;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex;   //!
-   TBranch        *b_Vertex_SecondBestPrimaryVertex;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex_covariance;   //!
    TBranch        *b_Vertex_d0_reco;   //!
-   TBranch        *b_Vertex_d0sig_reco;   //!
-
    TBranch        *b_Vertex_dz_reco;   //!
    TBranch        *b_Vertex_d0SV_reco;   //!
    TBranch        *b_Vertex_dzSV_reco;   //!
-   TBranch        *b_Vertex_d0sigSV_reco;   //!
    TBranch        *b_Vertex_d0BeamSpot_reco;   //!
    TBranch        *b_Vertex_d0BeamSpot_reco_sig;   //!
-
-
-
-
+   TBranch        *b_Vertex_d0sig_reco;   //!
+   TBranch        *b_Vertex_d0sigSV_reco;   //!
    TBranch        *b_Vertex_2Ddisplacement;   //!
    TBranch        *b_Vertex_3Ddisplacement;   //!
    TBranch        *b_Vertex_Isolation1;   //!
    TBranch        *b_Vertex_Isolation2;   //!
    TBranch        *b_Vertex_Isolation3;   //!
    TBranch        *b_Vertex_Isolation4;   //!
-
-
-
-   TBranch        *b_IsolationBranch_Trackp4;   //!
+   TBranch        *b_Vertex_NMuonsAssocWithPV;   //!
    TBranch        *b_IsolationTrack_p4;   //!
    TBranch        *b_IsolationTrack_charge;   //!
    TBranch        *b_IsolationTrack_quality;   //!
-
    TBranch        *b_IsolationTrack_dxySV;   //!
    TBranch        *b_IsolationTrack_dzSV;   //!
-
    TBranch        *b_IsolationTrack_dxyPV;   //!
    TBranch        *b_IsolationTrack_dzPV;   //!
-
    TBranch        *b_IsolationTrack_DocaMu1;   //!
    TBranch        *b_IsolationTrack_DocaMu2;   //!
    TBranch        *b_IsolationTrack_DocaMu3;   //!
-
-
+   TBranch        *b_SV_Track_P4;   //!
    TBranch        *b_SV_pos;   //!
+   TBranch        *b_SV_TrackCharge;   //!
    TBranch        *b_SV_Mass;   //!
    TBranch        *b_SV_PosCovariance;   //!
-   TBranch        *b_SV_Track_P4;   //!
-   TBranch        *b_SV_TrackCharge;    //!
-
-
    TBranch        *b_Trigger_l1name;   //!
    TBranch        *b_Trigger_l1decision;   //!
    TBranch        *b_Trigger_l1prescale;   //!
@@ -558,25 +580,27 @@ NtupleReader::~NtupleReader()
   delete fChain->GetCurrentFile();
 }
 
+
+
+
 Int_t NtupleReader::GetEntry(Long64_t entry)
 {
-  // Read contents of entry.
-  if (!fChain) return 0;
-  return fChain->GetEntry(entry);
+// Read contents of entry.
+   if (!fChain) return 0;
+   return fChain->GetEntry(entry);
 }
 Long64_t NtupleReader::LoadTree(Long64_t entry)
 {
-  // Set the environment to read one entry
-  if (!fChain) return -5;
-  Long64_t centry = fChain->LoadTree(entry);
-  if (centry < 0) return centry;
-  if (fChain->GetTreeNumber() != fCurrent) {
-    fCurrent = fChain->GetTreeNumber();
-    Notify();
-  }
-  return centry;
+// Set the environment to read one entry
+   if (!fChain) return -5;
+   Long64_t centry = fChain->LoadTree(entry);
+   if (centry < 0) return centry;
+   if (fChain->GetTreeNumber() != fCurrent) {
+      fCurrent = fChain->GetTreeNumber();
+      Notify();
+   }
+   return centry;
 }
-
 
 void NtupleReader::Init(TTree *tree)
 {
@@ -607,6 +631,7 @@ void NtupleReader::Init(TTree *tree)
    Muon_isIsolationValid = 0;
    Muon_isQualityValid = 0;
    Muon_isTimeValid = 0;
+   Muon_expectedNnumberOfMatchedStations = 0;
    Muon_emEt03 = 0;
    Muon_emVetoEt03 = 0;
    Muon_hadEt03 = 0;
@@ -622,6 +647,8 @@ void NtupleReader::Init(TTree *tree)
    Muon_nJets05 = 0;
    Muon_nTracks05 = 0;
    Muon_sumPt05 = 0;
+   Muon_timeAtIpInOut = 0;
+   Muon_timeAtIpInOutErr = 0;
    Muon_trackerVetoPt05 = 0;
    Muon_sumChargedHadronPt03 = 0;
    Muon_sumChargedParticlePt03 = 0;
@@ -661,9 +688,6 @@ void NtupleReader::Init(TTree *tree)
    Muon_combinedQuality_tightMatch = 0;
    Muon_combinedQuality_glbTrackProbability = 0;
    Muon_prod_inner_outer_charge = 0;
-   Muon_ptError = 0;
-   Muon_phiError = 0;
-   Muon_etaError = 0;
    Muon_outerTrack_p4 = 0;
    Muon_innerTrack_p4 = 0;
    Muon_innerTrack_quality = 0;
@@ -673,6 +697,18 @@ void NtupleReader::Init(TTree *tree)
    Muon_calEnergy_emS25 = 0;
    Muon_calEnergy_emS9 = 0;
    Muon_calEnergy_em = 0;
+   Muon_dDxDz = 0;
+   Muon_dDyDz = 0;
+   Muon_dX = 0;
+   Muon_dY = 0;
+   Muon_pullX = 0;
+   Muon_pullY = 0;
+   Muon_pullDxDz = 0;
+   Muon_pullDyDz = 0;
+   numberOfSegments = 0;
+   Muon_ptError = 0;
+   Muon_phiError = 0;
+   Muon_etaError = 0;
    Muon_segmentCompatibility = 0;
    Muon_caloCompatibility = 0;
    Muon_isGoodMuon_TM2DCompatibility = 0;
@@ -703,23 +739,27 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
-   MC_p4 = 0;
-   MC_pdgid = 0;
-   MC_charge = 0;
-   MC_midx = 0;
-   MC_childpdgid = 0;
-   MC_childidx = 0;
-   MC_status = 0;
-
+   Gamma_P4 = 0;
+   Gamma_hasPixelSeed = 0;
+   Gamma_hasConversionTracks = 0;
+   Gamma_e1x5 = 0;
+   Gamma_e2x5 = 0;
+   Gamma_e3x3 = 0;
+   Gamma_e5x5 = 0;
+   Gamma_isPFPhoton = 0;
+   ThreeMuons_index = 0;
+   ThreeMuons_SV_Chi2 = 0;
+   ThreeMuons_SV_NDF = 0;
+   ThreeMuons_TriggerMatch_dR = 0;
    signalTau_charge = 0;
-   signalTau_pdgid = 0; 
-   signalTau_B = 0; 
-   signalTau_M = 0; 
+   signalTau_isLVP = 0;
+   signalTau_pdgid = 0;
+   signalTau_B = 0;
+   signalTau_M = 0;
    signalTau_lvp = 0;
    signalTau_cov = 0;
-   signalTau_isLVP = 0; 
 
-  
+   MC_isReco = 0;
    MCSignalParticle_p4 = 0;
    MCSignalParticle_pdgid = 0;
    MCSignalParticle_Sourcepdgid = 0;
@@ -739,10 +779,17 @@ void NtupleReader::Init(TTree *tree)
    MCTauandProd_pdgid = 0;
    MCTauandProd_midx = 0;
    MCTauandProd_charge = 0;
-   ThreeMuons_index = 0;
-   ThreeMuons_SV_Chi2 = 0;
-   ThreeMuons_SV_NDF = 0;
-   ThreeMuons_TriggerMatch_dR = 0;
+   MC_p4 = 0;
+   MC_pdgid = 0;
+   MC_charge = 0;
+   MC_midx = 0;
+   MC_childpdgid = 0;
+   MC_childidx = 0;
+   MC_status = 0;
+
+
+
+
    TwoMuonsTrack_Muonsindex = 0;
    TwoMuonsTrack_Trackindex = 0;
    TwoMuonsTrack_SV_Chi2 = 0;
@@ -763,50 +810,40 @@ void NtupleReader::Init(TTree *tree)
    Vertex_pair_quality = 0;
    Vertex_pairfit_status = 0;
    Vertex_MatchedPrimaryVertex = 0;
+   Vertex_SecondBestPrimaryVertex = 0;
    Vertex_RefitPVisValid = 0;
    Vertex_MatchedRefitPrimaryVertex = 0;
-   Vertex_SecondBestPrimaryVertex = 0;
    Vertex_MatchedRefitPrimaryVertex_covariance = 0;
    Vertex_d0_reco = 0;
-   Vertex_d0sig_reco = 0;
-
    Vertex_dz_reco = 0;
    Vertex_d0SV_reco = 0;
    Vertex_dzSV_reco = 0;
-   Vertex_d0sigSV_reco = 0;
    Vertex_d0BeamSpot_reco = 0;
    Vertex_d0BeamSpot_reco_sig = 0;
-
-
-
+   Vertex_d0sig_reco = 0;
+   Vertex_d0sigSV_reco = 0;
    Vertex_2Ddisplacement = 0;
    Vertex_3Ddisplacement = 0;
    Vertex_Isolation1 = 0;
    Vertex_Isolation2 = 0;
    Vertex_Isolation3 = 0;
    Vertex_Isolation4 = 0;
-   IsolationBranch_Trackp4 = 0;
+   Vertex_NMuonsAssocWithPV = 0;
    IsolationTrack_p4 = 0;
    IsolationTrack_charge = 0;
    IsolationTrack_quality = 0;
-
    IsolationTrack_dxySV = 0;
    IsolationTrack_dzSV = 0;
-
    IsolationTrack_dxyPV = 0;
    IsolationTrack_dzPV = 0;
-
    IsolationTrack_DocaMu1 = 0;
    IsolationTrack_DocaMu2 = 0;
    IsolationTrack_DocaMu3 = 0;
-
+   SV_Track_P4 = 0;
    SV_pos = 0;
+   SV_TrackCharge = 0;
    SV_Mass = 0;
    SV_PosCovariance = 0;
-   SV_Track_P4 = 0;
-   SV_TrackCharge = 0;
-
-
    Trigger_l1name = 0;
    Trigger_l1decision = 0;
    Trigger_l1prescale = 0;
@@ -846,6 +883,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_isIsolationValid", &Muon_isIsolationValid, &b_Muon_isIsolationValid);
    fChain->SetBranchAddress("Muon_isQualityValid", &Muon_isQualityValid, &b_Muon_isQualityValid);
    fChain->SetBranchAddress("Muon_isTimeValid", &Muon_isTimeValid, &b_Muon_isTimeValid);
+   fChain->SetBranchAddress("Muon_expectedNnumberOfMatchedStations", &Muon_expectedNnumberOfMatchedStations, &b_Muon_expectedNnumberOfMatchedStations);
    fChain->SetBranchAddress("Muon_emEt03", &Muon_emEt03, &b_Muon_emEt03);
    fChain->SetBranchAddress("Muon_emVetoEt03", &Muon_emVetoEt03, &b_Muon_emVetoEt03);
    fChain->SetBranchAddress("Muon_hadEt03", &Muon_hadEt03, &b_Muon_hadEt03);
@@ -861,6 +899,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_nJets05", &Muon_nJets05, &b_Muon_nJets05);
    fChain->SetBranchAddress("Muon_nTracks05", &Muon_nTracks05, &b_Muon_nTracks05);
    fChain->SetBranchAddress("Muon_sumPt05", &Muon_sumPt05, &b_Muon_sumPt05);
+   fChain->SetBranchAddress("Muon_timeAtIpInOut", &Muon_timeAtIpInOut, &b_Muon_timeAtIpInOut);
+   fChain->SetBranchAddress("Muon_timeAtIpInOutErr", &Muon_timeAtIpInOutErr, &b_Muon_timeAtIpInOutErr);
    fChain->SetBranchAddress("Muon_trackerVetoPt05", &Muon_trackerVetoPt05, &b_Muon_trackerVetoPt05);
    fChain->SetBranchAddress("Muon_sumChargedHadronPt03", &Muon_sumChargedHadronPt03, &b_Muon_sumChargedHadronPt03);
    fChain->SetBranchAddress("Muon_sumChargedParticlePt03", &Muon_sumChargedParticlePt03, &b_Muon_sumChargedParticlePt03);
@@ -900,9 +940,6 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_combinedQuality_tightMatch", &Muon_combinedQuality_tightMatch, &b_Muon_combinedQuality_tightMatch);
    fChain->SetBranchAddress("Muon_combinedQuality_glbTrackProbability", &Muon_combinedQuality_glbTrackProbability, &b_Muon_combinedQuality_glbTrackProbability);
    fChain->SetBranchAddress("Muon_prod_inner_outer_charge", &Muon_prod_inner_outer_charge, &b_Muon_prod_inner_outer_charge);
-   fChain->SetBranchAddress("Muon_ptError",&Muon_ptError,&b_Muon_ptError);
-   fChain->SetBranchAddress("Muon_phiError",&Muon_phiError, &b_Muon_phiError);
-   fChain->SetBranchAddress("Muon_etaError",&Muon_etaError, &b_Muon_etaError);
    fChain->SetBranchAddress("Muon_outerTrack_p4", &Muon_outerTrack_p4, &b_Muon_outerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_p4", &Muon_innerTrack_p4, &b_Muon_innerTrack_p4);
    fChain->SetBranchAddress("Muon_innerTrack_quality", &Muon_innerTrack_quality, &b_Muon_innerTrack_quality);
@@ -912,6 +949,18 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_calEnergy_emS25", &Muon_calEnergy_emS25, &b_Muon_calEnergy_emS25);
    fChain->SetBranchAddress("Muon_calEnergy_emS9", &Muon_calEnergy_emS9, &b_Muon_calEnergy_emS9);
    fChain->SetBranchAddress("Muon_calEnergy_em", &Muon_calEnergy_em, &b_Muon_calEnergy_em);
+   fChain->SetBranchAddress("Muon_dDxDz", &Muon_dDxDz, &b_Muon_dDxDz);
+   fChain->SetBranchAddress("Muon_dDyDz", &Muon_dDyDz, &b_Muon_dDyDz);
+   fChain->SetBranchAddress("Muon_dX", &Muon_dX, &b_Muon_dX);
+   fChain->SetBranchAddress("Muon_dY", &Muon_dY, &b_Muon_dY);
+   fChain->SetBranchAddress("Muon_pullX", &Muon_pullX, &b_Muon_pullX);
+   fChain->SetBranchAddress("Muon_pullY", &Muon_pullY, &b_Muon_pullY);
+   fChain->SetBranchAddress("Muon_pullDxDz", &Muon_pullDxDz, &b_Muon_pullDxDz);
+   fChain->SetBranchAddress("Muon_pullDyDz", &Muon_pullDyDz, &b_Muon_pullDyDz);
+   fChain->SetBranchAddress("numberOfSegments", &numberOfSegments, &b_numberOfSegments);
+   fChain->SetBranchAddress("Muon_ptError", &Muon_ptError, &b_Muon_ptError);
+   fChain->SetBranchAddress("Muon_phiError", &Muon_phiError, &b_Muon_phiError);
+   fChain->SetBranchAddress("Muon_etaError", &Muon_etaError, &b_Muon_etaError);
    fChain->SetBranchAddress("Muon_segmentCompatibility", &Muon_segmentCompatibility, &b_Muon_segmentCompatibility);
    fChain->SetBranchAddress("Muon_caloCompatibility", &Muon_caloCompatibility, &b_Muon_caloCompatibility);
    fChain->SetBranchAddress("Muon_isGoodMuon_TM2DCompatibility", &Muon_isGoodMuon_TM2DCompatibility, &b_Muon_isGoodMuon_TM2DCompatibility);
@@ -942,22 +991,25 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
-   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
-   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
-   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
-   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
-   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
-   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
-   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
-   fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
-
-   fChain->SetBranchAddress("signalTau_charge",&signalTau_charge,&b_signalTau_charge);
-   fChain->SetBranchAddress("signalTau_pdgid",&signalTau_pdgid,&b_signalTau_pdgid);
-   fChain->SetBranchAddress("signalTau_B",&signalTau_B, &b_signalTau_B);
-   fChain->SetBranchAddress("signalTau_M",&signalTau_M, &b_signalTau_M);
-   fChain->SetBranchAddress("signalTau_lvp",&signalTau_lvp, &b_signalTau_lvp);
-   fChain->SetBranchAddress("signalTau_cov",&signalTau_cov,&b_signalTau_cov);
-   fChain->SetBranchAddress("signalTau_isLVP",&signalTau_isLVP, &b_signalTau_isLVP);
+   fChain->SetBranchAddress("Gamma_P4", &Gamma_P4, &b_Gamma_P4);
+   fChain->SetBranchAddress("Gamma_hasPixelSeed", &Gamma_hasPixelSeed, &b_Gamma_hasPixelSeed);
+   fChain->SetBranchAddress("Gamma_hasConversionTracks", &Gamma_hasConversionTracks, &b_Gamma_hasConversionTracks);
+   fChain->SetBranchAddress("Gamma_e1x5", &Gamma_e1x5, &b_Gamma_e1x5);
+   fChain->SetBranchAddress("Gamma_e2x5", &Gamma_e2x5, &b_Gamma_e2x5);
+   fChain->SetBranchAddress("Gamma_e3x3", &Gamma_e3x3, &b_Gamma_e3x3);
+   fChain->SetBranchAddress("Gamma_e5x5", &Gamma_e5x5, &b_Gamma_e5x5);
+   fChain->SetBranchAddress("Gamma_isPFPhoton", &Gamma_isPFPhoton, &b_Gamma_isPFPhoton);
+   fChain->SetBranchAddress("ThreeMuons_index", &ThreeMuons_index, &b_ThreeMuons_index);
+   fChain->SetBranchAddress("ThreeMuons_SV_Chi2", &ThreeMuons_SV_Chi2, &b_ThreeMuons_SV_Chi2);
+   fChain->SetBranchAddress("ThreeMuons_SV_NDF", &ThreeMuons_SV_NDF, &b_ThreeMuons_SV_NDF);
+   fChain->SetBranchAddress("ThreeMuons_TriggerMatch_dR", &ThreeMuons_TriggerMatch_dR, &b_ThreeMuons_TriggerMatch_dR);
+   fChain->SetBranchAddress("signalTau_charge", &signalTau_charge, &b_signalTau_charge);
+   fChain->SetBranchAddress("signalTau_isLVP", &signalTau_isLVP, &b_signalTau_isLVP);
+   fChain->SetBranchAddress("signalTau_pdgid", &signalTau_pdgid, &b_signalTau_pdgid);
+   fChain->SetBranchAddress("signalTau_B", &signalTau_B, &b_signalTau_B);
+   fChain->SetBranchAddress("signalTau_M", &signalTau_M, &b_signalTau_M);
+   fChain->SetBranchAddress("signalTau_lvp", &signalTau_lvp, &b_signalTau_lvp);
+   fChain->SetBranchAddress("signalTau_cov", &signalTau_cov, &b_signalTau_cov);
 
 
 
@@ -982,10 +1034,15 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
    fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
    fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);
-   fChain->SetBranchAddress("ThreeMuons_index", &ThreeMuons_index, &b_ThreeMuons_index);
-   fChain->SetBranchAddress("ThreeMuons_SV_Chi2", &ThreeMuons_SV_Chi2, &b_ThreeMuons_SV_Chi2);
-   fChain->SetBranchAddress("ThreeMuons_SV_NDF", &ThreeMuons_SV_NDF, &b_ThreeMuons_SV_NDF);
-   fChain->SetBranchAddress("ThreeMuons_TriggerMatch_dR", &ThreeMuons_TriggerMatch_dR, &b_ThreeMuons_TriggerMatch_dR);
+   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
+   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
+   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
+   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
+   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
+   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
+   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
+   fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
+
    fChain->SetBranchAddress("TwoMuonsTrack_Muonsindex", &TwoMuonsTrack_Muonsindex, &b_TwoMuonsTrack_Muonsindex);
    fChain->SetBranchAddress("TwoMuonsTrack_Trackindex", &TwoMuonsTrack_Trackindex, &b_TwoMuonsTrack_Trackindex);
    fChain->SetBranchAddress("TwoMuonsTrack_SV_Chi2", &TwoMuonsTrack_SV_Chi2, &b_TwoMuonsTrack_SV_Chi2);
@@ -1007,52 +1064,40 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_pair_quality", &Vertex_pair_quality, &b_Vertex_pair_quality);
    fChain->SetBranchAddress("Vertex_pairfit_status", &Vertex_pairfit_status, &b_Vertex_pairfit_status);
    fChain->SetBranchAddress("Vertex_MatchedPrimaryVertex", &Vertex_MatchedPrimaryVertex, &b_Vertex_MatchedPrimaryVertex);
+   fChain->SetBranchAddress("Vertex_SecondBestPrimaryVertex", &Vertex_SecondBestPrimaryVertex, &b_Vertex_SecondBestPrimaryVertex);
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex", &Vertex_MatchedRefitPrimaryVertex, &b_Vertex_MatchedRefitPrimaryVertex);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex_covariance", &Vertex_MatchedRefitPrimaryVertex_covariance, &b_Vertex_MatchedRefitPrimaryVertex_covariance);
-   fChain->SetBranchAddress("Vertex_SecondBestPrimaryVertex", &Vertex_SecondBestPrimaryVertex,&b_Vertex_SecondBestPrimaryVertex);
    fChain->SetBranchAddress("Vertex_d0_reco", &Vertex_d0_reco, &b_Vertex_d0_reco);
-   fChain->SetBranchAddress("Vertex_d0sig_reco", &Vertex_d0sig_reco, &b_Vertex_d0sig_reco);
-
    fChain->SetBranchAddress("Vertex_dz_reco", &Vertex_dz_reco, &b_Vertex_dz_reco);
    fChain->SetBranchAddress("Vertex_d0SV_reco", &Vertex_d0SV_reco, &b_Vertex_d0SV_reco);
    fChain->SetBranchAddress("Vertex_dzSV_reco", &Vertex_dzSV_reco, &b_Vertex_dzSV_reco);
-   fChain->SetBranchAddress("Vertex_d0sigSV_reco", &Vertex_d0sigSV_reco, &b_Vertex_d0sigSV_reco);
    fChain->SetBranchAddress("Vertex_d0BeamSpot_reco", &Vertex_d0BeamSpot_reco, &b_Vertex_d0BeamSpot_reco);
    fChain->SetBranchAddress("Vertex_d0BeamSpot_reco_sig", &Vertex_d0BeamSpot_reco_sig, &b_Vertex_d0BeamSpot_reco_sig);
-
-
-
-
+   fChain->SetBranchAddress("Vertex_d0sig_reco", &Vertex_d0sig_reco, &b_Vertex_d0sig_reco);
+   fChain->SetBranchAddress("Vertex_d0sigSV_reco", &Vertex_d0sigSV_reco, &b_Vertex_d0sigSV_reco);
    fChain->SetBranchAddress("Vertex_2Ddisplacement", &Vertex_2Ddisplacement, &b_Vertex_2Ddisplacement);
    fChain->SetBranchAddress("Vertex_3Ddisplacement", &Vertex_3Ddisplacement, &b_Vertex_3Ddisplacement);
    fChain->SetBranchAddress("Vertex_Isolation1", &Vertex_Isolation1, &b_Vertex_Isolation1);
    fChain->SetBranchAddress("Vertex_Isolation2", &Vertex_Isolation2, &b_Vertex_Isolation2);
    fChain->SetBranchAddress("Vertex_Isolation3", &Vertex_Isolation3, &b_Vertex_Isolation3);
    fChain->SetBranchAddress("Vertex_Isolation4", &Vertex_Isolation4, &b_Vertex_Isolation4);
-
-
-   fChain->SetBranchAddress("IsolationBranch_Trackp4",&IsolationBranch_Trackp4, &b_IsolationBranch_Trackp4);  
-
-   fChain->SetBranchAddress("IsolationTrack_p4",&IsolationTrack_p4,&b_IsolationTrack_p4);
-   fChain->SetBranchAddress("IsolationTrack_charge",&IsolationTrack_charge,&b_IsolationTrack_charge);
-   fChain->SetBranchAddress("IsolationTrack_quality",&IsolationTrack_quality,&b_IsolationTrack_quality);
-
-   fChain->SetBranchAddress("IsolationTrack_dxySV",&IsolationTrack_dxySV,&b_IsolationTrack_dxySV);
-   fChain->SetBranchAddress("IsolationTrack_dzSV",&IsolationTrack_dzSV,&b_IsolationTrack_dzSV);
-
-   fChain->SetBranchAddress("IsolationTrack_dxyPV",&IsolationTrack_dxyPV,&b_IsolationTrack_dxyPV);
-   fChain->SetBranchAddress("IsolationTrack_dzPV",&IsolationTrack_dzPV,&b_IsolationTrack_dzPV);
-   fChain->SetBranchAddress("IsolationTrack_DocaMu1",&IsolationTrack_DocaMu1,&b_IsolationTrack_DocaMu1);
-   fChain->SetBranchAddress("IsolationTrack_DocaMu2",&IsolationTrack_DocaMu2,&b_IsolationTrack_DocaMu2);
-   fChain->SetBranchAddress("IsolationTrack_DocaMu3",&IsolationTrack_DocaMu3,&b_IsolationTrack_DocaMu3);
-
-   fChain->SetBranchAddress("SV_pos",&SV_pos,&b_SV_pos);
-   fChain->SetBranchAddress("SV_Mass",&SV_Mass,&b_SV_Mass);
-   fChain->SetBranchAddress("SV_PosCovariance",&SV_PosCovariance,&b_SV_PosCovariance);
-   fChain->SetBranchAddress("SV_Track_P4",&SV_Track_P4,&b_SV_Track_P4);
-   fChain->SetBranchAddress("SV_TrackCharge",&SV_TrackCharge, &b_SV_TrackCharge);
-
+   fChain->SetBranchAddress("Vertex_NMuonsAssocWithPV", &Vertex_NMuonsAssocWithPV, &b_Vertex_NMuonsAssocWithPV);
+   fChain->SetBranchAddress("IsolationTrack_p4", &IsolationTrack_p4, &b_IsolationTrack_p4);
+   fChain->SetBranchAddress("IsolationTrack_charge", &IsolationTrack_charge, &b_IsolationTrack_charge);
+   fChain->SetBranchAddress("IsolationTrack_quality", &IsolationTrack_quality, &b_IsolationTrack_quality);
+   fChain->SetBranchAddress("IsolationTrack_dxySV", &IsolationTrack_dxySV, &b_IsolationTrack_dxySV);
+   fChain->SetBranchAddress("IsolationTrack_dzSV", &IsolationTrack_dzSV, &b_IsolationTrack_dzSV);
+   fChain->SetBranchAddress("IsolationTrack_dxyPV", &IsolationTrack_dxyPV, &b_IsolationTrack_dxyPV);
+   fChain->SetBranchAddress("IsolationTrack_dzPV", &IsolationTrack_dzPV, &b_IsolationTrack_dzPV);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu1", &IsolationTrack_DocaMu1, &b_IsolationTrack_DocaMu1);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu2", &IsolationTrack_DocaMu2, &b_IsolationTrack_DocaMu2);
+   fChain->SetBranchAddress("IsolationTrack_DocaMu3", &IsolationTrack_DocaMu3, &b_IsolationTrack_DocaMu3);
+   fChain->SetBranchAddress("SV_Track_P4", &SV_Track_P4, &b_SV_Track_P4);
+   fChain->SetBranchAddress("SV_pos", &SV_pos, &b_SV_pos);
+   fChain->SetBranchAddress("SV_TrackCharge", &SV_TrackCharge, &b_SV_TrackCharge);
+   fChain->SetBranchAddress("SV_Mass", &SV_Mass, &b_SV_Mass);
+   fChain->SetBranchAddress("SV_PosCovariance", &SV_PosCovariance, &b_SV_PosCovariance);
    fChain->SetBranchAddress("Trigger_l1name", &Trigger_l1name, &b_Trigger_l1name);
    fChain->SetBranchAddress("Trigger_l1decision", &Trigger_l1decision, &b_Trigger_l1decision);
    fChain->SetBranchAddress("Trigger_l1prescale", &Trigger_l1prescale, &b_Trigger_l1prescale);
