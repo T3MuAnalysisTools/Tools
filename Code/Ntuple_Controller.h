@@ -300,7 +300,34 @@ class Ntuple_Controller{
       int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
       int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
 
+      float Muon_dDxDz(unsigned int i, unsigned int det){return Ntp->Muon_dDxDz->at(i).at(det);} //  det = 0,1,2,3 - DT, det = 4,5,6,7 - CSC
+      float Muon_dDyDz(unsigned int i, unsigned int det){return Ntp->Muon_dDyDz->at(i).at(det);}
+      float Muon_dX(unsigned int i, unsigned int det){return Ntp->Muon_dX->at(i).at(det);}
+      float Muon_dY(unsigned int i, unsigned int det){return Ntp->Muon_dY->at(i).at(det);}
+      float Muon_pullX(unsigned int i, unsigned int det){return Ntp->Muon_pullX->at(i).at(det);}
+      float Muon_pullY(unsigned int i, unsigned int det){return Ntp->Muon_pullY->at(i).at(det);}
+      float Muon_pullDxDz(unsigned int i, unsigned int det){return Ntp->Muon_pullDxDz->at(i).at(det);}
+      float Muon_pullDyDz(unsigned int i, unsigned int det){return Ntp->Muon_pullDyDz->at(i).at(det);}
+      float numberOfSegments(unsigned int i, unsigned int det){return Ntp->numberOfSegments->at(i).at(det);}
 
+
+      float Muon_timeAtIpInOut(unsigned int i){return Ntp->Muon_timeAtIpInOut->at(i);}
+      float Muon_timeAtIpInOutErr(unsigned int i){return Ntp->Muon_timeAtIpInOutErr->at(i);}
+      //Vertex_NMuonsAssocWithPV
+
+
+
+
+      int NPhotons(){return Ntp->Gamma_P4->size();}
+      TLorentzVector Photon_p4(unsigned int i){return TLorentzVector(Ntp->Gamma_P4->at(i).at(1),Ntp->Gamma_P4->at(i).at(2), Ntp->Gamma_P4->at(i).at(3), Ntp->Gamma_P4->at(i).at(0));}
+      float Photon_e1x5(unsigned int i){return Ntp->Gamma_e1x5->at(i);}
+      float Photon_e2x5(unsigned int i){return Ntp->Gamma_e2x5->at(i);}
+      float Photon_e3x3(unsigned int i){return Ntp->Gamma_e3x3->at(i);}
+      float Photon_e5x5(unsigned int i){return Ntp->Gamma_e5x5->at(i);}
+
+      int Photon_hasPixelSeed(unsigned int i){return Ntp->Gamma_hasPixelSeed->at(i);}
+      int Photon_hasConversionTracks(unsigned int i){return Ntp->Gamma_hasConversionTracks->at(i);}
+      int Photon_isPF(unsigned int i){return Ntp->Gamma_isPFPhoton->at(i);}
       /*    will be fixed later
             bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
             TrackParticle Muon_TrackParticle(unsigned int i){ 
@@ -345,8 +372,8 @@ class Ntuple_Controller{
          return TVector3(Ntp->Vertex_signal_KF_pos->at(index).at(0), Ntp->Vertex_signal_KF_pos->at(index).at(1),Ntp->Vertex_signal_KF_pos->at(index).at(2));
       }
       
-      TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i, bool channel);
-      TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel);
+      TMatrixTSym<double>   Vertex_Signal_KF_Covariance(unsigned int i, bool channel=false);
+      TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel=false);
 
 
       //   int NTracksInThePV(unsigned int i){return Ntp->IsolationBranch_Trackp4->at(i).size();}

@@ -1,5 +1,5 @@
-#ifndef BackgroundSelector_h
-#define BackgroundSelector_h
+#ifndef MCBackgroundStudy_h
+#define MCBackgroundStudy_h
 
 #include "Selection.h"
 #include <vector>
@@ -10,11 +10,11 @@
 #include "TMVA/MethodCuts.h"
 
 
-class BackgroundSelector : public Selection {
+class MCBackgroundStudy : public Selection {
 
  public:
-  BackgroundSelector(TString Name_, TString id_);
-  virtual ~BackgroundSelector();
+  MCBackgroundStudy(TString Name_, TString id_);
+  virtual ~MCBackgroundStudy();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -123,8 +123,6 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> Muon1isTrack;
   std::vector<TH1D> Muon2isTrack;
   std::vector<TH1D> Muon3isTrack;
-
-
 
   std::vector<TH1D> Muon1PtResolution;
   std::vector<TH1D> Muon2PtResolution;

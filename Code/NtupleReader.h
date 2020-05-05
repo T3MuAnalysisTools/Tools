@@ -3,7 +3,6 @@
 // Tue May  5 11:52:47 2020 by ROOT version 6.20/04
 // from TTree NtupleReader/
 // found on file: /tmp/bjoshi/DsT3MNtuple_1.root
-//////////////////////////////////////////////////////////
 
 #ifndef NtupleReader_h
 #define NtupleReader_h
@@ -172,22 +171,6 @@ public :
    std::vector<float>   *Gamma_e3x3;
    std::vector<float>   *Gamma_e5x5;
    std::vector<int>     *Gamma_isPFPhoton;
-   Bool_t          MC_isReco;
-   std::vector<std::vector<float> > *MCSignalParticle_p4;
-   std::vector<std::vector<float> > *MCSignalParticle_Vertex;
-   std::vector<int>     *MCSignalParticle_pdgid;
-   std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
-   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_childp4;
-   std::vector<std::vector<int> > *MCSignalParticle_Sourcepdgid;
-   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_Sourcep4;
-   std::vector<int>     *MCSignalParticle_charge;
-   std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
-   std::vector<std::vector<float> > *MCSignalParticle_SourceVertex;
-   std::vector<std::vector<std::vector<float> > > *MCTauandProd_p4;
-   std::vector<std::vector<std::vector<float> > > *MCTauandProd_Vertex;
-   std::vector<std::vector<int> > *MCTauandProd_pdgid;
-   std::vector<unsigned int> *MCTauandProd_midx;
-   std::vector<std::vector<int> > *MCTauandProd_charge;
    std::vector<std::vector<unsigned int> > *ThreeMuons_index;
    std::vector<double>  *ThreeMuons_SV_Chi2;
    std::vector<double>  *ThreeMuons_SV_NDF;
@@ -204,6 +187,39 @@ public :
    std::vector<double>  *TwoMuonsTrack_SV_Chi2;
    std::vector<double>  *TwoMuonsTrack_SV_NDF;
    std::vector<std::vector<float> > *TwoMuonsTrack_TriggerMatch_dR;
+
+
+   Bool_t          MC_isReco;
+   std::vector<std::vector<float> > *MCSignalParticle_p4;
+   std::vector<std::vector<float> > *MCSignalParticle_Vertex;
+   std::vector<int>     *MCSignalParticle_pdgid;
+   std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
+   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_childp4;
+   std::vector<std::vector<int> > *MCSignalParticle_Sourcepdgid;
+   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_Sourcep4;
+   std::vector<int>     *MCSignalParticle_charge;
+   std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
+   std::vector<std::vector<float> > *MCSignalParticle_SourceVertex;
+   std::vector<std::vector<std::vector<float> > > *MCTauandProd_p4;
+   std::vector<std::vector<std::vector<float> > > *MCTauandProd_Vertex;
+   std::vector<std::vector<int> > *MCTauandProd_pdgid;
+   std::vector<unsigned int> *MCTauandProd_midx;
+   std::vector<std::vector<int> > *MCTauandProd_charge;
+   std::vector<std::vector<float> > *MC_p4;
+   std::vector<int>     *MC_pdgid;
+   std::vector<int>     *MC_charge;
+   std::vector<int>     *MC_midx;
+   std::vector<std::vector<int> > *MC_childpdgid;
+   std::vector<std::vector<int> > *MC_childidx;
+   std::vector<int>     *MC_status;
+
+
+
+
+
+
+
+
    std::vector<double>  *Jet_BTagCVSB;
    std::vector<double>  *Jet_BTagMVA;
    std::vector<double>  *Jet_BTagCSV;
@@ -258,7 +274,7 @@ public :
    std::vector<std::vector<int> > *SV_TrackCharge;
    std::vector<float>   *SV_Mass;
    std::vector<std::vector<float> > *SV_PosCovariance;
-   std::vector<string>  *Trigger_l1name;
+   std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
    std::vector<string>  *Trigger_hltname;
@@ -409,7 +425,18 @@ public :
    TBranch        *b_Gamma_e3x3;   //!
    TBranch        *b_Gamma_e5x5;   //!
    TBranch        *b_Gamma_isPFPhoton;   //!
-   TBranch        *b_MC_isReco;   //!
+   TBranch        *b_ThreeMuons_index;   //!
+   TBranch        *b_ThreeMuons_SV_Chi2;   //!
+   TBranch        *b_ThreeMuons_SV_NDF;   //!
+   TBranch        *b_ThreeMuons_TriggerMatch_dR;   //!
+   TBranch        *b_signalTau_charge;   //!
+   TBranch        *b_signalTau_isLVP;   //!
+   TBranch        *b_signalTau_pdgid;   //!
+   TBranch        *b_signalTau_B;   //!
+   TBranch        *b_signalTau_M;   //!
+   TBranch        *b_signalTau_lvp;   //!
+   TBranch        *b_signalTau_cov;   //!
+
    TBranch        *b_MCSignalParticle_p4;   //!
    TBranch        *b_MCSignalParticle_Vertex;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
@@ -425,17 +452,19 @@ public :
    TBranch        *b_MCTauandProd_pdgid;   //!
    TBranch        *b_MCTauandProd_midx;   //!
    TBranch        *b_MCTauandProd_charge;   //!
-   TBranch        *b_ThreeMuons_index;   //!
-   TBranch        *b_ThreeMuons_SV_Chi2;   //!
-   TBranch        *b_ThreeMuons_SV_NDF;   //!
-   TBranch        *b_ThreeMuons_TriggerMatch_dR;   //!
-   TBranch        *b_signalTau_charge;   //!
-   TBranch        *b_signalTau_isLVP;   //!
-   TBranch        *b_signalTau_pdgid;   //!
-   TBranch        *b_signalTau_B;   //!
-   TBranch        *b_signalTau_M;   //!
-   TBranch        *b_signalTau_lvp;   //!
-   TBranch        *b_signalTau_cov;   //!
+   TBranch        *b_MC_p4;   //!
+   TBranch        *b_MC_pdgid;   //!
+   TBranch        *b_MC_charge;   //!
+   TBranch        *b_MC_midx;   //!
+   TBranch        *b_MC_childpdgid;   //!
+   TBranch        *b_MC_childidx;   //!
+   TBranch        *b_MC_status;   //!
+   TBranch        *b_MC_isReco;   //!
+
+
+
+
+
    TBranch        *b_TwoMuonsTrack_Muonsindex;   //!
    TBranch        *b_TwoMuonsTrack_Trackindex;   //!
    TBranch        *b_TwoMuonsTrack_SV_Chi2;   //!
@@ -536,6 +565,9 @@ NtupleReader::~NtupleReader()
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
+
+
+
 
 Int_t NtupleReader::GetEntry(Long64_t entry)
 {
@@ -701,6 +733,19 @@ void NtupleReader::Init(TTree *tree)
    Gamma_e3x3 = 0;
    Gamma_e5x5 = 0;
    Gamma_isPFPhoton = 0;
+   ThreeMuons_index = 0;
+   ThreeMuons_SV_Chi2 = 0;
+   ThreeMuons_SV_NDF = 0;
+   ThreeMuons_TriggerMatch_dR = 0;
+   signalTau_charge = 0;
+   signalTau_isLVP = 0;
+   signalTau_pdgid = 0;
+   signalTau_B = 0;
+   signalTau_M = 0;
+   signalTau_lvp = 0;
+   signalTau_cov = 0;
+
+   MC_isReco = 0;
    MCSignalParticle_p4 = 0;
    MCSignalParticle_Vertex = 0;
    MCSignalParticle_pdgid = 0;
@@ -716,17 +761,17 @@ void NtupleReader::Init(TTree *tree)
    MCTauandProd_pdgid = 0;
    MCTauandProd_midx = 0;
    MCTauandProd_charge = 0;
-   ThreeMuons_index = 0;
-   ThreeMuons_SV_Chi2 = 0;
-   ThreeMuons_SV_NDF = 0;
-   ThreeMuons_TriggerMatch_dR = 0;
-   signalTau_charge = 0;
-   signalTau_isLVP = 0;
-   signalTau_pdgid = 0;
-   signalTau_B = 0;
-   signalTau_M = 0;
-   signalTau_lvp = 0;
-   signalTau_cov = 0;
+   MC_p4 = 0;
+   MC_pdgid = 0;
+   MC_charge = 0;
+   MC_midx = 0;
+   MC_childpdgid = 0;
+   MC_childidx = 0;
+   MC_status = 0;
+
+
+
+
    TwoMuonsTrack_Muonsindex = 0;
    TwoMuonsTrack_Trackindex = 0;
    TwoMuonsTrack_SV_Chi2 = 0;
@@ -940,7 +985,20 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Gamma_e3x3", &Gamma_e3x3, &b_Gamma_e3x3);
    fChain->SetBranchAddress("Gamma_e5x5", &Gamma_e5x5, &b_Gamma_e5x5);
    fChain->SetBranchAddress("Gamma_isPFPhoton", &Gamma_isPFPhoton, &b_Gamma_isPFPhoton);
-   fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
+   fChain->SetBranchAddress("ThreeMuons_index", &ThreeMuons_index, &b_ThreeMuons_index);
+   fChain->SetBranchAddress("ThreeMuons_SV_Chi2", &ThreeMuons_SV_Chi2, &b_ThreeMuons_SV_Chi2);
+   fChain->SetBranchAddress("ThreeMuons_SV_NDF", &ThreeMuons_SV_NDF, &b_ThreeMuons_SV_NDF);
+   fChain->SetBranchAddress("ThreeMuons_TriggerMatch_dR", &ThreeMuons_TriggerMatch_dR, &b_ThreeMuons_TriggerMatch_dR);
+   fChain->SetBranchAddress("signalTau_charge", &signalTau_charge, &b_signalTau_charge);
+   fChain->SetBranchAddress("signalTau_isLVP", &signalTau_isLVP, &b_signalTau_isLVP);
+   fChain->SetBranchAddress("signalTau_pdgid", &signalTau_pdgid, &b_signalTau_pdgid);
+   fChain->SetBranchAddress("signalTau_B", &signalTau_B, &b_signalTau_B);
+   fChain->SetBranchAddress("signalTau_M", &signalTau_M, &b_signalTau_M);
+   fChain->SetBranchAddress("signalTau_lvp", &signalTau_lvp, &b_signalTau_lvp);
+   fChain->SetBranchAddress("signalTau_cov", &signalTau_cov, &b_signalTau_cov);
+
+
+
    fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
    fChain->SetBranchAddress("MCSignalParticle_Vertex", &MCSignalParticle_Vertex, &b_MCSignalParticle_Vertex);
    fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
@@ -956,17 +1014,15 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
    fChain->SetBranchAddress("MCTauandProd_midx", &MCTauandProd_midx, &b_MCTauandProd_midx);
    fChain->SetBranchAddress("MCTauandProd_charge", &MCTauandProd_charge, &b_MCTauandProd_charge);
-   fChain->SetBranchAddress("ThreeMuons_index", &ThreeMuons_index, &b_ThreeMuons_index);
-   fChain->SetBranchAddress("ThreeMuons_SV_Chi2", &ThreeMuons_SV_Chi2, &b_ThreeMuons_SV_Chi2);
-   fChain->SetBranchAddress("ThreeMuons_SV_NDF", &ThreeMuons_SV_NDF, &b_ThreeMuons_SV_NDF);
-   fChain->SetBranchAddress("ThreeMuons_TriggerMatch_dR", &ThreeMuons_TriggerMatch_dR, &b_ThreeMuons_TriggerMatch_dR);
-   fChain->SetBranchAddress("signalTau_charge", &signalTau_charge, &b_signalTau_charge);
-   fChain->SetBranchAddress("signalTau_isLVP", &signalTau_isLVP, &b_signalTau_isLVP);
-   fChain->SetBranchAddress("signalTau_pdgid", &signalTau_pdgid, &b_signalTau_pdgid);
-   fChain->SetBranchAddress("signalTau_B", &signalTau_B, &b_signalTau_B);
-   fChain->SetBranchAddress("signalTau_M", &signalTau_M, &b_signalTau_M);
-   fChain->SetBranchAddress("signalTau_lvp", &signalTau_lvp, &b_signalTau_lvp);
-   fChain->SetBranchAddress("signalTau_cov", &signalTau_cov, &b_signalTau_cov);
+   fChain->SetBranchAddress("MC_p4", &MC_p4, &b_MC_p4);
+   fChain->SetBranchAddress("MC_pdgid", &MC_pdgid, &b_MC_pdgid);
+   fChain->SetBranchAddress("MC_charge", &MC_charge, &b_MC_charge);
+   fChain->SetBranchAddress("MC_midx", &MC_midx, &b_MC_midx);
+   fChain->SetBranchAddress("MC_childpdgid", &MC_childpdgid, &b_MC_childpdgid);
+   fChain->SetBranchAddress("MC_childidx", &MC_childidx, &b_MC_childidx);
+   fChain->SetBranchAddress("MC_status", &MC_status, &b_MC_status);
+   fChain->SetBranchAddress("MC_isReco", &MC_isReco, &b_MC_isReco);
+
    fChain->SetBranchAddress("TwoMuonsTrack_Muonsindex", &TwoMuonsTrack_Muonsindex, &b_TwoMuonsTrack_Muonsindex);
    fChain->SetBranchAddress("TwoMuonsTrack_Trackindex", &TwoMuonsTrack_Trackindex, &b_TwoMuonsTrack_Trackindex);
    fChain->SetBranchAddress("TwoMuonsTrack_SV_Chi2", &TwoMuonsTrack_SV_Chi2, &b_TwoMuonsTrack_SV_Chi2);
