@@ -43,6 +43,9 @@ class MuonPionTree : public Selection {
       float dsMassMax;
 
       int fake;
+      int isGlobal;
+      int isTracker;
+      int isPF;
       float muonPt ;
       float muonEta ;
       float muonPhi ;

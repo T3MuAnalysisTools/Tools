@@ -36,6 +36,9 @@ void  MuonPionTree::Configure(){
 
    TMVATree = new TTree("tree","tree"); 
    TMVATree->Branch("fake",&fake);
+   TMVATree->Branch("isGlobal",&isGlobal);
+   TMVATree->Branch("isTracker",&isTracker);
+   TMVATree->Branch("isPF",&isPF);
    TMVATree->Branch("muonPt",&muonPt);
    TMVATree->Branch("muonEta",&muonEta);
    TMVATree->Branch("muonPhi",&muonPhi);
@@ -148,9 +151,9 @@ void  MuonPionTree::doEvent(){
                      for (unsigned int iMuon=0; iMuon<Ntp->NMuons(); iMuon++){
                         float muon_pt = Ntp->Muon_P4(iMuon).Pt();
                         float dpt = fabs(muon_pt-Ntp->MCSignalParticle_child_p4(ngen,nchild).Pt())/Ntp->MCSignalParticle_child_p4(ngen,nchild).Pt();
+                        //bool muId = (Ntp->Muon_isPFMuon(iMuon) && Ntp->Muon_isTrackerMuon(iMuon) && !Ntp->Muon_isGlobalMuon(iMuon));
                         float dR = Ntp->Muon_P4(iMuon).DeltaR(Ntp->MCSignalParticle_child_p4(ngen,nchild));
-                        bool muId = (Ntp->Muon_isTrackerMuon(iMuon) && !Ntp->Muon_isGlobalMuon(iMuon));
-                        if (dR<0.01 && dR<mu_dR && dpt<0.1 && muId) { 
+                        if (dR<0.01 && dR<mu_dR && dpt<0.1 /*&& muId*/) { 
                            mu_dR = dR;
                            pi_flag = 1;
                            mu_idx = iMuon;
@@ -178,11 +181,14 @@ void  MuonPionTree::doEvent(){
       // Fill Tree
       if(pi_flag){
          fake=1;
+         isGlobal = Ntp->Muon_isGlobalMuon(mu_idx);
+         isTracker = Ntp->Muon_isTrackerMuon(mu_idx);
+         isPF = Ntp->Muon_isPFMuon(mu_idx);
          muonPt = Ntp->Muon_P4(mu_idx).Pt();
          muonEta = Ntp->Muon_P4(mu_idx).Eta();
          muonPhi = Ntp->Muon_P4(mu_idx).Phi();
          muonInnerNC2 = Ntp->Muon_innerTrack_normalizedChi2(mu_idx);
-         muonValidFraction = Ntp->Muon_hitPattern_numberOfValidMuonHits(mu_idx);
+         muonValidFraction = Ntp->Muon_innerTrack_validFraction(mu_idx);
          muonInnerNValidHits = Ntp->Muon_innerTrack_numberofValidHits(mu_idx);
          muonInnerTrackQuality = Ntp->Muon_innerTrack_quality(mu_idx);
          muonNValidPixelHits = Ntp->Muon_numberofValidPixelHits(mu_idx);
@@ -210,8 +216,12 @@ void  MuonPionTree::doEvent(){
       if (mu_flag){
          for (unsigned int j=0; j<3; j++){
             unsigned int iMuon = Ntp->ThreeMuonIndices(final_idx).at(j);
-            if (!Ntp->Muon_isTrackerMuon(iMuon) || Ntp->Muon_isGlobalMuon(iMuon)) continue;
+            //if (!Ntp->Muon_isPFMuon(iMuon)) continue;
+            //if (!Ntp->Muon_isTrackerMuon(iMuon) || Ntp->Muon_isGlobalMuon(iMuon)) continue;
             fake = 0;
+            isGlobal = Ntp->Muon_isGlobalMuon(iMuon);
+            isTracker = Ntp->Muon_isTrackerMuon(iMuon);
+            isPF = Ntp->Muon_isPFMuon(iMuon);
             muonPt = Ntp->Muon_P4(iMuon).Pt();
             muonEta = Ntp->Muon_P4(iMuon).Eta();
             muonPhi = Ntp->Muon_P4(iMuon).Phi();
