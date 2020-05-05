@@ -31,6 +31,7 @@
 #include "joshi/FillMVATree.h"
 #include "joshi/FillMVATree_ThreeGlobal.h"
 #include "joshi/FillMVATree_TwoGlobalTracker.h"
+#include "joshi/FillTMVATrees.h"
 #include "joshi/DsPhiPeak.h"
 #include "joshi/SignalSelector.h"
 #endif
@@ -99,6 +100,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("signalselector"))s = new SignalSelector(Analysis,UncertType); 
   else if(Analysis.Contains("dsphipeak"))s = new DsPhiPeak(Analysis,UncertType); 
   else if(Analysis.Contains("SignalSelector"))s=new SignalSelector(Analysis, UncertType);
+  else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis, UncertType);
   
 #endif
 

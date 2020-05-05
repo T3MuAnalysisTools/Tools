@@ -65,7 +65,7 @@ endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency  AnalysisWithTMVA TMVASignal FillMVATree SignalSelector DsPhiPeak 
+	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency  AnalysisWithTMVA TMVASignal FillMVATree SignalSelector DsPhiPeak FillTMVATrees
 	DEFS += -DUSE_joshi=1
 endif
 
