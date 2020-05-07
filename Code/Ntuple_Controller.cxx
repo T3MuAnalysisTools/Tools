@@ -570,9 +570,9 @@ double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, 
    Mu3_deltaEta.SetPtEtaPhiM(Mu3.Pt(),Mu3.Eta()  + Muon_etaError(indices.at(2)), Mu3.Phi(), Mu3.M());
 
 
-   Mu1_deltaPhi.SetPtEtaPhiM(Mu1.Pt(), Mu1.Eta(), Mu1.Phi() + Muon_etaError(indices.at(0)), Mu1.M());
-   Mu2_deltaPhi.SetPtEtaPhiM(Mu2.Pt(), Mu2.Eta(), Mu2.Phi() + Muon_etaError(indices.at(1)), Mu2.M());
-   Mu3_deltaPhi.SetPtEtaPhiM(Mu3.Pt(), Mu3.Eta(), Mu3.Phi() + Muon_etaError(indices.at(2)), Mu3.M());
+   Mu1_deltaPhi.SetPtEtaPhiM(Mu1.Pt(), Mu1.Eta(), Mu1.Phi() + Muon_phiError(indices.at(0)), Mu1.M());
+   Mu2_deltaPhi.SetPtEtaPhiM(Mu2.Pt(), Mu2.Eta(), Mu2.Phi() + Muon_phiError(indices.at(1)), Mu2.M());
+   Mu3_deltaPhi.SetPtEtaPhiM(Mu3.Pt(), Mu3.Eta(), Mu3.Phi() + Muon_phiError(indices.at(2)), Mu3.M());
 
 
    TLorentzVector Tau_Mu1PtUp = Mu1_deltaPt + Mu2 + Mu3;
