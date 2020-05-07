@@ -174,7 +174,7 @@ void  BackgroundSelector::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     if(i==TriggerOk){
-      title.at(i)="Pass HLT and L1";
+      title.at(i)="Pass HLT ";
       hlabel="DoubleMu3_Trk_Tau3mu";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
@@ -537,7 +537,8 @@ void  BackgroundSelector::doEvent(){
     TString HLT = Ntp->HLTName(iTrigger);
 
     if(id==1){
-    if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+      //    if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
     }
 
     //    if(id==1 && Ntp->WhichEra(2017).Contains("RunF")){
@@ -545,7 +546,8 @@ void  BackgroundSelector::doEvent(){
     //    }	 
 
     if(id!=1){
-    if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
+      //if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v" or HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
+      if( HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") && Ntp->HLTDecision(iTrigger)==1) HLTOk = true;
     }
 
   }
@@ -738,8 +740,8 @@ void  BackgroundSelector::doEvent(){
 
     Ntp->printMCDecayChainOfEvent(true, true, true, true);
     std::cout<< "\n\n\n\n\n\n";
-
     */
+    
 
 
     vector<unsigned int> idx_vec;
@@ -760,6 +762,10 @@ void  BackgroundSelector::doEvent(){
     bool RemoveEta(false);
     if((MuonOS+MuonSS1).M() > 0.547 && (MuonOS+MuonSS2).M() > 0.547) RemoveEta = true;
     if(RemoveEta)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+
+
+
+    /*
     // ----  MC 
     if(id == 122){
 
@@ -815,6 +821,11 @@ void  BackgroundSelector::doEvent(){
       
 
     }
+
+    */
+
+
+
 
     //----
 
