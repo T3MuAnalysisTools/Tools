@@ -34,7 +34,7 @@
 
 #include "NtupleReader.h"
 #include "HistoConfig.h"
-
+#include "PDG_Var.h"
 
 // small struct needed to allow sorting indices by some value
 struct sortIdxByValue {
@@ -181,6 +181,8 @@ class Ntuple_Controller{
 
       unsigned int   NTracks(){return Ntp->Track_p4->size();}
       TLorentzVector Track_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2), Ntp->Track_p4->at(i).at(3), Ntp->Track_p4->at(i).at(0));}
+      TLorentzVector KaonTrack_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2),
+            Ntp->Track_p4->at(i).at(3), sqrt(pow(Ntp->Track_p4->at(i).at(0),2)+pow(PDG_Var::Kp_mass(),2)-pow(PDG_Var::Pi_mass(),2)));}
       TVector3       Track_Poca(unsigned int i){return TVector3(Ntp->Track_poca->at(i).at(0),Ntp->Track_poca->at(i).at(1),Ntp->Track_poca->at(i).at(2));}
       double         Track_normalizedChi2(unsigned int i){return Ntp->Track_normalizedChi2->at(i);}
       double         Track_numberOfValidHits(unsigned int i){return Ntp->Track_numberOfValidHits->at(i);}
@@ -605,6 +607,11 @@ class Ntuple_Controller{
       int        NHLT(){return Ntp->Trigger_hltname->size();}
       std::string     HLTName(unsigned int i){return Ntp->Trigger_hltname->at(i);}
       int        HLTDecision(unsigned int i){return Ntp->Trigger_hltdecision->at(i);}
+      std::string TriggerObject_name(unsigned int i){return Ntp->TriggerObject_name->at(i);}
+      double TriggerObject_pt(unsigned int i){return Ntp->TriggerObject_pt->at(i);}
+      double TriggerObject_eta(unsigned int i){return Ntp->TriggerObject_eta->at(i);}
+      double TriggerObject_phi(unsigned int i){return Ntp->TriggerObject_phi->at(i);}
+      int NTriggerObjects(){return Ntp->TriggerObject_name->size();}
 
 
 
@@ -678,6 +685,7 @@ class Ntuple_Controller{
       TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
 
       float DsGenMatch(unsigned int tmp_idx);
+      float ThreeMuonDsGenMatch(unsigned int tmp_idx);
       float TauGenMatch(unsigned int tmp_idx);
       bool isPromptDs();
       int GENMatchedPdgId(TLorentzVector vec);
@@ -693,6 +701,7 @@ class Ntuple_Controller{
       std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
       template<typename T>
          void printVec(int size, T& vec);
+      bool triggerMatchTriplet(std::vector<TLorentzVector>, std::vector<TLorentzVector>);
 
       bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
       void  printMCDecayChainOfParticle(unsigned int index, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain

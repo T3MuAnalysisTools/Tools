@@ -1,5 +1,6 @@
 #include "PDG_Var.h"
 
+double PDG_Var::Muon_mass(){return 0.106;}//GeV
 double PDG_Var::Z_mass(){return 91.1876;}//GeV                                                                                                   
 double PDG_Var::Z_width(){return 2.4952;}//GeV   
 double PDG_Var::Tau_mass(){return 1.777;}//GeV   
@@ -15,3 +16,4 @@ double PDG_Var::Omega_mass(){return 0.778;}//GeV
 double PDG_Var::Omega_width(){return 8.5/1000;}//GeV
 double PDG_Var::Pi_mass(){return 0.135;}//GeV
 double PDG_Var::Ds_mass(){return 1.977;}//GeV
+double PDG_Var::Kp_mass(){return 0.493;}//GeV

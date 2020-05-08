@@ -1,28 +1,23 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon Apr 27 17:03:46 2020 by ROOT version 6.10/05
-// from TTree t3mtree/
-// found on file: /afs/cern.ch/work/c/cherepan/T3M/Tools/ControlScripts/TestLast/CMSSW_10_2_18/src/DsTau23Mu/T3MNtuple/test/DsT3MNtuple.root
-//////////////////////////////////////////////////////////
+// Tue May  5 11:52:47 2020 by ROOT version 6.20/04
+// from TTree NtupleReader/
+// found on file: /tmp/bjoshi/DsT3MNtuple_1.root
 
 #ifndef NtupleReader_h
 #define NtupleReader_h
-
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
+#include "std::vector"
+#include "std::vector"
+#include "std::vector"
+#include "std::vector"
+#include "std::vector"
+#include "std::vector"
+#include "std::vector"
 
 class NtupleReader {
 public :
@@ -195,20 +190,18 @@ public :
 
 
    Bool_t          MC_isReco;
-   std::vector<std::vector<double> > *MCSignalParticle_p4;
+   std::vector<std::vector<float> > *MCSignalParticle_p4;
+   std::vector<std::vector<float> > *MCSignalParticle_Vertex;
    std::vector<int>     *MCSignalParticle_pdgid;
-   std::vector<std::vector<int> >   *MCSignalParticle_Sourcepdgid;
-   std::vector<std::vector<std::vector<double> > > *MCSignalParticle_Sourcep4;
    std::vector<std::vector<int> > *MCSignalParticle_childpdgid;
    std::vector<std::vector<std::vector<float> > > *MCSignalParticle_childp4;
+   std::vector<std::vector<int> > *MCSignalParticle_Sourcepdgid;
+   std::vector<std::vector<std::vector<float> > > *MCSignalParticle_Sourcep4;
    std::vector<int>     *MCSignalParticle_charge;
    std::vector<std::vector<unsigned int> > *MCSignalParticle_Tauidx;
-   std::vector<std::vector<float> > *MCSignalParticle_Vertex;
    std::vector<std::vector<float> > *MCSignalParticle_SourceVertex;
-
-
    std::vector<std::vector<std::vector<float> > > *MCTauandProd_p4;
-   std::vector<std::vector<std::vector<float> > >  *MCTauandProd_Vertex;
+   std::vector<std::vector<std::vector<float> > > *MCTauandProd_Vertex;
    std::vector<std::vector<int> > *MCTauandProd_pdgid;
    std::vector<unsigned int> *MCTauandProd_midx;
    std::vector<std::vector<int> > *MCTauandProd_charge;
@@ -262,6 +255,10 @@ public :
    std::vector<std::vector<float> > *Vertex_Isolation3;
    std::vector<std::vector<float> > *Vertex_Isolation4;
    std::vector<int>     *Vertex_NMuonsAssocWithPV;
+   std::vector<double>  *TriggerObject_pt;
+   std::vector<double>  *TriggerObject_phi;
+   std::vector<double>  *TriggerObject_eta;
+   std::vector<string>  *TriggerObject_name;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
    std::vector<std::vector<int> > *IsolationTrack_charge;
    std::vector<std::vector<float> > *IsolationTrack_quality;
@@ -280,7 +277,7 @@ public :
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
-   std::vector<std::string>  *Trigger_hltname;
+   std::vector<string>  *Trigger_hltname;
    std::vector<int>     *Trigger_hltdecision;
 
    // List of branches
@@ -441,19 +438,15 @@ public :
    TBranch        *b_signalTau_cov;   //!
 
    TBranch        *b_MCSignalParticle_p4;   //!
+   TBranch        *b_MCSignalParticle_Vertex;   //!
    TBranch        *b_MCSignalParticle_pdgid;   //!
-
-   TBranch        *b_MCSignalParticle_Sourcepdgid;    //!
-   TBranch        *b_MCSignalParticle_Sourcep4;    //!
-   TBranch        *b_MCSignalParticle_Vertex;    //!
-   TBranch        *b_MCSignalParticle_SourceVertex;    //!
-
-
-
    TBranch        *b_MCSignalParticle_childpdgid;   //!
    TBranch        *b_MCSignalParticle_childp4;   //!
+   TBranch        *b_MCSignalParticle_Sourcepdgid;   //!
+   TBranch        *b_MCSignalParticle_Sourcep4;   //!
    TBranch        *b_MCSignalParticle_charge;   //!
    TBranch        *b_MCSignalParticle_Tauidx;   //!
+   TBranch        *b_MCSignalParticle_SourceVertex;   //!
    TBranch        *b_MCTauandProd_p4;   //!
    TBranch        *b_MCTauandProd_Vertex;   //!
    TBranch        *b_MCTauandProd_pdgid;   //!
@@ -512,6 +505,10 @@ public :
    TBranch        *b_Vertex_Isolation3;   //!
    TBranch        *b_Vertex_Isolation4;   //!
    TBranch        *b_Vertex_NMuonsAssocWithPV;   //!
+   TBranch        *b_TriggerObject_pt;   //!
+   TBranch        *b_TriggerObject_phi;   //!
+   TBranch        *b_TriggerObject_eta;   //!
+   TBranch        *b_TriggerObject_name;   //!
    TBranch        *b_IsolationTrack_p4;   //!
    TBranch        *b_IsolationTrack_charge;   //!
    TBranch        *b_IsolationTrack_quality;   //!
@@ -547,37 +544,26 @@ public :
 #endif
 
 #ifdef NtupleReader_cxx
-NtupleReader::NtupleReader(TTree *tree) : fChain(0)
+NtupleReader::NtupleReader(TTree *tree) : fChain(0) 
 {
-  // if parameter tree is not specified (or zero), connect the file
-  // used to generate this class and read the Tree.
-  if (tree == 0) {
+// if parameter tree is not specified (or zero), connect the file
+// used to generate this class and read the Tree.
+   if (tree == 0) {
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/tmp/bjoshi/DsT3MNtuple_1.root");
+      if (!f || !f->IsOpen()) {
+         f = new TFile("/tmp/bjoshi/DsT3MNtuple_1.root");
+      }
+      TDirectory * dir = (TDirectory*)f->Get("/tmp/bjoshi/DsT3MNtuple_1.root:/T3MTree");
+      dir->GetObject("NtupleReader",tree);
 
-#ifdef SINGLE_TREE
-    // The following code should be used if you want this class to access
-    // a single tree instead of a chain
-    TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
-    if (!f || !f->IsOpen()) {
-      f = new TFile("Memory Directory");
-    }
-    f->GetObject("T3MTree/t3mtree",tree);
-
-#else // SINGLE_TREE
-
-      // The following code should be used if you want this class to access a chain
-      // of trees.
-    TChain * chain = new TChain("T3MTree/t3mtree","");
-    tree = chain;
-#endif // SINGLE_TREE
-
-  }
-  Init(tree);
+   }
+   Init(tree);
 }
 
 NtupleReader::~NtupleReader()
 {
-  if (!fChain) return;
-  delete fChain->GetCurrentFile();
+   if (!fChain) return;
+   delete fChain->GetCurrentFile();
 }
 
 
@@ -761,19 +747,15 @@ void NtupleReader::Init(TTree *tree)
 
    MC_isReco = 0;
    MCSignalParticle_p4 = 0;
-   MCSignalParticle_pdgid = 0;
-   MCSignalParticle_Sourcepdgid = 0;
-   MCSignalParticle_Sourcep4 = 0;
    MCSignalParticle_Vertex = 0;
-   MCSignalParticle_SourceVertex = 0;
-
-
-
-
+   MCSignalParticle_pdgid = 0;
    MCSignalParticle_childpdgid = 0;
    MCSignalParticle_childp4 = 0;
+   MCSignalParticle_Sourcepdgid = 0;
+   MCSignalParticle_Sourcep4 = 0;
    MCSignalParticle_charge = 0;
    MCSignalParticle_Tauidx = 0;
+   MCSignalParticle_SourceVertex = 0;
    MCTauandProd_p4 = 0;
    MCTauandProd_Vertex = 0;
    MCTauandProd_pdgid = 0;
@@ -829,6 +811,10 @@ void NtupleReader::Init(TTree *tree)
    Vertex_Isolation3 = 0;
    Vertex_Isolation4 = 0;
    Vertex_NMuonsAssocWithPV = 0;
+   TriggerObject_pt = 0;
+   TriggerObject_phi = 0;
+   TriggerObject_eta = 0;
+   TriggerObject_name = 0;
    IsolationTrack_p4 = 0;
    IsolationTrack_charge = 0;
    IsolationTrack_quality = 0;
@@ -1014,21 +1000,15 @@ void NtupleReader::Init(TTree *tree)
 
 
    fChain->SetBranchAddress("MCSignalParticle_p4", &MCSignalParticle_p4, &b_MCSignalParticle_p4);
+   fChain->SetBranchAddress("MCSignalParticle_Vertex", &MCSignalParticle_Vertex, &b_MCSignalParticle_Vertex);
    fChain->SetBranchAddress("MCSignalParticle_pdgid", &MCSignalParticle_pdgid, &b_MCSignalParticle_pdgid);
-
-   fChain->SetBranchAddress("MCSignalParticle_Sourcepdgid",&MCSignalParticle_Sourcepdgid, &b_MCSignalParticle_Sourcepdgid);
-   fChain->SetBranchAddress("MCSignalParticle_Sourcep4",&MCSignalParticle_Sourcep4, &b_MCSignalParticle_Sourcep4);
-   fChain->SetBranchAddress("MCSignalParticle_Vertex",&MCSignalParticle_Vertex,&b_MCSignalParticle_Vertex);
-   fChain->SetBranchAddress("MCSignalParticle_SourceVertex",&MCSignalParticle_SourceVertex,&b_MCSignalParticle_SourceVertex);
-
-
-
-
-
    fChain->SetBranchAddress("MCSignalParticle_childpdgid", &MCSignalParticle_childpdgid, &b_MCSignalParticle_childpdgid);
    fChain->SetBranchAddress("MCSignalParticle_childp4", &MCSignalParticle_childp4, &b_MCSignalParticle_childp4);
+   fChain->SetBranchAddress("MCSignalParticle_Sourcepdgid", &MCSignalParticle_Sourcepdgid, &b_MCSignalParticle_Sourcepdgid);
+   fChain->SetBranchAddress("MCSignalParticle_Sourcep4", &MCSignalParticle_Sourcep4, &b_MCSignalParticle_Sourcep4);
    fChain->SetBranchAddress("MCSignalParticle_charge", &MCSignalParticle_charge, &b_MCSignalParticle_charge);
    fChain->SetBranchAddress("MCSignalParticle_Tauidx", &MCSignalParticle_Tauidx, &b_MCSignalParticle_Tauidx);
+   fChain->SetBranchAddress("MCSignalParticle_SourceVertex", &MCSignalParticle_SourceVertex, &b_MCSignalParticle_SourceVertex);
    fChain->SetBranchAddress("MCTauandProd_p4", &MCTauandProd_p4, &b_MCTauandProd_p4);
    fChain->SetBranchAddress("MCTauandProd_Vertex", &MCTauandProd_Vertex, &b_MCTauandProd_Vertex);
    fChain->SetBranchAddress("MCTauandProd_pdgid", &MCTauandProd_pdgid, &b_MCTauandProd_pdgid);
@@ -1083,6 +1063,10 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_Isolation3", &Vertex_Isolation3, &b_Vertex_Isolation3);
    fChain->SetBranchAddress("Vertex_Isolation4", &Vertex_Isolation4, &b_Vertex_Isolation4);
    fChain->SetBranchAddress("Vertex_NMuonsAssocWithPV", &Vertex_NMuonsAssocWithPV, &b_Vertex_NMuonsAssocWithPV);
+   fChain->SetBranchAddress("TriggerObject_pt", &TriggerObject_pt, &b_TriggerObject_pt);
+   fChain->SetBranchAddress("TriggerObject_phi", &TriggerObject_phi, &b_TriggerObject_phi);
+   fChain->SetBranchAddress("TriggerObject_eta", &TriggerObject_eta, &b_TriggerObject_eta);
+   fChain->SetBranchAddress("TriggerObject_name", &TriggerObject_name, &b_TriggerObject_name);
    fChain->SetBranchAddress("IsolationTrack_p4", &IsolationTrack_p4, &b_IsolationTrack_p4);
    fChain->SetBranchAddress("IsolationTrack_charge", &IsolationTrack_charge, &b_IsolationTrack_charge);
    fChain->SetBranchAddress("IsolationTrack_quality", &IsolationTrack_quality, &b_IsolationTrack_quality);

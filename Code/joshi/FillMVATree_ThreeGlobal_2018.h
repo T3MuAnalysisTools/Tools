@@ -15,7 +15,7 @@ class FillMVATree_ThreeGlobal : public Selection {
       virtual void  Configure();
       virtual void  Finish();
 
-      enum cuts {TriggerOk=0,SignalCandidate, Mu1Mu2dR, Mu2Mu3dR, Mu3Mu1dR, Mu1Mu2dz, Mu2Mu3dz, Mu3Mu1dz, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
+      enum cuts {SignalCandidate=0, L1Fired, HLTFired, KFChi2, PFMuons, MuonID, Mu1PtCut, Mu2PtCut, Mu3PtCut, TauMassCut, Mu1Mu2dR, Mu2Mu3dR, Mu3Mu1dR, Mu1Mu2dz, Mu2Mu3dz, Mu3Mu1dz, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, DsGenMatch, GenMatch, NCuts};
 
    protected:
       virtual void doEvent();  
@@ -34,7 +34,9 @@ class FillMVATree_ThreeGlobal : public Selection {
 
       // random number generator
       TRandom rndm;
-      int random_num;
+      float random_num;
+      int l1FailedRandom;
+      int eventNumber;
 
    
       // PU Weights
@@ -80,6 +82,18 @@ class FillMVATree_ThreeGlobal : public Selection {
       bool threeGlobal;
       int l1seed;
 
+      // kineamtic variables
+      float mu1pt;
+      float mu2pt;
+      float mu3pt;
+
+      float mu1eta;
+      float mu2eta;
+      float mu3eta;
+
+      float mu1phi;
+      float mu2phi;
+      float mu3phi;
       //commmon variables (2016 + 2017)
       float var_vertexKFChi2; // <= should be changed to normalized KF chi2
       float var_svpvTauAngle; 

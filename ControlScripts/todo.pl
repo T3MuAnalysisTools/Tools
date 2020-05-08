@@ -638,7 +638,7 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"error        = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).e  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"log          = Set_$B-Condor_\\\$(cluster)_\\\$(proccess).log  \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B")); 
 			system(sprintf("echo \"getenv       = True\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
-			system(sprintf("echo \"+JobFlavour  = 'longlunch'\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
+			system(sprintf("echo \"+MaxRuntime  = 7200\" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 			system(sprintf("echo \"notification = Error        \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 			system(sprintf("echo \"queue  1 \" >> $OutputDir/workdir$set/Set_$B/Condor_Set_$B"));
 		    

@@ -15,7 +15,7 @@ class FillMVATree_ThreeGlobal : public Selection {
       virtual void  Configure();
       virtual void  Finish();
 
-      enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
+      enum cuts {SignalCandidate=0, L1Fired, HLTFired, KFChi2, PFMuons, MuonID, Mu1PtCut, Mu2PtCut, Mu3PtCut, TauMassCut, TriggerMatch, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, NCuts};
 
    protected:
       virtual void doEvent();  
@@ -32,6 +32,17 @@ class FillMVATree_ThreeGlobal : public Selection {
 
    private:
 
+      // random number generator
+      TRandom rndm;
+      float random_num;
+      int l1FailedRandom;
+      int eventNumber;
+
+   
+      // PU Weights
+      TFile* PUWeightFile;
+      TH1D* puWeights;
+      
       // Selection Variables
       double tauMinMass_, tauMaxMass_;
       double tauMinSideBand_,tauMaxSideBand_;
@@ -69,7 +80,20 @@ class FillMVATree_ThreeGlobal : public Selection {
       bool MC;
       float category;
       bool threeGlobal;
+      int l1seed;
 
+      // kineamtic variables
+      float mu1pt;
+      float mu2pt;
+      float mu3pt;
+
+      float mu1eta;
+      float mu2eta;
+      float mu3eta;
+
+      float mu1phi;
+      float mu2phi;
+      float mu3phi;
       //commmon variables (2016 + 2017)
       float var_vertexKFChi2; // <= should be changed to normalized KF chi2
       float var_svpvTauAngle; 
@@ -103,6 +127,31 @@ class FillMVATree_ThreeGlobal : public Selection {
       float var_tauMassRefit;
 
       // Additional plots
+      // Tracker Muon plots
+      std::vector<TH1D> Muon1TrackerPt;
+      std::vector<TH1D> Muon1TrackerEta;
+      std::vector<TH2D> Muon1TrackerPtEta;
+      
+      std::vector<TH1D> Muon2TrackerPt;
+      std::vector<TH1D> Muon2TrackerEta;
+      std::vector<TH2D> Muon2TrackerPtEta;
+
+      std::vector<TH1D> Muon3TrackerPt;
+      std::vector<TH1D> Muon3TrackerEta;
+      std::vector<TH2D> Muon3TrackerPtEta;
+      
+      std::vector<TH1D> Muon1NotLoosePt;
+      std::vector<TH1D> Muon1NotLooseEta;
+      std::vector<TH2D> Muon1NotLoosePtEta;
+      
+      std::vector<TH1D> Muon2NotLoosePt;
+      std::vector<TH1D> Muon2NotLooseEta;
+      std::vector<TH2D> Muon2NotLoosePtEta;
+
+      std::vector<TH1D> Muon3NotLoosePt;
+      std::vector<TH1D> Muon3NotLooseEta;
+      std::vector<TH2D> Muon3NotLoosePtEta;
+
       std::vector<TH1D> Mu3_isGlobal;
       std::vector<TH1D> Mu2_isGlobal;
       std::vector<TH2D> L1TriggerMatch;
@@ -119,6 +168,21 @@ class FillMVATree_ThreeGlobal : public Selection {
       std::vector<TH1D> Muon1Eta;
       std::vector<TH1D> Muon2Eta;
       std::vector<TH1D> Muon3Eta;
+
+      std::vector<TH1D> Muon1P;
+      std::vector<TH1D> Muon1SegmentCompatibility;
+      std::vector<TH1D> Muon1NumberOfMatches;
+      std::vector<TH2D> Muon1NumberOfMatchesVsEta;
+
+      std::vector<TH1D> Muon2P;
+      std::vector<TH1D> Muon2SegmentCompatibility;
+      std::vector<TH1D> Muon2NumberOfMatches;
+      std::vector<TH2D> Muon2NumberOfMatchesVsEta;
+
+      std::vector<TH1D> Muon3P;
+      std::vector<TH1D> Muon3SegmentCompatibility;
+      std::vector<TH1D> Muon3NumberOfMatches;
+      std::vector<TH2D> Muon3NumberOfMatchesVsEta;
 
       std::vector<TH1D> TauPt;
       std::vector<TH1D> TauP;

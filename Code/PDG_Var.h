@@ -2,6 +2,7 @@
 #define PDG_Var_h
 
 namespace PDG_Var {
+  double Muon_mass();
   double Z_mass();
   double Z_width();
   double Tau_mass();
@@ -18,6 +19,7 @@ namespace PDG_Var {
   double Omega_width();
   double Pi_mass();
   double Ds_mass();
+  double Kp_mass(); 
 }
 
 #endif

@@ -1,24 +1,21 @@
-#ifndef FillMVATree_TwoGlobalTracker_h
-#define FillMVATree_TwoGlobalTracker_h
+#ifndef FillMVATree_TwoGlobalTracker_TrackerOnly_h
+#define FillMVATree_TwoGlobalTracker_TrackerOnly_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 #include "TRandom.h"
-#include "TMVA/Tools.h"
-#include "TMVA/Reader.h"
-#include "TMVA/MethodCuts.h"
 
-class FillMVATree_TwoGlobalTracker : public Selection {
+class FillMVATree_TwoGlobalTracker_TrackerOnly : public Selection {
 
    public:
-      FillMVATree_TwoGlobalTracker(TString Name_, TString id_);
-      virtual ~FillMVATree_TwoGlobalTracker();
+      FillMVATree_TwoGlobalTracker_TrackerOnly(TString Name_, TString id_);
+      virtual ~FillMVATree_TwoGlobalTracker_TrackerOnly();
 
       virtual void  Configure();
       virtual void  Finish();
 
-      enum cuts {SignalCandidate=0, L1Fired, HLTFired, KFChi2, PFMuons, MuonID, Mu1PtCut, Mu2PtCut, Mu3PtCut, TauMassCut, TriggerMatch, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, NCuts};
+      enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, TriggerMatchMu1, TriggerMatchMu2, TriggerMatchMu3, MuonID, PVRefit, PhiVetoOS1, OmegaVetoOS1, PhiVetoOS2,  OmegaVetoOS2, TauMassCut, DsGenMatch, GenMatch, NCuts};
 
    protected:
       virtual void doEvent();  
@@ -34,43 +31,10 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       TTree * TMVA_Tree;
 
    private:
-      
-      // random number generator
-      TRandom rndm;
-      float random_num;
-      int l1FailedRandom;
-      int eventNumber;
-
-   
       // PU Weights
       TFile* PUWeightFile;
       TH1D* puWeights;
-
-      // Muon Id variable
-      float var_trackerMuonId;
-
-      // TMVA Reader
-      TMVA::Reader *reader_trackerMuonId;
-
-      float muonPt ;
-      float muonEta ;
-      float muonPhi ;
-
-      float fake;
-      float muonInnerNC2 ;
-      float muonValidFraction;
-      float muonInnerNValidHits ;
-      float muonNLostTrackerHits ;
-      float muonNLostTrackerHitsInner ;
-      float muonNLostTrackerHitsOuter ;
-      float muonPixelLayers ;
-      float muonNMatchedStations ;
-      float muonPtErrPt ;
-      float muonSegComp ;
-      float muonCaloComp ;
-      float muonHad ;
-      float muonEM ; 
-
+      
       // Selection Variables
       double tauMinMass_, tauMaxMass_;
       double tauMinSideBand_,tauMaxSideBand_;
@@ -110,22 +74,6 @@ class FillMVATree_TwoGlobalTracker : public Selection {
       bool threeGlobal;
       int l1seed;
 
-      // kineamtic variables
-      float mu1pt;
-      float mu2pt;
-      float mu3pt;
-
-      float mu1eta;
-      float mu2eta;
-      float mu3eta;
-
-      float mu1phi;
-      float mu2phi;
-      float mu3phi;
-
-      float mu1segComp;
-      float mu2segComp;
-      float mu3segComp;
       //commmon variables (2016 + 2017)
       float var_vertexKFChi2; // <= should be changed to normalized KF chi2
       float var_svpvTauAngle; 
