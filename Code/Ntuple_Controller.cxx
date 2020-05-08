@@ -222,14 +222,13 @@ void printVec(int size, T& vec){
 
 double Ntuple_Controller::deltaR(double eta1, double phi1, double eta2, double phi2)
 {
-   double deta = eta1 - eta2;
-   double dphi = phi1 - phi2;
-   while (dphi > TMath::Pi()) dphi -= 2*TMath::Pi();
-   while (dphi <= -TMath::Pi()) dphi += 2*TMath::Pi();
+   double deta = abs(eta1 - eta2);
+   double dphi = fabs(phi1 - phi2);
+
+   if (dphi > TMath::Pi()) dphi -= 2*TMath::Pi();
 
    return sqrt(deta*deta + dphi*dphi);
 }
-
 //-------------------------- --------------------------------- 
 
 
@@ -250,6 +249,54 @@ int Ntuple_Controller::GENMatchedPdgId(TLorentzVector vec){
 }
 
 //-------------------------- --------------------------------- -------------------
+// Trigger matching
+//-------------------------- --------------------------------- -------------------
+bool Ntuple_Controller::triggerMatchTriplet(std::vector<TLorentzVector> v1, std::vector<TLorentzVector> v2){
+
+   int SIZE = v2.size();
+
+   double dpt[3][SIZE];
+   double dR[3][SIZE];
+   bool matched = false;
+
+   for (int i=0; i<3; i++){
+      for (int j=0; j<SIZE; j++){
+         double p = fabs(v1[i].Pt()-v2[j].Pt())/v1[i].Pt();
+         double r = v1[i].DeltaR(v2[j]);
+         dpt[i][j] = p;
+         dR[i][j] = r;
+      }
+   }
+
+   // Find if any combination matches the trigger matching criteria
+   for (int i=0; i<SIZE; i++){
+      for (int j=0; j<SIZE; j++){
+         if (i==j) continue;
+         for (int k=0; k<SIZE; k++){
+            if (k==i || k==j) continue;
+            if ( dpt[0][i]<0.1 && dpt[1][j]<0.1 && dpt[2][k]<0.1 &&
+                 dR[0][i]<0.03 && dR[1][j]<0.03 && dR[2][k]<0.03 ) matched = true;
+         }
+      }
+   }
+   if (0){
+      cout<<"dR"<<endl;
+      for (int i=0; i<3; i++){
+         for (int j=0; j<SIZE; j++){
+           cout<<dR[i][j]<<" "; 
+         }
+         cout<<endl;
+      }
+      cout<<"dPt"<<endl;
+      for (int i=0; i<3; i++){
+         for (int j=0; j<SIZE; j++){
+           cout<<dpt[i][j]<<" "; 
+         }
+         cout<<endl;
+      } 
+   }
+   return matched;
+}
 
 //-------------------------- return GEN LV -------------------
 // Returns the lorentz vector of the GEN particle matched to a RECO particle
@@ -268,13 +315,47 @@ TLorentzVector Ntuple_Controller::GENMatchedLV(TLorentzVector vec){
 }
 
 //-------------------------- --------------------------------- -------------------
+//-------------------------- --------------------------------- -------------------
+float Ntuple_Controller::ThreeMuonDsGenMatch(unsigned int tmp_idx){
+   float ds_dR = 999.0;
+
+   if (tmp_idx>=NThreeMuons()) {
+      cout<<"Index out of range!"<<endl;
+      return ds_dR;
+   }
+
+   unsigned int Muon_index_1 = ThreeMuonIndices(tmp_idx).at(0);
+   unsigned int Muon_index_2 = ThreeMuonIndices(tmp_idx).at(1);
+   unsigned int Muon_index_3 = ThreeMuonIndices(tmp_idx).at(2);
+
+   for (unsigned int j=0; j<NTwoMuonsTrack(); ++j){
+      unsigned int mu1_idx = TwoMuonsTrackMuonIndices(j).at(0);
+      unsigned int mu2_idx = TwoMuonsTrackMuonIndices(j).at(1);
+      unsigned int trk_idx = TwoMuonsTrackTrackIndex(j).at(0);
+
+      float dRMu1Trk = Muon_P4(Muon_index_1).DeltaR(Track_P4(trk_idx));
+      float dRMu2Trk = Muon_P4(Muon_index_2).DeltaR(Track_P4(trk_idx));
+      float dRMu3Trk = Muon_P4(Muon_index_3).DeltaR(Track_P4(trk_idx));
+
+      if ( (((mu1_idx==Muon_index_1 && mu2_idx==Muon_index_2) || (mu1_idx==Muon_index_2 && mu2_idx==Muon_index_1)) && (dRMu3Trk<0.01)) ||
+           (((mu1_idx==Muon_index_1 && mu2_idx==Muon_index_2) || (mu1_idx==Muon_index_2 && mu2_idx==Muon_index_1)) && (dRMu2Trk<0.01)) ||
+           (((mu1_idx==Muon_index_1 && mu2_idx==Muon_index_2) || (mu1_idx==Muon_index_2 && mu2_idx==Muon_index_1)) && (dRMu1Trk<0.01))
+            ) {
+        float tmp_ds_dR = DsGenMatch(j);
+        if (tmp_ds_dR<ds_dR){
+           ds_dR = tmp_ds_dR;
+        }
+      }
+   }
+   return ds_dR;
+}
 
 //-------------------------- Match GEN Ds to 2mu+trk candidate -------------------
 // Returns the dR of best GEN machted Ds
 // The function takes the index of the two muons + track candidate as the input
 // and iterates over all the GEN Ds candidates. It matches the track to a daughter pion and
 // the dimuon to a daughter Phi separately. If both matches are found, then it saves the dR.
-// 
+//
 float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
    float ds_dR = 999.0;
 
@@ -304,7 +385,7 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
             if(fabs(MCSignalParticle_childpdgid(ngen,nchild))==211){
                unsigned int tmp_track_idx = TwoMuonsTrackTrackIndex(tmp_idx).at(0);
                float dR = Track_P4(tmp_track_idx).DeltaR(MCSignalParticle_child_p4(ngen,nchild));
-               if (dR<0.03 && dR<tmp_pi_dR) { 
+               if (dR<0.03 && dR<tmp_pi_dR) {
                   dspi_flag = 1;
                   tmp_pi_dR = dR;
                   tmp_pi_p4 = MCSignalParticle_child_p4(ngen,nchild);
@@ -316,7 +397,7 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
                unsigned int tmp_mu1_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(0);
                unsigned int tmp_mu2_idx = TwoMuonsTrackMuonIndices(tmp_idx).at(1);
                float dR = MCSignalParticle_child_p4(ngen,nchild).DeltaR(Muon_P4(tmp_mu1_idx)+Muon_P4(tmp_mu2_idx));
-               if (dR<0.03 && dR<tmp_phi_dR) { 
+               if (dR<0.03 && dR<tmp_phi_dR) {
                   dsphi_flag = 1;
                   tmp_phi_dR = dR;
                   tmp_phi_p4 = MCSignalParticle_child_p4(ngen,nchild);
@@ -330,7 +411,7 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
             float tmp_ds_dR = (tmp_phi_p4+tmp_pi_p4).DeltaR(Muon_P4(mu1_idx)+Muon_P4(mu2_idx)+Track_P4(track_idx));
             if (tmp_ds_dR<ds_dR) ds_dR = tmp_ds_dR;
          }
-      } 
+      }
    }
    return ds_dR;
 }
@@ -663,7 +744,7 @@ TMatrixTSym<float> Ntuple_Controller::SecondaryVertexCovariance(unsigned int i){
 
 
 
-TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i, bool channel){
+TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int i, bool channel=false){
    
    unsigned int index = i + channel*NThreeMuons();
    TMatrixTSym<double> V_cov(3);
@@ -679,7 +760,7 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int 
    return  V_cov;
 }
 
-TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel){
+TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel=false){
    unsigned int index = i + channel*NThreeMuons();
    TMatrixTSym<float> V_cov(3);
    int l=0;
