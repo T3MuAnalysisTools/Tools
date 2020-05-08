@@ -1,13 +1,12 @@
 Histo: 1   -1 Data Data 1
 Histo: 30  161.397  MC1 D_{s}\rightarrow\phi\pi 33
-Histo: 40  0.11970  MC2 D_{s}\rightarrow\tau_{3\mu}(B=10^{-7}) 93
-Histo: 60  0.03067  MC3 B_{0}\rightarrow\tau_{3\mu}(B=10^{-7}) 209
-Histo: 90  0.02963  MC4 B_{p}\rightarrow\tau_{3\mu}(B=10^{-7}) 205
-Histo: 120 -1       MC5 MinimumBias 9
+Histo: 40  0.12970  MC2 D_{s}\rightarrow\tau_{3\mu}(10^{-7}) 93
+Histo: 60  0.03067  MC3 B_{0}\rightarrow\tau_{3\mu}(10^{-7}) 209
+Histo: 120 78.81    MC5 b\bar{b}/c\bar{c}\rightarrow3\mu 9
 Histo: 121 0.510    MC6 D_{s}\rightarrow3\mu2\nu   13
-Histo: 122 40.90    MC7 D_{s}\rightarrow\eta\mu\nu  15
-Histo: 124 0.576    MC8 D_{s}\rightarrow\eta\mu\nu  17
-Histo: 132 2.058    MC9 D_{s}\rightarrow\omega\mu\nu  25
-Histo: 142 5.221    MC10 D_{s}\rightarrow\phi\mu\nu  18
+Histo: 122 40.90    MC7 D_{s}\rightarrow\eta_{\mu\mu\gamma}\mu\nu  61
+Histo: 128 40.90    MC8 D_{s}\rightarrow\eta\prime_{\mu\mu\gamma}\mu\nu  208
+Histo: 132 2.058    MC9 D_{s}\rightarrow\omega_{\mu\mu\pi}\mu\nu  212
+Histo: 142 5.221    MC10 D_{s}\rightarrow\phi_{\mu\mu\gamma}\mu\nu  69
 
 
