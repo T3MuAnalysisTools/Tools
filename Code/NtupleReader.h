@@ -11,13 +11,13 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "std::vector"
-#include "std::vector"
-#include "std::vector"
-#include "std::vector"
-#include "std::vector"
-#include "std::vector"
-#include "std::vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
 
 class NtupleReader {
 public :
@@ -258,7 +258,7 @@ public :
    std::vector<double>  *TriggerObject_pt;
    std::vector<double>  *TriggerObject_phi;
    std::vector<double>  *TriggerObject_eta;
-   std::vector<string>  *TriggerObject_name;
+   std::vector<std::string>  *TriggerObject_name;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
    std::vector<std::vector<int> > *IsolationTrack_charge;
    std::vector<std::vector<float> > *IsolationTrack_quality;
@@ -277,7 +277,7 @@ public :
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
-   std::vector<string>  *Trigger_hltname;
+   std::vector<std::string>  *Trigger_hltname;
    std::vector<int>     *Trigger_hltdecision;
 
    // List of branches
