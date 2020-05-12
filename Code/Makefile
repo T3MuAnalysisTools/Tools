@@ -81,7 +81,7 @@ ifdef USE_menendez
 endif
 
 ifdef USE_madhu
-	TARGETS += MyTest
+	TARGETS += MyTest MCBackgroundStudy
 	DEFS += -DUSE_madhu=1
 endif
 

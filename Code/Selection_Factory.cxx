@@ -55,6 +55,7 @@
 
 #ifdef USE_madhu
 #include "madhu/MyTest.h"
+#include "madhu/MCBackgroundStudy.h"
 
 #endif
 
@@ -118,6 +119,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 #ifdef USE_madhu
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
+  else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
 #endif
 
 
