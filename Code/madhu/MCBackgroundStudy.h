@@ -163,6 +163,9 @@ class MCBackgroundStudy : public Selection {
   std::vector<TH1D> MassEtaReco;
   std::vector<TH1D> MassEtaPrimeReco;
   std::vector<TH1D> MassPhiReco;
+  std::vector<TH1D> MassEtaMixed;
+  std::vector<TH1D> MassEtaPrimeMixed;
+  std::vector<TH1D> MassPhiMixed;
   std::vector<TH1D> MassOmega;
   std::vector<TH1D> PassedCount;
   std::vector<TH1D> ChildCount;

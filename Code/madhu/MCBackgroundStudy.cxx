@@ -187,6 +187,10 @@ void  MCBackgroundStudy::Configure(){
   MassEtaPrimeReco =HConfig.GetTH1D(Name+"_MassEtaPrimeReco","MassEtaPrimeReco",50,0,2,"Mass of reco #eta' meson","Events");
   MassPhiReco =HConfig.GetTH1D(Name+"_MassPhiReco","MassPhiReco",50,0,2,"Mass of reco #phi meson","Events");
   
+  MassEtaMixed =HConfig.GetTH1D(Name+"_MassEtaMixed","MassEtaMixed",50,0,2,"Mass of mixed-reco #eta meson","Events");
+  MassEtaPrimeMixed =HConfig.GetTH1D(Name+"_MassEtaPrimeMixed","MassEtaPrimeMixed",50,0,2,"Mass of mixed-reco #eta' meson","Events");
+  MassPhiMixed =HConfig.GetTH1D(Name+"_MassPhiMixed","MassPhiMixed",50,0,2,"Mass of mixed-reco #phi meson","Events");
+  
   PhotonDRToTruth_Eta=HConfig.GetTH1D(Name+"_PhotonDRToTruth_Eta","PhotonDRToTruth_Eta",40,0,1,"reco - mc #gamma #Delta R","Events");
   PhotonDRToTruth_EtaPrime=HConfig.GetTH1D(Name+"_PhotonDRToTruth_EtaPrime","PhotonDRToTruth_EtaPrime",40,0,1,"reco - mc #gamma #Delta R","Events");
   PhotonDRToTruth_Phi=HConfig.GetTH1D(Name+"_PhotonDRToTruth_Phi","PhotonDRToTruth_Phi",40,0,1,"reco - mc #gamma #Delta R","Events");
@@ -237,6 +241,10 @@ void  MCBackgroundStudy::Store_ExtraDist(){
   Extradist1d.push_back(&MassEtaPrime);
   Extradist1d.push_back(&MassPhi);
   Extradist1d.push_back(&MassOmega);
+  
+  Extradist1d.push_back(&MassEtaMixed);
+  Extradist1d.push_back(&MassEtaPrimeMixed);
+  Extradist1d.push_back(&MassPhiMixed);
   
   Extradist1d.push_back(&MassEtaReco);
   Extradist1d.push_back(&MassEtaPrimeReco);
@@ -510,6 +518,11 @@ void  MCBackgroundStudy::doEvent(){
       TLorentzVector PhiLV_reco(0,0,0,0);
       TLorentzVector OmegaLV_reco(0,0,0,0);
       
+      TLorentzVector EtaLV_mixed(0,0,0,0);
+      TLorentzVector EtaPrimeLV_mixed(0,0,0,0);
+      TLorentzVector PhiLV_mixed(0,0,0,0);
+      TLorentzVector OmegaLV_mixed(0,0,0,0);
+      
       int mc_muon1idx(-1),mc_muon2idx(-1), mc_photon_idx(-1);
       int mc_prime_muon1idx(-1),mc_prime_muon2idx(-1), mc_prime_photon_idx(-1);
       int mc_phi_muon1idx(-1),mc_phi_muon2idx(-1), mc_phi_photon_idx(-1);
@@ -643,9 +656,6 @@ void  MCBackgroundStudy::doEvent(){
       
       
       
-      
-      
-      
       int mc_idx_sum = (mc_photon_idx>-0.5) + (mc_muon1idx>-0.5) + (mc_muon2idx>-0.5);
       PassedCount.at(t).Fill(mc_idx_sum,1);      
       
@@ -658,66 +668,81 @@ void  MCBackgroundStudy::doEvent(){
       if(pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1){
         double Dr1(99.),Dr2(99.),Dr3(99.);
         for(int reco_photon=0; reco_photon < Ntp->NPhotons(); reco_photon++){
-          if(Ntp->Gamma_P4(reco_photon).DeltaR(eta_ph) < Dr1){
-            Dr1 = Ntp->Gamma_P4(reco_photon).DeltaR(eta_ph);
+          std::cout<<"Energy of photon no. "<<reco_photon+1<<" is "<<Ntp->Photon_p4(reco_photon).E()<<std::endl;
+          if(Ntp->Photon_p4(reco_photon).DeltaR(eta_ph) < Dr1){
+            Dr1 = Ntp->Photon_p4(reco_photon).DeltaR(eta_ph);
             recoph_index.at(0) = reco_photon;
           }
-          if(Ntp->Gamma_P4(reco_photon).DeltaR(etaprime_ph) < Dr2){
-            Dr2 = Ntp->Gamma_P4(reco_photon).DeltaR(etaprime_ph);
+          if(Ntp->Photon_p4(reco_photon).DeltaR(etaprime_ph) < Dr2){
+            Dr2 = Ntp->Photon_p4(reco_photon).DeltaR(etaprime_ph);
             recoph_index.at(1) = reco_photon;
           }
-          if(Ntp->Gamma_P4(reco_photon).DeltaR(phi_ph) < Dr3){
-            Dr3 = Ntp->Gamma_P4(reco_photon).DeltaR(phi_ph);
+          if(Ntp->Photon_p4(reco_photon).DeltaR(phi_ph) < Dr3){
+            Dr3 = Ntp->Photon_p4(reco_photon).DeltaR(phi_ph);
             recoph_index.at(2) = reco_photon;
           }
         }
       }
       
+      //std::cout<<"pass_list is:"<< pass_list.at(0)<< " " << pass_list.at(1)<< " " <<pass_list.at(2)<< " " <<pass_list.at(3)<< " " <<std::endl;
+      //std::cout<<"recoph_index is:"<< recoph_index.at(0)<< " " << recoph_index.at(1)<< " " <<recoph_index.at(2)<< " " <<recoph_index.at(3)<< " " <<std::endl;
       
       std::vector<unsigned int> genidx{mc_index1,mc_index2,mc_index3}, recomu_idx{os_mu_idx,ss1_mu_idx,ss2_mu_idx};
       
-      if(pass_list.at(0)==1){
+      if(pass_list.at(0)==1&&recoph_index.at(0)>-0.5){
+        eta_ph_reco=Ntp->Photon_p4(recoph_index.at(0));
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_muon1idx?idx_match:match1;
           match2=genidx.at(idx_match)==mc_muon2idx?idx_match:match2;
         }
         if(match1>-0.5&&match2>-0.5){
-          eta_ph_reco=Gamma_P4(recoph_index.at(0));
           PhotonDRToTruth_Eta.at(t).Fill(eta_ph_reco.DeltaR(eta_ph),1);
           EtaLV_reco = Ntp->Muon_P4(recomu_idx.at(match1)) + Ntp->Muon_P4(recomu_idx.at(match2)) + eta_ph_reco;
           MassEtaReco.at(t).Fill(EtaLV_reco.M(),1);
+          std::cout<<"Mass of reco eta is "<< EtaLV_reco.M()<< std::endl;
         }
+        EtaLV_mixed = Ntp->MCParticle_p4(mc_muon1idx) + Ntp->MCParticle_p4(mc_muon2idx) + eta_ph_reco;
+        MassEtaMixed.at(t).Fill(EtaLV_mixed.M(),1);
+        std::cout<<"Mass of mixed-reco eta is "<< EtaLV_mixed.M()<< std::endl;
       }
       
       
-      if(pass_list.at(1)==1){
+      if(pass_list.at(1)==1&&recoph_index.at(1)>-0.5){
+        etaprime_ph_reco=Ntp->Photon_p4(recoph_index.at(1));
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_prime_muon1idx?idx_match:match1;
           match2=genidx.at(idx_match)==mc_prime_muon2idx?idx_match:match2;
         }
         if(match1>-0.5&&match2>-0.5){
-          etaprime_ph_reco=Gamma_P4(recoph_index.at(1));
           PhotonDRToTruth_EtaPrime.at(t).Fill(etaprime_ph_reco.DeltaR(etaprime_ph),1);
           EtaPrimeLV_reco = Ntp->Muon_P4(recomu_idx.at(match1)) + Ntp->Muon_P4(recomu_idx.at(match2)) + etaprime_ph_reco;
           MassEtaPrimeReco.at(t).Fill(EtaPrimeLV_reco.M(),1);
+          std::cout<<"Mass of reco eta prime is "<< EtaPrimeLV_reco.M()<< std::endl;
         }
+        EtaPrimeLV_mixed = Ntp->MCParticle_p4(mc_prime_muon1idx) + Ntp->MCParticle_p4(mc_prime_muon2idx) + etaprime_ph_reco;
+        MassEtaPrimeMixed.at(t).Fill(EtaPrimeLV_mixed.M(),1);
+        std::cout<<"Mass of mixed-reco eta' is "<< EtaPrimeLV_mixed.M()<< std::endl;
       }
       
       
-      if(pass_list.at(2)==1){
+      if(pass_list.at(2)==1&&recoph_index.at(2)>-0.5){
+        phi_ph_reco=Ntp->Photon_p4(recoph_index.at(2));
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_phi_muon1idx?idx_match:match1;
           match2=genidx.at(idx_match)==mc_phi_muon2idx?idx_match:match2;
         }
         if(match1>-0.5&&match2>-0.5){
-          phi_ph_reco=Gamma_P4(recoph_index.at(2));
           PhotonDRToTruth_Phi.at(t).Fill(phi_ph_reco.DeltaR(phi_ph),1);
           PhiLV_reco = Ntp->Muon_P4(recomu_idx.at(match1)) + Ntp->Muon_P4(recomu_idx.at(match2)) + phi_ph_reco;
           MassPhiReco.at(t).Fill(PhiLV_reco.M(),1);
+          std::cout<<"Mass of reco phi is "<< PhiLV_reco.M()<< std::endl;
         }
+        PhiLV_mixed = Ntp->MCParticle_p4(mc_phi_muon1idx) + Ntp->MCParticle_p4(mc_phi_muon2idx) + phi_ph_reco;
+        MassPhiMixed.at(t).Fill(PhiLV_mixed.M(),1);
+        std::cout<<"Mass of mixed-reco phi is "<< PhiLV_mixed.M()<< std::endl;
       }
       
       
