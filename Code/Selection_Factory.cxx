@@ -11,12 +11,15 @@
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
+#include "cherepanov/MakeMVATree.h"
 #include "cherepanov/SignalSelector.h"
 #include "cherepanov/BackgroundSelector.h"
 #include "cherepanov/MuIDStudy.h"
 #include "cherepanov/MinBiasSelector.h"
 #include "cherepanov/Isolation.h"
 #include "cherepanov/MCBackgroundStudy.h"
+#include "cherepanov/DsPhiPeak.h"
+
 
 #endif
 
@@ -82,12 +85,13 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
   else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
   else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis,UncertType);
+  else if(Analysis.Contains("makemvatree"))s=new MakeMVATree(Analysis,UncertType);
   else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
   else if(Analysis.Contains("backgroundselector"))s=new BackgroundSelector(Analysis,UncertType);
   else if(Analysis.Contains("muidstudy"))s=new MuIDStudy(Analysis,UncertType);
   else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
   else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
-
+  else if(Analysis.Contains("dsphipeak"))s=new DsPhiPeak(Analysis,UncertType);
 
 
 #endif
