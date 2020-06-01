@@ -36,7 +36,7 @@ class DsPhiPeak_2018 : public Selection {
 
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;
-
+  TMVA::Reader *reader_trackerMuonId;
 
   // Selection Variables
   bool RunB, RunC, RunD, RunE, RunF = 0;
@@ -303,6 +303,28 @@ class DsPhiPeak_2018 : public Selection {
   Float_t Muon1DetID;
   Float_t Muon2DetID;
   Float_t Muon3DetID;
+
+
+  //   tracker vs mu id
+
+  float muonPt ;
+  float muonEta ;
+  float muonPhi ;
+
+  float fake;
+  float muonInnerNC2 ;
+  float muonValidFraction;
+  float muonInnerNValidHits ;
+  float muonNLostTrackerHits ;
+  float muonNLostTrackerHitsInner ;
+  float muonNLostTrackerHitsOuter ;
+  float muonPixelLayers ;
+  float muonNMatchedStations ;
+  float muonPtErrPt ;
+  float muonSegComp ;
+  float muonCaloComp ;
+  float muonHad ;
+  float muonEM ; 
 
 
 };

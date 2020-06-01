@@ -101,6 +101,27 @@ void  DsPhiPeak_2018::Configure(){
 
 
 
+  reader_trackerMuonId = new TMVA::Reader("!Color:!Silent");
+  reader_trackerMuonId->AddSpectator("fake",&fake);
+  reader_trackerMuonId->AddSpectator("muonPt",&muonPt);
+  reader_trackerMuonId->AddSpectator("muonEta",&muonEta);
+  reader_trackerMuonId->AddSpectator("muonPhi",&muonPhi);
+  reader_trackerMuonId->AddVariable("muonInnerNC2",&muonInnerNC2);
+  reader_trackerMuonId->AddVariable("muonInnerNValidHits",&muonInnerNValidHits);
+  reader_trackerMuonId->AddVariable("muonValidFraction", &muonValidFraction);
+  reader_trackerMuonId->AddVariable("muonNLostTrackerHits",&muonNLostTrackerHits);
+  reader_trackerMuonId->AddVariable("muonNLostTrackerHitsInner",&muonNLostTrackerHitsInner);
+  reader_trackerMuonId->AddVariable("muonNLostTrackerHitsOuter",&muonNLostTrackerHitsOuter);
+  reader_trackerMuonId->AddVariable("muonPixelLayers",&muonPixelLayers);
+  reader_trackerMuonId->AddVariable("muonNMatchedStations",&muonNMatchedStations);
+  reader_trackerMuonId->AddVariable("muonPtErrPt",&muonPtErrPt);
+  reader_trackerMuonId->AddVariable("muonSegComp",&muonSegComp);
+  reader_trackerMuonId->AddVariable("muonCaloComp",&muonCaloComp);
+  reader_trackerMuonId->AddVariable("muonHad",&muonHad);
+  reader_trackerMuonId->AddVariable("muonEM",&muonEM);
+
+  reader_trackerMuonId->BookMVA( "BDT", basedir+"weights/TrackerMuonBDT_2018/weights/MuPiTMVA_2018_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
@@ -508,7 +529,7 @@ void  DsPhiPeak_2018::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  std::cout<<"--- "<< std::endl;
+  //  std::cout<<"--- "<< std::endl;
   //bool RunB,   RunC, RunD, RunE, RunF = 0;
   if(id==1 && Ntp->WhichEra(2017).Contains("RunB") ){ RunB=1;} 
   if(id==1 && Ntp->WhichEra(2017).Contains("RunC") ){ RunC=1;} 
@@ -613,6 +634,8 @@ void  DsPhiPeak_2018::doEvent(){
       int tmp_track = Ntp->TwoMuonsTrackTrackIndex(i2M).at(0);
       //double tmp_PhiMass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)).M();
       double mumutrkmass = (Ntp->Muon_P4(tmp_mu1)+Ntp->Muon_P4(tmp_mu2)+Ntp->Track_P4(tmp_track)).M();    
+
+      //      std::cout<<"muon 1 is global and tracker  "<<Ntp->Muon_isGlobalMuon(tmp_mu1) << "  "<< Ntp->Muon_isTrackerMuon(tmp_mu1)<< std::endl;
 
       value.at(GlobalMu) = Ntp->Muon_isGlobalMuon(tmp_mu1)==1 && Ntp->Muon_isGlobalMuon(tmp_mu2)==1;
       value.at(Mass2Mu) = (Ntp->Muon_P4(tmp_mu1) + Ntp->Muon_P4(tmp_mu2)).M();
@@ -797,6 +820,28 @@ void  DsPhiPeak_2018::doEvent(){
     TLorentzVector DsRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0,true)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1,true)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2,true);
     TLorentzVector Muon1LV = Ntp->Muon_P4(mu1);
     TLorentzVector Muon2LV = Ntp->Muon_P4(mu2);
+
+
+    //  Track/Muon ID
+    /*
+    muonInnerNC2 = Ntp->Muon_innerTrack_normalizedChi2(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonInnerNValidHits = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonNLostTrackerHits = Ntp->Muon_innerTrack_numberOfLostTrackerHits(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonValidFraction = Ntp->Muon_innerTrack_validFraction(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonNLostTrackerHitsInner = Ntp->Muon_innerTrack_numberOfLostTrackerInnerHits(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonNLostTrackerHitsOuter = Ntp->Muon_innerTrack_numberOfLostTrackerOuterHits(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonPixelLayers = Ntp->Muon_innerTrack_pixelLayersWithMeasurement(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonNMatchedStations = Ntp->Muon_numberOfMatchedStations(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonPtErrPt = Ntp->Muon_ptErrOverPt(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonSegComp = Ntp->Muon_segmentCompatibility(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonCaloComp = Ntp->Muon_caloCompatibility(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonHad = Ntp->Muon_calEnergy_had(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    muonEM = Ntp->Muon_calEnergy_em(Ntp->TwoMuonsTrackTrackIndex(final_idx).at(0));
+    std::cout<<"  "<<  reader_trackerMuonId->EvaluateMVA("BDT") << std::endl;
+    */
+
+
+
 
 
 
