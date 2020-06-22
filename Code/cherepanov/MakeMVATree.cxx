@@ -1105,6 +1105,10 @@ void  MakeMVATree::doEvent(){
       unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
       unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
       //
+
+
+      //      std::cout<<"  "<<Ntp->Muon_isGlobalMuon(mu1_pt_idx)<<"  "<< Ntp->Muon_isTrackerMuon(mu1_pt_idx) << std::endl;
+
       value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
 			  Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
 			  Ntp->Muon_isGlobalMuon(mu3_pt_idx) &&
@@ -1139,10 +1143,10 @@ void  MakeMVATree::doEvent(){
 
 
 
-      value.at(PhiVeto1) =  M_osss1;//fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
-      value.at(PhiVeto2) =  M_osss2;//fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2; 
-      value.at(OmegaVeto1) = M_osss1;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
-      value.at(OmegaVeto2) = M_osss2;//fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+      value.at(PhiVeto1) =  M_osss1;//M_osss1;
+      value.at(PhiVeto2) =  M_osss2;
+      value.at(OmegaVeto1) = M_osss1;
+      value.at(OmegaVeto2) = M_osss2;
 
 
       unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
@@ -1195,11 +1199,11 @@ void  MakeMVATree::doEvent(){
     pass.at(MuonID)  =  (value.at(MuonID)     == cut.at(MuonID));
     pass.at(TRKLWithM) = (value.at(TRKLWithM) == cut.at(TRKLWithM));
     pass.at(TriggerMatch) = (value.at(TriggerMatch) == cut.at(TriggerMatch));
-    pass.at(PhiVeto1) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto1) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
-    pass.at(PhiVeto2) = true;//(fabs(value.at(PhiVeto)-PDG_Var::Phi_mass()) > 2*PDG_Var::Phi_width());
-    pass.at(OmegaVeto2) = true;//(fabs(value.at(OmegaVeto)-PDG_Var::Omega_mass())> 2*PDG_Var::Omega_width());
-    pass.at(CutCategory) = ( value.at(CutCategory) == cut.at(CutCategory) );
+    pass.at(PhiVeto1) = (value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
+    pass.at(OmegaVeto1) = (value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
+    pass.at(PhiVeto2) = (value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
+    pass.at(OmegaVeto2) = (value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
+    pass.at(CutCategory) = true;//( value.at(CutCategory) == cut.at(CutCategory) );
 
     //    if(id!=1) pass.at(ThreeMuMass) = true;
     //    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
