@@ -55,9 +55,9 @@ void  BackgroundSelector::Configure(){
   readerA->AddVariable( "var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
   readerA->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
   readerA->AddVariable( "var_MuonglbkinkSum", &var_MuonglbkinkSum);
-  readerA->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
+  //  readerA->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
   readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerA->BookMVA( "BDT", basedir+"weights/June22_A_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerA->BookMVA( "BDT", basedir+"weights/June23_A_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
 
@@ -78,9 +78,9 @@ void  BackgroundSelector::Configure(){
   readerB->AddVariable( "var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
   readerB->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
   readerB->AddVariable( "var_MuonglbkinkSum", &var_MuonglbkinkSum);
-  readerB->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
+  //  readerB->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
   readerB->AddSpectator("var_tauMass",&var_tauMass);
-  readerB->BookMVA( "BDT", basedir+"weights/June22_B_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerB->BookMVA( "BDT", basedir+"weights/June23_B_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
 
@@ -98,9 +98,9 @@ void  BackgroundSelector::Configure(){
   readerC->AddVariable( "var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
   readerC->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
   readerC->AddVariable( "var_MuonglbkinkSum", &var_MuonglbkinkSum);
-  readerC->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
+  //  readerC->AddVariable( "var_MaxMuon_chi2LocalMomentum", &var_MaxMuon_chi2LocalMomentum);
   readerC->AddSpectator("var_tauMass",&var_tauMass);
-  readerC->BookMVA( "BDT", basedir+"weights/June22_C_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerC->BookMVA( "BDT", basedir+"weights/June23_C_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
 
 
@@ -221,7 +221,7 @@ void  BackgroundSelector::Configure(){
 
 
     else if(i==Mu1PtCut){
-      title.at(i)="$p_{T}(\\mu_{1}) >$ 4.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{1}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -231,7 +231,7 @@ void  BackgroundSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
     }
     else if(i==Mu2PtCut){
-      title.at(i)="$p_{T}(\\mu_{2}) >$ 4.0 GeV";
+      title.at(i)="$p_{T}(\\mu_{2}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -290,7 +290,7 @@ void  BackgroundSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
     }
     else if(i==TauMassCut){
-      title.at(i)="$\\tau$ mass (sideband in data)";
+      title.at(i)="$\\tau$ mass 1.6 - 2 GeV ";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -343,31 +343,33 @@ void  BackgroundSelector::Configure(){
 
   EMR_tau_eta  =HConfig.GetTH2D(Name+"_EMR_tau_eta","EMR vs eta",50,0,0.02,50,0,2.5,"3#mu mass, GeV","#eta_{#tau}");
 
-  TauMassA1 =HConfig.GetTH1D(Name+"_TauMassA1","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitA1 =HConfig.GetTH1D(Name+"_TauMassRefitA1","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
-  TauMassRefitA1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA1MassCut","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassA1 =HConfig.GetTH1D(Name+"_TauMassA1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitA1 =HConfig.GetTH1D(Name+"_TauMassRefitA1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (A1)","Events");
+  TauMassRefitA1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (A1)","Events");
+  TauMassRefitA2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (A2)","Events");
 
 
-  TauMassB1 =HConfig.GetTH1D(Name+"_TauMassB1","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitB1 =HConfig.GetTH1D(Name+"_TauMassRefitB1","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
-  TauMassRefitB1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB1MassCut","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+
+  TauMassB1 =HConfig.GetTH1D(Name+"_TauMassB1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitB1 =HConfig.GetTH1D(Name+"_TauMassRefitB1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (B1)","Events");
+  TauMassRefitB1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (B1)","Events");
+  TauMassRefitB2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (B2)","Events");
+
+  TauMassC1 =HConfig.GetTH1D(Name+"_TauMassC1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitC1 =HConfig.GetTH1D(Name+"_TauMassRefitC1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (C1)","Events");
+  TauMassRefitC1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (C1)","Events");
+  TauMassRefitC2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (C2)","Events");
+
+  TauMassA2 =HConfig.GetTH1D(Name+"_TauMassA2","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitA2 =HConfig.GetTH1D(Name+"_TauMassRefitA2","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
-  TauMassC1 =HConfig.GetTH1D(Name+"_TauMassC1","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitC1 =HConfig.GetTH1D(Name+"_TauMassRefitC1","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
-  TauMassRefitC1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC1MassCut","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassB2 =HConfig.GetTH1D(Name+"_TauMassB2","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitB2 =HConfig.GetTH1D(Name+"_TauMassRefitB2","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
-  TauMassA2 =HConfig.GetTH1D(Name+"_TauMassA2","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitA2 =HConfig.GetTH1D(Name+"_TauMassRefitA2","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
-
-
-  TauMassB2 =HConfig.GetTH1D(Name+"_TauMassB2","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitB2 =HConfig.GetTH1D(Name+"_TauMassRefitB2","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
-
-
-  TauMassC2 =HConfig.GetTH1D(Name+"_TauMassC2","#tau lepton mass",50,1.5,2.1,"  M_{#tau} , GeV","Events");
-  TauMassRefitC2 =HConfig.GetTH1D(Name+"_TauMassRefitC2","Refit #tau lepton mass",50,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
+  TauMassC2 =HConfig.GetTH1D(Name+"_TauMassC2","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
+  TauMassRefitC2 =HConfig.GetTH1D(Name+"_TauMassRefitC2","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV","Events");
 
 
 
@@ -400,7 +402,10 @@ void  BackgroundSelector::Configure(){
   L1TriggersF=HConfig.GetTH2D(Name+"_L1TriggersF","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
 
   NSignalCandidates =HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"Number of signal candidates","Events");
-  PairMass=HConfig.GetTH2D(Name+"_PairMass","PairMass",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
+  PairMass=HConfig.GetTH2D(Name+"_PairMass","PairMass",100,0.2,1.8,100,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
+  PairMassFinalSel=HConfig.GetTH2D(Name+"_PairMassFinalSel","PairMassFinalSel",60,0.2,1.8,60,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
+  PairMass1=HConfig.GetTH1D(Name+"_PairMass1","PairMass1",80,0.2,1.777,"M_{1}, GeV","");
+  PairMass2=HConfig.GetTH1D(Name+"_PairMass2","PairMass2",80,0.2,1.777,"M_{2}, GeV","");
   PairMassWithCut=HConfig.GetTH2D(Name+"_PairMassWithCut","PairMassWithCut",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassEta=HConfig.GetTH2D(Name+"_PairMassEta","PairMassEta",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassEtaPrime=HConfig.GetTH2D(Name+"_PairMassEtaPrime","PairMassEtaPrime",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
@@ -452,14 +457,17 @@ void  BackgroundSelector::Store_ExtraDist(){
   Extradist1d.push_back(&TauMassA1);
   Extradist1d.push_back(&TauMassRefitA1);
   Extradist1d.push_back(&TauMassRefitA1MassCut);
+  Extradist1d.push_back(&TauMassRefitA2MassCut);
 
   Extradist1d.push_back(&TauMassB1);
   Extradist1d.push_back(&TauMassRefitB1);
   Extradist1d.push_back(&TauMassRefitB1MassCut);
+  Extradist1d.push_back(&TauMassRefitB2MassCut);
 
   Extradist1d.push_back(&TauMassC1);
   Extradist1d.push_back(&TauMassRefitC1);
   Extradist1d.push_back(&TauMassRefitC1MassCut);
+  Extradist1d.push_back(&TauMassRefitC2MassCut);
 
 
   Extradist1d.push_back(&TauMassA2);
@@ -521,6 +529,9 @@ void  BackgroundSelector::Store_ExtraDist(){
   Extradist2d.push_back(&L1TriggersE);
   Extradist2d.push_back(&L1TriggersF);
   Extradist2d.push_back(&PairMass);
+  Extradist2d.push_back(&PairMassFinalSel);
+  Extradist1d.push_back(&PairMass1);
+  Extradist1d.push_back(&PairMass2);
   Extradist2d.push_back(&PairMassWithCut);
   Extradist2d.push_back(&PairMassEta);
   Extradist2d.push_back(&PairMassEtaPrime);
@@ -651,9 +662,9 @@ void  BackgroundSelector::doEvent(){
     unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
     //
-    value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
-    			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
-			Ntp->Muon_isGlobalMuon(mu3_pt_idx));
+    value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) &&  Ntp->Muon_isPFMuon(mu1_pt_idx) &&
+    			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&  Ntp->Muon_isPFMuon(mu2_pt_idx) &&
+			Ntp->Muon_isGlobalMuon(mu3_pt_idx) &&  Ntp->Muon_isPFMuon(mu3_pt_idx));
     //Ntp->Muon_isGlobalMuon(mu3_pt_idx));
     //------------------------------------------------------------------------------------------------------
   
@@ -813,6 +824,7 @@ void  BackgroundSelector::doEvent(){
     TLorentzVector MuonSS2 = Ntp->Muon_P4(ss2_mu_idx);
 
     PairMass.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+
     bool RemoveEta(false);
     if((MuonOS+MuonSS1).M() > 0.547 && (MuonOS+MuonSS2).M() > 0.547) RemoveEta = true;
     if(RemoveEta)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
@@ -1082,9 +1094,13 @@ void  BackgroundSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
       TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
       BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT") );
-      if(readerA->EvaluateMVA("BDT") > 0.216094){
-	
-	if(id ==120){// or id == 40){
+      if(readerA->EvaluateMVA("BDT") > 0.16){
+      //      if(readerA->EvaluateMVA("BDT") > -0.5){
+
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+	if(id ==120 or id == 122){// or id == 40){
 	  
 	  std::cout<<"------------------------------- category A1"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
@@ -1113,10 +1129,12 @@ void  BackgroundSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
       TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
       BDTOutputB.at(t).Fill(    readerB->EvaluateMVA("BDT") );
-      if(readerB->EvaluateMVA("BDT") > 0.1905){
-
-
-        if(id ==120){// or id == 40){
+      if(readerB->EvaluateMVA("BDT") > 0.204){
+      //      if(readerB->EvaluateMVA("BDT") > -0.5){
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+        if(id ==120 or id == 122){// or id == 40){
 
 	  std::cout<<"------------------------------- category B1"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
@@ -1145,8 +1163,12 @@ void  BackgroundSelector::doEvent(){
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
       TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
       BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
-      if(readerC->EvaluateMVA("BDT") > 0.1662){
-        if(id ==120){// or id == 40){
+      if(readerC->EvaluateMVA("BDT") > 0.186){
+	//if(readerC->EvaluateMVA("BDT") > -0.5){
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+        if(id ==120 or id ==122 ){// or id == 40){
 
 	  std::cout<<"------------------------------- category C1"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
@@ -1173,10 +1195,12 @@ void  BackgroundSelector::doEvent(){
 
     //Category A2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
-      if(readerA->EvaluateMVA("BDT") > 0.1117 && readerA->EvaluateMVA("BDT") < 0.2160){
-
-        if(id ==120){// or id == 40){
-
+      if(readerA->EvaluateMVA("BDT") > 0.128 && readerA->EvaluateMVA("BDT") < 0.16){
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+        if(id ==120 or id == 122){// or id == 40){
+	  /*
 	  std::cout<<"------------------------------- category A2"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	  std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -1188,10 +1212,11 @@ void  BackgroundSelector::doEvent(){
           Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
 
           Ntp->printMCDecayChainOfEvent(true, true, true, true);
-	  std::cout<< "\n\n\n\n\n\n";
+	  std::cout<< "\n\n\n\n\n\n";*/
         }
 
 	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveEta)	TauMassRefitA2MassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA2.at(t).Fill(TauLV.M(),1);
 	category=4;
 	bdt = readerA->EvaluateMVA("BDT");
@@ -1200,9 +1225,12 @@ void  BackgroundSelector::doEvent(){
 
     //Category B2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.01){
-      if(readerB->EvaluateMVA("BDT") > 0.0954 && readerB->EvaluateMVA("BDT") < 0.1905){
+      if(readerB->EvaluateMVA("BDT") > 0.0994 && readerB->EvaluateMVA("BDT") < 0.204){
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
         if(id ==120){// or id == 40){
-
+	  /*
 	  std::cout<<"------------------------------- category B2"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	  std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -1214,11 +1242,12 @@ void  BackgroundSelector::doEvent(){
           Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
 
           Ntp->printMCDecayChainOfEvent(true, true, true, true);
-	  std::cout<< "\n\n\n\n\n\n";
+	  std::cout<< "\n\n\n\n\n\n";*/
         }
 
 
 	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveEta)	TauMassRefitB2MassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB2.at(t).Fill(TauLV.M(),1);
 	category =5 ;
 	bdt = readerB->EvaluateMVA("BDT");
@@ -1227,9 +1256,12 @@ void  BackgroundSelector::doEvent(){
 
     //Category C2
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01){
-      if(readerC->EvaluateMVA("BDT") > 0.087 && readerC->EvaluateMVA("BDT")< 0.1662){
+      if(readerC->EvaluateMVA("BDT") > 0.121 && readerC->EvaluateMVA("BDT")< 0.186){
+	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
+	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
+	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
         if(id ==120){// or id == 40){
-
+	  /*
 	  std::cout<<"------------------------------- category C2"<< std::endl;
 	  std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	  std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -1242,11 +1274,13 @@ void  BackgroundSelector::doEvent(){
 
           Ntp->printMCDecayChainOfEvent(true, true, true, true);
 	  std::cout<< "\n\n\n\n\n\n";
+	  */
         }
 
 
 	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC2.at(t).Fill(TauLV.M(),1);
+	if(RemoveEta)	TauMassRefitC2MassCut.at(t).Fill(TauRefitLV.M(),1);    
 	category = 6;
 	bdt = readerC->EvaluateMVA("BDT");
       }

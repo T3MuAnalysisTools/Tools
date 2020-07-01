@@ -61,12 +61,15 @@ class BackgroundSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitA1;
   std::vector<TH1D> TauMassRefitA1MassCut;
+  std::vector<TH1D> TauMassRefitA2MassCut;
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
   std::vector<TH1D> TauMassRefitB1MassCut;
+  std::vector<TH1D> TauMassRefitB2MassCut;
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
   std::vector<TH1D> TauMassRefitC1MassCut;
+  std::vector<TH1D> TauMassRefitC2MassCut;
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -111,6 +114,9 @@ class BackgroundSelector : public Selection {
   std::vector<TH2D> L1TriggersF;
 
   std::vector<TH2D> PairMass;
+  std::vector<TH2D> PairMassFinalSel;
+  std::vector<TH1D> PairMass1;
+  std::vector<TH1D> PairMass2;
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
