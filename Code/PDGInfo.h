@@ -144,9 +144,16 @@ class PDGInfo {
     D_star_2010_plus = 413 ,
     D_star_2010_minus = -413 ,
     D_star_2007_0 = 423 ,
+    anti_D_star_2007_0 = -423 ,
+    Psi_3770 = 30443,
     B_plus = 521 ,
     B_minus = -521 ,
-    B_0 = 511
+    B_star_plus = 523 ,
+    B_star_minus = -523 ,
+    B_0 = 511,
+    anti_B_0 = -511,
+    B_s_0 = 531,
+    anti_B_s_0 = -531
   };
   static std::string pdgIdToName(int pdgId) {
     if(pdgId == 1)        return "d";
@@ -266,13 +273,19 @@ class PDGInfo {
     if(pdgId == -20313)   return "anti_K_prime_10";
     if(pdgId == 20323)    return "K_prime_1+";
     if(pdgId == -20323)   return "K_prime_1-";
+    if(pdgId == 30443)    return "Psi_3770";
     if(pdgId == 431)      return "Ds_plus";
     if(pdgId == -431)     return "Ds_minus";
     if(pdgId == 433)      return "Ds_star_plus";
     if(pdgId == -433)     return "Ds_star_minus";
     if(pdgId == 521)      return "B_plus";
     if(pdgId == -521)     return "B_minus";
+    if(pdgId == 523)      return "B_star_plus";
+    if(pdgId == -523)     return "B_star_minus";
     if(pdgId == 511)      return "B_0";
+    if(pdgId == -511)     return "anti_B_0";
+    if(pdgId == 531)      return "B_s_0";
+    if(pdgId == -531)     return "anti_B_s_0";
     if(pdgId == 421)      return "D_0";
     if(pdgId == -421)     return "anti_D_0";
     if(pdgId == 411)      return "D_plus";
@@ -280,6 +293,7 @@ class PDGInfo {
     if(pdgId == 413)      return "D_star_2010_plus";
     if(pdgId == -413)     return "D_star_2010_minus";
     if(pdgId == 423)      return "D_star_2007_0";
+    if(pdgId == -423)     return "anti_D_star_2007_0";
 
 
 
