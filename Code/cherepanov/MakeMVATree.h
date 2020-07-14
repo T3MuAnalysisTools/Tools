@@ -174,7 +174,16 @@ class MakeMVATree : public Selection {
 
   std::vector<TH1D> MaxVertexPairQuality;
   std::vector<TH1D> MinVertexPairQuality;
+
+
+  std::vector<TH1D> MaxVertexPairDistance;
+  std::vector<TH1D> MinVertexPairDistance;
 	
+  std::vector<TH1D>  VertexPairDistance1;
+  std::vector<TH1D>  VertexPairDistance2;
+  std::vector<TH1D>  VertexPairDistance3;
+
+
 
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;

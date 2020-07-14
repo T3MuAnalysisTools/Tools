@@ -611,6 +611,16 @@ void  MakeMVATree::Configure(){
       MaxVertexPairQuality=HConfig.GetTH1D(Name+"_MaxVertexPairQuality","MaxVertexPairQuality",30,0,10,"max vertex pair quality","Events");
       MinVertexPairQuality=HConfig.GetTH1D(Name+"_MinVertexPairQuality","MinVertexPairQuality",20,0,2,"minvertex pair quality","Events");
 
+      MaxVertexPairDistance=HConfig.GetTH1D(Name+"_MaxVertexPairDistance","MaxVertexPairDistance",50,0,1,"max pair vertex dist, cm","Events");
+      MinVertexPairDistance=HConfig.GetTH1D(Name+"_MinVertexPairDistance","MinVertexPairDistance",50,0,1,"min pair vertex dist, cm","Events");
+
+      VertexPairDistance1=HConfig.GetTH1D(Name+"_VertexPairDistance1","VertexPairDistance1",50,0,1,"pair vertex dist 1, cm","Events");
+      VertexPairDistance2=HConfig.GetTH1D(Name+"_VertexPairDistance2","VertexPairDistance2",50,0,1,"pair vertex dist 2, cm","Events");
+      VertexPairDistance3=HConfig.GetTH1D(Name+"_VertexPairDistance3","VertexPairDistance3",50,0,1,"pair vertex dist 3, cm","Events");
+
+
+
+
 
       deltaMuZ12 = HConfig.GetTH1D(Name+"_deltaMuZ12","deltaMuZ12",30,0,0.6,"#Delta z (#mu_{1}-#mu_{2}), cm","");
       deltaMuZ13 = HConfig.GetTH1D(Name+"_deltaMuZ13","deltaMuZ13",30,0,0.6,"#Delta z (#mu_{1}-#mu_{3}), cm","");
@@ -818,6 +828,13 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&NTracksCloseToPV);
   Extradist1d.push_back(&NTracksCloseToPVTauDR);
 
+  Extradist1d.push_back(&MaxVertexPairDistance);
+  Extradist1d.push_back(&MinVertexPairDistance);
+
+
+  Extradist1d.push_back(&VertexPairDistance1);
+  Extradist1d.push_back(&VertexPairDistance2);
+  Extradist1d.push_back(&VertexPairDistance3);
 
 
 
@@ -1249,8 +1266,35 @@ void  MakeMVATree::doEvent(){
       //	Ntp->Track_dxy( Ntp->Muon_Track_idx(Muon_index_3))/Ntp->Track_dxyError( Ntp->Muon_Track_idx(Muon_index_3));
 
 
-      
 
+      //      Ntp->Vertex_Pair12_Pos(final_idx).Print();
+      //      Ntp->Vertex_Pair23_Pos(final_idx).Print();
+      //      Ntp->Vertex_Pair31_Pos(final_idx).Print();
+
+
+      float MaxPairDistance = std::max({ (Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag(),(Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair31_Pos(final_idx)).Mag(),(Ntp->Vertex_Pair31_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag()});
+      float MinPairDistance =  std::min({ (Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag(),(Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair31_Pos(final_idx)).Mag(),(Ntp->Vertex_Pair31_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag()});
+
+
+
+      std::vector<float> VertexDistances;
+      VertexDistances.push_back((Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag());
+      VertexDistances.push_back((Ntp->Vertex_Pair12_Pos(final_idx) - Ntp->Vertex_Pair31_Pos(final_idx)).Mag());
+      VertexDistances.push_back((Ntp->Vertex_Pair31_Pos(final_idx) - Ntp->Vertex_Pair23_Pos(final_idx)).Mag());
+      sort(VertexDistances.begin(),VertexDistances.end());
+
+
+      VertexPairDistance1.at(t).Fill(VertexDistances.at(0),1);
+      VertexPairDistance2.at(t).Fill(VertexDistances.at(1),1);
+      VertexPairDistance3.at(t).Fill(VertexDistances.at(2),1);
+
+
+      MaxVertexPairDistance.at(t).Fill(MaxPairDistance,1);
+      MinVertexPairDistance.at(t).Fill(MinPairDistance,1);
+
+
+
+      
       vector<unsigned int> idx_vec;
 
       idx_vec.push_back( Ntp->ThreeMuonIndices(final_idx).at(0));

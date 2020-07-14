@@ -79,6 +79,23 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassRefitC2;
   std::vector<TH1D> TauMassC2;
 
+  std::vector<TH1D> SV_Mass_postselection;
+  std::vector<TH1D> SV_Mass_preselection;
+
+  std::vector<TH1D> Mu1TrackMass;
+  std::vector<TH1D> Mu2TrackMass;
+  std::vector<TH1D> Mu3TrackMass;
+
+
+  std::vector<TH1D> Mu1AllTrackMass;
+  std::vector<TH1D> Mu2AllTrackMass;
+  std::vector<TH1D> Mu3AllTrackMass;
+
+
+
+
+  std::vector<TH1D>   SV_Mass_postselection_disp_1mu;
+  std::vector<TH1D>   SV_Mass_preselection_disp_1mu;
 
 
 
@@ -120,6 +137,8 @@ class BackgroundSelector : public Selection {
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
+  std::vector<TH2D> CategoryOverlap;
+  std::vector<TH2D> Mu3IdOverlap;
   std::vector<TH1D> IDOriginOfOSMuon;
 
   std::vector<TH1D> Muon1isGlob;
