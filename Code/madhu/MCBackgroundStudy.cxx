@@ -195,6 +195,14 @@ void  MCBackgroundStudy::Configure(){
   PhotonDRToTruth_EtaPrime=HConfig.GetTH1D(Name+"_PhotonDRToTruth_EtaPrime","PhotonDRToTruth_EtaPrime",40,0,1,"reco - mc #gamma #Delta R","Events");
   PhotonDRToTruth_Phi=HConfig.GetTH1D(Name+"_PhotonDRToTruth_Phi","PhotonDRToTruth_Phi",40,0,1,"reco - mc #gamma #Delta R","Events");
   
+  DeltaRPhotontoTau=HConfig.GetTH1D(Name+"_DeltaRPhotontoTau","DeltaRPhotontoTau",4,0.5,4.5,"DeltaR to Tau of all reco #gamma 0.1,0.5,1,2","Events");
+  PhotonRecoSuccess=HConfig.GetTH1D(Name+"_PhotonRecoSuccess","PhotonRecoSuccess",2,-0.5,1.5,"Whether atleat 1 photon is found","Events");
+  DeltaEnergyPhoton=HConfig.GetTH1D(Name+"_DeltaEnergyPhoton","DeltaEnergyPhoton",20,0,20,"reco - mc #gamma #Delta E","Events");
+  
+  DeltaRPhotontoTau
+  PhotonRecoSuccess
+  DeltaEnergyPhoton
+  
   PassedCount =HConfig.GetTH1D(Name+"_PassedCount","PassedCount",4,-0.5,3.5,"How many indices changed value from -1","Events");
   ChildCount =HConfig.GetTH1D(Name+"_ChildCount","ChildCount",10,-0.5,9.5,"Number of children of particle with pdgid 221","Events");
   ChildCountPrime =HConfig.GetTH1D(Name+"_ChildCountPrime","ChildCountPrime",10,-0.5,9.5,"Number of children of particle with pdgid 331","Events"); 
@@ -461,9 +469,7 @@ void  MCBackgroundStudy::doEvent(){
     // ----  MC 
     if(id == 122 || id == 128 || id == 132 || id == 142){ // id == 122 is Ds-> eta(mu mu gamma) mu nu   + eta' (mu mu gamma) mu nu
     
-      std::cout << "The ID of the event is " << id << std::endl;
-
-      double Dr1(99.), Dr2(99.), Dr3(99.);
+            double Dr1(99.), Dr2(99.), Dr3(99.);
       int mc_index1,mc_index2, mc_index3;
       for(int igen_particle=0; igen_particle < Ntp->NMCParticles(); igen_particle++){
 	
@@ -612,6 +618,7 @@ void  MCBackgroundStudy::doEvent(){
             MassEta.at(t).Fill(EtaLV.M(),1);
             pass_list.at(0)=1;
             eta_ph=Ntp->MCParticle_p4(mc_photon_idx);
+            std::cout << "The ID of the event is " << id << std::endl;
           }
         }
       }
@@ -627,6 +634,7 @@ void  MCBackgroundStudy::doEvent(){
             MassEtaPrime.at(t).Fill(EtaPrimeLV.M(),1);
             pass_list.at(1)=1;
             etaprime_ph=Ntp->MCParticle_p4(mc_prime_photon_idx);
+            std::cout << "The ID of the event is " << id << std::endl;
           }
         }
       }
@@ -639,6 +647,7 @@ void  MCBackgroundStudy::doEvent(){
             MassPhi.at(t).Fill(PhiLV.M(),1);
             pass_list.at(2)=1;
             phi_ph=Ntp->MCParticle_p4(mc_phi_photon_idx);
+            std::cout << "The ID of the event is " << id << std::endl;
           }
         }
       }
@@ -650,6 +659,7 @@ void  MCBackgroundStudy::doEvent(){
             MassOmega.at(t).Fill(OmegaLV.M(),1);
             pass_list.at(3)=1;
             omega_pi=Ntp->MCParticle_p4(mc_omega_pion_idx);
+            std::cout << "The ID of the event is " << id << std::endl;
           }
         }
       }
@@ -663,12 +673,28 @@ void  MCBackgroundStudy::doEvent(){
       //To find the reco photons:
       
       
+      TLorentzVector TauLV1 = Ntp->Muon_P4(os_mu_idx)  + Ntp->Muon_P4(ss1_mu_idx) + Ntp->Muon_P4(ss2_mu_idx);
+      
       std::vector<int> recoph_index{-1,-1,-1,-1};//reco indices: photon from eta, eta', phi, and then pion_index
       
       if(pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1){
         double Dr1(99.),Dr2(99.),Dr3(99.);
         for(int reco_photon=0; reco_photon < Ntp->NPhotons(); reco_photon++){
-          std::cout<<"Energy of photon no. "<<reco_photon+1<<" is "<<Ntp->Photon_p4(reco_photon).E()<<std::endl;
+          //std::cout<<"Energy of photon no. "<<reco_photon+1<<" is "<<Ntp->Photon_p4(reco_photon).E()<<std::endl;
+          if(Ntp->Photon_p4(reco_photon).DeltaR(TauLV1) < 2){
+            DeltaRPhotontoTau.at(t).Fill(4,1);
+          }
+          if(Ntp->Photon_p4(reco_photon).DeltaR(TauLV1) < 1){
+            DeltaRPhotontoTau.at(t).Fill(3,1);
+          }
+          if(Ntp->Photon_p4(reco_photon).DeltaR(TauLV1) < 0.5){
+            DeltaRPhotontoTau.at(t).Fill(2,1);
+          }
+          if(Ntp->Photon_p4(reco_photon).DeltaR(TauLV1) < 0.1){
+            DeltaRPhotontoTau.at(t).Fill(1,1);
+          }
+          
+          
           if(Ntp->Photon_p4(reco_photon).DeltaR(eta_ph) < Dr1){
             Dr1 = Ntp->Photon_p4(reco_photon).DeltaR(eta_ph);
             recoph_index.at(0) = reco_photon;
@@ -691,6 +717,7 @@ void  MCBackgroundStudy::doEvent(){
       
       if(pass_list.at(0)==1&&recoph_index.at(0)>-0.5){
         eta_ph_reco=Ntp->Photon_p4(recoph_index.at(0));
+        DeltaEnergyPhoton.at(t).Fill(abs(eta_ph_reco.E()-eta_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_muon1idx?idx_match:match1;
@@ -710,6 +737,7 @@ void  MCBackgroundStudy::doEvent(){
       
       if(pass_list.at(1)==1&&recoph_index.at(1)>-0.5){
         etaprime_ph_reco=Ntp->Photon_p4(recoph_index.at(1));
+        DeltaEnergyPhoton.at(t).Fill(abs(etaprime_ph_reco.E()-etaprime_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_prime_muon1idx?idx_match:match1;
@@ -729,6 +757,7 @@ void  MCBackgroundStudy::doEvent(){
       
       if(pass_list.at(2)==1&&recoph_index.at(2)>-0.5){
         phi_ph_reco=Ntp->Photon_p4(recoph_index.at(2));
+        DeltaEnergyPhoton.at(t).Fill(abs(phi_ph_reco.E()-phi_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
         for(int idx_match =0; idx_match < 3; idx_match++){
           match1=genidx.at(idx_match)==mc_phi_muon1idx?idx_match:match1;
@@ -745,6 +774,12 @@ void  MCBackgroundStudy::doEvent(){
         std::cout<<"Mass of mixed-reco phi is "<< PhiLV_mixed.M()<< std::endl;
       }
       
+      if((pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1)&&recoph_index.at(0)==-1&&recoph_index.at(1)==-1&&recoph_index.at(2)==-1){
+        PhotonRecoSuccess.at(t).Fill(0,1);
+      }
+      if((pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1)&&(recoph_index.at(0)>-0.5||recoph_index.at(1)>-0.5||recoph_index.at(2)>-0.5)){
+        PhotonRecoSuccess.at(t).Fill(1,1);
+      }
       
       
     }
