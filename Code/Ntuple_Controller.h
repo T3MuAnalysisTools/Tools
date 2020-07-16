@@ -512,6 +512,25 @@ class Ntuple_Controller{
          return Ntp->Vertex_pairfit_status->at(index).at(j);
       }//the second index should not exceed 3
 
+
+      TVector3  Vertex_Pair12_Pos(unsigned int i, bool channel = false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	 return TVector3(Ntp->Vertex_Pair12_Pos->at(index).at(0),Ntp->Vertex_Pair12_Pos->at(index).at(1),Ntp->Vertex_Pair12_Pos->at(index).at(2));
+      }
+
+      TVector3  Vertex_Pair23_Pos(unsigned int i, bool channel = false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	 return TVector3(Ntp->Vertex_Pair23_Pos->at(index).at(0),Ntp->Vertex_Pair23_Pos->at(index).at(1),Ntp->Vertex_Pair23_Pos->at(index).at(2));
+      }
+
+      TVector3  Vertex_Pair31_Pos(unsigned int i, bool channel = false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	 return TVector3(Ntp->Vertex_Pair31_Pos->at(index).at(0),Ntp->Vertex_Pair31_Pos->at(index).at(1),Ntp->Vertex_Pair31_Pos->at(index).at(2));
+      }
+
+
+
+
       double     Vertex_signal_KF_Chi2(unsigned int i, bool channel=false){
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
          return Ntp->Vertex_signal_KF_Chi2->at(index); 

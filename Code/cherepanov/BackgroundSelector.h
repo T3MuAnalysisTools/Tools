@@ -19,7 +19,7 @@ class BackgroundSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, PhiVeto, OmegaVeto, TriggerMatch, TauMassCut,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID,PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, TriggerMatch, TauMassCut,NCuts}; 
 
 
  protected:
@@ -30,8 +30,13 @@ class BackgroundSelector : public Selection {
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
 
+  bool RunB, RunC, RunD, RunE, RunF = 0;
+
   TTree *T3MMiniTree;
   TFile *T3MFMiniTree;
+
+  TRandom rndm;
+  double random_num;
 
   // Selection Variables
   // Initializhere your analysis histograms
@@ -56,12 +61,15 @@ class BackgroundSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitA1;
   std::vector<TH1D> TauMassRefitA1MassCut;
+  std::vector<TH1D> TauMassRefitA2MassCut;
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
   std::vector<TH1D> TauMassRefitB1MassCut;
+  std::vector<TH1D> TauMassRefitB2MassCut;
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
   std::vector<TH1D> TauMassRefitC1MassCut;
+  std::vector<TH1D> TauMassRefitC2MassCut;
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -71,6 +79,23 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassRefitC2;
   std::vector<TH1D> TauMassC2;
 
+  std::vector<TH1D> SV_Mass_postselection;
+  std::vector<TH1D> SV_Mass_preselection;
+
+  std::vector<TH1D> Mu1TrackMass;
+  std::vector<TH1D> Mu2TrackMass;
+  std::vector<TH1D> Mu3TrackMass;
+
+
+  std::vector<TH1D> Mu1AllTrackMass;
+  std::vector<TH1D> Mu2AllTrackMass;
+  std::vector<TH1D> Mu3AllTrackMass;
+
+
+
+
+  std::vector<TH1D>   SV_Mass_postselection_disp_1mu;
+  std::vector<TH1D>   SV_Mass_preselection_disp_1mu;
 
 
 
@@ -106,9 +131,14 @@ class BackgroundSelector : public Selection {
   std::vector<TH2D> L1TriggersF;
 
   std::vector<TH2D> PairMass;
+  std::vector<TH2D> PairMassFinalSel;
+  std::vector<TH1D> PairMass1;
+  std::vector<TH1D> PairMass2;
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
+  std::vector<TH2D> CategoryOverlap;
+  std::vector<TH2D> Mu3IdOverlap;
   std::vector<TH1D> IDOriginOfOSMuon;
 
   std::vector<TH1D> Muon1isGlob;
@@ -159,11 +189,22 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> BDTOutputEndcap;
   std::vector<TH1D> NSignalCandidates;
 
+
+  std::vector<TH1D>  Muon1MVAID;
+  std::vector<TH1D>  Muon2MVAID;
+  std::vector<TH1D>  Muon3MVAID;
+
+
+
+
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
-  TMVA::Reader *readerBarrel;
-  TMVA::Reader *readerEndcap;
+
+  TMVA::Reader *readerMuIDBarrel;
+  TMVA::Reader *readerMuIDEndcap;
+
+
 
   Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
   Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
@@ -180,6 +221,24 @@ class BackgroundSelector : public Selection {
   Float_t var_MuTau_maxdR;
   Float_t var_MaxD0Significance;
   Float_t var_IsolationMinDist;
+  Float_t var_Muon1DetID;
+  Float_t var_Muon2DetID;
+  Float_t var_Muon3DetID;
+
+
+  
+
+  float var_MaxtrkKink;
+  float var_MaxD0SigSV;
+  float var_MindcaTrackSV;
+  float var_maxMuonsDca;
+  float var_nsv;
+
+  float var_MaxMuon_chi2LocalPosition;
+  float var_MaxVertexPairQuality;
+  float var_MuonglbkinkSum;
+  float var_MaxMuon_chi2LocalMomentum;
+
 
 
   Float_t m3m;
@@ -190,6 +249,35 @@ class BackgroundSelector : public Selection {
   Float_t rapidity;
   Float_t LumiScale;
 
+
+  Float_t mu_combinedQuality_chi2LocalMomentum;
+  Float_t mu_combinedQuality_chi2LocalPosition;
+  Float_t mu_combinedQuality_staRelChi2;
+  Float_t mu_combinedQuality_trkRelChi2;
+  Float_t mu_combinedQuality_globalDeltaEtaPhi;
+  Float_t mu_combinedQuality_trkKink;
+  Float_t mu_combinedQuality_glbKink;
+  Float_t mu_combinedQuality_glbTrackProbability;
+  Float_t mu_Numberofvalidtrackerhits;
+  Float_t mu_Numberofvalidpixelhits;
+  Float_t mu_validMuonHitComb;
+  Float_t mu_numberOfMatchedStations;
+  Float_t mu_segmentCompatibility;
+  Float_t mu_timeAtIpInOutErr;
+  Float_t mu_GLnormChi2;
+  Float_t mu_innerTrack_normalizedChi2;
+  Float_t mu_outerTrack_normalizedChi2;
+  Float_t mu_innerTrack_validFraction;
+
+  Float_t mu_eta;
+  Float_t mu_pt;
+  Float_t mu_phi;
+  Float_t mu_SoftMVA;
+
+
+  Float_t Muon1DetID;
+  Float_t Muon2DetID;
+  Float_t Muon3DetID;
 
 
 

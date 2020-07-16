@@ -235,6 +235,9 @@ public :
    std::vector<double>  *Vertex_signal_AF_Ndf;
    std::vector<std::vector<double> > *Vertex_pair_quality;
    std::vector<std::vector<double> > *Vertex_pairfit_status;
+   std::vector<std::vector<float  > > *Vertex_Pair12_Pos;
+   std::vector<std::vector<float  > > *Vertex_Pair23_Pos;
+   std::vector<std::vector<float  > > *Vertex_Pair31_Pos;
    std::vector<std::vector<double> > *Vertex_MatchedPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_SecondBestPrimaryVertex;
    std::vector<bool>    *Vertex_RefitPVisValid;
@@ -484,6 +487,9 @@ public :
    TBranch        *b_Vertex_signal_AF_Chi2;   //!
    TBranch        *b_Vertex_signal_AF_Ndf;   //!
    TBranch        *b_Vertex_pair_quality;   //!
+   TBranch        *b_Vertex_Pair12_Pos;   //!
+   TBranch        *b_Vertex_Pair23_Pos;   //!
+   TBranch        *b_Vertex_Pair31_Pos;   //!
    TBranch        *b_Vertex_pairfit_status;   //!
    TBranch        *b_Vertex_MatchedPrimaryVertex;   //!
    TBranch        *b_Vertex_SecondBestPrimaryVertex;   //!
@@ -790,6 +796,10 @@ void NtupleReader::Init(TTree *tree)
    Vertex_signal_AF_Chi2 = 0;
    Vertex_signal_AF_Ndf = 0;
    Vertex_pair_quality = 0;
+   Vertex_Pair12_Pos = 0;
+   Vertex_Pair23_Pos = 0;
+   Vertex_Pair31_Pos = 0;
+
    Vertex_pairfit_status = 0;
    Vertex_MatchedPrimaryVertex = 0;
    Vertex_SecondBestPrimaryVertex = 0;
@@ -1043,6 +1053,13 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_signal_AF_Ndf", &Vertex_signal_AF_Ndf, &b_Vertex_signal_AF_Ndf);
    fChain->SetBranchAddress("Vertex_pair_quality", &Vertex_pair_quality, &b_Vertex_pair_quality);
    fChain->SetBranchAddress("Vertex_pairfit_status", &Vertex_pairfit_status, &b_Vertex_pairfit_status);
+
+   fChain->SetBranchAddress("Vertex_Pair12_Pos", &Vertex_Pair12_Pos,&b_Vertex_Pair12_Pos);
+   fChain->SetBranchAddress("Vertex_Pair23_Pos", &Vertex_Pair23_Pos,&b_Vertex_Pair23_Pos);
+   fChain->SetBranchAddress("Vertex_Pair31_Pos", &Vertex_Pair31_Pos,&b_Vertex_Pair31_Pos);
+
+
+
    fChain->SetBranchAddress("Vertex_MatchedPrimaryVertex", &Vertex_MatchedPrimaryVertex, &b_Vertex_MatchedPrimaryVertex);
    fChain->SetBranchAddress("Vertex_SecondBestPrimaryVertex", &Vertex_SecondBestPrimaryVertex, &b_Vertex_SecondBestPrimaryVertex);
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
