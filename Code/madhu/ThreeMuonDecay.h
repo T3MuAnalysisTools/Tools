@@ -21,7 +21,7 @@ class ThreeMuonDecay : public Selection {
   // PrimeVts, EventCut1, EventCut2, ..., NCuts};  
   // Do not remove/rename  the last enumerator   NCuts;
 
-  enum cuts {TriggerOk=0,PrimeVtx,SignalCandidate,LeadingMuonPt,NCuts}; 
+  enum cuts {L1=0,HLT,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, TRKLWithM, PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2,TriggerMatch, ThreeMuMass, CutCategory,NCuts}; 
 
 
  protected:

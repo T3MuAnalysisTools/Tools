@@ -1,3 +1,4 @@
+#include "MakeMVATree.h"
 #include "ThreeMuonDecay.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
@@ -5,9 +6,20 @@
 #include "PDG_Var.h"
 #include <iostream>
 #include "Logger.h"
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
+using namespace std;
 
 ThreeMuonDecay::ThreeMuonDecay(TString Name_, TString id_):
-  Selection(Name_,id_)
+    Selection(Name_,id_),
+    tauMinMass_(1.731),
+    tauMaxMass_(1.823),
+    tauMinSideBand_(1.61),
+    tauMaxSideBand_(2.05),
+    tauMassResCutLow(0.007),
+    tauMassResCutHigh(0.01)
 {
   // This is a class constructor;
 }
@@ -31,14 +43,25 @@ void  ThreeMuonDecay::Configure(){
   // is an actual value of Var1,2,3 in a given event (this vector will be filled later)
   // vector pass contains boolean of the cut status.
 
-  for(int i=0; i<NCuts;i++){
+  for(int i=0; i<NCuts;i++){             //"value" store the values from MC/data which must be above the "cut" value. "pass" stores whether "value" passes "cut"
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk)        cut.at(TriggerOk)=1;
-    if(i==PrimeVtx)         cut.at(PrimeVtx)=5; // Here for example we place cut value on number of PVs
-    if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
-    if(i==LeadingMuonPt)    cut.at(LeadingMuonPt)=5;
+    if(i==SignalCandidate)  cut.at(SignalCandidate)=1;              //Checks whether there's at least one 3-muon combination
+    if(i==HLT)              cut.at(HLT)=1;
+    if(i==L1)               cut.at(L1)=1;
+    if(i==Mu1PtCut)         cut.at(Mu1PtCut)=3.0;
+    if(i==Mu2PtCut)         cut.at(Mu2PtCut)=3.0;
+    if(i==Mu3PtCut)         cut.at(Mu3PtCut)=2.0;
+    if(i==TRKLWithM)        cut.at(TRKLWithM)=1;                    //Checks whether tracker layer with measurement is a layer > 7
+    if(i==MuonID)           cut.at(MuonID)=1;                       //Checks whether they're all global muons (and particle flow muons)
+    if(i==PhiVeto1)           cut.at(PhiVeto1)=0; // defined below
+    if(i==OmegaVeto1)         cut.at(OmegaVeto1)=0; // defined below
+    if(i==PhiVeto2)           cut.at(PhiVeto2)=0; // defined below
+    if(i==OmegaVeto2)         cut.at(OmegaVeto2)=0; // defined below
+    if(i==TriggerMatch)     cut.at(TriggerMatch)=0.03;
+    if(i==ThreeMuMass)      cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
+    if(i==CutCategory)      cut.at(CutCategory)=2;// Depends on tau mass resolution
 
   }
 
@@ -50,37 +73,109 @@ void  ThreeMuonDecay::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
-    if(i==PrimeVtx){
-      title.at(i)="Number of Prime Vertices $(N>$";
-      title.at(i)+=cut.at(PrimeVtx);
-      title.at(i)+=")";
-      htitle=title.at(i);
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      hlabel="Number of Prime Vertices";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PrimeVtx_",htitle,51,-0.5,50.5,hlabel,"Events"));
-    }
-    else if(i==TriggerOk){
-      title.at(i)="Trigger ";
-      hlabel="Trigger ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==SignalCandidate){
+    if(i==SignalCandidate){
       title.at(i)="signal candidate";
       hlabel="is 3mu candidate";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==LeadingMuonPt){
-      title.at(i)="$\\mu$ Pt $>$ .5 GeV";
+    else if(i==L1){
+      title.at(i)="Pass L1";
+      hlabel="L1";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==HLT){
+      title.at(i)="Pass HLT";
+      hlabel="HLT";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu1PtCut){
+      title.at(i)="$p_{T}(\\mu_{1}) >$ 3.0 GeV";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
-      hlabel="Pt of the leading  muon";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_LeadingMuonPt_",htitle,80,0,20,hlabel,"Events"));
+
+      hlabel="Muon1 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1PtCut_",htitle,40,2,25,hlabel,"Events"));
+    }
+    else if(i==Mu2PtCut){
+      title.at(i)="$p_{T}(\\mu_{2}) >$ 3.0 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
+
+      hlabel="Muon2 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2PtCut_",htitle,40,2,20,hlabel,"Events"));
+    }
+    else if(i==Mu3PtCut){
+      title.at(i)="$p_{T}(\\mu_{3}) >$ 2.0 GeV";
+      htitle=title.at(i);
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+
+      hlabel="Muon3 PT, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3PtCut_",htitle,40,2,15,hlabel,"Events"));
+    }
+    else if(i==TRKLWithM){
+      title.at(i)="TrkLayerWithM";
+      hlabel="pass TRKLWithM";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TRKLWithM_",htitle,20,-0.5,19.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TRKLWithM_",htitle,20,-0.5,19.5,hlabel,"Events"));
+    }
+    else if(i==MuonID){
+      title.at(i)="All mu pass ID";
+      hlabel="gl,gl,gl";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_MuonID_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==PhiVeto1){
+      title.at(i)="phi mass veto";
+      hlabel="Phi mass Veto 1 pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto1_",htitle,40,0.8,1.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto1_",htitle,40,0.8,1.2,hlabel,"Events"));
+    }
+    else if(i==OmegaVeto1){
+      title.at(i)="omega mass veto";
+      hlabel="Omega mass veto 1 pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto1_",htitle,50,0.4,0.9,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto1_",htitle,50,0.4,0.9,hlabel,"Events"));
+    }
+    else if(i==PhiVeto2){
+      title.at(i)="phi mass veto";
+      hlabel="Phi mass Veto 2nd pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PhiVeto2_",htitle,40,0.8,1.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PhiVeto2_",htitle,40,0.8,1.2,hlabel,"Events"));
+    }
+    else if(i==OmegaVeto2){
+      title.at(i)="omega mass veto";
+      hlabel="Omega mass veto 2nd pair, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OmegaVeto2_",htitle,50,0.4,0.9,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OmegaVeto2_",htitle,50,0.4,0.9,hlabel,"Events"));
+    }
+    else if(i==TriggerMatch){
+      title.at(i)="Trigger Matching";
+      hlabel="Sum of dR_{reco-trigger}";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,40,0,0.05,hlabel,"Events"));
+    }
+    else if(i==ThreeMuMass){
+      title.at(i)="Tau Mass";
+      hlabel="three mu mass, GeV";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ThreeMuMass_",htitle,80,1.4,2.2,hlabel,"Events"));
+    }
+
+   else if(i==CutCategory){
+      title.at(i)="CutCategory";
+      hlabel="CutCategory";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_CutCategory_",htitle,3,0.5,3.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_CutCategory_",htitle,3,0.5,3.5,hlabel,"Events"));
     }
   } 
   // Setup NPassed Histogams
@@ -125,13 +220,58 @@ void  ThreeMuonDecay::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-
-
-  value.at(PrimeVtx)=Ntp->NVtx(); // Here the actual_value of a cut is set
-  pass.at(PrimeVtx)=(value.at(PrimeVtx)>=cut.at(PrimeVtx)); // Here we check that the actuall value of PrimeVrtices is above 5.
   
-  value.at(TriggerOk)=(Ntp->EventNumber()%1000)==1;
-  pass.at(TriggerOk)=true; // always true
+  
+  bool HLTOk(false);
+  bool L1Ok(false);
+  
+    bool DoubleMu0Fired(false);
+    bool DoubleMu4Fired(false);
+    bool DoubleMuFired(false);
+    bool TripleMuFired(false);
+    bool randomFailed(false);
+  
+  
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLT = Ntp->HLTName(iTrigger);
+
+    if(HLT.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
+
+  }
+
+  
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+      TString L1TriggerName = Ntp->L1Name(il1);
+      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
+      if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
+      if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
+      if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
+      if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
+	randomFailed = true;
+      }
+  }
+  
+  if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
+  if (!DoubleMu0Fired && !TripleMuFired && randomFailed) l1FailedRandom++;
+  
+  if(DoubleMuFired  or TripleMuFired) L1Ok = true;
+  
+    if (HLTOk) value.at(HLT) = true;
+    else value.at(HLT) = false;
+
+    if (L1Ok) value.at(L1) = true;
+    else value.at(L1) = false;
+
+    //    if (HLTFired && !L1Fired && !randomFailed) cout<<"wrong hlt"<<endl;
+
+    pass.at(HLT) = (value.at(HLT) == cut.at(HLT));
+    pass.at(L1)  = (value.at(L1) == cut.at(L1));
+
+
+  
+  
+  value.at(SignalCandidate)=0;
+  value.at(TriggerMatch)=0;
   
   unsigned int  signal_idx=0;
 
@@ -145,19 +285,136 @@ void  ThreeMuonDecay::doEvent(){
 
 
   unsigned int  final_idx=0;
+  
+    value.at(TRKLWithM) = 0;
+    value.at(SignalCandidate)=0;
+    value.at(Mu1PtCut)=0;
+    value.at(Mu2PtCut)=0;
+    value.at(Mu3PtCut)=0;
+
+    value.at(TriggerMatch)=0;
+    value.at(MuonID)=0;
+    value.at(ThreeMuMass)=0;
 
 
-  value.at(SignalCandidate) = Ntp->NThreeMuons();
-  if(Ntp->NThreeMuons()>0){  // Check if this is a signal category (take the first triplet only in this example)
+  
+  
+    if(Ntp->NThreeMuons()>0){
+      value.at(SignalCandidate) = Ntp->NThreeMuons();
+      unsigned int mu1_idx = Ntp->ThreeMuonIndices(final_idx).at(0); 
+      unsigned int mu2_idx = Ntp->ThreeMuonIndices(final_idx).at(1); 
+      unsigned int mu3_idx = Ntp->ThreeMuonIndices(final_idx).at(2);
+      // value.at(MuonID) =  (Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu1_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
+      //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu2_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium) &&
+      //     Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(mu3_idx),Ntp->MuonStandardSelectors::CutBasedIdMedium));
+      //----------------  alternatively require two leading muons to be global and trailing muon to be tracker 
+      unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+      unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+      unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+      //
 
-    unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
-    value.at(LeadingMuonPt) = Ntp->Muon_P4(mu1_pt_idx).Pt();
 
-  }
+      //      std::cout<<"  "<<Ntp->Muon_isGlobalMuon(mu1_pt_idx)<<"  "<< Ntp->Muon_isTrackerMuon(mu1_pt_idx) << std::endl;
+
+      value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) && 
+			  Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&
+			  Ntp->Muon_isGlobalMuon(mu3_pt_idx) &&
+			  Ntp->Muon_isPFMuon(mu1_pt_idx) &&
+			  Ntp->Muon_isPFMuon(mu2_pt_idx) &&
+			  Ntp->Muon_isPFMuon(mu3_pt_idx));
+      value.at(TRKLWithM) = (Ntp->Muon_trackerLayersWithMeasurement(mu1_pt_idx) >= 7 ? 1:0 &&
+			     Ntp->Muon_trackerLayersWithMeasurement(mu2_pt_idx) >= 7 ? 1:0 &&
+			     Ntp->Muon_trackerLayersWithMeasurement(mu3_pt_idx) >= 7 ? 1:0 );
+      //------------------------------------------------------------------------------------------------------
+
+      value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
+      value.at(Mu2PtCut) = Ntp->Muon_P4(mu2_pt_idx).Pt();
+      value.at(Mu3PtCut) = Ntp->Muon_P4(mu3_pt_idx).Pt();
+
+      vector<unsigned int> idx_vec;
+
+      idx_vec.push_back(mu1_idx);
+      idx_vec.push_back(mu2_idx);
+      idx_vec.push_back(mu3_idx);
+
+      unsigned int os_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
+      unsigned int ss1_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
+      unsigned int ss2_idx = Ntp->SortedChargeMuons(idx_vec).at(2);
+
+      TLorentzVector TauLV = Ntp->Muon_P4(mu1_idx)+Ntp->Muon_P4(mu2_idx)+Ntp->Muon_P4(mu3_idx);
 
 
-  pass.at(SignalCandidate) = (value.at(SignalCandidate)  > 0 );
-  pass.at(LeadingMuonPt)   = (value.at(LeadingMuonPt)    > cut.at(LeadingMuonPt));
+
+      double M_osss1 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss1_idx)).M();
+      double M_osss2 = (Ntp->Muon_P4(os_idx)+Ntp->Muon_P4(ss2_idx)).M();
+
+
+
+      value.at(PhiVeto1) =  M_osss1;//M_osss1;
+      value.at(PhiVeto2) =  M_osss2;
+      value.at(OmegaVeto1) = M_osss1;
+      value.at(OmegaVeto2) = M_osss2;
+
+
+      unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+      unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+      unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+
+      std::vector<unsigned int> EtaSortedIndices;
+
+
+      EtaSortedIndices.push_back(Muon_Eta_index_1);
+      EtaSortedIndices.push_back(Muon_Eta_index_2);
+      EtaSortedIndices.push_back(Muon_Eta_index_3);
+      EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007) value.at(CutCategory)=1;
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false)< 0.01) value.at(CutCategory)=2;
+      if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01) value.at(CutCategory)=3;
+
+
+      vector<TLorentzVector> trigobjTriplet;
+      for (int i=0; i<Ntp->NTriggerObjects(); i++){
+	      TString name = Ntp->TriggerObject_name(i);
+	      if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+    	  TLorentzVector tmp;
+	      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+    	  trigobjTriplet.push_back(tmp);
+      }
+
+      std::vector<TLorentzVector> muonTriplet;
+      muonTriplet.push_back(Ntp->Muon_P4(mu1_pt_idx));
+      muonTriplet.push_back(Ntp->Muon_P4(mu2_pt_idx));
+      muonTriplet.push_back(Ntp->Muon_P4(mu3_pt_idx));
+
+      bool triggerCheck = false;
+      if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet);
+      value.at(TriggerMatch) = triggerCheck;
+
+
+ 
+      //      value.at(TriggerMatchMu) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(0);
+      //      value.at(TriggerMatchMu2) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(1);
+      //      value.at(TriggerMatchMu3) = Ntp->ThreeMuons_TriggerMatch_dR(final_idx).at(2);
+     
+      value.at(ThreeMuMass) = TauLV.M();
+    }
+  
+  
+
+
+    pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
+    pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
+    pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
+    pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
+    pass.at(MuonID)  =  (value.at(MuonID)     == cut.at(MuonID));
+    pass.at(TRKLWithM) = (value.at(TRKLWithM) == cut.at(TRKLWithM));
+    pass.at(TriggerMatch) = (value.at(TriggerMatch) == cut.at(TriggerMatch));
+    pass.at(PhiVeto1) = (value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
+    pass.at(OmegaVeto1) = (value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
+    pass.at(PhiVeto2) = (value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
+    pass.at(OmegaVeto2) = (value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
+    pass.at(CutCategory) = true;//( value.at(CutCategory) == cut.at(CutCategory) );
+    pass.at(ThreeMuMass) =( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
 
 
   double wobs=1;
@@ -185,9 +442,13 @@ void  ThreeMuonDecay::doEvent(){
     LeadMuonEta.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Eta(),1);
     LeadMuonPhi.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Phi(),1);
     
-    unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
-    unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
-    unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+    unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
+    unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
+    unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(2);
+    
+    TLorentzVector Muon1LV = Ntp->Muon_P4(Muon_index_1);
+    TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
+    TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
     
     std::cout<<"------------------------------- "<< std::endl;
     std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
