@@ -195,13 +195,18 @@ void  MCBackgroundStudy::Configure(){
   PhotonDRToTruth_EtaPrime=HConfig.GetTH1D(Name+"_PhotonDRToTruth_EtaPrime","PhotonDRToTruth_EtaPrime",40,0,1,"reco - mc #gamma #Delta R","Events");
   PhotonDRToTruth_Phi=HConfig.GetTH1D(Name+"_PhotonDRToTruth_Phi","PhotonDRToTruth_Phi",40,0,1,"reco - mc #gamma #Delta R","Events");
   
+  Photon_hasPixelSeed_Eta=HConfig.GetTH1D(Name+"_Photon_hasPixelSeed_Eta","Photon_hasPixelSeed_Eta",2,-0.5,1.5,"Whether photon has pixel seed","Events");
+  Photon_hasPixelSeed_EtaPrime=HConfig.GetTH1D(Name+"_Photon_hasPixelSeed_EtaPrime","Photon_hasPixelSeed_EtaPrime",2,-0.5,1.5,"Whether photon has pixel seed","Events");
+  Photon_hasPixelSeed_Phi=HConfig.GetTH1D(Name+"_Photon_hasPixelSeed_Phi","Photon_hasPixelSeed_Phi",2,-0.5,1.5,"Whether photon has pixel seed","Events");
+  
+  Photon_hasPixelSeed=HConfig.GetTH1D(Name+"_Photon_hasPixelSeed","Photon_hasPixelSeed",2,-0.5,1.5,"Whether photon has pixel seed","Events");
+  Photon_hasConversionTracks=HConfig.GetTH1D(Name+"_Photon_hasConversionTracks","Photon_hasConversionTracks",2,-0.5,1.5,"Whether photon has conversion tracks","Events");
+  Photon_isPF=HConfig.GetTH1D(Name+"_Photon_isPF","Photon_isPF",2,-0.5,1.5,"Whether photon is particle flow","Events");
+  
   DeltaRPhotontoTau=HConfig.GetTH1D(Name+"_DeltaRPhotontoTau","DeltaRPhotontoTau",4,0.5,4.5,"DeltaR to Tau of all reco #gamma 0.1,0.5,1,2","Events");
-  PhotonRecoSuccess=HConfig.GetTH1D(Name+"_PhotonRecoSuccess","PhotonRecoSuccess",2,-0.5,1.5,"Whether atleat 1 photon is found","Events");
+  PhotonRecoSuccess=HConfig.GetTH1D(Name+"_PhotonRecoSuccess","PhotonRecoSuccess",2,-2,2,"Whether atleast 1 photon is found","Events");
   DeltaEnergyPhoton=HConfig.GetTH1D(Name+"_DeltaEnergyPhoton","DeltaEnergyPhoton",20,0,20,"reco - mc #gamma #Delta E","Events");
   
-  DeltaRPhotontoTau
-  PhotonRecoSuccess
-  DeltaEnergyPhoton
   
   PassedCount =HConfig.GetTH1D(Name+"_PassedCount","PassedCount",4,-0.5,3.5,"How many indices changed value from -1","Events");
   ChildCount =HConfig.GetTH1D(Name+"_ChildCount","ChildCount",10,-0.5,9.5,"Number of children of particle with pdgid 221","Events");
@@ -269,6 +274,18 @@ void  MCBackgroundStudy::Store_ExtraDist(){
   Extradist2d.push_back(&PhotonSpectrum);
   Extradist2d.push_back(&PhotonSpectrumPrime);
   Extradist2d.push_back(&PhotonSpectrumPhi);
+  
+  Extradist1d.push_back(&DeltaRPhotontoTau);
+  Extradist1d.push_back(&PhotonRecoSuccess);
+  Extradist1d.push_back(&DeltaEnergyPhoton);
+  
+  Extradist1d.push_back(&Photon_hasPixelSeed_Eta);
+  Extradist1d.push_back(&Photon_hasPixelSeed_EtaPrime);
+  Extradist1d.push_back(&Photon_hasPixelSeed_Phi);
+  
+  Extradist1d.push_back(&Photon_hasPixelSeed);
+  Extradist1d.push_back(&Photon_hasConversionTracks);
+  Extradist1d.push_back(&Photon_isPF);
 
 
 }
@@ -716,6 +733,14 @@ void  MCBackgroundStudy::doEvent(){
       std::vector<unsigned int> genidx{mc_index1,mc_index2,mc_index3}, recomu_idx{os_mu_idx,ss1_mu_idx,ss2_mu_idx};
       
       if(pass_list.at(0)==1&&recoph_index.at(0)>-0.5){
+        std::cout<<"Whether eta photon has pixel seed: "<< Ntp->Photon_hasPixelSeed(recoph_index.at(0)) << std::endl;
+        std::cout<<"Whether eta photon has Conversion Tracks: "<< Ntp->Photon_hasConversionTracks(recoph_index.at(0)) << std::endl;
+        std::cout<<"Whether eta photon is PF: "<< Ntp->Photon_isPF(recoph_index.at(0)) << std::endl;
+        Photon_hasPixelSeed_Eta.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(0)),1);
+        Photon_hasPixelSeed.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(0)),1);
+        Photon_hasConversionTracks.at(t).Fill(Ntp->Photon_hasConversionTracks(recoph_index.at(0)),1);
+        Photon_isPF.at(t).Fill(Ntp->Photon_isPF(recoph_index.at(0)),1);
+        
         eta_ph_reco=Ntp->Photon_p4(recoph_index.at(0));
         DeltaEnergyPhoton.at(t).Fill(abs(eta_ph_reco.E()-eta_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
@@ -736,6 +761,14 @@ void  MCBackgroundStudy::doEvent(){
       
       
       if(pass_list.at(1)==1&&recoph_index.at(1)>-0.5){
+        std::cout<<"Whether eta' photon has pixel seed: "<< Ntp->Photon_hasPixelSeed(recoph_index.at(1)) << std::endl;
+        std::cout<<"Whether eta' photon has Conversion Tracks: "<< Ntp->Photon_hasConversionTracks(recoph_index.at(1)) << std::endl;
+        std::cout<<"Whether eta' photon is PF: "<< Ntp->Photon_isPF(recoph_index.at(1)) << std::endl;
+        Photon_hasPixelSeed_EtaPrime.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(1)),1);
+        Photon_hasPixelSeed.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(1)),1);
+        Photon_hasConversionTracks.at(t).Fill(Ntp->Photon_hasConversionTracks(recoph_index.at(1)),1);
+        Photon_isPF.at(t).Fill(Ntp->Photon_isPF(recoph_index.at(1)),1);
+        
         etaprime_ph_reco=Ntp->Photon_p4(recoph_index.at(1));
         DeltaEnergyPhoton.at(t).Fill(abs(etaprime_ph_reco.E()-etaprime_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
@@ -756,6 +789,14 @@ void  MCBackgroundStudy::doEvent(){
       
       
       if(pass_list.at(2)==1&&recoph_index.at(2)>-0.5){
+        std::cout<<"Whether phi photon has pixel seed: "<< Ntp->Photon_hasPixelSeed(recoph_index.at(2)) << std::endl;
+        std::cout<<"Whether phi photon has Conversion Tracks: "<< Ntp->Photon_hasConversionTracks(recoph_index.at(2)) << std::endl;
+        std::cout<<"Whether phi photon is PF: "<< Ntp->Photon_isPF(recoph_index.at(2)) << std::endl;
+        Photon_hasPixelSeed_Phi.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(2)),1);
+        Photon_hasPixelSeed.at(t).Fill(Ntp->Photon_hasPixelSeed(recoph_index.at(2)),1);
+        Photon_hasConversionTracks.at(t).Fill(Ntp->Photon_hasConversionTracks(recoph_index.at(2)),1);
+        Photon_isPF.at(t).Fill(Ntp->Photon_isPF(recoph_index.at(2)),1);
+        
         phi_ph_reco=Ntp->Photon_p4(recoph_index.at(2));
         DeltaEnergyPhoton.at(t).Fill(abs(phi_ph_reco.E()-phi_ph.E()),1);
         int match1(-1), match2(-1);//finding the corresponding muons
@@ -775,7 +816,7 @@ void  MCBackgroundStudy::doEvent(){
       }
       
       if((pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1)&&recoph_index.at(0)==-1&&recoph_index.at(1)==-1&&recoph_index.at(2)==-1){
-        PhotonRecoSuccess.at(t).Fill(0,1);
+        PhotonRecoSuccess.at(t).Fill(-1,1);
       }
       if((pass_list.at(0)==1||pass_list.at(1)==1||pass_list.at(2)==1)&&(recoph_index.at(0)>-0.5||recoph_index.at(1)>-0.5||recoph_index.at(2)>-0.5)){
         PhotonRecoSuccess.at(t).Fill(1,1);
