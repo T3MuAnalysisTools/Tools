@@ -1,4 +1,3 @@
-#include "MakeMVATree.h"
 #include "ThreeMuonDecay.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
@@ -366,7 +365,6 @@ void  ThreeMuonDecay::doEvent(){
       EtaSortedIndices.push_back(Muon_Eta_index_1);
       EtaSortedIndices.push_back(Muon_Eta_index_2);
       EtaSortedIndices.push_back(Muon_Eta_index_3);
-      EMR_tau_eta.at(t).Fill(Ntp->TauMassResolution(EtaSortedIndices,1,false),TauLV.Eta());
       if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007) value.at(CutCategory)=1;
       if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.007 && Ntp->TauMassResolution(EtaSortedIndices,1,false)< 0.01) value.at(CutCategory)=2;
       if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > 0.01) value.at(CutCategory)=3;
@@ -426,6 +424,8 @@ void  ThreeMuonDecay::doEvent(){
   
   
   bool status=AnalysisCuts(t,w,wobs);
+  
+  std::cout<<"The status is: "<< status <<" with signal candidate, "<<value.at(SignalCandidate)<<" ThreeMuMass, "<<value.at(ThreeMuMass)<<" MuonID, "<<value.at(MuonID)<< std::endl;
   ///////////////////////////////////////////////////////////
   // Add plots
   // The status boolean is true if all elements in pass are true

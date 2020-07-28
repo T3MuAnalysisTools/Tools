@@ -29,6 +29,18 @@ class ThreeMuonDecay : public Selection {
   virtual void Store_ExtraDist();
 
  private:
+ 
+  double tauMinMass_, tauMaxMass_;
+  double tauMinSideBand_,tauMaxSideBand_;
+  double tauMassResCutLow, tauMassResCutHigh;
+
+  // random number generator
+  TRandom rndm;
+  float random_num;
+  int l1FailedRandom;
+  int eventNumber;
+  
+  
   // Selection Variables
   // Initializhere your analysis histograms
   std::vector<TH1D> NVtx;
