@@ -54,6 +54,14 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
 
+
+  std::vector<TH1D> VertexPairDistance1;
+  std::vector<TH1D> VertexPairDistance2;
+  std::vector<TH1D> VertexPairDistance3;
+
+
+
+
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
 
@@ -62,14 +70,21 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassRefitA1;
   std::vector<TH1D> TauMassRefitA1MassCut;
   std::vector<TH1D> TauMassRefitA2MassCut;
+  std::vector<TH1D> TauMassRefitA1HalfMassCut;
+  std::vector<TH1D> TauMassRefitA2HalfMassCut;
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
   std::vector<TH1D> TauMassRefitB1MassCut;
   std::vector<TH1D> TauMassRefitB2MassCut;
+  std::vector<TH1D> TauMassRefitB1HalfMassCut;
+  std::vector<TH1D> TauMassRefitB2HalfMassCut;
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
   std::vector<TH1D> TauMassRefitC1MassCut;
   std::vector<TH1D> TauMassRefitC2MassCut;
+
+  std::vector<TH1D> TauMassRefitC1HalfMassCut;
+  std::vector<TH1D> TauMassRefitC2HalfMassCut;
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -78,6 +93,12 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassB2;
   std::vector<TH1D> TauMassRefitC2;
   std::vector<TH1D> TauMassC2;
+
+  std::vector<TH1D> dRNearestPair;
+  std::vector<TH1D> dRFarestPair;
+  std::vector<TH1D> CloseDRMuMuMass;
+  std::vector<TH1D> FarDRMuMuMass;
+
 
   std::vector<TH1D> SV_Mass_postselection;
   std::vector<TH1D> SV_Mass_preselection;
@@ -134,6 +155,8 @@ class BackgroundSelector : public Selection {
   std::vector<TH2D> PairMassFinalSel;
   std::vector<TH1D> PairMass1;
   std::vector<TH1D> PairMass2;
+  std::vector<TH1D> EtaMuMuGammaMass;
+  std::vector<TH1D> NonEtaMuMuGammaMass;
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
@@ -246,8 +269,9 @@ class BackgroundSelector : public Selection {
   Float_t event_weight;
   Float_t bdt;
   Float_t category;
-  Float_t rapidity;
-  Float_t LumiScale;
+  Float_t m12;
+  Float_t m23;
+  Float_t scale;
 
 
   Float_t mu_combinedQuality_chi2LocalMomentum;

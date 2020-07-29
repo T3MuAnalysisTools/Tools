@@ -18,7 +18,8 @@ class DsPhiPeak_2018 : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NTrackHits,DsMassCut,NCuts}; 
+  //  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,Mu1dR,Mu2dR,TrkdR,Mu1pt,Mu2pt,Trkpt,NTrackHits,DsMassCut,NCuts}; 
+  enum cuts {L1TOk=0,HLTOk,is2MuTrk,GlobalMu,MuCharge,Mass2Mu,TriggerMatch,Mu1pt,Mu2pt,Trkpt,DsMassCut,NCuts};
 
 
  protected:
@@ -182,6 +183,16 @@ class DsPhiPeak_2018 : public Selection {
   std::vector<TH1D> MinMuon_chi2LocalPosition_sideband;
   std::vector<TH1D> MinMuon_chi2LocalPosition;
   
+  std::vector<TH1D> Mu1Muon_chi2LocalPosition;
+  std::vector<TH1D> Mu2Muon_chi2LocalPosition;
+
+  std::vector<TH1D> Mu1Muon_chi2LocalPosition_peak;
+  std::vector<TH1D> Mu2Muon_chi2LocalPosition_peak;
+
+  std::vector<TH1D> Mu1Muon_chi2LocalPosition_sideband;
+  std::vector<TH1D> Mu2Muon_chi2LocalPosition_sideband;
+
+
   std::vector<TH1D> MindcaTrackSV_peak;
   std::vector<TH1D> MindcaTrackSV_sideband;
   std::vector<TH1D> MindcaTrackSV;
@@ -238,6 +249,14 @@ class DsPhiPeak_2018 : public Selection {
   std::vector<TH1D>   mu1segmentCompatibility_sideband;
   std::vector<TH1D>   mu2segmentCompatibility_sideband;
 
+  std::vector<TH1D> Muon1ImpactAngle_peak;
+  std::vector<TH1D> Muon2ImpactAngle_peak;
+
+  std::vector<TH1D> Muon1ImpactAngle_sideband;
+  std::vector<TH1D> Muon2ImpactAngle_sideband;
+
+  std::vector<TH1D> Muon1ImpactAngle;
+  std::vector<TH1D> Muon2ImpactAngle;
 
 
   std::vector<TH1D> MaxD0SigBS_peak;
@@ -267,9 +286,235 @@ class DsPhiPeak_2018 : public Selection {
   std::vector<TH1D>  Muon1MVAID_sideband;
   std::vector<TH1D>  Muon2MVAID_sideband;
 
-
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
+
+
+  std::vector<TH1D>  SVPosX_peak;
+  std::vector<TH1D>  SVPosX_sideband;
+  std::vector<TH1D>  SVPosX;
+
+  std::vector<TH1D>  SVPosY_peak;
+  std::vector<TH1D>  SVPosY_sideband;
+  std::vector<TH1D>  SVPosY;
+
+  std::vector<TH1D>  SVPosZ_peak;
+  std::vector<TH1D>  SVPosZ_sideband;
+  std::vector<TH1D>  SVPosZ;
+
+
+  std::vector<TH1D>  PVPosX_peak;
+  std::vector<TH1D>  PVPosX_sideband;
+  std::vector<TH1D>  PVPosX;
+
+  std::vector<TH1D>  PVPosY_peak;
+  std::vector<TH1D>  PVPosY_sideband;
+  std::vector<TH1D>  PVPosY;
+
+  std::vector<TH1D>  PVPosZ_peak;
+  std::vector<TH1D>  PVPosZ_sideband;
+  std::vector<TH1D>  PVPosZ;
+
+
+  std::vector<TH1D>  SVPVEta_peak;
+  std::vector<TH1D>  SVPVPhi_peak;
+
+  std::vector<TH1D>  SVPVEta_sideband;
+  std::vector<TH1D>  SVPVPhi_sideband;
+
+  std::vector<TH1D>  SVPVEta;
+  std::vector<TH1D>  SVPVPhi;
+
+  std::vector<TH1D>  SVPVTransverse_peak;
+  std::vector<TH1D>  SVPVTransverse_sideband;
+  std::vector<TH1D>  SVPVTransverse;
+
+
+
+
+
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalMomentum_peak;
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalPosition_peak;
+  std::vector<TH1D>  Mu1combinedQuality_staRelChi2_peak;
+  std::vector<TH1D>  Mu1combinedQuality_trkRelChi2_peak;
+  std::vector<TH1D>  Mu1combinedQuality_globalDeltaEtaPhi_peak;
+  std::vector<TH1D>  Mu1mu_combinedQuality_trkKink_peak;
+  std::vector<TH1D>  Mu1mu_combinedQuality_glbKink_peak;
+  std::vector<TH1D>  Mu1combinedQuality_glbTrackProbability_peak;
+  std::vector<TH1D>  Mu1Numberofvalidtrackerhits_peak;
+  std::vector<TH1D>  Mu1Numberofvalidpixelhits_peak;
+  std::vector<TH1D>  Mu1trackerLayersWithMeasurement_peak;
+  std::vector<TH1D>  Mu1validMuonHitComb_peak;
+  std::vector<TH1D>  Mu1numberOfMatchedStations_peak;
+  std::vector<TH1D>  Mu1segmentCompatibility_peak;
+  std::vector<TH1D>  Mu1timeAtIpInOutErr_peak;
+  std::vector<TH1D>  Mu1timeAtIpInOut_peak;
+  std::vector<TH1D>  Mu1GLnormChi2_peak;
+  std::vector<TH1D>  Mu1innerTrack_normalizedChi2_peak;
+  std::vector<TH1D>  Mu1outerTrack_normalizedChi2_peak;
+  std::vector<TH1D>  Mu1innerTrack_validFraction_peak;
+
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalMomentum_sideband;
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalPosition_sideband;
+  std::vector<TH1D>  Mu1combinedQuality_staRelChi2_sideband;
+  std::vector<TH1D>  Mu1combinedQuality_trkRelChi2_sideband;
+  std::vector<TH1D>  Mu1combinedQuality_globalDeltaEtaPhi_sideband;
+  std::vector<TH1D>  Mu1mu_combinedQuality_trkKink_sideband;
+  std::vector<TH1D>  Mu1mu_combinedQuality_glbKink_sideband;
+  std::vector<TH1D>  Mu1combinedQuality_glbTrackProbability_sideband;
+  std::vector<TH1D>  Mu1Numberofvalidtrackerhits_sideband;
+  std::vector<TH1D>  Mu1Numberofvalidpixelhits_sideband;
+  std::vector<TH1D>  Mu1trackerLayersWithMeasurement_sideband;
+  std::vector<TH1D>  Mu1validMuonHitComb_sideband;
+  std::vector<TH1D>  Mu1numberOfMatchedStations_sideband;
+  std::vector<TH1D>  Mu1segmentCompatibility_sideband;
+  std::vector<TH1D>  Mu1timeAtIpInOutErr_sideband;
+  std::vector<TH1D>  Mu1timeAtIpInOut_sideband;
+  std::vector<TH1D>  Mu1GLnormChi2_sideband;
+  std::vector<TH1D>  Mu1innerTrack_normalizedChi2_sideband;
+  std::vector<TH1D>  Mu1outerTrack_normalizedChi2_sideband;
+  std::vector<TH1D>  Mu1innerTrack_validFraction_sideband;
+
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalMomentum;
+  std::vector<TH1D>  Mu1combinedQuality_chi2LocalPosition;
+  std::vector<TH1D>  Mu1combinedQuality_staRelChi2;
+  std::vector<TH1D>  Mu1combinedQuality_trkRelChi2;
+  std::vector<TH1D>  Mu1combinedQuality_globalDeltaEtaPhi;
+  std::vector<TH1D>  Mu1mu_combinedQuality_trkKink;
+  std::vector<TH1D>  Mu1mu_combinedQuality_glbKink;
+  std::vector<TH1D>  Mu1combinedQuality_glbTrackProbability;
+  std::vector<TH1D>  Mu1Numberofvalidtrackerhits;
+  std::vector<TH1D>  Mu1Numberofvalidpixelhits;
+  std::vector<TH1D>  Mu1trackerLayersWithMeasurement;
+  std::vector<TH1D>  Mu1validMuonHitComb;
+  std::vector<TH1D>  Mu1numberOfMatchedStations;
+  std::vector<TH1D>  Mu1segmentCompatibility;
+  std::vector<TH1D>  Mu1timeAtIpInOutErr;
+  std::vector<TH1D>  Mu1timeAtIpInOut;
+  std::vector<TH1D>  Mu1GLnormChi2;
+  std::vector<TH1D>  Mu1innerTrack_normalizedChi2;
+  std::vector<TH1D>  Mu1outerTrack_normalizedChi2;
+  std::vector<TH1D>  Mu1innerTrack_validFraction;
+
+
+
+
+
+
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalMomentum_peak;
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalPosition_peak;
+  std::vector<TH1D>  Mu2combinedQuality_staRelChi2_peak;
+  std::vector<TH1D>  Mu2combinedQuality_trkRelChi2_peak;
+  std::vector<TH1D>  Mu2combinedQuality_globalDeltaEtaPhi_peak;
+  std::vector<TH1D>  Mu2mu_combinedQuality_trkKink_peak;
+  std::vector<TH1D>  Mu2mu_combinedQuality_glbKink_peak;
+  std::vector<TH1D>  Mu2combinedQuality_glbTrackProbability_peak;
+  std::vector<TH1D>  Mu2Numberofvalidtrackerhits_peak;
+  std::vector<TH1D>  Mu2Numberofvalidpixelhits_peak;
+  std::vector<TH1D>  Mu2trackerLayersWithMeasurement_peak;
+  std::vector<TH1D>  Mu2validMuonHitComb_peak;
+  std::vector<TH1D>  Mu2numberOfMatchedStations_peak;
+  std::vector<TH1D>  Mu2segmentCompatibility_peak;
+  std::vector<TH1D>  Mu2timeAtIpInOutErr_peak;
+  std::vector<TH1D>  Mu2timeAtIpInOut_peak;
+  std::vector<TH1D>  Mu2GLnormChi2_peak;
+  std::vector<TH1D>  Mu2innerTrack_normalizedChi2_peak;
+  std::vector<TH1D>  Mu2outerTrack_normalizedChi2_peak;
+  std::vector<TH1D>  Mu2innerTrack_validFraction_peak;
+
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalMomentum_sideband;
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalPosition_sideband;
+  std::vector<TH1D>  Mu2combinedQuality_staRelChi2_sideband;
+  std::vector<TH1D>  Mu2combinedQuality_trkRelChi2_sideband;
+  std::vector<TH1D>  Mu2combinedQuality_globalDeltaEtaPhi_sideband;
+  std::vector<TH1D>  Mu2mu_combinedQuality_trkKink_sideband;
+  std::vector<TH1D>  Mu2mu_combinedQuality_glbKink_sideband;
+  std::vector<TH1D>  Mu2combinedQuality_glbTrackProbability_sideband;
+  std::vector<TH1D>  Mu2Numberofvalidtrackerhits_sideband;
+  std::vector<TH1D>  Mu2trackerLayersWithMeasurement_sideband;
+  std::vector<TH1D>  Mu2Numberofvalidpixelhits_sideband;
+  std::vector<TH1D>  Mu2validMuonHitComb_sideband;
+  std::vector<TH1D>  Mu2numberOfMatchedStations_sideband;
+  std::vector<TH1D>  Mu2segmentCompatibility_sideband;
+  std::vector<TH1D>  Mu2timeAtIpInOutErr_sideband;
+  std::vector<TH1D>  Mu2timeAtIpInOut_sideband;
+  std::vector<TH1D>  Mu2GLnormChi2_sideband;
+  std::vector<TH1D>  Mu2innerTrack_normalizedChi2_sideband;
+  std::vector<TH1D>  Mu2outerTrack_normalizedChi2_sideband;
+  std::vector<TH1D>  Mu2innerTrack_validFraction_sideband;
+
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalMomentum;
+  std::vector<TH1D>  Mu2combinedQuality_chi2LocalPosition;
+  std::vector<TH1D>  Mu2combinedQuality_staRelChi2;
+  std::vector<TH1D>  Mu2combinedQuality_trkRelChi2;
+  std::vector<TH1D>  Mu2combinedQuality_globalDeltaEtaPhi;
+  std::vector<TH1D>  Mu2mu_combinedQuality_trkKink;
+  std::vector<TH1D>  Mu2mu_combinedQuality_glbKink;
+  std::vector<TH1D>  Mu2combinedQuality_glbTrackProbability;
+  std::vector<TH1D>  Mu2trackerLayersWithMeasurement;
+  std::vector<TH1D>  Mu2Numberofvalidtrackerhits;
+  std::vector<TH1D>  Mu2Numberofvalidpixelhits;
+  std::vector<TH1D>  Mu2validMuonHitComb;
+  std::vector<TH1D>  Mu2numberOfMatchedStations;
+  std::vector<TH1D>  Mu2segmentCompatibility;
+  std::vector<TH1D>  Mu2timeAtIpInOutErr;
+  std::vector<TH1D>  Mu2timeAtIpInOut;
+  std::vector<TH1D>  Mu2GLnormChi2;
+  std::vector<TH1D>  Mu2innerTrack_normalizedChi2;
+  std::vector<TH1D>  Mu2outerTrack_normalizedChi2;
+  std::vector<TH1D>  Mu2innerTrack_validFraction;
+
+  std::vector<TH1D>  MatchedMuonTrackdPT;
+
+
+  std::vector<TH1D> TrkIDTrackmuonInnerNC2;
+  std::vector<TH1D> TrkIDTrackmuonInnerNValidHits;
+  std::vector<TH1D> TrkIDTrackmuonValidFraction;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHits;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsInner;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsOuter;
+  std::vector<TH1D> TrkIDTrackmuonPixelLayers;
+  std::vector<TH1D> TrkIDTrackmuonNMatchedStations;
+  std::vector<TH1D> TrkIDTrackmuonPtErrPt;
+  std::vector<TH1D> TrkIDTrackmuonCaloComp;
+  std::vector<TH1D> TrkIDTrackmuonSegComp;
+  std::vector<TH1D> TrkIDTrackmuonHad;
+  std::vector<TH1D> TrkIDTrackmuonEM;
+
+
+  std::vector<TH1D> TrkIDTrackmuonInnerNC2_sideband;
+  std::vector<TH1D> TrkIDTrackmuonInnerNValidHits_sideband;
+  std::vector<TH1D> TrkIDTrackmuonValidFraction_sideband;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHits_sideband;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsInner_sideband;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsOuter_sideband;
+  std::vector<TH1D> TrkIDTrackmuonPixelLayers_sideband;
+  std::vector<TH1D> TrkIDTrackmuonNMatchedStations_sideband;
+  std::vector<TH1D> TrkIDTrackmuonPtErrPt_sideband;
+  std::vector<TH1D> TrkIDTrackmuonCaloComp_sideband;
+  std::vector<TH1D> TrkIDTrackmuonSegComp_sideband;
+  std::vector<TH1D> TrkIDTrackmuonHad_sideband;
+  std::vector<TH1D> TrkIDTrackmuonEM_sideband;
+
+
+  std::vector<TH1D> TrkIDTrackmuonInnerNC2_peak;
+  std::vector<TH1D> TrkIDTrackmuonInnerNValidHits_peak;
+  std::vector<TH1D> TrkIDTrackmuonValidFraction_peak;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHits_peak;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsInner_peak;
+  std::vector<TH1D> TrkIDTrackmuonNLostTrackerHitsOuter_peak;
+  std::vector<TH1D> TrkIDTrackmuonPixelLayers_peak;
+  std::vector<TH1D> TrkIDTrackmuonNMatchedStations_peak;
+  std::vector<TH1D> TrkIDTrackmuonPtErrPt_peak;
+  std::vector<TH1D> TrkIDTrackmuonCaloComp_peak;
+  std::vector<TH1D> TrkIDTrackmuonSegComp_peak;
+  std::vector<TH1D> TrkIDTrackmuonHad_peak;
+  std::vector<TH1D> TrkIDTrackmuonEM_peak;
+
+  std::vector<TH1D> TrkIDTrackBDT_peak;
+  std::vector<TH1D> TrkIDTrackBDT_sideband;
+  std::vector<TH1D> TrkIDTrackBDT;
+
 
 
   //--- muonID variables
@@ -284,6 +529,7 @@ class DsPhiPeak_2018 : public Selection {
   Float_t mu_combinedQuality_glbKink;
   Float_t mu_combinedQuality_glbTrackProbability;
   Float_t mu_Numberofvalidtrackerhits;
+  Float_t mu_trackerLayersWithMeasurement;
   Float_t mu_Numberofvalidpixelhits;
   Float_t mu_validMuonHitComb;
   Float_t mu_numberOfMatchedStations;
@@ -325,7 +571,8 @@ class DsPhiPeak_2018 : public Selection {
   float muonCaloComp ;
   float muonHad ;
   float muonEM ; 
-
+  float TrackMuBDT_Track;
+  float TrackMuBDT_Muon;
 
 };
 #endif

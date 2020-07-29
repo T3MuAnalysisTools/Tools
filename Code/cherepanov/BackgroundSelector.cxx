@@ -36,6 +36,18 @@ void  BackgroundSelector::Configure(){
 
 
 
+  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
+
+  T3MMiniTree->Branch("m3m",&m3m);
+  T3MMiniTree->Branch("dataMCtype",&dataMCtype);
+  T3MMiniTree->Branch("event_weight",&event_weight);
+  T3MMiniTree->Branch("bdt",&bdt);
+  T3MMiniTree->Branch("category",&category);
+  T3MMiniTree->Branch("m12",&m12);
+  T3MMiniTree->Branch("m23",&m23);
+  T3MMiniTree->Branch("scale",&scale);
+
+
 
   TString basedir = "";
   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/";
@@ -177,7 +189,7 @@ void  BackgroundSelector::Configure(){
     if(i==OmegaVeto1)         cut.at(OmegaVeto1)=0; // defined below
     if(i==PhiVeto2)           cut.at(PhiVeto2)=0; // defined below
     if(i==OmegaVeto2)         cut.at(OmegaVeto2)=0; // defined below
-    if(i==TriggerMatch)       cut.at(TriggerMatch)=0.03;
+    if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==TauMassCut)         cut.at(TauMassCut)=1;// true for MC and mass side band for data
   }
 
@@ -345,20 +357,30 @@ void  BackgroundSelector::Configure(){
 
   TauMassA1 =HConfig.GetTH1D(Name+"_TauMassA1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
   TauMassRefitA1 =HConfig.GetTH1D(Name+"_TauMassRefitA1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (A1)","Events");
-  TauMassRefitA1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (A1)","Events");
-  TauMassRefitA2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (A2)","Events");
+  TauMassRefitA1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (A1)","Events");
+  TauMassRefitA2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitA2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (A2)","Events");
+
+  TauMassRefitA1HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitA1HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (A1)","Events");
+  TauMassRefitA2HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitA2HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (A2)","Events");
 
 
 
   TauMassB1 =HConfig.GetTH1D(Name+"_TauMassB1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
   TauMassRefitB1 =HConfig.GetTH1D(Name+"_TauMassRefitB1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (B1)","Events");
-  TauMassRefitB1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (B1)","Events");
-  TauMassRefitB2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (B2)","Events");
+  TauMassRefitB1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (B1)","Events");
+  TauMassRefitB2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitB2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (B2)","Events");
+
+
+  TauMassRefitB1HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitB1HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (B1)","Events");
+  TauMassRefitB2HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitB2HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (B2)","Events");
 
   TauMassC1 =HConfig.GetTH1D(Name+"_TauMassC1","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV","Events");
   TauMassRefitC1 =HConfig.GetTH1D(Name+"_TauMassRefitC1","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (C1)","Events");
-  TauMassRefitC1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (C1)","Events");
-  TauMassRefitC2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta mass cut) (C2)","Events");
+  TauMassRefitC1MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC1MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (C1)","Events");
+  TauMassRefitC2MassCut =HConfig.GetTH1D(Name+"_TauMassRefitC2MassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (#eta veto) (C2)","Events");
+
+  TauMassRefitC1HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitC1HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (C1)","Events");
+  TauMassRefitC2HalfMassCut =HConfig.GetTH1D(Name+"_TauMassRefitC2HalfMassCut","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau}, GeV (half #eta veto) (C2)","Events");
 
   TauMassA2 =HConfig.GetTH1D(Name+"_TauMassA2","#tau lepton mass",30,1.5,2.1,"  M_{#tau} , GeV (A2)","Events");
   TauMassRefitA2 =HConfig.GetTH1D(Name+"_TauMassRefitA2","Refit #tau lepton mass",30,1.5,2.1,"KF refit  M_{#tau} , GeV (A2)","Events");
@@ -404,6 +426,17 @@ void  BackgroundSelector::Configure(){
   PairMassFinalSel=HConfig.GetTH2D(Name+"_PairMassFinalSel","PairMassFinalSel",60,0.2,1.8,60,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
   PairMass1=HConfig.GetTH1D(Name+"_PairMass1","PairMass1",80,0.2,1.777,"M_{1}, GeV","");
   PairMass2=HConfig.GetTH1D(Name+"_PairMass2","PairMass2",80,0.2,1.777,"M_{2}, GeV","");
+  EtaMuMuGammaMass=HConfig.GetTH1D(Name+"_EtaMuMuGammaMass","EtaMuMuGammaMass",80,0.2,1.777,"M_{1} (Pair Vertex Sorted), GeV","");
+  NonEtaMuMuGammaMass=HConfig.GetTH1D(Name+"_NonEtaMuMuGammaMass","NonEtaMuMuGammaMass",80,0.2,1.777,"M_{2} (Pair Vertex Sorted), GeV","");
+
+  dRNearestPair=HConfig.GetTH1D(Name+"_dRNearestPair","dRNearestPair",80,0.,0.8,"min OS #mu #Delta R","");
+  dRFarestPair=HConfig.GetTH1D(Name+"_dRFarestPair","dRFarestPair",80,0.,0.8,"max OS #mu #Delta R","");
+  CloseDRMuMuMass=HConfig.GetTH1D(Name+"_CloseDRMuMuMass","CloseDRMuMuMass",80,0.2,1.777,"M_{1} (#Delta R OS sorted), GeV","");
+  FarDRMuMuMass=HConfig.GetTH1D(Name+"_FarDRMuMuMass","FarDRMuMuMass",80,0.2,1.777,"M_{2} (#Delta R OS sorted), GeV","");
+
+
+
+
   PairMassWithCut=HConfig.GetTH2D(Name+"_PairMassWithCut","PairMassWithCut",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassEta=HConfig.GetTH2D(Name+"_PairMassEta","PairMassEta",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassEtaPrime=HConfig.GetTH2D(Name+"_PairMassEtaPrime","PairMassEtaPrime",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
@@ -432,6 +465,11 @@ void  BackgroundSelector::Configure(){
   Mu1AllTrackMass=HConfig.GetTH1D(Name+"_Mu1AllTrackMass","Mu1AllTrackMass",50,0.2,2.2,"M(#mu_{1}-track), GeV","Events");
   Mu2AllTrackMass=HConfig.GetTH1D(Name+"_Mu2AllTrackMass","Mu2AllTrackMass",50,0.2,2.2,"M(#mu_{2}-track), GeV","Events");
   Mu3AllTrackMass=HConfig.GetTH1D(Name+"_Mu3AllTrackMass","Mu3AllTrackMass",50,0.2,2.2,"M(#mu_{3}-track), GeV","Events");
+
+  VertexPairDistance1=HConfig.GetTH1D(Name+"_VertexPairDistance1","VertexPairDistance1",50,0,1,"pair vertex dist 1, cm","Events");
+  VertexPairDistance2=HConfig.GetTH1D(Name+"_VertexPairDistance2","VertexPairDistance2",50,0,1,"pair vertex dist 2, cm","Events");
+  VertexPairDistance3=HConfig.GetTH1D(Name+"_VertexPairDistance3","VertexPairDistance3",50,0,1,"pair vertex dist 3, cm","Events");
+
 
 
   Selection::ConfigureHistograms(); //do not remove
@@ -474,17 +512,27 @@ void  BackgroundSelector::Store_ExtraDist(){
   Extradist1d.push_back(&TauMassRefitA1);
   Extradist1d.push_back(&TauMassRefitA1MassCut);
   Extradist1d.push_back(&TauMassRefitA2MassCut);
+  Extradist1d.push_back(&TauMassRefitA1HalfMassCut);
+  Extradist1d.push_back(&TauMassRefitA2HalfMassCut);
 
   Extradist1d.push_back(&TauMassB1);
   Extradist1d.push_back(&TauMassRefitB1);
   Extradist1d.push_back(&TauMassRefitB1MassCut);
   Extradist1d.push_back(&TauMassRefitB2MassCut);
+  Extradist1d.push_back(&TauMassRefitB1HalfMassCut);
+  Extradist1d.push_back(&TauMassRefitB2HalfMassCut);
 
   Extradist1d.push_back(&TauMassC1);
   Extradist1d.push_back(&TauMassRefitC1);
   Extradist1d.push_back(&TauMassRefitC1MassCut);
   Extradist1d.push_back(&TauMassRefitC2MassCut);
+  Extradist1d.push_back(&TauMassRefitC1HalfMassCut);
+  Extradist1d.push_back(&TauMassRefitC2HalfMassCut);
 
+  Extradist1d.push_back(&dRNearestPair);
+  Extradist1d.push_back(&dRFarestPair);
+  Extradist1d.push_back(&CloseDRMuMuMass);
+  Extradist1d.push_back(&FarDRMuMuMass);
 
   Extradist1d.push_back(&TauMassA2);
   Extradist1d.push_back(&TauMassRefitA2);
@@ -494,6 +542,10 @@ void  BackgroundSelector::Store_ExtraDist(){
 
   Extradist1d.push_back(&TauMassC2);
   Extradist1d.push_back(&TauMassRefitC2);
+
+  Extradist1d.push_back(&VertexPairDistance1);
+  Extradist1d.push_back(&VertexPairDistance2);
+  Extradist1d.push_back(&VertexPairDistance3);
 
 
   Extradist1d.push_back(&SV_Mass_postselection);
@@ -562,6 +614,8 @@ void  BackgroundSelector::Store_ExtraDist(){
   Extradist2d.push_back(&PairMassFinalSel);
   Extradist1d.push_back(&PairMass1);
   Extradist1d.push_back(&PairMass2);
+  Extradist1d.push_back(&EtaMuMuGammaMass);
+  Extradist1d.push_back(&NonEtaMuMuGammaMass);
   Extradist2d.push_back(&PairMassWithCut);
   Extradist2d.push_back(&PairMassEta);
   Extradist2d.push_back(&PairMassEtaPrime);
@@ -729,9 +783,24 @@ void  BackgroundSelector::doEvent(){
 
 
 
-    for (auto &i:Ntp-> ThreeMuons_TriggerMatch_dR(signal_idx)){
-      value.at(TriggerMatch)+=i; 
+    vector<TLorentzVector> trigobjTriplet;
+    for (int i=0; i<Ntp->NTriggerObjects(); i++){
+      TString name = Ntp->TriggerObject_name(i);
+      if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+      TLorentzVector tmp;
+      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+      trigobjTriplet.push_back(tmp);
     }
+
+    std::vector<TLorentzVector> muonTriplet;
+    muonTriplet.push_back(Ntp->Muon_P4(mu1_pt_idx));
+    muonTriplet.push_back(Ntp->Muon_P4(mu2_pt_idx));
+    muonTriplet.push_back(Ntp->Muon_P4(mu3_pt_idx));
+
+    bool triggerCheck = false;
+    if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet);
+    value.at(TriggerMatch) = triggerCheck;
+
     
     //    value.at(TauMassCut) = TauLV.M();
     value.at(TauMassCut) = TauRefittedLV.M();
@@ -742,7 +811,7 @@ void  BackgroundSelector::doEvent(){
   pass.at(Mu2PtCut) = (value.at(Mu2PtCut) >= cut.at(Mu2PtCut));
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
-  pass.at(TriggerMatch) = true;//(value.at(TriggerMatch)  <  cut.at(TriggerMatch));
+  pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
   pass.at(PhiVeto1) = true;//(value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
   pass.at(OmegaVeto1) = true;//(value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
   pass.at(PhiVeto2) = true;//(value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
@@ -866,12 +935,16 @@ void  BackgroundSelector::doEvent(){
     PairMass.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
 
     bool RemoveEta(false);
+    bool RemoveHalfEta(false);
     bool phiVeto(false);
+    bool rhoVeto(false);
 
-    if(( (MuonOS+MuonSS1).M() > 0.96 && (MuonOS+MuonSS1).M() < 1.07 )  && ((MuonOS+MuonSS2).M() > 0.97 && (MuonOS+MuonSS2).M() < 1.07)  )phiVeto=true;
+    if(( (MuonOS+MuonSS1).M() < 0.96 || (MuonOS+MuonSS1).M() > 1.07 )  && ((MuonOS+MuonSS2).M() < 0.96 || (MuonOS+MuonSS2).M() > 1.07)  )phiVeto=true;
+    if(( (MuonOS+MuonSS1).M() < 0.77 || (MuonOS+MuonSS1).M() > 0.812 )  && ((MuonOS+MuonSS2).M() < 0.76 || (MuonOS+MuonSS2).M() > 0.812)  )rhoVeto=true;
 
-    if((MuonOS+MuonSS1).M() > 0.547 && (MuonOS+MuonSS2).M() > 0.547) RemoveEta = true;
-    if(RemoveEta && phiVeto)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+    if((MuonOS+MuonSS1).M() > 0.549 && (MuonOS+MuonSS2).M() > 0.549) RemoveEta = true;
+    if((MuonOS+MuonSS2).M() > 0.549) RemoveHalfEta = true;
+    if(RemoveEta && phiVeto && rhoVeto)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
 
     
 
@@ -1159,8 +1232,8 @@ void  BackgroundSelector::doEvent(){
     m3m = TauRefitLV.M();
     dataMCtype = id;
     event_weight = w;
-    rapidity = TauLV.Eta();
-    LumiScale=1;
+    //    rapidity = TauLV.Eta();
+    scale=1;
 
     double dRToMu1(99.),dRToMu2(99.), dRToMu3(99.);
     int IsoTrackIndex1(-1), IsoTrackIndex2(-1), IsoTrackIndex3(-1);
@@ -1189,7 +1262,49 @@ void  BackgroundSelector::doEvent(){
     //---------------- define per event resolution categroies 
     //Category A1
 
-    if(phiVeto){
+    if(phiVeto && rhoVeto){
+
+
+
+      std::vector<float> VertexDistances;
+      VertexDistances.push_back((Ntp->Vertex_Pair12_Pos(signal_idx) - Ntp->Vertex_Pair23_Pos(signal_idx)).Mag());
+      VertexDistances.push_back((Ntp->Vertex_Pair12_Pos(signal_idx) - Ntp->Vertex_Pair31_Pos(signal_idx)).Mag());
+      VertexDistances.push_back((Ntp->Vertex_Pair31_Pos(signal_idx) - Ntp->Vertex_Pair23_Pos(signal_idx)).Mag());
+      sort(VertexDistances.begin(),VertexDistances.end());
+
+
+      VertexPairDistance1.at(t).Fill(VertexDistances.at(0),1);
+      VertexPairDistance2.at(t).Fill(VertexDistances.at(1),1);
+      VertexPairDistance3.at(t).Fill(VertexDistances.at(2),1);
+
+
+
+
+      int EtaMuMuGammaIndex1,EtaMuMuGammaIndex2, NonEtaMuMuGammaIndex1,NonEtaMuMuGammaIndex2;
+
+      if((VertexDistances.at(0) < VertexDistances.at(1)) and (VertexDistances.at(0) < VertexDistances.at(2))  ) 
+	{ 
+	  EtaMuMuGammaIndex1  = 0; EtaMuMuGammaIndex2  =2; NonEtaMuMuGammaIndex1 = 1;
+	  if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(0) == -1) NonEtaMuMuGammaIndex2=0;
+	  else if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(2) == -1)NonEtaMuMuGammaIndex2=2;
+	}
+      if((VertexDistances.at(1) < VertexDistances.at(0)) and (VertexDistances.at(1) < VertexDistances.at(2))  ) 
+	{ 
+	  EtaMuMuGammaIndex1  = 1; EtaMuMuGammaIndex2  =2; NonEtaMuMuGammaIndex1 = 0;
+	  if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(1) == -1) NonEtaMuMuGammaIndex2=1;
+	  else if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(2) == -1)NonEtaMuMuGammaIndex2=2;
+	}
+      if((VertexDistances.at(2) < VertexDistances.at(0)) and (VertexDistances.at(2) < VertexDistances.at(1))  ) 
+	{ 
+	  EtaMuMuGammaIndex1  = 0; EtaMuMuGammaIndex2  =1; NonEtaMuMuGammaIndex1 = 2;
+	  if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(0) == -1) NonEtaMuMuGammaIndex2=0;
+	  else if(Ntp->Muon_charge(NonEtaMuMuGammaIndex1)*Ntp->Muon_charge(1) == -1)NonEtaMuMuGammaIndex2=1;
+	}
+
+
+      //      std::cout<<"check charge  "<<Ntp->Muon_charge(EtaMuMuGammaIndex1) << Ntp->Muon_charge(EtaMuMuGammaIndex2) <<std::endl;
+
+
 
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < 0.007){
       TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
@@ -1200,6 +1315,20 @@ void  BackgroundSelector::doEvent(){
 	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+      if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+      }else{
+	dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+      }
+
 
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
@@ -1266,6 +1395,7 @@ void  BackgroundSelector::doEvent(){
 
 	TauMassRefitA1.at(t).Fill(TauRefitLV.M(),1);    
 	if(RemoveEta)	TauMassRefitA1MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta) TauMassRefitA1HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA1.at(t).Fill(TauLV.M(),1);
 	category=1;
 	bdt = readerA->EvaluateMVA("BDT");
@@ -1281,7 +1411,19 @@ void  BackgroundSelector::doEvent(){
 	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
-
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	  dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	}else{
+	  dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	}
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
 	    {
@@ -1343,6 +1485,7 @@ void  BackgroundSelector::doEvent(){
 
 	TauMassRefitB1.at(t).Fill(TauRefitLV.M(),1);    
 	if(RemoveEta)	TauMassRefitB1MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta)	TauMassRefitB1HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB1.at(t).Fill(TauLV.M(),1);
 	category =2 ;
 	bdt = readerB->EvaluateMVA("BDT");
@@ -1358,8 +1501,19 @@ void  BackgroundSelector::doEvent(){
 	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
-
-
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	  dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	}else{
+	  dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	}
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
 	    {
@@ -1422,6 +1576,7 @@ void  BackgroundSelector::doEvent(){
 
 	TauMassRefitC1.at(t).Fill(TauRefitLV.M(),1);    
 	if(RemoveEta)	TauMassRefitC1MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta)	TauMassRefitC1HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC1.at(t).Fill(TauLV.M(),1);
 	category = 3;
 	bdt = readerC->EvaluateMVA("BDT");
@@ -1434,8 +1589,19 @@ void  BackgroundSelector::doEvent(){
 	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
-
-
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	  dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	}else{
+	  dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	}
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
 	    {
@@ -1495,6 +1661,7 @@ void  BackgroundSelector::doEvent(){
 
 	TauMassRefitA2.at(t).Fill(TauRefitLV.M(),1);    
 	if(RemoveEta)	TauMassRefitA2MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta)	TauMassRefitA2HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassA2.at(t).Fill(TauLV.M(),1);
 	category=4;
 	bdt = readerA->EvaluateMVA("BDT");
@@ -1507,7 +1674,19 @@ void  BackgroundSelector::doEvent(){
 	PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
-
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	  dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	}else{
+	  dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	}
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
 	    {
@@ -1568,6 +1747,7 @@ void  BackgroundSelector::doEvent(){
 
 	TauMassRefitB2.at(t).Fill(TauRefitLV.M(),1);    
 	if(RemoveEta)	TauMassRefitB2MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta)	TauMassRefitB2HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassB2.at(t).Fill(TauLV.M(),1);
 	category =5 ;
 	bdt = readerB->EvaluateMVA("BDT");
@@ -1581,8 +1761,19 @@ void  BackgroundSelector::doEvent(){
 	PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
 	PairMassFinalSel.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
 
-
-
+	if(Ntp->Muon_charge(EtaMuMuGammaIndex1)*Ntp->Muon_charge(EtaMuMuGammaIndex2) == -1){
+	  EtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(EtaMuMuGammaIndex1) + Ntp->Muon_P4(EtaMuMuGammaIndex2)).M(),1);
+	  NonEtaMuMuGammaMass.at(t).Fill( (Ntp->Muon_P4(NonEtaMuMuGammaIndex2) + Ntp->Muon_P4(NonEtaMuMuGammaIndex1)).M(),1);
+	}
+	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+	  dRNearestPair.at(t).Fill(MuonOS.DeltaR(MuonSS2),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	}else{
+	  dRFarestPair.at(t).Fill(MuonOS.DeltaR(MuonSS1),1);
+	  CloseDRMuMuMass.at(t).Fill((MuonOS+MuonSS1).M(),1);
+	  FarDRMuMuMass.at(t).Fill((MuonOS+MuonSS2).M(),1);
+	}
 	for(unsigned int iv=0; iv < Ntp->NSecondaryVertices() ; iv++){
 	  if(SVPV.DeltaR(Ntp->SecondaryVertexPosition(iv)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx)) < 1)
 	    {
@@ -1644,6 +1835,7 @@ void  BackgroundSelector::doEvent(){
 	TauMassRefitC2.at(t).Fill(TauRefitLV.M(),1);    
 	TauMassC2.at(t).Fill(TauLV.M(),1);
 	if(RemoveEta)	TauMassRefitC2MassCut.at(t).Fill(TauRefitLV.M(),1);    
+	if(RemoveHalfEta)	TauMassRefitC2HalfMassCut.at(t).Fill(TauRefitLV.M(),1);    
 	category = 6;
 	bdt = readerC->EvaluateMVA("BDT");
       }
@@ -1676,6 +1868,12 @@ void  BackgroundSelector::doEvent(){
 
 
 void  BackgroundSelector::Finish(){
+
+
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
+  T3MMiniTree->SetDirectory(T3MFMiniTree);
+  T3MFMiniTree->Write();
+  T3MFMiniTree->Close();
 
 
 
