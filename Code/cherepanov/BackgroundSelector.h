@@ -72,12 +72,17 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassRefitA2MassCut;
   std::vector<TH1D> TauMassRefitA1HalfMassCut;
   std::vector<TH1D> TauMassRefitA2HalfMassCut;
+  std::vector<TH1D> TauMassRefitA1FullEtaVetoCut;
+  std::vector<TH1D> TauMassRefitA2FullEtaVetoCut;
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
   std::vector<TH1D> TauMassRefitB1MassCut;
   std::vector<TH1D> TauMassRefitB2MassCut;
   std::vector<TH1D> TauMassRefitB1HalfMassCut;
   std::vector<TH1D> TauMassRefitB2HalfMassCut;
+
+  std::vector<TH1D> TauMassRefitB1FullEtaVetoCut;
+  std::vector<TH1D> TauMassRefitB2FullEtaVetoCut;
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
   std::vector<TH1D> TauMassRefitC1MassCut;
@@ -85,6 +90,9 @@ class BackgroundSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitC1HalfMassCut;
   std::vector<TH1D> TauMassRefitC2HalfMassCut;
+
+  std::vector<TH1D> TauMassRefitC1FullEtaVetoCut;
+  std::vector<TH1D> TauMassRefitC2FullEtaVetoCut;
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
