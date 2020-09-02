@@ -102,6 +102,11 @@ class BackgroundSelector : public Selection {
   std::vector<TH1D> TauMassRefitC2;
   std::vector<TH1D> TauMassC2;
 
+
+
+  std::vector<TH1D> TauMassRefitABC1;
+  std::vector<TH1D> TauMassRefitABC2;
+
   std::vector<TH1D> dRNearestPair;
   std::vector<TH1D> dRFarestPair;
   std::vector<TH1D> CloseDRMuMuMass;
@@ -255,6 +260,8 @@ class BackgroundSelector : public Selection {
   Float_t var_Muon1DetID;
   Float_t var_Muon2DetID;
   Float_t var_Muon3DetID;
+  Float_t var_mass12_dRsorting;
+  Float_t var_mass13_drSorting;
 
 
   
@@ -272,15 +279,20 @@ class BackgroundSelector : public Selection {
 
 
 
-  Float_t m3m;
-  Float_t dataMCtype;
-  Float_t event_weight;
-  Float_t bdt;
-  Float_t category;
-  Float_t m12;
-  Float_t m23;
-  Float_t scale;
-
+  Double_t m3m;
+  Double_t dataMCtype;
+  Double_t event_weight;
+  Double_t bdt;
+  Double_t category;
+  Double_t m12;
+  Double_t m13;
+  Double_t LumiScale;
+  Double_t mvaA1;
+  Double_t mvaA2;
+  Double_t mvaB1;
+  Double_t mvaB2;
+  Double_t mvaC1;
+  Double_t mvaC2;
 
   Float_t mu_combinedQuality_chi2LocalMomentum;
   Float_t mu_combinedQuality_chi2LocalPosition;

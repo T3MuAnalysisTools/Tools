@@ -174,16 +174,7 @@ class MakeMVATree : public Selection {
 
   std::vector<TH1D> MaxVertexPairQuality;
   std::vector<TH1D> MinVertexPairQuality;
-
-
-  std::vector<TH1D> MaxVertexPairDistance;
-  std::vector<TH1D> MinVertexPairDistance;
 	
-  std::vector<TH1D>  VertexPairDistance1;
-  std::vector<TH1D>  VertexPairDistance2;
-  std::vector<TH1D>  VertexPairDistance3;
-
-
 
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;
@@ -336,6 +327,24 @@ class MakeMVATree : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
+
+
+
+  std::vector<TH1D>  PairMass1AllignedSorting;
+  std::vector<TH1D>  PairMass2AllignedSorting;
+  std::vector<TH2D>  MuMuMassAllignedSorting;
+
+
+ std::vector<TH1D>  PairMass1PTSorting;
+ std::vector<TH1D>  PairMass2PTSorting;
+ std::vector<TH2D>  MuMuMassPTSorting;
+
+
+ std::vector<TH1D>  PairMass1NoSorting;
+ std::vector<TH1D>  PairMass2NoSorting;
+ std::vector<TH2D>  MuMuMassNoSorting;
+
+
 
 
 
@@ -593,6 +602,12 @@ class MakeMVATree : public Selection {
 
   float var_mass12;
   float var_mass13;
+
+  float var_mass12_dRsorting;
+  float var_mass13_dRsorting;
+
+
+
   float var_Muon1DetID;
   float var_Muon2DetID;
   float var_Muon3DetID;
