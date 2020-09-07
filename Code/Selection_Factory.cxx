@@ -7,7 +7,7 @@
 #include "cherepanov/MCStudy.h"
 #include "cherepanov/ThreeMu.h"
 #include "cherepanov/DsToPhiPi.h"
-
+#include "cherepanov/CommonSelector"
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
@@ -92,6 +92,8 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
   else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
   else if(Analysis.Contains("dsphipeak"))s=new DsPhiPeak(Analysis,UncertType);
+  else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
+
 
 
 #endif
