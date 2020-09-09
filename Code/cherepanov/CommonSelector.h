@@ -29,6 +29,12 @@ class CommonSelector : public Selection {
  private:
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
+  double PEMassResolutionCut1_,PEMassResolutionCut2_;
+  double mvaA1_,mvaA2_,mvaB1_,mvaB2_,mvaC1_,mvaC2_;
+
+
+
+
 
   bool RunB, RunC, RunD, RunE, RunF = 0;
 
