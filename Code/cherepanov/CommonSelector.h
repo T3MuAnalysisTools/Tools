@@ -19,7 +19,7 @@ class CommonSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1TOk=0,HLTOk,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID,PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, TriggerMatch, TauMassCut,NCuts}; 
+  enum cuts {L1T=0,HLT,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID,PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, TriggerMatch, TauMassCut,NCuts}; 
 
 
  protected:
@@ -29,6 +29,7 @@ class CommonSelector : public Selection {
  private:
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
+  double phiVetoCut1, phiVetoCut2, rmgCutVeto1, rmgCutVeto2;
   double PEMassResolutionCut1_,PEMassResolutionCut2_;
   double mvaA1_,mvaA2_,mvaB1_,mvaB2_,mvaC1_,mvaC2_;
 
@@ -43,7 +44,6 @@ class CommonSelector : public Selection {
 
   TRandom rndm;
   double random_num;
-
   // Selection Variables
   // Initializhere your analysis histograms
 
@@ -59,11 +59,6 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
-
-
-  std::vector<TH1D> VertexPairDistance1;
-  std::vector<TH1D> VertexPairDistance2;
-  std::vector<TH1D> VertexPairDistance3;
 
 
 
@@ -113,43 +108,6 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauMassRefitABC1;
   std::vector<TH1D> TauMassRefitABC2;
 
-  std::vector<TH1D> dRNearestPair;
-  std::vector<TH1D> dRFarestPair;
-  std::vector<TH1D> CloseDRMuMuMass;
-  std::vector<TH1D> FarDRMuMuMass;
-
-
-  std::vector<TH1D> SV_Mass_postselection;
-  std::vector<TH1D> SV_Mass_preselection;
-
-  std::vector<TH1D> Mu1TrackMass;
-  std::vector<TH1D> Mu2TrackMass;
-  std::vector<TH1D> Mu3TrackMass;
-
-
-  std::vector<TH1D> Mu1AllTrackMass;
-  std::vector<TH1D> Mu2AllTrackMass;
-  std::vector<TH1D> Mu3AllTrackMass;
-
-
-
-
-  std::vector<TH1D>   SV_Mass_postselection_disp_1mu;
-  std::vector<TH1D>   SV_Mass_preselection_disp_1mu;
-
-
-
-  std::vector<TH1D> TauMassRefitBarrel1;
-  std::vector<TH1D> TauMassBarrel1;
-
-  std::vector<TH1D> TauMassRefitEndcap1;
-  std::vector<TH1D> TauMassEndcap1;
-
-  std::vector<TH1D> TauMassRefitBarrel2;
-  std::vector<TH1D> TauMassBarrel2;
-
-  std::vector<TH1D> TauMassRefitEndcap2;
-  std::vector<TH1D> TauMassEndcap2;
 
   std::vector<TH1D> TauMassResolutionRefit;
 
@@ -161,24 +119,16 @@ class CommonSelector : public Selection {
   std::vector<TH2D> TauMass_allVsBDTBarrel;
   std::vector<TH2D> TauMass_allVsBDTEndcap;
   std::vector<TH2D> EMR_tau_eta;
-  std::vector<TH2D> L1Triggers;
-
-
-  std::vector<TH2D> L1TriggersB;
-  std::vector<TH2D> L1TriggersC;
-  std::vector<TH2D> L1TriggersD;
-  std::vector<TH2D> L1TriggersE;
-  std::vector<TH2D> L1TriggersF;
 
   std::vector<TH2D> PairMass;
   std::vector<TH2D> PairMassFinalSel;
   std::vector<TH1D> PairMass1;
   std::vector<TH1D> PairMass2;
-  std::vector<TH1D> EtaMuMuGammaMass;
-  std::vector<TH1D> NonEtaMuMuGammaMass;
-  std::vector<TH2D> PairMassWithCut;
+
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
+
+  std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> CategoryOverlap;
   std::vector<TH2D> Mu3IdOverlap;
   std::vector<TH1D> IDOriginOfOSMuon;
@@ -215,12 +165,6 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TriggerMatchdR2;
   std::vector<TH1D> TriggerMatchdR3;
 
-  std::vector<TH1D> dR12;
-  std::vector<TH1D> dR23;
-  std::vector<TH1D> dR31;
-  std::vector<TH1D> dR1Tau;
-  std::vector<TH1D> dR2Tau;
-  std::vector<TH1D> dR3Tau;
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH1D> FLSignificance;
@@ -238,10 +182,10 @@ class CommonSelector : public Selection {
 
 
 
-
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
+
 
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;

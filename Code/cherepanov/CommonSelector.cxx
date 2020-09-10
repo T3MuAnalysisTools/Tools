@@ -18,6 +18,10 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
   tauMaxMass_(1.81),
   tauMinSideBand_(1.6),
   tauMaxSideBand_(2.0),
+  phiVetoCut1(0.96),
+  phiVetoCut2(1.07),
+  rmgCutVeto1(0.77),  // rmg = rho&omega
+  rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
   PEMassResolutionCut2_(0.01),
   mvaA1_(0.0927636), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
@@ -29,6 +33,8 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
 {
   // This is a class constructor;
 }
+
+
 
 CommonSelector::~CommonSelector(){
   for(unsigned int j=0; j<Npassed.size(); j++){
@@ -178,8 +184,8 @@ void  CommonSelector::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==L1TOk)              cut.at(L1TOk)=1;
-    if(i==HLTOk)              cut.at(HLTOk)=1;
+    if(i==L1T)                cut.at(L1T)=1;
+    if(i==HLT)                cut.at(HLT)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
     if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
@@ -201,17 +207,17 @@ void  CommonSelector::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
 
-    if(i==L1TOk){
+    if(i==L1T){
       title.at(i)="L1T trigger ";
       hlabel="Level 1 Trigger";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1TOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1TOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1T_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1T_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==HLTOk){
+    else if(i==HLT){
       title.at(i)="HLT trigger ";
       hlabel="DoubleMu3_Trk_Tau3mu";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLTOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
 
     else if(i==SignalCandidate){
@@ -418,26 +424,16 @@ void  CommonSelector::Configure(){
   BDTOutputB = HConfig.GetTH1D(Name+"_BDTOutputB","BDTOutputB",50,-0.4,0.4,"BDT Output","Events");
   BDTOutputC = HConfig.GetTH1D(Name+"_BDTOutputC","BDTOutputC",50,-0.4,0.4,"BDT Output","Events");
 
-  L1Triggers=HConfig.GetTH2D(Name+"_L1Triggers","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
 
-  L1TriggersB=HConfig.GetTH2D(Name+"_L1TriggersB","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
-  L1TriggersC=HConfig.GetTH2D(Name+"_L1TriggersC","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
-  L1TriggersD=HConfig.GetTH2D(Name+"_L1TriggersD","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
-  L1TriggersE=HConfig.GetTH2D(Name+"_L1TriggersE","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
-  L1TriggersF=HConfig.GetTH2D(Name+"_L1TriggersF","DoubleMuVsTripleMu",2,-0.5,1.5,2,-0.5,1.5,"DoubleMu","TripleMu");
 
   NSignalCandidates =HConfig.GetTH1D(Name+"_NSignalCandidates","NSignalCandidates",5,-0.5,4.5,"Number of signal candidates","Events");
   PairMass=HConfig.GetTH2D(Name+"_PairMass","PairMass",100,0.2,1.8,100,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassFinalSel=HConfig.GetTH2D(Name+"_PairMassFinalSel","PairMassFinalSel",60,0.2,1.8,60,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
   PairMass1=HConfig.GetTH1D(Name+"_PairMass1","PairMass1",80,0.2,1.777,"M_{1}, GeV","");
   PairMass2=HConfig.GetTH1D(Name+"_PairMass2","PairMass2",80,0.2,1.777,"M_{2}, GeV","");
-  EtaMuMuGammaMass=HConfig.GetTH1D(Name+"_EtaMuMuGammaMass","EtaMuMuGammaMass",80,0.2,1.777,"M_{1} (Pair Vertex Sorted), GeV","");
-  NonEtaMuMuGammaMass=HConfig.GetTH1D(Name+"_NonEtaMuMuGammaMass","NonEtaMuMuGammaMass",80,0.2,1.777,"M_{2} (Pair Vertex Sorted), GeV","");
 
-  dRNearestPair=HConfig.GetTH1D(Name+"_dRNearestPair","dRNearestPair",80,0.,0.8,"min OS #mu #Delta R","");
-  dRFarestPair=HConfig.GetTH1D(Name+"_dRFarestPair","dRFarestPair",80,0.,0.8,"max OS #mu #Delta R","");
-  CloseDRMuMuMass=HConfig.GetTH1D(Name+"_CloseDRMuMuMass","CloseDRMuMuMass",80,0.2,1.777,"M_{1} (#Delta R OS sorted), GeV","");
-  FarDRMuMuMass=HConfig.GetTH1D(Name+"_FarDRMuMuMass","FarDRMuMuMass",80,0.2,1.777,"M_{2} (#Delta R OS sorted), GeV","");
+
+
 
 
   PairMassWithCut=HConfig.GetTH2D(Name+"_PairMassWithCut","PairMassWithCut",40,0,2,40,0,2,"M_{OS}, GeV","M_{OS}, GeV");
@@ -450,22 +446,8 @@ void  CommonSelector::Configure(){
   Muon2MVAID=HConfig.GetTH1D(Name+"_Muon2MVAID","Muon2MVAID",50,0.0,1.0,"#mu_{2} MVA","Events");
   Muon3MVAID=HConfig.GetTH1D(Name+"_Muon3MVAID","Muon3MVAID",50,0.0,1.0,"#mu_{3} MVA","Events");
 
-  SV_Mass_postselection=HConfig.GetTH1D(Name+"_SV_Mass_postselection","SV_Mass_postselection",50,0.2,3.5,"SV Mass (2 OC tracks) post selection","Events");
-  SV_Mass_preselection=HConfig.GetTH1D(Name+"_SV_Mass_preselection","SV_Mass_preselection",50,0.2,3.5,"SV Mass (2 OC tracks) pre selection","Events");
 
 
-  SV_Mass_postselection_disp_1mu=HConfig.GetTH1D(Name+"_SV_Mass_postselection_disp_1mu","SV_Mass_postselection_disp_1mu",50,0.2,3.5,"SV Mass (2 OC tracks) post sel disp,1 match","Events");
-  SV_Mass_preselection_disp_1mu=HConfig.GetTH1D(Name+"_SV_Mass_preselection_disp_1mu","SV_Mass_preselection_disp_1mu",50,0.2,3.5,"SV Mass (2 OC tracks) pre sel disp,1 match","Events");
-
-
-  Mu1TrackMass=HConfig.GetTH1D(Name+"_Mu1TrackMass","Mu1TrackMass",50,0.2,2.2,"M(#mu_{1}-track), GeV","Events");
-  Mu2TrackMass=HConfig.GetTH1D(Name+"_Mu2TrackMass","Mu2TrackMass",50,0.2,2.2,"M(#mu_{2}-track), GeV","Events");
-  Mu3TrackMass=HConfig.GetTH1D(Name+"_Mu3TrackMass","Mu3TrackMass",50,0.2,2.2,"M(#mu_{3}-track), GeV","Events");
-
-
-  Mu1AllTrackMass=HConfig.GetTH1D(Name+"_Mu1AllTrackMass","Mu1AllTrackMass",50,0.2,2.2,"M(#mu_{1}-track), GeV","Events");
-  Mu2AllTrackMass=HConfig.GetTH1D(Name+"_Mu2AllTrackMass","Mu2AllTrackMass",50,0.2,2.2,"M(#mu_{2}-track), GeV","Events");
-  Mu3AllTrackMass=HConfig.GetTH1D(Name+"_Mu3AllTrackMass","Mu3AllTrackMass",50,0.2,2.2,"M(#mu_{3}-track), GeV","Events");
 
 
 
@@ -500,22 +482,6 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&TauMassRefitB2);
   Extradist1d.push_back(&TauMassRefitC2);
 
-
-
-  Extradist1d.push_back(&SV_Mass_postselection);
-  Extradist1d.push_back(&SV_Mass_preselection);
-
-  Extradist1d.push_back(&SV_Mass_postselection_disp_1mu);
-  Extradist1d.push_back(&SV_Mass_preselection_disp_1mu);
-
-
-  Extradist1d.push_back(&Mu1TrackMass);
-  Extradist1d.push_back(&Mu2TrackMass);
-  Extradist1d.push_back(&Mu3TrackMass);
-
-  Extradist1d.push_back(&Mu1AllTrackMass);
-  Extradist1d.push_back(&Mu2AllTrackMass);
-  Extradist1d.push_back(&Mu3AllTrackMass);
 
 
 
@@ -554,19 +520,11 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&BDTOutputB);
   Extradist1d.push_back(&BDTOutputC);
 
-  Extradist2d.push_back(&L1Triggers);
 
-  Extradist2d.push_back(&L1TriggersB);
-  Extradist2d.push_back(&L1TriggersC);
-  Extradist2d.push_back(&L1TriggersD);
-  Extradist2d.push_back(&L1TriggersE);
-  Extradist2d.push_back(&L1TriggersF);
   Extradist2d.push_back(&PairMass);
   Extradist2d.push_back(&PairMassFinalSel);
   Extradist1d.push_back(&PairMass1);
   Extradist1d.push_back(&PairMass2);
-  Extradist1d.push_back(&EtaMuMuGammaMass);
-  Extradist1d.push_back(&NonEtaMuMuGammaMass);
   Extradist2d.push_back(&PairMassWithCut);
   Extradist2d.push_back(&PairMassEta);
   Extradist2d.push_back(&PairMassEtaPrime);
@@ -589,49 +547,46 @@ void  CommonSelector::doEvent(){
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
 
-  //  bool HLTOk(false);
-  //  bool L1Ok(false);
-
-
-
-
-
-  //bool RunB, RunC, RunD, RunE, RunF = 0;
-  if(id==1 && Ntp->WhichEra(2017).Contains("RunB") ){ RunB=1;} 
-  if(id==1 && Ntp->WhichEra(2017).Contains("RunC") ){ RunC=1;} 
-  if(id==1 && Ntp->WhichEra(2017).Contains("RunD") ){ RunD=1;} 
-  if(id==1 && Ntp->WhichEra(2017).Contains("RunE") ){ RunE=1;}
-  if(id==1 && Ntp->WhichEra(2017).Contains("RunF") ){ RunF=1;}
+  bool HLTOk(false);
+  bool L1Ok(false);
+  bool DoubleMu0Fired(false);
+  bool DoubleMu4Fired(false);
+  bool DoubleMuFired(false);
+  bool TripleMuFired(false);
+  bool randomFailed(false);
 
   random_num = rndm.Rndm();
 
-  value.at(HLTOk) = 0;
-  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
-    TString HLT = Ntp->HLTName(iTrigger);
-    if((HLT.Contains("DoubleMu3_TkMu_DsTau3Mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") ) && Ntp->HLTDecision(iTrigger) == 1){
 
-      value.at(HLTOk)=Ntp->HLTDecision(iTrigger);
-    }
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLTName = Ntp->HLTName(iTrigger);
+    if(HLTName.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
   }
 
-
-
-  value.at(L1TOk) = 0;
-  bool DoubleMuFired(0);
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
-    
-    if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4"))                 DoubleMuFired = Ntp-> L1Decision(il1);
-    if(L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2"))                      DoubleMuFired = Ntp-> L1Decision(il1);
-      
+    if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
+    if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
+    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
+    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
+    if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
+      randomFailed = true;
+    }
   }
+  if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
+  if (DoubleMuFired || TripleMuFired) L1Ok = true;
+
+  if (HLTOk) value.at(HLT) = true;
+  else value.at(HLT) = false;
+
+  if (L1Ok) value.at(L1T) = true;
+  else value.at(L1T) = false;
 
 
+  if(DoubleMuFired) value.at(L1T)=1;
 
-  if(DoubleMuFired) value.at(L1TOk)=1;
-
-  pass.at(L1TOk)= (value.at(L1TOk)==cut.at(L1TOk));
-  pass.at(HLTOk)= (value.at(HLTOk)==cut.at(HLTOk));
+  pass.at(L1T)= (value.at(L1T)==cut.at(L1T));
+  pass.at(HLT)= (value.at(HLT)==cut.at(HLT));
 
 
 
@@ -659,12 +614,12 @@ void  CommonSelector::doEvent(){
     unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int mu2_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int mu3_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
-    //
+    //*** Muon ID cut
     value.at(MuonID) = (Ntp->Muon_isGlobalMuon(mu1_pt_idx) &&  Ntp->Muon_isPFMuon(mu1_pt_idx) &&
     			Ntp->Muon_isGlobalMuon(mu2_pt_idx) &&  Ntp->Muon_isPFMuon(mu2_pt_idx) &&
 			Ntp->Muon_isGlobalMuon(mu3_pt_idx) &&  Ntp->Muon_isPFMuon(mu3_pt_idx));
 
-    //------------------------------------------------------------------------------------------------------
+
 
     value.at(Mu1PtCut) = Ntp->Muon_P4(mu1_pt_idx).Pt();
     value.at(Mu2PtCut) = Ntp->Muon_P4(mu2_pt_idx).Pt();
@@ -770,7 +725,6 @@ void  CommonSelector::doEvent(){
 
   if(status){
 
-    //    std::cout<<" mindist   "<< Ntp->Isolation_MinDist(signal_idx) << std::endl;
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -817,23 +771,20 @@ void  CommonSelector::doEvent(){
 
 
     bool phiVeto(false);
-    bool rhoVeto(false);
+    bool rmgVeto(false);
 
 
     double    m12v = (MuonOS+MuonSS1).M();
     double    m13v = (MuonOS+MuonSS2).M();
 
 
-
-    if(( m12v < 0.96 || m12v > 1.07 )  && (m13v < 0.96 || m13v > 1.07)  )  phiVeto=true;
-    if(( m12v < 0.77 || m12v > 0.812 )  && (m13v < 0.76 || m13v > 0.812))  rhoVeto=true;
-
-
+    if(( m12v < phiVetoCut1  || m12v > phiVetoCut2 )  && (m13v < phiVetoCut1 || m13v > phiVetoCut2)  )  phiVeto=true;
+    if(( m12v < rmgCutVeto1 || m12v > rmgCutVeto2 )  && (m13v < rmgCutVeto1 || m13v > rmgCutVeto2))  rmgVeto=true;
 
 
     if((MuonOS+MuonSS1).M() > 0.549 && (MuonOS+MuonSS2).M() > 0.549) RemoveEta = true;
     if((MuonOS+MuonSS2).M() > 0.549) RemoveHalfEta = true;
-    if(RemoveEta && phiVeto && rhoVeto)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
+    if(RemoveEta && phiVeto && rmgVeto)    PairMassWithCut.at(t).Fill((MuonOS+MuonSS1).M(), (MuonOS+MuonSS2).M() ,1);
 
     
 
@@ -1033,7 +984,7 @@ void  CommonSelector::doEvent(){
 
     //*** define per event resolution categroies 
     //*** Category A1
-    if(phiVeto && rhoVeto)
+    //    if(phiVeto && rhoVeto)
       {
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_)
 	  {
@@ -1042,7 +993,7 @@ void  CommonSelector::doEvent(){
 	    BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT"),1 );
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1076,7 +1027,7 @@ void  CommonSelector::doEvent(){
 	    BDTOutputB.at(t).Fill(readerB->EvaluateMVA("BDT"), 1);
 
 	    if(readerB->EvaluateMVA("BDT") > mvaB2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1109,7 +1060,7 @@ void  CommonSelector::doEvent(){
 	    BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
 
 	    if(readerC->EvaluateMVA("BDT") > mvaC2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1139,7 +1090,7 @@ void  CommonSelector::doEvent(){
 	  {
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA1_ && readerA->EvaluateMVA("BDT") < mvaA2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1168,7 +1119,7 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_)
 	  {
 	    if(readerB->EvaluateMVA("BDT") > mvaB1_ && readerB->EvaluateMVA("BDT") < mvaB2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1197,7 +1148,7 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_)
 	  {
 	    if(readerC->EvaluateMVA("BDT") > mvaC1_ && readerC->EvaluateMVA("BDT")< mvaC2_){
-	      if(phiVeto && rhoVeto)
+	      if(phiVeto && rmgVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
