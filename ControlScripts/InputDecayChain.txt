@@ -1,6 +1,6 @@
 Thin: False
 Skim: False
-HistoFile: InputData/HistoScaletoLumi.txt
+HistoFile: InputData/Histo.txt
 Analysis: ThreeMuonDecay
 UncertType: default
 SkimInfo: InputData/SkimSummaryDecayChain.log

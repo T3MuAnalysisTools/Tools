@@ -58,7 +58,7 @@ void  ThreeMuonDecay::Configure(){
     if(i==OmegaVeto1)         cut.at(OmegaVeto1)=0; // defined below
     if(i==PhiVeto2)           cut.at(PhiVeto2)=0; // defined below
     if(i==OmegaVeto2)         cut.at(OmegaVeto2)=0; // defined below
-    if(i==TriggerMatch)     cut.at(TriggerMatch)=0.03;
+    if(i==TriggerMatch)     cut.at(TriggerMatch)=true;
     if(i==ThreeMuMass)      cut.at(ThreeMuMass)=1;// true for MC and mass side band for data
     if(i==CutCategory)      cut.at(CutCategory)=2;// Depends on tau mass resolution
 
@@ -411,7 +411,7 @@ void  ThreeMuonDecay::doEvent(){
     pass.at(OmegaVeto1) = (value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
     pass.at(PhiVeto2) = (value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
     pass.at(OmegaVeto2) = (value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
-    pass.at(CutCategory) = true;//( value.at(CutCategory) == cut.at(CutCategory) );
+    pass.at(CutCategory) = true;//true;//( value.at(CutCategory) == cut.at(CutCategory) );
     pass.at(ThreeMuMass) =( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
 
 
@@ -425,18 +425,28 @@ void  ThreeMuonDecay::doEvent(){
   
   bool status=AnalysisCuts(t,w,wobs);
   
-  std::cout<<"The status is: "<< status <<" with signal candidate, "<<value.at(SignalCandidate)<<" ThreeMuMass, "<<value.at(ThreeMuMass)<<" MuonID, "<<value.at(MuonID)<< std::endl;
+  //std::cout<<"The status is: "<< status <<" with signal candidate, "<<value.at(SignalCandidate)<<" ThreeMuMass, "<<value.at(ThreeMuMass)<<" MuonID, "<<value.at(MuonID)<< std::endl;
+  
+  std::cout<<"Event number is : "<<iEvent<< std::endl;
+  
+  //if(iEvent<15&&value.at(SignalCandidate)<0.5){
+  //  Ntp->printMCDecayChainOfEvent(true, true, true, true);
+  //  std::cout<< "\n\n\n\n\n\n";
+  //}
   ///////////////////////////////////////////////////////////
   // Add plots
   // The status boolean is true if all elements in pass are true
   // and false if at least one is false: status = true if 
   // pass = (true, true, true ..., true)  and status = false
   // if pass = (true, true, false, ..., true)
-
+  iEvent++;
+  
   if(status){ // Only selected events pass this if statement
     // Lets fill below some plots ...
     // All available get functions can be found in https://github.com/T3MuAnalysisTools/Tools/blob/master/Code/Ntuple_Controller.h
-    // Lets plot the pT, phi and eta of the leading muon
+    // Lets plot the pT, phi and eta of the leading 
+    
+    
     unsigned int mu1_pt_idx=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);  // leading pT muon
     LeadMuonPt.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Pt(),1);
     LeadMuonEta.at(t).Fill(Ntp->Muon_P4(mu1_pt_idx).Eta(),1);
@@ -459,6 +469,7 @@ void  ThreeMuonDecay::doEvent(){
     Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
     Ntp->printMCDecayChainOfEvent(true, true, true, true);
     std::cout<< "\n\n\n\n\n\n";
+    
 
 
   }

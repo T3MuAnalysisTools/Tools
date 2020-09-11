@@ -33,6 +33,8 @@ class ThreeMuonDecay : public Selection {
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
   double tauMassResCutLow, tauMassResCutHigh;
+  
+  unsigned int iEvent = 0;
 
   // random number generator
   TRandom rndm;
