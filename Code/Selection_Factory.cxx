@@ -7,7 +7,7 @@
 #include "cherepanov/MCStudy.h"
 #include "cherepanov/ThreeMu.h"
 #include "cherepanov/DsToPhiPi.h"
-#include "cherepanov/CommonSelector"
+#include "cherepanov/CommonSelector.h"
 #include "cherepanov/SyncSignal.h"
 #include "cherepanov/SyncDsPhiPi.h"
 #include "cherepanov/FillTMVATrees.h"
