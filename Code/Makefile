@@ -81,7 +81,7 @@ ifdef USE_menendez
 endif
 
 ifdef USE_madhu
-	TARGETS += MyTest MCBackgroundStudy ThreeMuonDecay
+	TARGETS += MyTest MCBackgroundStudy ThreeMuonDecay CommonSelector
 	DEFS += -DUSE_madhu=1
 endif
 

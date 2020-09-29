@@ -60,6 +60,7 @@
 #include "madhu/MyTest.h"
 #include "madhu/MCBackgroundStudy.h"
 #include "madhu/ThreeMuonDecay.h"
+#include "madhu/CommonSelector.h"
 
 #endif
 
@@ -128,6 +129,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
   else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemuondecay"))s=new ThreeMuonDecay(Analysis,UncertType);
+  else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
 #endif
 
 
