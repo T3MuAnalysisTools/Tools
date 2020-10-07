@@ -340,44 +340,64 @@ void  CommonSelector::Configure(){
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVA","Mu1TrackInvariantMassBeforeMVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVA","Mu2TrackInvariantMassBeforeMVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVA","Mu3TrackInvariantMassBeforeMVA",200,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVA","Mu1TrackInvariantMassBeforeMVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVA","Mu2TrackInvariantMassBeforeMVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVA","Mu3TrackInvariantMassBeforeMVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAFiner","Mu1TrackInvariantMassBeforeMVAFiner",300,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAFiner","Mu2TrackInvariantMassBeforeMVAFiner",300,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAFiner","Mu3TrackInvariantMassBeforeMVAFiner",300,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAFiner","Mu1TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAFiner","Mu2TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAFiner","Mu3TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVACoarser","Mu1TrackInvariantMassBeforeMVACoarser",150,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVACoarser","Mu2TrackInvariantMassBeforeMVACoarser",150,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVACoarser","Mu3TrackInvariantMassBeforeMVACoarser",150,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVACoarser","Mu1TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVACoarser","Mu2TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVACoarser","Mu3TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  MuOSSS1InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS1InvariantMassBeforeMVA","MuOSSS1InvariantMassBeforeMVA",150,0.9,1.3,"OS - SS1 #mu Invariant Mass, GeV","Events");
-  MuOSSS2InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS2InvariantMassBeforeMVA","MuOSSS2InvariantMassBeforeMVA",150,0.9,1.3,"OS - SS2 #mu Invariant Mass, GeV","Events");
+  MuOSSS1InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS1InvariantMassBeforeMVA","MuOSSS1InvariantMassBeforeMVA",150,0.9,1.2,"OS - SS1 #mu Invariant Mass, GeV","Events");
+  MuOSSS2InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS2InvariantMassBeforeMVA","MuOSSS2InvariantMassBeforeMVA",150,0.9,1.2,"OS - SS2 #mu Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA1MVA","Mu1TrackInvariantMassAfterA1MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA1MVA","Mu2TrackInvariantMassAfterA1MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA1MVA","Mu3TrackInvariantMassAfterA1MVA",200,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdR","Mu1TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdR","Mu2TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdR","Mu3TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB1MVA","Mu1TrackInvariantMassAfterB1MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB1MVA","Mu2TrackInvariantMassAfterB1MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB1MVA","Mu3TrackInvariantMassAfterB1MVA",200,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRIncrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRIncrease","Mu1TrackInvariantMassBeforeMVABestdRIncrease",800,0.9,2.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC1MVA","Mu1TrackInvariantMassAfterC1MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC1MVA","Mu2TrackInvariantMassAfterC1MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC1MVA","Mu3TrackInvariantMassAfterC1MVA",200,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRDecrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRDecrease","Mu1TrackInvariantMassBeforeMVABestdRDecrease",300,0.9,2.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA2MVA","Mu1TrackInvariantMassAfterA2MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA2MVA","Mu2TrackInvariantMassAfterA2MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA2MVA","Mu3TrackInvariantMassAfterA2MVA",200,0.9,1.3,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd","Mu1TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd","Mu2TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd","Mu3TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB2MVA","Mu1TrackInvariantMassAfterB2MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB2MVA","Mu2TrackInvariantMassAfterB2MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB2MVA","Mu3TrackInvariantMassAfterB2MVA",200,0.9,1.3,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd1","Mu1TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd1","Mu2TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd1","Mu3TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC2MVA","Mu1TrackInvariantMassAfterC2MVA",200,0.9,1.3,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC2MVA","Mu2TrackInvariantMassAfterC2MVA",200,0.9,1.3,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC2MVA","Mu3TrackInvariantMassAfterC2MVA",200,0.9,1.3,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestMass","Mu1TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestMass","Mu2TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestMass","Mu3TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA1MVA","Mu1TrackInvariantMassAfterA1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA1MVA","Mu2TrackInvariantMassAfterA1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA1MVA","Mu3TrackInvariantMassAfterA1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB1MVA","Mu1TrackInvariantMassAfterB1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB1MVA","Mu2TrackInvariantMassAfterB1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB1MVA","Mu3TrackInvariantMassAfterB1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC1MVA","Mu1TrackInvariantMassAfterC1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC1MVA","Mu2TrackInvariantMassAfterC1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC1MVA","Mu3TrackInvariantMassAfterC1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA2MVA","Mu1TrackInvariantMassAfterA2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA2MVA","Mu2TrackInvariantMassAfterA2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA2MVA","Mu3TrackInvariantMassAfterA2MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB2MVA","Mu1TrackInvariantMassAfterB2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB2MVA","Mu2TrackInvariantMassAfterB2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB2MVA","Mu3TrackInvariantMassAfterB2MVA",150,0.9,1.2,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC2MVA","Mu1TrackInvariantMassAfterC2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC2MVA","Mu2TrackInvariantMassAfterC2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC2MVA","Mu3TrackInvariantMassAfterC2MVA",150,0.9,1.2,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
 
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
@@ -525,6 +545,25 @@ void  CommonSelector::Store_ExtraDist(){
   
   Extradist1d.push_back(&MuOSSS1InvariantMassBeforeMVA);
   Extradist1d.push_back(&MuOSSS2InvariantMassBeforeMVA);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdR);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdR);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdR);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRIncrease);
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRDecrease);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd1);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd1);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd1);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestMass);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestMass);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestMass);
   
   Extradist1d.push_back(&Mu1TrackInvariantMassAfterA1MVA);
   Extradist1d.push_back(&Mu2TrackInvariantMassAfterA1MVA);
@@ -862,6 +901,18 @@ void  CommonSelector::doEvent(){
     MuOSSS1InvariantMassBeforeMVA.at(t).Fill((MuonOSReassigned+MuonSS1Reassigned).M(),1);
     MuOSSS2InvariantMassBeforeMVA.at(t).Fill((MuonOSReassigned+MuonSS2Reassigned).M(),1);
     
+    double dR1 = 99.0;
+    double dR2 = 99.0;
+    double dR3 = 99.0;
+    
+    double M1dR = 99.0;
+    double M2dR = 99.0;
+    double M3dR = 99.0;
+    
+    double M1best = 99.0;
+    double M2best = 99.0;
+    double M3best = 99.0;
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
       TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
@@ -889,11 +940,37 @@ void  CommonSelector::doEvent(){
         Mu3TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
       }
       
-      /*
-      double dRmu1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
-      double dRmu2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
-      double dRmu3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
       
+      if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
+        dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
+        M1dR=(ParticleLVReassigned+MuonOSReassigned).M();
+      }
+      
+      if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
+        dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
+        M2dR=(ParticleLVReassigned+MuonSS1Reassigned).M();
+      }
+      
+      if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
+        dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
+        M3dR=(ParticleLVReassigned+MuonSS2Reassigned).M();
+      }
+      
+      
+      if(fabs((ParticleLVReassigned+MuonOSReassigned).M()-1.019461)<fabs(M1best-1.019461)){//find the pair that is closest in mass
+        M1best=(ParticleLVReassigned+MuonOSReassigned).M();
+      }
+      
+      if(fabs((ParticleLVReassigned+MuonSS1Reassigned).M()-1.019461)<fabs(M2best-1.019461)){//find the pair that is closest in mass
+        M2best=(ParticleLVReassigned+MuonSS1Reassigned).M();
+      }
+      
+      if(fabs((ParticleLVReassigned+MuonSS2Reassigned).M()-1.019461)<fabs(M3best-1.019461)){//find the pair that is closest in mass
+        M3best=(ParticleLVReassigned+MuonSS2Reassigned).M();
+      }
+      
+      
+      /*
       if(dRmu1<dRmu2){
         if(dRmu1<dRmu3){
           Mu1TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
@@ -940,10 +1017,45 @@ void  CommonSelector::doEvent(){
       //MassDifference.at(t).Fill((ParticleLV+Muon2LV).M(),1);
       //MassDifference.at(t).Fill((ParticleLV+Muon2LV).M(),1);
       //std::cout<<"Mass of particle "<<j<<" is "<<ParticleLV.M()<<" GeV"<< std::endl;
-      if(fabs(ParticleLV.M()-0.493677)<0.05){
-        std::cout<<"The charge of the particle is: "<<Ntp->IsolationTrack_charge(signal_idx,j)<< std::endl;
-      }
     }
+    
+    
+    Mu1TrackInvariantMassBeforeMVABestdR.at(t).Fill(M1dR,1);
+    Mu2TrackInvariantMassBeforeMVABestdR.at(t).Fill(M2dR,1);
+    Mu3TrackInvariantMassBeforeMVABestdR.at(t).Fill(M3dR,1);
+    
+    Mu1TrackInvariantMassBeforeMVABestdRIncrease.at(t).Fill(M1dR,1);
+    Mu1TrackInvariantMassBeforeMVABestdRDecrease.at(t).Fill(M1dR,1);
+    
+    Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR1,1);
+    Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR2,1);
+    Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR3,1);
+    
+    /*
+    if(dR1<0.125){
+      Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M1dR,1);
+    }
+    if(dR2<0.125){
+      Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M2dR,1);
+    }
+    if(dR3<0.125){
+      Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M3dR,1);
+    }
+    */
+    
+    if(dR1<0.06){
+      Mu1TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M1dR,1);
+    }
+    if(dR2<0.06){
+      Mu2TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M2dR,1);
+    }
+    if(dR3<0.06){
+      Mu3TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M3dR,1);
+    }
+    
+    Mu1TrackInvariantMassBeforeMVABestMass.at(t).Fill(M1best,1);
+    Mu2TrackInvariantMassBeforeMVABestMass.at(t).Fill(M2best,1);
+    Mu3TrackInvariantMassBeforeMVABestMass.at(t).Fill(M3best,1);
     
     
 

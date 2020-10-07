@@ -75,6 +75,25 @@ class CommonSelector : public Selection {
   std::vector<TH1D> MuOSSS1InvariantMassBeforeMVA;
   std::vector<TH1D> MuOSSS2InvariantMassBeforeMVA;
   
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdR;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdR;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdR;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRIncrease;
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRDecrease;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd1;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd1;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd1;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestMass;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestMass;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestMass;
+  
   std::vector<TH1D> Mu1TrackInvariantMassAfterA1MVA;
   std::vector<TH1D> Mu2TrackInvariantMassAfterA1MVA;
   std::vector<TH1D> Mu3TrackInvariantMassAfterA1MVA;
