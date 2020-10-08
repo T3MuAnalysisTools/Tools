@@ -72,12 +72,20 @@ class CommonSelector : public Selection {
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVACoarser;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVACoarser;
   
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStar;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStar;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStar;
+  
   std::vector<TH1D> MuOSSS1InvariantMassBeforeMVA;
   std::vector<TH1D> MuOSSS2InvariantMassBeforeMVA;
   
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdR;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdR;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdR;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdR;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdR;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdR;
   
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRIncrease;
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRDecrease;
@@ -86,13 +94,27 @@ class CommonSelector : public Selection {
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd;
   
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd;
+  
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd1;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd1;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd1;
   
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1;
+  
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestMass;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestMass;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestMass;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestMass;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestMass;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestMass;
+  
+  
   
   std::vector<TH1D> Mu1TrackInvariantMassAfterA1MVA;
   std::vector<TH1D> Mu2TrackInvariantMassAfterA1MVA;

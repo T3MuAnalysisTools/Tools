@@ -340,40 +340,60 @@ void  CommonSelector::Configure(){
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVA","Mu1TrackInvariantMassBeforeMVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVA","Mu2TrackInvariantMassBeforeMVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVA","Mu3TrackInvariantMassBeforeMVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVA","Mu1TrackInvariantMassBeforeMVA",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVA","Mu2TrackInvariantMassBeforeMVA",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVA","Mu3TrackInvariantMassBeforeMVA",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAFiner","Mu1TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAFiner","Mu2TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAFiner","Mu3TrackInvariantMassBeforeMVAFiner",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStar","Mu1TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStar","Mu2TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStar","Mu3TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVACoarser","Mu1TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVACoarser","Mu2TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVACoarser","Mu3TrackInvariantMassBeforeMVACoarser",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAFiner","Mu1TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAFiner","Mu2TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAFiner","Mu3TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  MuOSSS1InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS1InvariantMassBeforeMVA","MuOSSS1InvariantMassBeforeMVA",150,0.9,1.2,"OS - SS1 #mu Invariant Mass, GeV","Events");
-  MuOSSS2InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS2InvariantMassBeforeMVA","MuOSSS2InvariantMassBeforeMVA",150,0.9,1.2,"OS - SS2 #mu Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVACoarser","Mu1TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVACoarser","Mu2TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVACoarser","Mu3TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdR","Mu1TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdR","Mu2TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdR","Mu3TrackInvariantMassBeforeMVABestdR",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  MuOSSS1InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS1InvariantMassBeforeMVA","MuOSSS1InvariantMassBeforeMVA",200,0.95,1.2,"OS - SS1 #mu Invariant Mass, GeV","Events");
+  MuOSSS2InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS2InvariantMassBeforeMVA","MuOSSS2InvariantMassBeforeMVA",200,0.95,1.2,"OS - SS2 #mu Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdR","Mu1TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdR","Mu2TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdR","Mu3TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdR","Mu1TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdR","Mu2TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdR","Mu3TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
   Mu1TrackInvariantMassBeforeMVABestdRIncrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRIncrease","Mu1TrackInvariantMassBeforeMVABestdRIncrease",800,0.9,2.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   
   Mu1TrackInvariantMassBeforeMVABestdRDecrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRDecrease","Mu1TrackInvariantMassBeforeMVABestdRDecrease",300,0.9,2.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd","Mu1TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd","Mu2TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd","Mu3TrackInvariantMassBeforeMVABestdRLtd",400,0,1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd","Mu1TrackInvariantMassBeforeMVABestdRLtd",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd","Mu2TrackInvariantMassBeforeMVABestdRLtd",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd","Mu3TrackInvariantMassBeforeMVABestdRLtd",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd1","Mu1TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd1","Mu2TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd1","Mu3TrackInvariantMassBeforeMVABestdRLtd1",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestMass","Mu1TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestMass","Mu2TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestMass","Mu3TrackInvariantMassBeforeMVABestMass",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd1","Mu1TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd1","Mu2TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd1","Mu3TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestMass","Mu1TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestMass","Mu2TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestMass","Mu3TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  
+  Mu1TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestMass","Mu1TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestMass","Mu2TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestMass","Mu3TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
   Mu1TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA1MVA","Mu1TrackInvariantMassAfterA1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   Mu2TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA1MVA","Mu2TrackInvariantMassAfterA1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
@@ -535,6 +555,10 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVA);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVA);
   
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStar);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStar);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStar);
+  
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAFiner);
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAFiner);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAFiner);
@@ -550,6 +574,10 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdR);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdR);
   
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdR);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdR);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdR);
+  
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRIncrease);
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRDecrease);
   
@@ -557,13 +585,25 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd);
   
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd);
+  
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd1);
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd1);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd1);
   
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1);
+  
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestMass);
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestMass);
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestMass);
+  
+  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestMass);
+  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestMass);
+  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestMass);
   
   Extradist1d.push_back(&Mu1TrackInvariantMassAfterA1MVA);
   Extradist1d.push_back(&Mu2TrackInvariantMassAfterA1MVA);
@@ -913,6 +953,18 @@ void  CommonSelector::doEvent(){
     double M2best = 99.0;
     double M3best = 99.0;
     
+    double KdR1 = 99.0;
+    double KdR2 = 99.0;
+    double KdR3 = 99.0;
+    
+    double KM1dR = 99.0;
+    double KM2dR = 99.0;
+    double KM3dR = 99.0;
+    
+    double KM1best = 99.0;
+    double KM2best = 99.0;
+    double KM3best = 99.0;
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
       TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
@@ -926,47 +978,78 @@ void  CommonSelector::doEvent(){
         Mu1TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
         Mu1TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
         Mu1TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
+        
+        if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
+          dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
+          M1dR=(ParticleLVReassigned+MuonOSReassigned).M();
+        }
+        
+        if(fabs((ParticleLVReassigned+MuonOSReassigned).M()-1.019461)<fabs(M1best-1.019461)){//find the pair that is closest in mass
+          M1best=(ParticleLVReassigned+MuonOSReassigned).M();
+        }
+        
+        Mu1TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonOSReassigned).M(),1);//For the Kstars
+        
+        if(fabs(ParticleLV.DeltaR(MuonOSReassigned))<KdR1){//try to find the pair with the lowest dR
+          KdR1=fabs(ParticleLV.DeltaR(MuonOSReassigned));
+          KM1dR=(ParticleLV+MuonOSReassigned).M();
+        }
+        
+        if(fabs((ParticleLV+MuonOSReassigned).M()-0.892)<fabs(KM1best-0.892)){//find the pair that is closest in mass
+          KM1best=(ParticleLV+MuonOSReassigned).M();
+        }
       }
       
       if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
         Mu2TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
         Mu2TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
         Mu2TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
+        
+        if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
+          dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
+          M2dR=(ParticleLVReassigned+MuonSS1Reassigned).M();
+        }
+        
+        if(fabs((ParticleLVReassigned+MuonSS1Reassigned).M()-1.019461)<fabs(M2best-1.019461)){//find the pair that is closest in mass
+          M2best=(ParticleLVReassigned+MuonSS1Reassigned).M();
+        }
+        
+        Mu2TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonSS1Reassigned).M(),1);
+        
+        if(fabs(ParticleLV.DeltaR(MuonSS1Reassigned))<KdR2){//try to find the pair with the lowest dR
+          KdR2=fabs(ParticleLV.DeltaR(MuonSS1Reassigned));
+          KM2dR=(ParticleLV+MuonSS1Reassigned).M();
+        }
+        
+        if(fabs((ParticleLV+MuonSS1Reassigned).M()-0.892)<fabs(KM2best-0.892)){//find the pair that is closest in mass
+          KM2best=(ParticleLV+MuonSS1Reassigned).M();
+        }
       }
       
       if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
         Mu3TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
         Mu3TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
         Mu3TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-      if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
-        dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
-        M1dR=(ParticleLVReassigned+MuonOSReassigned).M();
-      }
-      
-      if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
-        dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
-        M2dR=(ParticleLVReassigned+MuonSS1Reassigned).M();
-      }
-      
-      if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
-        dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
-        M3dR=(ParticleLVReassigned+MuonSS2Reassigned).M();
-      }
-      
-      
-      if(fabs((ParticleLVReassigned+MuonOSReassigned).M()-1.019461)<fabs(M1best-1.019461)){//find the pair that is closest in mass
-        M1best=(ParticleLVReassigned+MuonOSReassigned).M();
-      }
-      
-      if(fabs((ParticleLVReassigned+MuonSS1Reassigned).M()-1.019461)<fabs(M2best-1.019461)){//find the pair that is closest in mass
-        M2best=(ParticleLVReassigned+MuonSS1Reassigned).M();
-      }
-      
-      if(fabs((ParticleLVReassigned+MuonSS2Reassigned).M()-1.019461)<fabs(M3best-1.019461)){//find the pair that is closest in mass
-        M3best=(ParticleLVReassigned+MuonSS2Reassigned).M();
+        
+        if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
+          dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
+          M3dR=(ParticleLVReassigned+MuonSS2Reassigned).M();
+        }
+        
+        if(fabs((ParticleLVReassigned+MuonSS2Reassigned).M()-1.019461)<fabs(M3best-1.019461)){//find the pair that is closest in mass
+          M3best=(ParticleLVReassigned+MuonSS2Reassigned).M();
+        }
+        
+        Mu3TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonSS2Reassigned).M(),1);
+        
+        if(fabs(ParticleLV.DeltaR(MuonSS2Reassigned))<KdR3){//try to find the pair with the lowest dR
+          KdR3=fabs(ParticleLV.DeltaR(MuonSS2Reassigned));
+          KM3dR=(ParticleLV+MuonSS2Reassigned).M();
+        }
+        
+        if(fabs((ParticleLV+MuonSS2Reassigned).M()-0.892)<fabs(KM3best-0.892)){//find the pair that is closest in mass
+          KM3best=(ParticleLV+MuonSS2Reassigned).M();
+        }
       }
       
       
@@ -1024,14 +1107,18 @@ void  CommonSelector::doEvent(){
     Mu2TrackInvariantMassBeforeMVABestdR.at(t).Fill(M2dR,1);
     Mu3TrackInvariantMassBeforeMVABestdR.at(t).Fill(M3dR,1);
     
+    Mu1TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM1dR,1);
+    Mu2TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM2dR,1);
+    Mu3TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM3dR,1);
+    
     Mu1TrackInvariantMassBeforeMVABestdRIncrease.at(t).Fill(M1dR,1);
     Mu1TrackInvariantMassBeforeMVABestdRDecrease.at(t).Fill(M1dR,1);
     
-    Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR1,1);
-    Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR2,1);
-    Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR3,1);
+    //Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR1,1);
+    //Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR2,1);
+    //Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR3,1);
     
-    /*
+    
     if(dR1<0.125){
       Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M1dR,1);
     }
@@ -1041,7 +1128,7 @@ void  CommonSelector::doEvent(){
     if(dR3<0.125){
       Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M3dR,1);
     }
-    */
+    
     
     if(dR1<0.06){
       Mu1TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M1dR,1);
@@ -1056,6 +1143,32 @@ void  CommonSelector::doEvent(){
     Mu1TrackInvariantMassBeforeMVABestMass.at(t).Fill(M1best,1);
     Mu2TrackInvariantMassBeforeMVABestMass.at(t).Fill(M2best,1);
     Mu3TrackInvariantMassBeforeMVABestMass.at(t).Fill(M3best,1);
+    
+    
+    if(KdR1<0.125){//for kstars
+      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM1dR,1);
+    }
+    if(KdR2<0.125){
+      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM2dR,1);
+    }
+    if(KdR3<0.125){
+      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM3dR,1);
+    }
+    
+    
+    if(KdR1<0.06){
+      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(KM1dR,1);
+    }
+    if(KdR2<0.06){
+      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(KM2dR,1);
+    }
+    if(KdR3<0.06){
+      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(KM3dR,1);
+    }
+    
+    Mu1TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM1best,1);
+    Mu2TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM2best,1);
+    Mu3TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM3best,1);
     
     
 
