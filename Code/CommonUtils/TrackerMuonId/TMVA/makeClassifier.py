@@ -7,7 +7,6 @@ import json
 
 BASE_DIR = ''
 
-
 def makeClassifiers(classifierName, inputFile, outputFile, variableSet):
    
    #-------------------------------
