@@ -64,6 +64,48 @@ class CommonSelector : public Selection {
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVA;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVA;
   
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASV;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASV;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASV;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle0;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle0;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle0;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle1;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle1;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle1;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle2;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle2;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle2;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle3;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle3;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle3;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSV;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSV;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSV;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle0;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle0;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle0;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle1;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle1;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle1;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle2;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle2;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle2;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle3;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle3;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle3;  
+  
+  std::vector<TH1D> TauAngleTest;
+  
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAFiner;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAFiner;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAFiner;
@@ -105,6 +147,56 @@ class CommonSelector : public Selection {
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1;
   std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd2;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd2;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd2;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd3;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd3;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd3;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd4;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd4;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd4;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd5;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd5;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd5;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd6;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd6;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd6;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd7;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd7;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd7;
+  
+  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7;
+  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7;
+  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7;
+  
+  std::vector<TH1D> IsolationTrackCount;
   
   std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestMass;
   std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestMass;
