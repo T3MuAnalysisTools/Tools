@@ -38,8 +38,8 @@ for st in setlist:
 #      elif ('2017E' in datasetline): datatype = 'DataE'
 #      elif ('2017F' in datasetline): datatype = 'DataF'
    elif ('DsToTau' in datasetline): datatype = 'DsMC'
-   elif ('BuToTau' in datasetline): datatype = 'BuMC' 
-   elif ('BdToTau' in datasetline): datatype = 'BdMC'
+   elif ('BuTau3Mu' in datasetline): datatype = 'BuMC' 
+   elif ('B0ToTau' in datasetline): datatype = 'BdMC'
    #elif ( 'DsToTau' in datasetline ): datatype = 'MC'
    else: datatype= None
    if (datatype=='DsMC'): mclistDs.append(st)
