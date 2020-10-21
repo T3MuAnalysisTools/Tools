@@ -17,7 +17,7 @@ BINS = TMVAClassification \
 
 
 CXX = g++
-CCFLAGS = -O0 -ggdb -std=c++17
+CCFLAGS = -O0 -ggdb -std=c++0x
 
 
 LD = g++
