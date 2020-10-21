@@ -1,0 +1,148 @@
+{
+    "2017_standard_variables": {
+        "Run": "2017",
+        "spectator_variables": {
+            "fake": {
+                "name": "fake",
+                "type": "I"
+            },
+            "muonEta": {
+                "name": "muonEta",
+                "type": "F"
+            },
+            "muonPhi": {
+                "name": "muonPhi",
+                "type": "F"
+            },
+            "muonPt": {
+                "name": "muonPt",
+                "type": "F"
+            }
+        },
+        "training_variables": {
+            "muonCaloComp": {
+                "name": "muonCaloComp",
+                "type": "F"
+            },
+            "muonEM": {
+                "name": "muonEM",
+                "type": "F"
+            },
+            "muonHad": {
+                "name": "muonHad",
+                "type": "F"
+            },
+            "muonInnerNC2": {
+                "name": "muonInnerNC2",
+                "type": "I"
+            },
+            "muonInnerNValidHits": {
+                "name": "muonInnerNValidHits",
+                "type": "I"
+            },
+            "muonNLostTrackerHits": {
+                "name": "muonNLostTrackerHits",
+                "type": "I"
+            },
+            "muonNLostTrackerHitsInner": {
+                "name": "muonNLostTrackerHitsInner",
+                "type": "I"
+            },
+            "muonNLostTrackerHitsOuter": {
+                "name": "muonNLostTrackerHitsOuter",
+                "type": "I"
+            },
+            "muonNMatchedStations": {
+                "name": "muonNMatchedStations",
+                "type": "I"
+            },
+            "muonPixelLayers": {
+                "name": "muonPixelLayers",
+                "type": "I"
+            },
+            "muonPtErrPt": {
+                "name": "muonPtErrPt",
+                "type": "F"
+            },
+            "muonSegComp": {
+                "name": "muonSegComp",
+                "type": "F"
+            }
+        }
+    },
+    "2018_standard_variables": {
+        "Run": "2018",
+        "spectator_variables": {
+            "fake": {
+                "name": "fake",
+                "type": "I"
+            },
+            "muonEta": {
+                "name": "muonEta",
+                "type": "F"
+            },
+            "muonPhi": {
+                "name": "muonPhi",
+                "type": "F"
+            },
+            "muonPt": {
+                "name": "muonPt",
+                "type": "F"
+            }
+        },
+        "training_variables": {
+            "muonCaloComp": {
+                "name": "muonCaloComp",
+                "type": "F"
+            },
+            "muonEM": {
+                "name": "muonEM",
+                "type": "F"
+            },
+            "muonHad": {
+                "name": "muonHad",
+                "type": "F"
+            },
+            "muonInnerNC2": {
+                "name": "muonInnerNC2",
+                "type": "F"
+            },
+            "muonInnerNValidHits": {
+                "name": "muonInnerNValidHits",
+                "type": "I"
+            },
+            "muonNLostTrackerHits": {
+                "name": "muonNLostTrackerHits",
+                "type": "I"
+            },
+            "muonNLostTrackerHitsInner": {
+                "name": "muonNLostTrackerHitsInner",
+                "type": "I"
+            },
+            "muonNLostTrackerHitsOuter": {
+                "name": "muonNLostTrackerHitsOuter",
+                "type": "I"
+            },
+            "muonNMatchedStations": {
+                "name": "muonNMatchedStations",
+                "type": "I"
+            },
+            "muonPixelLayers": {
+                "name": "muonPixelLayers",
+                "type": "I"
+            },
+            "muonPtErrPt": {
+                "name": "muonPtErrPt",
+                "type": "F"
+            },
+            "muonSegComp": {
+                "name": "muonSegComp",
+                "type": "F"
+            },
+            "muonValidFraction": {
+                "name": "muonValidFraction",
+                "type": "F"
+            }
+        }
+    }
+}
