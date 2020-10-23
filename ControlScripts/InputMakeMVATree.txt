@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoScaletoLumiSignal.txt
+Analysis: MakeMVATree
+UncertType: default
+SkimInfo: InputData/Dat2018Sig.log
+Lumi: 58345.2884618
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
