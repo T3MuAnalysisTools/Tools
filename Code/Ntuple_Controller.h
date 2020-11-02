@@ -398,6 +398,67 @@ class Ntuple_Controller{
       }
 
 
+
+      //------------------  functions in the box are valid ONLY for a signal category, not control channel
+      int IsolationTrack_VertexWithSignalMuon1IsValid(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonIsValid->at(index).at(j).at(0);
+      }
+      
+      int IsolationTrack_VertexWithSignalMuon2IsValid(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonIsValid->at(index).at(j).at(1);
+      }
+      
+      int IsolationTrack_VertexWithSignalMuon3IsValid(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonIsValid->at(index).at(j).at(2);
+      }
+
+      float IsolationTrack_VertexWithSignalMuon1Chi2(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonChi2->at(index).at(j).at(0);
+      }
+
+      float IsolationTrack_VertexWithSignalMuon2Chi2(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonChi2->at(index).at(j).at(1);
+      }
+
+      float IsolationTrack_VertexWithSignalMuon3Chi2(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->IsolationTrack_VertexWithSignalMuonChi2->at(index).at(j).at(2);
+      }
+
+
+      TVector3 IsolationTrack_VertexWithSignalMuon1Position(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return TVector3(Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(0), 
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(1),
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(2));
+
+      }
+
+
+      TVector3 IsolationTrack_VertexWithSignalMuon2Position(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return TVector3(Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(3), 
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(4),
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(5));
+
+      }
+
+      TVector3 IsolationTrack_VertexWithSignalMuon3Position(unsigned int i, unsigned int j, bool channel = false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return TVector3(Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(6), 
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(7),
+			Ntp->IsolationTrack_VertexWithSignalMuonPosition->at(index).at(j).at(8));
+
+      }
+
+      //------------------  functions in the box are valid ONLY for a signal category, not control channel
+
+
       int IsolationTrack_charge(unsigned int i, unsigned int j, bool channel=false){
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
          return Ntp->IsolationTrack_charge->at(index).at(j);

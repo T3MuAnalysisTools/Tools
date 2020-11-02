@@ -263,6 +263,9 @@ public :
    std::vector<double>  *TriggerObject_eta;
    std::vector<std::string>  *TriggerObject_name;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
+   std::vector<std::vector<std::vector<int> > > *IsolationTrack_VertexWithSignalMuonIsValid;
+   std::vector<std::vector<std::vector<float> > > *IsolationTrack_VertexWithSignalMuonChi2;
+   std::vector<std::vector<std::vector<float> > > *IsolationTrack_VertexWithSignalMuonPosition;
    std::vector<std::vector<int> > *IsolationTrack_charge;
    std::vector<std::vector<float> > *IsolationTrack_quality;
    std::vector<std::vector<float> > *IsolationTrack_dxySV;
@@ -516,6 +519,9 @@ public :
    TBranch        *b_TriggerObject_eta;   //!
    TBranch        *b_TriggerObject_name;   //!
    TBranch        *b_IsolationTrack_p4;   //!
+   TBranch        *b_IsolationTrack_VertexWithSignalMuonIsValid;   //!
+   TBranch        *b_IsolationTrack_VertexWithSignalMuonChi2;   //!
+   TBranch        *b_IsolationTrack_VertexWithSignalMuonPosition;   //!
    TBranch        *b_IsolationTrack_charge;   //!
    TBranch        *b_IsolationTrack_quality;   //!
    TBranch        *b_IsolationTrack_dxySV;   //!
@@ -825,7 +831,10 @@ void NtupleReader::Init(TTree *tree)
    TriggerObject_phi = 0;
    TriggerObject_eta = 0;
    TriggerObject_name = 0;
-   IsolationTrack_p4 = 0;
+   IsolationTrack_p4 = 0;   
+   IsolationTrack_VertexWithSignalMuonIsValid = 0;   
+   IsolationTrack_VertexWithSignalMuonChi2 = 0;   
+   IsolationTrack_VertexWithSignalMuonPosition = 0;   
    IsolationTrack_charge = 0;
    IsolationTrack_quality = 0;
    IsolationTrack_dxySV = 0;
@@ -1085,6 +1094,9 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("TriggerObject_eta", &TriggerObject_eta, &b_TriggerObject_eta);
    fChain->SetBranchAddress("TriggerObject_name", &TriggerObject_name, &b_TriggerObject_name);
    fChain->SetBranchAddress("IsolationTrack_p4", &IsolationTrack_p4, &b_IsolationTrack_p4);
+   fChain->SetBranchAddress("IsolationTrack_VertexWithSignalMuonIsValid",&IsolationTrack_VertexWithSignalMuonIsValid, &b_IsolationTrack_VertexWithSignalMuonIsValid);
+   fChain->SetBranchAddress("IsolationTrack_VertexWithSignalMuonChi2",&IsolationTrack_VertexWithSignalMuonChi2, &b_IsolationTrack_VertexWithSignalMuonChi2);
+   fChain->SetBranchAddress("IsolationTrack_VertexWithSignalMuonPosition",&IsolationTrack_VertexWithSignalMuonPosition, &b_IsolationTrack_VertexWithSignalMuonPosition);
    fChain->SetBranchAddress("IsolationTrack_charge", &IsolationTrack_charge, &b_IsolationTrack_charge);
    fChain->SetBranchAddress("IsolationTrack_quality", &IsolationTrack_quality, &b_IsolationTrack_quality);
    fChain->SetBranchAddress("IsolationTrack_dxySV", &IsolationTrack_dxySV, &b_IsolationTrack_dxySV);
