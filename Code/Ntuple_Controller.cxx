@@ -357,7 +357,6 @@ float Ntuple_Controller::DsGenMatch(unsigned int tmp_idx){
       return ds_dR;
    }
    for (unsigned int ngen=0; ngen<NMCSignalParticles(); ngen++){
-      bool dspi_flag = 0, dsphi_flag = 0;
       float tmp_phi_dR = 999.0, tmp_pi_dR = 999.0;
 
       int track_idx = -1, mu1_idx = -1, mu2_idx = -1;

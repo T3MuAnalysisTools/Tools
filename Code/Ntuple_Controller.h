@@ -783,6 +783,7 @@ class Ntuple_Controller{
       float ThreeMuonDsGenMatch(unsigned int tmp_idx);
       float TauGenMatch(unsigned int tmp_idx);
       bool isPromptDs();
+      int DsMotherPdgId(unsigned int index);
       int GENMatchedPdgId(TLorentzVector vec);
       TLorentzVector GENMatchedLV(TLorentzVector vec);
       double deltaR(double eta1, double phi1, double eta2, double phi2); 
@@ -790,13 +791,14 @@ class Ntuple_Controller{
       std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
       std::vector<int> MuonCustomID(unsigned int MuonIndex);
       double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
+      double TransverseFlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
       TLorentzVector Boost(TLorentzVector pB, TLorentzVector frame);
       TMatrixT<double> convertToMatrix(TVectorT<double> V);
 
       std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
       template<typename T>
          void printVec(int size, T& vec);
-      bool triggerMatchTriplet(std::vector<TLorentzVector>, std::vector<TLorentzVector>);
+      std::pair<bool, std::vector<float>> triggerMatchTriplet(std::vector<TLorentzVector>, std::vector<TLorentzVector>);
 
       bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
       void  printMCDecayChainOfParticle(unsigned int index, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
