@@ -181,8 +181,7 @@ class Ntuple_Controller{
 
       unsigned int   NTracks(){return Ntp->Track_p4->size();}
       TLorentzVector Track_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2), Ntp->Track_p4->at(i).at(3), Ntp->Track_p4->at(i).at(0));}
-      TLorentzVector KaonTrack_P4(unsigned int i){return TLorentzVector(Ntp->Track_p4->at(i).at(1),Ntp->Track_p4->at(i).at(2),
-            Ntp->Track_p4->at(i).at(3), sqrt(pow(Ntp->Track_p4->at(i).at(0),2)+pow(PDG_Var::Kp_mass(),2)-pow(PDG_Var::Pi_mass(),2)));}
+      TLorentzVector KaonTrack_P4(unsigned int index);
       TVector3       Track_Poca(unsigned int i){return TVector3(Ntp->Track_poca->at(i).at(0),Ntp->Track_poca->at(i).at(1),Ntp->Track_poca->at(i).at(2));}
       double         Track_normalizedChi2(unsigned int i){return Ntp->Track_normalizedChi2->at(i);}
       double         Track_numberOfValidHits(unsigned int i){return Ntp->Track_numberOfValidHits->at(i);}
@@ -302,6 +301,8 @@ class Ntuple_Controller{
       int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
       int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
 
+      float Muon_TrackX(unsigned int i, unsigned int det){return Ntp->Muon_TrackX->at(i).at(det);}
+      float Muon_TrackY(unsigned int i, unsigned int det){return Ntp->Muon_TrackY->at(i).at(det);}
       float Muon_dDxDz(unsigned int i, unsigned int det){return Ntp->Muon_dDxDz->at(i).at(det);} //  det = 0,1,2,3 - DT, det = 4,5,6,7 - CSC
       float Muon_dDyDz(unsigned int i, unsigned int det){return Ntp->Muon_dDyDz->at(i).at(det);}
       float Muon_dX(unsigned int i, unsigned int det){return Ntp->Muon_dX->at(i).at(det);}
@@ -312,13 +313,12 @@ class Ntuple_Controller{
       float Muon_pullDyDz(unsigned int i, unsigned int det){return Ntp->Muon_pullDyDz->at(i).at(det);}
       float numberOfSegments(unsigned int i, unsigned int det){return Ntp->numberOfSegments->at(i).at(det);}
 
-
       float Muon_timeAtIpInOut(unsigned int i){return Ntp->Muon_timeAtIpInOut->at(i);}
       float Muon_timeAtIpInOutErr(unsigned int i){return Ntp->Muon_timeAtIpInOutErr->at(i);}
+
+      TLorentzVector MuonToKaon(unsigned int index);
+      TLorentzVector MuonToPion(unsigned int index);
       //Vertex_NMuonsAssocWithPV
-
-
-
 
       int NPhotons(){return Ntp->Gamma_P4->size();}
       TLorentzVector Photon_p4(unsigned int i){return TLorentzVector(Ntp->Gamma_P4->at(i).at(1),Ntp->Gamma_P4->at(i).at(2), Ntp->Gamma_P4->at(i).at(3), Ntp->Gamma_P4->at(i).at(0));}
@@ -595,6 +595,21 @@ class Ntuple_Controller{
       double     Vertex_signal_KF_Chi2(unsigned int i, bool channel=false){
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
          return Ntp->Vertex_signal_KF_Chi2->at(index); 
+      }
+
+      double     Vertex_signal_KF_BS_2Ddistance(unsigned int i, bool channel=false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+         return Ntp->Vertex_signal_KF_BS_2Ddistance->at(index); 
+      }
+
+      double     Vertex_signal_KF_BS_error(unsigned int i, bool channel=false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+         return Ntp->Vertex_signal_KF_BS_error->at(index); 
+      }
+
+      double     Vertex_signal_KF_BS_significance(unsigned int i, bool channel=false){
+         unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+         return Ntp->Vertex_signal_KF_BS_significance->at(index); 
       }
 
       TVector3   Vertex_signal_AF_pos(unsigned int i, bool channel=false){
