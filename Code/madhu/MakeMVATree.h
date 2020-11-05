@@ -345,16 +345,29 @@ class MakeMVATree : public Selection {
  std::vector<TH2D>  MuMuMassNoSorting;
  
  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASV;
+ std::vector<TH1D> Mu1TrackPtBeforeMVASV;
+ std::vector<TH1D> Mu1TrackAngleBeforeMVASV;
+ 
  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASV;
+ std::vector<TH1D> Mu2TrackPtBeforeMVASV;
+ std::vector<TH1D> Mu2TrackAngleBeforeMVASV;
+ 
  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASV;
+ std::vector<TH1D> Mu3TrackPtBeforeMVASV;
+ std::vector<TH1D> Mu3TrackAngleBeforeMVASV;
  
  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSV;
+ std::vector<TH1D> Mu1TrackPtBeforeMVAKStarSV;
+ std::vector<TH1D> Mu1TrackAngleBeforeMVAKStarSV;
+ 
  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSV;
+ std::vector<TH1D> Mu2TrackPtBeforeMVAKStarSV;
+ std::vector<TH1D> Mu2TrackAngleBeforeMVAKStarSV;
+ 
  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSV;
-
-
-
-
+ std::vector<TH1D> Mu3TrackPtBeforeMVAKStarSV;
+ std::vector<TH1D> Mu3TrackAngleBeforeMVAKStarSV;
+ 
 
 
 
@@ -633,12 +646,28 @@ class MakeMVATree : public Selection {
   float var_MinDZDistSV;
   
   float var_Mu1TrackInvariantMassBeforeMVASV;
+  float var_Mu1TrackPtBeforeMVASV;
+  float var_Mu1TrackAngleBeforeMVASV;
+  
   float var_Mu2TrackInvariantMassBeforeMVASV;
+  float var_Mu2TrackPtBeforeMVASV;
+  float var_Mu2TrackAngleBeforeMVASV;
+  
   float var_Mu3TrackInvariantMassBeforeMVASV;
+  float var_Mu3TrackPtBeforeMVASV;
+  float var_Mu3TrackAngleBeforeMVASV;
   
   float var_Mu1TrackInvariantMassBeforeMVAKStarSV;
+  float var_Mu1TrackPtBeforeMVAKStarSV;
+  float var_Mu1TrackAngleBeforeMVAKStarSV;
+  
   float var_Mu2TrackInvariantMassBeforeMVAKStarSV;
+  float var_Mu2TrackPtBeforeMVAKStarSV;
+  float var_Mu2TrackAngleBeforeMVAKStarSV;
+  
   float var_Mu3TrackInvariantMassBeforeMVAKStarSV;
+  float var_Mu3TrackPtBeforeMVAKStarSV;
+  float var_Mu3TrackAngleBeforeMVAKStarSV;
 
 
 };

@@ -329,12 +329,28 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("var_MinDZDistSV",&var_MinDZDistSV);
   
   TMVA_Tree->Branch("var_Mu1TrackInvariantMassBeforeMVASV",&var_Mu1TrackInvariantMassBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu1TrackPtBeforeMVASV",&var_Mu1TrackPtBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu1TrackAngleBeforeMVASV",&var_Mu1TrackAngleBeforeMVASV);
+  
   TMVA_Tree->Branch("var_Mu2TrackInvariantMassBeforeMVASV",&var_Mu2TrackInvariantMassBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu2TrackPtBeforeMVASV",&var_Mu2TrackPtBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu2TrackAngleBeforeMVASV",&var_Mu2TrackAngleBeforeMVASV);
+  
   TMVA_Tree->Branch("var_Mu3TrackInvariantMassBeforeMVASV",&var_Mu3TrackInvariantMassBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu3TrackPtBeforeMVASV",&var_Mu3TrackPtBeforeMVASV);
+  TMVA_Tree->Branch("var_Mu3TrackAngleBeforeMVASV",&var_Mu3TrackAngleBeforeMVASV);
   
   TMVA_Tree->Branch("var_Mu1TrackInvariantMassBeforeMVAKStarSV",&var_Mu1TrackInvariantMassBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu1TrackPtBeforeMVAKStarSV",&var_Mu1TrackPtBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu1TrackAngleBeforeMVAKStarSV",&var_Mu1TrackAngleBeforeMVAKStarSV);
+  
   TMVA_Tree->Branch("var_Mu2TrackInvariantMassBeforeMVAKStarSV",&var_Mu2TrackInvariantMassBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu2TrackPtBeforeMVAKStarSV",&var_Mu2TrackPtBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu2TrackAngleBeforeMVAKStarSV",&var_Mu2TrackAngleBeforeMVAKStarSV);
+  
   TMVA_Tree->Branch("var_Mu3TrackInvariantMassBeforeMVAKStarSV",&var_Mu3TrackInvariantMassBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu3TrackPtBeforeMVAKStarSV",&var_Mu3TrackPtBeforeMVAKStarSV);
+  TMVA_Tree->Branch("var_Mu3TrackAngleBeforeMVAKStarSV",&var_Mu3TrackAngleBeforeMVAKStarSV);
 
 
 
@@ -775,13 +791,31 @@ void  MakeMVATree::Configure(){
       PairMass2NoSorting=HConfig.GetTH1D(Name+"_PairMass2NoSorting","PairMass2NoSorting",55,0.1,2.0,"M_{#mu#mu} (OS-SS, 2 no sorting), GeV","Events");
       MuMuMassNoSorting=HConfig.GetTH2D(Name+"_MuMuMassNoSorting","MuMuMassNoSorting",55,0.1,2.0,50,0.1,2.0,"M_{#mu#mu} (OS-SS, 1 no sorting), GeV","M_{#mu#mu} (OS-SS, 2 no sorting sorting), GeV");
       
-      Mu1TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASV","Mu1TrackInvariantMassBeforeMVASV",400,0.95,3.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-      Mu2TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASV","Mu2TrackInvariantMassBeforeMVASV",400,0.95,3.0,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-      Mu3TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASV","Mu3TrackInvariantMassBeforeMVASV",400,0.95,3.0,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu1TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASV","Mu1TrackInvariantMassBeforeMVASV",200,0.95,3.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu1TrackPtBeforeMVASV =HConfig.GetTH1D(Name+"_Mu1TrackPtBeforeMVASV","Mu1TrackPtBeforeMVASV",100,0,30,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu1TrackAngleBeforeMVASV =HConfig.GetTH1D(Name+"_Mu1TrackAngleBeforeMVASV","Mu1TrackAngleBeforeMVASV",50,0,1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      
+      Mu2TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASV","Mu2TrackInvariantMassBeforeMVASV",200,0.95,3.0,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu2TrackPtBeforeMVASV =HConfig.GetTH1D(Name+"_Mu2TrackPtBeforeMVASV","Mu2TrackPtBeforeMVASV",100,0,30,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu2TrackAngleBeforeMVASV =HConfig.GetTH1D(Name+"_Mu2TrackAngleBeforeMVASV","Mu2TrackAngleBeforeMVASV",50,0,1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      
+      Mu3TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASV","Mu3TrackInvariantMassBeforeMVASV",200,0.95,3.0,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu3TrackPtBeforeMVASV =HConfig.GetTH1D(Name+"_Mu3TrackPtBeforeMVASV","Mu3TrackPtBeforeMVASV",100,0,30,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu3TrackAngleBeforeMVASV =HConfig.GetTH1D(Name+"_Mu3TrackAngleBeforeMVASV","Mu3TrackAngleBeforeMVASV",50,0,1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
       
       Mu1TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSV","Mu1TrackInvariantMassBeforeMVAKStarSV",120,0.6,3.0,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu1TrackPtBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu1TrackPtBeforeMVAKStarSV","Mu1TrackPtBeforeMVAKStarSV",100,0,30,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu1TrackAngleBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu1TrackAngleBeforeMVAKStarSV","Mu1TrackAngleBeforeMVAKStarSV",50,0,1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
+      
       Mu2TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSV","Mu2TrackInvariantMassBeforeMVAKStarSV",120,0.6,3.0,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu2TrackPtBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu2TrackPtBeforeMVAKStarSV","Mu2TrackPtBeforeMVAKStarSV",100,0,30,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu2TrackAngleBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu2TrackAngleBeforeMVAKStarSV","Mu2TrackAngleBeforeMVAKStarSV",50,0,1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
+      
       Mu3TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSV","Mu3TrackInvariantMassBeforeMVAKStarSV",120,0.6,3.0,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu3TrackPtBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu3TrackPtBeforeMVAKStarSV","Mu3TrackPtBeforeMVAKStarSV",100,0,30,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      Mu3TrackAngleBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu3TrackAngleBeforeMVAKStarSV","Mu3TrackAngleBeforeMVAKStarSV",50,0,1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+      
+      
 
 
 
@@ -1075,13 +1109,30 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist2d.push_back(&MuMuMassNoSorting);
   
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASV);
+  Extradist1d.push_back(&Mu1TrackPtBeforeMVASV);
+  Extradist1d.push_back(&Mu1TrackAngleBeforeMVASV);
+  
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASV);
+  Extradist1d.push_back(&Mu2TrackPtBeforeMVASV);
+  Extradist1d.push_back(&Mu2TrackAngleBeforeMVASV);
+  
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASV);
+  Extradist1d.push_back(&Mu3TrackPtBeforeMVASV);
+  Extradist1d.push_back(&Mu3TrackAngleBeforeMVASV);
   
   Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSV);
+  Extradist1d.push_back(&Mu1TrackPtBeforeMVAKStarSV);
+  Extradist1d.push_back(&Mu1TrackAngleBeforeMVAKStarSV);
+  
   Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSV);
+  Extradist1d.push_back(&Mu2TrackPtBeforeMVAKStarSV);
+  Extradist1d.push_back(&Mu2TrackAngleBeforeMVAKStarSV);
+  
   Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSV);
-
+  Extradist1d.push_back(&Mu3TrackPtBeforeMVAKStarSV);
+  Extradist1d.push_back(&Mu3TrackAngleBeforeMVAKStarSV);
+  
+  
 
 
 
@@ -1425,16 +1476,16 @@ void  MakeMVATree::doEvent(){
       double BestSS2SVAngleMassKStar = 99.0;
       
       double bestOSAng = 99.0;
-      double bestOSAngM = 99.0;
-      double bestOSAngMK = 99.0;
+      double bestOSAngM = 0.97;
+      double bestOSAngMK = 0.62;
       
       double bestSS1Ang = 99.0;
-      double bestSS1AngM = 99.0;
-      double bestSS1AngMK = 99.0;
+      double bestSS1AngM = 0.97;
+      double bestSS1AngMK = 0.62;
       
       double bestSS2Ang = 99.0;
-      double bestSS2AngM = 99.0;
-      double bestSS2AngMK = 99.0;
+      double bestSS2AngM = 0.97;
+      double bestSS2AngMK = 0.62;
       
       for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
         TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
@@ -1600,8 +1651,7 @@ void  MakeMVATree::doEvent(){
             M1bestSV=M1bestSV1;
             M1bestSVKStar=(MuonOSReassigned+ParticleLV).M();
             
-            bestpTSV1=(MuonOSReassigned+ParticleLVReassigned).Pt();
-            bestpTSVKStar1=(MuonOSReassigned+ParticleLV).Pt();
+            
             
             bestpSV1=(MuonOSReassigned+ParticleLVReassigned).P();
             bestpSVKStar1=(MuonOSReassigned+ParticleLV).P();
@@ -1614,8 +1664,7 @@ void  MakeMVATree::doEvent(){
             M2bestSV=M2bestSV1;
             M2bestSVKStar=(MuonSS1Reassigned+ParticleLV).M();
             
-            bestpTSV2=(MuonSS1Reassigned+ParticleLVReassigned).Pt();
-            bestpTSVKStar2=(MuonSS1Reassigned+ParticleLV).Pt();
+            
             
             bestpSV2=(MuonSS1Reassigned+ParticleLVReassigned).P();
             bestpSVKStar2=(MuonSS1Reassigned+ParticleLV).P();
@@ -1626,8 +1675,7 @@ void  MakeMVATree::doEvent(){
             M3bestSV=M3bestSV1;
             M3bestSVKStar=(MuonSS2Reassigned+ParticleLV).M();
             
-            bestpTSV3=(MuonSS2Reassigned+ParticleLVReassigned).Pt();
-            bestpTSVKStar3=(MuonSS2Reassigned+ParticleLV).Pt();
+            
             
             bestpSV3=(MuonSS2Reassigned+ParticleLVReassigned).P();
             bestpSVKStar3=(MuonSS2Reassigned+ParticleLV).P();
@@ -1642,34 +1690,13 @@ void  MakeMVATree::doEvent(){
               bestOSAng=fabs(SVPVVect.Angle(CombDirOS));
               bestOSAngM=(MuonOSReassigned+ParticleLVReassigned).M();
               bestOSAngMK=(MuonOSReassigned+ParticleLV).M();
-            }
-            
-            TLorentzVector MuTest=MuonOSReassigned;
-            TLorentzVector PtTest=ParticleLVReassigned;
-            TLorentzVector SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestOSSVAngle){//0.03
-              BestOSSVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestOSSVAngleMass=M1bestSV1;
+              
+              bestpTSV1=(MuonOSReassigned+ParticleLVReassigned).Pt();
+              bestpTSVKStar1=(MuonOSReassigned+ParticleLV).Pt();
             }
             
             
             
-            
-            MuTest=MuonOSReassigned;//For K star 896, neutral
-            PtTest=ParticleLV;
-            SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestOSSVAngleKStar){//0.03
-              BestOSSVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestOSSVAngleMassKStar=(MuonOSReassigned+ParticleLV).M();
-            }
           }
           
           
@@ -1681,33 +1708,12 @@ void  MakeMVATree::doEvent(){
               bestSS1Ang=fabs(SVPVVect.Angle(CombDirSS1));
               bestSS1AngM=(MuonSS1Reassigned+ParticleLVReassigned).M();
               bestSS1AngMK=(MuonSS1Reassigned+ParticleLV).M();
-            }
-            
-            TLorentzVector MuTest=MuonSS1Reassigned;
-            TLorentzVector PtTest=ParticleLVReassigned;
-            TLorentzVector SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS1SVAngle){//0.03
-              BestSS1SVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestSS1SVAngleMass=M2bestSV1;
+              
+              bestpTSV2=(MuonSS1Reassigned+ParticleLVReassigned).Pt();
+              bestpTSVKStar2=(MuonSS1Reassigned+ParticleLV).Pt();
             }
             
             
-            
-            MuTest=MuonSS1Reassigned;//For K star 896, neutral
-            PtTest=ParticleLV;
-            SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS1SVAngleKStar){//0.03
-              BestSS1SVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestSS1SVAngleMassKStar=(MuonSS1Reassigned+ParticleLV).M();
-            }
           }
           
           
@@ -1722,34 +1728,12 @@ void  MakeMVATree::doEvent(){
               bestSS2Ang=fabs(SVPVVect.Angle(CombDirSS2));
               bestSS2AngM=(MuonSS2Reassigned+ParticleLVReassigned).M();
               bestSS2AngMK=(MuonSS2Reassigned+ParticleLV).M();
-            }
-            
-            TLorentzVector MuTest=MuonSS2Reassigned;
-            TLorentzVector PtTest=ParticleLVReassigned;
-            TLorentzVector SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS2SVAngle){//0.03
-              BestSS2SVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestSS2SVAngleMass=M3bestSV1;
+              
+              bestpTSV3=(MuonSS2Reassigned+ParticleLVReassigned).Pt();
+              bestpTSVKStar3=(MuonSS2Reassigned+ParticleLV).Pt();
             }
             
             
-            
-            
-            MuTest=MuonSS2Reassigned;//For K star 896, neutral
-            PtTest=ParticleLV;
-            SumLV=MuTest+PtTest;
-            SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-            MuTest.Boost(-1*SumLV.BoostVector());
-            PtTest.Boost(-1*SumLV.BoostVector());
-            
-            if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS2SVAngleKStar){//0.03
-              BestSS2SVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-              BestSS2SVAngleMassKStar=(MuonSS2Reassigned+ParticleLV).M();
-            }
           }
           
           
@@ -1760,23 +1744,47 @@ void  MakeMVATree::doEvent(){
       
       
       Mu1TrackInvariantMassBeforeMVASV.at(t).Fill(bestOSAngM,1);
-      Mu1TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestOSAngMK,1);
-      
+      Mu1TrackPtBeforeMVASV.at(t).Fill(bestpTSV1,1);
+      Mu1TrackAngleBeforeMVASV.at(t).Fill(bestOSAng,1);
       var_Mu1TrackInvariantMassBeforeMVASV=bestOSAngM;
+      var_Mu1TrackPtBeforeMVASV=bestpTSV1;
+      var_Mu1TrackAngleBeforeMVASV=bestOSAng;
+      
+      Mu1TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestOSAngMK,1);
+      Mu1TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar1,1);
+      Mu1TrackAngleBeforeMVAKStarSV.at(t).Fill(bestOSAng,1);
       var_Mu1TrackInvariantMassBeforeMVAKStarSV=bestOSAngMK;
+      var_Mu1TrackPtBeforeMVAKStarSV=bestpTSVKStar1;
+      var_Mu1TrackAngleBeforeMVAKStarSV=bestOSAng;
         
       Mu2TrackInvariantMassBeforeMVASV.at(t).Fill(bestSS1AngM,1);
-      Mu2TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS1AngMK,1);
-      
+      Mu2TrackPtBeforeMVASV.at(t).Fill(bestpTSV2,1);
+      Mu2TrackAngleBeforeMVASV.at(t).Fill(bestSS1Ang,1);
       var_Mu2TrackInvariantMassBeforeMVASV=bestSS1AngM;
+      var_Mu2TrackPtBeforeMVASV=bestpTSV2;
+      var_Mu2TrackAngleBeforeMVASV=bestSS1Ang;
+      
+      Mu2TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS1AngMK,1);
+      Mu2TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar2,1);
+      Mu2TrackAngleBeforeMVAKStarSV.at(t).Fill(bestSS1Ang,1);
       var_Mu2TrackInvariantMassBeforeMVAKStarSV=bestSS1AngMK;
+      var_Mu2TrackPtBeforeMVAKStarSV=bestpTSVKStar2;
+      var_Mu2TrackAngleBeforeMVAKStarSV=bestSS1Ang;
       
       
       Mu3TrackInvariantMassBeforeMVASV.at(t).Fill(bestSS2AngM,1);
-      Mu3TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS2AngMK,1);
-      
+      Mu3TrackPtBeforeMVASV.at(t).Fill(bestpTSV3,1);
+      Mu3TrackAngleBeforeMVASV.at(t).Fill(bestSS2Ang,1);
       var_Mu3TrackInvariantMassBeforeMVASV=bestSS2AngM;
+      var_Mu3TrackPtBeforeMVASV=bestpTSV3;
+      var_Mu3TrackAngleBeforeMVASV=bestSS2Ang;
+      
+      Mu3TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS2AngMK,1);
+      Mu3TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar3,1);
+      Mu3TrackAngleBeforeMVAKStarSV.at(t).Fill(bestSS2Ang,1);
       var_Mu3TrackInvariantMassBeforeMVAKStarSV=bestSS2AngMK;
+      var_Mu3TrackPtBeforeMVAKStarSV=bestpTSVKStar3;
+      var_Mu3TrackAngleBeforeMVAKStarSV=bestSS2Ang;
       
       
       
