@@ -19,6 +19,8 @@
 #include "vector"
 #include "vector"
 
+using namespace std;
+
 class NtupleReader {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -121,6 +123,8 @@ public :
    std::vector<double>  *Muon_calEnergy_emS25;
    std::vector<double>  *Muon_calEnergy_emS9;
    std::vector<double>  *Muon_calEnergy_em;
+   std::vector<vector<float> > *Muon_TrackX;
+   std::vector<vector<float> > *Muon_TrackY;
    std::vector<std::vector<float> > *Muon_dDxDz;
    std::vector<std::vector<float> > *Muon_dDyDz;
    std::vector<std::vector<float> > *Muon_dX;
@@ -214,12 +218,6 @@ public :
    std::vector<int>     *MC_status;
 
 
-
-
-
-
-
-
    std::vector<double>  *Jet_BTagCVSB;
    std::vector<double>  *Jet_BTagMVA;
    std::vector<double>  *Jet_BTagCSV;
@@ -261,7 +259,7 @@ public :
    std::vector<double>  *TriggerObject_pt;
    std::vector<double>  *TriggerObject_phi;
    std::vector<double>  *TriggerObject_eta;
-   std::vector<std::string>  *TriggerObject_name;
+   std::vector<string>  *TriggerObject_name;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_p4;
    std::vector<std::vector<std::vector<int> > > *IsolationTrack_VertexWithSignalMuonIsValid;
    std::vector<std::vector<std::vector<float> > > *IsolationTrack_VertexWithSignalMuonChi2;
@@ -283,8 +281,12 @@ public :
    std::vector<std::string>  *Trigger_l1name;
    std::vector<int>     *Trigger_l1decision;
    std::vector<int>     *Trigger_l1prescale;
-   std::vector<std::string>  *Trigger_hltname;
+   std::vector<string>  *Trigger_hltname;
    std::vector<int>     *Trigger_hltdecision;
+   std::vector<double>  *Vertex_signal_KF_BS_2Ddistance;
+   std::vector<double>  *Vertex_signal_KF_BS_error;
+   std::vector<double>  *Vertex_signal_KF_BS_significance;
+
 
    // List of branches
    TBranch        *b_Event_EventNumber;   //!
@@ -381,6 +383,8 @@ public :
    TBranch        *b_Muon_calEnergy_emS25;   //!
    TBranch        *b_Muon_calEnergy_emS9;   //!
    TBranch        *b_Muon_calEnergy_em;   //!
+   TBranch        *b_Muon_TrackX;   //!
+   TBranch        *b_Muon_TrackY;   //!
    TBranch        *b_Muon_dDxDz;   //!
    TBranch        *b_Muon_dDyDz;   //!
    TBranch        *b_Muon_dX;   //!
@@ -486,6 +490,9 @@ public :
    TBranch        *b_Vertex_signal_KF_cov;   //!
    TBranch        *b_Vertex_signal_KF_refittedTracksP4;   //!
    TBranch        *b_Vertex_signal_KF_Chi2;   //!
+   TBranch        *b_Vertex_signal_KF_BS_2Ddistance;   //!
+   TBranch        *b_Vertex_signal_KF_BS_error;   //!
+   TBranch        *b_Vertex_signal_KF_BS_significance;   //!
    TBranch        *b_Vertex_signal_AF_pos;   //!
    TBranch        *b_Vertex_signal_AF_Chi2;   //!
    TBranch        *b_Vertex_signal_AF_Ndf;   //!
@@ -695,6 +702,8 @@ void NtupleReader::Init(TTree *tree)
    Muon_calEnergy_emS25 = 0;
    Muon_calEnergy_emS9 = 0;
    Muon_calEnergy_em = 0;
+   Muon_TrackX = 0;
+   Muon_TrackY = 0;
    Muon_dDxDz = 0;
    Muon_dDyDz = 0;
    Muon_dX = 0;
@@ -801,6 +810,9 @@ void NtupleReader::Init(TTree *tree)
    Vertex_signal_AF_pos = 0;
    Vertex_signal_AF_Chi2 = 0;
    Vertex_signal_AF_Ndf = 0;
+   Vertex_signal_KF_BS_2Ddistance = 0;
+   Vertex_signal_KF_BS_error = 0;
+   Vertex_signal_KF_BS_significance = 0;
    Vertex_pair_quality = 0;
    Vertex_Pair12_Pos = 0;
    Vertex_Pair23_Pos = 0;
@@ -954,6 +966,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_calEnergy_emS25", &Muon_calEnergy_emS25, &b_Muon_calEnergy_emS25);
    fChain->SetBranchAddress("Muon_calEnergy_emS9", &Muon_calEnergy_emS9, &b_Muon_calEnergy_emS9);
    fChain->SetBranchAddress("Muon_calEnergy_em", &Muon_calEnergy_em, &b_Muon_calEnergy_em);
+   fChain->SetBranchAddress("Muon_TrackX", &Muon_TrackX, &b_Muon_TrackX);
+   fChain->SetBranchAddress("Muon_TrackY", &Muon_TrackY, &b_Muon_TrackY);
    fChain->SetBranchAddress("Muon_dDxDz", &Muon_dDxDz, &b_Muon_dDxDz);
    fChain->SetBranchAddress("Muon_dDyDz", &Muon_dDyDz, &b_Muon_dDyDz);
    fChain->SetBranchAddress("Muon_dX", &Muon_dX, &b_Muon_dX);
@@ -1057,6 +1071,9 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_signal_KF_cov", &Vertex_signal_KF_cov, &b_Vertex_signal_KF_cov);
    fChain->SetBranchAddress("Vertex_signal_KF_refittedTracksP4", &Vertex_signal_KF_refittedTracksP4, &b_Vertex_signal_KF_refittedTracksP4);
    fChain->SetBranchAddress("Vertex_signal_KF_Chi2", &Vertex_signal_KF_Chi2, &b_Vertex_signal_KF_Chi2);
+   fChain->SetBranchAddress("Vertex_signal_KF_BS_2Ddistance", &Vertex_signal_KF_BS_2Ddistance, &b_Vertex_signal_KF_BS_2Ddistance);
+   fChain->SetBranchAddress("Vertex_signal_KF_BS_error", &Vertex_signal_KF_BS_error, &b_Vertex_signal_KF_BS_error);
+   fChain->SetBranchAddress("Vertex_signal_KF_BS_significance", &Vertex_signal_KF_BS_significance, &b_Vertex_signal_KF_BS_significance);
    fChain->SetBranchAddress("Vertex_signal_AF_pos", &Vertex_signal_AF_pos, &b_Vertex_signal_AF_pos);
    fChain->SetBranchAddress("Vertex_signal_AF_Chi2", &Vertex_signal_AF_Chi2, &b_Vertex_signal_AF_Chi2);
    fChain->SetBranchAddress("Vertex_signal_AF_Ndf", &Vertex_signal_AF_Ndf, &b_Vertex_signal_AF_Ndf);
