@@ -385,7 +385,7 @@ void  ThreeMuonDecay::doEvent(){
       muonTriplet.push_back(Ntp->Muon_P4(mu3_pt_idx));
 
       bool triggerCheck = false;
-      if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet);
+      if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
       value.at(TriggerMatch) = triggerCheck;
 
 

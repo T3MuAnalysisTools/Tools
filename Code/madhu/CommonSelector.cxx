@@ -415,9 +415,9 @@ void  CommonSelector::Configure(){
   Mu2TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd","Mu2TrackInvariantMassBeforeMVABestdRLtd",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
   Mu3TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd","Mu3TrackInvariantMassBeforeMVABestdRLtd",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
+  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0,30,"OS #mu - Isolation Track Chi2, GeV","Events");
+  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0,30,"SS1 #mu - Isolation Track Chi2, GeV","Events");
+  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0,30,"SS2 #mu - Isolation Track Chi2, GeV","Events");
   
   Mu1TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd1","Mu1TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
   Mu2TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd1","Mu2TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
@@ -1005,7 +1005,7 @@ void  CommonSelector::doEvent(){
     muonTriplet.push_back(Ntp->Muon_P4(mu3_pt_idx));
 
     bool triggerCheck = false;
-    if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet);
+    if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
     value.at(TriggerMatch) = triggerCheck;
 
     value.at(TauMassCut) = TauRefittedLV.M();
@@ -1219,6 +1219,10 @@ void  CommonSelector::doEvent(){
     double bestSS2AngM = 99.0;
     double bestSS2AngMK = 99.0;
     
+    double M1bestSVQual1 = 99.0;
+    double M2bestSVQual1 = 99.0;
+    double M3bestSVQual1 = 99.0;
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
       TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
@@ -1228,10 +1232,14 @@ void  CommonSelector::doEvent(){
       
       //std::cout<<"The charge of OS is "<<Ntp->Muon_charge(os_mu_idx)<<" SS1 is "<<Ntp->Muon_charge(ss1_mu_idx)<<" SS2 is "<<Ntp->Muon_charge(ss2_mu_idx)<< std::endl;
       //std::cout<<"The charge of Particle is "<<Ntp->IsolationTrack_charge(signal_idx,j)<<std::endl;
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
+      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,j)){
         Mu1TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
         Mu1TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
         Mu1TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
+        
+        Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j),1);
+        
+        
         
         if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
           dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
@@ -1254,10 +1262,12 @@ void  CommonSelector::doEvent(){
         }
       }
       
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
+      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,j)){
         Mu2TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
         Mu2TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
         Mu2TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
+        
+        Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j),1);
         
         if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
           dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
@@ -1280,10 +1290,12 @@ void  CommonSelector::doEvent(){
         }
       }
       
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
+      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,j)){
         Mu3TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
         Mu3TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
         Mu3TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
+        
+        Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j),1);
         
         if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
           dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
@@ -1372,6 +1384,7 @@ void  CommonSelector::doEvent(){
         double M2bestSV1 = 99.0;
         double M3bestSV1 = 99.0;
         
+        
         TLorentzVector MuLVSV1(0.,0.,0.,0.);
         TLorentzVector PtLVSV1(0.,0.,0.,0.);
         TLorentzVector MuLVSV2(0.,0.,0.,0.);
@@ -1391,7 +1404,7 @@ void  CommonSelector::doEvent(){
            MuLVSV1.SetE(sqrt(MuLVSV1.Px()*MuLVSV1.Px()+MuLVSV1.Py()*MuLVSV1.Py()+MuLVSV1.Pz()*MuLVSV1.Pz()+0.493677*0.493677));
            M1bestSV1=(MuLVSV1+PtLVSV1).M();
          }
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->IsolationTrack_charge(signal_idx,j)&&sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1mu*OSdRSV1mu)<OSdRSV1){
+         if(Ntp->SecondaryVertexTrackCharge(m,n)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->IsolationTrack_charge(signal_idx,j)&&sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1mu*OSdRSV1mu)<OSdRSV1){//only tracks with opposite charge of muon consiered
            OSdRSV1=sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1mu*OSdRSV1mu);
            OSdRSV1track=ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
            PtLVSV1=Ntp->SecondaryVertexTrack_P4(m,n);
@@ -1478,6 +1491,9 @@ void  CommonSelector::doEvent(){
           
           bestpSV3=(MuonSS2Reassigned+ParticleLVReassigned).P();
           bestpSVKStar3=(MuonSS2Reassigned+ParticleLV).P();
+        }
+        
+        if(OSdRSV1<0.00001){
         }
         
         
@@ -1823,6 +1839,7 @@ void  CommonSelector::doEvent(){
     //Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR2,1);
     //Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR3,1);
     
+    /*
     
     if(dR1<0.125){
       Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M1dR,1);
@@ -1833,6 +1850,8 @@ void  CommonSelector::doEvent(){
     if(dR3<0.125){
       Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M3dR,1);
     }
+    
+    */
     
     
     if(dR1<0.09){
