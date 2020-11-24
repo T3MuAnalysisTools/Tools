@@ -163,16 +163,30 @@ class MCBackgroundStudy : public Selection {
   std::vector<TH1D> MassEtaReco;
   std::vector<TH1D> MassEtaPrimeReco;
   std::vector<TH1D> MassPhiReco;
+  std::vector<TH1D> MassEtaMixed;
+  std::vector<TH1D> MassEtaPrimeMixed;
+  std::vector<TH1D> MassPhiMixed;
   std::vector<TH1D> MassOmega;
+  
   std::vector<TH1D> PassedCount;
   std::vector<TH1D> ChildCount;
   std::vector<TH1D> ChildCountPrime;
+  
   std::vector<TH2D> PhotonSpectrum;
   std::vector<TH2D> PhotonSpectrumPrime;
   std::vector<TH2D> PhotonSpectrumPhi;
   std::vector<TH1D> PhotonDRToTruth_Eta;
   std::vector<TH1D> PhotonDRToTruth_EtaPrime;
   std::vector<TH1D> PhotonDRToTruth_Phi;
+  std::vector<TH1D> DeltaRPhotontoTau;
+  std::vector<TH1D> PhotonRecoSuccess;
+  std::vector<TH1D> DeltaEnergyPhoton;
+  std::vector<TH1D> Photon_hasPixelSeed_Eta;
+  std::vector<TH1D> Photon_hasPixelSeed_EtaPrime;
+  std::vector<TH1D> Photon_hasPixelSeed_Phi;
+  std::vector<TH1D> Photon_hasPixelSeed;
+  std::vector<TH1D> Photon_hasConversionTracks;
+  std::vector<TH1D> Photon_isPF;
 
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;

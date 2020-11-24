@@ -1,0 +1,5 @@
+Histo: 1   -1 Data Data 1
+Histo: 40  -1  MC2 D_{s}\rightarrow\tau_{3\mu}(10^{-7}) 93
+Histo: 60  -1  MC3 B_{0}\rightarrow\tau_{3\mu}(10^{-7}) 209
+Histo: 90  -1  MC4 B_{p}\rightarrow\tau_{3\mu}(10^{-7}) 88
+

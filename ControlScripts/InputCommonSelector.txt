@@ -1,9 +1,9 @@
 Thin: False
 Skim: False
-HistoFile: InputData/HistoScaletoLumi.txt
+HistoFile: InputData/HistoScaletoLumiSignal.txt
 Analysis: CommonSelector
 UncertType: default
-SkimInfo: InputData/Data2018Bkg.log
+SkimInfo: InputData/Dat2018Sig.log
 Lumi: 58345.2884618
 PlotStyle: style2
 
