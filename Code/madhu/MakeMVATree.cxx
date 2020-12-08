@@ -1487,16 +1487,67 @@ void  MakeMVATree::doEvent(){
       double bestSS2AngM = 0.97;
       double bestSS2AngMK = 0.62;
       
+      double Mu1bestChi2 = 199.0;
+      double Mu2bestChi2 = 199.0;
+      double Mu3bestChi2 = 199.0;
+      
+      double M1bestChi2 = 99.0;
+      double M2bestChi2 = 99.0;
+      double M3bestChi2 = 99.0;
+      
+      double M1KStarbestChi2 = 99.0;
+      double M2KStarbestChi2 = 99.0;
+      double M3KStarbestChi2 = 99.0;
+      
+      double Mu1bestChi2AngleDiff = 99.0;//angle between SVPV and muon-track combination
+      double Mu2bestChi2AngleDiff = 99.0;
+      double Mu3bestChi2AngleDiff = 99.0;
+      
+      double Mu1bestChi2DistRatio = 99.0;//ratio of SVPV dist and c t gamma
+      double Mu2bestChi2DistRatio = 99.0;
+      double Mu3bestChi2DistRatio = 99.0;
+      
+      double Mu1KSbestChi2DistRatio = 99.0;//ratio of SVPV dist and c t gamma
+      double Mu2KSbestChi2DistRatio = 99.0;
+      double Mu3KSbestChi2DistRatio = 99.0;
+      
       for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
         TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
         TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
         ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
         
+        TLorentzVector CombOSPhi = ParticleLVReassigned+MuonOSReassigned;
+        TLorentzVector CombOSKS = ParticleLV+MuonOSReassigned;
+        
+        TLorentzVector CombSS1Phi = ParticleLVReassigned+MuonSS1Reassigned;
+        TLorentzVector CombSS1KS = ParticleLV+MuonSS1Reassigned;
+        
+        TLorentzVector CombSS2Phi = ParticleLVReassigned+MuonSS2Reassigned;
+        TLorentzVector CombSS2KS = ParticleLV+MuonSS2Reassigned;
+        
         //MassDifference.at(t).Fill(ParticleLV.M()-0.493677,1);
         
         //std::cout<<"The charge of OS is "<<Ntp->Muon_charge(os_mu_idx)<<" SS1 is "<<Ntp->Muon_charge(ss1_mu_idx)<<" SS2 is "<<Ntp->Muon_charge(ss2_mu_idx)<< std::endl;
         //std::cout<<"The charge of Particle is "<<Ntp->IsolationTrack_charge(signal_idx,j)<<std::endl;
-        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
+        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,j)){
+          
+          TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon1Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
+          TVector3 CombDirOS = CombOSPhi.Vect();
+          
+          Mu1bestChi2DistRatio =  (4.6345*pow(10,-12)*CombOSPhi.Gamma())/(SVPVVect.Mag());
+          Mu1KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombOSKS.Gamma())/(SVPVVect.Mag());
+          
+          if(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j)<Mu1bestChi2){
+            Mu1bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j);
+            M1bestChi2=(ParticleLVReassigned+MuonOSReassigned).M();
+            M1KStarbestChi2=(ParticleLV+MuonOSReassigned).M();
+            
+            Mu1bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirOS));
+            
+            Mu1bestChi2DistRatio =  (4.6345*pow(10,-12)*CombOSPhi.Gamma())/(SVPVVect.Mag());
+            Mu1KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombOSKS.Gamma())/(SVPVVect.Mag());
+          }
+          
           if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
             dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
             M1dR=(ParticleLVReassigned+MuonOSReassigned).M();
@@ -1516,7 +1567,22 @@ void  MakeMVATree::doEvent(){
           }
         }
         
-        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
+        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,j)){
+          
+          TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon2Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
+          TVector3 CombDirSS1 = CombSS1Phi.Vect();
+          
+          if(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j)<Mu2bestChi2){
+            Mu2bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j);
+            M2bestChi2=(ParticleLVReassigned+MuonSS1Reassigned).M();
+            M2KStarbestChi2=(ParticleLV+MuonSS1Reassigned).M();
+            
+            Mu2bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirSS1));
+            
+            Mu2bestChi2DistRatio =  (4.6345*pow(10,-12)*CombSS1Phi.Gamma())/(SVPVVect.Mag());
+            Mu2KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombSS1KS.Gamma())/(SVPVVect.Mag());
+          }
+          
           if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
             dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
             M2dR=(ParticleLVReassigned+MuonSS1Reassigned).M();
@@ -1536,7 +1602,22 @@ void  MakeMVATree::doEvent(){
           }
         }
         
-        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
+        if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,j)){
+          
+          TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon3Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
+          TVector3 CombDirSS2 = CombSS2Phi.Vect();
+          
+          if(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j)<Mu3bestChi2){
+            Mu3bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j);
+            M3bestChi2=(ParticleLVReassigned+MuonSS2Reassigned).M();
+            M3KStarbestChi2=(ParticleLV+MuonSS2Reassigned).M();
+            
+            Mu3bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirSS2));
+            
+            Mu3bestChi2DistRatio =  (4.6345*pow(10,-12)*CombSS2Phi.Gamma())/(SVPVVect.Mag());
+            Mu3KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombSS2KS.Gamma())/(SVPVVect.Mag());
+          }
+          
           if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
             dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
             M3dR=(ParticleLVReassigned+MuonSS2Reassigned).M();
@@ -1742,7 +1823,7 @@ void  MakeMVATree::doEvent(){
       
       
       
-      
+      /*
       Mu1TrackInvariantMassBeforeMVASV.at(t).Fill(bestOSAngM,1);
       Mu1TrackPtBeforeMVASV.at(t).Fill(bestpTSV1,1);
       Mu1TrackAngleBeforeMVASV.at(t).Fill(bestOSAng,1);
@@ -1783,6 +1864,50 @@ void  MakeMVATree::doEvent(){
       Mu3TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar3,1);
       Mu3TrackAngleBeforeMVAKStarSV.at(t).Fill(bestSS2Ang,1);
       var_Mu3TrackInvariantMassBeforeMVAKStarSV=bestSS2AngMK;
+      var_Mu3TrackPtBeforeMVAKStarSV=bestpTSVKStar3;
+      var_Mu3TrackAngleBeforeMVAKStarSV=bestSS2Ang;
+      */
+      
+      Mu1TrackInvariantMassBeforeMVASV.at(t).Fill(M1bestChi2,1);
+      Mu1TrackPtBeforeMVASV.at(t).Fill(bestpTSV1,1);
+      Mu1TrackAngleBeforeMVASV.at(t).Fill(bestOSAng,1);
+      var_Mu1TrackInvariantMassBeforeMVASV=M1bestChi2;
+      var_Mu1TrackPtBeforeMVASV=bestpTSV1;
+      var_Mu1TrackAngleBeforeMVASV=bestOSAng;
+      
+      Mu1TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(M1KStarbestChi2,1);
+      Mu1TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar1,1);
+      Mu1TrackAngleBeforeMVAKStarSV.at(t).Fill(bestOSAng,1);
+      var_Mu1TrackInvariantMassBeforeMVAKStarSV=M1KStarbestChi2;
+      var_Mu1TrackPtBeforeMVAKStarSV=bestpTSVKStar1;
+      var_Mu1TrackAngleBeforeMVAKStarSV=bestOSAng;
+        
+      Mu2TrackInvariantMassBeforeMVASV.at(t).Fill(M2bestChi2,1);
+      Mu2TrackPtBeforeMVASV.at(t).Fill(bestpTSV2,1);
+      Mu2TrackAngleBeforeMVASV.at(t).Fill(bestSS1Ang,1);
+      var_Mu2TrackInvariantMassBeforeMVASV=M2bestChi2;
+      var_Mu2TrackPtBeforeMVASV=bestpTSV2;
+      var_Mu2TrackAngleBeforeMVASV=bestSS1Ang;
+      
+      Mu2TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(M2KStarbestChi2,1);
+      Mu2TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar2,1);
+      Mu2TrackAngleBeforeMVAKStarSV.at(t).Fill(bestSS1Ang,1);
+      var_Mu2TrackInvariantMassBeforeMVAKStarSV=M2KStarbestChi2;
+      var_Mu2TrackPtBeforeMVAKStarSV=bestpTSVKStar2;
+      var_Mu2TrackAngleBeforeMVAKStarSV=bestSS1Ang;
+      
+      
+      Mu3TrackInvariantMassBeforeMVASV.at(t).Fill(M3bestChi2,1);
+      Mu3TrackPtBeforeMVASV.at(t).Fill(bestpTSV3,1);
+      Mu3TrackAngleBeforeMVASV.at(t).Fill(bestSS2Ang,1);
+      var_Mu3TrackInvariantMassBeforeMVASV=M3bestChi2;
+      var_Mu3TrackPtBeforeMVASV=bestpTSV3;
+      var_Mu3TrackAngleBeforeMVASV=bestSS2Ang;
+      
+      Mu3TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(M3KStarbestChi2,1);
+      Mu3TrackPtBeforeMVAKStarSV.at(t).Fill(bestpTSVKStar3,1);
+      Mu3TrackAngleBeforeMVAKStarSV.at(t).Fill(bestSS2Ang,1);
+      var_Mu3TrackInvariantMassBeforeMVAKStarSV=M3KStarbestChi2;
       var_Mu3TrackPtBeforeMVAKStarSV=bestpTSVKStar3;
       var_Mu3TrackAngleBeforeMVAKStarSV=bestSS2Ang;
       
