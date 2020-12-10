@@ -12,7 +12,6 @@ args = parser.parse_args()
 
 #CLASSIFIER = args.classifier.replace('.C','')
 DIR = 'dataset/weights/'
-
 TMVATreeList = [ 'Run2017', 'Run2017B', 'Run']
 
 #------------------------------

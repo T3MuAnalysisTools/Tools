@@ -66,7 +66,6 @@ if __name__== "__main__":
         rdict = get_file_dict(ifile)
         hist = rdict["datasets"]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
 
-
         hist.SetTitle("")
         hist.SetLineColor(color)
         hist.SetStats(0)
@@ -80,7 +79,6 @@ if __name__== "__main__":
     cmd = 'mkdir plots'
     os.system(cmd)
     legend.Draw()
-
 
     can.SaveAs("plots/compareRocks.png")
     can.SaveAs("plots/compareRocks.root")

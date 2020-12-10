@@ -123,19 +123,19 @@ var_limits = {  'var_min_p':[0,10],
 
 
 varsets = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-                'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
+                ,'var_maxMuonsDca',
                 'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
                 ],
 
 
            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-                'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
+                ,'var_maxMuonsDca',
                 'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
                 ],
 
 
            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-                'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
+                'var_maxMuonsDca',
                 'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
                 ],
 
@@ -167,5 +167,5 @@ if __name__== "__main__":
             print classifierName
             print args.methods
 #            os.system("root -q -b -l "+classifierName+".cxx\(\\\ "+args.methods+"\\\"\) &>> TMVATraining.log")
-            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
+#            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
 
