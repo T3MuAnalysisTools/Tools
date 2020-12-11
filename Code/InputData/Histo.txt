@@ -1,8 +1,2 @@
 Histo: 1   -1 Data Data 1
-Histo: 30  -1  MC1 D_{s}\rightarrow\phi\pi 33
-Histo: 40  -1  MC2 D_{s}\rightarrow\tau_{3\mu} 51
-Histo: 60  -1  MC3 B_{0}\rightarrow\tau_{3\mu} 5
-Histo: 90  -1  MC4 B_{p}\rightarrow\tau_{3\mu} 6
-Histo: 120  -1  MC5 MinimumBias 9
-
-
+Histo: 120 4367.0   MC5 b\bar{b}/c\bar{c}\rightarrow2\mu 9
