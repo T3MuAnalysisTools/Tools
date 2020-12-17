@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoScaletoLumi.txt
+Analysis: T3MSelectionTree
+UncertType: default
+SkimInfo: InputData/SkimSummaryLog_Production2018_24_04_2020.log
+Lumi: 59800
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
