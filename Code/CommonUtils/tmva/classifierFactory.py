@@ -79,8 +79,9 @@ def makeClassifiers(classifierName, inputFile, outputFile,cat, varset, cut):
          if cat=="B": category_cut = " && category == 2  "
          if cat=="C": category_cut = " && category == 3  "
          if cat=="BC": category_cut = " && (category == 2 || category ==3)  "
-         oFile.write("TCut mycutb = \""+cutb+" MC==0 " + category_cut + "  && var_flightLenSig < 100.  && var_maxMuonsDca < 0.3   &&   var_MaxVertexPairQuality < 30. &&  var_svpvTauAngle < 0.2   && var_MaxtrkKink  < 100 && var_MindcaTrackSV > 0 && var_MindcaTrackSV < 0.5 &&  var_MuonglbkinkSum < 100   && (var_tauMass < 1.75 || var_tauMass > 1.81)  \";\n")
-         oFile.write("TCut mycuts = \""+cuts+" MC==1 " + category_cut + "  && var_flightLenSig < 100.  && var_maxMuonsDca < 0.3   && var_MaxVertexPairQuality < 30. &&  var_svpvTauAngle < 0.2  && var_MaxtrkKink  < 100 && var_MindcaTrackSV > 0 && var_MindcaTrackSV < 0.5 &&  var_MuonglbkinkSum < 100        \";\n")
+         if cat=="ABC": category_cut = " && (category == 1 || category == 2 || category ==3)  "
+         oFile.write("TCut mycutb = \""+cutb+" MC==0 " + category_cut + "  && var_flightLenSig < 100.  && var_maxMuonsDca < 0.3   &&   var_MaxVertexPairQuality < 30. &&  var_svpvTauAngle < 0.2   && var_MaxtrkKink  < 100 && var_MindcaTrackSV > 0 && var_MindcaTrackSV < 0.5 &&  var_MuonglbkinkSum < 100   && (var_Mu1TrackInvariantMassBeforeMVASV < 1.01 || var_Mu1TrackInvariantMassBeforeMVASV > 1.03) && var_Mu1TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu2TrackInvariantMassBeforeMVASV < 1.01 || var_Mu2TrackInvariantMassBeforeMVASV > 1.03) && var_Mu2TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu3TrackInvariantMassBeforeMVASV < 1.01 || var_Mu3TrackInvariantMassBeforeMVASV > 1.03) && var_Mu3TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu1TrackInvariantMassBeforeMVAKStarSV > 0.63)  && (var_Mu2TrackInvariantMassBeforeMVAKStarSV > 0.63)  && (var_Mu3TrackInvariantMassBeforeMVAKStarSV > 0.63) && (var_tauMass < 1.75 || var_tauMass > 1.81)  \";\n")
+         oFile.write("TCut mycuts = \""+cuts+" MC==1 " + category_cut + "  && var_flightLenSig < 100.  && var_maxMuonsDca < 0.3   && var_MaxVertexPairQuality < 30. &&  var_svpvTauAngle < 0.2  && var_MaxtrkKink  < 100 && var_MindcaTrackSV > 0 && var_MindcaTrackSV < 0.5 &&  var_MuonglbkinkSum < 100   && (var_Mu1TrackInvariantMassBeforeMVASV < 1.01 || var_Mu1TrackInvariantMassBeforeMVASV > 1.03) && var_Mu1TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu2TrackInvariantMassBeforeMVASV < 1.01 || var_Mu2TrackInvariantMassBeforeMVASV > 1.03) && var_Mu2TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu3TrackInvariantMassBeforeMVASV < 1.01 || var_Mu3TrackInvariantMassBeforeMVASV > 1.03) && var_Mu3TrackInvariantMassBeforeMVASV > 0.98  && (var_Mu1TrackInvariantMassBeforeMVAKStarSV > 0.63)  && (var_Mu2TrackInvariantMassBeforeMVAKStarSV > 0.63)  && (var_Mu3TrackInvariantMassBeforeMVAKStarSV > 0.63)      \";\n")
 
       elif _training_tag in line:
          oFile.write("dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,\n\"nTrain_Signal=0:nTrain_Background=0:nTest_signal=0:nTest_Background=0:SplitMode=Random:NormMode=NumEvents:!V\");\n")
@@ -116,7 +117,10 @@ var_limits = {  'var_min_p':[0,10],
                 'var_RelPt_Mu1Tau': [0,100],
                 'var_MinMIPLikelihood': [0,1],
                 'var_pmin': [0,10],
-                'var_max_cLP': [0,60]
+                'var_max_cLP': [0,60],
+                'var_Mu1TrackInvariantMassBeforeMVAKStarSV': [0,20],
+                'var_Mu2TrackInvariantMassBeforeMVAKStarSV': [0,20],
+                'var_Mu3TrackInvariantMassBeforeMVAKStarSV': [0,20]
 }
 
 
@@ -124,27 +128,41 @@ var_limits = {  'var_min_p':[0,10],
 
 varsets = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
-                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
+                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality',
+                'var_Mu1TrackInvariantMassBeforeMVAKStarSV','var_Mu2TrackInvariantMassBeforeMVAKStarSV','var_Mu3TrackInvariantMassBeforeMVAKStarSV'
                 ],
 
 
            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
-                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
+                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality',
+                'var_Mu1TrackInvariantMassBeforeMVAKStarSV','var_Mu2TrackInvariantMassBeforeMVAKStarSV','var_Mu3TrackInvariantMassBeforeMVAKStarSV'
                 ],
 
 
            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
-                'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
+                'var_maxMuonsDca',
                 'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
+                'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
+                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality',
+                'var_Mu1TrackInvariantMassBeforeMVAKStarSV','var_Mu2TrackInvariantMassBeforeMVAKStarSV','var_Mu3TrackInvariantMassBeforeMVAKStarSV'
                 ],
 
 
 
            'BC':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
                  'var_MaxD0SigSV','var_MindcaTrackSV','var_maxMuonsDca',
-                 'var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxVertexPairQuality'
-                 ,'var_MaxMuon_chi2LocalMomentum']}
+                 'var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxVertexPairQuality',
+                 'var_MaxMuon_chi2LocalMomentum',
+                 'var_Mu1TrackInvariantMassBeforeMVAKStarSV','var_Mu2TrackInvariantMassBeforeMVAKStarSV','var_Mu3TrackInvariantMassBeforeMVAKStarSV'
+                 ],
+                 
+           'ABC':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MaxD0SigSV','var_MindcaTrackSV','var_maxMuonsDca',
+                 'var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxVertexPairQuality',
+                 'var_MaxMuon_chi2LocalMomentum',
+                 'var_Mu1TrackInvariantMassBeforeMVAKStarSV','var_Mu2TrackInvariantMassBeforeMVAKStarSV','var_Mu3TrackInvariantMassBeforeMVAKStarSV'
+                 ]}
 
 
 
@@ -152,7 +170,7 @@ varsets = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 
 print varsets
 
-categories = ['A','B','C','BC']
+categories = ['A','B','C','BC','ABC']
 datasets = {'Vars':'FillMVATree'}
 
 if __name__== "__main__":
@@ -167,5 +185,5 @@ if __name__== "__main__":
             print classifierName
             print args.methods
 #            os.system("root -q -b -l "+classifierName+".cxx\(\\\ "+args.methods+"\\\"\) &>> TMVATraining.log")
-            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
+#            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
 

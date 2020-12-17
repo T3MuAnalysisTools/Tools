@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoMyTest.txt
+Analysis: MCBackgroundStudy
+UncertType: default
+SkimInfo: InputData/SkimSummaryMyTest.log
+Lumi: 6782.0070
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
