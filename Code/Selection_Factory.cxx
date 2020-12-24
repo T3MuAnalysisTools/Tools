@@ -27,10 +27,6 @@
 
 
 #ifdef USE_joshi
-#include "joshi/MyTest.h"
-#include "joshi/T3MSelectionTree.h"
-#include "joshi/DsPhiTree.h"
-#include "joshi/SignalSelector.h"
 #include "joshi/MuonPionTree.h"
 #endif
 
@@ -96,10 +92,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #endif
 
 #ifdef USE_joshi
-  else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  else if(Analysis.Contains("dsphipeak"))s = new DsPhiPeak(Analysis,UncertType); 
   else if(Analysis.Contains("muonpiontree"))s=new MuonPionTree(Analysis, UncertType);
-  else if(Analysis.Contains("t3mselectiontree"))s=new T3MSelectionTree(Analysis, UncertType); 
 #endif
 
 

@@ -65,7 +65,7 @@ endif
 
 
 ifdef USE_joshi
-	TARGETS += MyTest DimuTrk ThreeMu MCEfficiency  AnalysisWithTMVA TMVASignal SignalSelector DsPhiPeak FillMVATree FillMVATree_ThreeGlobal FillMVATree_TwoGlobalTracker FillMVATree_ThreeGlobal_TrackerOnly FillMVATree_TwoGlobalTracker_TrackerOnly MuonPionTree
+	TARGETS += MuonPionTree
 	DEFS += -DUSE_joshi=1
 endif
 

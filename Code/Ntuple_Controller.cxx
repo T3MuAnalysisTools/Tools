@@ -235,17 +235,23 @@ double Ntuple_Controller::deltaR(double eta1, double phi1, double eta2, double p
 //-------------------------- return GEN pdgId -------------------
 // Returns the pdgId of the GEN particle matched to a RECO particle
 
-int Ntuple_Controller::GENMatchedPdgId(TLorentzVector vec){
+std::pair<int, int> Ntuple_Controller::GENMatchedPdgId(TLorentzVector vec){
+   std::pair<int, int> tmp;
    float dR_min = 999.0;
    int pdgId = 9999999;
-   for (unsigned int it=0; it<NMCSignalParticles(); ++it){
-      float tmp_dR = MCSignalParticle_p4(it).DeltaR(vec);
-      if (tmp_dR<dR_min && tmp_dR<0.05){
+   tmp.first = pdgId;
+   tmp.second = -1;
+   for (unsigned int it=0; it<NMCParticles(); ++it){
+      float tmp_dR = MCParticle_p4(it).DeltaR(vec);
+      float dpt = abs(MCParticle_p4(it).Pt()-vec.Pt())/vec.Pt();
+      if (tmp_dR<dR_min && tmp_dR<0.03 && dpt<0.1){
          dR_min = tmp_dR;
-         pdgId = MCSignalParticle_pdgid(it);
+         pdgId = MCParticle_pdgid(it);
+         tmp.second = it;
+         tmp.first = pdgId;
       }
    } 
-   return pdgId;
+   return tmp;
 }
 
 //-------------------------- --------------------------------- -------------------
