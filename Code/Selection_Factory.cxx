@@ -28,18 +28,8 @@
 
 #ifdef USE_joshi
 #include "joshi/MyTest.h"
-//#include "joshi/Validation.h"
-#include "joshi/DimuTrk.h"
-#include "joshi/ThreeMu.h"
-#include "joshi/TMVASignal.h"
-#include "joshi/AnalysisWithTMVA.h"
-#include "joshi/MCEfficiency.h"
-#include "joshi/FillMVATree.h"
-#include "joshi/FillMVATree_ThreeGlobal_TrackerOnly.h"
-#include "joshi/FillMVATree_ThreeGlobal.h"
-#include "joshi/FillMVATree_TwoGlobalTracker_TrackerOnly.h"
-#include "joshi/FillMVATree_TwoGlobalTracker.h"
-#include "joshi/DsPhiPeak.h"
+#include "joshi/T3MSelectionTree.h"
+#include "joshi/DsPhiTree.h"
 #include "joshi/SignalSelector.h"
 #include "joshi/MuonPionTree.h"
 #endif
@@ -107,21 +97,9 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 
 #ifdef USE_joshi
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  //  else if(Analysis.Contains("validation"))s=new Validation(Analysis,UncertType);
-  else if(Analysis.Contains("dimutrk"))s=new DimuTrk(Analysis,UncertType);
-  else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType); //  three mu id cuts
-  else if(Analysis.Contains("mcefficiency"))s=new MCEfficiency(Analysis,UncertType);
-  else if(Analysis.Contains("analysiswithtmva"))s=new AnalysisWithTMVA(Analysis,UncertType);
-  else if(Analysis.Contains("fillmvatree_threeglobal_trackeronly"))s=new FillMVATree_ThreeGlobal_TrackerOnly(Analysis,UncertType);
-  else if(Analysis.Contains("fillmvatree_threeglobal"))s=new FillMVATree_ThreeGlobal(Analysis,UncertType);
-  else if(Analysis.Contains("fillmvatree_twoglobaltracker_trackeronly"))s=new FillMVATree_TwoGlobalTracker_TrackerOnly(Analysis,UncertType);
-  else if(Analysis.Contains("fillmvatree_twoglobaltracker"))s=new FillMVATree_TwoGlobalTracker(Analysis,UncertType);
-  else if(Analysis.Contains("fillmvatree"))s=new FillMVATree(Analysis,UncertType);
-  else if(Analysis.Contains("signalselector"))s = new SignalSelector(Analysis,UncertType); 
   else if(Analysis.Contains("dsphipeak"))s = new DsPhiPeak(Analysis,UncertType); 
-  else if(Analysis.Contains("SignalSelector"))s=new SignalSelector(Analysis, UncertType);
   else if(Analysis.Contains("muonpiontree"))s=new MuonPionTree(Analysis, UncertType);
-  
+  else if(Analysis.Contains("t3mselectiontree"))s=new T3MSelectionTree(Analysis, UncertType); 
 #endif
 
 
