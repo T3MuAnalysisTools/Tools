@@ -2,6 +2,7 @@
 
 
 import os
+import sys
 from ROOT import *
 import argparse
 import ROOT
@@ -9,12 +10,13 @@ import ROOT
 
 
 parser = argparse.ArgumentParser()
-
 parser.add_argument("-f","--files", help="List of files (coma separated); [Default: %(default)s]",  nargs="+", action="store", default = ["a.root","b.root"])
 parser.add_argument("-m","--method", help="name of method; [Default: %(default)s]",  type = str, action="store", default = "BDT")
-
 args = parser.parse_args()
+args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
+# use your args
+#print("connecting to {}".format(args.host))
 
 
 
@@ -79,6 +81,7 @@ if __name__== "__main__":
     cmd = 'mkdir plots'
     os.system(cmd)
     legend.Draw()
+
 
     can.SaveAs("plots/compareRocks.png")
     can.SaveAs("plots/compareRocks.root")
