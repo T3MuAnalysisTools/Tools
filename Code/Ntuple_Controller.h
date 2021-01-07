@@ -784,7 +784,7 @@ class Ntuple_Controller{
       float TauGenMatch(unsigned int tmp_idx);
       bool isPromptDs();
       int DsMotherPdgId(unsigned int index);
-      int GENMatchedPdgId(TLorentzVector vec);
+      std::pair<int, int> GENMatchedPdgId(TLorentzVector vec);
       TLorentzVector GENMatchedLV(TLorentzVector vec);
       double deltaR(double eta1, double phi1, double eta2, double phi2); 
       TLorentzVector matchToTruthTauDecay(TLorentzVector vector);

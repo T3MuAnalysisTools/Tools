@@ -146,6 +146,8 @@ varsets = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 
 
            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                'var_maxMuonsDca',
+                'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality'
                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV',
                 'var_Muon1DetID','var_Muon2DetID','var_Muon3DetID' ,'var_MaxVertexPairQuality',
                 'var_Mu1TrackInvariantMassBeforeMVASV','var_Mu2TrackInvariantMassBeforeMVASV','var_Mu3TrackInvariantMassBeforeMVASV',
@@ -191,5 +193,5 @@ if __name__== "__main__":
             print classifierName
             print args.methods
 #            os.system("root -q -b -l "+classifierName+".cxx\(\\\ "+args.methods+"\\\"\) &>> TMVATraining.log")
-            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
+#            os.system("root -q -b -l "+classifierName+".cxx\(\\\""+args.methods+"\\\"\) &>> TMVATraining.log")
 

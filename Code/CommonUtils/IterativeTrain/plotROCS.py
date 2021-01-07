@@ -12,6 +12,7 @@ import ROOT
 parser = argparse.ArgumentParser()
 parser.add_argument("-f","--files", help="List of files (coma separated); [Default: %(default)s]",  nargs="+", action="store", default = ["a.root","b.root"])
 parser.add_argument("-m","--method", help="name of method; [Default: %(default)s]",  type = str, action="store", default = "BDT")
+parser.add_argument("-o","--output", help="output files prefix; [Default: %(default)s]",  type = str, action="store", default = "Out")
 args = parser.parse_args()
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
@@ -64,9 +65,11 @@ if __name__== "__main__":
     color = 1
     for ifile in args.files:
         print ifile
+        datasets_prefix = ifile[:-5]
         color +=1
         rdict = get_file_dict(ifile)
-        hist = rdict["datasets"]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
+        hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
+
 
         hist.SetTitle("")
         hist.SetLineColor(color)
@@ -83,7 +86,7 @@ if __name__== "__main__":
     legend.Draw()
 
 
-    can.SaveAs("plots/compareRocks.png")
-    can.SaveAs("plots/compareRocks.root")
+    can.SaveAs("plots/Compare_"+args.output+".png")
+    can.SaveAs("plots/Compare_"+args.output+".root")
 
 

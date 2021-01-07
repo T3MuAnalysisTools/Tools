@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoScaletoLumi.txt
+Analysis: DsPhiPiTree
+UncertType: default
+SkimInfo: InputData/InputData/SkimSummaryLog_Production2017_13_08_2020.log
+Lumi: 38900
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
