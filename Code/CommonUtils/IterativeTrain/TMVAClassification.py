@@ -33,16 +33,16 @@ def doTrain(configs,training_cuts,mlist,infname):
 
     count = 0
     for train in configs:
-        for k in train.keys():
+        for category_wagon in train.keys():
         
-            outfname = str(count)+"_"+k+".root"
+            outfname = str(count)+"_"+category_wagon+".root"
             outputFile = TFile(outfname , 'RECREATE' )
 
 
             factory = TMVA.Factory( "TMVAClassification", outputFile,  
                                     "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" )
 
-            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+k)
+            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+category_wagon)
             factory.SetVerbose( True  )
 
 
@@ -51,7 +51,7 @@ def doTrain(configs,training_cuts,mlist,infname):
             cuts=''
             cutb=''
 
-            for v in train.get(k):
+            for v in train.get(category_wagon):
                 dataloader.AddVariable(v,v,"F")
 
                 if v in selection:
@@ -87,9 +87,9 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
             categoryCut = ''
-            if k=="A":categoryCut='category==1'
-            if k=="B":categoryCut='category==2'
-            if k=="C":categoryCut='category==3'
+            if category_wagon=="A":categoryCut='category==1'
+            if category_wagon=="B":categoryCut='category==2'
+            if category_wagon=="C":categoryCut='category==3'
 
             mycutSig = TCut( "MC == 1 &&" + cuts + categoryCut) 
             mycutBkg = TCut( "MC == 0 &&" + cutb + categoryCut + "&& (var_tauMass < 1.75 || var_tauMass > 1.81) ") 
