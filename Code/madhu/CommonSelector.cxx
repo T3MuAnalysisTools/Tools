@@ -1247,6 +1247,20 @@ void  CommonSelector::doEvent(){
     double Mu2KSbestChi2DistRatio = 99.0;
     double Mu3KSbestChi2DistRatio = 99.0;
     
+    for(int i=0;i<Ntp->NIsolationTrack(signal_idx);i++){
+      for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
+        if(Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,j)){
+          Mu1TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
+        }
+        if(Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,j)){
+          Mu2TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
+        }
+        if(Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,j)){
+          Mu3TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
+        }
+      }
+    }
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
       TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
@@ -1942,7 +1956,7 @@ void  CommonSelector::doEvent(){
     
     Mu3TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M3bestChi2,1);
     
-    
+    /*
     if(Mu1bestChi2<100){
       Mu1TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill(M1bestChi2,1);
     }
@@ -1952,6 +1966,7 @@ void  CommonSelector::doEvent(){
     if(Mu3bestChi2<100){
       Mu3TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill(M3bestChi2,1);
     }
+    */
     
     if(Mu1bestChi2<20){
       Mu1TrackInvariantMassBeforeMVABestdRLtd3.at(t).Fill(M1bestChi2,1);
