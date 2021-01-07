@@ -189,7 +189,6 @@ if __name__ == "__main__":
 
     # Run TMVA with given configs
     from ROOT import TMVA
-    print len(configuration)
     doTrain(configuration, selection, mlist,infname)
 
     
