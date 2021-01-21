@@ -1,0 +1,11 @@
+universe              = vanilla
+rank                  = memory
+executable            = TMVAClassification.py
+transfer_input_files  = FillMVATreeInput_combined_August.root, TrainConfigs.py
+output                = Condor_$(cluster)_$(proccess).o
+error                 = Condor_$(cluster)_$(proccess).e
+log                   = Condor_$(cluster)_$(proccess).log
+getenv                = True
++MaxRuntime           = 7200
+notification = Error
+queue  1

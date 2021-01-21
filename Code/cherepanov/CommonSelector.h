@@ -60,6 +60,9 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
 
+  std::vector<TH1D> BetterMuMuVertex;
+  std::vector<TH1D> WorseMuMuVertex;
+
 
 
 
@@ -94,6 +97,10 @@ class CommonSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitC1FullEtaVetoCut;
   std::vector<TH1D> TauMassRefitC2FullEtaVetoCut;
+
+  std::vector<TH1D> TauMassRefitABC1FullEtaVetoCut;
+  std::vector<TH1D> TauMassRefitABC2FullEtaVetoCut;
+
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -108,6 +115,9 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauMassRefitABC1;
   std::vector<TH1D> TauMassRefitABC2;
 
+  std::vector<TH2D> TauMassRefitABC1_eta;
+  std::vector<TH2D> TauMassRefitABC2_eta;
+
 
   std::vector<TH1D> TauMassResolutionRefit;
 
@@ -121,12 +131,67 @@ class CommonSelector : public Selection {
   std::vector<TH2D> EMR_tau_eta;
 
   std::vector<TH2D> PairMass;
+  std::vector<TH2D> KKMass_dR_sort;
+  std::vector<TH1D> KKMass_dR_sort1;
+  std::vector<TH1D> KKMass_dR_sort2;
+
+  std::vector<TH2D> KKMass_pt_sort;
+  std::vector<TH1D> KKMass_pt_sort1;
+  std::vector<TH1D> KKMass_pt_sort2;
+
+
+  std::vector<TH2D> KKMass_dR_sort_XVeto;
+  std::vector<TH1D> KKMass_dR_sort1_XVeto;
+  std::vector<TH1D> KKMass_dR_sort2_XVeto;
+
+  std::vector<TH2D> KKMass_pt_sort_XVeto;
+  std::vector<TH1D> KKMass_pt_sort1_XVeto;
+  std::vector<TH1D> KKMass_pt_sort2_XVeto;
+
+  std::vector<TH1D> KpiIsolationMass_OS;
+  std::vector<TH1D> KpiIsolationMass_SS1;
+  std::vector<TH1D> KpiIsolationMass_SS2;
+
+
+
+
+
+  std::vector<TH2D> PairMassdRSorted;
+  std::vector<TH2D> PairMassVertexSorted;
+  std::vector<TH1D> PairMass1VertexSorting;
+  std::vector<TH1D> PairMass2VertexSorting;
+
+  std::vector<TH2D> PairMassdRSortedXVeto;
+  std::vector<TH2D> PairMassPhiMassSorting;
+  std::vector<TH1D> PairMass1PhiMassSorting;
+  std::vector<TH1D> PairMass2PhiMassSorting;
+
+  std::vector<TH2D> PairMass1TauPhiMassSorting;
+  std::vector<TH2D> PairMass2TauPhiMassSorting;
+
+
   std::vector<TH2D> PairMassFinalSel;
   std::vector<TH1D> PairMass1;
   std::vector<TH1D> PairMass2;
 
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
+
+  std::vector<TH1D> AllignSortMass1;
+  std::vector<TH1D> AllignSortMass2;
+
+
+  std::vector<TH1D> PairMass1NoSorting;
+  std::vector<TH1D> PairMass2NoSorting;
+  std::vector<TH2D> MuMuMassNoSorting;
+
+  std::vector<TH1D> PairMass1PTSorting;
+  std::vector<TH1D> PairMass2PTSorting;
+  std::vector<TH2D> MuMuMassPTSorting;
+
+  std::vector<TH1D> PairMass1AllignedSorting;
+  std::vector<TH1D> PairMass2AllignedSorting;
+  std::vector<TH2D> MuMuMassAllignedSorting;
 
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> CategoryOverlap;
@@ -236,6 +301,11 @@ class CommonSelector : public Selection {
   Double_t category;
   Double_t m12;
   Double_t m13;
+  Double_t mDr1;
+  Double_t mDr2;
+  Double_t xv;
+
+
   Double_t LumiScale;
   Double_t mvaA1;
   Double_t mvaA2;
