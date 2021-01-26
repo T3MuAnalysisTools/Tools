@@ -36,6 +36,11 @@
 #include "HistoConfig.h"
 #include "PDG_Var.h"
 
+#include "SimpleFits/FitSoftware/interface/TrackParticle.h"
+#include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
+#include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+
+
 // small struct needed to allow sorting indices by some value
 struct sortIdxByValue {
    bool operator()(const std::pair<int,double> &left, const std::pair<int,double> &right) {
@@ -295,8 +300,8 @@ class Ntuple_Controller{
       int     Muon_charge(unsigned int i){return Ntp->Muon_charge->at(i);}
       int     Muon_trackCharge(unsigned int i){return Ntp->Muon_trackCharge->at(i);}
       int     Muon_pdgid(unsigned int i){return Ntp->Muon_pdgid->at(i);}
-      double  Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
-      double  Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
+      float   Muon_B(unsigned int i){return Ntp->Muon_B->at(i);}
+      float   Muon_M(unsigned int i){return Ntp->Muon_M->at(i);}
 
       int     Muon_ID(unsigned int i){return Ntp->Muon_ID->at(i);}
       int     Muon_StandardSelection(unsigned int i){return Ntp->Muon_StandardSelection->at(i);}
@@ -330,22 +335,24 @@ class Ntuple_Controller{
       int Photon_hasPixelSeed(unsigned int i){return Ntp->Gamma_hasPixelSeed->at(i);}
       int Photon_hasConversionTracks(unsigned int i){return Ntp->Gamma_hasConversionTracks->at(i);}
       int Photon_isPF(unsigned int i){return Ntp->Gamma_isPFPhoton->at(i);}
-      /*    will be fixed later
-            bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
-            TrackParticle Muon_TrackParticle(unsigned int i){ 
-            TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1); 
-            TMatrixTSym<double> mu_cov(TrackParticle::NHelixPar); 
-            unsigned int l=0;
-            for(int k=0; k<TrackParticle::NHelixPar; k++){ 
-            mu_par(k,0)=Ntp->Muon_par->at(i).at(k); 
-            for(int j=k; j<TrackParticle::NHelixPar; j++){ 
-            mu_cov(k,j)=Ntp->Muon_cov->at(i).at(l); 
-            l++; 
-            } 
-            } 
-            return TrackParticle(mu_par,mu_cov,Ntp->Muon_pdgid->at(i),Ntp->Muon_M->at(i),Ntp->Muon_trackCharge->at(i),Ntp->Muon_B->at(i));
-            }  
-            */
+
+
+
+      bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
+      TrackParticle Muon_TrackParticle(unsigned int i){
+	TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1);
+	TMatrixTSym<double> mu_cov(TrackParticle::NHelixPar);
+	unsigned int l=0;
+	for(int k=0; k<TrackParticle::NHelixPar; k++){
+	  mu_par(k,0)=Ntp->Muon_par->at(i).at(k);
+	  for(int j=k; j<TrackParticle::NHelixPar; j++){
+	    mu_cov(k,j)=Ntp->Muon_cov->at(i).at(l);
+	    l++;
+	  }
+	}
+	return TrackParticle(mu_par,mu_cov,Ntp->Muon_pdgid->at(i),Ntp->Muon_M->at(i),Ntp->Muon_charge->at(i),Ntp->Muon_B->at(i));
+      }
+
 
       bool MCEventIsReconstructed(){return Ntp->MC_isReco;}
 
@@ -588,9 +595,6 @@ class Ntuple_Controller{
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
 	 return TVector3(Ntp->Vertex_Pair31_Pos->at(index).at(0),Ntp->Vertex_Pair31_Pos->at(index).at(1),Ntp->Vertex_Pair31_Pos->at(index).at(2));
       }
-
-
-
 
       double     Vertex_signal_KF_Chi2(unsigned int i, bool channel=false){
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();

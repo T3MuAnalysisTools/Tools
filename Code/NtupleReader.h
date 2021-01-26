@@ -163,10 +163,10 @@ public :
    std::vector<int>     *Muon_charge;
    std::vector<int>     *Muon_trackCharge;
    std::vector<int>     *Muon_pdgid;
-   std::vector<double>  *Muon_B;
-   std::vector<double>  *Muon_M;
-   std::vector<std::vector<double> > *Muon_par;
-   std::vector<std::vector<double> > *Muon_cov;
+   std::vector<float>   *Muon_B;
+   std::vector<float>   *Muon_M;
+   std::vector<std::vector<float> > *Muon_par;
+   std::vector<std::vector<float> > *Muon_cov;
    std::vector<std::vector<float> > *Gamma_P4;
    std::vector<int>     *Gamma_hasPixelSeed;
    std::vector<int>     *Gamma_hasConversionTracks;
