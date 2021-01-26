@@ -8,6 +8,12 @@
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
+#include "SimpleFits/FitSoftware/interface/Chi2VertexFitter.h"
+#include "SimpleFits/FitSoftware/interface/TrackParticle.h"
+#include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
+#include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+
+
 
 
 class CommonSelector : public Selection {
@@ -120,6 +126,7 @@ class CommonSelector : public Selection {
 
 
   std::vector<TH1D> TauMassResolutionRefit;
+  std::vector<TH1D> TauMassResolutionHelixRefit;
 
   std::vector<TH2D> TauMass_all_nophiVeto;
   std::vector<TH1D> TauMass_all;
@@ -232,6 +239,12 @@ class CommonSelector : public Selection {
 
 
   std::vector<TH1D> VertexChi2KF;
+  std::vector<TH2D> VertexChi2KF_vs_HelixFit;
+
+  std::vector<TH1D>   KF_Helix_deltaX;
+  std::vector<TH1D>   KF_Helix_deltaY;
+  std::vector<TH1D>   KF_Helix_deltaZ;
+
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> BDTOutputA;
   std::vector<TH1D> BDTOutputB;

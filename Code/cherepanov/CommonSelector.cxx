@@ -345,6 +345,7 @@ void  CommonSelector::Configure(){
 
   TauMassResolution=HConfig.GetTH1D(Name+"_TauMassResolution","TauMassResolution",50,-0.2,0.2,"#Delta M_{#tau}  (reco - mc)/mc ","Events");
   TauMassResolutionRefit=HConfig.GetTH1D(Name+"_TauMassResolutionRefit","TauMassResolutionRefit",50,-0.2,0.2,"KF refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
+  TauMassResolutionHelixRefit=HConfig.GetTH1D(Name+"_TauMassResolutionHelixRefit","TauMassResolutionHelixRefit",50,-0.2,0.2,"Helix refit #Delta M_{#tau}  (reco - mc)/mc ","Events");
 
   TauMass_all_nophiVeto =HConfig.GetTH2D(Name+"_TauMass_all_nophiVeto","3#mu mass vs phimass ",60,1.5,2.1,50,0.8,1.2,"3#mu mass, GeV","#phi mass, GeV");
   TauMass_all =HConfig.GetTH1D(Name+"_TauMass_all","3#mu  mass",60,1.5,2.1,"  M_{#tau} , GeV","Events");
@@ -426,6 +427,12 @@ void  CommonSelector::Configure(){
   EventMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_EventMassResolution_PtEtaPhi","EventMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
 
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
+  VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",50,0,20,50,0,20,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
+
+  KF_Helix_deltaX=HConfig.GetTH1D(Name+"_KF_Helix_deltaX","KF_Helix_deltaX",50,-0.05,0.05,"#Delta X, cm (Helix Fitter - Kalman Fitter)","Events");
+  KF_Helix_deltaY=HConfig.GetTH1D(Name+"_KF_Helix_deltaY","KF_Helix_deltaY",50,-0.05,0.05,"#Delta Y, cm (Helix Fitter - Kalman Fitter)","Events");
+  KF_Helix_deltaZ=HConfig.GetTH1D(Name+"_KF_Helix_deltaZ","KF_Helix_deltaZ",50,-0.05,0.05,"#Delta Z, cm (Helix Fitter - Kalman Fitter)","Events");
+
   FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,15,"PV - SV distance  significance","Events");
 
   SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{#tau}, rad","Events");
@@ -611,6 +618,7 @@ void  CommonSelector::Store_ExtraDist(){
 
   Extradist1d.push_back(&TauMassResolution);
   Extradist1d.push_back(&TauMassResolutionRefit);
+  Extradist1d.push_back(&TauMassResolutionHelixRefit);
 
   Extradist2d.push_back(&TauMass_all_nophiVeto);
   Extradist1d.push_back(&TauMass_all);
@@ -620,7 +628,11 @@ void  CommonSelector::Store_ExtraDist(){
 
   Extradist2d.push_back(&EMR_tau_eta);
 
-
+  Extradist1d.push_back(&VertexChi2KF);
+  Extradist2d.push_back(&VertexChi2KF_vs_HelixFit);
+  Extradist1d.push_back(&KF_Helix_deltaX);
+  Extradist1d.push_back(&KF_Helix_deltaY);
+  Extradist1d.push_back(&KF_Helix_deltaZ);
 
   Extradist1d.push_back(&SVPVTauDirAngle);
 
@@ -907,6 +919,10 @@ void  CommonSelector::doEvent(){
 
   if(status){
 
+
+
+
+
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -914,6 +930,8 @@ void  CommonSelector::doEvent(){
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+
+
 
 
 
@@ -1285,6 +1303,31 @@ void  CommonSelector::doEvent(){
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
 
+
+    TVector3 vguess(0,0,0);
+    std::vector<TrackParticle> MuonsTrackParticles;
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
+
+
+
+    Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
+
+
+    VertexChi2KF_vs_HelixFit.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),Fitter.ChiSquare());
+    TVector3 ReffitedVertex = Fitter.GetVertex();
+
+
+    KF_Helix_deltaX.at(t).Fill(ReffitedVertex.X()  - Ntp->Vertex_Signal_KF_pos(signal_idx).X(),1);
+    KF_Helix_deltaY.at(t).Fill(ReffitedVertex.Y()  - Ntp->Vertex_Signal_KF_pos(signal_idx).Y(),1);
+    KF_Helix_deltaZ.at(t).Fill(ReffitedVertex.Z()  - Ntp->Vertex_Signal_KF_pos(signal_idx).Z(),1);
+
+    std::vector<LorentzVectorParticle> ReffitedLVParticles = Fitter.GetReFitLorentzVectorParticles();
+
+
+
+    LorentzVectorParticle  MotherParticle = Fitter.GetMother(888);
 
     //***  define the mva varables used for evaluation of BDT weights for selection
     
@@ -1707,6 +1750,8 @@ void  CommonSelector::doEvent(){
 	
 	    TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
 	    TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
+	    TauMassResolutionHelixRefit.at(t).Fill((MotherParticle.LV().M() - MCTauLV.M())/MCTauLV.M(),1);
+
 
 	    Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
 	    Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
