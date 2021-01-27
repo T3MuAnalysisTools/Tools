@@ -273,6 +273,15 @@ public :
    std::vector<std::vector<float> > *IsolationTrack_DocaMu1;
    std::vector<std::vector<float> > *IsolationTrack_DocaMu2;
    std::vector<std::vector<float> > *IsolationTrack_DocaMu3;
+
+   std::vector<int> *IsolationTrack_Helcharge;
+   std::vector<int> *IsolationTrack_pdgid;
+   std::vector<float> *IsolationTrack_B;
+   std::vector<float> *IsolationTrack_M;
+   std::vector<std::vector<float> > *IsolationTrack_par;
+   std::vector<std::vector<float> > *IsolationTrack_cov;
+
+
    std::vector<std::vector<std::vector<float> > > *SV_Track_P4;
    std::vector<std::vector<float> > *SV_pos;
    std::vector<std::vector<int> > *SV_TrackCharge;
@@ -538,6 +547,18 @@ public :
    TBranch        *b_IsolationTrack_DocaMu1;   //!
    TBranch        *b_IsolationTrack_DocaMu2;   //!
    TBranch        *b_IsolationTrack_DocaMu3;   //!
+   TBranch        *b_IsolationTrack_Helcharge;   //!
+   TBranch        *b_IsolationTrack_pdgid;   //!
+   TBranch        *b_IsolationTrack_B;   //!
+   TBranch        *b_IsolationTrack_M;   //!
+   TBranch        *b_IsolationTrack_par;   //!
+   TBranch        *b_IsolationTrack_cov;   //!
+
+
+
+
+
+
    TBranch        *b_SV_Track_P4;   //!
    TBranch        *b_SV_pos;   //!
    TBranch        *b_SV_TrackCharge;   //!
@@ -856,6 +877,14 @@ void NtupleReader::Init(TTree *tree)
    IsolationTrack_DocaMu1 = 0;
    IsolationTrack_DocaMu2 = 0;
    IsolationTrack_DocaMu3 = 0;
+
+   IsolationTrack_Helcharge = 0;
+   IsolationTrack_pdgid = 0;
+   IsolationTrack_B = 0;
+   IsolationTrack_M = 0;
+   IsolationTrack_par = 0;
+   IsolationTrack_cov = 0;
+
    SV_Track_P4 = 0;
    SV_pos = 0;
    SV_TrackCharge = 0;
@@ -1123,6 +1152,15 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("IsolationTrack_DocaMu1", &IsolationTrack_DocaMu1, &b_IsolationTrack_DocaMu1);
    fChain->SetBranchAddress("IsolationTrack_DocaMu2", &IsolationTrack_DocaMu2, &b_IsolationTrack_DocaMu2);
    fChain->SetBranchAddress("IsolationTrack_DocaMu3", &IsolationTrack_DocaMu3, &b_IsolationTrack_DocaMu3);
+
+
+   fChain->SetBranchAddress("IsolationTrack_Helcharge", &IsolationTrack_Helcharge, &b_IsolationTrack_Helcharge);
+   fChain->SetBranchAddress("IsolationTrack_pdgid", &IsolationTrack_pdgid, &b_IsolationTrack_pdgid);
+   fChain->SetBranchAddress("IsolationTrack_B", &IsolationTrack_B, &b_IsolationTrack_B);
+   fChain->SetBranchAddress("IsolationTrack_M", &IsolationTrack_M, &b_IsolationTrack_M);
+   fChain->SetBranchAddress("IsolationTrack_par", &IsolationTrack_par, &b_IsolationTrack_par);
+   fChain->SetBranchAddress("IsolationTrack_cov", &IsolationTrack_cov, &b_IsolationTrack_cov);
+
    fChain->SetBranchAddress("SV_Track_P4", &SV_Track_P4, &b_SV_Track_P4);
    fChain->SetBranchAddress("SV_pos", &SV_pos, &b_SV_pos);
    fChain->SetBranchAddress("SV_TrackCharge", &SV_TrackCharge, &b_SV_TrackCharge);

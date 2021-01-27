@@ -340,8 +340,8 @@ class Ntuple_Controller{
 
       bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
       TrackParticle Muon_TrackParticle(unsigned int i){
-	TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1);
-	TMatrixTSym<double> mu_cov(TrackParticle::NHelixPar);
+	TMatrixT<float>    mu_par(TrackParticle::NHelixPar,1);
+	TMatrixTSym<float> mu_cov(TrackParticle::NHelixPar);
 	unsigned int l=0;
 	for(int k=0; k<TrackParticle::NHelixPar; k++){
 	  mu_par(k,0)=Ntp->Muon_par->at(i).at(k);
@@ -499,6 +499,22 @@ class Ntuple_Controller{
          return Ntp->IsolationTrack_DocaMu3->at(index).at(j);
       }
       
+      bool IsolationTrack_TrackParticleHasMomentum(unsigned int i){if(Ntp->IsolationTrack_par->at(i).size()!=0)return true; return false;}
+      TrackParticle IsolationTrack_TrackParticle(unsigned int i){
+        TMatrixT<float>    IsolationTrack_par(TrackParticle::NHelixPar,1);
+        TMatrixTSym<float> IsolationTrack_cov(TrackParticle::NHelixPar);
+        unsigned int l=0;
+        for(int k=0; k<TrackParticle::NHelixPar; k++){
+          IsolationTrack_par(k,0)=Ntp->IsolationTrack_par->at(i).at(k);
+          for(int j=k; j<TrackParticle::NHelixPar; j++){
+            IsolationTrack_cov(k,j)=Ntp->IsolationTrack_cov->at(i).at(l);
+            l++;
+          }
+        }
+        return TrackParticle(IsolationTrack_par,IsolationTrack_cov,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
+      }
+
+
       ///// closest distance between the tracks of a candidate
       double     Vertex_DCA12(unsigned int i, bool channel=false) {
          unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
