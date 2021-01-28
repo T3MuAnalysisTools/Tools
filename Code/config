@@ -25,6 +25,7 @@ else
 	scramv1 project CMSSW ${cmssw_version}
 	cd ${cmssw_version}/src
 	eval `scramv1 runtime -sh`
+	eval `mkdir lib`
 	cd ../../
 	cd ../
     fi
@@ -33,7 +34,9 @@ else
         export ROOTSYS=${2}
         ROOT="$PWD/../root/"
     fi
+
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib/
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
     export PATH=$PATH:$ROOTSYS/bin/
 
     for var in $@ ; do
