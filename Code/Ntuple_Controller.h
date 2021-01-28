@@ -340,8 +340,8 @@ class Ntuple_Controller{
 
       bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
       TrackParticle Muon_TrackParticle(unsigned int i){
-	TMatrixT<float>    mu_par(TrackParticle::NHelixPar,1);
-	TMatrixTSym<float> mu_cov(TrackParticle::NHelixPar);
+	TMatrixT<double>    mu_par(TrackParticle::NHelixPar,1);
+	TMatrixTSym<double> mu_cov(TrackParticle::NHelixPar);
 	unsigned int l=0;
 	for(int k=0; k<TrackParticle::NHelixPar; k++){
 	  mu_par(k,0)=Ntp->Muon_par->at(i).at(k);
@@ -351,6 +351,7 @@ class Ntuple_Controller{
 	  }
 	}
 	return TrackParticle(mu_par,mu_cov,Ntp->Muon_pdgid->at(i),Ntp->Muon_M->at(i),Ntp->Muon_charge->at(i),Ntp->Muon_B->at(i));
+	//	return TrackParticle(mu_par,mu_cov,0,0,0,0);
       }
 
 
@@ -499,6 +500,13 @@ class Ntuple_Controller{
          return Ntp->IsolationTrack_DocaMu3->at(index).at(j);
       }
       
+
+
+      int      IsolationTrack_Helcharge(unsigned int i){return Ntp->IsolationTrack_Helcharge->at(i);}
+      int      IsolationTrack_pdgid(unsigned int i){return Ntp->IsolationTrack_pdgid->at(i);}
+      float      IsolationTrack_B(unsigned int i){return Ntp->IsolationTrack_B->at(i);}
+      float      IsolationTrack_M(unsigned int i){return Ntp->IsolationTrack_M->at(i);}
+
       bool IsolationTrack_TrackParticleHasMomentum(unsigned int i){if(Ntp->IsolationTrack_par->at(i).size()!=0)return true; return false;}
       TrackParticle IsolationTrack_TrackParticle(unsigned int i){
         TMatrixT<float>    IsolationTrack_par(TrackParticle::NHelixPar,1);

@@ -427,7 +427,7 @@ void  CommonSelector::Configure(){
   EventMassResolution_PtEtaPhi = HConfig.GetTH1D(Name+"_EventMassResolution_PtEtaPhi","EventMassResolution_PtEtaPhi",50,0,0.02,"#frac{#Delta m}{m} (ptEtaPhi)","Events");
 
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
-  VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",50,0,20,50,0,20,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
+  VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",100,0,100,100,0,100,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
 
   KF_Helix_deltaX=HConfig.GetTH1D(Name+"_KF_Helix_deltaX","KF_Helix_deltaX",50,-0.05,0.05,"#Delta X, cm (Helix Fitter - Kalman Fitter)","Events");
   KF_Helix_deltaY=HConfig.GetTH1D(Name+"_KF_Helix_deltaY","KF_Helix_deltaY",50,-0.05,0.05,"#Delta Y, cm (Helix Fitter - Kalman Fitter)","Events");
@@ -1119,26 +1119,62 @@ void  CommonSelector::doEvent(){
     //    std::cout<<"   "<<(KaonOS+KaonSS1).M() <<"  " << (KaonOS+KaonSS2).M() <<std::endl;
     //    std::cout<<"   "<< KaonOS.M() <<"  "<< KaonSS1.M() <<  "   "<< KaonSS2.M() <<std::endl;
 
+
+
+    if(Ntp->NIsolationTrack(signal_idx) > 6){
+
+
+      TVector3 vguess(0,0,0);
+      std::vector<TrackParticle> IsoTracks3;
+
+      std::vector<TrackParticle> IsoTracks2;
+
+      std::vector<TrackParticle> IsoTracks22;
+
+      std::vector<TrackParticle> IsoTracks4;
+      IsoTracks2.push_back(Ntp->IsolationTrack_TrackParticle(0));
+      IsoTracks2.push_back(Ntp->IsolationTrack_TrackParticle(1));
+
+      IsoTracks22.push_back(Ntp->IsolationTrack_TrackParticle(5));
+      IsoTracks22.push_back(Ntp->IsolationTrack_TrackParticle(6));
+
+      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(1));
+      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(2));
+      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(5));
+      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(3));
+
+
+      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(1));
+      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(5));
+      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(3));
+
+
+
+      Chi2VertexFitter  FitterIso2(IsoTracks2,vguess);
+      Chi2VertexFitter  FitterIso3(IsoTracks3,vguess);
+      Chi2VertexFitter  FitterIso4(IsoTracks4,vguess);
+      Chi2VertexFitter  FitterIso22(IsoTracks22,vguess);
+      FitterIso2.Fit();
+      FitterIso22.Fit();
+      FitterIso3.Fit();
+      FitterIso4.Fit();
+
+
+      std::cout<<"FitterIso2  "<< FitterIso2.ChiSquare() << "  "<< FitterIso3.ChiSquare() << "   " << FitterIso4.ChiSquare() <<"   " << FitterIso22.ChiSquare()<<std::endl;
+
+
+    }
+
+
+
+
+
     for(unsigned int iIsoTrack=0; iIsoTrack < Ntp->NIsolationTrack(signal_idx); iIsoTrack++){
 
 
 
 
-      // std::cout<<"track  "<< iIsoTrack <<" vertex with mus are valid   "<< 
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,iIsoTrack)<< "  "<< 
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,iIsoTrack)<< "  "<<
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,iIsoTrack)<<std::endl;
-      
-      // std::cout<<"track  "<< iIsoTrack <<" vertex with mus chi2   "<< 
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,iIsoTrack)<< "  "<< 
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,iIsoTrack)<< "  "<<
-      // 	Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,iIsoTrack)<<std::endl;
-      
-      // std::cout<<"track  "<< iIsoTrack <<" vertex position   "<<std::endl;
-      // Ntp->IsolationTrack_VertexWithSignalMuon1Position(signal_idx,iIsoTrack).Print();
-      // Ntp->IsolationTrack_VertexWithSignalMuon2Position(signal_idx,iIsoTrack).Print();
-      // Ntp->IsolationTrack_VertexWithSignalMuon3Position(signal_idx,iIsoTrack).Print();
-      
+
 
 
 
@@ -1303,7 +1339,7 @@ void  CommonSelector::doEvent(){
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
 
-
+    
     TVector3 vguess(0,0,0);
     std::vector<TrackParticle> MuonsTrackParticles;
     MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
@@ -1311,9 +1347,16 @@ void  CommonSelector::doEvent(){
     MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
 
 
+    std::cout<<"m1  "<<Ntp->Muon_TrackParticle(Muon_index_1).Parameter(2) << std::endl;
+    std::cout<<"m2  "<<Ntp->Muon_TrackParticle(Muon_index_2).Parameter(2) << std::endl;
+    std::cout<<"m3  "<<Ntp->Muon_TrackParticle(Muon_index_3).Parameter(2) << std::endl;
+
+    //    Ntp->Muon_TrackParticle(Muon_index_1).getParMatrix().Print();
+    //    Ntp->Muon_TrackParticle(Muon_index_1).getCovMatrix().Print();
 
     Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
-
+    Fitter.Fit();
+    std::cout<<" chi2 with muons  "<<Fitter.ChiSquare() <<"   "  << Ntp->Vertex_signal_KF_Chi2(signal_idx)<<std::endl;
 
     VertexChi2KF_vs_HelixFit.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),Fitter.ChiSquare());
     TVector3 ReffitedVertex = Fitter.GetVertex();
@@ -1325,10 +1368,8 @@ void  CommonSelector::doEvent(){
 
     std::vector<LorentzVectorParticle> ReffitedLVParticles = Fitter.GetReFitLorentzVectorParticles();
 
-
-
     LorentzVectorParticle  MotherParticle = Fitter.GetMother(888);
-
+    
     //***  define the mva varables used for evaluation of BDT weights for selection
     
     var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(signal_idx);
@@ -1750,7 +1791,7 @@ void  CommonSelector::doEvent(){
 	
 	    TauMassResolution.at(t).Fill((TauLV.M() - MCTauLV.M())/MCTauLV.M(),1);
 	    TauMassResolutionRefit.at(t).Fill((TauRefitLV.M() - MCTauLV.M())/MCTauLV.M(),1);
-	    TauMassResolutionHelixRefit.at(t).Fill((MotherParticle.LV().M() - MCTauLV.M())/MCTauLV.M(),1);
+	    //	    TauMassResolutionHelixRefit.at(t).Fill((MotherParticle.LV().M() - MCTauLV.M())/MCTauLV.M(),1);
 
 
 	    Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
