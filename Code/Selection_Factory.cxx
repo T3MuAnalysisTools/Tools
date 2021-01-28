@@ -70,7 +70,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   if(Analysis.Contains("example"))s=new Example(Analysis,UncertType);
 #ifdef USE_cherepanov
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
+  //  else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
   //else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
   //else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
