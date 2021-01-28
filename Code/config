@@ -18,6 +18,7 @@ else
     cd ..
     if [ $CommonUtils == 0 ]; then
 	cd CommonUtils
+	eval `mkdir lib`
 	export cmssw_version=CMSSW_9_3_8
 	export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 	source $VO_CMS_SW_DIR/cmsset_default.sh
@@ -25,7 +26,6 @@ else
 	scramv1 project CMSSW ${cmssw_version}
 	cd ${cmssw_version}/src
 	eval `scramv1 runtime -sh`
-	eval `mkdir lib`
 	cd ../../
 	cd ../
     fi
