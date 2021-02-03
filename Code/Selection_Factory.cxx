@@ -27,7 +27,7 @@
 
 
 #ifdef USE_joshi
-#include "joshi/MuonPionTree.h"
+#include "joshi/DsPhiPiTree.h"
 #endif
 
 
@@ -92,7 +92,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
 #endif
 
 #ifdef USE_joshi
-  else if(Analysis.Contains("muonpiontree"))s=new MuonPionTree(Analysis, UncertType);
+  else if(Analysis.Contains("dsphipitree"))s=new MuonPionTree(Analysis, UncertType);
 #endif
 
 
