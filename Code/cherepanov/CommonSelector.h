@@ -53,6 +53,17 @@ class CommonSelector : public Selection {
   // Selection Variables
   // Initializhere your analysis histograms
 
+  std::vector<TH1D> PairMassDRSorted1A;
+  std::vector<TH1D> PairMassDRSorted2A;
+
+
+  std::vector<TH1D> PairMassDRSorted1B;
+  std::vector<TH1D> PairMassDRSorted2B;
+
+  std::vector<TH1D> PairMassDRSorted1C;
+  std::vector<TH1D> PairMassDRSorted2C;
+
+
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;
   std::vector<TH1D> Muon3Pt;
@@ -357,6 +368,17 @@ class CommonSelector : public Selection {
   Float_t Muon3DetID;
 
 
+  Float_t var_IsoPhiKKMass_Mu1;
+  Float_t var_IsoKStarMass_Mu1;
+  Float_t var_IsoMuMuMass_Mu1;
+
+  Float_t var_IsoPhiKKMass_Mu2;
+  Float_t var_IsoKStarMass_Mu2;
+  Float_t var_IsoMuMuMass_Mu2;
+
+  Float_t var_IsoPhiKKMass_Mu3;
+  Float_t var_IsoKStarMass_Mu3;
+  Float_t var_IsoMuMuMass_Mu3;
 
 };
 #endif

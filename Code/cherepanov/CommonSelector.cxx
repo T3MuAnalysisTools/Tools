@@ -24,12 +24,12 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
   PEMassResolutionCut2_(0.01),
-  mvaA1_(0.0927636), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
-  mvaA2_(0.160007),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
-  mvaB1_(0.113621),
-  mvaB2_(0.206321),
-  mvaC1_(0.139706),
-  mvaC2_(0.219904)
+  mvaA1_(0.0799), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
+  mvaA2_(0.208),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
+  mvaB1_(0.133),
+  mvaB2_(0.255),
+  mvaC1_(0.115),
+  mvaC2_(0.222)
 {
   // This is a class constructor;
 }
@@ -81,48 +81,66 @@ void  CommonSelector::Configure(){
   readerA->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
   readerA->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
   readerA->AddVariable( "var_flightLenSig", &var_flightLenSig);
+  readerA->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerA->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerA->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
   readerA->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerA->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
   readerA->AddVariable( "var_maxMuonsDca", &var_maxMuonsDca);
+  readerA->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerA->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerA->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerA->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
   readerA->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerA->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerA->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerA->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
 
-  readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerA->BookMVA( "BDT", basedir+"weights/August_A_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
+  readerA->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
 
 
 
   readerB = new TMVA::Reader( "!Color:!Silent" );
   readerB->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
   readerB->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
-  readerB->AddVariable( "var_flightLenSig", &var_flightLenSig);
-  readerB->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerB->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerB->AddVariable( "var_maxMuonsDca", &var_maxMuonsDca);
+  readerB->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerB->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerB->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
   readerB->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerB->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerB->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerB->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerB->AddSpectator("var_tauMass",&var_tauMass);
-  readerB->BookMVA( "BDT", basedir+"weights/August_B_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+  readerB->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerB->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerB->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerB->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+ 
+  readerB->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_B/weights/TMVAClassification_BDT.weights.xml");
+
+
 
 
 
   readerC = new TMVA::Reader( "!Color:!Silent" );
-  readerC->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
+
   readerC->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
   readerC->AddVariable( "var_flightLenSig", &var_flightLenSig);
+  readerC->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerC->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerC->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
   readerC->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerC->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
   readerC->AddVariable( "var_maxMuonsDca", &var_maxMuonsDca);
+  readerC->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerC->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerC->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerC->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
   readerC->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerC->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerC->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerC->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerC->AddSpectator("var_tauMass",&var_tauMass);
-  readerC->BookMVA( "BDT", basedir+"weights/August_C_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
+
+  readerC->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_C/weights/TMVAClassification_BDT.weights.xml"); 
+
 
 
 
@@ -498,6 +516,18 @@ void  CommonSelector::Configure(){
 
 
 
+  PairMassDRSorted1A=HConfig.GetTH1D(Name+"_PairMassDRSorted1A","PairMassDRSorted1A",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 1st collimated pair), GeV A","Events");
+  PairMassDRSorted2A=HConfig.GetTH1D(Name+"_PairMassDRSorted2A","PairMassDRSorted2A",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 2nd collimated pair), GeV A","Events");
+
+
+  PairMassDRSorted1B=HConfig.GetTH1D(Name+"_PairMassDRSorted1B","PairMassDRSorted1B",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 1st collimated pair), GeV B","Events");
+  PairMassDRSorted2B=HConfig.GetTH1D(Name+"_PairMassDRSorted2B","PairMassDRSorted2B",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 2nd collimated pair), GeV B","Events");
+
+  PairMassDRSorted1C=HConfig.GetTH1D(Name+"_PairMassDRSorted1C","PairMassDRSorted1C",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 1st collimated pair), GeV C","Events");
+  PairMassDRSorted2C=HConfig.GetTH1D(Name+"_PairMassDRSorted2C","PairMassDRSorted2C",80,0.5,1.2,"M_{#mu#mu} (OS-SS, 2nd collimated pair), GeV C","Events");
+
+
+
 
   PairMassdRSorted=HConfig.GetTH2D(Name+"_PairMassdRSorted","PairMassdRSorted",200,0.2,1.8,200,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
   PairMassVertexSorted=HConfig.GetTH2D(Name+"_PairMassVertexSorted","PairMassVertexSorted",200,0.2,1.8,200,0.2,1.8,"M_{OS}, GeV","M_{OS}, GeV");
@@ -530,6 +560,10 @@ void  CommonSelector::Configure(){
   AllignSortMass1=HConfig.GetTH1D(Name+"_AllignSortMass1","AllignSortMass1",80,0.2,1.777,"M_{1} (#Delta R OS sorted), GeV","");
   AllignSortMass2=HConfig.GetTH1D(Name+"_AllignSortMass2","AllignSortMass2",80,0.2,1.777,"M_{2} (#Delta R OS sorted), GeV","");
 
+
+
+
+
   //  AllignSortMass1XVeto=HConfig.GetTH1D(Name+"_AllignSortMass1XVeto","AllignSortMass1XVeto",80,0.2,1.777,"M_{1} (#Delta R OS sorted), GeV","");
   //  AllignSortMass2XVeto=HConfig.GetTH1D(Name+"_AllignSortMass2XVeto","AllignSortMass2XVeto",80,0.2,1.777,"M_{2} (#Delta R OS sorted), GeV","");
 
@@ -560,6 +594,18 @@ void  CommonSelector::Configure(){
 
 
 void  CommonSelector::Store_ExtraDist(){ 
+
+
+  Extradist1d.push_back(&PairMassDRSorted1A);
+  Extradist1d.push_back(&PairMassDRSorted2A);
+
+
+  Extradist1d.push_back(&PairMassDRSorted1B);
+  Extradist1d.push_back(&PairMassDRSorted2B);
+
+  Extradist1d.push_back(&PairMassDRSorted1C);
+  Extradist1d.push_back(&PairMassDRSorted2C);
+
 
 
   Extradist1d.push_back(&Muon1Pt);
@@ -1121,50 +1167,6 @@ void  CommonSelector::doEvent(){
 
 
 
-    if(Ntp->NIsolationTrack(signal_idx) > 6){
-
-
-      TVector3 vguess(0,0,0);
-      std::vector<TrackParticle> IsoTracks3;
-
-      std::vector<TrackParticle> IsoTracks2;
-
-      std::vector<TrackParticle> IsoTracks22;
-
-      std::vector<TrackParticle> IsoTracks4;
-      IsoTracks2.push_back(Ntp->IsolationTrack_TrackParticle(0));
-      IsoTracks2.push_back(Ntp->IsolationTrack_TrackParticle(1));
-
-      IsoTracks22.push_back(Ntp->IsolationTrack_TrackParticle(5));
-      IsoTracks22.push_back(Ntp->IsolationTrack_TrackParticle(6));
-
-      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(1));
-      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(2));
-      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(5));
-      IsoTracks4.push_back(Ntp->IsolationTrack_TrackParticle(3));
-
-
-      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(1));
-      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(5));
-      IsoTracks3.push_back(Ntp->IsolationTrack_TrackParticle(3));
-
-
-
-      Chi2VertexFitter  FitterIso2(IsoTracks2,vguess);
-      Chi2VertexFitter  FitterIso3(IsoTracks3,vguess);
-      Chi2VertexFitter  FitterIso4(IsoTracks4,vguess);
-      Chi2VertexFitter  FitterIso22(IsoTracks22,vguess);
-      FitterIso2.Fit();
-      FitterIso22.Fit();
-      FitterIso3.Fit();
-      FitterIso4.Fit();
-
-
-      std::cout<<"FitterIso2  "<< FitterIso2.ChiSquare() << "  "<< FitterIso3.ChiSquare() << "   " << FitterIso4.ChiSquare() <<"   " << FitterIso22.ChiSquare()<<std::endl;
-
-
-    }
-
 
 
 
@@ -1340,36 +1342,6 @@ void  CommonSelector::doEvent(){
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(TauLV.Vect()),w);
 
     
-    TVector3 vguess(0,0,0);
-    std::vector<TrackParticle> MuonsTrackParticles;
-    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
-    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
-    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
-
-
-    std::cout<<"m1  "<<Ntp->Muon_TrackParticle(Muon_index_1).Parameter(2) << std::endl;
-    std::cout<<"m2  "<<Ntp->Muon_TrackParticle(Muon_index_2).Parameter(2) << std::endl;
-    std::cout<<"m3  "<<Ntp->Muon_TrackParticle(Muon_index_3).Parameter(2) << std::endl;
-
-    //    Ntp->Muon_TrackParticle(Muon_index_1).getParMatrix().Print();
-    //    Ntp->Muon_TrackParticle(Muon_index_1).getCovMatrix().Print();
-
-    Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
-    Fitter.Fit();
-    std::cout<<" chi2 with muons  "<<Fitter.ChiSquare() <<"   "  << Ntp->Vertex_signal_KF_Chi2(signal_idx)<<std::endl;
-
-    VertexChi2KF_vs_HelixFit.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),Fitter.ChiSquare());
-    TVector3 ReffitedVertex = Fitter.GetVertex();
-
-
-    KF_Helix_deltaX.at(t).Fill(ReffitedVertex.X()  - Ntp->Vertex_Signal_KF_pos(signal_idx).X(),1);
-    KF_Helix_deltaY.at(t).Fill(ReffitedVertex.Y()  - Ntp->Vertex_Signal_KF_pos(signal_idx).Y(),1);
-    KF_Helix_deltaZ.at(t).Fill(ReffitedVertex.Z()  - Ntp->Vertex_Signal_KF_pos(signal_idx).Z(),1);
-
-    std::vector<LorentzVectorParticle> ReffitedLVParticles = Fitter.GetReFitLorentzVectorParticles();
-
-    LorentzVectorParticle  MotherParticle = Fitter.GetMother(888);
-    
     //***  define the mva varables used for evaluation of BDT weights for selection
     
     var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(signal_idx);
@@ -1430,6 +1402,142 @@ void  CommonSelector::doEvent(){
 
     var_tauMass=TauRefitLV.M();
     TauMass_all.at(t).Fill(TauRefitLV.M(),1);
+
+    // ** Isolation mass spectra
+    double Chi2IsoTrackVertexToMuon3(999.);
+    TLorentzVector IsoTrack_P4_closestToMu3(0,0,0,0);
+
+    double Chi2IsoTrackVertexToMuon2(999.);
+    TLorentzVector IsoTrack_P4_closestToMu2(0,0,0,0);
+
+    double Chi2IsoTrackVertexToMuon1(999.);
+    TLorentzVector IsoTrack_P4_closestToMu1(0,0,0,0);
+
+    for(int i =0; i< Ntp->NIsolationTrack(signal_idx); i++){
+
+      if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(signal_idx).at(2)) * Ntp->IsolationTrack_charge(signal_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,i) < Chi2IsoTrackVertexToMuon3)
+	       {
+		 Chi2IsoTrackVertexToMuon3= Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,i);
+		 IsoTrack_P4_closestToMu3 = Ntp->IsolationTrack_p4(signal_idx,i);
+	       }
+	   }
+
+
+	   if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(signal_idx).at(1)) * Ntp->IsolationTrack_charge(signal_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,i) < Chi2IsoTrackVertexToMuon2)
+	       {
+		 Chi2IsoTrackVertexToMuon2= Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,i);
+		 IsoTrack_P4_closestToMu2 = Ntp->IsolationTrack_p4(signal_idx,i);
+
+	       }
+
+	   }
+
+
+	   if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(signal_idx).at(0)) * Ntp->IsolationTrack_charge(signal_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,i) < Chi2IsoTrackVertexToMuon1)
+	       {
+		 Chi2IsoTrackVertexToMuon1= Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,i);
+		 IsoTrack_P4_closestToMu1 = Ntp->IsolationTrack_p4(signal_idx,i);
+
+	       }
+
+	   }
+    }
+
+
+
+
+    IsoTrack_P4_closestToMu3.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+				       IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+				       IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.493677*0.493677));
+
+    TLorentzVector IsoTrack_P4_closestToMu3_PiMass = IsoTrack_P4_closestToMu3;
+    IsoTrack_P4_closestToMu3_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+					      IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+					      IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.135*0.135));
+
+    TLorentzVector IsoTrack_P4_closestToMu3_MuMass = IsoTrack_P4_closestToMu3;
+    IsoTrack_P4_closestToMu3_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+					      IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+					      IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.106*0.106));
+
+
+    TLorentzVector Mu3_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2));
+    
+    Mu3_WithKMass.SetE(sqrt(Mu3_WithKMass.Px()*Mu3_WithKMass.Px() + 
+			    Mu3_WithKMass.Py()*Mu3_WithKMass.Py() + 
+			    Mu3_WithKMass.Pz()*Mu3_WithKMass.Pz() + 0.493677*0.493677));
+    
+  
+    
+    var_IsoPhiKKMass_Mu3 = (IsoTrack_P4_closestToMu3+Mu3_WithKMass).M();
+    var_IsoKStarMass_Mu3 = (IsoTrack_P4_closestToMu3_PiMass+Mu3_WithKMass).M();
+    var_IsoMuMuMass_Mu3 = (IsoTrack_P4_closestToMu3_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2))).M();
+    
+    
+    
+    
+    IsoTrack_P4_closestToMu2.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+				       IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+				       IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.493677*0.493677));
+    TLorentzVector Mu2_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1));
+    
+    Mu2_WithKMass.SetE(sqrt(Mu2_WithKMass.Px()*Mu2_WithKMass.Px() + 
+			    Mu2_WithKMass.Py()*Mu2_WithKMass.Py() + 
+			    Mu2_WithKMass.Pz()*Mu2_WithKMass.Pz() + 0.493677*0.493677));
+    
+    TLorentzVector IsoTrack_P4_closestToMu2_PiMass = IsoTrack_P4_closestToMu2;
+    IsoTrack_P4_closestToMu2_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+					      IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+					      IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.135*0.135));
+    
+    TLorentzVector IsoTrack_P4_closestToMu2_MuMass = IsoTrack_P4_closestToMu2;
+    IsoTrack_P4_closestToMu2_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+					      IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+					      IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.106*0.106));
+    
+   
+    
+    var_IsoPhiKKMass_Mu2 = (IsoTrack_P4_closestToMu2+Mu2_WithKMass).M();
+    var_IsoKStarMass_Mu2 = (IsoTrack_P4_closestToMu2_PiMass+Mu2_WithKMass).M();
+    var_IsoMuMuMass_Mu2 = (IsoTrack_P4_closestToMu2_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1))).M();
+    
+
+
+    IsoTrack_P4_closestToMu1.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+				       IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+				       IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.493677*0.493677));
+    
+    TLorentzVector IsoTrack_P4_closestToMu1_PiMass = IsoTrack_P4_closestToMu1;
+    IsoTrack_P4_closestToMu1_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+					      IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+					      IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.135*0.135));
+    
+    TLorentzVector IsoTrack_P4_closestToMu1_MuMass = IsoTrack_P4_closestToMu1;
+    IsoTrack_P4_closestToMu1_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+					      IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+					      IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.106*0.106));
+    
+    
+    
+    TLorentzVector Mu1_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0));
+    
+    Mu1_WithKMass.SetE(sqrt(Mu1_WithKMass.Px()*Mu1_WithKMass.Px() + 
+			    Mu1_WithKMass.Py()*Mu1_WithKMass.Py() + 
+			    Mu1_WithKMass.Pz()*Mu1_WithKMass.Pz() + 0.493677*0.493677));
+    
+   
+    
+    var_IsoPhiKKMass_Mu1 = (IsoTrack_P4_closestToMu1+Mu1_WithKMass).M();
+    var_IsoKStarMass_Mu1 = (IsoTrack_P4_closestToMu1_PiMass+Mu1_WithKMass).M();
+    var_IsoMuMuMass_Mu1 = (IsoTrack_P4_closestToMu1_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0))).M();
+    
+ 
 
 
     //*** define variables for Mu ID and evaluate the BDT
@@ -1502,6 +1610,33 @@ void  CommonSelector::doEvent(){
     if(id==1 && (TauRefitLV.M() > tauMinSideBand_ && TauRefitLV.M() < tauMinMass_) or (TauRefitLV.M() > tauMaxMass_ && TauRefitLV.M() < tauMaxSideBand_) ) KeepSignalRegionForMC=true;
 
 
+
+
+
+    if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_){
+
+
+      PairMassDRSorted1A.at(t).Fill(var_mass12_dRsorting,1);
+      PairMassDRSorted2A.at(t).Fill(var_mass13_drSorting,1);
+
+
+    } else if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_){
+
+      PairMassDRSorted1B.at(t).Fill(var_mass12_dRsorting,1);
+      PairMassDRSorted2B.at(t).Fill(var_mass13_drSorting,1);
+
+
+
+    }else if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_){
+
+      PairMassDRSorted1C.at(t).Fill(var_mass12_dRsorting,1);
+      PairMassDRSorted2C.at(t).Fill(var_mass13_drSorting,1);
+
+
+    }
+
+
+
     double dRSortedMass;
 
     //*** define per event resolution categroies 
@@ -1515,8 +1650,8 @@ void  CommonSelector::doEvent(){
 	    BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT"),1 );
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA2_){
-	      	      if(phiVeto && rmgVeto)
-			//if(CrossVeto)
+	      //	      if(phiVeto && rmgVeto)
+		//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
 		  PairMass2.at(t).Fill((MuonOS+MuonSS2).M() ,1);
@@ -1527,10 +1662,14 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+
+
                   }
                   //***
 
@@ -1564,7 +1703,7 @@ void  CommonSelector::doEvent(){
 	    BDTOutputB.at(t).Fill(readerB->EvaluateMVA("BDT"), 1);
 
 	    if(readerB->EvaluateMVA("BDT") > mvaB2_){
-	      	      if(phiVeto && rmgVeto)
+	      //	      if(phiVeto && rmgVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1576,10 +1715,13 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+  
+
                   }
                   //***
 
@@ -1612,7 +1754,7 @@ void  CommonSelector::doEvent(){
 	    BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
 
 	    if(readerC->EvaluateMVA("BDT") > mvaC2_){
-	      	      if(phiVeto && rmgVeto)
+	      //	      	      if(phiVeto && rmgVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1624,10 +1766,13 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+
                   }
                   //***
 
@@ -1656,7 +1801,7 @@ void  CommonSelector::doEvent(){
 	  {
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA1_ && readerA->EvaluateMVA("BDT") < mvaA2_){
-	      	      if(phiVeto && rmgVeto)
+	      //	      	      if(phiVeto && rmgVeto)
 			//	      if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1668,10 +1813,12 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+
                   }
                   //***
 
@@ -1698,7 +1845,7 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_)
 	  {
 	    if(readerB->EvaluateMVA("BDT") > mvaB1_ && readerB->EvaluateMVA("BDT") < mvaB2_){
-	      	      if(phiVeto && rmgVeto)
+	      //	      	      if(phiVeto && rmgVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1710,10 +1857,12 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+
                   }
                   //***
 
@@ -1741,7 +1890,7 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_)
 	  {
 	    if(readerC->EvaluateMVA("BDT") > mvaC1_ && readerC->EvaluateMVA("BDT")< mvaC2_){
-	      	      if(phiVeto && rmgVeto)
+	      //	      	      if(phiVeto && rmgVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1753,10 +1902,12 @@ void  CommonSelector::doEvent(){
                     dRSortedMass = (MuonOS+MuonSS2).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS2).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS1).M(),1);
+
                   }else{
                     dRSortedMass = (MuonOS+MuonSS1).M();
                     AllignSortMass1.at(t).Fill((MuonOS+MuonSS1).M(),1);
                     AllignSortMass2.at(t).Fill((MuonOS+MuonSS2).M(),1);
+
                   }
                   //***
 
@@ -1809,9 +1960,9 @@ void  CommonSelector::doEvent(){
 	dataMCtype = id;
 	event_weight =1; // 1 for data
 	if(dataMCtype == 1){event_weight =1;}
-	else if(dataMCtype == 40){event_weight =0.00128;} // event_weight is a value Lumi Scale 
-	else if(dataMCtype == 60){event_weight =0.000497;}
-	else if(dataMCtype == 90){event_weight =0.00149;}
+	else if(dataMCtype == 40){event_weight =9.2e-04;} // event_weight is a value Lumi Scale 
+	else if(dataMCtype == 60){event_weight =4.61e-04;}
+	else if(dataMCtype == 90){event_weight =6.25e-04;}
     
     
 	mvaA1 = mvaA1_;
@@ -1836,8 +1987,6 @@ void  CommonSelector::doEvent(){
 	  category = 3;
 	  bdt = readerC->EvaluateMVA("BDT");
 	}
-
-
 
 
 	if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
