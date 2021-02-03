@@ -328,6 +328,17 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("var_MaxDZDistSV",&var_MaxDZDistSV);
   TMVA_Tree->Branch("var_MinDZDistSV",&var_MinDZDistSV);
 
+  TMVA_Tree->Branch("var_IsoPhiKKMass_Mu1",&var_IsoPhiKKMass_Mu1 );
+  TMVA_Tree->Branch("var_IsoKStarMass_Mu1",&var_IsoKStarMass_Mu1 );
+  TMVA_Tree->Branch("var_IsoMuMuMass_Mu1",&var_IsoMuMuMass_Mu1 );
+
+  TMVA_Tree->Branch("var_IsoPhiKKMass_Mu2",&var_IsoPhiKKMass_Mu2 );
+  TMVA_Tree->Branch("var_IsoKStarMass_Mu2",&var_IsoKStarMass_Mu2 );
+  TMVA_Tree->Branch("var_IsoMuMuMass_Mu2",&var_IsoMuMuMass_Mu2 );
+
+  TMVA_Tree->Branch("var_IsoPhiKKMass_Mu3",&var_IsoPhiKKMass_Mu3 );
+  TMVA_Tree->Branch("var_IsoKStarMass_Mu3",&var_IsoKStarMass_Mu3 );
+  TMVA_Tree->Branch("var_IsoMuMuMass_Mu3",&var_IsoMuMuMass_Mu3 );
 
 
 
@@ -768,7 +779,48 @@ void  MakeMVATree::Configure(){
       MuMuMassNoSorting=HConfig.GetTH2D(Name+"_MuMuMassNoSorting","MuMuMassNoSorting",55,0.1,2.0,50,0.1,2.0,"M_{#mu#mu} (OS-SS, 1 no sorting), GeV","M_{#mu#mu} (OS-SS, 2 no sorting sorting), GeV");
 
 
+      IsoPhiKKMass_Mu3=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu3","IsoPhiKKMass_Mu3",55,0.95,1.20,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu2=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu2","IsoPhiKKMass_Mu1",55,0.95,1.20,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu1=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu1","IsoPhiKKMass_Mu1",55,0.95,1.20,"M_{KK},GeV","Events");
 
+
+      IsoKStarMass_Mu3=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu3","IsoKStarMass_Mu3",55,0.65,2.1,"M_{K#pi},GeV","Events");
+      IsoKStarMass_Mu2=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu2","IsoKStarMass_Mu1",55,0.65,2.1,"M_{K#pi},GeV","Events");
+      IsoKStarMass_Mu1=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu1","IsoKStarMass_Mu1",55,0.65,2.1,"M_{K#pi},GeV","Events");
+
+
+
+      IsoMuMuMass_Mu3=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu3","IsoMuMuMass_Mu3",55,0.25,1.20,"M_{#mu#mu},GeV","Events");
+      IsoMuMuMass_Mu2=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu2","IsoMuMuMass_Mu1",55,0.25,1.20,"M_{#mu#mu},GeV","Events");
+      IsoMuMuMass_Mu1=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu1","IsoMuMuMass_Mu1",55,0.25,1.20,"M_{#mu#mu},GeV","Events");
+
+
+
+
+      IsoPhiKKMass_Mu3_wideRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu3_wideRange","IsoPhiKKMass_Mu3_wideRange",75,0.95,3.2,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu2_wideRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu2_wideRange","IsoPhiKKMass_Mu1_wideRange",75,0.95,3.2,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu1_wideRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu1_wideRange","IsoPhiKKMass_Mu1_wideRange",75,0.95,3.2,"M_{KK},GeV","Events");
+
+
+      IsoPhiKKMass_Mu3_midRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu3_midRange","IsoPhiKKMass_Mu3_midRange",75,1.2,1.8,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu2_midRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu2_midRange","IsoPhiKKMass_Mu1_midRange",75,1.2,1.8,"M_{KK},GeV","Events");
+      IsoPhiKKMass_Mu1_midRange=HConfig.GetTH1D(Name+"_IsoPhiKKMass_Mu1_midRange","IsoPhiKKMass_Mu1_midRange",75,1.2,1.8,"M_{KK},GeV","Events");
+
+
+
+      IsoKStarMass_Mu3_wideRange=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu3_wideRange","IsoKStarMass_Mu3_wideRange",75,0.65,3.2,"M_{K#pi},GeV","Events");
+      IsoKStarMass_Mu2_wideRange=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu2_wideRange","IsoKStarMass_Mu1_wideRange",75,0.65,3.2,"M_{K#pi},GeV","Events");
+      IsoKStarMass_Mu1_wideRange=HConfig.GetTH1D(Name+"_IsoKStarMass_Mu1_wideRange","IsoKStarMass_Mu1_wideRange",75,0.65,3.2,"M_{K#pi},GeV","Events");
+
+
+
+      IsoMuMuMass_Mu3_wideRange=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu3_wideRange","IsoMuMuMass_Mu3_wideRange",75,0.25,3.2,"M_{#mu#mu},GeV","Events");
+      IsoMuMuMass_Mu2_wideRange=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu2_wideRange","IsoMuMuMass_Mu1_wideRange",75,0.25,3.2,"M_{#mu#mu},GeV","Events");
+      IsoMuMuMass_Mu1_wideRange=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu1_wideRange","IsoMuMuMass_Mu1_wideRange",75,0.25,3.2,"M_{#mu#mu},GeV","Events");
+
+
+
+      IsolationCombinatorialMass_pipi=HConfig.GetTH1D(Name+"_IsolationCombinatorialMass_pipi","IsolationCombinatorialMass_pipi",55,0.27,2.0,"M_{#pi#pi},GeV","Events");
 
       Selection::ConfigureHistograms(); //do not remove
       HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -954,6 +1006,50 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&Iso18Mu3);
   Extradist1d.push_back(&Iso2Mu3);
   
+
+
+  Extradist1d.push_back(&IsoPhiKKMass_Mu3);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu2);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu1);
+
+
+  Extradist1d.push_back(&IsoKStarMass_Mu3);
+  Extradist1d.push_back(&IsoKStarMass_Mu2);
+  Extradist1d.push_back(&IsoKStarMass_Mu1);
+
+
+  Extradist1d.push_back(&IsoMuMuMass_Mu3);
+  Extradist1d.push_back(&IsoMuMuMass_Mu2);
+  Extradist1d.push_back(&IsoMuMuMass_Mu1);
+
+
+
+  Extradist1d.push_back(&IsoPhiKKMass_Mu3_wideRange);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu2_wideRange);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu1_wideRange);
+
+  Extradist1d.push_back(&IsoPhiKKMass_Mu3_midRange);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu2_midRange);
+  Extradist1d.push_back(&IsoPhiKKMass_Mu1_midRange);
+
+
+  Extradist1d.push_back(&IsoKStarMass_Mu3_wideRange);
+  Extradist1d.push_back(&IsoKStarMass_Mu2_wideRange);
+  Extradist1d.push_back(&IsoKStarMass_Mu1_wideRange);
+
+
+  Extradist1d.push_back(&IsoMuMuMass_Mu3_wideRange);
+  Extradist1d.push_back(&IsoMuMuMass_Mu2_wideRange);
+  Extradist1d.push_back(&IsoMuMuMass_Mu1_wideRange);
+
+
+
+
+
+
+
+  Extradist1d.push_back(&IsolationCombinatorialMass_pipi);
+
   Extradist1d.push_back(&Iso08MuMax);
   Extradist1d.push_back(&Iso08MuMin);
 
@@ -1217,7 +1313,7 @@ void  MakeMVATree::doEvent(){
       muonTriplet.push_back(Ntp->Muon_P4(mu3_pt_idx));
 
       bool triggerCheck = false;
-      if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet);
+      if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
       value.at(TriggerMatch) = triggerCheck;
 
 
@@ -1925,8 +2021,63 @@ void  MakeMVATree::doEvent(){
 	double TrackPTtreschold(0.8);
 	double dca_temp(999.);
 	double dcaPV_temp(999.);
+
+	double Chi2IsoTrackVertexToMuon3(999.);
+	TLorentzVector IsoTrack_P4_closestToMu3(0,0,0,0);
+
+	double Chi2IsoTrackVertexToMuon2(999.);
+	TLorentzVector IsoTrack_P4_closestToMu2(0,0,0,0);
+
+	double Chi2IsoTrackVertexToMuon1(999.);
+	TLorentzVector IsoTrack_P4_closestToMu1(0,0,0,0);
+
 	for(int i =0; i< Ntp->NIsolationTrack(final_idx); i++){
 	  
+	  for(int ii=i+1 ; ii < Ntp->NIsolationTrack(final_idx); ii++){
+
+	    if(Ntp->IsolationTrack_charge(final_idx,i)*Ntp->IsolationTrack_charge(final_idx,ii)==-1){
+	      IsolationCombinatorialMass_pipi.at(t).Fill( (Ntp->IsolationTrack_p4(final_idx,i) +Ntp->IsolationTrack_p4(final_idx,ii)).M(),1  );
+	    }
+
+	  }
+
+
+
+	   if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(final_idx).at(2)) * Ntp->IsolationTrack_charge(final_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(final_idx,i) < Chi2IsoTrackVertexToMuon3)
+	       {
+		 Chi2IsoTrackVertexToMuon3= Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(final_idx,i);
+		 IsoTrack_P4_closestToMu3 = Ntp->IsolationTrack_p4(final_idx,i);
+	       }
+	   }
+
+
+	   if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(final_idx).at(1)) * Ntp->IsolationTrack_charge(final_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(final_idx,i) < Chi2IsoTrackVertexToMuon2)
+	       {
+		 Chi2IsoTrackVertexToMuon2= Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(final_idx,i);
+		 IsoTrack_P4_closestToMu2 = Ntp->IsolationTrack_p4(final_idx,i);
+
+	       }
+
+	   }
+
+
+	   if(Ntp->Muon_charge(Ntp->ThreeMuonIndices(final_idx).at(0)) * Ntp->IsolationTrack_charge(final_idx,i) == -1);
+	   {
+	     if(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(final_idx,i) < Chi2IsoTrackVertexToMuon1)
+	       {
+		 Chi2IsoTrackVertexToMuon1= Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(final_idx,i);
+		 IsoTrack_P4_closestToMu1 = Ntp->IsolationTrack_p4(final_idx,i);
+
+	       }
+
+	   }
+
+
+
 	  
 	  if(Ntp->IsolationTrack_p4(final_idx,i).Pt()> 0.5  && sqrt(  pow(Ntp->IsolationTrack_dzSV(final_idx,i),2)   +   
 								      pow(Ntp->IsolationTrack_dxySV(final_idx,i),2)) < 0.03)
@@ -1999,6 +2150,124 @@ void  MakeMVATree::doEvent(){
 	    }
 	  }
 	}
+
+	IsoTrack_P4_closestToMu3.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+					   IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+					   IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.493677*0.493677));
+
+	TLorentzVector IsoTrack_P4_closestToMu3_PiMass = IsoTrack_P4_closestToMu3;
+	IsoTrack_P4_closestToMu3_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+						  IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+						  IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.135*0.135));
+
+	TLorentzVector IsoTrack_P4_closestToMu3_MuMass = IsoTrack_P4_closestToMu3;
+	IsoTrack_P4_closestToMu3_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
+						  IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
+						  IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.106*0.106));
+
+
+	TLorentzVector Mu3_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(2));
+
+	Mu3_WithKMass.SetE(sqrt(Mu3_WithKMass.Px()*Mu3_WithKMass.Px() + 
+				Mu3_WithKMass.Py()*Mu3_WithKMass.Py() + 
+				Mu3_WithKMass.Pz()*Mu3_WithKMass.Pz() + 0.493677*0.493677));
+
+
+	IsoPhiKKMass_Mu3.at(t).Fill((IsoTrack_P4_closestToMu3+Mu3_WithKMass).M(),1);
+	IsoKStarMass_Mu3.at(t).Fill((IsoTrack_P4_closestToMu3_PiMass+Mu3_WithKMass).M(),1);
+	IsoMuMuMass_Mu3.at(t).Fill((IsoTrack_P4_closestToMu3_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(2))).M(),1);
+	IsoPhiKKMass_Mu3_wideRange.at(t).Fill((IsoTrack_P4_closestToMu3+Mu3_WithKMass).M(),1);
+	IsoPhiKKMass_Mu3_midRange.at(t).Fill((IsoTrack_P4_closestToMu3+Mu3_WithKMass).M(),1);
+	IsoKStarMass_Mu3_wideRange.at(t).Fill((IsoTrack_P4_closestToMu3_PiMass+Mu3_WithKMass).M(),1);
+	IsoMuMuMass_Mu3_wideRange.at(t).Fill((IsoTrack_P4_closestToMu3_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(2))).M(),1);
+
+
+	var_IsoPhiKKMass_Mu3 = (IsoTrack_P4_closestToMu3+Mu3_WithKMass).M();
+	var_IsoKStarMass_Mu3 = (IsoTrack_P4_closestToMu3_PiMass+Mu3_WithKMass).M();
+	var_IsoMuMuMass_Mu3 = (IsoTrack_P4_closestToMu3_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(2))).M();
+
+
+
+
+	IsoTrack_P4_closestToMu2.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+					   IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+					   IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.493677*0.493677));
+	TLorentzVector Mu2_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(1));
+
+	Mu2_WithKMass.SetE(sqrt(Mu2_WithKMass.Px()*Mu2_WithKMass.Px() + 
+				Mu2_WithKMass.Py()*Mu2_WithKMass.Py() + 
+				Mu2_WithKMass.Pz()*Mu2_WithKMass.Pz() + 0.493677*0.493677));
+
+	TLorentzVector IsoTrack_P4_closestToMu2_PiMass = IsoTrack_P4_closestToMu2;
+	IsoTrack_P4_closestToMu2_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+						  IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+						  IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.135*0.135));
+
+	TLorentzVector IsoTrack_P4_closestToMu2_MuMass = IsoTrack_P4_closestToMu2;
+	IsoTrack_P4_closestToMu2_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu2.Px()*IsoTrack_P4_closestToMu2.Px() +
+						  IsoTrack_P4_closestToMu2.Py()*IsoTrack_P4_closestToMu2.Py() +
+						  IsoTrack_P4_closestToMu2.Pz()*IsoTrack_P4_closestToMu2.Pz() + 0.106*0.106));
+
+
+
+	IsoPhiKKMass_Mu2.at(t).Fill((IsoTrack_P4_closestToMu2+Mu2_WithKMass).M(),1);
+	IsoKStarMass_Mu2.at(t).Fill((IsoTrack_P4_closestToMu2_PiMass+Mu2_WithKMass).M(),1);
+	IsoMuMuMass_Mu2.at(t).Fill((IsoTrack_P4_closestToMu2_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(1))).M(),1);
+	IsoPhiKKMass_Mu2_wideRange.at(t).Fill((IsoTrack_P4_closestToMu2+Mu2_WithKMass).M(),1);
+	IsoPhiKKMass_Mu2_midRange.at(t).Fill((IsoTrack_P4_closestToMu2+Mu2_WithKMass).M(),1);
+	IsoKStarMass_Mu2_wideRange.at(t).Fill((IsoTrack_P4_closestToMu2_PiMass+Mu2_WithKMass).M(),1);
+	IsoMuMuMass_Mu2_wideRange.at(t).Fill((IsoTrack_P4_closestToMu2_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(1))).M(),1);
+
+
+	var_IsoPhiKKMass_Mu2 = (IsoTrack_P4_closestToMu2+Mu2_WithKMass).M();
+	var_IsoKStarMass_Mu2 = (IsoTrack_P4_closestToMu2_PiMass+Mu2_WithKMass).M();
+	var_IsoMuMuMass_Mu2 = (IsoTrack_P4_closestToMu2_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(1))).M();
+
+
+
+
+
+
+
+	IsoTrack_P4_closestToMu1.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+					   IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+					   IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.493677*0.493677));
+
+	TLorentzVector IsoTrack_P4_closestToMu1_PiMass = IsoTrack_P4_closestToMu1;
+	IsoTrack_P4_closestToMu1_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+						  IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+						  IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.135*0.135));
+
+	TLorentzVector IsoTrack_P4_closestToMu1_MuMass = IsoTrack_P4_closestToMu1;
+	IsoTrack_P4_closestToMu1_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu1.Px()*IsoTrack_P4_closestToMu1.Px() +
+						  IsoTrack_P4_closestToMu1.Py()*IsoTrack_P4_closestToMu1.Py() +
+						  IsoTrack_P4_closestToMu1.Pz()*IsoTrack_P4_closestToMu1.Pz() + 0.106*0.106));
+
+
+
+	TLorentzVector Mu1_WithKMass = Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(0));
+
+	Mu1_WithKMass.SetE(sqrt(Mu1_WithKMass.Px()*Mu1_WithKMass.Px() + 
+				Mu1_WithKMass.Py()*Mu1_WithKMass.Py() + 
+				Mu1_WithKMass.Pz()*Mu1_WithKMass.Pz() + 0.493677*0.493677));
+
+
+	IsoPhiKKMass_Mu1.at(t).Fill((IsoTrack_P4_closestToMu1+Mu1_WithKMass).M(),1);
+	IsoKStarMass_Mu1.at(t).Fill((IsoTrack_P4_closestToMu1_PiMass+Mu1_WithKMass).M(),1);
+	IsoMuMuMass_Mu1.at(t).Fill((IsoTrack_P4_closestToMu1_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(0))).M(),1);
+	IsoPhiKKMass_Mu1_wideRange.at(t).Fill((IsoTrack_P4_closestToMu1+Mu1_WithKMass).M(),1);
+	IsoPhiKKMass_Mu1_midRange.at(t).Fill((IsoTrack_P4_closestToMu1+Mu1_WithKMass).M(),1);
+	IsoKStarMass_Mu1_wideRange.at(t).Fill((IsoTrack_P4_closestToMu1_PiMass+Mu1_WithKMass).M(),1);
+	IsoMuMuMass_Mu1_wideRange.at(t).Fill((IsoTrack_P4_closestToMu1_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(0))).M(),1);
+
+
+	var_IsoPhiKKMass_Mu1 = (IsoTrack_P4_closestToMu1+Mu1_WithKMass).M();
+	var_IsoKStarMass_Mu1 = (IsoTrack_P4_closestToMu1_PiMass+Mu1_WithKMass).M();
+	var_IsoMuMuMass_Mu1 = (IsoTrack_P4_closestToMu1_MuMass+ Ntp->Muon_P4(Ntp->ThreeMuonIndices(final_idx).at(0))).M();
+
+
+
+
 
 
 	NtracksClose.at(t).Fill(NcloseTracksCount,w);

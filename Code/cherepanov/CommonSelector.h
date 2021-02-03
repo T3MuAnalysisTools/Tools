@@ -8,6 +8,12 @@
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
+#include "SimpleFits/FitSoftware/interface/Chi2VertexFitter.h"
+#include "SimpleFits/FitSoftware/interface/TrackParticle.h"
+#include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
+#include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+
+
 
 
 class CommonSelector : public Selection {
@@ -47,6 +53,17 @@ class CommonSelector : public Selection {
   // Selection Variables
   // Initializhere your analysis histograms
 
+  std::vector<TH1D> PairMassDRSorted1A;
+  std::vector<TH1D> PairMassDRSorted2A;
+
+
+  std::vector<TH1D> PairMassDRSorted1B;
+  std::vector<TH1D> PairMassDRSorted2B;
+
+  std::vector<TH1D> PairMassDRSorted1C;
+  std::vector<TH1D> PairMassDRSorted2C;
+
+
   std::vector<TH1D> Muon1Pt;
   std::vector<TH1D> Muon2Pt;
   std::vector<TH1D> Muon3Pt;
@@ -59,6 +76,9 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauEta;
   std::vector<TH1D> TauPt;
   std::vector<TH1D> TauP;
+
+  std::vector<TH1D> BetterMuMuVertex;
+  std::vector<TH1D> WorseMuMuVertex;
 
 
 
@@ -94,6 +114,10 @@ class CommonSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitC1FullEtaVetoCut;
   std::vector<TH1D> TauMassRefitC2FullEtaVetoCut;
+
+  std::vector<TH1D> TauMassRefitABC1FullEtaVetoCut;
+  std::vector<TH1D> TauMassRefitABC2FullEtaVetoCut;
+
   std::vector<TH1D> TauMassC1;
 
   std::vector<TH1D> TauMassRefitA2;
@@ -108,8 +132,12 @@ class CommonSelector : public Selection {
   std::vector<TH1D> TauMassRefitABC1;
   std::vector<TH1D> TauMassRefitABC2;
 
+  std::vector<TH2D> TauMassRefitABC1_eta;
+  std::vector<TH2D> TauMassRefitABC2_eta;
+
 
   std::vector<TH1D> TauMassResolutionRefit;
+  std::vector<TH1D> TauMassResolutionHelixRefit;
 
   std::vector<TH2D> TauMass_all_nophiVeto;
   std::vector<TH1D> TauMass_all;
@@ -121,12 +149,67 @@ class CommonSelector : public Selection {
   std::vector<TH2D> EMR_tau_eta;
 
   std::vector<TH2D> PairMass;
+  std::vector<TH2D> KKMass_dR_sort;
+  std::vector<TH1D> KKMass_dR_sort1;
+  std::vector<TH1D> KKMass_dR_sort2;
+
+  std::vector<TH2D> KKMass_pt_sort;
+  std::vector<TH1D> KKMass_pt_sort1;
+  std::vector<TH1D> KKMass_pt_sort2;
+
+
+  std::vector<TH2D> KKMass_dR_sort_XVeto;
+  std::vector<TH1D> KKMass_dR_sort1_XVeto;
+  std::vector<TH1D> KKMass_dR_sort2_XVeto;
+
+  std::vector<TH2D> KKMass_pt_sort_XVeto;
+  std::vector<TH1D> KKMass_pt_sort1_XVeto;
+  std::vector<TH1D> KKMass_pt_sort2_XVeto;
+
+  std::vector<TH1D> KpiIsolationMass_OS;
+  std::vector<TH1D> KpiIsolationMass_SS1;
+  std::vector<TH1D> KpiIsolationMass_SS2;
+
+
+
+
+
+  std::vector<TH2D> PairMassdRSorted;
+  std::vector<TH2D> PairMassVertexSorted;
+  std::vector<TH1D> PairMass1VertexSorting;
+  std::vector<TH1D> PairMass2VertexSorting;
+
+  std::vector<TH2D> PairMassdRSortedXVeto;
+  std::vector<TH2D> PairMassPhiMassSorting;
+  std::vector<TH1D> PairMass1PhiMassSorting;
+  std::vector<TH1D> PairMass2PhiMassSorting;
+
+  std::vector<TH2D> PairMass1TauPhiMassSorting;
+  std::vector<TH2D> PairMass2TauPhiMassSorting;
+
+
   std::vector<TH2D> PairMassFinalSel;
   std::vector<TH1D> PairMass1;
   std::vector<TH1D> PairMass2;
 
   std::vector<TH2D> PairMassEta;
   std::vector<TH2D> PairMassEtaPrime;
+
+  std::vector<TH1D> AllignSortMass1;
+  std::vector<TH1D> AllignSortMass2;
+
+
+  std::vector<TH1D> PairMass1NoSorting;
+  std::vector<TH1D> PairMass2NoSorting;
+  std::vector<TH2D> MuMuMassNoSorting;
+
+  std::vector<TH1D> PairMass1PTSorting;
+  std::vector<TH1D> PairMass2PTSorting;
+  std::vector<TH2D> MuMuMassPTSorting;
+
+  std::vector<TH1D> PairMass1AllignedSorting;
+  std::vector<TH1D> PairMass2AllignedSorting;
+  std::vector<TH2D> MuMuMassAllignedSorting;
 
   std::vector<TH2D> PairMassWithCut;
   std::vector<TH2D> CategoryOverlap;
@@ -167,6 +250,12 @@ class CommonSelector : public Selection {
 
 
   std::vector<TH1D> VertexChi2KF;
+  std::vector<TH2D> VertexChi2KF_vs_HelixFit;
+
+  std::vector<TH1D>   KF_Helix_deltaX;
+  std::vector<TH1D>   KF_Helix_deltaY;
+  std::vector<TH1D>   KF_Helix_deltaZ;
+
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> BDTOutputA;
   std::vector<TH1D> BDTOutputB;
@@ -236,6 +325,11 @@ class CommonSelector : public Selection {
   Double_t category;
   Double_t m12;
   Double_t m13;
+  Double_t mDr1;
+  Double_t mDr2;
+  Double_t xv;
+
+
   Double_t LumiScale;
   Double_t mvaA1;
   Double_t mvaA2;
@@ -274,6 +368,17 @@ class CommonSelector : public Selection {
   Float_t Muon3DetID;
 
 
+  Float_t var_IsoPhiKKMass_Mu1;
+  Float_t var_IsoKStarMass_Mu1;
+  Float_t var_IsoMuMuMass_Mu1;
+
+  Float_t var_IsoPhiKKMass_Mu2;
+  Float_t var_IsoKStarMass_Mu2;
+  Float_t var_IsoMuMuMass_Mu2;
+
+  Float_t var_IsoPhiKKMass_Mu3;
+  Float_t var_IsoKStarMass_Mu3;
+  Float_t var_IsoMuMuMass_Mu3;
 
 };
 #endif

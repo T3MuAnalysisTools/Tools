@@ -70,22 +70,24 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   if(Analysis.Contains("example"))s=new Example(Analysis,UncertType);
 #ifdef USE_cherepanov
   else if(Analysis.Contains("mytest"))s=new MyTest(Analysis,UncertType);
-  else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
+  //  else if(Analysis.Contains("mcstudy"))s=new MCStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemu"))s=new ThreeMu(Analysis,UncertType);
-  else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
-  else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
-  else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
+  //else if(Analysis.Contains("dstophipi"))s=new DsToPhiPi(Analysis,UncertType);
+  //else if(Analysis.Contains("syncsignal"))s=new SyncSignal(Analysis,UncertType);
+  //else if(Analysis.Contains("syncdsphipi"))s=new SyncDsPhiPi(Analysis,UncertType);
   else if(Analysis.Contains("filltmvatrees"))s=new FillTMVATrees(Analysis,UncertType);
   else if(Analysis.Contains("makemvatree"))s=new MakeMVATree(Analysis,UncertType);
   else if(Analysis.Contains("makemvacategoryII"))s=new MakeMVACategoryII(Analysis,UncertType);
-  else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
-  else if(Analysis.Contains("categoryiiselector"))s=new CategoryIISelector(Analysis,UncertType);
-  else if(Analysis.Contains("backgroundselector"))s=new BackgroundSelector(Analysis,UncertType);
-  else if(Analysis.Contains("muidstudy"))s=new MuIDStudy(Analysis,UncertType);
-  else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
+  //else if(Analysis.Contains("signalselector"))s=new SignalSelector(Analysis,UncertType);
+  //else if(Analysis.Contains("categoryiiselector"))s=new CategoryIISelector(Analysis,UncertType);
+  //else if(Analysis.Contains("backgroundselector"))s=new BackgroundSelector(Analysis,UncertType);
+  //else if(Analysis.Contains("muidstudy"))s=new MuIDStudy(Analysis,UncertType);
+  //else if(Analysis.Contains("isolation"))s=new Isolation(Analysis,UncertType);
   else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
-  else if(Analysis.Contains("dsphipeak"))s=new DsPhiPeak(Analysis,UncertType);
+  //  else if(Analysis.Contains("dsphipeak"))s=new DsPhiPeak(Analysis,UncertType);
   else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
+
+
 
 
 
