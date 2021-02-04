@@ -398,6 +398,18 @@ class CommonSelector : public Selection {
   float var_MaxVertexPairQuality;
   float var_MuonglbkinkSum;
   float var_MaxMuon_chi2LocalMomentum;
+  
+  float var_IsoPhiKKMass_Mu1;
+  float var_IsoKStarMass_Mu1;
+  float var_IsoMuMuMass_Mu1;
+
+  float var_IsoPhiKKMass_Mu2;
+  float var_IsoKStarMass_Mu2;
+  float var_IsoMuMuMass_Mu2;
+
+  float var_IsoPhiKKMass_Mu3;
+  float var_IsoKStarMass_Mu3;
+  float var_IsoMuMuMass_Mu3;
 
 
 
@@ -444,6 +456,7 @@ class CommonSelector : public Selection {
   Float_t Muon1DetID;
   Float_t Muon2DetID;
   Float_t Muon3DetID;
+  
 
 
 

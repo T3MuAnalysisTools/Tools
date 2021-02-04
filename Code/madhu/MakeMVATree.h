@@ -146,7 +146,42 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> MinMuDistanceToSV;
 
 
+  std::vector<TH1D> IsoPhiKKMass_Mu3;
+  std::vector<TH1D> IsoPhiKKMass_Mu2;
+  std::vector<TH1D> IsoPhiKKMass_Mu1;
 
+
+  std::vector<TH1D> IsoKStarMass_Mu3;
+  std::vector<TH1D> IsoKStarMass_Mu2;
+  std::vector<TH1D> IsoKStarMass_Mu1;
+
+
+  std::vector<TH1D> IsoMuMuMass_Mu3_wideRange;
+  std::vector<TH1D> IsoMuMuMass_Mu2_wideRange;
+  std::vector<TH1D> IsoMuMuMass_Mu1_wideRange;
+
+  std::vector<TH1D> IsoPhiKKMass_Mu3_wideRange;
+  std::vector<TH1D> IsoPhiKKMass_Mu2_wideRange;
+  std::vector<TH1D> IsoPhiKKMass_Mu1_wideRange;
+
+  std::vector<TH1D> IsoPhiKKMass_Mu3_midRange;
+  std::vector<TH1D> IsoPhiKKMass_Mu2_midRange;
+  std::vector<TH1D> IsoPhiKKMass_Mu1_midRange;
+
+
+  std::vector<TH1D> IsoKStarMass_Mu3_wideRange;
+  std::vector<TH1D> IsoKStarMass_Mu2_wideRange;
+  std::vector<TH1D> IsoKStarMass_Mu1_wideRange;
+
+
+  std::vector<TH1D> IsoMuMuMass_Mu3;
+  std::vector<TH1D> IsoMuMuMass_Mu2;
+  std::vector<TH1D> IsoMuMuMass_Mu1;
+
+
+
+
+  std::vector<TH1D> IsolationCombinatorialMass_pipi;
 
 
 
@@ -668,6 +703,18 @@ class MakeMVATree : public Selection {
   float var_Mu3TrackInvariantMassBeforeMVAKStarSV;
   float var_Mu3TrackPtBeforeMVAKStarSV;
   float var_Mu3TrackAngleBeforeMVAKStarSV;
+  
+  float var_IsoPhiKKMass_Mu1;
+  float var_IsoKStarMass_Mu1;
+  float var_IsoMuMuMass_Mu1;
+
+  float var_IsoPhiKKMass_Mu2;
+  float var_IsoKStarMass_Mu2;
+  float var_IsoMuMuMass_Mu2;
+
+  float var_IsoPhiKKMass_Mu3;
+  float var_IsoKStarMass_Mu3;
+  float var_IsoMuMuMass_Mu3;
 
 
 };
