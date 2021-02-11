@@ -328,6 +328,7 @@ class CommonSelector : public Selection {
   Double_t mDr1;
   Double_t mDr2;
   Double_t xv;
+  Double_t phiv;
 
 
   Double_t LumiScale;

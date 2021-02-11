@@ -24,12 +24,12 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
   PEMassResolutionCut2_(0.01),
-  mvaA1_(0.0799), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
-  mvaA2_(0.208),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
-  mvaB1_(0.133),
-  mvaB2_(0.255),
-  mvaC1_(0.115),
-  mvaC2_(0.222)
+  mvaA1_(0.117), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
+  mvaA2_(0.221),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
+  mvaB1_(0.134),
+  mvaB2_(0.223),
+  mvaC1_(0.143),
+  mvaC2_(0.227)
 {
   // This is a class constructor;
 }
@@ -54,6 +54,7 @@ void  CommonSelector::Configure(){
 
   T3MMiniTree->Branch("m3m",&m3m);
   T3MMiniTree->Branch("xv",&xv);
+  T3MMiniTree->Branch("phiv",&phiv);
   T3MMiniTree->Branch("dataMCtype",&dataMCtype);
   T3MMiniTree->Branch("event_weight",&event_weight);
   T3MMiniTree->Branch("bdt",&bdt);
@@ -93,6 +94,7 @@ void  CommonSelector::Configure(){
   readerA->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerA->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerA->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
+  readerA->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
 
 
   //  readerA->AddSpectator("var_tauMass",&var_tauMass);
@@ -101,31 +103,30 @@ void  CommonSelector::Configure(){
 
 
 
-
   readerB = new TMVA::Reader( "!Color:!Silent" );
   readerB->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
   readerB->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
+  readerB->AddVariable( "var_flightLenSig", &var_flightLenSig);
   readerB->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
   readerB->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
   readerB->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
   readerB->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerB->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerB->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
+  readerB->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
   readerB->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
   readerB->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
   readerB->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
   readerB->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
- 
+  readerB->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
   readerB->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_B/weights/TMVAClassification_BDT.weights.xml");
-
-
 
 
 
   readerC = new TMVA::Reader( "!Color:!Silent" );
 
   readerC->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
-  readerC->AddVariable( "var_flightLenSig", &var_flightLenSig);
+  readerC->AddVariable( "var_vertexKFChi2", &var_flightLenSig);
   readerC->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
   readerC->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
   readerC->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
@@ -138,7 +139,7 @@ void  CommonSelector::Configure(){
   readerC->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
   readerC->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
   readerC->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-
+  readerC->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
   readerC->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_C/weights/TMVAClassification_BDT.weights.xml"); 
 
 
@@ -780,7 +781,7 @@ void  CommonSelector::doEvent(){
   
   unsigned int t;
   int id(Ntp->GetMCID());
-  //    std::cout<<" id   "<< id << std::endl;
+  std::cout<<" id   "<< id << std::endl;
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
 
@@ -797,11 +798,13 @@ void  CommonSelector::doEvent(){
 
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLTName = Ntp->HLTName(iTrigger);
+    std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
     if(HLTName.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
   }
 
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
+    //    std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
     if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
     if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
     if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
@@ -822,8 +825,11 @@ void  CommonSelector::doEvent(){
 
   if(DoubleMuFired) value.at(L1T)=1;
 
-  pass.at(L1T)= true;//(value.at(L1T)==cut.at(L1T));
-  pass.at(HLT)= true;//(value.at(HLT)==cut.at(HLT));
+  std::cout<<"  "<< value.at(L1T) << "  "<<value.at(HLT)  << std::endl;
+
+
+  pass.at(L1T)= (value.at(L1T)==cut.at(L1T));
+  pass.at(HLT)= (value.at(HLT)==cut.at(HLT));
 
 
 
@@ -962,6 +968,10 @@ void  CommonSelector::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
+
+
+  if(id!=1)  std::cout<<" id:   "<< id << "  NMCSignalParticles  "<< Ntp->NMCSignalParticles() << "  NMCTaus   "<< Ntp->NMCTaus() << std::endl;
+
 
   if(status){
 
@@ -1130,6 +1140,17 @@ void  CommonSelector::doEvent(){
       MuMuMassAllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),(MuonOS+MuonSS1).M());
     }
 
+    if(id == 40 or id == 60 or id == 90 ){// or id == 40){
+      std::cout<<"-------------- All categoris ----------------"<< std::endl;
+      std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+      Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+      Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+      Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+      Ntp->printMCDecayChainOfEvent(true, true, true, true);
+      std::cout<< "\n\n\n\n\n\n";
+    }
 
 
   
@@ -1249,7 +1270,7 @@ void  CommonSelector::doEvent(){
     double    m13v = (MuonOS+MuonSS2).M();
     
     
-    if(( m12v < phiVetoCut1  || m12v > phiVetoCut2 )  && (m13v < phiVetoCut1 || m13v > phiVetoCut2)  )  phiVeto=true;
+    //    if(( m12v < phiVetoCut1  || m12v > phiVetoCut2 )  && (m13v < phiVetoCut1 || m13v > phiVetoCut2)  )  phiVeto=true;
     if(( m12v < rmgCutVeto1 || m12v > rmgCutVeto2 )  && (m13v < rmgCutVeto1 || m13v > rmgCutVeto2))  rmgVeto=true;
     
     
@@ -1257,6 +1278,10 @@ void  CommonSelector::doEvent(){
     if((dRSortedMassPair1 > phiVetoCut1 &&  dRSortedMassPair2 > 0.65)  &&  (dRSortedMassPair1 < phiVetoCut2 &&  dRSortedMassPair2 < 1.6))CrossVeto1=false;
     if((dRSortedMassPair2 > phiVetoCut1 &&  dRSortedMassPair1 > 0.2)  &&  (dRSortedMassPair2 < phiVetoCut2 &&  dRSortedMassPair1 < 1.4))CrossVeto2=false;
     if((dRSortedMassPair1 > rmgCutVeto1 &&  dRSortedMassPair2 > 0.95)  &&  (dRSortedMassPair1 < rmgCutVeto2 &&  dRSortedMassPair2 < 1.5))CrossVeto3=false;
+
+
+
+
 
     CrossVeto = CrossVeto1*CrossVeto2*CrossVeto3;
     if(CrossVeto)   {PairMassdRSortedXVeto.at(t).Fill(dRSortedMassPair2,dRSortedMassPair1 ,1);
@@ -1343,6 +1368,14 @@ void  CommonSelector::doEvent(){
 
     
     //***  define the mva varables used for evaluation of BDT weights for selection
+
+    if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+      var_mass12_dRsorting = (MuonOS+MuonSS2).M();
+      var_mass13_drSorting = (MuonOS+MuonSS1).M();
+    }else{
+      var_mass12_dRsorting = (MuonOS+MuonSS1).M();
+      var_mass13_drSorting = (MuonOS+MuonSS2).M();
+    }
     
     var_vertexKFChi2 =Ntp->Vertex_signal_KF_Chi2(signal_idx);
     var_svpvTauAngle = SVPV.Angle(TauLV.Vect());
@@ -1391,13 +1424,7 @@ void  CommonSelector::doEvent(){
     var_IsolationMinDist = Ntp->Isolation_MinDist(signal_idx);
 
 
-    if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
-      var_mass12_dRsorting = (MuonOS+MuonSS2).M();
-      var_mass13_drSorting = (MuonOS+MuonSS1).M();
-    }else{
-      var_mass12_dRsorting = (MuonOS+MuonSS1).M();
-      var_mass13_drSorting = (MuonOS+MuonSS2).M();
-    }
+
 
 
     var_tauMass=TauRefitLV.M();
@@ -1613,15 +1640,22 @@ void  CommonSelector::doEvent(){
 
 
 
+
+
+
+    //  define also phi veto here
+
     if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_){
 
 
+      if((dRSortedMassPair1<0.994 ||  dRSortedMassPair1 > 1.044) && (dRSortedMassPair2<0.994 || dRSortedMassPair2> 1.044) ) phiVeto = true;
       PairMassDRSorted1A.at(t).Fill(var_mass12_dRsorting,1);
       PairMassDRSorted2A.at(t).Fill(var_mass13_drSorting,1);
 
 
     } else if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_){
 
+      if((dRSortedMassPair1<0.985 ||  dRSortedMassPair1 > 1.053) && (dRSortedMassPair2<0.985 || dRSortedMassPair2> 1.053) ) phiVeto = true;
       PairMassDRSorted1B.at(t).Fill(var_mass12_dRsorting,1);
       PairMassDRSorted2B.at(t).Fill(var_mass13_drSorting,1);
 
@@ -1629,6 +1663,7 @@ void  CommonSelector::doEvent(){
 
     }else if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_){
 
+      if((dRSortedMassPair1<0.974 ||  dRSortedMassPair1 > 1.064) && (dRSortedMassPair2<0.974 || dRSortedMassPair2> 1.064) ) phiVeto = true;
       PairMassDRSorted1C.at(t).Fill(var_mass12_dRsorting,1);
       PairMassDRSorted2C.at(t).Fill(var_mass13_drSorting,1);
 
@@ -1651,6 +1686,7 @@ void  CommonSelector::doEvent(){
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA2_){
 	      //	      if(phiVeto && rmgVeto)
+	      if(phiVeto)
 		//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1704,6 +1740,7 @@ void  CommonSelector::doEvent(){
 
 	    if(readerB->EvaluateMVA("BDT") > mvaB2_){
 	      //	      if(phiVeto && rmgVeto)
+	      if(phiVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1755,6 +1792,7 @@ void  CommonSelector::doEvent(){
 
 	    if(readerC->EvaluateMVA("BDT") > mvaC2_){
 	      //	      	      if(phiVeto && rmgVeto)
+	      if(phiVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1802,6 +1840,7 @@ void  CommonSelector::doEvent(){
 
 	    if(readerA->EvaluateMVA("BDT") > mvaA1_ && readerA->EvaluateMVA("BDT") < mvaA2_){
 	      //	      	      if(phiVeto && rmgVeto)
+   	      if(phiVeto)
 			//	      if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1846,6 +1885,7 @@ void  CommonSelector::doEvent(){
 	  {
 	    if(readerB->EvaluateMVA("BDT") > mvaB1_ && readerB->EvaluateMVA("BDT") < mvaB2_){
 	      //	      	      if(phiVeto && rmgVeto)
+     	      if(phiVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1891,6 +1931,7 @@ void  CommonSelector::doEvent(){
 	  {
 	    if(readerC->EvaluateMVA("BDT") > mvaC1_ && readerC->EvaluateMVA("BDT")< mvaC2_){
 	      //	      	      if(phiVeto && rmgVeto)
+      	      if(phiVeto)
 			//if(CrossVeto)
 		{
 		  PairMass1.at(t).Fill((MuonOS+MuonSS1).M() ,1);
@@ -1957,6 +1998,10 @@ void  CommonSelector::doEvent(){
 	m3m = TauRefitLV.M();
 	if(CrossVeto)	xv = 1;
 	if(!CrossVeto)	xv = 0;
+	
+	if(phiVeto) phiv=1;
+	if(!phiVeto) phiv=0;
+
 	dataMCtype = id;
 	event_weight =1; // 1 for data
 	if(dataMCtype == 1){event_weight =1;}
