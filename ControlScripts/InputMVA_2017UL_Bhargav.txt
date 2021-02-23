@@ -1,0 +1,13 @@
+Thin: False
+Skim: False
+HistoFile: InputData/HistoScaletoLumi_SignalSelection_2017.txt
+Analysis: T3MSelectionTree
+UncertType: default
+SkimInfo: InputData/SkimSummary_BPH_2017LegacyUL.log
+Lumi: 38300
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}
