@@ -1,9 +1,10 @@
-#ifndef CommonSelector_h
-#define CommonSelector_h
+#ifndef VertexFits_h
+#define VertexFits_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
+#include "TError.h"
 
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
@@ -15,12 +16,15 @@
 
 
 
+//using namespace std;
 
-class CommonSelector : public Selection {
+
+
+class VertexFits : public Selection {
 
  public:
-  CommonSelector(TString Name_, TString id_);
-  virtual ~CommonSelector();
+  VertexFits(TString Name_, TString id_);
+  virtual ~VertexFits();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -45,13 +49,14 @@ class CommonSelector : public Selection {
 
   bool RunB, RunC, RunD, RunE, RunF = 0;
 
-  TTree *T3MMiniTree;
-  TFile *T3MFMiniTree;
+ 
 
   TRandom rndm;
   double random_num;
   // Selection Variables
   // Initializhere your analysis histograms
+
+  std::vector<TH1D> BbkgVertexHypothesis;
 
   std::vector<TH1D> PairMassDRSorted1A;
   std::vector<TH1D> PairMassDRSorted2A;
@@ -269,6 +274,24 @@ class CommonSelector : public Selection {
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
 
+  std::vector<TH1D>  MassPairFit;
+  std::vector<TH1D>  Chi2SquarePairFit;
+  std::vector<TH1D>  DistanceToSignalVertexPairFit;
+
+  std::vector<TH2D>  MassPairFit_Chi2;
+  std::vector<TH2D>  MassTriplFit_Chi2;
+
+
+  std::vector<TH1D>  MassTripleFit;
+  std::vector<TH1D>  Chi2SquareTripleFit;
+  std::vector<TH1D>  DistanceToSignalVertexTripleFit;
+
+  std::vector<TH1D>  DeltaR_D_SV_3tracks;
+  std::vector<TH1D>  DeltaR_D_SV_2tracks;
+
+  std::vector<TH1D>  Angle_D_SV_3tracks;
+  std::vector<TH1D>  Angle_D_SV_2tracks;
+
 
 
   TMVA::Reader *readerA;
@@ -318,26 +341,6 @@ class CommonSelector : public Selection {
 
 
 
-  Double_t m3m;
-  Double_t dataMCtype;
-  Double_t event_weight;
-  Double_t bdt;
-  Double_t category;
-  Double_t m12;
-  Double_t m13;
-  Double_t mDr1;
-  Double_t mDr2;
-  Double_t xv;
-  Double_t phiv;
-
-
-  Double_t LumiScale;
-  Double_t mvaA1;
-  Double_t mvaA2;
-  Double_t mvaB1;
-  Double_t mvaB2;
-  Double_t mvaC1;
-  Double_t mvaC2;
 
   Float_t mu_combinedQuality_chi2LocalMomentum;
   Float_t mu_combinedQuality_chi2LocalPosition;

@@ -48,6 +48,8 @@ bool Chi2VertexFitter::Fit(){
     return false;
   }
   chi2=min.Fval();
+  if(min.Fval() < 0 ) return false;
+  //  std::cout<<"chi2 from Chi2VertexFit-----------  " << chi2 <<std::endl;
   // Get output parameters
   for(int i=0;i<par.GetNrows();i++){ par(i,0)=min.UserParameters().Value(i);}
   // Get output covariance

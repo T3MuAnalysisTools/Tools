@@ -501,7 +501,7 @@ class Ntuple_Controller{
       }
       
 
-
+      int      IsolationTrack_NTracks(){return Ntp->IsolationTrack_Helcharge->size();}
       int      IsolationTrack_Helcharge(unsigned int i){return Ntp->IsolationTrack_Helcharge->at(i);}
       int      IsolationTrack_pdgid(unsigned int i){return Ntp->IsolationTrack_pdgid->at(i);}
       float      IsolationTrack_B(unsigned int i){return Ntp->IsolationTrack_B->at(i);}
