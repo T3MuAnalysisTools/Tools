@@ -341,6 +341,8 @@ void  VertexFits::Configure(){
   MassTriplFit_Chi2 =HConfig.GetTH2D(Name+"_MassTriplFit_Chi2","MassTriplFit_Chi2",50,0.2,4,50,0,2,"Vertex Mass, GeV (3 tracks)","Vertex #chi^{2}");
 
 
+  IsoTrack_mcDr_vs_drToTau=HConfig.GetTH2D(Name+"_IsoTrack_mcDr_vs_drToTau","IsoTrack_mcDr_vs_drToTau",100,0.,1.,100,0.,1,"#Delta R wrt to mc","#Delta R wrt to #tau");
+
   DeltaR_D_SV_3tracks=HConfig.GetTH1D(Name+"_DeltaR_D_SV_3tracks","DeltaR_D_SV_3tracks",30,0,2.5,"#DeltaR(#vec{D} - #vec{SV}) (D and SV are w.r.t #vec{PV} (3 tracks)","Events");
   DeltaR_D_SV_2tracks=HConfig.GetTH1D(Name+"_DeltaR_D_SV_2tracks","DeltaR_D_SV_2tracks",30,0,2.5,"#DeltaR(#vec{D} - #vec{SV}) (D and SV are w.r.t #vec{PV} (2 tracks)","Events");
 
@@ -359,6 +361,11 @@ void  VertexFits::Configure(){
 
   VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
   VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",50,0,10,50,0,10,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
+
+
+  DisplacementFromPV_vs_mass3tracks=HConfig.GetTH2D(Name+"_DisplacementFromPV_vs_mass3tracks","DisplacementFromPV_vs_mass3tracks",80,0,3,80,0.5,2.5,"Displacement from PV 3 tracks, cm","SV Mass, GeV");
+  DisplacementFromPV_vs_mass2tracks=HConfig.GetTH2D(Name+"_DisplacementFromPV_vs_mass2tracks","DisplacementFromPV_vs_mass2tracks",80,0,3,80,0.5,2.5,"Displacement from PV 2 tracks, cm","SV Mass, GeV");
+
 
   KF_Helix_deltaX=HConfig.GetTH1D(Name+"_KF_Helix_deltaX","KF_Helix_deltaX",50,-0.05,0.05,"#Delta X, cm (Helix Fitter - Kalman Fitter)","Events");
   KF_Helix_deltaY=HConfig.GetTH1D(Name+"_KF_Helix_deltaY","KF_Helix_deltaY",50,-0.05,0.05,"#Delta Y, cm (Helix Fitter - Kalman Fitter)","Events");
@@ -383,6 +390,13 @@ void  VertexFits::Configure(){
 
   BetterMuMuVertex=HConfig.GetTH1D(Name+"_BetterMuMuVertex","BetterMuMuVertex",30,0,5,"vertex pair quality (close)","");
   WorseMuMuVertex=HConfig.GetTH1D(Name+"_WorseMuMuVertex","WorseMuMuVertex",30,0,5,"vertex pair quality (far)","");
+
+
+  MassFit12 =HConfig.GetTH1D(Name+"_MassFit12","MassFit12",80,0.2,4,"Vertex Mass Fit12, GeV ","Events");
+  MassFit13 =HConfig.GetTH1D(Name+"_MassFit13","MassFit13",80,0.2,4,"Vertex Mass Fit13, GeV ","Events");
+  MassFit23 =HConfig.GetTH1D(Name+"_MassFit23","MassFit23",80,0.2,4,"Vertex Mass Fit23, GeV ","Events");
+  MassFit123 =HConfig.GetTH1D(Name+"_MassFit123","MassFit123",80,0.2,4,"Vertex Mass Fit123, GeV ","Events");
+  MassFitLeastChi2 =HConfig.GetTH1D(Name+"_MassFitLeastChi2","MassFitLeastChi2",80,0.2,4,"Vertex Mass 2(tracks) least #chi^{2}, GeV ","Events");
 
 
 
@@ -410,6 +424,14 @@ void  VertexFits::Store_ExtraDist(){
   Extradist1d.push_back(&Chi2SquareTripleFit);
   Extradist1d.push_back(&DistanceToSignalVertexTripleFit);
 
+
+  Extradist1d.push_back(&MassFit12);
+  Extradist1d.push_back(&MassFit13);
+  Extradist1d.push_back(&MassFit23);
+  Extradist1d.push_back(&MassFit123);
+
+  Extradist1d.push_back(&MassFitLeastChi2);
+
   Extradist1d.push_back(&DeltaR_D_SV_3tracks);
   Extradist1d.push_back(&DeltaR_D_SV_2tracks);
 
@@ -419,7 +441,7 @@ void  VertexFits::Store_ExtraDist(){
 
   Extradist2d.push_back(&MassPairFit_Chi2);
   Extradist2d.push_back(&MassTriplFit_Chi2);
-
+  Extradist2d.push_back(&IsoTrack_mcDr_vs_drToTau);
 
   Extradist1d.push_back(&TauMassRefitABC1);  
   Extradist1d.push_back(&TauMassRefitABC2);
@@ -439,6 +461,9 @@ void  VertexFits::Store_ExtraDist(){
   Extradist1d.push_back(&KF_Helix_deltaZ);
 
 
+  Extradist2d.push_back(&DisplacementFromPV_vs_mass3tracks);
+  Extradist2d.push_back(&DisplacementFromPV_vs_mass2tracks);
+
   Extradist1d.push_back(&KpiIsolationMass_OS);
   Extradist1d.push_back(&KpiIsolationMass_SS1);
   Extradist1d.push_back(&KpiIsolationMass_SS2);
@@ -453,7 +478,7 @@ void  VertexFits::doEvent(){
   
   unsigned int t;
   int id(Ntp->GetMCID());
-  //    std::cout<<" id   "<< id << std::endl;
+  //  std::cout<<" id   "<< id << std::endl;
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
 
 
@@ -636,7 +661,7 @@ void  VertexFits::doEvent(){
   bool status=AnalysisCuts(t,w,wobs);
 
   if(status){
-    //    std::cout<<"id ---- "<< id << std::endl;
+    std::cout<<"id ---- "<< id << std::endl;
     unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_index_3=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -650,7 +675,7 @@ void  VertexFits::doEvent(){
     TLorentzVector Muon2LV = Ntp->Muon_P4(Muon_index_2);
     TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
 
-
+    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
 
     std::vector<unsigned int> EtaSortedIndices;
     
@@ -667,13 +692,57 @@ void  VertexFits::doEvent(){
     int TrackIndex3(-1);
 
     //    std::cout<<"all iso tracks:   "<< std::endl;
+    int DToKPiPi_index(-1);
+    for(unsigned int imc=0; imc< Ntp->NMCParticles(); imc++){
+
+      if(abs(Ntp->MCParticle_pdgid(imc)) == 411 or abs(Ntp->MCParticle_pdgid(imc)) == 421){
+	std::cout<<" found particle  "<< Ntp->MCParticle_pdgid(imc) << " size  " <<Ntp->MCParticle_childpdgid(imc).size() <<std::endl;
+	if(Ntp->MCParticle_childpdgid(imc).size()>=2){
+	  
+	  for (int i = 0; i < Ntp->MCParticle_childpdgid(imc).size(); i++) {
+	    std::cout << Ntp->MCParticle_childpdgid(imc).at(i) << ' ';
+	  }
+
+	  //	  if((std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , 211)!=Ntp->MCParticle_childpdgid(imc).end()   or 
+	  //	      std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , -211)!=Ntp->MCParticle_childpdgid(imc).end()   ) and 
+	  //	     (std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , 321)!=Ntp->MCParticle_childpdgid(imc).end()   or 
+	  //	      std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , -321)!=Ntp->MCParticle_childpdgid(imc).end()))
+
+	  if((std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , 321)!=Ntp->MCParticle_childpdgid(imc).end()   or 
+	      std::find(Ntp->MCParticle_childpdgid(imc).begin() , Ntp->MCParticle_childpdgid(imc).end() , -321)!=Ntp->MCParticle_childpdgid(imc).end()))
+	    {
+	      DToKPiPi_index = imc;	       
+	      std::cout<<"====================================================== "<< DToKPiPi_index  <<std::endl;
+	    }
+	  
+	}
+      }
+    }
+      
+    if(DToKPiPi_index>0){
+
+      std::cout<<"------------------      DToKPiPi found " << std::endl;
+      Ntp->printMCDecayChainOfParticle(DToKPiPi_index,true,true,true,true);
+
+    }
     for(unsigned int i1=0; i1 < Ntp->NIsolationTrack(signal_idx); i1++){// first loop
 
-      //      std::cout<<"i:   "<<  i1 << "   pt:   "<<Ntp->IsolationTrack_p4(signal_idx, i1).Pt() << "  eta:    " << Ntp->IsolationTrack_p4(signal_idx, i1).Eta() <<std::endl;
-      if(Ntp->IsolationTrack_p4(signal_idx, i1).Pt() < 0.6 ) continue;
+      std::cout<<"i:   "<<  i1 << "   pt:   "<<Ntp->IsolationTrack_p4(signal_idx, i1).Pt() << "  eta:    " << Ntp->IsolationTrack_p4(signal_idx, i1).Eta() 
+      	       <<  "   truth pt:   "<<Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1))).Pt() 
+      	       <<  "   truth eta:  "<<Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1))).Eta() <<"   id   " <<  Ntp->MCParticle_pdgid(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1)))  <<"  dR   " <<   Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1))).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)) <<" dR to tau   " <<  TauLV.DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1))<<" delta Phi  " << Ntp->DeltaPhi(TauLV.Phi(), Ntp->IsolationTrack_p4(signal_idx, i1).Phi()) <<std::endl;
+
+      
+      IsoTrack_mcDr_vs_drToTau.at(t).Fill(Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1))).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)), TauLV.DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)));
+
+
+
+
+      if(Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i1))).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)) > 0.003) continue;// lets take only matched
+      if(Ntp->IsolationTrack_p4(signal_idx, i1).Pt() < 0.4 ) continue;
       for(unsigned int i2=i1+1; i2 < Ntp->NIsolationTrack(signal_idx); i2++){// second loop
-	if(Ntp->IsolationTrack_p4(signal_idx, i2).Pt() < 0.6 ) continue;
-	if(Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)) > 1.5) continue;
+	if(Ntp->IsolationTrack_p4(signal_idx, i2).Pt() < 0.4 ) continue;
+	//	if(Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i1)) > 1.5) continue;
+	if(Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i2))).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i2)) > 0.003) continue;// lets take only matched
 	if(Ntp->IsolationTrack_Helcharge(i1)!=Ntp->IsolationTrack_Helcharge(i2)){
 
 	  std::vector<TrackParticle> FirstPairCollection;
@@ -698,9 +767,10 @@ void  VertexFits::doEvent(){
 	for(unsigned int i3=0; i3 < Ntp->NIsolationTrack(signal_idx); i3++){
 	  if(i3==TrackIndex1) continue;
 	  if(i3==TrackIndex2) continue;
-	  if(Ntp->IsolationTrack_p4(signal_idx, i3).Pt() < 0.6 ) continue;
-	  if(Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, TrackIndex1)) > 1.5
-	     or Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, TrackIndex2)) > 1.5) continue;
+	  if(Ntp->IsolationTrack_p4(signal_idx, i3).Pt() < 0.4 ) continue;
+	  //	  if(Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, TrackIndex1)) > 1.5
+	  //	     or Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, TrackIndex2)) > 1.5) continue;
+	  if(Ntp->MCParticle_p4(Ntp->getMatchTruthIndex(Ntp->IsolationTrack_p4(signal_idx, i3))).DeltaR(Ntp->IsolationTrack_p4(signal_idx, i3)) > 0.003) continue;// lets take only matched
 	  std::vector<TrackParticle> TripleCollection;
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex1));
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex2));
@@ -720,6 +790,34 @@ void  VertexFits::doEvent(){
 	}
       }
     }
+
+    //  ----------------------------- secondary vertices ----------------
+    int NumberOfPrimaryVertices(0);
+    for(unsigned int iVertex=0; iVertex < Ntp->NSecondaryVertices(); iVertex++){
+
+      bool nonSignalMuons(true);
+      for(unsigned int iTrack = 0; iTrack < Ntp->NTracksAtSecondaryVertex(iVertex); iTrack++){
+        if(Muon1LV.DeltaR(Ntp->SecondaryVertexTrack_P4(iVertex, iTrack)) < 0.01 or
+           Muon2LV.DeltaR(Ntp->SecondaryVertexTrack_P4(iVertex, iTrack)) < 0.01 or
+           Muon3LV.DeltaR(Ntp->SecondaryVertexTrack_P4(iVertex, iTrack)) < 0.01) {nonSignalMuons = false; continue; }
+	std::cout<<"Vertex "<< iVertex << " TrackPt  "<< Ntp->SecondaryVertexTrack_P4(iVertex, iTrack).Pt() << " eta  "<< Ntp->SecondaryVertexTrack_P4(iVertex, iTrack).Eta() <<std::endl;
+      }
+
+
+      if(nonSignalMuons){
+	if(Ntp->NTracksAtSecondaryVertex(iVertex)==3){
+	  if(Ntp->SecondaryVertexTrackCharge(iVertex,0) * Ntp->SecondaryVertexTrackCharge(iVertex,1)*Ntp->SecondaryVertexTrackCharge(iVertex,2)==-1 ){
+	    DisplacementFromPV_vs_mass3tracks.at(t).Fill(  (Ntp->Vertex_MatchedPrimaryVertex(signal_idx) - Ntp->SecondaryVertexPosition(iVertex)).Mag(), Ntp->SecondaryVertexMass(iVertex)  );
+	  }
+	}
+	if( Ntp->NTracksAtSecondaryVertex(iVertex)==2){
+	  if(Ntp->SecondaryVertexTrackCharge(iVertex,0) * Ntp->SecondaryVertexTrackCharge(iVertex,1)==-1){
+	    DisplacementFromPV_vs_mass2tracks.at(t).Fill(  (Ntp->Vertex_MatchedPrimaryVertex(signal_idx) - Ntp->SecondaryVertexPosition(iVertex)).Mag(), Ntp->SecondaryVertexMass(iVertex)  );
+	  }
+	}
+      }
+    }
+
 
 
     if(TrackIndex1!=-1 && TrackIndex2 !=-1){
@@ -745,10 +843,11 @@ void  VertexFits::doEvent(){
       Angle_D_SV_2tracks.at(t).Fill(pvTosv_2tracks.Angle(pvToD_2tracks),1);
 
       if(pvTosv_2tracks.Angle(pvToD_2tracks) > 0.5*TMath::Pi()){
-	//	std::cout<<"iso 2 - 1: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Eta() << " phi:  " << Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Phi() <<std::endl;
-	//	std::cout<<"iso 2 - 2: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Eta() << " phi:  " << Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Phi()  <<std::endl;
 
-	/*	  if(id == 40 or id == 60 or id == 90 ){// or id == 40){
+	std::cout<<"iso 2 - 1: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Eta() << " phi:  " << Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Phi() <<std::endl;
+	std::cout<<"iso 2 - 2: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Eta() << " phi:  " << Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Phi()  <<std::endl;
+	
+	if(id == 40 or id == 60 or id == 90 ){// or id == 40){
 	    std::cout<<"-------------- All categoris ----------------"<< std::endl;
 	    std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
 	    std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -758,10 +857,15 @@ void  VertexFits::doEvent(){
 	    Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
 	    Ntp->printMCDecayChainOfEvent(true, true, true, true);
 	    std::cout<< "\n\n\n\n\n\n";
-	    }*/
+	    }
 
-
-
+	if(DToKPiPi_index!=-1){
+	  for (unsigned int i_dau = 0; i_dau < Ntp->MCParticle_childidx(DToKPiPi_index).size(); i_dau++){
+	    std::cout<<"  delta Eta to Tau   "<<Ntp->MCParticle_p4(Ntp->MCParticle_childidx(DToKPiPi_index).at(i_dau)).Eta()  - TauLV.Eta() <<"  pdgid  "  
+		     << PDGInfo::pdgIdToName(Ntp->MCParticle_pdgid(Ntp->MCParticle_childidx(DToKPiPi_index).at(i_dau)))<<" pT  " << Ntp->MCParticle_p4(Ntp->MCParticle_childidx(DToKPiPi_index).at(i_dau)).Pt() << "  eta  " << Ntp->MCParticle_p4(Ntp->MCParticle_childidx(DToKPiPi_index).at(i_dau)).Eta() << std::endl;
+	  }
+	}
+      
       }
     
       MassPairFit_Chi2.at(t).Fill(MotherParticle2Particles.LV().M(),TwoTracksFit.ChiSquare(),1);
@@ -792,9 +896,9 @@ void  VertexFits::doEvent(){
       if(pvTosv_3tracks.Angle(pvToD_3tracks) > 0.5*TMath::Pi()){
 
 
-	//	std::cout<<"iso 2 - 1: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Eta() << " phi:   " <<Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Phi() <<std::endl;
-	//	std::cout<<"iso 2 - 2: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Eta() << " phi:   "<<Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Phi() <<std::endl;
-	//std::cout<<"iso 2 - 3: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Eta() << " phi:   "<<Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Phi() <<std::endl;
+	std::cout<<"iso 3 - 1: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Eta() << " phi:   " <<Ntp->IsolationTrack_p4(signal_idx, TrackIndex1).Phi() <<std::endl;
+	std::cout<<"iso 3 - 2: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Eta() << " phi:   "<<Ntp->IsolationTrack_p4(signal_idx, TrackIndex2).Phi() <<std::endl;
+       	std::cout<<"iso 3x - 3: "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Pt()<< "  eta:    "<< Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Eta() << " phi:   "<<Ntp->IsolationTrack_p4(signal_idx, TrackIndex3).Phi() <<std::endl;
 
 	/*	  if(id == 40 or id == 60 or id == 90 ){// or id == 40){
 
@@ -817,9 +921,100 @@ void  VertexFits::doEvent(){
       MassTriplFit_Chi2.at(t).Fill(MotherParticle3Particles.LV().M(),ThreeTracksFit.ChiSquare());
     }
 
+    //*********  Tracking Other Approach
 
+    double deltaR1(999.);
+    double deltaR2(999.);
+    double deltaR3(999.);
+    int FirstTrack_index;
+    int SecondTrack_index;
+    int ThirdTrack_index;
+    bool FirstTrack_found(false);
+    bool SecondTrack_found(false);
+    bool ThirdTrack_found(false);
 
+    for(unsigned int i1=0; i1 < Ntp->NIsolationTrack(signal_idx); i1++){// first loop
+      //first find the track closest to tau by dR
+      if(Ntp->IsolationTrack_p4(signal_idx, i1).DeltaR(TauLV) < deltaR1){
+	deltaR1 = Ntp->IsolationTrack_p4(signal_idx, i1).DeltaR(TauLV);
+	FirstTrack_index = i1;
+	FirstTrack_found = true;
+      }  
+  
+    }
+    if(FirstTrack_found){
+      for(unsigned int i2=0; i2 < Ntp->NIsolationTrack(signal_idx); i2++){// second loop
+	if(i2 == FirstTrack_index) continue;
+	if(Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index)) < deltaR2){
+	  
+	  deltaR2 = Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index));
+	  SecondTrack_index=i2;
+	  SecondTrack_found = true;
+	}
+	
+      }
+      
+      if(SecondTrack_found){
+	for(unsigned int i3=0; i3 < Ntp->NIsolationTrack(signal_idx); i3++){// second loop
+	  if(i3 == FirstTrack_index) continue;
+	  if(i3 == SecondTrack_index) continue;
+	  if(Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index) + Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index) ) < deltaR3){
+	    deltaR3 = Ntp->IsolationTrack_p4(signal_idx, i3).DeltaR(Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index) + Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index) );
+	    ThirdTrack_index = i3;
+	    ThirdTrack_found = true;
+	  }
+	}
 
+	if(ThirdTrack_found){
+	  std::cout<<"index1  "<< FirstTrack_index << " dR to tau "<< Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Pt()  <<"  eta  "<<Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Eta() <<std::endl;
+	  std::cout<<"index2  "<< SecondTrack_index << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).Pt() << "  eta  "<<Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).Eta() <<std::endl;
+	  std::cout<<"index3  "<< ThirdTrack_index << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).Pt()<< "  eta  "<<Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).Eta() <<std::endl;
+	}
+      }
+    }
+
+    if(FirstTrack_found && SecondTrack_found && ThirdTrack_found){
+      TVector3 v(0,0,0);
+      std::vector<TrackParticle> Tracks12;
+      Tracks12.push_back(Ntp->IsolationTrack_TrackParticle(FirstTrack_index));
+      Tracks12.push_back(Ntp->IsolationTrack_TrackParticle(SecondTrack_index));
+      
+      std::vector<TrackParticle> Tracks13;
+      Tracks13.push_back(Ntp->IsolationTrack_TrackParticle(FirstTrack_index));
+      Tracks13.push_back(Ntp->IsolationTrack_TrackParticle(ThirdTrack_index));
+
+      std::vector<TrackParticle> Tracks23;
+      Tracks23.push_back(Ntp->IsolationTrack_TrackParticle(SecondTrack_index));
+      Tracks23.push_back(Ntp->IsolationTrack_TrackParticle(ThirdTrack_index));
+            
+
+     std::vector<TrackParticle> Tracks123;
+     Tracks123.push_back(Ntp->IsolationTrack_TrackParticle(FirstTrack_index));
+     Tracks123.push_back(Ntp->IsolationTrack_TrackParticle(SecondTrack_index));
+     Tracks123.push_back(Ntp->IsolationTrack_TrackParticle(ThirdTrack_index));
+ 
+
+      Chi2VertexFitter  Fit12(Tracks12,v);
+      Chi2VertexFitter  Fit13(Tracks13,v);
+      Chi2VertexFitter  Fit23(Tracks23,v);
+      Chi2VertexFitter  Fit123(Tracks123,v);
+   
+      
+      if(Fit12.Fit() &&  Fit13.Fit() &&  Fit23.Fit()){
+	std::cout<<"12 chi2  "<< Fit12.ChiSquare() << "  13 chi2  "<< Fit13.ChiSquare() << "  23 chi2   " << Fit23.ChiSquare()<< std::endl;
+	MassFit12.at(t).Fill(Fit12.GetMother(888).LV().M(),1);
+	MassFit13.at(t).Fill(Fit13.GetMother(888).LV().M(),1);
+	MassFit23.at(t).Fill(Fit23.GetMother(888).LV().M(),1);
+	double LeastChi2 = std::min({Fit12.ChiSquare(), Fit13.ChiSquare(),Fit23.ChiSquare()});
+	if(LeastChi2 == Fit12.ChiSquare()) MassFitLeastChi2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index) + Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index) ).M(),1);
+	if(LeastChi2 == Fit13.ChiSquare()) MassFitLeastChi2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index) + Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index) ).M(),1);
+	if(LeastChi2 == Fit23.ChiSquare()) MassFitLeastChi2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index) + Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index) ).M(),1);
+
+      }
+      if(Fit123.Fit()) {	MassFit123.at(t).Fill(Fit123.GetMother(888).LV().M(),1); std::cout<<"123 chi2  "<< Fit123.ChiSquare() << std::endl;}
+      
+    }
+  
 
 
 
@@ -828,8 +1023,6 @@ void  VertexFits::doEvent(){
     MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
     MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
     MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
-
-
 
     Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
     LorentzVectorParticle  MotherParticle;// = Fitter.GetMother(888);
@@ -1073,9 +1266,7 @@ void  VertexFits::doEvent(){
     
     float CloserToPhiMassPair  = fabs(Mass_osss1-PDG_Var::Phi_mass())  < fabs(Mass_osss2-PDG_Var::Phi_mass()) ? Mass_osss1 : Mass_osss2;
     
-    
-
-    
+        
     
     bool phiVeto(false);
     
@@ -1105,7 +1296,7 @@ void  VertexFits::doEvent(){
 
 
 
-    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
+
 
 
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),w);
@@ -1466,10 +1657,10 @@ void  VertexFits::Finish(){
 
 
   //*** extra actions
-  if(mode == RECONSTRUCT){
+    if(mode == RECONSTRUCT){
 
 
-    MassPairFit.at(1).Scale( MassPairFit.at(0).Integral()/ MassPairFit.at(1).Integral());
+    /*    MassPairFit.at(1).Scale( MassPairFit.at(0).Integral()/ MassPairFit.at(1).Integral());
     Chi2SquarePairFit.at(1).Scale( Chi2SquarePairFit.at(0).Integral()/ Chi2SquarePairFit.at(1).Integral());
     DistanceToSignalVertexPairFit.at(1).Scale( DistanceToSignalVertexPairFit.at(0).Integral()/ DistanceToSignalVertexPairFit.at(1).Integral());
 
@@ -1489,7 +1680,7 @@ void  VertexFits::Finish(){
     Angle_D_SV_3tracks.at(1).Scale( Angle_D_SV_3tracks.at(0).Integral()/Angle_D_SV_3tracks.at(1).Integral());
     Angle_D_SV_2tracks.at(1).Scale( Angle_D_SV_2tracks.at(0).Integral()/Angle_D_SV_2tracks.at(1).Integral());
 
-
+    */
 
     //    int id(Ntp->GetMCID());
     //    double scale(1.);
@@ -1508,7 +1699,7 @@ void  VertexFits::Finish(){
 
     //    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
     //    ScaleAllHistOfType(3,scale*scaleB0Tau);
-  }
+    }
   Selection::Finish();
 }
 

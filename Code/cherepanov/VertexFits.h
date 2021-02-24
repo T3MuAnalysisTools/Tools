@@ -5,6 +5,9 @@
 #include <vector>
 #include "TString.h"
 #include "TError.h"
+#include "PDGInfo.h"
+
+
 
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
@@ -256,6 +259,8 @@ class VertexFits : public Selection {
 
   std::vector<TH1D> VertexChi2KF;
   std::vector<TH2D> VertexChi2KF_vs_HelixFit;
+  std::vector<TH2D> DisplacementFromPV_vs_mass3tracks;
+  std::vector<TH2D> DisplacementFromPV_vs_mass2tracks;
 
   std::vector<TH1D>   KF_Helix_deltaX;
   std::vector<TH1D>   KF_Helix_deltaY;
@@ -280,7 +285,7 @@ class VertexFits : public Selection {
 
   std::vector<TH2D>  MassPairFit_Chi2;
   std::vector<TH2D>  MassTriplFit_Chi2;
-
+  std::vector<TH2D>  IsoTrack_mcDr_vs_drToTau;
 
   std::vector<TH1D>  MassTripleFit;
   std::vector<TH1D>  Chi2SquareTripleFit;
@@ -292,7 +297,11 @@ class VertexFits : public Selection {
   std::vector<TH1D>  Angle_D_SV_3tracks;
   std::vector<TH1D>  Angle_D_SV_2tracks;
 
-
+  std::vector<TH1D>  MassFit12;
+  std::vector<TH1D>  MassFit13;
+  std::vector<TH1D>  MassFit23;
+  std::vector<TH1D>  MassFit123;
+  std::vector<TH1D>  MassFitLeastChi2;
 
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
