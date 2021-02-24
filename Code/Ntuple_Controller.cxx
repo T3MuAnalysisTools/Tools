@@ -943,17 +943,15 @@ int Ntuple_Controller::matchTruth(TLorentzVector tvector){
 }
 
 int Ntuple_Controller::getMatchTruthIndex(TLorentzVector tvector){
-   int index = -9;
-   double dr=1.;
-   for(unsigned int i=0;i<NMCParticles();i++){
-      if(MCParticle_p4(i).Pt()>0.){
-         if(tvector.DeltaR(MCParticle_p4(i))<dr){
-            index = i;
-            dr = tvector.DeltaR(MCParticle_p4(i));
-         }
-      }
-   }
-   return index;
+  int index = -9;
+  double dr=999.;
+  for(unsigned int i=0;i<NMCParticles();i++){
+    if(tvector.DeltaR(MCParticle_p4(i))<dr){
+      index = i;
+      dr = tvector.DeltaR(MCParticle_p4(i));
+    }
+  }
+  return index;
 }
 
 TLorentzVector Ntuple_Controller::KaonTrack_P4(unsigned int index){
