@@ -25,8 +25,8 @@ T3MSelectionTree::T3MSelectionTree(TString Name_, TString id_):
 {
    // This is a class constructor;
    TString basedir = "";
-   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2018";
-   PUWeightFile = new TFile(basedir+"/PUWeights_Run2018.root");
+   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2017";
+   PUWeightFile = new TFile(basedir+"/PUWeights_Run2017.root");
    puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
    file= new TFile("T3MSelectionTreeInput_veto_corrections.root","recreate");
 }
@@ -39,6 +39,7 @@ T3MSelectionTree::~T3MSelectionTree(){
    }
    Logger(Logger::Info) << "complete." << std::endl;
 }
+
 void  T3MSelectionTree::Configure(){
 
    // Initialize Readers
@@ -53,7 +54,7 @@ void  T3MSelectionTree::Configure(){
    reader_trackerMuonId->AddSpectator("muonPhi",&muonPhi);
    reader_trackerMuonId->AddVariable("muonInnerNC2",&muonInnerNC2);
    reader_trackerMuonId->AddVariable("muonInnerNValidHits",&muonInnerNValidHits);
-   reader_trackerMuonId->AddVariable("muonValidFraction", &muonValidFraction);
+   //reader_trackerMuonId->AddVariable("muonValidFraction", &muonValidFraction);
    reader_trackerMuonId->AddVariable("muonNLostTrackerHits",&muonNLostTrackerHits);
    reader_trackerMuonId->AddVariable("muonNLostTrackerHitsInner",&muonNLostTrackerHitsInner);
    reader_trackerMuonId->AddVariable("muonNLostTrackerHitsOuter",&muonNLostTrackerHitsOuter);
@@ -65,7 +66,7 @@ void  T3MSelectionTree::Configure(){
    reader_trackerMuonId->AddVariable("muonHad",&muonHad);
    reader_trackerMuonId->AddVariable("muonEM",&muonEM);
 
-   reader_trackerMuonId->BookMVA( "BDT", basedir+"weights/TrackerMuonBDT_2018/weights/MuPiTMVA_2018_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_trackerMuonId->BookMVA( "BDT", basedir+"weights/TrackerMuonBDT_2017/weights/MuPiTMVA_2017_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // (GlobalMuonId 1)
    // Barrel
@@ -78,8 +79,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon1Id_barrel->AddVariable("log(mu_combinedQuality_trkKink)", &Muon1_trkKink);
    reader_Muon1Id_barrel->AddVariable("log(mu_combinedQuality_glbKink)", &Muon1_glbKink);
    reader_Muon1Id_barrel->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon1_glbTrkP);
-   reader_Muon1Id_barrel->AddVariable("mu_Numberofvalidtrackerhits", &Muon1_nTVH);
    reader_Muon1Id_barrel->AddVariable("mu_Numberofvalidpixelhits", &Muon1_nVPH);
+   reader_Muon1Id_barrel->AddVariable("mu_trackerLayersWithMeasurement", &Muon1_nTVH);
    reader_Muon1Id_barrel->AddVariable("mu_validMuonHitComb", &Muon1_vMHC);
    reader_Muon1Id_barrel->AddVariable("mu_numberOfMatchedStations", &Muon1_nMS);
    reader_Muon1Id_barrel->AddVariable("mu_segmentCompatibility", &Muon1_segComp);
@@ -92,7 +93,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon1Id_barrel->AddSpectator("mu_pt",&mu_pt);
    reader_Muon1Id_barrel->AddSpectator("mu_phi",&mu_phi);
    reader_Muon1Id_barrel->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon1Id_barrel->BookMVA( "BDT", basedir+"MuonMVA_02may_barrel/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon1Id_barrel->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/barrel/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    //Endcap
    reader_Muon1Id_endcap = new TMVA::Reader("!Color:!Silent");
@@ -104,8 +105,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon1Id_endcap->AddVariable("log(mu_combinedQuality_trkKink)", &Muon1_trkKink);
    reader_Muon1Id_endcap->AddVariable("log(mu_combinedQuality_glbKink)", &Muon1_glbKink);
    reader_Muon1Id_endcap->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon1_glbTrkP);
-   reader_Muon1Id_endcap->AddVariable("mu_Numberofvalidtrackerhits", &Muon1_nTVH);
    reader_Muon1Id_endcap->AddVariable("mu_Numberofvalidpixelhits", &Muon1_nVPH);
+   reader_Muon1Id_endcap->AddVariable("mu_trackerLayersWithMeasurement", &Muon1_nTVH);
    reader_Muon1Id_endcap->AddVariable("mu_validMuonHitComb", &Muon1_vMHC);
    reader_Muon1Id_endcap->AddVariable("mu_numberOfMatchedStations", &Muon1_nMS);
    reader_Muon1Id_endcap->AddVariable("mu_segmentCompatibility", &Muon1_segComp);
@@ -118,7 +119,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon1Id_endcap->AddSpectator("mu_pt",&mu_pt);
    reader_Muon1Id_endcap->AddSpectator("mu_phi",&mu_phi);
    reader_Muon1Id_endcap->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon1Id_endcap->BookMVA( "BDT", basedir+"MuonMVA_02may_endcap/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon1Id_endcap->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/endcap/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
 
    // (GlobalMuonId 2)
@@ -132,8 +133,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon2Id_barrel->AddVariable("log(mu_combinedQuality_trkKink)", &Muon2_trkKink);
    reader_Muon2Id_barrel->AddVariable("log(mu_combinedQuality_glbKink)", &Muon2_glbKink);
    reader_Muon2Id_barrel->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon2_glbTrkP);
-   reader_Muon2Id_barrel->AddVariable("mu_Numberofvalidtrackerhits", &Muon2_nTVH);
    reader_Muon2Id_barrel->AddVariable("mu_Numberofvalidpixelhits", &Muon2_nVPH);
+   reader_Muon2Id_barrel->AddVariable("mu_trackerLayersWithMeasurement", &Muon2_nTVH);
    reader_Muon2Id_barrel->AddVariable("mu_validMuonHitComb", &Muon2_vMHC);
    reader_Muon2Id_barrel->AddVariable("mu_numberOfMatchedStations", &Muon2_nMS);
    reader_Muon2Id_barrel->AddVariable("mu_segmentCompatibility", &Muon2_segComp);
@@ -146,7 +147,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon2Id_barrel->AddSpectator("mu_pt",&mu_pt);
    reader_Muon2Id_barrel->AddSpectator("mu_phi",&mu_phi);
    reader_Muon2Id_barrel->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon2Id_barrel->BookMVA( "BDT", basedir+"MuonMVA_02may_barrel/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon2Id_barrel->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/barrel/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // Endcap
    reader_Muon2Id_endcap = new TMVA::Reader("!Color:!Silent");
@@ -158,8 +159,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon2Id_endcap->AddVariable("log(mu_combinedQuality_trkKink)", &Muon2_trkKink);
    reader_Muon2Id_endcap->AddVariable("log(mu_combinedQuality_glbKink)", &Muon2_glbKink);
    reader_Muon2Id_endcap->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon2_glbTrkP);
-   reader_Muon2Id_endcap->AddVariable("mu_Numberofvalidtrackerhits", &Muon2_nTVH);
    reader_Muon2Id_endcap->AddVariable("mu_Numberofvalidpixelhits", &Muon2_nVPH);
+   reader_Muon2Id_endcap->AddVariable("mu_trackerLayersWithMeasurement", &Muon2_nTVH);
    reader_Muon2Id_endcap->AddVariable("mu_validMuonHitComb", &Muon2_vMHC);
    reader_Muon2Id_endcap->AddVariable("mu_numberOfMatchedStations", &Muon2_nMS);
    reader_Muon2Id_endcap->AddVariable("mu_segmentCompatibility", &Muon2_segComp);
@@ -172,7 +173,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon2Id_endcap->AddSpectator("mu_pt",&mu_pt);
    reader_Muon2Id_endcap->AddSpectator("mu_phi",&mu_phi);
    reader_Muon2Id_endcap->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon2Id_endcap->BookMVA( "BDT", basedir+"MuonMVA_02may_endcap/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon2Id_endcap->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/endcap/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // (GlobalMuonId 3)
    // Barrel
@@ -185,8 +186,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon3Id_barrel->AddVariable("log(mu_combinedQuality_trkKink)", &Muon3_trkKink);
    reader_Muon3Id_barrel->AddVariable("log(mu_combinedQuality_glbKink)", &Muon3_glbKink);
    reader_Muon3Id_barrel->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon3_glbTrkP);
-   reader_Muon3Id_barrel->AddVariable("mu_Numberofvalidtrackerhits", &Muon3_nTVH);
    reader_Muon3Id_barrel->AddVariable("mu_Numberofvalidpixelhits", &Muon3_nVPH);
+   reader_Muon3Id_barrel->AddVariable("mu_trackerLayersWithMeasurement", &Muon3_nTVH);
    reader_Muon3Id_barrel->AddVariable("mu_validMuonHitComb", &Muon3_vMHC);
    reader_Muon3Id_barrel->AddVariable("mu_numberOfMatchedStations", &Muon3_nMS);
    reader_Muon3Id_barrel->AddVariable("mu_segmentCompatibility", &Muon3_segComp);
@@ -199,7 +200,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon3Id_barrel->AddSpectator("mu_pt",&mu_pt);
    reader_Muon3Id_barrel->AddSpectator("mu_phi",&mu_phi);
    reader_Muon3Id_barrel->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon3Id_barrel->BookMVA( "BDT", basedir+"MuonMVA_02may_barrel/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon3Id_barrel->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/barrel/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // Endcap
    reader_Muon3Id_endcap = new TMVA::Reader("!Color:!Silent");
@@ -211,8 +212,8 @@ void  T3MSelectionTree::Configure(){
    reader_Muon3Id_endcap->AddVariable("log(mu_combinedQuality_trkKink)", &Muon3_trkKink);
    reader_Muon3Id_endcap->AddVariable("log(mu_combinedQuality_glbKink)", &Muon3_glbKink);
    reader_Muon3Id_endcap->AddVariable("mu_combinedQuality_glbTrackProbability>150?150:mu_combinedQuality_glbTrackProbability", &Muon3_glbTrkP);
-   reader_Muon3Id_endcap->AddVariable("mu_Numberofvalidtrackerhits", &Muon3_nTVH);
    reader_Muon3Id_endcap->AddVariable("mu_Numberofvalidpixelhits", &Muon3_nVPH);
+   reader_Muon3Id_endcap->AddVariable("mu_trackerLayersWithMeasurement", &Muon3_nTVH);
    reader_Muon3Id_endcap->AddVariable("mu_validMuonHitComb", &Muon3_vMHC);
    reader_Muon3Id_endcap->AddVariable("mu_numberOfMatchedStations", &Muon3_nMS);
    reader_Muon3Id_endcap->AddVariable("mu_segmentCompatibility", &Muon3_segComp);
@@ -225,7 +226,7 @@ void  T3MSelectionTree::Configure(){
    reader_Muon3Id_endcap->AddSpectator("mu_pt",&mu_pt);
    reader_Muon3Id_endcap->AddSpectator("mu_phi",&mu_phi);
    reader_Muon3Id_endcap->AddSpectator("mu_SoftMVA",&mu_SoftMVA);
-   reader_Muon3Id_endcap->BookMVA( "BDT", basedir+"MuonMVA_02may_endcap/weights/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
+   reader_Muon3Id_endcap->BookMVA( "BDT", basedir+"weights/GlobalMuonIdBDT_2017/endcap/TMVA_new_BDT.weights.xml" ); // weights weights.xml file after training, place it to CommonFiles
 
    // Initialize output tree
    // Set tree branches
@@ -435,17 +436,23 @@ void  T3MSelectionTree::doEvent(){
 
    for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-      if(HLT.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
+      if(HLT.Contains("DoubleMu3_Trk_Tau3mu_v") && Ntp->HLTDecision(iTrigger)  ) HLTOk=true;
    }
 
    for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
       TString L1TriggerName = Ntp->L1Name(il1);
-      if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
-      if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
-      if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
-      if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
-      if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
-         randomFailed = true;
+
+      if(id==1 && Ntp->WhichEra(2017).Contains("RunB")){
+         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp-> L1Decision(il1))                 DoubleMuFired = true;
+         if(L1TriggerName.Contains("L1_TripleMu_5_3_0_DoubleMu_5_3_OS_Mass_Max17") && Ntp-> L1Decision(il1))      TripleMuFired = true;
+      }
+      if(id!=1){
+         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp-> L1Decision(il1))                  DoubleMuFired = true;
+         if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp-> L1Decision(il1)) TripleMuFired = true;
+      }
+      if(id==1 && (Ntp->WhichEra(2017).Contains("RunC") or Ntp->WhichEra(2017).Contains("RunD") or Ntp->WhichEra(2017).Contains("RunF")  or Ntp->WhichEra(2017).Contains("RunE"))){
+         if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp-> L1Decision(il1))                 DoubleMuFired = true;
+         if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9")  && Ntp-> L1Decision(il1))TripleMuFired = true;
       }
    }
    if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
@@ -619,7 +626,7 @@ void  T3MSelectionTree::doEvent(){
          vector<TLorentzVector> trigobjTriplet;
          for (int i=0; i<Ntp->NTriggerObjects(); i++){
             TString name = Ntp->TriggerObject_name(i);
-            if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+            if (!(name.Contains("hltTau3muTkVertexFilter"))) continue;
             TLorentzVector tmp;
             tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
             trigobjTriplet.push_back(tmp);
@@ -636,8 +643,8 @@ void  T3MSelectionTree::doEvent(){
          value.at(TauMassCut) = TauLV.M();
 
          value.at(TrackerLayers) = ( (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) &&
-               (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) &&
-               (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) );
+               (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_2)>=7) &&
+               (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_3)>=7) );
          pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
          pass.at(KFChi2) = (value.at(KFChi2)<cut.at(KFChi2));
          pass.at(BSSVSig) = (value.at(BSSVSig)>=cut.at(BSSVSig));
@@ -783,7 +790,7 @@ void  T3MSelectionTree::doEvent(){
 
       for (int i=0; i<Ntp->NTriggerObjects(); i++){
          TString name = Ntp->TriggerObject_name(i);
-         if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+         if (!(name.Contains("hltTau3muTkVertexFilter"))) continue;
          TLorentzVector tmp;
          tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
          trigobjTriplet.push_back(tmp);
@@ -831,8 +838,8 @@ void  T3MSelectionTree::doEvent(){
 
       value.at(TauMassCut) = TauLV.M();
       value.at(TrackerLayers) = ( (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) && 
-            (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) &&
-            (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1)>=7) );
+            (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_2)>=7) &&
+            (Ntp->Muon_trackerLayersWithMeasurement(Muon_index_3)>=7) );
       pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
       pass.at(KFChi2) = (value.at(KFChi2)<cut.at(KFChi2));
       pass.at(BSSVSig) = (value.at(BSSVSig)>=cut.at(BSSVSig));
@@ -1400,7 +1407,8 @@ void  T3MSelectionTree::doEvent(){
       Muon1_trkKink = log(Ntp->Muon_combinedQuality_trkKink(Muon_index_1));
       Muon1_glbKink = log(Ntp->Muon_combinedQuality_glbKink(Muon_index_1));
       Muon1_glbTrkP = Ntp->Muon_combinedQuality_glbTrackProbability(Muon_index_1);
-      Muon1_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_1);
+      //Muon1_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_1);
+      Muon1_nTVH = Ntp->Muon_trackerLayersWithMeasurement(Muon_index_1);
       Muon1_nVPH = Ntp->Muon_numberofValidPixelHits(Muon_index_1);
       Muon1_vMHC = Ntp->Muon_vmuonhitcomb_reco(Muon_index_1);
       Muon1_nMS = Ntp->Muon_numberOfMatchedStations(Muon_index_1);
@@ -1419,7 +1427,8 @@ void  T3MSelectionTree::doEvent(){
       Muon2_trkKink = log(Ntp->Muon_combinedQuality_trkKink(Muon_index_2));
       Muon2_glbKink = log(Ntp->Muon_combinedQuality_glbKink(Muon_index_2));
       Muon2_glbTrkP = Ntp->Muon_combinedQuality_glbTrackProbability(Muon_index_2);
-      Muon2_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_2);
+      //Muon2_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_2);
+      Muon2_nTVH = Ntp->Muon_trackerLayersWithMeasurement(Muon_index_2);
       Muon2_nVPH = Ntp->Muon_numberofValidPixelHits(Muon_index_2);
       Muon2_vMHC = Ntp->Muon_vmuonhitcomb_reco(Muon_index_2);
       Muon2_nMS = Ntp->Muon_numberOfMatchedStations(Muon_index_2);
@@ -1438,7 +1447,8 @@ void  T3MSelectionTree::doEvent(){
       Muon3_trkKink = log(Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
       Muon3_glbKink = log(Ntp->Muon_combinedQuality_glbKink(Muon_index_3));
       Muon3_glbTrkP = Ntp->Muon_combinedQuality_glbTrackProbability(Muon_index_3);
-      Muon3_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_3);
+      //Muon3_nTVH = Ntp->Muon_innerTrack_numberOfValidTrackerHits(Muon_index_3);
+      Muon3_nTVH = Ntp->Muon_trackerLayersWithMeasurement(Muon_index_3);
       Muon3_nVPH = Ntp->Muon_numberofValidPixelHits(Muon_index_3);
       Muon3_vMHC = Ntp->Muon_vmuonhitcomb_reco(Muon_index_3);
       Muon3_nMS = Ntp->Muon_numberOfMatchedStations(Muon_index_3);
@@ -1474,12 +1484,12 @@ void  T3MSelectionTree::doEvent(){
       PV_cov_yz = fls_PVcov(1,2);
       PV_cov_zx = fls_PVcov(2,0);
 
-      SV_cov_xx = fls_PVcov(0,0);
-      SV_cov_yy = fls_PVcov(1,1);
-      SV_cov_zz = fls_PVcov(2,2);
-      SV_cov_xy = fls_PVcov(0,1);
-      SV_cov_yz = fls_PVcov(1,2);
-      SV_cov_zx = fls_PVcov(2,0);
+      SV_cov_xx = fls_SVcov(0,0);
+      SV_cov_yy = fls_SVcov(1,1);
+      SV_cov_zz = fls_SVcov(2,2);
+      SV_cov_xy = fls_SVcov(0,1);
+      SV_cov_yz = fls_SVcov(1,2);
+      SV_cov_zx = fls_SVcov(2,0);
 
 
       //      if (Ntp->Vertex_RefitPVisValid(final_idx)==1)
