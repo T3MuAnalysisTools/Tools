@@ -48,7 +48,7 @@ class MakeMVATree : public Selection {
 
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;
-
+  TMVA::Reader *readerBvsD;
 
   // Initializhere your analysis histograms
   std::vector<TH1D> nPVx;
@@ -304,7 +304,7 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> Mu2Muon_hitPattern_numberOfValidMuonHits;
   std::vector<TH1D> Mu3Muon_hitPattern_numberOfValidMuonHits;
 
-
+  std::vector<TH1D> Separation_BvsD;
   std::vector<TH1D> NBJet4pi;
   std::vector<TH1D> BTagCSV;
   std::vector<TH1D> BTagMVA;
@@ -425,6 +425,7 @@ class MakeMVATree : public Selection {
   float var_vertexKFChi2 ;
   float var_svpvTauAngle ;
   float var_flightLenSig ;
+  float var_flightLenDist ;
   float var_sumMuTrkKinkChi2 ;
   float var_segCompMuMin ;
   float var_segCompMuMax ;
@@ -671,6 +672,7 @@ class MakeMVATree : public Selection {
   float var_IsoKStarMass_Mu3;
   float var_IsoMuMuMass_Mu3;
 
+  float var_BvsDSeprator;
 
 };
 #endif

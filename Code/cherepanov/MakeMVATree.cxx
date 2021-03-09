@@ -105,6 +105,22 @@ void  MakeMVATree::Configure(){
 
 
 
+  readerBvsD= new TMVA::Reader( "!Color:!Silent" );
+  readerBvsD->AddVariable("var_flightLenSig",&var_flightLenSig);
+  readerBvsD->AddVariable("var_svpvTauAngle",&var_svpvTauAngle);
+  readerBvsD->AddVariable("var_MindcaTrackSV",&var_MindcaTrackSV);
+  readerBvsD->AddVariable("var_NtracksClose",&var_NtracksClose);
+  readerBvsD->AddVariable("var_nsv",&var_nsv);
+  readerBvsD->AddVariable("var_MaxD0SigBS",&var_MaxD0SigBS);
+  readerBvsD->AddVariable("var_MinD0SigBS",&var_MinD0SigBS);
+  readerBvsD->AddVariable("var_Iso08MuMin",&var_Iso08MuMin);
+  readerBvsD->AddVariable("var_dcaTrackPV",&var_dcaTrackPV);
+  readerBvsD->AddVariable("var_MinMuonImpactAngle",&var_MinMuonImpactAngle);
+  readerBvsD->AddVariable("var_flightLenDist",&var_flightLenDist);
+  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
+
+
+
 
 
   TMVA_Tree= new TTree("tree","tree");
@@ -113,6 +129,7 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2);
   TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle);
   TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
+  TMVA_Tree->Branch("var_flightLenDist",&var_flightLenDist);
   TMVA_Tree->Branch("var_sumMuTrkKinkChi2",&var_sumMuTrkKinkChi2);
   TMVA_Tree->Branch("var_segCompMuMin",&var_segCompMuMin);
   TMVA_Tree->Branch("var_segCompMuMax",&var_segCompMuMax);
@@ -339,6 +356,8 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("var_IsoPhiKKMass_Mu3",&var_IsoPhiKKMass_Mu3 );
   TMVA_Tree->Branch("var_IsoKStarMass_Mu3",&var_IsoKStarMass_Mu3 );
   TMVA_Tree->Branch("var_IsoMuMuMass_Mu3",&var_IsoMuMuMass_Mu3 );
+
+  TMVA_Tree->Branch("var_BvsDSeprator",&var_BvsDSeprator );
 
 
 
@@ -819,6 +838,9 @@ void  MakeMVATree::Configure(){
       IsoMuMuMass_Mu1_wideRange=HConfig.GetTH1D(Name+"_IsoMuMuMass_Mu1_wideRange","IsoMuMuMass_Mu1_wideRange",75,0.25,3.2,"M_{#mu#mu},GeV","Events");
 
 
+      Separation_BvsD=HConfig.GetTH1D(Name+"_Separation_BvsD","Separation_BvsD",70,-1.0,1.0,"B vs D BDTG output","Events");
+
+
 
       IsolationCombinatorialMass_pipi=HConfig.GetTH1D(Name+"_IsolationCombinatorialMass_pipi","IsolationCombinatorialMass_pipi",55,0.27,2.0,"M_{#pi#pi},GeV","Events");
 
@@ -837,7 +859,6 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&Muon1P);
   Extradist1d.push_back(&Muon2P);
   Extradist1d.push_back(&Muon3P);
-
 
   Extradist1d.push_back(&TauEta);
   Extradist1d.push_back(&TauPt);
@@ -1155,7 +1176,7 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist2d.push_back(&MuMuMassNoSorting);
 
 
-
+  Extradist1d.push_back(&Separation_BvsD);
 
 }
 
@@ -2016,9 +2037,10 @@ void  MakeMVATree::doEvent(){
 	int NPVcloseDRToTauTracksCount(0);
 	double SumPT02(0),SumPT04(0),SumPT06(0),SumPT08(0),SumPT1(0),SumPT12(0),SumPT14(0),SumPT16(0),SumPT18(0),SumPT2(0);
 	double Iso08Muon1,Iso08Muon2,Iso08Muon3;
+	double Iso05Muon1,Iso05Muon2,Iso05Muon3;
 	int TrackIndex(0);
 	int TrackIndex_closestToPV(0);
-	double TrackPTtreschold(0.8);
+	double TrackPTtreschold(0.4);
 	double dca_temp(999.);
 	double dcaPV_temp(999.);
 
@@ -2511,8 +2533,12 @@ void  MakeMVATree::doEvent(){
 	var_Iso08MuMin = std::min({Iso08Muon1,Iso08Muon2,Iso08Muon3});
 
 
-	Iso08MuMax.at(t).Fill(std::max({Iso08Muon1,Iso08Muon2,Iso08Muon3}),1);
-	Iso08MuMin.at(t).Fill(std::min({Iso08Muon1,Iso08Muon2,Iso08Muon3}),1);
+	var_Iso08MuMax = std::max({Iso08Muon1,Iso08Muon2,Iso08Muon3});
+	var_Iso08MuMin = std::min({Iso08Muon1,Iso08Muon2,Iso08Muon3});
+
+
+	//	Iso08MuMax.at(t).Fill(std::max({Iso08Muon1,Iso08Muon2,Iso08Muon3}),1);
+	//	Iso08MuMin.at(t).Fill(std::min({Iso08Muon1,Iso08Muon2,Iso08Muon3}),1);
 
 
 	// -----------------------------------------------------------------------
@@ -2525,6 +2551,8 @@ void  MakeMVATree::doEvent(){
 	var_flightLenSig =  Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(final_idx),Ntp->Vertex_PrimaryVertex_Covariance(final_idx),
 							   Ntp->Vertex_Signal_KF_pos(final_idx),Ntp->Vertex_Signal_KF_Covariance(final_idx));
 	
+
+	var_flightLenDist =  (Ntp->Vertex_MatchedPrimaryVertex(final_idx) - Ntp->Vertex_Signal_KF_pos(final_idx)).Mag();
 	
 	var_sumMuTrkKinkChi2 = (Ntp->Muon_combinedQuality_trkKink(Muon_index_1)+Ntp->Muon_combinedQuality_trkKink(Muon_index_2)+Ntp->Muon_combinedQuality_trkKink(Muon_index_3));
 	var_segCompMuMin = MinSegmentCompatibility;
@@ -2667,8 +2695,17 @@ void  MakeMVATree::doEvent(){
 	var_Muon3PFIsoTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoTight);
 	var_Muon3PFIsoVTight = Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(Muon_index_3),Ntp->MuonStandardSelectors::PFIsoVeryTight);
 
-	TMVA_Tree->Fill();
+
 	
+	// ---------------- Evaluate B vs D mva
+
+	var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
+	Separation_BvsD.at(t).Fill(var_BvsDSeprator,1);
+
+	// ---------------- Evaluate B vs D mva
+
+
+	TMVA_Tree->Fill();
 
 	}
     }
