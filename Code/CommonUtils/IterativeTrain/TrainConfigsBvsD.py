@@ -5,8 +5,8 @@ configuration=[]
 
 
 varsets3 = {'A':['var_flightLenSig', 'var_svpvTauAngle','var_MindcaTrackSV',
-                 'var_NtracksClose','var_nsv','var_MaxD0SigBS','var_MinD0SigBS','var_Iso08MuMin'
-                 ,'var_dcaTrackPV','var_MinMuonImpactAngle','var_flightLenDist'
+                 'var_NtracksClose','var_nsv','var_MaxD0SigBS','var_MinD0SigBS','var_Iso08',
+                 'var_dcaTrackPV','var_MinMuonImpactAngle','var_flightLenDist'
              ]}
                 
 

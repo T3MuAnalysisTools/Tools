@@ -44,17 +44,17 @@ varsets2 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 
 
 varsets3 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
-                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3','var_Muon1DetID','var_Muon2DetID','var_Muon3DetID'
+                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3','var_Muon1DetID','var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality'
              ],
                 
                 
-            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
-                 'var_Muon1DetID','var_Muon2DetID' ,'var_Muon3DetID','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3'
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Muon1DetID','var_Muon2DetID' ,'var_Muon3DetID','var_MaxD0SigSV','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3','var_MaxVertexPairQuality'
              ],
 
                 
-            'C':['var_svpvTauAngle', 'var_flightLenSig','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
-                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3','var_Muon1DetID','var_Muon2DetID','var_Muon3DetID'
+            'C':['var_svpvTauAngle', 'var_vertexKFChi2','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_MaxD0SigSV','var_maxMuonsDca','var_MindcaTrackSV','var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3','var_Muon1DetID','var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality'
              ]}
 
 
