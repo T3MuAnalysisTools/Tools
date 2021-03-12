@@ -74,18 +74,6 @@ def doTrain(configs,training_cuts,mlist,infname):
             background= input.Get("TreeB")
 
 
-######### All mixed
-#            signalWeight_ds  = 0.637;
-#            signalWeight_bu  = 0.262;
-#            signalWeight_bd  = 0.099;
-#            backgroundWeight = 1.0;
-
-
-
-
-######### D only
-#            signalWeight_ds  = 1.0;
-#            backgroundWeight = 1.0;
 
 ######## B only
             signalWeight_bu  = 0.63;
@@ -94,10 +82,7 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
 
-        
-  
- 
-#            dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
+
             dataloader.AddSignalTree    ( signal_bu,     signalWeight_bu       );
             dataloader.AddSignalTree    ( signal_bd,     signalWeight_bd       );
             dataloader.AddBackgroundTree( background,    backgroundWeight      );
