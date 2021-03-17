@@ -39,6 +39,9 @@ class CommonSelector : public Selection {
   double PEMassResolutionCut1_,PEMassResolutionCut2_;
   double mvaA1_,mvaA2_,mvaB1_,mvaB2_,mvaC1_,mvaC2_;
 
+  double mvaBTrainA1_,mvaBTrainA2_,mvaBTrainB1_,mvaBTrainB2_,mvaBTrainC1_,mvaBTrainC2_;
+  double mvaDTrainA1_,mvaDTrainA2_,mvaDTrainB1_,mvaDTrainB2_,mvaDTrainC1_,mvaDTrainC2_;
+
 
 
 
@@ -131,6 +134,11 @@ class CommonSelector : public Selection {
 
   std::vector<TH1D> TauMassRefitABC1;
   std::vector<TH1D> TauMassRefitABC2;
+
+
+  std::vector<TH1D> TauMassRefitABC1_BDSeparateTrain;
+  std::vector<TH1D> TauMassRefitABC2_BDSeparateTrain;
+
 
   std::vector<TH2D> TauMassRefitABC1_eta;
   std::vector<TH2D> TauMassRefitABC2_eta;
@@ -260,6 +268,11 @@ class CommonSelector : public Selection {
   std::vector<TH1D> BDTOutputA;
   std::vector<TH1D> BDTOutputB;
   std::vector<TH1D> BDTOutputC;
+  std::vector<TH1D> BvsDBDTG;
+
+  std::vector<TH1D> BvsDBDTG_ABC1;
+  std::vector<TH1D> BvsDBDTG_ABC2;
+
   std::vector<TH1D> BDTOutputBarrel;
   std::vector<TH1D> BDTOutputEndcap;
   std::vector<TH1D> NSignalCandidates;
@@ -279,11 +292,25 @@ class CommonSelector : public Selection {
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;
 
+  TMVA::Reader *readerBvsD;
+
+
+
+  TMVA::Reader *readerBTrainA;
+  TMVA::Reader *readerBTrainB;
+  TMVA::Reader *readerBTrainC;
+
+
+  TMVA::Reader *readerDTrainA;
+  TMVA::Reader *readerDTrainB;
+  TMVA::Reader *readerDTrainC;
+
 
 
   Float_t var_vertexKFChi2;// (chi sq of the fit of the secondary vertex)
   Float_t var_svpvTauAngle;// (The angle between PV-SV vector and the tau vector)
   Float_t var_flightLenSig;// (Flight length significance of the tau candidate)
+  Float_t var_flightLenDist;
   Float_t var_sumMuTrkKinkChi2;// (sum of chi sq of the kink of all three muons)
   Float_t var_segCompMuMin;// (Minimum of the segment compatibility of the three muons)
   Float_t var_MinMIPLikelihood;// (Minimum of the calorimeter compatibility of the three muons)
@@ -302,7 +329,10 @@ class CommonSelector : public Selection {
   Float_t var_mass12_dRsorting;
   Float_t var_mass13_drSorting;
 
-
+  Float_t var_NtracksClose;
+  Float_t var_Iso08;
+  Float_t var_MaxD0SigBS;
+  Float_t var_MinD0SigBS;
   
 
   float var_MaxtrkKink;
@@ -310,13 +340,14 @@ class CommonSelector : public Selection {
   float var_MindcaTrackSV;
   float var_maxMuonsDca;
   float var_nsv;
+  float var_dcaTrackPV;
 
   float var_MaxMuon_chi2LocalPosition;
   float var_MaxVertexPairQuality;
   float var_MuonglbkinkSum;
   float var_MaxMuon_chi2LocalMomentum;
-
-
+  float var_MinMuonImpactAngle;
+  float var_MaxMuonImpactAngle;
 
   Double_t m3m;
   Double_t dataMCtype;
@@ -338,6 +369,25 @@ class CommonSelector : public Selection {
   Double_t mvaB2;
   Double_t mvaC1;
   Double_t mvaC2;
+
+  Double_t mvaBTrainA1;
+  Double_t mvaBTrainA2;
+  Double_t mvaBTrainB1;
+  Double_t mvaBTrainB2;
+  Double_t mvaBTrainC1;
+  Double_t mvaBTrainC2;
+
+
+  Double_t mvaDTrainA1;
+  Double_t mvaDTrainA2;
+  Double_t mvaDTrainB1;
+  Double_t mvaDTrainB2;
+  Double_t mvaDTrainC1;
+  Double_t mvaDTrainC2;
+
+
+
+
 
   Float_t mu_combinedQuality_chi2LocalMomentum;
   Float_t mu_combinedQuality_chi2LocalPosition;
