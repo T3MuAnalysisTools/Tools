@@ -1,0 +1,43 @@
+import ROOT
+from array import array
+# reweight events
+
+class event_weights():
+
+    def __init__(self):
+        self.weights = ROOT.TH2F('weights','',50,0,25,50,-2.5,2.5) # pt bins 50 [0,25], eta bins 50 [-2.5,2.5]
+
+        # Initialize weights
+        # rows for pt, cols for eta
+        for row_ in range(1,51):
+            for col_ in range(1,51):
+                bin_ = self.weights.GetBin(row_,col_)
+                self.weights.SetBinContent(bin_,0.0)
+
+    def set_weights(self, h2_signal_pt_eta, h2_bkg_pt_eta):
+        h2_signal_pt_eta.Scale(1/h2_signal_pt_eta.GetEntries())
+        h2_bkg_pt_eta.Scale(1/h2_bkg_pt_eta.GetEntries())
+        h2_signal_pt_eta.Divide(h2_bkg_pt_eta)
+
+        for row_ in range(0,h2_signal_pt_eta.GetNbinsX()):
+            for col_ in range(0,h2_signal_pt_eta.GetNbinsY()):
+                bin_ = h2_signal_pt_eta.GetBin(row_+1, col_+1)
+                self.weights.SetBinContent(bin_, h2_signal_pt_eta.GetBinContent(bin_))
+                self.weights.SetBinError(bin_, h2_signal_pt_eta.GetBinError(bin_))
+
+    def get_weight(self, pt, eta):
+        binx = int(2*pt+1)
+        biny = int((eta+2.5)*10+1)
+        if (binx>50 or biny>50): return 0.0
+        if (binx<1 or biny<1): return 0.0
+        bin_ = self.weights.GetBin(binx, biny)
+        return self.weights.GetBinContent(bin_)
+
+    def read_weights(self, filename):
+        weight_file = ROOT.TFile(filename, "READ")
+        h = weight_file.Get('weights')
+        for row_ in range(0,h.GetNbinsX()):
+            for col_ in range(0,h.GetNbinsY()):
+                bin_ = h.GetBin(row_+1, col_+1)
+                self.weights.SetBinContent(bin_, h.GetBinContent(bin_))
+                self.weights.SetBinError(bin_, h.GetBinError(bin_))
