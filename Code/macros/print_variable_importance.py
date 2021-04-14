@@ -17,6 +17,7 @@ for iline, line in enumerate(lines):
     if 'Rank : Variable' in line: start_ = iline+2
     elif 'Destroy' in line: end_ = iline-1
 
+print 'Varible\tImportance'
 for i in range(start_,end_):
     line = lines[i].strip('\n')
     _ = line.split(':')
