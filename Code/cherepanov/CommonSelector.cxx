@@ -24,12 +24,12 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
   PEMassResolutionCut2_(0.01),
-  mvaA1_(0.117), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
-  mvaA2_(0.221),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
-  mvaB1_(0.134),
-  mvaB2_(0.223),
-  mvaC1_(0.143),
-  mvaC2_(0.227),
+  mvaA1_(0.132), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
+  mvaA2_(0.233),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
+  mvaB1_(0.148),
+  mvaB2_(0.279),
+  mvaC1_(0.170),
+  mvaC2_(0.257),
   mvaBTrainA1_(0.090),
   mvaBTrainA2_(0.182),
   mvaBTrainB1_(0.121),
@@ -91,68 +91,62 @@ void  CommonSelector::Configure(){
 
   //*** defined the bdt reader for event selection; readerA- category A, readerB - category B ...
   readerA = new TMVA::Reader( "!Color:!Silent" );
-  readerA->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
-  readerA->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
-  readerA->AddVariable( "var_flightLenSig", &var_flightLenSig);
-  readerA->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
-  readerA->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
-  readerA->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
-  readerA->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerA->AddVariable( "var_maxMuonsDca", &var_maxMuonsDca);
-  readerA->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerA->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
-  readerA->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
-  readerA->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
-  readerA->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
-  readerA->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
-  readerA->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerA->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-
+  readerA->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerA->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerA->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerA->AddVariable("var_MaxD0SigSV", &var_MaxD0SigSV);
+  readerA->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerA->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerA->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerA->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerA->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerA->AddVariable("var_Iso08", &var_Iso08);
+  readerA->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerA->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerA->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
 
   //  readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerA->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_A/weights/TMVAClassification_BDT.weights.xml"); 
+  readerA->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_A/weights/TMVAClassification_BDT.weights.xml"); 
 
 
 
 
   readerB = new TMVA::Reader( "!Color:!Silent" );
-  readerB->AddVariable( "var_vertexKFChi2", &var_vertexKFChi2);
-  readerB->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
-  readerB->AddVariable( "var_flightLenSig", &var_flightLenSig);
-  readerB->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
-  readerB->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
-  readerB->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
-  readerB->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
-  readerB->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
-  readerB->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerB->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerB->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerB->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
-  readerB->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
-  readerB->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
-  readerB->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerB->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_B/weights/TMVAClassification_BDT.weights.xml");
+  readerB->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerB->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerB->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerB->AddVariable("var_MaxD0SigSV", &var_MaxD0SigSV);
+  readerB->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerB->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerB->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerB->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerB->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerB->AddVariable("var_Iso08", &var_Iso08);
+  readerB->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerB->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerB->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
 
+  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
+  readerB->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_B/weights/TMVAClassification_BDT.weights.xml"); 
 
 
   readerC = new TMVA::Reader( "!Color:!Silent" );
+  readerC->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerC->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerC->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerC->AddVariable("var_MaxD0SigSV", &var_MaxD0SigSV);
+  readerC->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerC->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerC->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerC->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerC->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerC->AddVariable("var_Iso08", &var_Iso08);
+  readerC->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerC->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerC->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
 
-  readerC->AddVariable( "var_svpvTauAngle", &var_svpvTauAngle);
-  readerC->AddVariable( "var_vertexKFChi2", &var_flightLenSig);
-  readerC->AddVariable( "var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
-  readerC->AddVariable( "var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
-  readerC->AddVariable( "var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
-  readerC->AddVariable( "var_MaxD0SigSV", &var_MaxD0SigSV);
-  readerC->AddVariable( "var_maxMuonsDca", &var_maxMuonsDca);
-  readerC->AddVariable( "var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerC->AddVariable( "var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
-  readerC->AddVariable( "var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
-  readerC->AddVariable( "var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
-  readerC->AddVariable( "var_Muon1DetID", &var_Muon1DetID);
-  readerC->AddVariable( "var_Muon2DetID", &var_Muon2DetID);
-  readerC->AddVariable( "var_Muon3DetID", &var_Muon3DetID);
-  readerC->AddVariable( "var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerC->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_2_C/weights/TMVAClassification_BDT.weights.xml"); 
+  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
+  readerC->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_C/weights/TMVAClassification_BDT.weights.xml"); 
 
 
 
@@ -303,16 +297,6 @@ void  CommonSelector::Configure(){
 
 
 
-
-
-
-
-
-
-
-
-
-
   readerDTrainA= new TMVA::Reader( "!Color:!Silent" );
   readerDTrainA->AddVariable("var_vertexKFChi2",&var_vertexKFChi2);
   readerDTrainA->AddVariable("var_svpvTauAngle",&var_svpvTauAngle);
@@ -337,6 +321,8 @@ void  CommonSelector::Configure(){
   readerDTrainA->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_7_A_DS/weights/TMVAClassification_BDT.weights.xml");
 
 
+
+
   readerDTrainB= new TMVA::Reader( "!Color:!Silent" );
   readerDTrainB->AddVariable("var_vertexKFChi2",&var_vertexKFChi2);
   readerDTrainB->AddVariable("var_svpvTauAngle",&var_svpvTauAngle);
@@ -359,6 +345,8 @@ void  CommonSelector::Configure(){
   readerDTrainB->AddVariable("var_IsoPhiKKMass_Mu2",&var_IsoPhiKKMass_Mu2);
   readerDTrainB->AddVariable("var_IsoPhiKKMass_Mu3",&var_IsoPhiKKMass_Mu3);
   readerDTrainB->BookMVA( "BDT", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_7_B_DS/weights/TMVAClassification_BDT.weights.xml");
+
+
 
 
   readerDTrainC= new TMVA::Reader( "!Color:!Silent" );
@@ -925,8 +913,6 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&KpiIsolationMass_SS2);
 
 
-
-
   Extradist2d.push_back(&PairMassdRSorted);
   Extradist2d.push_back(&PairMassVertexSorted);
 
@@ -1237,7 +1223,6 @@ void  CommonSelector::doEvent(){
 	  {
 	    VertexQuality_OS_SS1  = Ntp->Vertex_pair_quality(signal_idx,2);
 	    VertexQuality_OS_SS2  = Ntp->Vertex_pair_quality(signal_idx,0);
-
 	  }
       }
 
@@ -1253,7 +1238,6 @@ void  CommonSelector::doEvent(){
 	  {
 	    VertexQuality_OS_SS1  = Ntp->Vertex_pair_quality(signal_idx,1);
 	    VertexQuality_OS_SS2  = Ntp->Vertex_pair_quality(signal_idx,0);
-
 	  }
       }
 
@@ -1282,7 +1266,6 @@ void  CommonSelector::doEvent(){
     if(VertexQuality_OS_SS1 < VertexQuality_OS_SS2){
       VertexQualitySortedMass1 = (MuonOS+MuonSS1).M();
       VertexQualitySortedMass2 = (MuonOS+MuonSS2).M();
-
       BetterPhiVertex=VertexQuality_OS_SS1;
       WorsePhiVertex=VertexQuality_OS_SS2;
     }else{
@@ -1290,8 +1273,8 @@ void  CommonSelector::doEvent(){
       VertexQualitySortedMass2 = (MuonOS+MuonSS1).M();
       BetterPhiVertex=VertexQuality_OS_SS2;
       WorsePhiVertex=VertexQuality_OS_SS1;
-
     }
+
     BetterMuMuVertex.at(t).Fill(BetterPhiVertex,1);
     WorseMuMuVertex.at(t).Fill(WorsePhiVertex,1);
     PairMassVertexSorted.at(t).Fill(VertexQualitySortedMass1,VertexQualitySortedMass2 ,1);
@@ -1480,9 +1463,6 @@ void  CommonSelector::doEvent(){
     if((dRSortedMassPair1 > phiVetoCut1 &&  dRSortedMassPair2 > 0.65)  &&  (dRSortedMassPair1 < phiVetoCut2 &&  dRSortedMassPair2 < 1.6))CrossVeto1=false;
     if((dRSortedMassPair2 > phiVetoCut1 &&  dRSortedMassPair1 > 0.2)  &&  (dRSortedMassPair2 < phiVetoCut2 &&  dRSortedMassPair1 < 1.4))CrossVeto2=false;
     if((dRSortedMassPair1 > rmgCutVeto1 &&  dRSortedMassPair2 > 0.95)  &&  (dRSortedMassPair1 < rmgCutVeto2 &&  dRSortedMassPair2 < 1.5))CrossVeto3=false;
-
-
-
 
 
     CrossVeto = CrossVeto1*CrossVeto2*CrossVeto3;
@@ -1764,10 +1744,12 @@ void  CommonSelector::doEvent(){
 				       IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
 				       IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.493677*0.493677));
 
+
     TLorentzVector IsoTrack_P4_closestToMu3_PiMass = IsoTrack_P4_closestToMu3;
     IsoTrack_P4_closestToMu3_PiMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +
 					      IsoTrack_P4_closestToMu3.Py()*IsoTrack_P4_closestToMu3.Py() +
 					      IsoTrack_P4_closestToMu3.Pz()*IsoTrack_P4_closestToMu3.Pz() + 0.135*0.135));
+
 
     TLorentzVector IsoTrack_P4_closestToMu3_MuMass = IsoTrack_P4_closestToMu3;
     IsoTrack_P4_closestToMu3_MuMass.SetE(sqrt(IsoTrack_P4_closestToMu3.Px()*IsoTrack_P4_closestToMu3.Px() +

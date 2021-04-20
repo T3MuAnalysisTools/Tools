@@ -61,6 +61,9 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> FL;
   std::vector<TH1D> VertexChi2KF;
+  std::vector<TH1D> Vertex2muTrkKF;
+  std::vector<TH1D> Dist2muTrkKF3Mu;
+  std::vector<TH1D> VertexQualitySeparator;
   std::vector<TH1D> Muon_segmentCompatibility_mu1;
   std::vector<TH1D> Muon_segmentCompatibility_mu2;
   std::vector<TH1D> Muon_segmentCompatibility_mu3;
@@ -397,6 +400,7 @@ class MakeMVATree : public Selection {
   Float_t mu_combinedQuality_glbTrackProbability;
   Float_t mu_Numberofvalidtrackerhits;
   Float_t mu_Numberofvalidpixelhits;
+  Float_t mu_trackerLayersWithMeasurement;
   Float_t mu_validMuonHitComb;
   Float_t mu_numberOfMatchedStations;
   Float_t mu_segmentCompatibility;
@@ -673,6 +677,13 @@ class MakeMVATree : public Selection {
   float var_IsoMuMuMass_Mu3;
 
   float var_BvsDSeprator;
+
+  float var_Vertex2muTrkKF;
+  float var_Dist2muTrkKF3Mu;
+  float var_VertexQualitySeparator;
+
+
+
 
 };
 #endif

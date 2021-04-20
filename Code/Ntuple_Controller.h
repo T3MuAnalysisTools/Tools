@@ -386,6 +386,18 @@ class Ntuple_Controller{
       TMatrixTSym<double>   Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel=false);
 
 
+
+      double     Vertex_2MuonsIsoTrack_KF_Chi2(unsigned int i, bool channel=false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return Ntp->Vertex_2MuonsIsoTrack_KF_Chi2->at(index);
+      }
+      TVector3   Vertex_2MuonsIsoTrack_KF_pos(unsigned int i, bool channel=false){
+	unsigned int index = i + channel*Ntuple_Controller::NThreeMuons();
+	return TVector3(Ntp->Vertex_2MuonsIsoTrack_KF_pos->at(index).at(0), Ntp->Vertex_2MuonsIsoTrack_KF_pos->at(index).at(1),Ntp->Vertex_2MuonsIsoTrack_KF_pos->at(index).at(2));
+      }
+
+      TMatrixTSym<double>   Vertex_2MuonsIsoTrack_KF_Covariance(unsigned int i, bool channel=false);
+
       //   int NTracksInThePV(unsigned int i){return Ntp->IsolationBranch_Trackp4->at(i).size();}
       //   TLorentzVector PrimaryVertexTrack_p4(unsigned int i, unsigned int j){return TLorentzVector(Ntp->IsolationBranch_Trackp4->at(i).at(j).at(1), 
       //												      Ntp->IsolationBranch_Trackp4->at(i).at(j).at(2), 

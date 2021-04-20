@@ -767,6 +767,25 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_Signal_KF_Covariance(unsigned int 
    return  V_cov;
 }
 
+
+TMatrixTSym<double> Ntuple_Controller::Vertex_2MuonsIsoTrack_KF_Covariance(unsigned int i, bool channel){
+
+  unsigned int index = i + channel*NThreeMuons();
+  TMatrixTSym<double> V_cov(3);
+  int l=0;
+
+  for(int j=0;j<3;j++){
+    for(int k=j;k<3;k++){
+      V_cov(j,k)=Ntp->Vertex_2MuonsIsoTrack_KF_cov->at(index).at(l);
+      V_cov(k,j)=Ntp->Vertex_2MuonsIsoTrack_KF_cov->at(index).at(l);
+      l++;
+    }
+  }
+  return  V_cov;
+}
+
+
+
 TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned int i, bool channel){
    unsigned int index = i + channel*NThreeMuons();
    TMatrixTSym<float> V_cov(3);
