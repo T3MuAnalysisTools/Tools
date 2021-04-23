@@ -6,14 +6,14 @@ import time   # time accounting
 import getopt # command line parser
 from TrainConfigs import configuration,selection
 
-DEFAULT_INFNAME  = "FillMVATreeInput_2018combined.root"
+DEFAULT_INFNAME  = "UL2018Combined.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
 
 
 #DEFAULT_METHODS  = "BDT,BDTG,Likelihood"
-DEFAULT_METHODS  = "BDT,BDTG"
+DEFAULT_METHODS  = "BDT"
 
 
 
@@ -36,7 +36,7 @@ def doTrain(configs,training_cuts,mlist,infname):
     for train in configs:
         for category_wagon in train.keys():
 
-            prefix = "_B_"
+            prefix = ""
             outfname = str(count)+"_"+category_wagon+prefix+".root"
             outputFile = TFile(outfname , 'RECREATE' )
 
@@ -75,10 +75,10 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
 ######### All mixed
-#            signalWeight_ds  = 0.637;
-#            signalWeight_bu  = 0.262;
-#            signalWeight_bd  = 0.099;
-#            backgroundWeight = 1.0;
+            signalWeight_ds  = 0.637;
+            signalWeight_bu  = 0.262;
+            signalWeight_bd  = 0.099;
+            backgroundWeight = 1.0;
 
 
 
@@ -88,16 +88,16 @@ def doTrain(configs,training_cuts,mlist,infname):
 #            backgroundWeight = 1.0;
 
 ######## B only
-            signalWeight_bu  = 0.63;
-            signalWeight_bd  = 0.37;
-            backgroundWeight = 1.0;
+#            signalWeight_bu  = 0.63;
+#            signalWeight_bd  = 0.37;
+#            backgroundWeight = 1.0;
 
 
 
         
   
  
-#            dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
+            dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
             dataloader.AddSignalTree    ( signal_bu,     signalWeight_bu       );
             dataloader.AddSignalTree    ( signal_bd,     signalWeight_bd       );
             dataloader.AddBackgroundTree( background,    backgroundWeight      );

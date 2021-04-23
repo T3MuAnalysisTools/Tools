@@ -6,14 +6,14 @@ import time   # time accounting
 import getopt # command line parser
 from TrainConfigs_D import configuration,selection
 
-DEFAULT_INFNAME  = "FillMVATreeInput_2018combined.root"
+DEFAULT_INFNAME  = "UL2018Combined.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
 
 
 #DEFAULT_METHODS  = "BDT,BDTG,Likelihood"
-DEFAULT_METHODS  = "BDT,BDTG"
+DEFAULT_METHODS  = "BDT"
 
 
 
