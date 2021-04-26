@@ -228,6 +228,11 @@ public :
    std::vector<std::vector<double> > *Vertex_signal_KF_cov;
    std::vector<std::vector<std::vector<double> > > *Vertex_signal_KF_refittedTracksP4;
    std::vector<double>  *Vertex_signal_KF_Chi2;
+
+   std::vector<double>  *Vertex_2MuonsIsoTrack_KF_Chi2;
+   std::vector<std::vector<double > >   *Vertex_2MuonsIsoTrack_KF_cov;
+   std::vector<std::vector<double > >   *Vertex_2MuonsIsoTrack_KF_pos;
+
    std::vector<std::vector<double> > *Vertex_signal_AF_pos;
    std::vector<double>  *Vertex_signal_AF_Chi2;
    std::vector<double>  *Vertex_signal_AF_Ndf;
@@ -499,6 +504,13 @@ public :
    TBranch        *b_Vertex_signal_KF_cov;   //!
    TBranch        *b_Vertex_signal_KF_refittedTracksP4;   //!
    TBranch        *b_Vertex_signal_KF_Chi2;   //!
+   TBranch        *b_Vertex_2MuonsIsoTrack_KF_Chi2;
+   TBranch        *b_Vertex_2MuonsIsoTrack_KF_cov;
+   TBranch        *b_Vertex_2MuonsIsoTrack_KF_pos;
+
+
+
+
    TBranch        *b_Vertex_signal_KF_BS_2Ddistance;   //!
    TBranch        *b_Vertex_signal_KF_BS_error;   //!
    TBranch        *b_Vertex_signal_KF_BS_significance;   //!
@@ -828,6 +840,11 @@ void NtupleReader::Init(TTree *tree)
    Vertex_signal_KF_cov = 0;
    Vertex_signal_KF_refittedTracksP4 = 0;
    Vertex_signal_KF_Chi2 = 0;
+   Vertex_2MuonsIsoTrack_KF_Chi2 = 0;
+   Vertex_2MuonsIsoTrack_KF_cov = 0;
+   Vertex_2MuonsIsoTrack_KF_pos = 0;
+
+
    Vertex_signal_AF_pos = 0;
    Vertex_signal_AF_Chi2 = 0;
    Vertex_signal_AF_Ndf = 0;
@@ -1100,6 +1117,12 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_signal_KF_cov", &Vertex_signal_KF_cov, &b_Vertex_signal_KF_cov);
    fChain->SetBranchAddress("Vertex_signal_KF_refittedTracksP4", &Vertex_signal_KF_refittedTracksP4, &b_Vertex_signal_KF_refittedTracksP4);
    fChain->SetBranchAddress("Vertex_signal_KF_Chi2", &Vertex_signal_KF_Chi2, &b_Vertex_signal_KF_Chi2);
+
+   fChain->SetBranchAddress("Vertex_2MuonsIsoTrack_KF_pos", &Vertex_2MuonsIsoTrack_KF_pos, &b_Vertex_2MuonsIsoTrack_KF_pos);
+   fChain->SetBranchAddress("Vertex_2MuonsIsoTrack_KF_cov", &Vertex_2MuonsIsoTrack_KF_cov, &b_Vertex_2MuonsIsoTrack_KF_cov);
+   fChain->SetBranchAddress("Vertex_2MuonsIsoTrack_KF_Chi2", &Vertex_2MuonsIsoTrack_KF_Chi2, &b_Vertex_2MuonsIsoTrack_KF_Chi2);
+
+
    fChain->SetBranchAddress("Vertex_signal_KF_BS_2Ddistance", &Vertex_signal_KF_BS_2Ddistance, &b_Vertex_signal_KF_BS_2Ddistance);
    fChain->SetBranchAddress("Vertex_signal_KF_BS_error", &Vertex_signal_KF_BS_error, &b_Vertex_signal_KF_BS_error);
    fChain->SetBranchAddress("Vertex_signal_KF_BS_significance", &Vertex_signal_KF_BS_significance, &b_Vertex_signal_KF_BS_significance);
