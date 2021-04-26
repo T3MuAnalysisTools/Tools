@@ -1,16 +1,16 @@
 import ROOT
-from ROOT import TMVA
+from ROOT import TMVA 
 from array import array
 import numpy as np
 
 basedir = '../CommonFiles/'
 
 def main():
-
-   Muon1_cLP = array('f', [-1.0]);
+   
+   Muon1_cLP = array('f', [-1.0]); 
    Muon1_cLM = array('f', [-1.0]);
    Muon1_staRelChi2 = array('f', [-1.0]);
-   Muon1_trkRelChi2 = array('f', [-1.0]);
+   Muon1_trkRelChi2 = array('f', [-1.0]); 
    Muon1_glbdEP = array('f', [-1.0]);
    Muon1_trkKink = array('f', [-1.0]);
    Muon1_glbKink = array('f', [-1.0]);
@@ -30,11 +30,11 @@ def main():
    mu1_pt = array('f', [-1.0])
    mu1_phi = array('f', [-1.0])
    mu1_SoftMVA = array('f', [-1.0])
-
-   Muon2_cLP = array('f', [-1.0]);
+   
+   Muon2_cLP = array('f', [-1.0]); 
    Muon2_cLM = array('f', [-1.0]);
    Muon2_staRelChi2 = array('f', [-1.0]);
-   Muon2_trkRelChi2 = array('f', [-1.0]);
+   Muon2_trkRelChi2 = array('f', [-1.0]); 
    Muon2_glbdEP = array('f', [-1.0]);
    Muon2_trkKink = array('f', [-1.0]);
    Muon2_glbKink = array('f', [-1.0]);
@@ -49,16 +49,16 @@ def main():
    Muon2_inner_nChi2 = array('f', [-1.0]);
    Muon2_outer_nChi2 = array('f', [-1.0]);
    Muon2_innner_VF = array('f', [-1.0]);
-
+   
    mu2_eta = array('f', [-1.0])
    mu2_pt = array('f', [-1.0])
    mu2_phi = array('f', [-1.0])
    mu2_SoftMVA = array('f', [-1.0])
-
-   Muon3_cLP = array('f', [-1.0]);
+   
+   Muon3_cLP = array('f', [-1.0]); 
    Muon3_cLM = array('f', [-1.0]);
    Muon3_staRelChi2 = array('f', [-1.0]);
-   Muon3_trkRelChi2 = array('f', [-1.0]);
+   Muon3_trkRelChi2 = array('f', [-1.0]); 
    Muon3_glbdEP = array('f', [-1.0]);
    Muon3_trkKink = array('f', [-1.0]);
    Muon3_glbKink = array('f', [-1.0]);
@@ -73,19 +73,19 @@ def main():
    Muon3_inner_nChi2 = array('f', [-1.0]);
    Muon3_outer_nChi2 = array('f', [-1.0]);
    Muon3_innner_VF = array('f', [-1.0]);
-
+   
    mu3_eta = array('f', [-1.0])
    mu3_pt = array('f', [-1.0])
    mu3_phi = array('f', [-1.0])
    mu3_SoftMVA = array('f', [-1.0])
 
    var_dnnSegCompMuMin = array('f', [-1.0])
-
+   
    # Muon Id 1
    reader_Muon1Id_barrel = TMVA.Reader("!Color:!Silent");
    reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon1_cLM);
    reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon1_cLP);
-   reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon1_staRelChi2);
+   reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon1_staRelChi2); 
    reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon1_trkRelChi2);
    reader_Muon1Id_barrel.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon1_glbdEP);
    reader_Muon1Id_barrel.AddVariable("log(mu_combinedQuality_trkKink)", Muon1_trkKink);
@@ -110,7 +110,7 @@ def main():
    reader_Muon1Id_endcap = TMVA.Reader("!Color:!Silent");
    reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon1_cLM);
    reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon1_cLP);
-   reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon1_staRelChi2);
+   reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon1_staRelChi2); 
    reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon1_trkRelChi2);
    reader_Muon1Id_endcap.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon1_glbdEP);
    reader_Muon1Id_endcap.AddVariable("log(mu_combinedQuality_trkKink)", Muon1_trkKink);
@@ -132,12 +132,12 @@ def main():
    reader_Muon1Id_endcap.AddSpectator("mu_SoftMVA",mu1_SoftMVA);
    reader_Muon1Id_endcap.BookMVA( "BDT", basedir+"weights/weights_endcap/TMVA_new_BDT.weights.xml" ); # weights weights.xml file after training, place it to CommonFiles
 
-
+   
    # (MuonId 2)
    reader_Muon2Id_barrel = TMVA.Reader("!Color:!Silent");
    reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon2_cLM);
    reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon2_cLP);
-   reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon2_staRelChi2);
+   reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon2_staRelChi2); 
    reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon2_trkRelChi2);
    reader_Muon2Id_barrel.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon2_glbdEP);
    reader_Muon2Id_barrel.AddVariable("log(mu_combinedQuality_trkKink)", Muon2_trkKink);
@@ -163,7 +163,7 @@ def main():
    reader_Muon2Id_endcap = TMVA.Reader("!Color:!Silent");
    reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon2_cLM);
    reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon2_cLP);
-   reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon2_staRelChi2);
+   reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon2_staRelChi2); 
    reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon2_trkRelChi2);
    reader_Muon2Id_endcap.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon2_glbdEP);
    reader_Muon2Id_endcap.AddVariable("log(mu_combinedQuality_trkKink)", Muon2_trkKink);
@@ -189,7 +189,7 @@ def main():
    reader_Muon3Id_barrel = TMVA.Reader("!Color:!Silent");
    reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon3_cLM);
    reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon3_cLP);
-   reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon3_staRelChi2);
+   reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon3_staRelChi2); 
    reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon3_trkRelChi2);
    reader_Muon3Id_barrel.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon3_glbdEP);
    reader_Muon3Id_barrel.AddVariable("log(mu_combinedQuality_trkKink)", Muon3_trkKink);
@@ -214,7 +214,7 @@ def main():
    reader_Muon3Id_endcap = TMVA.Reader("!Color:!Silent");
    reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_chi2LocalMomentum>250?250:mu_combinedQuality_chi2LocalMomentum", Muon3_cLM);
    reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_chi2LocalPosition>50?50:mu_combinedQuality_chi2LocalPosition", Muon3_cLP);
-   reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon3_staRelChi2);
+   reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_staRelChi2>50?50:mu_combinedQuality_staRelChi2", Muon3_staRelChi2); 
    reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_trkRelChi2>50?50:mu_combinedQuality_trkRelChi2", Muon3_trkRelChi2);
    reader_Muon3Id_endcap.AddVariable("mu_combinedQuality_globalDeltaEtaPhi", Muon3_glbdEP);
    reader_Muon3Id_endcap.AddVariable("log(mu_combinedQuality_trkKink)", Muon3_trkKink);
@@ -243,25 +243,25 @@ def main():
    old_tree_bd = file_.Get('TreeS_Bd')
 
    new_file = ROOT.TFile("/eos/user/b/bjoshi/RunIITau23Mu/AnalysisTrees/T3MSelectionTreeInput_combined_globalMuonId.root","RECREATE")
-
+   
    new_tree_bkg = old_tree_bkg.CloneTree(0)
    new_tree_ds = old_tree_ds.CloneTree(0)
    new_tree_bu = old_tree_bu.CloneTree(0)
    new_tree_bd = old_tree_bd.CloneTree(0)
-
+ 
    old_tree_list = [ old_tree_bkg, old_tree_ds, old_tree_bu, old_tree_bd ]
    new_tree_list = [ new_tree_bkg, new_tree_ds, new_tree_bu, new_tree_bd ]
-   globalMuon1Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]
-   globalMuon2Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]
-   globalMuon3Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]
-   var_dnnSegCompMuMin = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]
-
+   globalMuon1Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]  
+   globalMuon2Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]  
+   globalMuon3Id = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]  
+   var_dnnSegCompMuMin = [ array('f', [-99.]), array('f', [-99.]), array('f', [-99.]), array('f', [-99.]) ]  
+   
    for i in xrange(4):
        new_tree_list[i].Branch("globalMuon1Id", globalMuon1Id[i], "globalMuon1Id/F")
        new_tree_list[i].Branch("globalMuon2Id", globalMuon2Id[i], "globalMuon2Id/F")
        new_tree_list[i].Branch("globalMuon3Id", globalMuon3Id[i], "globalMuon3Id/F")
        new_tree_list[i].Branch("var_dnnSegCompMuMin", var_dnnSegCompMuMin[i], "var_dnnSegCompMuMin/F")
-
+   
    for i, tree in enumerate(old_tree_list):
       nentries = tree.GetEntriesFast()
       print tree.GetName()
@@ -289,7 +289,7 @@ def main():
          Muon1_inner_nChi2[0] = tree.Muon1_innerTrack_normalizedChi2;
          Muon1_outer_nChi2[0] = tree.Muon1_outerTrack_normalizedChi2;
          Muon1_innner_VF[0] = tree.Muon1_innerTrack_validFraction;
-
+      
          Muon2_cLM[0] = tree.Muon2_combinedQuality_chi2LocalMomentum;
          Muon2_cLP[0] = tree.Muon2_combinedQuality_chi2LocalPosition;
          Muon2_staRelChi2[0] = tree.Muon2_combinedQuality_staRelChi2;
@@ -308,7 +308,7 @@ def main():
          Muon2_inner_nChi2[0] = tree.Muon2_innerTrack_normalizedChi2;
          Muon2_outer_nChi2[0] = tree.Muon2_outerTrack_normalizedChi2;
          Muon2_innner_VF[0] = tree.Muon2_innerTrack_validFraction;
-
+         
          Muon3_cLM[0] = tree.Muon3_combinedQuality_chi2LocalMomentum;
          Muon3_cLP[0] = tree.Muon3_combinedQuality_chi2LocalPosition;
          Muon3_staRelChi2[0] = tree.Muon3_combinedQuality_staRelChi2;
@@ -327,23 +327,23 @@ def main():
          Muon3_inner_nChi2[0] = tree.Muon3_innerTrack_normalizedChi2;
          Muon3_outer_nChi2[0] = tree.Muon3_outerTrack_normalizedChi2;
          Muon3_innner_VF[0] = tree.Muon3_innerTrack_validFraction;
-
+      
          if (abs(tree.var_Muon1_Eta)<1.2): muon1_score = reader_Muon1Id_barrel.EvaluateMVA("BDT")
          else: muon1_score = reader_Muon1Id_endcap.EvaluateMVA("BDT")
-
+      
          if (abs(tree.var_Muon2_Eta)<1.2): muon2_score = reader_Muon2Id_barrel.EvaluateMVA("BDT")
          else: muon2_score = reader_Muon2Id_endcap.EvaluateMVA("BDT")
-
+        
          if (abs(tree.var_Muon3_Eta)<1.2): muon3_score = reader_Muon3Id_barrel.EvaluateMVA("BDT")
          else: muon3_score = reader_Muon3Id_endcap.EvaluateMVA("BDT")
-
+         
          globalMuon1Id[i][0] = muon1_score
          globalMuon2Id[i][0] = muon2_score
          if (tree.threeGlobal==1): globalMuon3Id[i][0] = muon3_score
          else: globalMuon3Id[i][0] = -99.0
          var_dnnSegCompMuMin[i][0] = min(tree.muon1_seg_comp_dnn, tree.muon2_seg_comp_dnn, tree.muon3_seg_comp_dnn)
          new_tree_list[i].Fill()
-
+   
    new_file.cd()
    new_tree_bkg.Write()
    new_tree_ds.Write()

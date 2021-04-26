@@ -6,20 +6,21 @@ import time   # time accounting
 import getopt # command line parser
 from TrainConfigs import configuration,selection
 
-DEFAULT_INFNAME  = "FillMVATreeInput_combined_August.root"
+DEFAULT_INFNAME  = "FillMVATreeInput_2018combined.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
 
 
-DEFAULT_METHODS  = "BDT"
+#DEFAULT_METHODS  = "BDT,BDTG,Likelihood"
+DEFAULT_METHODS  = "BDT,BDTG"
 
 
 
 def usage():
     print " "
     print "Usage: python %s [options]" % sys.argv[0]
-    print "  -m | --methods    : gives methods to be run (default: all methods)"
+    print "  -m | --methods    : gives methods to be run (default: all methods)" % DEFAULT_METHODS
     print "  -i | --inputfile  : name of input ROOT file (default: '%s')" % DEFAULT_INFNAME
     print "  -v | --verbose"
     print "  -? | --usage      : print this help message"
@@ -34,16 +35,18 @@ def doTrain(configs,training_cuts,mlist,infname):
     count = 0
     for train in configs:
         for category_wagon in train.keys():
-        
-            outfname = str(count)+"_"+category_wagon+".root"
+
+            prefix = "_B_"
+            outfname = str(count)+"_"+category_wagon+prefix+".root"
             outputFile = TFile(outfname , 'RECREATE' )
 
 
-            factory = TMVA.Factory( "TMVAClassification", outputFile,  
+            factory = TMVA.Factory( "TMVAClassification", outputFile,
                                     "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" )
 
-            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+category_wagon)
+            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+prefix+category_wagon)
             factory.SetVerbose( True  )
+
 
 
 
@@ -71,15 +74,30 @@ def doTrain(configs,training_cuts,mlist,infname):
             background= input.Get("TreeB")
 
 
+######### All mixed
+#            signalWeight_ds  = 0.637;
+#            signalWeight_bu  = 0.262;
+#            signalWeight_bd  = 0.099;
+#            backgroundWeight = 1.0;
 
-            signalWeight_ds  = 0.637;
-            signalWeight_bu  = 0.262;
-            signalWeight_bd  = 0.099;
+
+
+
+######### D only
+#            signalWeight_ds  = 1.0;
+#            backgroundWeight = 1.0;
+
+######## B only
+            signalWeight_bu  = 0.63;
+            signalWeight_bd  = 0.37;
             backgroundWeight = 1.0;
+
+
+
         
   
  
-            dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
+#            dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
             dataloader.AddSignalTree    ( signal_bu,     signalWeight_bu       );
             dataloader.AddSignalTree    ( signal_bd,     signalWeight_bd       );
             dataloader.AddBackgroundTree( background,    backgroundWeight      );
@@ -87,9 +105,9 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
             categoryCut = ''
-            if category_wagon=="A":categoryCut='category==1'
-            if category_wagon=="B":categoryCut='category==2'
-            if category_wagon=="C":categoryCut='category==3'
+            if category_wagon=="A":categoryCut='category==1&& (var_mass12_dRsorting<0.994 || var_mass12_dRsorting> 1.044) && (var_mass13_drSorting<0.994 || var_mass13_drSorting> 1.044)'
+            if category_wagon=="B":categoryCut='category==2&& (var_mass12_dRsorting<0.985 || var_mass12_dRsorting> 1.053) && (var_mass13_drSorting<0.985 || var_mass13_drSorting> 1.053) '
+            if category_wagon=="C":categoryCut='category==3&& (var_mass12_dRsorting<0.974 || var_mass12_dRsorting> 1.064) && (var_mass13_drSorting<0.974 || var_mass13_drSorting> 1.064)'
 
             mycutSig = TCut( "MC == 1 &&" + cuts + categoryCut) 
             mycutBkg = TCut( "MC == 0 &&" + cutb + categoryCut + "&& (var_tauMass < 1.75 || var_tauMass > 1.81) ") 
@@ -101,7 +119,7 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             if "BDTG" in mlist:
                 factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDTG",
-                                    "!H:!V:NTrees=1000:MinNodeSize=1.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=2" )                        
+                                    "!H:!V:NTrees=1000:MinNodeSize=1.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3" )                        
 
             if "BDT" in mlist:
                 factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",

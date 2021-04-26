@@ -16,25 +16,18 @@ SHELL = /bin/sh
 
 override CXXFLAGS += -I$(ROOTSYS)/include -I./ -c
 LDFLAGS       =  
-ROOTLIBS      =  -L$(ROOTSYS)/lib -L/usr/lib/ -L/lib/i686/  -lCore -lCint -lHist -lGraf  -lGraf3d -lGpad -lTree -lRint -lReflexDict -lReflex -lPostscript -lMatrix -lPhysics -lMinuit2 -lGui -LObj -lThread -rdynamic -Wl,--rpath $(ROOTSYS)/lib
+
+ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)
 
 DEFS  	      = -DSTANDALONE=1
 LIBS          = $(ROOTLIBS) $(SHAREDLIBFLAGS)
 
 SF_SRCS    = $(wildcard SimpleFits/FitSoftware/src/*.cc)
-SF_HDRS    = $(SF_SRCS:.cc=.h)
+SF_HDRS    = $(wildcard SimpleFits/FitSoftware/interface/*.h)
 
-HDRS          = TauDataFormat/TauNtuple/interface/TauDecay.h \
-		TauDataFormat/TauNtuple/interface/DataMCType.h \
-		$(SF_HDRS)
+OBJS          = $(SF_SRCS:.cc=.o) 
 
-SRCS          = TauDataFormat/TauNtuple/src/TauDecay.cc \
-		TauDataFormat/TauNtuple/src/DataMCType.cc \
-		$(SF_SRCS)
-
-OBJS          = $(SRCS:.cc=.o) 
-
-SHAREDLIB     = lib/libTauNtuple.so
+SHAREDLIB     = lib/libSimpleFits.so
 
 $(SHAREDLIB): $(OBJS)
 	@echo "======================================================="
@@ -45,8 +38,7 @@ $(SHAREDLIB): $(OBJS)
 	@echo "======================================================="
 
 
-vpath %.cc TauDataFormat/TauNtuple/src/ 
-vpath %.cc Validation/EventGenerator/src/
+
 vpath %.cc SimpleFits/FitSoftware/src/
 
 

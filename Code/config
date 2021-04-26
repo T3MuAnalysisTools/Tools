@@ -18,6 +18,7 @@ else
     cd ..
     if [ $CommonUtils == 0 ]; then
 	cd CommonUtils
+	eval `mkdir lib`
 	export cmssw_version=CMSSW_9_3_8
 	export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 	source $VO_CMS_SW_DIR/cmsset_default.sh
@@ -33,7 +34,9 @@ else
         export ROOTSYS=${2}
         ROOT="$PWD/../root/"
     fi
+
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib/
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
     export PATH=$PATH:$ROOTSYS/bin/
 
     for var in $@ ; do
@@ -74,5 +77,7 @@ else
 	    fi
 	done
     fi
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/CommonUtils/lib
     echo "Environment Configured"
 fi

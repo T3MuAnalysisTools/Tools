@@ -16,6 +16,9 @@ class T3MSelectionTree : public Selection {
       T3MSelectionTree(TString Name_, TString id_);
       virtual ~T3MSelectionTree();
 
+      void InitBranches(TTree*);
+      void FillMuonBranches(Ntuple_Controller*, unsigned int, unsigned int, unsigned int);
+
       virtual void  Configure();
       virtual void  Finish();
 
@@ -71,6 +74,7 @@ class T3MSelectionTree : public Selection {
       double tauMinMass_, tauMaxMass_;
       double tauMinSideBand_,tauMaxSideBand_;
       double tauMassResCutLow, tauMassResCutHigh;
+      double phiVetoSigmaA, phiVetoSigmaB, phiVetoSigmaC;
       double phiVetoSigma, omegaVetoSigma;
       double M_osss1, M_osss2;
 
@@ -128,6 +132,18 @@ class T3MSelectionTree : public Selection {
       float var_Muon1_Phi;
       float var_Muon2_Phi;
       float var_Muon3_Phi;
+
+      float var_Muon1Refit_Pt;
+      float var_Muon2Refit_Pt;
+      float var_Muon3Refit_Pt;
+
+      float var_Muon1Refit_Eta;
+      float var_Muon2Refit_Eta;
+      float var_Muon3Refit_Eta;
+
+      float var_Muon1Refit_Phi;
+      float var_Muon2Refit_Phi;
+      float var_Muon3Refit_Phi;
 
       float var_Tau_Pt;
       float var_Tau_Eta;
@@ -380,6 +396,10 @@ class T3MSelectionTree : public Selection {
       bool var_Muon3_isGoodMuon_TMLastStationOptimizedLowPtTight;
       bool var_Muon3_isGoodMuon_TMLastStationOptimizedBarrelLowPtTight;
 
+      float Muon1_BSdxySig;
+      float Muon2_BSdxySig;
+      float Muon3_BSdxySig;
+
       // muon time
       float var_Muon1_timeAtIpInOutErr;
       float var_Muon1_timeAtIpInOut;
@@ -547,16 +567,49 @@ class T3MSelectionTree : public Selection {
       float deltaMuZ13;
       float deltaMuZ23;
 
-      float sumTracksIso02;
-      float sumTracksIso04; 
-      float sumTracksIso06;
-      float sumTracksIso08;
-      float sumTracksIso1;   
-      float sumTracksIso12;
-      float sumTracksIso14;
-      float sumTracksIso16;
-      float sumTracksIso18;
-      float sumTracksIso2;
+      float sumTracksIso02Tau;
+      float sumTracksIso04Tau; 
+      float sumTracksIso06Tau;
+      float sumTracksIso08Tau;
+      float sumTracksIso1Tau;   
+      float sumTracksIso12Tau;
+      float sumTracksIso14Tau;
+      float sumTracksIso16Tau;
+      float sumTracksIso18Tau;
+      float sumTracksIso2Tau;
+
+      float sumTracksIso02Mu1;
+      float sumTracksIso04Mu1; 
+      float sumTracksIso06Mu1;
+      float sumTracksIso08Mu1;
+      float sumTracksIso1Mu1;   
+      float sumTracksIso12Mu1;
+      float sumTracksIso14Mu1;
+      float sumTracksIso16Mu1;
+      float sumTracksIso18Mu1;
+      float sumTracksIso2Mu1;
+
+      float sumTracksIso02Mu2;
+      float sumTracksIso04Mu2; 
+      float sumTracksIso06Mu2;
+      float sumTracksIso08Mu2;
+      float sumTracksIso1Mu2;   
+      float sumTracksIso12Mu2;
+      float sumTracksIso14Mu2;
+      float sumTracksIso16Mu2;
+      float sumTracksIso18Mu2;
+      float sumTracksIso2Mu2;
+
+      float sumTracksIso02Mu3;
+      float sumTracksIso04Mu3; 
+      float sumTracksIso06Mu3;
+      float sumTracksIso08Mu3;
+      float sumTracksIso1Mu3;   
+      float sumTracksIso12Mu3;
+      float sumTracksIso14Mu3;
+      float sumTracksIso16Mu3;
+      float sumTracksIso18Mu3;
+      float sumTracksIso2Mu3;
       
       float Isolation_NTracks;
       float Isolation_RelPt;
@@ -579,8 +632,6 @@ class T3MSelectionTree : public Selection {
       float var_relPt;
       float var_relPt_iso05;
       float var_isoMax;
-
-      float mu3_trk_InvMass;
 
       float var_tauMassRefitted;
       float var_tauMassResRefitted; 
@@ -675,5 +726,43 @@ class T3MSelectionTree : public Selection {
       float var_trackerMuon1Id;
       float var_trackerMuon2Id;
       float var_trackerMuon3Id;
+
+      float mu1trk_kk_mass;
+      float mu1trk_kpi_mass;
+      float mu1trk_pik_mass;
+      float mu1trk_pipi_mass;
+
+      float mu2trk_kk_mass;
+      float mu2trk_kpi_mass;
+      float mu2trk_pik_mass;
+      float mu2trk_pipi_mass;
+
+      float mu3trk_kk_mass;
+      float mu3trk_kpi_mass;
+      float mu3trk_pik_mass;
+      float mu3trk_pipi_mass;
+
+      int NMuMuTrkPair1;
+      int NMuMuTrkPair2;
+      int NMuMuTrkPair3;
+
+      float sumTrackMPair1;
+      float sumTrackMPair2;
+      float sumTrackMPair3;
+
+      float PV_cov_xx;
+      float PV_cov_yy;
+      float PV_cov_zz;
+      float PV_cov_xy;
+      float PV_cov_yz;
+      float PV_cov_zx;
+
+      float SV_cov_xx;
+      float SV_cov_yy;
+      float SV_cov_zz;
+      float SV_cov_xy;
+      float SV_cov_yz;
+      float SV_cov_zx;
+
 };
 #endif

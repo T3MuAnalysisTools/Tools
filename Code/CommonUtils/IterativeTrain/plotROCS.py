@@ -47,8 +47,6 @@ def get_file_dict(rfilename):
 
 
 
-
-
 if __name__== "__main__":
  
     w = 1400 

@@ -2,12 +2,9 @@ include make.inc
 #################################################
 ### Defining Compiling variables              ###
 #################################################
-#-Wno-parentheses
-# -std=c++1y or -std=gnu++1y
 CXX           = c++ -Wno-deprecated -Wall -std=c++0x  -std=c++1y
-#-m32  -Wno-deprecated
 LD            = g++ -Wno-deprecated -Wall
-#-m32  -Wno-deprecated 
+
 INSTALL	      = /usr/bin/install
 SHELL = /bin/sh
 
@@ -15,18 +12,16 @@ SHELL = /bin/sh
 ###                              ###
 ####################################
 
-SHAREDLIBFLAGS = #-L./CommonUtils/lib -lTauNtuple -L./DataFormats/lib -lDataFormats  -L./CommonUtils/lib -lClassicSVfit  -L./CommonUtils/lib -lTDCILib 
-SHAREDCXXFLAGS = #-I./CommonUtils -I./DataFormats
+SHAREDLIBFLAGS = -L./CommonUtils/lib -lSimpleFits
+SHAREDCXXFLAGS = -I./CommonUtils
 SUBDIRS = CommonUtils/ 
-TAUSPINERFLAG = 
 
 override CXXFLAGS += 
 ALLCXXFLAGS = $(CXXFLAGS) -I$(ROOTSYS)/include -c -I/include $(SHAREDCXXFLAGS) -c -I./ -c
 LDFLAGS       =  
 
-ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)  -lTMVA
+ROOTLIBS      =  -L$(ROOTSYS)/lib $(shell root-config --glibs)  -lTMVA -lMinuit2
 
-#ROOTLIBS      =  -L$(ROOTSYS)/lib -L/usr/lib/ -L/lib/i686/  -lCore -lCint -lHist -lGraf  -lGraf3d -lGpad -lTree -lRint -lReflexDict -lReflex -lPostscript -lMatrix -lPhysics -lGui -LObj -lMinuit2 -lThread -lTreePlayer -lRIO -lMathCore -rdynamic -Wl,--rpath $(ROOTSYS)/lib
 
 # -ldl -lpthread
 
@@ -54,12 +49,10 @@ TARGETS       =	Ntuple_Controller \
 
 CINTTARGETS = 
 
-
-
 # now include conditional options set by flags in make.inc
 
 ifdef USE_cherepanov
-	TARGETS += MyTest MCStudy ThreeMu DsToPhiPi SyncSignal SyncDsPhiPi FillTMVATrees SignalSelector MuIDStudy BackgroundSelector MinBiasSelector Isolation MCBackgroundStudy MakeMVATree MakeMVACategoryII DsPhiPeak CommonSelector CategoryIISelector
+	TARGETS += MyTest  ThreeMu  FillTMVATrees  MCBackgroundStudy MakeMVATree MakeMVACategoryII CommonSelector 
 	DEFS += -DUSE_cherepanov=1
 endif
 
@@ -132,7 +125,6 @@ endif
 vpath %.cxx CommonFiles
 vpath %.h CommonFiles
 
-#	@$(LD) $(LDFLAGS) $(OBJS) $(LIBS) -o ../$(PROGRAM)
 
 ##########################################################
 ###                                                    ###
@@ -141,29 +133,30 @@ vpath %.h CommonFiles
 $(OBJS): %.o : %.cxx
 	$(CXX) $(ALLCXXFLAGS) $(DEFS) $< -o libs/$@ 
 
-.PHONY: clean cleanall cleandf all dataformats install sharedlib 
+.PHONY: clean cleanall cleandf all install sharedlib 
 
 install: Analysis.exe
 
 
-#dataformats: 
-#	@cd DataFormats; gmake install; cd ../
-
 clean:
 	@rm libs/*.o
 	@rm Analysis.exe
-
-#cleandf:#=
-#	@cd DataFormats; gmake clean; cd ../
 
 cleanall:
 	@for subdir in $(SUBDIRS); do \
 		echo "Making all in $$subdir"; \
 		cd $$subdir && $(MAKE) -f Makefile.standalone clean && cd ../../; \
 	done
-	@cd DataFormats; gmake clean; cd ../
 	@rm libs/*.o
 	@rm Analysis.exe
 
-all: sharedlib dataformats install
+all: sharedlib  install
 
+
+
+sharedlib:
+	@for subdir in $(SUBDIRS); do \
+		echo "Making all in $$subdir"; \
+		cd $$subdir echo $(CXXFLAGS) && $(MAKE) -f Makefile.standalone CXXFLAGS+='$(CXXFLAGS)' ; \
+	done
+	$(install)
