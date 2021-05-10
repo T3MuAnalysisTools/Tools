@@ -48,7 +48,7 @@ class MakeMVATree : public Selection {
 
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;
-
+  TMVA::Reader *readerBvsD;
 
   // Initializhere your analysis histograms
   std::vector<TH1D> nPVx;
@@ -61,6 +61,9 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> FLSignificance;
   std::vector<TH1D> FL;
   std::vector<TH1D> VertexChi2KF;
+  std::vector<TH1D> Vertex2muTrkKF;
+  std::vector<TH1D> Dist2muTrkKF3Mu;
+  std::vector<TH1D> VertexQualitySeparator;
   std::vector<TH1D> Muon_segmentCompatibility_mu1;
   std::vector<TH1D> Muon_segmentCompatibility_mu2;
   std::vector<TH1D> Muon_segmentCompatibility_mu3;
@@ -184,7 +187,6 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> IsolationCombinatorialMass_pipi;
 
 
-
   std::vector<TH1D> MinMuon_chi2LocalMomentum;
   std::vector<TH1D> MaxMuon_chi2LocalMomentum;
 
@@ -305,7 +307,7 @@ class MakeMVATree : public Selection {
   std::vector<TH1D> Mu2Muon_hitPattern_numberOfValidMuonHits;
   std::vector<TH1D> Mu3Muon_hitPattern_numberOfValidMuonHits;
 
-
+  std::vector<TH1D> Separation_BvsD;
   std::vector<TH1D> NBJet4pi;
   std::vector<TH1D> BTagCSV;
   std::vector<TH1D> BTagMVA;
@@ -378,7 +380,8 @@ class MakeMVATree : public Selection {
  std::vector<TH1D>  PairMass1NoSorting;
  std::vector<TH1D>  PairMass2NoSorting;
  std::vector<TH2D>  MuMuMassNoSorting;
- 
+
+
  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASV;
  std::vector<TH1D> Mu1TrackPtBeforeMVASV;
  std::vector<TH1D> Mu1TrackAngleBeforeMVASV;
@@ -402,7 +405,7 @@ class MakeMVATree : public Selection {
  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSV;
  std::vector<TH1D> Mu3TrackPtBeforeMVAKStarSV;
  std::vector<TH1D> Mu3TrackAngleBeforeMVAKStarSV;
- 
+
 
 
 
@@ -419,6 +422,7 @@ class MakeMVATree : public Selection {
   Float_t mu_combinedQuality_glbTrackProbability;
   Float_t mu_Numberofvalidtrackerhits;
   Float_t mu_Numberofvalidpixelhits;
+  Float_t mu_trackerLayersWithMeasurement;
   Float_t mu_validMuonHitComb;
   Float_t mu_numberOfMatchedStations;
   Float_t mu_segmentCompatibility;
@@ -447,6 +451,7 @@ class MakeMVATree : public Selection {
   float var_vertexKFChi2 ;
   float var_svpvTauAngle ;
   float var_flightLenSig ;
+  float var_flightLenDist ;
   float var_sumMuTrkKinkChi2 ;
   float var_segCompMuMin ;
   float var_segCompMuMax ;
@@ -680,6 +685,7 @@ class MakeMVATree : public Selection {
   float var_MaxDZDistSV;
   float var_MinDZDistSV;
   
+  
   float var_Mu1TrackInvariantMassBeforeMVASV;
   float var_Mu1TrackPtBeforeMVASV;
   float var_Mu1TrackAngleBeforeMVASV;
@@ -703,7 +709,8 @@ class MakeMVATree : public Selection {
   float var_Mu3TrackInvariantMassBeforeMVAKStarSV;
   float var_Mu3TrackPtBeforeMVAKStarSV;
   float var_Mu3TrackAngleBeforeMVAKStarSV;
-  
+
+
   float var_IsoPhiKKMass_Mu1;
   float var_IsoKStarMass_Mu1;
   float var_IsoMuMuMass_Mu1;
@@ -715,6 +722,14 @@ class MakeMVATree : public Selection {
   float var_IsoPhiKKMass_Mu3;
   float var_IsoKStarMass_Mu3;
   float var_IsoMuMuMass_Mu3;
+
+  float var_BvsDSeprator;
+
+  float var_Vertex2muTrkKF;
+  float var_Dist2muTrkKF3Mu;
+  float var_VertexQualitySeparator;
+
+
 
 
 };

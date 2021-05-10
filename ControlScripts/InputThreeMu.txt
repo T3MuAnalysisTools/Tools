@@ -1,10 +1,10 @@
 Thin: False
 Skim: False
-HistoFile: InputData/HistoScaletoLumi.txt
-Analysis: SignalSelector
+HistoFile: InputData/HistoScaletoLumiBackground.txt
+Analysis: MCBackgroundStudy
 UncertType: default
-SkimInfo: InputData/SkimSummary_2018Data.txt
-Lumi: 58111.142
+SkimInfo: InputData/SkimSummaryDecayChain.log
+Lumi: 58345.28846
 PlotStyle: style2
 
 
