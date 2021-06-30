@@ -299,20 +299,184 @@ varsets11 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 
 
 
+varsets12 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+             ],
+
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+             ],
+
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+
+             ]}
 
 
 
-configuration.append(varsets0)
-configuration.append(varsets1)
-configuration.append(varsets2)
-configuration.append(varsets3)
-configuration.append(varsets4)
-configuration.append(varsets5)
-configuration.append(varsets6)
-configuration.append(varsets7)
-configuration.append(varsets8)
-configuration.append(varsets9)
-configuration.append(varsets10)
+
+varsets13 = {'A':['var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator'
+             ],
+
+
+            'B':['var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator'
+             ],
+
+            'C':['var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_maxMuonsDca','var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3',
+                 'var_Vertex2muTrkKF','var_BvsDSeprator'
+
+             ]}
+
+
+
+
+
+varsets14 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3'
+             ],
+
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3'
+             ],
+
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoPhiKKMass_Mu1','var_IsoPhiKKMass_Mu2','var_IsoPhiKKMass_Mu3'
+
+             ]}
+
+
+
+varsets15 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3'
+
+             ],
+
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3'
+             ],
+
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoKStarMass_Mu1','var_IsoKStarMass_Mu2','var_IsoKStarMass_Mu3'
+
+             ]}
+
+
+
+
+varsets16 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3'
+             ],
+
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3'
+             ],
+
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3'
+
+             ]}
+
+varsets17 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+             ],
+
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+             ],
+
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_MindcaTrackSV','var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID','var_MaxVertexPairQuality','var_NtracksClose','var_Iso08',
+                 'var_IsoMuMuMass_Mu1','var_IsoMuMuMass_Mu2','var_IsoMuMuMass_Mu3','var_segCompMuMin','var_MaxMuon_chi2LocalPosition','var_MaxtrkKink'
+
+             ]}
+
+
+
+varsets18 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID'
+             ],
+                
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID'
+             ],
+                
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID',
+                 'var_Muon2DetID','var_Muon3DetID'
+                 
+             ]}
+
+
+
+
+
+#configuration.append(varsets0)
+#configuration.append(varsets1)
+#configuration.append(varsets2)
+#configuration.append(varsets3)
+#configuration.append(varsets4)
+#configuration.append(varsets5)
+#configuration.append(varsets6)
+#configuration.append(varsets7)
+#configuration.append(varsets8)
+#configuration.append(varsets9)
+#configuration.append(varsets10)
+#configuration.append(varsets11)
+#configuration.append(varsets12)
+#configuration.append(varsets13)
+#configuration.append(varsets14)
+#configuration.append(varsets15)
+#configuration.append(varsets16)
+#configuration.append(varsets17)
+configuration.append(varsets18)
 
 
 

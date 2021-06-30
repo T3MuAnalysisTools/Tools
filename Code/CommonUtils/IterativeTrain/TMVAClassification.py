@@ -123,7 +123,7 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             if "BDT" in mlist:
                 factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                    "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=20" )
+                                    "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=20" )
 
 
             if "Likelihood" in mlist:
