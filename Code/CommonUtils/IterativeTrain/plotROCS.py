@@ -64,7 +64,7 @@ if __name__== "__main__":
     for ifile in args.files:
         print ifile
         datasets_prefix = ifile[:-5]
-        color +=3
+        color +=2
         rdict = get_file_dict(ifile)
         hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
 #output_4_A
@@ -75,7 +75,7 @@ if __name__== "__main__":
         hist.GetXaxis().SetTitle("Efficiency");
         hist.GetYaxis().SetTitle("Rejection");
         hist.GetYaxis().SetRangeUser(0.8,1.05);
-
+        hist.SetLineWidth(2)
         hist.Draw("same,C")
         legend.AddEntry(hist,str(ifile),"L")
         can.Update()
