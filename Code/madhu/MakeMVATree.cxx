@@ -2129,9 +2129,8 @@ void  MakeMVATree::doEvent(){
       TLorentzVector Muon3LV = Ntp->Muon_P4(Muon_index_3);
       TLorentzVector TauLV = Muon1LV + Muon2LV + Muon3LV;
       TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,0)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,1)+Ntp->Vertex_signal_KF_refittedTracksP4(final_idx,2);
-
-
-
+      
+      
       int OH_jet_count(0);
       int SH_jet_count(0);
       int jet_index_closest_to_tau(-1);

@@ -50,6 +50,7 @@
 #include "madhu/MCBackgroundStudy.h"
 #include "madhu/ThreeMuonDecay.h"
 #include "madhu/CommonSelector.h"
+#include "madhu/BDTSelector.h"
 #include "madhu/MakeMVATree.h"
 
 #endif
@@ -110,6 +111,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("mcbackgroundstudy"))s=new MCBackgroundStudy(Analysis,UncertType);
   else if(Analysis.Contains("threemuondecay"))s=new ThreeMuonDecay(Analysis,UncertType);
   else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
+  else if(Analysis.Contains("bdtselector"))s=new BDTSelector(Analysis,UncertType);
   else if(Analysis.Contains("makemvatree"))s=new MakeMVATree(Analysis,UncertType);
 #endif
 

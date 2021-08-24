@@ -1,7 +1,7 @@
 Thin: False
 Skim: False
 HistoFile: InputData/HistoScaletoLumiBackground.txt
-Analysis: MCBackgroundStudy
+Analysis: CommonSelector
 UncertType: default
 SkimInfo: InputData/SkimSummaryDecayChain.log
 Lumi: 58345.28846
