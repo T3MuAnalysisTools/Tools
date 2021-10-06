@@ -52,6 +52,7 @@
 #include "madhu/CommonSelector.h"
 #include "madhu/BDTSelector.h"
 #include "madhu/MakeMVATree.h"
+#include "madhu/SignalVertexSelector.h"
 
 #endif
 
@@ -113,6 +114,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
   else if(Analysis.Contains("bdtselector"))s=new BDTSelector(Analysis,UncertType);
   else if(Analysis.Contains("makemvatree"))s=new MakeMVATree(Analysis,UncertType);
+  else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
 #endif
 
 

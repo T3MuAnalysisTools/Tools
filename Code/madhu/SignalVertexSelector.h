@@ -450,9 +450,35 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
-
-
-
+  
+  std::vector<TH1D>  WhetherdRMatch;
+  std::vector<TH1D>  WhetherTau3Mu;
+  
+  std::vector<TH1D>  IsoTrackToMCdR01;
+  std::vector<TH1D>  IsoTrackToMCdR08;
+  std::vector<TH1D>  IsoTrackToMCAngle01;
+  
+  std::vector<TH1D>  NumberOfFS_ChargedParticles;
+  std::vector<TH1D>  NumberOfFS_ChargedParticles_RecoMatch;
+  
+  std::vector<TH1D>  TwoProngInvariantMassReco;
+  std::vector<TH1D>  TwoProngInvariantMassMC;
+  
+  std::vector<TH1D>  ThreeProngInvariantMassReco;
+  std::vector<TH1D>  ThreeProngInvariantMassMC;
+  
+  std::vector<TH1D>  TwoProngTrackPt;
+  std::vector<TH1D>  TwoProngTrack2Pt;
+  
+  std::vector<TH1D>  TwoProngTrackEta;
+  std::vector<TH1D>  TwoProngTrack2Eta;
+  
+  std::vector<TH2D>  dR_vs_dP;
+  std::vector<TH2D>  dRmin1_vs_dRmin2_vs_InvariantMass;
+  
+  std::vector<TH1D>  NoOfIsoTracks2Prong;
+  std::vector<TH1D>  NoOfIsoTracks3Prong;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
