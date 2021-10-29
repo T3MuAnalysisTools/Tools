@@ -1,5 +1,5 @@
-#ifndef SignalVertexSelector_h
-#define SignalVertexSelector_h
+#ifndef BDTSelector_h
+#define BDTSelector_h
 
 #include "Selection.h"
 #include <vector>
@@ -16,11 +16,11 @@
 
 
 
-class SignalVertexSelector : public Selection {
+class BDTSelector : public Selection {
 
  public:
-  SignalVertexSelector(TString Name_, TString id_);
-  virtual ~SignalVertexSelector();
+  BDTSelector(TString Name_, TString id_);
+  virtual ~BDTSelector();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -83,177 +83,24 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D> BetterMuMuVertex;
   std::vector<TH1D> WorseMuMuVertex;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVA;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVA;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVA;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASV;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASV;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASV;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle0;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle0;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle0;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle1;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle1;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle1;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle2;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle2;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle2;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVASVAngle3;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVASVAngle3;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVASVAngle3;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSV;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSV;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSV;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle0;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle0;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle0;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle1;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle1;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle1;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle2;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle2;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle2;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarSVAngle3;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarSVAngle3;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarSVAngle3;  
   
   std::vector<TH1D> TauAngleTest;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAFiner;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAFiner;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAFiner;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVACoarser;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVACoarser;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVACoarser;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStar;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStar;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStar;
   
   std::vector<TH1D> MuOSSS1InvariantMassBeforeMVA;
   std::vector<TH1D> MuOSSS2InvariantMassBeforeMVA;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdR;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdR;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdR;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdR;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdR;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdR;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRIncrease;
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRDecrease;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd1;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd1;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd1;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd2;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd2;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd2;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd3;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd3;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd3;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd4;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd4;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd4;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd5;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd5;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd5;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd6;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd6;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd6;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestdRLtd7;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestdRLtd7;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestdRLtd7;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7;
   
   std::vector<TH1D> IsolationTrackCount;
   
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVABestMass;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVABestMass;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVABestMass;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassBeforeMVAKStarBestMass;
-  std::vector<TH1D> Mu2TrackInvariantMassBeforeMVAKStarBestMass;
-  std::vector<TH1D> Mu3TrackInvariantMassBeforeMVAKStarBestMass;
   
   
   
-  std::vector<TH1D> Mu1TrackInvariantMassAfterA1MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterA1MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterA1MVA;
   
-  std::vector<TH1D> Mu1TrackInvariantMassAfterB1MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterB1MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterB1MVA;
   
-  std::vector<TH1D> Mu1TrackInvariantMassAfterC1MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterC1MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterC1MVA;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassAfterA2MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterA2MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterA2MVA;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassAfterB2MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterB2MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterB2MVA;
-  
-  std::vector<TH1D> Mu1TrackInvariantMassAfterC2MVA;
-  std::vector<TH1D> Mu2TrackInvariantMassAfterC2MVA;
-  std::vector<TH1D> Mu3TrackInvariantMassAfterC2MVA;
   
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
@@ -434,9 +281,87 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>   KF_Helix_deltaZ;
 
   std::vector<TH1D> FLSignificance;
-  std::vector<TH1D> BDTOutputA;
-  std::vector<TH1D> BDTOutputB;
-  std::vector<TH1D> BDTOutputC;
+  
+  std::vector<TH1D> BDTOutputATrain0;
+  std::vector<TH1D> BDTOutputBTrain0;
+  std::vector<TH1D> BDTOutputCTrain0;
+  
+  std::vector<TH1D> BDTOutputATrain1;
+  std::vector<TH1D> BDTOutputBTrain1;
+  std::vector<TH1D> BDTOutputCTrain1;
+  
+  std::vector<TH1D> BDTOutputATrain2;
+  std::vector<TH1D> BDTOutputBTrain2;
+  std::vector<TH1D> BDTOutputCTrain2;
+  
+  std::vector<TH1D> BDTOutputATrain3;
+  std::vector<TH1D> BDTOutputBTrain3;
+  std::vector<TH1D> BDTOutputCTrain3;
+  
+  std::vector<TH1D> BDTOutputATrain4;
+  std::vector<TH1D> BDTOutputBTrain4;
+  std::vector<TH1D> BDTOutputCTrain4;
+  
+  std::vector<TH1D> BDTOutputATrain5;
+  std::vector<TH1D> BDTOutputBTrain5;
+  std::vector<TH1D> BDTOutputCTrain5;
+  
+  std::vector<TH1D> BDTOutputATrain6;
+  std::vector<TH1D> BDTOutputBTrain6;
+  std::vector<TH1D> BDTOutputCTrain6;
+  
+  std::vector<TH1D> BDTOutputATrain7;
+  std::vector<TH1D> BDTOutputBTrain7;
+  std::vector<TH1D> BDTOutputCTrain7;
+  
+  std::vector<TH1D> BDTOutputATrain8;
+  std::vector<TH1D> BDTOutputBTrain8;
+  std::vector<TH1D> BDTOutputCTrain8;
+  
+  std::vector<TH1D> BDTOutputATrain9;
+  std::vector<TH1D> BDTOutputBTrain9;
+  std::vector<TH1D> BDTOutputCTrain9;
+  
+  std::vector<TH1D> BDTOutputATrain10;
+  std::vector<TH1D> BDTOutputBTrain10;
+  std::vector<TH1D> BDTOutputCTrain10;
+  
+  std::vector<TH1D> BDTOutputATrain11;
+  std::vector<TH1D> BDTOutputBTrain11;
+  std::vector<TH1D> BDTOutputCTrain11;
+  
+  std::vector<TH1D> BDTOutputATrain12;
+  std::vector<TH1D> BDTOutputBTrain12;
+  std::vector<TH1D> BDTOutputCTrain12;
+  
+  std::vector<TH1D> BDTOutputATrain13;
+  std::vector<TH1D> BDTOutputBTrain13;
+  std::vector<TH1D> BDTOutputCTrain13;
+  
+  std::vector<TH1D> BDTOutputATrain14;
+  std::vector<TH1D> BDTOutputBTrain14;
+  std::vector<TH1D> BDTOutputCTrain14;
+  
+  std::vector<TH1D> BDTOutputATrain15;
+  std::vector<TH1D> BDTOutputBTrain15;
+  std::vector<TH1D> BDTOutputCTrain15;
+  
+  std::vector<TH1D> BDTOutputATrain16;
+  std::vector<TH1D> BDTOutputBTrain16;
+  std::vector<TH1D> BDTOutputCTrain16;
+  
+  std::vector<TH1D> BDTOutputATrain17;
+  std::vector<TH1D> BDTOutputBTrain17;
+  std::vector<TH1D> BDTOutputCTrain17;
+  
+  std::vector<TH1D> BDTOutputATrain18;
+  std::vector<TH1D> BDTOutputBTrain18;
+  std::vector<TH1D> BDTOutputCTrain18;
+  
+  std::vector<TH1D> BDTOutputATrain19;
+  std::vector<TH1D> BDTOutputBTrain19;
+  std::vector<TH1D> BDTOutputCTrain19;
+  
   std::vector<TH1D> BvsDBDTG;
 
   std::vector<TH1D> BvsDBDTG_ABC1;
@@ -450,61 +375,88 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
+
+
+
+  TMVA::Reader *readerATrain0;
+  TMVA::Reader *readerBTrain0;
+  TMVA::Reader *readerCTrain0;
   
-  std::vector<TH1D>  WhetherdRMatch;
-  std::vector<TH1D>  WhetherTau3Mu;
+  TMVA::Reader *readerATrain1;
+  TMVA::Reader *readerBTrain1;
+  TMVA::Reader *readerCTrain1;
   
-  std::vector<TH1D>  IsoTrackToMCdR01;
-  std::vector<TH1D>  IsoTrackToMCdR08;
-  std::vector<TH1D>  IsoTrackToMCAngle01;
+  TMVA::Reader *readerATrain2;
+  TMVA::Reader *readerBTrain2;
+  TMVA::Reader *readerCTrain2;
   
-  std::vector<TH1D>  NumberOfFS_ChargedParticles;
-  std::vector<TH1D>  NumberOfFS_ChargedParticles_RecoMatch;
+  TMVA::Reader *readerATrain3;
+  TMVA::Reader *readerBTrain3;
+  TMVA::Reader *readerCTrain3;
   
-  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC1;
-  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC2;
-  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC3;
+  TMVA::Reader *readerATrain4;
+  TMVA::Reader *readerBTrain4;
+  TMVA::Reader *readerCTrain4;
   
-  std::vector<TH1D>  TwoProngInvariantMassReco;
-  std::vector<TH1D>  TwoProngInvariantMassMC;
+  TMVA::Reader *readerATrain5;
+  TMVA::Reader *readerBTrain5;
+  TMVA::Reader *readerCTrain5;
   
-  std::vector<TH1D>  ThreeProngInvariantMassReco;
-  std::vector<TH1D>  ThreeProngInvariantMassMC;
+  TMVA::Reader *readerATrain6;
+  TMVA::Reader *readerBTrain6;
+  TMVA::Reader *readerCTrain6;
   
-  std::vector<TH1D>  TwoProngInvariantMassReco005;
-  std::vector<TH1D>  TwoProngInvariantMassMC005;
+  TMVA::Reader *readerATrain7;
+  TMVA::Reader *readerBTrain7;
+  TMVA::Reader *readerCTrain7;
   
-  std::vector<TH1D>  ThreeProngInvariantMassReco005;
-  std::vector<TH1D>  ThreeProngInvariantMassMC005;
+  TMVA::Reader *readerATrain8;
+  TMVA::Reader *readerBTrain8;
+  TMVA::Reader *readerCTrain8;
   
-  std::vector<TH1D>  TwoProngTrackPt;
-  std::vector<TH1D>  TwoProngTrack2Pt;
+  TMVA::Reader *readerATrain9;
+  TMVA::Reader *readerBTrain9;
+  TMVA::Reader *readerCTrain9;
   
-  std::vector<TH1D>  ThreeProngTrackPt;
-  std::vector<TH1D>  ThreeProngTrack2Pt;
-  std::vector<TH1D>  ThreeProngTrack3Pt;
+  TMVA::Reader *readerATrain10;
+  TMVA::Reader *readerBTrain10;
+  TMVA::Reader *readerCTrain10;
   
-  std::vector<TH1D>  TrackToTauDr2Prong;
-  std::vector<TH1D>  TrackToTauDr3Prong;
-  std::vector<TH1D>  TrackToTauDrAll;
+  TMVA::Reader *readerATrain11;
+  TMVA::Reader *readerBTrain11;
+  TMVA::Reader *readerCTrain11;
   
-  std::vector<TH1D>  TwoProngTrackEta;
-  std::vector<TH1D>  TwoProngTrack2Eta;
+  TMVA::Reader *readerATrain12;
+  TMVA::Reader *readerBTrain12;
+  TMVA::Reader *readerCTrain12;
   
-  std::vector<TH2D>  dR_vs_dP;
+  TMVA::Reader *readerATrain13;
+  TMVA::Reader *readerBTrain13;
+  TMVA::Reader *readerCTrain13;
   
-  std::vector<TH2D>  InvMass2_vs_pdgid;
-  std::vector<TH2D>  InvMass3_vs_pdgid;
+  TMVA::Reader *readerATrain14;
+  TMVA::Reader *readerBTrain14;
+  TMVA::Reader *readerCTrain14;
   
-  std::vector<TH2D>  dRmin_sum_vs_InvariantMass_2prong;
-  std::vector<TH2D>  dRmin_sum_vs_InvariantMass_3prong;
+  TMVA::Reader *readerATrain15;
+  TMVA::Reader *readerBTrain15;
+  TMVA::Reader *readerCTrain15;
   
-  std::vector<TH1D>  NoOfIsoTracks2Prong;
-  std::vector<TH1D>  NoOfIsoTracks3Prong;
+  TMVA::Reader *readerATrain16;
+  TMVA::Reader *readerBTrain16;
+  TMVA::Reader *readerCTrain16;
   
-  TMVA::Reader *readerA;
-  TMVA::Reader *readerB;
-  TMVA::Reader *readerC;
+  TMVA::Reader *readerATrain17;
+  TMVA::Reader *readerBTrain17;
+  TMVA::Reader *readerCTrain17;
+  
+  TMVA::Reader *readerATrain18;
+  TMVA::Reader *readerBTrain18;
+  TMVA::Reader *readerCTrain18;
+  
+  TMVA::Reader *readerATrain19;
+  TMVA::Reader *readerBTrain19;
+  TMVA::Reader *readerCTrain19;
 
 
   TMVA::Reader *readerMuIDBarrel;
@@ -559,6 +511,9 @@ class SignalVertexSelector : public Selection {
   float var_maxMuonsDca;
   float var_nsv;
   float var_dcaTrackPV;
+  
+  float var_BvsDSeprator;
+  float var_Vertex2muTrkKF;
 
   float var_MaxMuon_chi2LocalPosition;
   float var_MaxVertexPairQuality;

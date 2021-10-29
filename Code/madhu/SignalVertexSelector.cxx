@@ -24,7 +24,7 @@ SignalVertexSelector::SignalVertexSelector(TString Name_, TString id_):
   rmgCutVeto1(0.77),  // rmg = rho&omega
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
-  PEMassResolutionCut2_(0.01),
+  PEMassResolutionCut2_(0.0105),
   mvaA1_(0.132), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
   mvaA2_(0.233),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
   mvaB1_(0.148),
@@ -934,8 +934,16 @@ void  SignalVertexSelector::Configure(){
   IsoTrackToMCdR08 =HConfig.GetTH1D(Name+"_IsoTrackToMCdR08","IsoTrackToMCdR08",100,0,0.8,"Reconstructed Track to MC dR","Entries");
   IsoTrackToMCAngle01 =HConfig.GetTH1D(Name+"_IsoTrackToMCAngle01","IsoTrackToMCAngle01",50,0,0.1,"Reconstructed Track to MC Angle","Entries");
   
+  TrackToTauDr2Prong =HConfig.GetTH1D(Name+"_TrackToTauDr2Prong","TrackToTauDr2Prong",100,0,1.0,"Reconstructed Track to Tau dR 2 Prong","Entries");
+  TrackToTauDr3Prong =HConfig.GetTH1D(Name+"_TrackToTauDr3Prong","TrackToTauDr3Prong",100,0,1.0,"Reconstructed Track to Tau dR 3 Prong","Entries");
+  TrackToTauDrAll =HConfig.GetTH1D(Name+"_TrackToTauDrAll","TrackToTauDrAll",100,0,1.0,"All Reconstructed Track to Tau dR","Entries");
+  
   NumberOfFS_ChargedParticles =HConfig.GetTH1D(Name+"_NumberOfFS_ChargedParticles","NumberOfFS_ChargedParticles",8,-0.5,7.5,"No Of final state particles","Entries");
   NumberOfFS_ChargedParticles_RecoMatch =HConfig.GetTH1D(Name+"_NumberOfFS_ChargedParticles_RecoMatch","NumberOfFS_ChargedParticles_RecoMatch",8,-0.5,7.5,"No Of final state particles reconstructed","Entries");
+  
+  NumberOfRecoChargedParticlesIfMC1 =HConfig.GetTH1D(Name+"_NumberOfRecoChargedParticlesIfMC1","NumberOfRecoChargedParticlesIfMC1",8,-0.5,7.5,"No Of final state particles reconstructed","Entries");
+  NumberOfRecoChargedParticlesIfMC2 =HConfig.GetTH1D(Name+"_NumberOfRecoChargedParticlesIfMC2","NumberOfRecoChargedParticlesIfMC2",8,-0.5,7.5,"No Of final state particles reconstructed","Entries");
+  NumberOfRecoChargedParticlesIfMC3 =HConfig.GetTH1D(Name+"_NumberOfRecoChargedParticlesIfMC3","NumberOfRecoChargedParticlesIfMC3",8,-0.5,7.5,"No Of final state particles reconstructed","Entries");
   
   TwoProngInvariantMassReco =HConfig.GetTH1D(Name+"_TwoProngInvariantMassReco","TwoProngInvariantMassReco",50,0,5.0,"Invariant Mass of two tracks, reco","Events");
   TwoProngInvariantMassMC =HConfig.GetTH1D(Name+"_TwoProngInvariantMassMC","TwoProngInvariantMassMC",50,0,5.0,"Invariant Mass of two tracks, MC","Events");
@@ -943,18 +951,33 @@ void  SignalVertexSelector::Configure(){
   ThreeProngInvariantMassReco =HConfig.GetTH1D(Name+"_ThreeProngInvariantMassReco","ThreeProngInvariantMassReco",50,0,5.0,"Invariant Mass of three tracks, reco","Events");
   ThreeProngInvariantMassMC =HConfig.GetTH1D(Name+"_ThreeProngInvariantMassMC","ThreeProngInvariantMassMC",50,0,5.0,"Invariant Mass of three tracks, MC","Events");
   
+  TwoProngInvariantMassReco005 =HConfig.GetTH1D(Name+"_TwoProngInvariantMassReco005","TwoProngInvariantMassReco005",50,0,5.0,"Invariant Mass of two tracks, reco","Events");
+  TwoProngInvariantMassMC005 =HConfig.GetTH1D(Name+"_TwoProngInvariantMassMC005","TwoProngInvariantMassMC005",50,0,5.0,"Invariant Mass of two tracks, MC","Events");
+  
+  ThreeProngInvariantMassReco005 =HConfig.GetTH1D(Name+"_ThreeProngInvariantMassReco005","ThreeProngInvariantMassReco005",50,0,5.0,"Invariant Mass of three tracks, reco","Events");
+  ThreeProngInvariantMassMC005 =HConfig.GetTH1D(Name+"_ThreeProngInvariantMassMC005","ThreeProngInvariantMassMC005",50,0,5.0,"Invariant Mass of three tracks, MC","Events");
+  
   TwoProngTrackPt =HConfig.GetTH1D(Name+"_TwoProngTrackPt","TwoProngTrackPt",50,0,5.0,"Track Pt","Events");
   TwoProngTrack2Pt =HConfig.GetTH1D(Name+"_TwoProngTrack2Pt","TwoProngTrack2Pt",50,0,5.0,"Track Pt","Events");
+  
+  ThreeProngTrackPt =HConfig.GetTH1D(Name+"_ThreeProngTrackPt","ThreeProngTrackPt",50,0,5.0,"Track Pt","Events");
+  ThreeProngTrack2Pt =HConfig.GetTH1D(Name+"_ThreeProngTrack2Pt","ThreeProngTrack2Pt",50,0,5.0,"Track Pt","Events");
+  ThreeProngTrack3Pt =HConfig.GetTH1D(Name+"_ThreeProngTrack3Pt","ThreeProngTrack3Pt",50,0,5.0,"Track Pt","Events");
   
   TwoProngTrackEta =HConfig.GetTH1D(Name+"_TwoProngTrackEta","TwoProngTrackEta",50,0,5.0,"Track Eta","Events");
   TwoProngTrack2Eta =HConfig.GetTH1D(Name+"_TwoProngTrack2Eta","TwoProngTrack2Eta",50,0,5.0,"Track Eta","Events");
   
   dR_vs_dP=HConfig.GetTH2D(Name+"_dR_vs_dP","dR_vs_dP",40,0,0.1,40,0,2.0,"dR","dP");
   
+  InvMass2_vs_pdgid=HConfig.GetTH2D(Name+"_InvMass2_vs_pdgid","InvMass2_vs_pdgid",50,0,5.0,1000,-0.5,999.5,"Invariant Mass MC 2 Prong","pdgid");
+  InvMass3_vs_pdgid=HConfig.GetTH2D(Name+"_InvMass3_vs_pdgid","InvMass3_vs_pdgid",50,0,5.0,1000,-0.5,999.5,"Invariant Mass MC 3 Prong","pdgid");
+  
   NoOfIsoTracks2Prong =HConfig.GetTH1D(Name+"_NoOfIsoTracks2Prong","NoOfIsoTracks2Prong",40,-0.5,39.5,"No of isolation tracks for 2 prong cat","Events");
   NoOfIsoTracks3Prong =HConfig.GetTH1D(Name+"_NoOfIsoTracks3Prong","NoOfIsoTracks3Prong",40,-0.5,39.5,"No of isolation tracks for 3 prong cat","Events");
   
-  dRmin1_vs_dRmin2_vs_InvariantMass=HConfig.GetTH2D(Name+"_dRmin1_vs_dRmin2_vs_InvariantMass","dRmin1_vs_dRmin2_vs_InvariantMass",40,0,0.03,40,0,4.0,"dR","Mass");
+  dRmin_sum_vs_InvariantMass_2prong=HConfig.GetTH2D(Name+"_dRmin_sum_vs_InvariantMass_2prong","dRmin_sum_vs_InvariantMass_2prong",40,0,0.03,40,0,4.0,"dR","Mass");
+  dRmin_sum_vs_InvariantMass_3prong=HConfig.GetTH2D(Name+"_dRmin_sum_vs_InvariantMass_3prong","dRmin_sum_vs_InvariantMass_3prong",40,0,0.03,40,0,4.0,"dR","Mass");
+  
 
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -1326,23 +1349,45 @@ void  SignalVertexSelector::Store_ExtraDist(){
   Extradist1d.push_back(&NumberOfFS_ChargedParticles);
   Extradist1d.push_back(&NumberOfFS_ChargedParticles_RecoMatch);
   
+  Extradist1d.push_back(&NumberOfRecoChargedParticlesIfMC1);
+  Extradist1d.push_back(&NumberOfRecoChargedParticlesIfMC2);
+  Extradist1d.push_back(&NumberOfRecoChargedParticlesIfMC3);
+  
   Extradist1d.push_back(&TwoProngInvariantMassReco);
   Extradist1d.push_back(&TwoProngInvariantMassMC);
   
   Extradist1d.push_back(&ThreeProngInvariantMassReco);
   Extradist1d.push_back(&ThreeProngInvariantMassMC);
   
+  Extradist1d.push_back(&TwoProngInvariantMassReco005);
+  Extradist1d.push_back(&TwoProngInvariantMassMC005);
+  
+  Extradist1d.push_back(&ThreeProngInvariantMassReco005);
+  Extradist1d.push_back(&ThreeProngInvariantMassMC005);
+  
   Extradist1d.push_back(&TwoProngTrackPt);
   Extradist1d.push_back(&TwoProngTrack2Pt);
+  
+  Extradist1d.push_back(&ThreeProngTrackPt);
+  Extradist1d.push_back(&ThreeProngTrack2Pt);
+  Extradist1d.push_back(&ThreeProngTrack3Pt);
+  
+  Extradist1d.push_back(&TrackToTauDr2Prong);
+  Extradist1d.push_back(&TrackToTauDr3Prong);
+  Extradist1d.push_back(&TrackToTauDrAll);
   
   Extradist1d.push_back(&TwoProngTrackEta);
   Extradist1d.push_back(&TwoProngTrack2Eta);
   
   Extradist2d.push_back(&dR_vs_dP);
-  Extradist2d.push_back(&dRmin1_vs_dRmin2_vs_InvariantMass);
+  Extradist2d.push_back(&dRmin_sum_vs_InvariantMass_2prong);
+  Extradist2d.push_back(&dRmin_sum_vs_InvariantMass_3prong);
   
   Extradist1d.push_back(&NoOfIsoTracks2Prong);
   Extradist1d.push_back(&NoOfIsoTracks3Prong);
+  
+  Extradist2d.push_back(&InvMass2_vs_pdgid);
+  Extradist2d.push_back(&InvMass3_vs_pdgid);
   
 
 
@@ -1611,6 +1656,8 @@ void  SignalVertexSelector::doEvent(){
     }
     
     
+    TLorentzVector TauLV = Ntp->Muon_P4(Muon_index_1)  + Ntp->Muon_P4(Muon_index_2) + Ntp->Muon_P4(Muon_index_3);
+    
     
     //TLorentzVector MuonOS = Muon1LV;
     
@@ -1625,7 +1672,7 @@ void  SignalVertexSelector::doEvent(){
     MuOSSS2InvariantMassBeforeMVA.at(t).Fill((MuonOSReassigned+MuonSS2Reassigned).M(),1);
     
     // This is to print out selected events content
-    
+    /*
     if(id ==60 ||  id ==90){// or id == 40){
       std::cout<<"-------------- All categoris ----------------"<< std::endl;
       std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
@@ -1637,7 +1684,7 @@ void  SignalVertexSelector::doEvent(){
       Ntp->printMCDecayChainOfEvent(true, true, true, true);
       std::cout<< "\n\n\n\n\n\n";
     }
-    
+    */
     
     std::vector<int> b_meson_full_childidx;//All descendents of B meson except for the tau and the three muons
     std::vector<int> b_meson_full_childidx_FS;//All descendents of B meson which are charged final state particles (except t3mu)
@@ -1653,12 +1700,31 @@ void  SignalVertexSelector::doEvent(){
     std::vector<float> p2;
     std::vector<float> p3;
     
+    std::vector<float> mc_pdgid;
+    
     std::vector<float> es_reco;// particle energy
     std::vector<float> p1_reco;// particle px
     std::vector<float> p2_reco;
     std::vector<float> p3_reco;
     
     std::vector<float> dR_min_reco;
+    
+    //Do everything with dR<0.005
+    std::vector<int> b_meson_full_childidx_FS_RecoMC005;
+    
+    std::vector<float> es005;// particle energy
+    std::vector<float> p1005;// particle px
+    std::vector<float> p2005;
+    std::vector<float> p3005;
+    
+    std::vector<float> es_reco005;// particle energy
+    std::vector<float> p1_reco005;// particle px
+    std::vector<float> p2_reco005;
+    std::vector<float> p3_reco005;
+    
+    std::vector<float> dR_min_reco005;
+    
+    std::vector<float> dR_To_Tau_Prong;
     
     //Trying to figure out if there are final state particles coming from b signal that match the isolation tracks
     for(int gen_part_index=0; gen_part_index < Ntp->NMCParticles(); gen_part_index++){        
@@ -1726,6 +1792,7 @@ void  SignalVertexSelector::doEvent(){
                   double dR_min(199.0);
                   double Ang_min(99.0);
                   bool dR_Match(false);
+                  bool dR_Match005(false);
                   
                   
                   TLorentzVector TrackLV_min;
@@ -1754,9 +1821,27 @@ void  SignalVertexSelector::doEvent(){
                   IsoTrackToMCdR08.at(t).Fill(dR_min,1);
                   IsoTrackToMCAngle01.at(t).Fill(Ang_min,1);
                   
-                  dR_vs_dP.at(t).Fill(dR_min,abs(TrackLV_min.Perp()-FinalStateParticleLV_min.Perp()),1);
+                  dR_vs_dP.at(t).Fill(dR_min,abs((TrackLV_min-FinalStateParticleLV_min).Perp()),1);
                   
                   (dR_min<0.015)?(dR_Match=true):(dR_Match=false);
+                  (dR_min<0.005)?(dR_Match005=true):(dR_Match005=false);
+                  
+                  if(dR_Match005){// Fill all charged final state particles we're interested in that have been reconstructed
+                    b_meson_full_childidx_FS_RecoMC005.push_back(i);
+                    
+                    es005.push_back(FinalStateParticleLV_min.E());// particle energy
+                    p1005.push_back(FinalStateParticleLV_min.Px());// particle px
+                    p2005.push_back(FinalStateParticleLV_min.Py());
+                    p3005.push_back(FinalStateParticleLV_min.Pz());
+                    
+                    es_reco005.push_back(TrackLV_min.E());// particle energy
+                    p1_reco005.push_back(TrackLV_min.Px());// particle px
+                    p2_reco005.push_back(TrackLV_min.Py());
+                    p3_reco005.push_back(TrackLV_min.Pz());
+                    
+                    dR_min_reco005.push_back(dR_min);
+                    //charges_reco.push_back(TrackLV_min);
+                  }
                   
                   if(dR_Match){// Fill all charged final state particles we're interested in that have been reconstructed
                     b_meson_full_childidx_FS_RecoMC.push_back(i);
@@ -1776,11 +1861,15 @@ void  SignalVertexSelector::doEvent(){
                     etas_reco.push_back(TrackLV_min.Eta());// signed values of eta
                     
                     dR_min_reco.push_back(dR_min);
+                    
+                    mc_pdgid.push_back(abs(Ntp->MCParticle_pdgid(Ntp->MCParticle_midx(i))));
+                    
+                    dR_To_Tau_Prong.push_back(TrackLV_min.DeltaR(TauLV));
                     //charges_reco.push_back(TrackLV_min);
                   }
                   
                   WhetherdRMatch.at(t).Fill(dR_Match,1);
-                }}
+                }}//end of i for loop?
                 
               }
               //if(!Three_Children){std::cout<<"Tau not found with index: "<< gen_part_index << std::endl;}
@@ -1795,10 +1884,30 @@ void  SignalVertexSelector::doEvent(){
           
     }//end of gen_part_index for loop
     
-    NumberOfFS_ChargedParticles.at(t).Fill(b_meson_full_childidx_FS.size(),1);
-    NumberOfFS_ChargedParticles_RecoMatch.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);
+    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
+      TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
+      TrackToTauDrAll.at(t).Fill(TrackLV.DeltaR(TauLV));
+    }
+    
+    NumberOfFS_ChargedParticles.at(t).Fill(b_meson_full_childidx_FS.size(),1);// Number of charged particles that can leave tracks
+    NumberOfFS_ChargedParticles_RecoMatch.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);// Number of charged particles reconstructed
+    
+    if(b_meson_full_childidx_FS.size()==1){
+      NumberOfRecoChargedParticlesIfMC1.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);
+    }
+    
+    if(b_meson_full_childidx_FS.size()==2){
+      NumberOfRecoChargedParticlesIfMC2.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);
+    }
+    
+    if(b_meson_full_childidx_FS.size()==3){
+      NumberOfRecoChargedParticlesIfMC3.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);
+    }
     
     if(b_meson_full_childidx_FS_RecoMC.size()==2){
+    
+     TrackToTauDr2Prong.at(t).Fill(dR_To_Tau_Prong.at(0),1);
+     TrackToTauDr2Prong.at(t).Fill(dR_To_Tau_Prong.at(1),1);
      
      NoOfIsoTracks2Prong.at(t).Fill(Ntp->NIsolationTrack(signal_idx),1);
      
@@ -1811,6 +1920,9 @@ void  SignalVertexSelector::doEvent(){
      TLorentzVector L2_MC(p1.at(1),p2.at(1),p3.at(1),es.at(1));//MC
      
      TwoProngInvariantMassMC.at(t).Fill((L1_MC+L2_MC).M(),1);
+     
+     InvMass2_vs_pdgid.at(t).Fill((L1_MC+L2_MC).M(),mc_pdgid.at(0),1);
+     InvMass2_vs_pdgid.at(t).Fill((L1_MC+L2_MC).M(),mc_pdgid.at(1),1);
      
      if(pts_reco.at(0)>pts_reco.at(1)){
        TwoProngTrackPt.at(t).Fill(pts_reco.at(0),1);
@@ -1828,7 +1940,7 @@ void  SignalVertexSelector::doEvent(){
        TwoProngTrack2Eta.at(t).Fill(etas_reco.at(0),1);
      }
      
-     dRmin1_vs_dRmin2_vs_InvariantMass.at(t).Fill((dR_min_reco.at(0)+dR_min_reco.at(1)),(L1_Track+L2_Track).M(),1);
+     dRmin_sum_vs_InvariantMass_2prong.at(t).Fill((dR_min_reco.at(0)+dR_min_reco.at(1)),(L1_Track+L2_Track).M(),1);
      /*
      if((L1_MC+L2_MC).M()<0.6){
        if(id ==60 ||  id ==90){// or id == 40){
@@ -1849,6 +1961,18 @@ void  SignalVertexSelector::doEvent(){
     
     if(b_meson_full_childidx_FS_RecoMC.size()==3){
      
+     TrackToTauDr3Prong.at(t).Fill(dR_To_Tau_Prong.at(0),1);
+     TrackToTauDr3Prong.at(t).Fill(dR_To_Tau_Prong.at(1),1);
+     TrackToTauDr3Prong.at(t).Fill(dR_To_Tau_Prong.at(2),1);
+     
+     std::vector<float> vect = pts_reco;
+     std::sort (vect.begin(), vect.end());
+     
+     ThreeProngTrackPt.at(t).Fill(vect.at(2),1);
+     ThreeProngTrack2Pt.at(t).Fill(vect.at(1),1);
+     ThreeProngTrack3Pt.at(t).Fill(vect.at(0),1);
+     
+     
      NoOfIsoTracks3Prong.at(t).Fill(Ntp->NIsolationTrack(signal_idx),1);
      
      TLorentzVector L1_Track(p1_reco.at(0),p2_reco.at(0),p3_reco.at(0),es_reco.at(0));//Track
@@ -1857,11 +1981,78 @@ void  SignalVertexSelector::doEvent(){
      
      ThreeProngInvariantMassReco.at(t).Fill((L1_Track+L2_Track+L3_Track).M(),1);
      
-     TLorentzVector L1_Reco(p1.at(0),p2.at(0),p3.at(0),es.at(0));//MC
-     TLorentzVector L2_Reco(p1.at(1),p2.at(1),p3.at(1),es.at(1));//MC
-     TLorentzVector L3_Reco(p1.at(2),p2.at(2),p3.at(2),es.at(2));//MC
+     TLorentzVector L1_MC(p1.at(0),p2.at(0),p3.at(0),es.at(0));//MC
+     TLorentzVector L2_MC(p1.at(1),p2.at(1),p3.at(1),es.at(1));//MC
+     TLorentzVector L3_MC(p1.at(2),p2.at(2),p3.at(2),es.at(2));//MC
      
-     ThreeProngInvariantMassMC.at(t).Fill((L1_Reco+L2_Reco+L3_Reco).M(),1);
+     ThreeProngInvariantMassMC.at(t).Fill((L1_MC+L2_MC+L3_MC).M(),1);
+     
+     InvMass3_vs_pdgid.at(t).Fill((L1_MC+L2_MC+L3_MC).M(),mc_pdgid.at(0),1);
+     InvMass3_vs_pdgid.at(t).Fill((L1_MC+L2_MC+L3_MC).M(),mc_pdgid.at(1),1);
+     InvMass3_vs_pdgid.at(t).Fill((L1_MC+L2_MC+L3_MC).M(),mc_pdgid.at(2),1);
+     
+     dRmin_sum_vs_InvariantMass_2prong.at(t).Fill((dR_min_reco.at(0)+dR_min_reco.at(1)+dR_min_reco.at(2)),(L1_Track+L2_Track+L3_Track).M(),1);
+     
+    }
+    
+    // Event Printouts
+    
+    if(b_meson_full_childidx_FS.size()==2){
+      if(id ==60 ||  id ==90){// or id == 40){
+        std::cout<<"--------------  Two Prong MC ----------------" << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+        Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+        Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+        Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+        Ntp->printMCDecayChainOfEvent(true, true, true, true);
+        std::cout<< "\n\n\n\n\n\n";
+      }
+    }
+    if(b_meson_full_childidx_FS.size()==3){
+      if(id ==60 ||  id ==90){// or id == 40){
+        std::cout<<"--------------  Three Prong MC ----------------" << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+        std::cout<<" idx = "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+        Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+        Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+        Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+        Ntp->printMCDecayChainOfEvent(true, true, true, true);
+        std::cout<< "\n\n\n\n\n\n";
+      }
+    }
+    
+    
+    
+    //Doing the same with dR<0.005
+    
+    if(b_meson_full_childidx_FS_RecoMC005.size()==2){
+    
+     TLorentzVector L1_Track(p1_reco005.at(0),p2_reco005.at(0),p3_reco005.at(0),es_reco005.at(0));//Track
+     TLorentzVector L2_Track(p1_reco005.at(1),p2_reco005.at(1),p3_reco005.at(1),es_reco005.at(1));//Track
+     
+     TwoProngInvariantMassReco005.at(t).Fill((L1_Track+L2_Track).M(),1);
+     
+     TLorentzVector L1_MC(p1005.at(0),p2005.at(0),p3005.at(0),es005.at(0));//MC
+     TLorentzVector L2_MC(p1005.at(1),p2005.at(1),p3005.at(1),es005.at(1));//MC
+     
+     TwoProngInvariantMassMC005.at(t).Fill((L1_MC+L2_MC).M(),1);
+    }
+    
+    if(b_meson_full_childidx_FS_RecoMC005.size()==3){
+     TLorentzVector L1_Track(p1_reco005.at(0),p2_reco005.at(0),p3_reco005.at(0),es_reco005.at(0));//Track
+     TLorentzVector L2_Track(p1_reco005.at(1),p2_reco005.at(1),p3_reco005.at(1),es_reco005.at(1));//Track
+     TLorentzVector L3_Track(p1_reco005.at(2),p2_reco005.at(2),p3_reco005.at(2),es_reco005.at(2));//Track
+     
+     ThreeProngInvariantMassReco005.at(t).Fill((L1_Track+L2_Track+L3_Track).M(),1);
+     
+     TLorentzVector L1_MC(p1005.at(0),p2005.at(0),p3005.at(0),es005.at(0));//MC
+     TLorentzVector L2_MC(p1005.at(1),p2005.at(1),p3005.at(1),es005.at(1));//MC
+     TLorentzVector L3_MC(p1005.at(2),p2005.at(2),p3005.at(2),es005.at(2));//MC
+     
+     ThreeProngInvariantMassMC005.at(t).Fill((L1_MC+L2_MC+L3_MC).M(),1);
     }
     
     //goes till MuMuMassAllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),(MuonOS+MuonSS1).M());
