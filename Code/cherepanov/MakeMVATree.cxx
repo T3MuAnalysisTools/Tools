@@ -130,6 +130,7 @@ void  MakeMVATree::Configure(){
   TMVA_Tree= new TTree("tree","tree");
   TMVA_Tree->Branch("MC",&MC);
   TMVA_Tree->Branch("category",&category);
+  TMVA_Tree->Branch("var_id", &var_id);
   TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2);
   TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle);
   TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
@@ -369,6 +370,20 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("var_BvsDSeprator",&var_BvsDSeprator );
 
 
+  TMVA_Tree->Branch("var_cTheta_TRF_SSSS",&var_cTheta_TRF_SSSS );
+  TMVA_Tree->Branch("var_cTheta_TRF_OSSS",&var_cTheta_TRF_OSSS );
+  TMVA_Tree->Branch("var_cTheta_MuonOS_TauPol_TRF",&var_cTheta_MuonOS_TauPol_TRF );
+  TMVA_Tree->Branch("var_pTMu1OverMass_TRF",&var_pTMu1OverMass_TRF );
+  TMVA_Tree->Branch("var_costheta_TRF_SSSS",&var_costheta_TRF_SSSS );
+  TMVA_Tree->Branch("var_costheta_TRF_OSS",&var_costheta_TRF_OSS );
+  TMVA_Tree->Branch("var_OSSS1Angle_TRF",&var_OSSS1Angle_TRF );
+  TMVA_Tree->Branch("var_OSSS2Angle_TRF",&var_OSSS2Angle_TRF );
+
+  TMVA_Tree->Branch("var_OSSS1Angle_RRF",&var_OSSS1Angle_RRF );
+  TMVA_Tree->Branch("var_OSSS2Angle_RRF",&var_OSSS2Angle_RRF );
+
+
+
 
   // -----------------
   
@@ -521,7 +536,14 @@ void  MakeMVATree::Configure(){
       TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
       
       VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
-      Vertex2muTrkKF=HConfig.GetTH1D(Name+"_Vertex2muTrkKF","Vertex2muTrkKF",50,-2,50,"KF vertex #chi^{2} 2#mu + tr","Events");
+      Vertex2muTrkKF=HConfig.GetTH1D(Name+"_Vertex2muTrkKF","Vertex2muTrkKF",50,-1.5,28.5,"KF vertex #chi^{2} 2#mu + tr","Events");
+
+      Vertex2muTrkKFChi2=HConfig.GetTH1D(Name+"_Vertex2muTrkKFChi2","iso vertex chi2",30,-1.5,28.5,"2#mu+iso track #chi^{2}","Events");
+      Vertex2muTrkKFToSignalVertexChi2=HConfig.GetTH1D(Name+"_Vertex2muTrkKFToSignalVertexChi2","Vertex Ratios",7,-1.5,5.5,"2#mu+iso track #chi^{2} / 3#mu #chi^{2}","Events");
+      Vertex2muTrkKFToSignalVertexDistance=HConfig.GetTH1D(Name+"_Vertex2muTrkKFToSignalVertexDistance","signal - iso vertex distance",50,0,2,"3#mu Vertex - 3#track Vertex dist, cm","Events");
+
+
+
 
       Dist2muTrkKF3Mu=HConfig.GetTH1D(Name+"_Dist2muTrkKF3Mu","Dist2muTrkKF3Mu",50,0,2,"Dist( 2#mu + tr - 3#mu), cm","Events");
       MuonglbkinkSum  =HConfig.GetTH1D(Name+"_MuonglbkinkSum","MuonglbkinkSum",50,0.,50," #sum  #mu glb kink #chi^{2}","Events");
@@ -856,12 +878,46 @@ void  MakeMVATree::Configure(){
 
       IsolationCombinatorialMass_pipi=HConfig.GetTH1D(Name+"_IsolationCombinatorialMass_pipi","IsolationCombinatorialMass_pipi",55,0.27,2.0,"M_{#pi#pi},GeV","Events");
       VertexQualitySeparator=HConfig.GetTH1D(Name+"_VertexQualitySeparator","VertexQualitySeparator",2,-0.5,1.5,"0 - #chi^{2}_{3 #mu} > #chi^{2}_{2 #mu-iso track} ; 1 -","Events");
+
+
+      OSSS1Angle_TRF=HConfig.GetTH1D(Name+"_OSSS1Angle_TRF","OSSS1Angle_TRF",50,-1.1,1.1,"cos#alpha_{1} (OS-SS1), 3#mu RF","");
+      OSSS2Angle_TRF=HConfig.GetTH1D(Name+"_OSSS2Angle_TRF","OSSS2Angle_TRF",50,-1.1,1.1,"cos#alpha_{2} (OS-SS2), 3#mu RF","");
+
+
+      OSSS1Angle_RRF=HConfig.GetTH1D(Name+"_OSSS1Angle_RRF","OSSS1Angle_RRF",50,-1.1,1.1,"cos#theta (n_{#rho} - n_{#mu})","");
+      OSSS2Angle_RRF=HConfig.GetTH1D(Name+"_OSSS2Angle_RRF","OSSS2Angle_RRF",50,-1.1,1.1,"cos#theta (n_{#rho} - n_{#mu})","");
+
+      cTheta_TRF_SSSS=HConfig.GetTH1D(Name+"_cTheta_TRF_SSSS","cTheta_TRF_SSSS",50,-1.1,1.1,"cos#theta (SS1-SS2), 3#mu RF","");
+      cTheta_TRF_OSSS=HConfig.GetTH1D(Name+"_cTheta_TRF_OSSS","cTheta_TRF_OSSS",50,-1.1,1.1,"cos#theta (OS -SS1), 3#mu RF","");
+      cTheta_MuonOS_TauPol_TRF=HConfig.GetTH1D(Name+"_cTheta_MuonOS_TauPol_TRF","cTheta_MuonOS_TauPol_TRF",50,-1.1,1.1,"cos#Theta (OS - #tau), 3#mu RF","");
+
+      pTMu1OverMass_TRF=HConfig.GetTH1D(Name+"_pTMu1OverMass_TRF","pTMu1OverMass_TRF",50,0,0.6,"P_{#mu_{OS}}/M_{3#mu}  ","");
+
+
+
       Selection::ConfigureHistograms(); //do not remove
       HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
       
 }
 
 void  MakeMVATree::Store_ExtraDist(){ 
+
+
+  Extradist1d.push_back(&pTMu1OverMass_TRF);
+  Extradist1d.push_back(&OSSS1Angle_TRF);
+  Extradist1d.push_back(&OSSS2Angle_TRF);
+
+  Extradist1d.push_back(&OSSS1Angle_RRF);
+  Extradist1d.push_back(&OSSS2Angle_RRF);
+
+
+  Extradist1d.push_back(&cTheta_MuonOS_TauPol_TRF);
+
+
+  Extradist1d.push_back(&cTheta_TRF_SSSS);
+  Extradist1d.push_back(&cTheta_TRF_OSSS);
+
+
   Extradist1d.push_back(&nPVx);
 
   Extradist1d.push_back(&Muon1Pt);
@@ -883,6 +939,15 @@ void  MakeMVATree::Store_ExtraDist(){
   Extradist1d.push_back(&VertexChi2KF);
   Extradist1d.push_back(&Vertex2muTrkKF);
   Extradist1d.push_back(&VertexQualitySeparator);
+
+  Extradist1d.push_back(&Vertex2muTrkKFChi2);
+  Extradist1d.push_back(&Vertex2muTrkKFToSignalVertexChi2);
+  Extradist1d.push_back(&Vertex2muTrkKFToSignalVertexDistance);
+
+
+
+
+
   Extradist1d.push_back(&Dist2muTrkKF3Mu);
   //  Extradist1d.push_back(&MuonglbkinkSum);
   Extradist1d.push_back(&Muon_segmentCompatibility_mu1);
@@ -1411,6 +1476,7 @@ void  MakeMVATree::doEvent(){
       
 
       //      std::cout<<   " 2mt  "<< Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) << "   3m   "<<Ntp->Vertex_signal_KF_Chi2(final_idx) << std::endl;
+      var_id = id;
       var_Vertex2muTrkKF = Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx);
       //      std::cout<<"  var_Vertex2muTrkKF   ever -1 ?  " << var_Vertex2muTrkKF << std::endl;
       Vertex2muTrkKF.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) ,w);
@@ -1455,6 +1521,91 @@ void  MakeMVATree::doEvent(){
       TLorentzVector MuonLV_OS  = Ntp->Muon_P4(Muon_index_os);
       TLorentzVector MuonLV_SS1 = Ntp->Muon_P4(Muon_index_ss1);
       TLorentzVector MuonLV_SS2 = Ntp->Muon_P4(Muon_index_ss2);
+      //*** With such sorting pT(ss1) > pT(ss2)
+      TLorentzVector MuonOS  = Ntp->Muon_P4(Muon_index_os);  
+      TLorentzVector MuonSS1 = Ntp->Muon_P4(Muon_index_ss1);
+      TLorentzVector MuonSS2 = Ntp->Muon_P4(Muon_index_ss2);
+
+      TLorentzVector MuonOS_Rotated = MuonOS; MuonOS_Rotated.SetVect(Ntp->Rotate(MuonOS_Rotated.Vect(), (MuonOS+MuonSS1+MuonSS2).Vect()));
+      TLorentzVector MuonSS1_Rotated = MuonSS1; MuonSS1_Rotated.SetVect(Ntp->Rotate(MuonSS1_Rotated.Vect(), (MuonOS+MuonSS1+MuonSS2).Vect()));
+      TLorentzVector MuonSS2_Rotated = MuonSS2; MuonSS2_Rotated.SetVect(Ntp->Rotate(MuonSS2_Rotated.Vect(), (MuonOS+MuonSS1+MuonSS2).Vect()));
+      TLorentzVector ThreeMuon_Rotated = MuonOS + MuonSS1 +MuonSS2; ThreeMuon_Rotated.SetVect(Ntp->Rotate(ThreeMuon_Rotated.Vect(), (MuonOS+MuonSS1+MuonSS2).Vect()));
+
+
+      TLorentzVector MuonOS_TRF  = Ntp->Boost(MuonOS_Rotated, ThreeMuon_Rotated);    // Muon in Tau REst Frame with Z axis alligned on tau directions
+      TLorentzVector MuonSS1_TRF = Ntp->Boost(MuonSS1_Rotated, ThreeMuon_Rotated);
+      TLorentzVector MuonSS2_TRF = Ntp->Boost(MuonSS2_Rotated, ThreeMuon_Rotated);
+
+
+
+      TLorentzVector MuonOS_R1_RF_rotated = MuonOS_TRF; MuonOS_R1_RF_rotated.SetVect(Ntp->Rotate(MuonOS_R1_RF_rotated.Vect(), (MuonOS_TRF + MuonSS1_TRF).Vect())   );
+      TLorentzVector MuonSS1_R1_RF_rotated = MuonSS1_TRF; MuonSS1_R1_RF_rotated.SetVect(Ntp->Rotate(MuonSS1_R1_RF_rotated.Vect(), (MuonOS_TRF + MuonSS1_TRF).Vect())   );
+
+
+
+      TLorentzVector MuonOS_R2_RF_rotated = MuonOS_TRF; MuonOS_R2_RF_rotated.SetVect(Ntp->Rotate(MuonOS_R2_RF_rotated.Vect(), (MuonOS_TRF + MuonSS2_TRF).Vect())   );
+      TLorentzVector MuonSS2_R2_RF_rotated = MuonSS2_TRF; MuonSS2_R2_RF_rotated.SetVect(Ntp->Rotate(MuonSS2_R2_RF_rotated.Vect(), (MuonOS_TRF + MuonSS2_TRF).Vect()  )   );
+
+      TLorentzVector MuonOS_R1_RF = Ntp->Boost(MuonOS_R1_RF_rotated, MuonOS_R1_RF_rotated+MuonSS1_R1_RF_rotated);
+      TLorentzVector MuonSS1_R1_RF=Ntp->Boost(MuonSS1_R1_RF_rotated, MuonOS_R1_RF_rotated+MuonSS1_R1_RF_rotated);
+    
+      TLorentzVector MuonOS_R2_RF = Ntp->Boost(MuonOS_R2_RF_rotated, MuonOS_R2_RF_rotated+MuonSS2_R2_RF_rotated);
+      TLorentzVector MuonSS2_R2_RF=Ntp->Boost(MuonSS2_R2_RF_rotated, MuonOS_R2_RF_rotated+MuonSS2_R2_RF_rotated);
+
+      double R1_RF_Theta =     MuonOS_R1_RF.Vect().Dot( (MuonOS_R1_RF_rotated+MuonSS1_R1_RF_rotated).Vect() ) * (1./MuonOS_R1_RF.Vect().Mag()/(MuonOS_R1_RF_rotated+MuonSS1_R1_RF_rotated).Vect().Mag());
+      double R2_RF_Theta =     MuonOS_R2_RF.Vect().Dot( (MuonOS_R2_RF_rotated+MuonSS2_R2_RF_rotated).Vect() ) * (1./MuonOS_R2_RF.Vect().Mag()/(MuonOS_R2_RF_rotated+MuonSS2_R2_RF_rotated).Vect().Mag());
+      
+      OSSS1Angle_RRF.at(t).Fill(R1_RF_Theta,1.);
+      OSSS2Angle_RRF.at(t).Fill(R2_RF_Theta,1.);
+
+
+      OSSS1Angle_TRF.at(t).Fill(( MuonOS_TRF.Vect() * MuonSS1_TRF.Vect() )*(1/MuonOS_TRF.Vect().Mag())*(1/MuonSS1_TRF.Vect().Mag()),1.);
+      OSSS2Angle_TRF.at(t).Fill(( MuonOS_TRF.Vect() * MuonSS2_TRF.Vect() )*(1/MuonOS_TRF.Vect().Mag())*(1/MuonSS2_TRF.Vect().Mag()),1.);
+
+      double costheta_TRF_SSSS;
+      double costheta_TRF_OSSS;
+
+      TVector3 n_tau(0,0,1);
+
+
+
+
+    //    (Ntp->Rotate(MuonOS.Vect(),MuonOS.Vect())).Print();
+      
+      if(MuonSS1_TRF.Vect().Mag() > MuonSS2_TRF.Vect().Mag()){
+
+	costheta_TRF_SSSS = MuonSS1_TRF.Vect().Cross(MuonSS2_TRF.Vect()).Dot(n_tau) *(1/ (MuonSS1_TRF.Vect().Cross(MuonSS2_TRF.Vect())).Mag());
+	costheta_TRF_OSSS = MuonOS_TRF.Vect().Cross(MuonSS1_TRF.Vect()).Dot(n_tau) *(1/ ( MuonOS_TRF.Vect().Cross(MuonSS1_TRF.Vect())).Mag());
+
+      } else {
+	
+	costheta_TRF_SSSS = MuonSS2_TRF.Vect().Cross(MuonSS1_TRF.Vect()).Dot(n_tau) *(1/ (MuonSS2_TRF.Vect().Cross(MuonSS1_TRF.Vect())).Mag());
+	costheta_TRF_OSSS = MuonOS_TRF.Vect().Cross(MuonSS2_TRF.Vect()).Dot(n_tau) *(1/  (MuonOS_TRF.Vect().Cross(MuonSS2_TRF.Vect())).Mag());
+	
+      }
+      
+
+      cTheta_TRF_SSSS.at(t).Fill(costheta_TRF_SSSS,1.);
+      cTheta_TRF_OSSS.at(t).Fill(costheta_TRF_OSSS,1.);
+
+      cTheta_MuonOS_TauPol_TRF.at(t).Fill(MuonOS_TRF.Vect().Dot(n_tau)*(1./MuonOS_TRF.Vect().Mag()),1.);
+      pTMu1OverMass_TRF.at(t).Fill(MuonOS_TRF.P()/(MuonOS_TRF + MuonSS1_TRF + MuonSS2_TRF).M(),1.);
+
+      var_cTheta_TRF_SSSS = costheta_TRF_SSSS;
+      var_cTheta_TRF_OSSS = costheta_TRF_OSSS;
+      var_cTheta_MuonOS_TauPol_TRF = MuonOS_TRF.Vect().Dot(n_tau)*(1./MuonOS_TRF.Vect().Mag());
+      var_pTMu1OverMass_TRF = MuonOS_TRF.P()/(MuonOS_TRF + MuonSS1_TRF + MuonSS2_TRF).M();
+      var_costheta_TRF_SSSS = costheta_TRF_SSSS;
+      var_costheta_TRF_OSS = costheta_TRF_OSSS;
+      var_OSSS1Angle_TRF = ( MuonOS_TRF.Vect() * MuonSS1_TRF.Vect() )*(1/MuonOS_TRF.Vect().Mag())*(1/MuonSS1_TRF.Vect().Mag());
+      var_OSSS2Angle_TRF = ( MuonOS_TRF.Vect() * MuonSS2_TRF.Vect() )*(1/MuonOS_TRF.Vect().Mag())*(1/MuonSS2_TRF.Vect().Mag());
+
+      var_OSSS1Angle_RRF = R1_RF_Theta;
+      var_OSSS2Angle_RRF = R2_RF_Theta;
+
+
+
+
 
 
       std::vector<unsigned int> Indices;
@@ -1785,6 +1936,11 @@ void  MakeMVATree::doEvent(){
 	Isolation_RelPt.at(t).Fill(Ntp->Isolation_RelPt(final_idx),w);
 	Isolation_maxdxy.at(t).Fill(Ntp->Isolation_maxdy(final_idx),w);
 
+        if(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) > 0){
+          Vertex2muTrkKFChi2.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx),1);
+          if(Ntp->Vertex_signal_KF_Chi2(final_idx)!=0)  Vertex2muTrkKFToSignalVertexChi2.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx)/Ntp->Vertex_signal_KF_Chi2(final_idx),1);
+          Vertex2muTrkKFToSignalVertexDistance.at(t).Fill((Ntp->Vertex_Signal_KF_pos(final_idx) - Ntp->Vertex_2MuonsIsoTrack_KF_pos(final_idx)).Mag(),1);
+        }
 
 
 
@@ -2751,7 +2907,7 @@ void  MakeMVATree::Finish(){
   if(mode == RECONSTRUCT){
     //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
     //    int id(Ntp->GetMCID());
-    double scale(1.);
+    /*    double scale(1.);
     double scaleDsTau(0.637);
     double scaleBpTau(0.262);
     double scaleB0Tau(0.099);
@@ -2764,7 +2920,7 @@ void  MakeMVATree::Finish(){
 
     if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
     ScaleAllHistOfType(3,scale*scaleB0Tau);
-
+    */
     //    }
   }
   file= new TFile("TMVATreesInput.root","recreate");

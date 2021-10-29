@@ -726,6 +726,15 @@ TLorentzVector Ntuple_Controller::Boost(TLorentzVector pB, TLorentzVector frame)
 
 
 
+TVector3 Ntuple_Controller::Rotate(TVector3 LVec, TVector3 Rot){
+  TVector3 vec = LVec;
+  vec.RotateZ(0.5*TMath::Pi() - Rot.Phi());  
+  vec.RotateX(Rot.Theta());
+  return vec;
+}
+
+
+
 TMatrixT<double>  Ntuple_Controller::convertToMatrix(TVectorT<double> V){
    TMatrixT<double> M(V.GetNrows(),1);
    for(int i=0; i < M.GetNrows(); i++){

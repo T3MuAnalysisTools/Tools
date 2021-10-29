@@ -833,6 +833,10 @@ class Ntuple_Controller{
       double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
       double TransverseFlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
       TLorentzVector Boost(TLorentzVector pB, TLorentzVector frame);
+      TVector3 Rotate(TVector3 LVec, TVector3 Rot);
+
+
+
       TMatrixT<double> convertToMatrix(TVectorT<double> V);
 
       std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);

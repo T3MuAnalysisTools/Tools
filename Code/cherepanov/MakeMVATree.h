@@ -51,6 +51,17 @@ class MakeMVATree : public Selection {
   TMVA::Reader *readerBvsD;
 
   // Initializhere your analysis histograms
+
+
+  std::vector<TH1D> pTMu1OverMass_TRF;
+  std::vector<TH1D> cTheta_MuonOS_TauPol_TRF;
+  std::vector<TH1D> OSSS1Angle_TRF;
+  std::vector<TH1D> OSSS2Angle_TRF;
+  std::vector<TH1D> OSSS1Angle_RRF;
+  std::vector<TH1D> OSSS2Angle_RRF;
+  std::vector<TH1D> cTheta_TRF_SSSS;
+  std::vector<TH1D> cTheta_TRF_OSSS;
+
   std::vector<TH1D> nPVx;
   std::vector<TH1D> MuonsPt;
   std::vector<TH1D> MuonsEta;
@@ -80,6 +91,15 @@ class MakeMVATree : public Selection {
 
   std::vector<TH1D> VertexDCAMax;
  
+
+
+  std::vector<TH1D> Vertex2muTrkKFChi2;
+  std::vector<TH1D> Vertex2muTrkKFToSignalVertexChi2;
+  std::vector<TH1D> Vertex2muTrkKFToSignalVertexDistance;
+  
+
+
+
 
   std::vector<TH2D> EMR_tau_eta;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
@@ -426,6 +446,7 @@ class MakeMVATree : public Selection {
 
   bool MC;
   int category;
+  float var_id;
   float var_vertexKFChi2 ;
   float var_svpvTauAngle ;
   float var_flightLenSig ;
@@ -681,6 +702,19 @@ class MakeMVATree : public Selection {
   float var_Vertex2muTrkKF;
   float var_Dist2muTrkKF3Mu;
   float var_VertexQualitySeparator;
+
+  float var_cTheta_TRF_SSSS;
+  float var_cTheta_TRF_OSSS;
+  float var_cTheta_MuonOS_TauPol_TRF;
+  float var_pTMu1OverMass_TRF;
+  float var_costheta_TRF_SSSS;
+  float var_costheta_TRF_OSS;
+  float var_OSSS1Angle_TRF;
+  float var_OSSS2Angle_TRF;
+
+  float var_OSSS1Angle_RRF;
+  float var_OSSS2Angle_RRF;
+
 
 
 
