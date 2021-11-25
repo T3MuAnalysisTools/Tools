@@ -502,6 +502,9 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  NoOfIsoTracks2Prong;
   std::vector<TH1D>  NoOfIsoTracks3Prong;
   
+  std::vector<TH1D>  RankMatchedTrackpT;
+  std::vector<TH1D>  RankMatchedTrackdR;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;

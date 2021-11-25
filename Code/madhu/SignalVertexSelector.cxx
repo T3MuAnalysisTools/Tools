@@ -936,7 +936,7 @@ void  SignalVertexSelector::Configure(){
   
   TrackToTauDr2Prong =HConfig.GetTH1D(Name+"_TrackToTauDr2Prong","TrackToTauDr2Prong",100,0,1.0,"Reconstructed Track to Tau dR 2 Prong","Entries");
   TrackToTauDr3Prong =HConfig.GetTH1D(Name+"_TrackToTauDr3Prong","TrackToTauDr3Prong",100,0,1.0,"Reconstructed Track to Tau dR 3 Prong","Entries");
-  TrackToTauDrAll =HConfig.GetTH1D(Name+"_TrackToTauDrAll","TrackToTauDrAll",100,0,1.0,"All Reconstructed Track to Tau dR","Entries");
+  TrackToTauDrAll =HConfig.GetTH1D(Name+"_TrackToTauDrAll","TrackToTauDrAll",100,0,1.5,"All Reconstructed Track to Tau dR","Entries");
   
   NumberOfFS_ChargedParticles =HConfig.GetTH1D(Name+"_NumberOfFS_ChargedParticles","NumberOfFS_ChargedParticles",8,-0.5,7.5,"No Of final state particles","Entries");
   NumberOfFS_ChargedParticles_RecoMatch =HConfig.GetTH1D(Name+"_NumberOfFS_ChargedParticles_RecoMatch","NumberOfFS_ChargedParticles_RecoMatch",8,-0.5,7.5,"No Of final state particles reconstructed","Entries");
@@ -977,6 +977,9 @@ void  SignalVertexSelector::Configure(){
   
   dRmin_sum_vs_InvariantMass_2prong=HConfig.GetTH2D(Name+"_dRmin_sum_vs_InvariantMass_2prong","dRmin_sum_vs_InvariantMass_2prong",40,0,0.03,40,0,4.0,"dR","Mass");
   dRmin_sum_vs_InvariantMass_3prong=HConfig.GetTH2D(Name+"_dRmin_sum_vs_InvariantMass_3prong","dRmin_sum_vs_InvariantMass_3prong",40,0,0.03,40,0,4.0,"dR","Mass");
+  
+  RankMatchedTrackpT =HConfig.GetTH1D(Name+"_RankMatchedTrackpT","RankMatchedTrackpT",40,-0.5,8.5,"Rank of matched iso trk in pT sorted tracks after dR sorting","Events");
+  RankMatchedTrackdR =HConfig.GetTH1D(Name+"_RankMatchedTrackdR","RankMatchedTrackdR",40,-0.5,39.5,"Rank of matched iso trk in dR sorted tracks","Events");
   
 
   Selection::ConfigureHistograms(); //do not remove
@@ -1389,6 +1392,9 @@ void  SignalVertexSelector::Store_ExtraDist(){
   Extradist2d.push_back(&InvMass2_vs_pdgid);
   Extradist2d.push_back(&InvMass3_vs_pdgid);
   
+  Extradist1d.push_back(&RankMatchedTrackpT);
+  Extradist1d.push_back(&RankMatchedTrackdR);
+  
 
 
 }
@@ -1726,6 +1732,8 @@ void  SignalVertexSelector::doEvent(){
     
     std::vector<float> dR_To_Tau_Prong;
     
+    std::vector<float> MatchedIsoTrackNo; // Just the index, 'j' of the matched isolation track
+    
     //Trying to figure out if there are final state particles coming from b signal that match the isolation tracks
     for(int gen_part_index=0; gen_part_index < Ntp->NMCParticles(); gen_part_index++){        
           //std::cout<<"Particle PDGID is:"<< Ntp->MCParticle_pdgid(gen_part_index) << std::endl;
@@ -1798,6 +1806,8 @@ void  SignalVertexSelector::doEvent(){
                   TLorentzVector TrackLV_min;
                   TLorentzVector FinalStateParticleLV_min;
                   
+                  float TrackNoMin;// Just the track index
+                  
                   for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
                     TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
                     TLorentzVector FinalStateParticleLV = Ntp->MCParticle_p4(i);
@@ -1810,12 +1820,13 @@ void  SignalVertexSelector::doEvent(){
                       dR_min=dR1;
                       TrackLV_min=TrackLV;
                       FinalStateParticleLV_min=FinalStateParticleLV;
+                      TrackNoMin=j;
                     }
                     
                     double AngleDiff=fabs(TrackLV1.Angle(FinalStateParticleLV1));
                     (AngleDiff<Ang_min)?(Ang_min=AngleDiff):(Ang_min=Ang_min);
                     
-                  }
+                  }// end of j for loop
                   
                   IsoTrackToMCdR01.at(t).Fill(dR_min,1);
                   IsoTrackToMCdR08.at(t).Fill(dR_min,1);
@@ -1866,6 +1877,8 @@ void  SignalVertexSelector::doEvent(){
                     
                     dR_To_Tau_Prong.push_back(TrackLV_min.DeltaR(TauLV));
                     //charges_reco.push_back(TrackLV_min);
+                    
+                    MatchedIsoTrackNo.push_back(TrackNoMin);
                   }
                   
                   WhetherdRMatch.at(t).Fill(dR_Match,1);
@@ -1884,10 +1897,58 @@ void  SignalVertexSelector::doEvent(){
           
     }//end of gen_part_index for loop
     
+    using Row = vector<double>;
+    using Matrix = vector<Row>;
+    
+    Matrix dR_No;// n x 2 matrix where first column is dR and second column is the index of the isolation track
+    Matrix pT_No;// n x 2 matrix where first column is pT and second column is the index of the isolation track
+    
+    Matrix pT_No_7;// n x 2 matrix where first column is pT and second column is the index of the isolation track. These are the 7 tracks closest to tau by dR
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TrackToTauDrAll.at(t).Fill(TrackLV.DeltaR(TauLV));
+      
+      dR_No.push_back({TrackLV.DeltaR(TauLV),j});
+      pT_No.push_back({TrackLV.Perp(),j});
     }
+    
+    sort( dR_No.begin(), dR_No.end() ); // sort based on first column, lowest first
+    sort( pT_No.rbegin(), pT_No.rend() ); // sort based on first column, highest first
+    
+    
+    /*
+    for(int i=0;i<pT_No.size();i++){
+      for(int j=0;j<MatchedIsoTrackNo.size();j++){// to get the rank
+        if(pT_No[i][1]==MatchedIsoTrackNo[j]){
+          RankMatchedTrackpT.at(t).Fill(i,1);
+        }
+      }
+    }
+    */
+    
+    //std::cout<<" The dR sorted indices of the isolation tracks are: " << std::endl;
+    
+    for(int i=0;i<dR_No.size();i++){
+      //std::cout<<" dR : " << dR_No[i][0] << " index : " << dR_No[i][1] << std::endl;
+      
+      for(int j=0;j<MatchedIsoTrackNo.size();j++){// to get the rank
+        if(dR_No[i][1]==MatchedIsoTrackNo[j]){
+          RankMatchedTrackdR.at(t).Fill(i,1);
+        }
+      }
+      
+    }
+    
+    for(int i=0;i<dR_No.size()&&i<7;i++){// Selecting pTs of the 7 tracks (indices 0 - 6) that are closest to tau
+      TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]);
+      
+      //pT_No_7.push_back({TrackLV.Perp(TauLV.Vect()),dR_No[i][1]});
+      pT_No_7.push_back({(TrackLV.Vect()).Dot(TauLV.Vect()),dR_No[i][1]});
+    }
+    
+    
+    
     
     NumberOfFS_ChargedParticles.at(t).Fill(b_meson_full_childidx_FS.size(),1);// Number of charged particles that can leave tracks
     NumberOfFS_ChargedParticles_RecoMatch.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);// Number of charged particles reconstructed
@@ -1904,7 +1965,15 @@ void  SignalVertexSelector::doEvent(){
       NumberOfRecoChargedParticlesIfMC3.at(t).Fill(b_meson_full_childidx_FS_RecoMC.size(),1);
     }
     
+    // Two-Prong Events
+    
+    Matrix TwoProngChi2;// n x 3 matrix where first column is chi2 of fit of two tracks, second column is the index of one isolation track, third column is the index of one isolation track
+    
     if(b_meson_full_childidx_FS_RecoMC.size()==2){
+      
+      for(int i=0;i<Ntp->NIsolationTrack(signal_idx);i++){
+      
+      }
     
      TrackToTauDr2Prong.at(t).Fill(dR_To_Tau_Prong.at(0),1);
      TrackToTauDr2Prong.at(t).Fill(dR_To_Tau_Prong.at(1),1);
@@ -1957,7 +2026,90 @@ void  SignalVertexSelector::doEvent(){
      }
      */
      
+      for(int i=0;i<dR_No.size()&&i<7&&dR_No.size()>1;i++){
+        for(int j=0;j<dR_No.size()&&j<7&&j<i;j++){// combinations of tracks with indices from 0 - 6
+          
+          std::vector<TrackParticle> TrackPair;
+          TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[i][1]));
+          TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[j][1]));
+          TVector3 FirstGuess(1.1,1.1,1.1);
+          
+          Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
+          PairFittedVertex.Fit();
+          
+          //if(PairFittedVertex.ChiSquare() > 0 && PairFittedVertex.ChiSquare() < 999999. ){
+      
+            //std::cout<<"  Chi2 of 1-2 ranked tracks   "<< PairFittedVertex.ChiSquare() << std::endl;
+            
+            TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1]});
+          //}
+          
+          
+        }
+      }
+     
+    }// if(b_meson_full_childidx_FS_RecoMC.size()==2)
+    //---------------------- Fit signal vertex
+
+    TVector3 vguess(0,0,0);
+    std::vector<TrackParticle> MuonsTrackParticles;
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
+    MuonsTrackParticles.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
+
+    Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
+
+    if(Fitter.Fit())std::cout<<" 3mu tau vertex fit  "<< Fitter.ChiSquare() << std::endl;
+
+
+    //---------------------- Fit signal vertex
+
+
+    sort( TwoProngChi2.begin(), TwoProngChi2.end() ); // sort based on first column, lowest first
+    
+    if(MatchedIsoTrackNo.size()>1){
+      std::cout<<"\n\n\n" << std::endl;
+      std::cout<<"Next Event." << std::endl;
+      std::cout<<"Size of TwoProngChi2 is: "<< TwoProngChi2.size() << std::endl;
+      std::cout<<"\n\n\n" << std::endl;
+      
+      std::cout<<" The dR sorted indices of the isolation tracks are: " << std::endl;
+      
+      for(int i=0;i<dR_No.size()&&i<7;i++){
+        std::cout<<" dR : " << dR_No[i][0] << " index : " << dR_No[i][1] << std::endl;
+      }
     }
+    
+    for(int i=0;i<TwoProngChi2.size()&&MatchedIsoTrackNo.size()>1;i++){// Selecting Chi squares of 7 track combinations with lowest Chi2
+      std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] << " index1 : " << TwoProngChi2[i][1] << " index2 : " << TwoProngChi2[i][2] <<std::endl;
+    }
+    
+    sort( pT_No_7.rbegin(), pT_No_7.rend() ); // sort based on first column, highest first. Moving this here due to errors when running with vertex finder
+    
+    if(MatchedIsoTrackNo.size()>1){
+      //std::cout<<" The pT sorted indices of the 7 isolation tracks are: " << std::endl;
+      
+      for(int i=0;i<pT_No_7.size();i++){
+        //std::cout<<" pT : " << pT_No_7[i][0] << " index : " << pT_No_7[i][1] << std::endl;
+        
+        for(int j=0;j<MatchedIsoTrackNo.size();j++){// to get the rank
+          if(pT_No_7[i][1]==MatchedIsoTrackNo[j]){
+            RankMatchedTrackpT.at(t).Fill(i,1);
+          }
+        }
+      }// i<pT_No_7.size()
+      
+      std::cout<<" The required isolation track indices are: " << std::endl;
+      
+      for(int i=0;i<MatchedIsoTrackNo.size();i++){
+        std::cout<<" index : " << MatchedIsoTrackNo[i] << std::endl;
+      }
+    }// end if MatchedIsoTrackNo.size()>0
+    
+    
+    // Three prong
+    
+    Matrix ThreeProngChi2;// n x 3 matrix where first column is chi2 of fit of two tracks, second column is the index of one isolation track, third column is the index of one isolation track
     
     if(b_meson_full_childidx_FS_RecoMC.size()==3){
      
@@ -1993,10 +2145,45 @@ void  SignalVertexSelector::doEvent(){
      
      dRmin_sum_vs_InvariantMass_2prong.at(t).Fill((dR_min_reco.at(0)+dR_min_reco.at(1)+dR_min_reco.at(2)),(L1_Track+L2_Track+L3_Track).M(),1);
      
+     for(int i=0;i<dR_No.size()&&i<7&&dR_No.size()>1;i++){
+        for(int j=0;j<dR_No.size()&&j<7&&j<i;j++){// combinations of tracks with indices from 0 - 6
+          
+          
+          std::vector<TrackParticle> TrackPair;
+          TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[i][1]));
+          TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[j][1]));
+          TVector3 FirstGuess(0,0,0);
+          
+          Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
+          PairFittedVertex.Fit();
+          
+          if(PairFittedVertex.ChiSquare() > 0 && PairFittedVertex.ChiSquare() < 999999. ){
+            ThreeProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1]});
+          }
+          
+          
+        }
+      }
+     
     }
     
-    // Event Printouts
+    sort( ThreeProngChi2.begin(), ThreeProngChi2.end() ); // sort based on first column, lowest first
+    /*
+    for(int i=0;i<ThreeProngChi2.size()&&MatchedIsoTrackNo.size()>1;i++){// Selecting Chi squares of 7 track combinations with lowest Chi2
+      std::cout<<"Chi2 of 3-prong track: "<< ThreeProngChi2[i][0] << " index1 : " << ThreeProngChi2[i][1] << " index2 : " << ThreeProngChi2[i][2] <<std::endl;
+    }
     
+    if(MatchedIsoTrackNo.size()>1){
+      std::cout<<" The required isolation track indices are: " << std::endl;
+      for(int i=0;i<MatchedIsoTrackNo.size();i++){
+        std::cout<<" index : " << MatchedIsoTrackNo[i] << std::endl;
+      }
+    }// end if MatchedIsoTrackNo.size()>0
+    
+    */
+    
+    // Event Printouts
+    /*
     if(b_meson_full_childidx_FS.size()==2){
       if(id ==60 ||  id ==90){// or id == 40){
         std::cout<<"--------------  Two Prong MC ----------------" << std::endl;
@@ -2023,6 +2210,7 @@ void  SignalVertexSelector::doEvent(){
         std::cout<< "\n\n\n\n\n\n";
       }
     }
+    */
     
     
     
