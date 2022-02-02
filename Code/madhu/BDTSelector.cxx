@@ -23,7 +23,7 @@ BDTSelector::BDTSelector(TString Name_, TString id_):
   rmgCutVeto1(0.77),  // rmg = rho&omega
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
-  PEMassResolutionCut2_(0.01),
+  PEMassResolutionCut2_(0.0105),
   mvaA1_(0.132), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
   mvaA2_(0.233),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
   mvaB1_(0.148),
@@ -2059,6 +2059,27 @@ void  BDTSelector::Configure(){
 
   BetterMuMuVertex=HConfig.GetTH1D(Name+"_BetterMuMuVertex","BetterMuMuVertex",30,0,5,"vertex pair quality (close)","");
   WorseMuMuVertex=HConfig.GetTH1D(Name+"_WorseMuMuVertex","WorseMuMuVertex",30,0,5,"vertex pair quality (far)","");
+  
+  BDTOutputCTrain0_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain0_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain1_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain1_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain2_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain2_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain3_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain3_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain4_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain4_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain5_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain5_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain6_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain6_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain7_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain7_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain8_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain8_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain9_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain9_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain10_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain10_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain11_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain11_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain12_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain12_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain13_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain13_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain14_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain14_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain15_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain15_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain16_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain16_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain17_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain17_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain18_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain18_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain19_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain19_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
 
 
 
@@ -2274,6 +2295,28 @@ void  BDTSelector::Store_ExtraDist(){
 
   Extradist1d.push_back(&BvsDBDTG_ABC1);
   Extradist1d.push_back(&BvsDBDTG_ABC2);
+  
+  Extradist2d.push_back(&BDTOutputCTrain0_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain1_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain2_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain3_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain4_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain5_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain6_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain7_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain8_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain9_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain10_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain11_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain12_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain13_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain14_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain15_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain16_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain17_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain18_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain19_Vs_TauMass);
+  
   /*
   Extradist2d.push_back(&PairMass);
   Extradist2d.push_back(&KKMass_dR_sort);
@@ -2494,10 +2537,10 @@ void  BDTSelector::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
-  pass.at(PhiVeto1) = true;//(value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
-  pass.at(OmegaVeto1) = true;//(value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
-  pass.at(PhiVeto2) = true;//(value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
-  pass.at(OmegaVeto2) = true;//(value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
+  pass.at(PhiVeto1) = (value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
+  pass.at(OmegaVeto1) = (value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
+  pass.at(PhiVeto2) = (value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
+  pass.at(OmegaVeto2) = (value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
   pass.at(TauMassCut) =( (value.at(TauMassCut) > tauMinSideBand_)  &&   (value.at(TauMassCut) < tauMaxSideBand_ ));
 
   std::vector<unsigned int> exclude_cuts;
@@ -2741,9 +2784,9 @@ void  BDTSelector::doEvent(){
       PairMass2AllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),w);
       MuMuMassAllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),(MuonOS+MuonSS1).M());
     }
-    /*
+    
 
-    if(id == 40 or id == 60 or id == 119 or id == 120 ){// or id == 40){
+    if(id==60){//   if(id == 40 or id == 60 or id == 119 or id == 120 ){// or id == 40){
       std::cout<<"-------------- All categoris ----------------"<< std::endl;
       std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
       std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -2754,7 +2797,7 @@ void  BDTSelector::doEvent(){
       Ntp->printMCDecayChainOfEvent(true, true, true, true);
       std::cout<< "\n\n\n\n\n\n";
     }
-    */
+    
 
   
   
@@ -3693,26 +3736,26 @@ void  BDTSelector::doEvent(){
 
 	    TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerBTrain0->EvaluateMVA("BDT"));
          
-	       BDTOutputBTrain0.at(t).Fill(    readerBTrain0->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain1.at(t).Fill(    readerBTrain1->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain2.at(t).Fill(    readerBTrain2->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain3.at(t).Fill(    readerBTrain3->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain4.at(t).Fill(    readerBTrain4->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain5.at(t).Fill(    readerBTrain5->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain6.at(t).Fill(    readerBTrain6->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain7.at(t).Fill(    readerBTrain7->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain8.at(t).Fill(    readerBTrain8->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain9.at(t).Fill(    readerBTrain9->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain10.at(t).Fill(    readerBTrain10->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain11.at(t).Fill(    readerBTrain11->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain12.at(t).Fill(    readerBTrain12->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain13.at(t).Fill(    readerBTrain13->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain14.at(t).Fill(    readerBTrain14->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain15.at(t).Fill(    readerBTrain15->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain16.at(t).Fill(    readerBTrain16->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain17.at(t).Fill(    readerBTrain17->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain18.at(t).Fill(    readerBTrain18->EvaluateMVA("BDT"),1 );
-         BDTOutputBTrain19.at(t).Fill(    readerBTrain19->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain0.at(t).Fill(    readerBTrain0->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain1.at(t).Fill(    readerBTrain1->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain2.at(t).Fill(    readerBTrain2->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain3.at(t).Fill(    readerBTrain3->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain4.at(t).Fill(    readerBTrain4->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain5.at(t).Fill(    readerBTrain5->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain6.at(t).Fill(    readerBTrain6->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain7.at(t).Fill(    readerBTrain7->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain8.at(t).Fill(    readerBTrain8->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain9.at(t).Fill(    readerBTrain9->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain10.at(t).Fill(    readerBTrain10->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain11.at(t).Fill(    readerBTrain11->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain12.at(t).Fill(    readerBTrain12->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain13.at(t).Fill(    readerBTrain13->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain14.at(t).Fill(    readerBTrain14->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain15.at(t).Fill(    readerBTrain15->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain16.at(t).Fill(    readerBTrain16->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain17.at(t).Fill(    readerBTrain17->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain18.at(t).Fill(    readerBTrain18->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain19.at(t).Fill(    readerBTrain19->EvaluateMVA("BDT"),1 );
 
 	    if(readerBTrain0->EvaluateMVA("BDT") > mvaB2_){
 	      //	      if(phiVeto && rmgVeto)
@@ -3787,6 +3830,27 @@ void  BDTSelector::doEvent(){
          BDTOutputCTrain17.at(t).Fill(    readerCTrain17->EvaluateMVA("BDT"),1 );
          BDTOutputCTrain18.at(t).Fill(    readerCTrain18->EvaluateMVA("BDT"),1 );
          BDTOutputCTrain19.at(t).Fill(    readerCTrain19->EvaluateMVA("BDT"),1 );
+         
+         BDTOutputCTrain0_Vs_TauMass.at(t).Fill(readerCTrain0->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain1_Vs_TauMass.at(t).Fill(readerCTrain1->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain2_Vs_TauMass.at(t).Fill(readerCTrain2->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain3_Vs_TauMass.at(t).Fill(readerCTrain3->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain4_Vs_TauMass.at(t).Fill(readerCTrain4->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain5_Vs_TauMass.at(t).Fill(readerCTrain5->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain6_Vs_TauMass.at(t).Fill(readerCTrain6->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain7_Vs_TauMass.at(t).Fill(readerCTrain7->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain8_Vs_TauMass.at(t).Fill(readerCTrain8->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain9_Vs_TauMass.at(t).Fill(readerCTrain9->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain10_Vs_TauMass.at(t).Fill(readerCTrain10->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain11_Vs_TauMass.at(t).Fill(readerCTrain11->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain12_Vs_TauMass.at(t).Fill(readerCTrain12->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain13_Vs_TauMass.at(t).Fill(readerCTrain13->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain14_Vs_TauMass.at(t).Fill(readerCTrain14->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain15_Vs_TauMass.at(t).Fill(readerCTrain15->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain16_Vs_TauMass.at(t).Fill(readerCTrain16->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain17_Vs_TauMass.at(t).Fill(readerCTrain17->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain18_Vs_TauMass.at(t).Fill(readerCTrain18->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain19_Vs_TauMass.at(t).Fill(readerCTrain19->EvaluateMVA("BDT"),TauRefitLV.M());
 
 	    if(readerCTrain0->EvaluateMVA("BDT") > mvaC2_){
 	      //	      	      if(phiVeto && rmgVeto)

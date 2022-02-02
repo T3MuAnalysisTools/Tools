@@ -3,7 +3,7 @@ Skim: False
 HistoFile: InputData/HistoScaletoLumiWorking.txt
 Analysis: BDTSelector
 UncertType: default
-SkimInfo: InputData/2018DataMC.log
+SkimInfo: InputData/2018DataMC_Working.log
 Lumi: 58345.2884618
 PlotStyle: style2
 

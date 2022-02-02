@@ -375,6 +375,27 @@ class BDTSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
+  
+  std::vector<TH2D> BDTOutputCTrain0_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain1_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain2_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain3_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain4_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain5_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain6_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain7_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain8_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain9_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain10_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain11_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain12_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain13_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain14_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain15_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain16_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain17_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain18_Vs_TauMass;
+  std::vector<TH2D> BDTOutputCTrain19_Vs_TauMass;
 
 
 

@@ -504,6 +504,49 @@ class SignalVertexSelector : public Selection {
   
   std::vector<TH1D>  RankMatchedTrackpT;
   std::vector<TH1D>  RankMatchedTrackdR;
+  std::vector<TH1D>  RankMatchedTrackdR_trim;
+  
+  std::vector<TH1D>  RankMatchedTrackAvgDiff;
+  std::vector<TH1D>  RankMatchedTrackCombn;
+  
+  std::vector<TH1D>  var_All_7_Iso_dR;
+  std::vector<TH1D>  var_Correct_Iso_dR;
+  
+  std::vector<TH1D>  var_All_7_Iso_AvgDiff;
+  std::vector<TH1D>  var_Correct_Iso_AvgDiff;
+  
+  std::vector<TH1D>  var_All_7_Iso_Avg;
+  std::vector<TH1D>  var_Correct_Iso_Avg;
+  
+  std::vector<TH1D>  var_All_7_Iso_Combn;
+  std::vector<TH1D>  var_Correct_Iso_Combn;
+  
+  std::vector<TH1D>  var_All_7_Iso_Trial;
+  std::vector<TH1D>  var_Correct_Iso_Trial;
+  
+  std::vector<TH1D>  RankMatchedTrackdR_cut;
+  
+  std::vector<TH1D>  RankMatchedTrackPairdR;
+  std::vector<TH1D>  TrackPairdR_Crt;
+  std::vector<TH1D>  TrackPairdR_Bkg;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_1;
+  std::vector<TH1D>  IsoTrackMatchedToSV_TwoMatched;
+  std::vector<TH1D>  IsoTrackMatchedToSV_TwoCrtIso;
+  std::vector<TH1D>  IsoTrackMatchedToSV_MassMatch;
+  std::vector<TH1D>  IsoTrackMatchedToSV_MassMatch1;
+  std::vector<TH1D>  IsoTrackMatchedToSV_CombMatch;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_Count;
+  
+  std::vector<TH1D>  CombMatch_Avg1;
+  std::vector<TH1D>  CombMatch_Avg2;
+  
+  std::vector<TH1D>  Angle_SVPV_iSVSV;
+  std::vector<TH1D>  Angle_SVPV_isvSV;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch;
+  std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch1;
   
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
