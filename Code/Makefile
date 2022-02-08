@@ -51,8 +51,8 @@ CINTTARGETS =
 
 # now include conditional options set by flags in make.inc
 
-ifdef USE_cherepanov
-	TARGETS += MyTest  ThreeMu  FillTMVATrees  MCBackgroundStudy MakeMVATree MakeMVACategoryII CommonSelector 
+ifdef USE_cherepanov 
+	TARGETS += MyTest  ThreeMu  FillTMVATrees  MCBackgroundStudy MakeMVATree MakeMVACategoryII CommonSelector  VertexFits
 	DEFS += -DUSE_cherepanov=1
 endif
 
