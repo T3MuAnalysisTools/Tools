@@ -458,25 +458,49 @@ varsets18 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
 
 
 
-#configuration.append(varsets0)
-#configuration.append(varsets1)
-#configuration.append(varsets2)
-#configuration.append(varsets3)
-#configuration.append(varsets4)
-#configuration.append(varsets5)
-#configuration.append(varsets6)
-#configuration.append(varsets7)
-#configuration.append(varsets8)
-#configuration.append(varsets9)
-#configuration.append(varsets10)
-#configuration.append(varsets11)
-#configuration.append(varsets12)
-#configuration.append(varsets13)
-#configuration.append(varsets14)
-#configuration.append(varsets15)
-#configuration.append(varsets16)
-#configuration.append(varsets17)
+varsets19 = {'A':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID','var_MindcaTrackSV','var_MaxtrkKink',
+                 'var_Muon2DetID','var_Muon3DetID','var_segCompMuMax','var_MaxD0SigBS','var_MinD0SigBS','var_MaxMuon_chi2LocalPosition'
+             ],
+                
+
+            'B':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID','var_MindcaTrackSV','var_MaxtrkKink',
+                 'var_Muon2DetID','var_Muon3DetID','var_segCompMuMax','var_MaxD0SigBS','var_MinD0SigBS','var_MaxMuon_chi2LocalPosition'
+             ],
+                
+            'C':['var_vertexKFChi2', 'var_svpvTauAngle', 'var_flightLenSig',
+                 'var_Muon1DetID','var_MindcaTrackSV','var_MaxtrkKink',
+                 'var_Muon2DetID','var_Muon3DetID','var_segCompMuMax','var_MaxD0SigBS','var_MinD0SigBS','var_MaxMuon_chi2LocalPosition'
+                 
+             ]}
+
+
+
+
+
+
+configuration.append(varsets0)
+configuration.append(varsets1)
+configuration.append(varsets2)
+configuration.append(varsets3)
+configuration.append(varsets4)
+configuration.append(varsets5)
+configuration.append(varsets6)
+configuration.append(varsets7)
+configuration.append(varsets8)
+configuration.append(varsets9)
+configuration.append(varsets10)
+configuration.append(varsets11)
+configuration.append(varsets12)
+configuration.append(varsets13)
+configuration.append(varsets14)
+configuration.append(varsets15)
+configuration.append(varsets16)
+configuration.append(varsets17)
 configuration.append(varsets18)
+configuration.append(varsets19)
+
 
 
 

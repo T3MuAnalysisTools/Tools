@@ -4,7 +4,7 @@
 import sys    # exit
 import time   # time accounting
 import getopt # command line parser
-from TrainConfigs import configuration,selection
+from TrainConfigs_TypeI_vs_Signal import configuration,selection
 
 DEFAULT_INFNAME  = "2018AndTotalMCCombination.root"
 
@@ -72,6 +72,17 @@ def doTrain(configs,training_cuts,mlist,infname):
             signal_bd= input.Get("TreeS_Bd")
             signal_bu= input.Get("TreeS_Bu")
             background= input.Get("TreeB")
+            Type1_dmunurhomumu = input.Get("tree_dmunurhomumu")
+            Type1_dmunuomegamumu = input.Get("tree_dmunuomegamumu")
+            Type1_dmunuphimumugamma = input.Get("tree_dmunuphimumugamma")
+            Type1_dmunuetaprimemumugamma = input.Get("tree_dmunuetaprimemumugamma")
+            Type1_dmunuetamumugamma = input.Get("tree_dmunuetamumugamma")
+            Type1_dmunuetamumu = input.Get("tree_dmunuetamumu")
+            Type1_dmunuomegamumupi0 = input.Get("tree_dmunuomegamumupi0")
+            Type1_dmunuphimumu = input.Get("tree_dmunuphimumu")
+
+
+
 
 
 ######### All mixed
@@ -79,6 +90,15 @@ def doTrain(configs,training_cuts,mlist,infname):
             signalWeight_bu  = 0.262;
             signalWeight_bd  = 0.099;
             backgroundWeight = 1.0;
+            Type1_dmunurhomumuWeight = 1
+            Type1_dmunuomegamumuWeight = 1
+            Type1_dmunuphimumugammaWeight = 1
+            Type1_dmunuetaprimemumugammaWeight = 1
+            Type1_dmunuetamumugammaWeight = 1
+            Type1_dmunuetamumuWeight = 1
+            Type1_dmunuomegamumupi0Weight = 1
+            Type1_dmunuphimumuWeight = 1
+
 
 
 
@@ -100,17 +120,25 @@ def doTrain(configs,training_cuts,mlist,infname):
             dataloader.AddSignalTree    ( signal_ds,     signalWeight_ds       );
             dataloader.AddSignalTree    ( signal_bu,     signalWeight_bu       );
             dataloader.AddSignalTree    ( signal_bd,     signalWeight_bd       );
-            dataloader.AddBackgroundTree( background,    backgroundWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunurhomumu,    Type1_dmunurhomumuWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuomegamumu,    Type1_dmunuomegamumuWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuphimumugamma,    Type1_dmunuphimumugammaWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuetaprimemumugamma,    Type1_dmunuetaprimemumugammaWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuetamumugamma,    Type1_dmunuetamumugammaWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuetamumu,    Type1_dmunuetamumuWeight      );
+            dataloader.AddBackgroundTree( Type1_dmunuomegamumupi0,    Type1_dmunuomegamumupi0Weight      );
+            dataloader.AddBackgroundTree( Type1_dmunuphimumu,    Type1_dmunuphimumuWeight      );
 
 
 
             categoryCut = ''
-            if category_wagon=="A":categoryCut='category==1&& (var_mass12_dRsorting<0.994 || var_mass12_dRsorting> 1.044) && (var_mass13_drSorting<0.994 || var_mass13_drSorting> 1.044)'
-            if category_wagon=="B":categoryCut='category==2&& (var_mass12_dRsorting<0.985 || var_mass12_dRsorting> 1.053) && (var_mass13_drSorting<0.985 || var_mass13_drSorting> 1.053) '
-            if category_wagon=="C":categoryCut='category==3&& (var_mass12_dRsorting<0.974 || var_mass12_dRsorting> 1.064) && (var_mass13_drSorting<0.974 || var_mass13_drSorting> 1.064)'
+            if category_wagon=="A":categoryCut=' (var_mass12_dRsorting<0.994 || var_mass12_dRsorting> 1.044) && (var_mass13_drSorting<0.994 || var_mass13_drSorting> 1.044)'
+            if category_wagon=="B":categoryCut=' (var_mass12_dRsorting<0.985 || var_mass12_dRsorting> 1.053) && (var_mass13_drSorting<0.985 || var_mass13_drSorting> 1.053) '
+            if category_wagon=="C":categoryCut=' (var_mass12_dRsorting<0.974 || var_mass12_dRsorting> 1.064) && (var_mass13_drSorting<0.974 || var_mass13_drSorting> 1.064)'
 
             mycutSig = TCut( "MC == 1 &&" + cuts + categoryCut) 
-            mycutBkg = TCut( "MC == 0 &&" + cutb + categoryCut + "&& (var_tauMass < 1.75 || var_tauMass > 1.81) ") 
+            mycutBkg = TCut( "MC == 1 &&" + cutb + categoryCut)
+#            mycutBkg = TCut( "MC == 0 &&" + cutb + categoryCut + "&& (var_tauMass < 1.75 || var_tauMass > 1.81) ") 
 
 
             dataloader.PrepareTrainingAndTestTree( mycutSig, mycutBkg,
@@ -123,7 +151,7 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             if "BDT" in mlist:
                 factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                    "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=20" )
+                                    "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=20" )
 
 
             if "Likelihood" in mlist:
