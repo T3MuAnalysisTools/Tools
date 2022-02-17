@@ -303,6 +303,23 @@ class VertexFits : public Selection {
   std::vector<TH1D>  MassFit123;
   std::vector<TH1D>  MassFitLeastChi2;
 
+  std::vector<TH1D> PairMassHighestPlusBestVertexMass;
+  std::vector<TH1D> PairMassHighestPlusSubHighest;
+  std::vector<TH1D> TripleMassHighestPlusBestVertexMass;
+  std::vector<TH1D> TripleMassHighestPlusBestVertexMassDRToTruth;
+
+  std::vector<TH2D> PairMassHighestPlusBestVertexMassVsChi2;
+  std::vector<TH2D> TripleMassHighestPlusBestVertexMassVsChi2;
+
+
+  std::vector<TH1D> HighestPtTrackDRToTruth;
+  std::vector<TH1D> SecondTrackByBestFitIndexDRToTruth;
+  std::vector<TH1D> SubHighestPtTrackDRToTruth;
+
+  std::vector<TH1D> PairMassHighestPlusBestVertexMassDRToTruth;
+  std::vector<TH1D> PairMassHighestPlusSubHighestDRToTruth;
+
+
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
