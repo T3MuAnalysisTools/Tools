@@ -726,16 +726,17 @@ void  VertexFits::doEvent(){
     int TrackIndex2(-1);
     int TrackIndex3(-1);
 
-    //    std::cout<<"all iso tracks:   "<< std::endl;
+    std::cout<<"all iso tracks:   "<< std::endl;
     int DToKPiPi_index(-1);
     if(id!=1){
 
 
       //------------------ study the MC content ------------
-
+      /*
       for(unsigned int imc=0; imc< Ntp->NMCParticles(); imc++){
 	if( abs(Ntp->MCParticle_pdgid(imc)) == 511 ){
-	  std::cout<<" B0/antiB0  found  "<< std::endl;
+	  std::cout<<" B0/antiB0  found  "<<   Ntp->MCSignalParticle_Nchilds(imc) <<std::endl;
+
 	  for(unsigned int dau_mc = 0; dau_mc < Ntp->MCSignalParticle_Nchilds(imc); dau_mc++){
 	    std::cout<<" Childs of B  "<< std::endl;
 	    std::cout<<"  "<< Ntp->MCSignalParticle_childpdgid(imc, dau_mc) << std::endl;
@@ -744,7 +745,7 @@ void  VertexFits::doEvent(){
 	}
       }
 
-
+      */
 
 
 
@@ -836,7 +837,7 @@ void  VertexFits::doEvent(){
 	  std::vector<TrackParticle> TripleCollection;
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex1));
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex2));
-	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(i3));
+	  Tripl.push_back(Ntp->IsolationTrack_TrackParticle(i3));
 
 
 	  TVector3 vguess(0,0,0);
@@ -1038,8 +1039,8 @@ void  VertexFits::doEvent(){
 	  Chi2VertexFitter  vfit(TracksToFit,v);
 	  bool fitOk = vfit.Fit();
 
-	  std::cout<<" pT  "<< Ntp->IsolationTrack_p4(signal_idx, i2).Pt() << "  dR to first  found   "
-		   <<  Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack)) <<"   chi2  " << vfit.ChiSquare() <<"  ok?   " << fitOk <<std::endl;
+	  //	  std::cout<<" pT  "<< Ntp->IsolationTrack_p4(signal_idx, i2).Pt() << "  dR to first  found   "
+	  //		   <<  Ntp->IsolationTrack_p4(signal_idx, i2).DeltaR(Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack)) <<"   chi2  " << vfit.ChiSquare() <<"  ok?   " << fitOk <<std::endl;
 	  
 	  if(fitOk){
 	    if( vfit.ChiSquare()< deltaChi2){
@@ -1058,6 +1059,31 @@ void  VertexFits::doEvent(){
       }
     }
       
+    // ----------------------------------   debugging fit -----------------
+
+    std::cout<<" ========================  "<<std::endl;
+    std::cout<<"SubHighestPtTrack   "<< SubHighestPtTrack << "   HighestPtTrack   " << HighestPtTrack << std::endl;
+
+    if(SubHighestPtTrack!=-1 && HighestPtTrack!=-1){
+
+
+      std::vector<TrackParticle> DebugFitTracks;
+      DebugFitTracks.push_back(Ntp->IsolationTrack_TrackParticle(HighestPtTrack));
+      DebugFitTracks.push_back(Ntp->IsolationTrack_TrackParticle(SubHighestPtTrack));
+      TVector3 vguess(0.1,0.1,0.1);
+      Chi2VertexFitter  DebugFitter(DebugFitTracks,vguess);
+      DebugFitter.Fit();
+
+      std::cout<<"  Debugger chi2    "<< DebugFitter.ChiSquare() << std::endl;
+      std::cout<<"  Vertex Position    "<< std::endl;
+      DebugFitter.GetVertex().Print();
+
+    }
+
+
+    //--------------------------------------------------------------------
+
+
 
     if(FirstTrack_found){
       for(unsigned int i2=0; i2 < Ntp->NIsolationTrack(signal_idx); i2++){// second loop
@@ -1082,12 +1108,12 @@ void  VertexFits::doEvent(){
 	}
 
 	if(ThirdTrack_found && SubHighestPtTrack!=-1 && HighestPtTrack!=-1){
-	  std::cout<<"index1  "<< FirstTrack_index << " dR to tau "<< Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Pt()  <<"  eta  "<<Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Eta() <<std::endl;
+	  /*	  std::cout<<"index1  "<< FirstTrack_index << " dR to tau "<< Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Pt()  <<"  eta  "<<Ntp->IsolationTrack_p4(signal_idx, FirstTrack_index).Eta() <<std::endl;
 	  std::cout<<"index2  "<< SecondTrack_index << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).Pt() << "  eta  "<<Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index).Eta() <<std::endl;
 	  std::cout<<"index3  "<< ThirdTrack_index << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).DeltaR(TauLV) << " pt  " << Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).Pt()<< "  eta  "<<Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index).Eta() <<std::endl;
 
 	  std::cout<<"Highest pT  "<< HighestPtTrack << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack).DeltaR(TauLV) << " pt  " <<Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack).Pt() <<std::endl;
-	  std::cout<<"Second Highest pT  "<< SubHighestPtTrack << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).DeltaR(TauLV) << " pt  " <<Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).Pt() <<"  dR to first track "  << Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).DeltaR(Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack))<<std::endl;
+	  std::cout<<"Second Highest pT  "<< SubHighestPtTrack << " dR to tau  "<< Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).DeltaR(TauLV) << " pt  " <<Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).Pt() <<"  dR to first track "  << Ntp->IsolationTrack_p4(signal_idx, SubHighestPtTrack).DeltaR(Ntp->IsolationTrack_p4(signal_idx, HighestPtTrack))<<std::endl;*/
 
 	}
       }
@@ -1250,7 +1276,7 @@ void  VertexFits::doEvent(){
    
       
       if(Fit12.Fit() &&  Fit13.Fit() &&  Fit23.Fit()){
-	std::cout<<"12 chi2  "<< Fit12.ChiSquare() << "  13 chi2  "<< Fit13.ChiSquare() << "  23 chi2   " << Fit23.ChiSquare()<< std::endl;
+	//	std::cout<<"12 chi2  "<< Fit12.ChiSquare() << "  13 chi2  "<< Fit13.ChiSquare() << "  23 chi2   " << Fit23.ChiSquare()<< std::endl;
 	MassFit12.at(t).Fill(Fit12.GetMother(888).LV().M(),1);
 	MassFit13.at(t).Fill(Fit13.GetMother(888).LV().M(),1);
 	MassFit23.at(t).Fill(Fit23.GetMother(888).LV().M(),1);
@@ -1260,7 +1286,7 @@ void  VertexFits::doEvent(){
 	if(LeastChi2 == Fit23.ChiSquare()) MassFitLeastChi2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx, SecondTrack_index) + Ntp->IsolationTrack_p4(signal_idx, ThirdTrack_index) ).M(),1);
 
       }
-      if(Fit123.Fit()) {	MassFit123.at(t).Fill(Fit123.GetMother(888).LV().M(),1); std::cout<<"123 chi2  "<< Fit123.ChiSquare() << std::endl;}
+      if(Fit123.Fit()) {	MassFit123.at(t).Fill(Fit123.GetMother(888).LV().M(),1); }
       
     }
   
