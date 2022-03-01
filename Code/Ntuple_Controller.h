@@ -21,7 +21,8 @@
 #include "TMatrixTSym.h"
 #include "TVectorT.h"
 #include "TSystem.h"
-
+#include "TMatrixDSymEigen.h"
+#include "TDecompBK.h"
 // Include files (C & C++ libraries)
 #include <iostream>
 #include <fstream>
@@ -528,11 +529,17 @@ class Ntuple_Controller{
           IsolationTrack_par(k,0)=Ntp->IsolationTrack_par->at(i).at(k);
           for(int j=k; j<TrackParticle::NHelixPar; j++){
             IsolationTrack_cov(k,j)=Ntp->IsolationTrack_cov->at(i).at(l);
+	    IsolationTrack_cov(j,k)=Ntp->IsolationTrack_cov->at(i).at(l);
             l++;
           }
         }
         return TrackParticle(IsolationTrack_par,IsolationTrack_cov,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
       }
+
+      TVectorD EigenValues(TMatrixTSym<double> S);
+      TMatrixD EigenVectors(TMatrixTSym<double> S);
+      TMatrixTSym<double> RegulariseCovariance(TMatrixTSym<double>  M, double coef);
+      TMatrixTSym<double> InvertMatrix(TMatrixTSym<double>   M);
 
 
       ///// closest distance between the tracks of a candidate

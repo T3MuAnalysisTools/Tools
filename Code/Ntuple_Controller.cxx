@@ -892,6 +892,54 @@ double Ntuple_Controller::TransverseFlightLength_significance(TVector3 pv, TMatr
 
 }
 
+TVectorD Ntuple_Controller::EigenValues(TMatrixTSym<double> S){
+
+  TMatrixDSymEigen eigen_matrix(S);
+  return eigen_matrix.GetEigenValues();
+
+
+}
+
+
+TMatrixD Ntuple_Controller::EigenVectors(TMatrixTSym<double> S){
+
+  TMatrixDSymEigen eigen_matrix(S);
+  return eigen_matrix.GetEigenVectors();
+
+}
+
+//////////////////////////////////////////////////////////////////////
+//   If the covariance matrix contains the negative eigen values then 
+//   the dioganal elements are recursively inflamed by coef
+
+TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>  M, double coef){
+
+
+  TMatrixTSym<double>  M_infl = M;
+  TVectorD eigen_val = EigenValues(M_infl);
+
+
+  for(unsigned int i=0; i<eigen_val.GetNrows(); i++){
+    if(eigen_val(i) < 0){
+      for(unsigned int j=0; j<TrackParticle::NHelixPar;j++){
+	M_infl(j,j)*=coef;
+      }
+      break;
+    }
+  }
+
+  return M_infl;
+}
+
+
+
+TMatrixTSym<double>  Ntuple_Controller::InvertMatrix(TMatrixTSym<double>   M){
+
+  TDecompBK Inverter(M);
+  return  Inverter.Invert();
+}
+
+
 
 
 
