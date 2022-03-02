@@ -348,6 +348,7 @@ class Ntuple_Controller{
 	  mu_par(k,0)=Ntp->Muon_par->at(i).at(k);
 	  for(int j=k; j<TrackParticle::NHelixPar; j++){
 	    mu_cov(k,j)=Ntp->Muon_cov->at(i).at(l);
+	    mu_cov(j,k)=Ntp->Muon_cov->at(i).at(l);
 	    l++;
 	  }
 	}
@@ -533,7 +534,9 @@ class Ntuple_Controller{
             l++;
           }
         }
-        return TrackParticle(IsolationTrack_par,IsolationTrack_cov,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
+	TMatrixTSym<float> IsolationTrack_cov_regularised = RegulariseCovariance(IsolationTrack_cov, 1.0);
+        return TrackParticle(IsolationTrack_par,IsolationTrack_cov_regularised,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
+	//        return TrackParticle(IsolationTrack_par,IsolationTrack_cov,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
       }
 
       TVectorD EigenValues(TMatrixTSym<double> S);

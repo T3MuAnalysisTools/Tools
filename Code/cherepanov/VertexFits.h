@@ -1,5 +1,5 @@
-#ifndef VertexFits_h
-#define VertexFits_h
+#ifndef DebugFit_h
+#define DebugFit_h
 
 #include "Selection.h"
 #include <vector>
@@ -23,11 +23,11 @@
 
 
 
-class VertexFits : public Selection {
+class DebugFit : public Selection {
 
  public:
-  VertexFits(TString Name_, TString id_);
-  virtual ~VertexFits();
+  DebugFit(TString Name_, TString id_);
+  virtual ~DebugFit();
 
   virtual void  Configure();
   virtual void  Finish();

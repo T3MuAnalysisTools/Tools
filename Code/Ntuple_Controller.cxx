@@ -916,25 +916,25 @@ TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>
 
 
   TMatrixTSym<double>  M_infl = M;
-  TVectorD eigen_val = EigenValues(M_infl);
+  for(unsigned int j=0; j<TrackParticle::NHelixPar;j++){
+    M_infl(j,j)*=coef;
+  }
 
+  TVectorD eigen_val = EigenValues(M_infl);
 
   for(unsigned int i=0; i<eigen_val.GetNrows(); i++){
     if(eigen_val(i) < 0){
-      for(unsigned int j=0; j<TrackParticle::NHelixPar;j++){
-	M_infl(j,j)*=coef;
-      }
-      break;
+      coef*=1.01;
+      return RegulariseCovariance(M_infl,coef);
     }
   }
-
   return M_infl;
 }
 
 
 
-TMatrixTSym<double>  Ntuple_Controller::InvertMatrix(TMatrixTSym<double>   M){
-
+TMatrixTSym<double>  
+Ntuple_Controller::InvertMatrix(TMatrixTSym<double>   M){
   TDecompBK Inverter(M);
   return  Inverter.Invert();
 }
