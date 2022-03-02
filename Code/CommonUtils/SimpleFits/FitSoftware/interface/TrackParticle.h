@@ -17,9 +17,14 @@ class TrackParticle : public Particle {
   int NParameters(){return NHelixPar;}
 
   double Mass() const{return mass;}
+
+
+
+
   
  private:
   double mass;
+
 };
 #endif
 

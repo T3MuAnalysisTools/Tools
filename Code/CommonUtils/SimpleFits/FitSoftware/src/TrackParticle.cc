@@ -16,7 +16,6 @@ TrackParticle::TrackParticle(TMatrixT<double> par_, TMatrixTSym<double> cov_, in
   Particle(par_,cov_,pdgid_,charge_,b_),
   mass(mass_)
 {
-
 }
 
 TString TrackParticle::Name(int i){

@@ -6,6 +6,7 @@
 #include <TLorentzVector.h>
 #include <TVector3.h>
 #include <TVectorD.h>
+#include "TMatrixDSymEigen.h"
 
 #include "SimpleFits/FitSoftware/interface/Particle.h"
 #include "SimpleFits/FitSoftware/interface/TrackParticle.h"

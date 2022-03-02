@@ -25,7 +25,7 @@ bool Chi2VertexFitter::Fit(){
     // if not limited (vhigh <= vlow)
     MnPar.Add(name.Data(),par(i,0),sqrt(fabs(parcov(i,i))),par(i,0)-nsigma*sqrt(fabs(parcov(i,i))),par(i,0)+nsigma*sqrt(fabs(parcov(i,i))));
   }
-
+  //  std::cout<<"  do we work here? ??   " << std::endl;
   unsigned int max=10;
   int numberofcalls=200+par.GetNrows()*100+par.GetNrows()*par.GetNrows()*5;
   double tolerance(0.01);
@@ -47,9 +47,11 @@ bool Chi2VertexFitter::Fit(){
     if(!min.HasReachedCallLimit()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasReachedCallLimit()" << std::endl; }
     return false;
   }
+
+
   chi2=min.Fval();
   if(min.Fval() < 0 ) return false;
-  //  std::cout<<"chi2 from Chi2VertexFit-----------  " << chi2 <<std::endl;
+  
   // Get output parameters
   for(int i=0;i<par.GetNrows();i++){ par(i,0)=min.UserParameters().Value(i);}
   // Get output covariance
