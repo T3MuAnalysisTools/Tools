@@ -837,7 +837,7 @@ void  VertexFits::doEvent(){
 	  std::vector<TrackParticle> TripleCollection;
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex1));
 	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(TrackIndex2));
-	  Tripl.push_back(Ntp->IsolationTrack_TrackParticle(i3));
+	  TripleCollection.push_back(Ntp->IsolationTrack_TrackParticle(i3));
 
 
 	  TVector3 vguess(0,0,0);

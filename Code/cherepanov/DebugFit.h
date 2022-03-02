@@ -1,5 +1,5 @@
-#ifndef VertexFits_h
-#define VertexFits_h
+#ifndef DebugFit_h
+#define DebugFit_h
 
 #include "Selection.h"
 #include <vector>
@@ -16,6 +16,12 @@
 #include "SimpleFits/FitSoftware/interface/TrackParticle.h"
 #include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
 #include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+#include "TDecompBK.h"
+#include <TMatrixT.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TVectorD.h>
+#include "TMatrixDSymEigen.h"
 
 
 
@@ -23,11 +29,11 @@
 
 
 
-class VertexFits : public Selection {
+class DebugFit : public Selection {
 
  public:
-  VertexFits(TString Name_, TString id_);
-  virtual ~VertexFits();
+  DebugFit(TString Name_, TString id_);
+  virtual ~DebugFit();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -58,6 +64,16 @@ class VertexFits : public Selection {
   double random_num;
   // Selection Variables
   // Initializhere your analysis histograms
+
+  std::vector<TH1D> TwoTracksFitOk;
+  std::vector<TH1D> SignalVertexFitOk;
+  std::vector<TH1D>  SignalFitVertexChi2;
+  std::vector<TH2D>  SignalFitVertexChi2VsKalman;
+  std::vector<TH1D>  TwoLargestPtIsolationTracks;
+  std::vector<TH1D>  HelixKalmanDeltaX;
+  std::vector<TH1D>  HelixKalmanDeltaY;
+  std::vector<TH1D>  HelixKalmanDeltaZ;
+  std::vector<TH1D>  ReffitedMotherMass;
 
   std::vector<TH1D> BbkgVertexHypothesis;
 
