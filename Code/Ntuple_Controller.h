@@ -539,8 +539,8 @@ class Ntuple_Controller{
 	//        return TrackParticle(IsolationTrack_par,IsolationTrack_cov,Ntp->IsolationTrack_pdgid->at(i),Ntp->IsolationTrack_M->at(i),Ntp->IsolationTrack_Helcharge->at(i),Ntp->IsolationTrack_B->at(i));
       }
 
-      TVectorD EigenValues(TMatrixTSym<double> S);
-      TMatrixD EigenVectors(TMatrixTSym<double> S);
+      TVectorD EigenValues(TMatrixTSym<double> M);
+      TMatrixD EigenVectors(TMatrixTSym<double> M);
       TMatrixTSym<double> RegulariseCovariance(TMatrixTSym<double>  M, double coef);
       TMatrixTSym<double> InvertMatrix(TMatrixTSym<double>   M);
 
