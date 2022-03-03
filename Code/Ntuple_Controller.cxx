@@ -913,8 +913,8 @@ TMatrixD Ntuple_Controller::EigenVectors(TMatrixTSym<double> M){
 TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>  M, double coef){
 
   TMatrixTSym<double>  M_infl = M;
-  for(unsigned int j=0; j<TrackParticle::NHelixPar;j++){
-    M_infl(j,j)*=coef;
+  for(unsigned int i=0; i<TrackParticle::NHelixPar;i++){
+    M_infl(i,i)*=coef;
   }
 
   TVectorD eigen_val = EigenValues(M_infl);
