@@ -12,7 +12,7 @@
 #include "SimpleFits/FitSoftware/interface/TrackParticle.h"
 #include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
 #include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
-
+#include "PDGInfo.h"
 
 
 
@@ -38,6 +38,8 @@ class CommonSelector : public Selection {
   double phiVetoCut1, phiVetoCut2, rmgCutVeto1, rmgCutVeto2;
   double PEMassResolutionCut1_,PEMassResolutionCut2_;
   double mvaA1_,mvaA2_,mvaB1_,mvaB2_,mvaC1_,mvaC2_;
+  double mvaA1train11_,mvaA2train11_,mvaB1train11_,mvaB2train11_,mvaC1train11_,mvaC2train11_;
+  double mvaA1train8_,mvaA2train8_,mvaB1train8_,mvaB2train8_,mvaC1train8_,mvaC2train8_;
 
   double mvaBTrainA1_,mvaBTrainA2_,mvaBTrainB1_,mvaBTrainB2_,mvaBTrainC1_,mvaBTrainC2_;
   double mvaDTrainA1_,mvaDTrainA2_,mvaDTrainB1_,mvaDTrainB2_,mvaDTrainC1_,mvaDTrainC2_;
@@ -56,6 +58,24 @@ class CommonSelector : public Selection {
   // Selection Variables
   // Initializhere your analysis histograms
 
+
+  std::vector<TH1D> pTMu1OverMass_TRF;
+  std::vector<TH1D> cTheta_MuonOS_TauPol_TRF;
+
+  std::vector<TH1D> OSSS1Angle_TRF;
+  std::vector<TH1D> OSSS2Angle_TRF;
+
+  std::vector<TH1D> OSSS1Angle_RRF;
+  std::vector<TH1D> OSSS2Angle_RRF;
+
+
+  std::vector<TH1D> cTheta_TRF_SSSS;
+  std::vector<TH1D> cTheta_TRF_OSSS;
+
+
+
+  std::vector<TH1D> EtaGenSource;
+
   std::vector<TH1D> PairMassDRSorted1A;
   std::vector<TH1D> PairMassDRSorted2A;
 
@@ -67,18 +87,6 @@ class CommonSelector : public Selection {
   std::vector<TH1D> PairMassDRSorted2C;
 
 
-  std::vector<TH1D> Muon1Pt;
-  std::vector<TH1D> Muon2Pt;
-  std::vector<TH1D> Muon3Pt;
-
-  std::vector<TH1D> Muon1Eta;
-  std::vector<TH1D> Muon2Eta;
-  std::vector<TH1D> Muon3Eta;
-
-
-  std::vector<TH1D> TauEta;
-  std::vector<TH1D> TauPt;
-  std::vector<TH1D> TauP;
 
   std::vector<TH1D> BetterMuMuVertex;
   std::vector<TH1D> WorseMuMuVertex;
@@ -88,35 +96,22 @@ class CommonSelector : public Selection {
 
   std::vector<TH1D> TauMassResolution;
   std::vector<TH1D> EventMassResolution_PtEtaPhi;
+  std::vector<TH1D> EventMassResolution_PtEtaPhi_TauEta1p2;
 
   std::vector<TH1D> SVPVTauDirAngle;
 
   std::vector<TH1D> TauMassRefitA1;
-  std::vector<TH1D> TauMassRefitA1MassCut;
-  std::vector<TH1D> TauMassRefitA2MassCut;
-  std::vector<TH1D> TauMassRefitA1HalfMassCut;
-  std::vector<TH1D> TauMassRefitA2HalfMassCut;
-  std::vector<TH1D> TauMassRefitA1FullEtaVetoCut;
-  std::vector<TH1D> TauMassRefitA2FullEtaVetoCut;
+
+
+
   std::vector<TH1D> TauMassA1;
   std::vector<TH1D> TauMassRefitB1;
-  std::vector<TH1D> TauMassRefitB1MassCut;
-  std::vector<TH1D> TauMassRefitB2MassCut;
-  std::vector<TH1D> TauMassRefitB1HalfMassCut;
-  std::vector<TH1D> TauMassRefitB2HalfMassCut;
 
-  std::vector<TH1D> TauMassRefitB1FullEtaVetoCut;
-  std::vector<TH1D> TauMassRefitB2FullEtaVetoCut;
+
+
   std::vector<TH1D> TauMassB1;
   std::vector<TH1D> TauMassRefitC1;
-  std::vector<TH1D> TauMassRefitC1MassCut;
-  std::vector<TH1D> TauMassRefitC2MassCut;
 
-  std::vector<TH1D> TauMassRefitC1HalfMassCut;
-  std::vector<TH1D> TauMassRefitC2HalfMassCut;
-
-  std::vector<TH1D> TauMassRefitC1FullEtaVetoCut;
-  std::vector<TH1D> TauMassRefitC2FullEtaVetoCut;
 
   std::vector<TH1D> TauMassRefitABC1FullEtaVetoCut;
   std::vector<TH1D> TauMassRefitABC2FullEtaVetoCut;
@@ -144,6 +139,37 @@ class CommonSelector : public Selection {
   std::vector<TH2D> TauMassRefitABC2_eta;
 
 
+
+  std::vector<TH1D> TauMassRefitABC1_train11;
+  std::vector<TH1D> TauMassRefitABC2_train11;
+  std::vector<TH1D> TauMassRefitA1_train11;
+  std::vector<TH1D> TauMassRefitB1_train11;
+  std::vector<TH1D> TauMassRefitC1_train11;
+  std::vector<TH1D> TauMassRefitA2_train11;
+  std::vector<TH1D> TauMassRefitB2_train11;
+  std::vector<TH1D> TauMassRefitC2_train11;
+  std::vector<TH1D> AllignSortMass1_train11;
+  std::vector<TH1D> AllignSortMass2_train11;
+  std::vector<TH1D> BDTOutputA_train11;
+  std::vector<TH1D> BDTOutputB_train11;
+  std::vector<TH1D> BDTOutputC_train11;
+
+  std::vector<TH1D> TauMassRefitABC1_train8;
+  std::vector<TH1D> TauMassRefitABC2_train8;
+  std::vector<TH1D> TauMassRefitA1_train8;
+  std::vector<TH1D> TauMassRefitB1_train8;
+  std::vector<TH1D> TauMassRefitC1_train8;
+  std::vector<TH1D> TauMassRefitA2_train8;
+  std::vector<TH1D> TauMassRefitB2_train8;
+  std::vector<TH1D> TauMassRefitC2_train8;
+  std::vector<TH1D> AllignSortMass1_train8;
+  std::vector<TH1D> AllignSortMass2_train8;
+  std::vector<TH1D> BDTOutputA_train8;
+  std::vector<TH1D> BDTOutputB_train8;
+  std::vector<TH1D> BDTOutputC_train8;
+
+
+
   std::vector<TH1D> TauMassResolutionRefit;
   std::vector<TH1D> TauMassResolutionHelixRefit;
 
@@ -157,22 +183,6 @@ class CommonSelector : public Selection {
   std::vector<TH2D> EMR_tau_eta;
 
   std::vector<TH2D> PairMass;
-  std::vector<TH2D> KKMass_dR_sort;
-  std::vector<TH1D> KKMass_dR_sort1;
-  std::vector<TH1D> KKMass_dR_sort2;
-
-  std::vector<TH2D> KKMass_pt_sort;
-  std::vector<TH1D> KKMass_pt_sort1;
-  std::vector<TH1D> KKMass_pt_sort2;
-
-
-  std::vector<TH2D> KKMass_dR_sort_XVeto;
-  std::vector<TH1D> KKMass_dR_sort1_XVeto;
-  std::vector<TH1D> KKMass_dR_sort2_XVeto;
-
-  std::vector<TH2D> KKMass_pt_sort_XVeto;
-  std::vector<TH1D> KKMass_pt_sort1_XVeto;
-  std::vector<TH1D> KKMass_pt_sort2_XVeto;
 
   std::vector<TH1D> KpiIsolationMass_OS;
   std::vector<TH1D> KpiIsolationMass_SS1;
@@ -220,32 +230,9 @@ class CommonSelector : public Selection {
   std::vector<TH2D> MuMuMassAllignedSorting;
 
   std::vector<TH2D> PairMassWithCut;
-  std::vector<TH2D> CategoryOverlap;
-  std::vector<TH2D> Mu3IdOverlap;
-  std::vector<TH1D> IDOriginOfOSMuon;
-
-  std::vector<TH1D> Muon1isGlob;
-  std::vector<TH1D> Muon2isGlob;
-  std::vector<TH1D> Muon3isGlob;
-
-  std::vector<TH1D> Muon1isStand;
-  std::vector<TH1D> Muon2isStand;
-  std::vector<TH1D> Muon3isStand;
-
-
-  std::vector<TH1D> Muon1isTrack;
-  std::vector<TH1D> Muon2isTrack;
-  std::vector<TH1D> Muon3isTrack;
 
 
 
-  std::vector<TH1D> Muon1PtResolution;
-  std::vector<TH1D> Muon2PtResolution;
-  std::vector<TH1D> Muon3PtResolution;
-
-  std::vector<TH1D> Muon1EtaResolution;
-  std::vector<TH1D> Muon2EtaResolution;
-  std::vector<TH1D> Muon3EtaResolution;
 
   std::vector<TH1D> Muon1DRToTruth;
   std::vector<TH1D> Muon2DRToTruth;
@@ -281,6 +268,23 @@ class CommonSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
+
+
+  TMVA::Reader *readerA_train11;
+  TMVA::Reader *readerB_train11;
+  TMVA::Reader *readerC_train11;
+
+  TMVA::Reader *readerA_train8;
+  TMVA::Reader *readerB_train8;
+  TMVA::Reader *readerC_train8;
+
+  TMVA::Reader *readerA_train12;
+  TMVA::Reader *readerB_train12;
+  TMVA::Reader *readerC_train12;
+
+  TMVA::Reader *readerA_train13;
+  TMVA::Reader *readerB_train13;
+  TMVA::Reader *readerC_train13;
 
 
 
@@ -348,6 +352,9 @@ class CommonSelector : public Selection {
   float var_MaxMuon_chi2LocalMomentum;
   float var_MinMuonImpactAngle;
   float var_MaxMuonImpactAngle;
+  float var_Vertex2muTrkKF;
+
+
 
   Double_t m3m;
   Double_t dataMCtype;
@@ -384,9 +391,6 @@ class CommonSelector : public Selection {
   Double_t mvaDTrainB2;
   Double_t mvaDTrainC1;
   Double_t mvaDTrainC2;
-
-
-
 
 
   Float_t mu_combinedQuality_chi2LocalMomentum;
@@ -430,6 +434,9 @@ class CommonSelector : public Selection {
   Float_t var_IsoPhiKKMass_Mu3;
   Float_t var_IsoKStarMass_Mu3;
   Float_t var_IsoMuMuMass_Mu3;
+
+  float var_BvsDSeprator;
+
 
 };
 #endif

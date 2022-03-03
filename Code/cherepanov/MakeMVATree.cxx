@@ -131,6 +131,9 @@ void  MakeMVATree::Configure(){
   TMVA_Tree->Branch("MC",&MC);
   TMVA_Tree->Branch("category",&category);
   TMVA_Tree->Branch("var_id", &var_id);
+  TMVA_Tree->Branch("var_EventNumber", &var_EventNumber);
+
+
   TMVA_Tree->Branch("var_vertexKFChi2",&var_vertexKFChi2);
   TMVA_Tree->Branch("var_svpvTauAngle",&var_svpvTauAngle);
   TMVA_Tree->Branch("var_flightLenSig",&var_flightLenSig);
@@ -1477,8 +1480,10 @@ void  MakeMVATree::doEvent(){
 
       //      std::cout<<   " 2mt  "<< Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) << "   3m   "<<Ntp->Vertex_signal_KF_Chi2(final_idx) << std::endl;
       var_id = id;
+      var_EventNumber = Ntp->EventNumber();
       var_Vertex2muTrkKF = Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx);
       //      std::cout<<"  var_Vertex2muTrkKF   ever -1 ?  " << var_Vertex2muTrkKF << std::endl;
+      std::cout<<" Event NUmber  "<< var_EventNumber << std::endl;
       Vertex2muTrkKF.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) ,w);
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);

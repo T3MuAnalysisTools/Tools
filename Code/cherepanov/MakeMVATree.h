@@ -446,6 +446,7 @@ class MakeMVATree : public Selection {
 
   bool MC;
   int category;
+  float var_EventNumber;
   float var_id;
   float var_vertexKFChi2 ;
   float var_svpvTauAngle ;
