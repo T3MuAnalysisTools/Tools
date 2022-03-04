@@ -548,6 +548,41 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch;
   std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch1;
   
+  std::vector<TH1D>  iSVSV_Distance;
+  std::vector<TH1D>  iSVSV_Distance_Sig;
+  
+  std::vector<TH1D>  isvSV_Distance;
+  std::vector<TH1D>  isvSV_Distance_Sig;
+  
+  std::vector<TH1D>  InvMass2ProngMatched;
+  std::vector<TH1D>  InvMass2ProngMatchedSV;
+  std::vector<TH1D>  InvMass2ProngNotMatched;
+  
+  std::vector<TH1D>  SVSize;
+  std::vector<TH1D>  SVNoOfTracksMatched;
+  std::vector<TH1D>  SVNoOfTracksMatchedThree;
+  std::vector<TH1D>  SVNoOfTracksUnmatched;
+  
+  std::vector<TH1D>  InvMass3ProngMatched;
+  std::vector<TH1D>  InvMass3ProngMatchedSV;
+  std::vector<TH1D>  InvMass3ProngNotMatched;
+  
+  std::vector<TH1D>  InvMassTotal;
+  std::vector<TH1D>  InvMassTotal1;
+  std::vector<TH1D>  InvMassTotal2;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu;
+  std::vector<TH1D>  SVCollectionNoOfNeither;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu_if1;
+  std::vector<TH1D>  SVCollectionNoOfNeither_if1;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu_ifmore1;
+  std::vector<TH1D>  SVCollectionNoOfNeither_ifmore1;
+  
+  std::vector<TH1D>  SVCollectionNoOfCrt;
+  std::vector<TH1D>  SVCollectionNoOfCrt_if3;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
