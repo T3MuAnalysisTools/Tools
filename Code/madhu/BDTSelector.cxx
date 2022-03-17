@@ -1,4 +1,4 @@
-#include "CommonSelector.h"
+#include "BDTSelector.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-CommonSelector::CommonSelector(TString Name_, TString id_):
+BDTSelector::BDTSelector(TString Name_, TString id_):
   Selection(Name_,id_),
   tauMinMass_(1.73),
   tauMaxMass_(1.81),
@@ -23,7 +23,7 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
   rmgCutVeto1(0.77),  // rmg = rho&omega
   rmgCutVeto2(0.812), // rmg = rho&omega
   PEMassResolutionCut1_(0.007),
-  PEMassResolutionCut2_(0.01),
+  PEMassResolutionCut2_(0.0105),
   mvaA1_(0.132), // optimal cuts for trainings weights/August_A(BC)_BDT.weights.xml
   mvaA2_(0.233),  // obtained by Code/CommonUtils/tmva/Get_BDT_cut.cxx
   mvaB1_(0.148),
@@ -48,7 +48,7 @@ CommonSelector::CommonSelector(TString Name_, TString id_):
 
 
 
-CommonSelector::~CommonSelector(){
+BDTSelector::~BDTSelector(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -57,7 +57,7 @@ CommonSelector::~CommonSelector(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  CommonSelector::Configure(){
+void  BDTSelector::Configure(){
 
 
   //  This mini tree is for limit extraction
@@ -89,58 +89,1275 @@ void  CommonSelector::Configure(){
   TString basedir = "";
   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/";
 
-  //*** defined the bdt reader for event selection; readerA- category A, readerB - category B ...
-  readerA = new TMVA::Reader( "!Color:!Silent" );
-  readerA->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
-  readerA->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
-  readerA->AddVariable("var_flightLenSig", &var_flightLenSig);
-  readerA->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerA->AddVariable("var_Muon1DetID", &var_Muon1DetID);
-  readerA->AddVariable("var_Muon2DetID", &var_Muon2DetID);
-  readerA->AddVariable("var_Muon3DetID", &var_Muon3DetID);
-  readerA->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerA->AddVariable("var_NtracksClose", &var_NtracksClose);
-  readerA->AddVariable("var_Iso08", &var_Iso08);
+  //Train0 : *** defined the bdt reader for event selection; readerATrain0- category A, readerBTrain0 - category B ...
+  readerATrain0 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain0->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain0->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain0->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain0->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain0->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain0->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain0->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain0->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain0->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain0->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain0->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain0->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain0->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain0->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain0->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain0->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain0->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerATrain0->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+
+
+
+  //  readerATrain0->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain0->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_8_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain0 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain0->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain0->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain0->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain0->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain0->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain0->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain0->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain0->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain0->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain0->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain0->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain0->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain0->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain0->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain0->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain0->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain0->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerBTrain0->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+
+
+  //  readerATrain0->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain0->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_8_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain0 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain0->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain0->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain0->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain0->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain0->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain0->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain0->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain0->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain0->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain0->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain0->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain0->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain0->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain0->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain0->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain0->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain0->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerCTrain0->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+
+
+  //  readerATrain0->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain0->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_8_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train1 : *** defined the bdt reader for event selection; readerATrain1- category A, readerBTrain1 - category B ...
+  readerATrain1 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain1->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain1->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain1->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain1->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain1->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain1->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain1->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain1->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain1->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain1->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain1->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain1->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain1->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain1->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain1->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain1->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain1->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerATrain1->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerATrain1->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
   
 
-  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerA->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_0_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  //  readerATrain1->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain1->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_10_A/weights/TMVAClassification_BDT.weights.xml"); 
 
 
 
 
-  readerB = new TMVA::Reader( "!Color:!Silent" );
-  readerB->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
-  readerB->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
-  readerB->AddVariable("var_flightLenSig", &var_flightLenSig);
-  readerB->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerB->AddVariable("var_Muon1DetID", &var_Muon1DetID);
-  readerB->AddVariable("var_Muon2DetID", &var_Muon2DetID);
-  readerB->AddVariable("var_Muon3DetID", &var_Muon3DetID);
-  readerB->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerB->AddVariable( "var_NtracksClose", &var_NtracksClose);
-  readerB->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain1 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain1->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain1->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain1->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain1->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain1->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain1->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain1->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain1->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain1->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain1->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain1->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain1->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain1->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain1->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain1->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain1->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain1->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerBTrain1->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerBTrain1->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
   
 
-  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerB->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_0_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+  //  readerATrain1->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain1->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_10_B/weights/TMVAClassification_BDT.weights.xml"); 
 
 
-  readerC = new TMVA::Reader( "!Color:!Silent" );
-  readerC->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
-  readerC->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
-  readerC->AddVariable("var_flightLenSig", &var_flightLenSig);
-  readerC->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
-  readerC->AddVariable("var_Muon1DetID", &var_Muon1DetID);
-  readerC->AddVariable("var_Muon2DetID", &var_Muon2DetID);
-  readerC->AddVariable("var_Muon3DetID", &var_Muon3DetID);
-  readerC->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
-  readerC->AddVariable( "var_NtracksClose", &var_NtracksClose);
-  readerC->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain1 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain1->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain1->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain1->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain1->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain1->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain1->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain1->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain1->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain1->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain1->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain1->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain1->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain1->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain1->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain1->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain1->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain1->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerCTrain1->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerCTrain1->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
   
 
-  //  readerA->AddSpectator("var_tauMass",&var_tauMass);
-  readerC->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_0_C/weights/TMVAClassification_BDT.weights.xml"); 
+
+  //  readerATrain1->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain1->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_10_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train2 : *** defined the bdt reader for event selection; readerATrain2- category A, readerBTrain2 - category B ...
+  readerATrain2 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain2->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain2->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain2->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain2->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain2->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain2->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain2->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain2->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain2->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain2->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain2->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain2->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain2->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain2->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain2->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerATrain2->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  readerATrain2->AddVariable("var_segCompMuMin", &var_segCompMuMin);
+  readerATrain2->AddVariable("var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
+  readerATrain2->AddVariable("var_MaxtrkKink", &var_MaxtrkKink);
+
+
+
+  //  readerATrain2->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain2->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_12_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain2 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain2->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain2->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain2->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain2->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain2->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain2->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain2->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain2->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain2->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain2->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain2->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain2->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain2->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain2->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain2->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerBTrain2->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  readerBTrain2->AddVariable("var_segCompMuMin", &var_segCompMuMin);
+  readerBTrain2->AddVariable("var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
+  readerBTrain2->AddVariable("var_MaxtrkKink", &var_MaxtrkKink);
+
+
+  //  readerATrain2->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain2->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_12_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain2 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain2->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain2->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain2->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain2->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain2->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain2->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain2->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain2->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain2->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain2->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain2->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain2->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain2->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain2->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain2->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerCTrain2->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  readerCTrain2->AddVariable("var_segCompMuMin", &var_segCompMuMin);
+  readerCTrain2->AddVariable("var_MaxMuon_chi2LocalPosition", &var_MaxMuon_chi2LocalPosition);
+  readerCTrain2->AddVariable("var_MaxtrkKink", &var_MaxtrkKink);
+
+
+  //  readerATrain2->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain2->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_12_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train3 : *** defined the bdt reader for event selection; readerATrain3- category A, readerBTrain3 - category B ...
+  readerATrain3 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain3->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain3->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain3->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain3->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain3->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain3->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain3->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain3->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain3->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain3->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain3->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain3->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain3->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain3->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain3->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerATrain3->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  
+
+
+
+  //  readerATrain3->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain3->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_11_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain3 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain3->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain3->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain3->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain3->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain3->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain3->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain3->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain3->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain3->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain3->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain3->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain3->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain3->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain3->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain3->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerBTrain3->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  
+
+
+  //  readerATrain3->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain3->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_11_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain3 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain3->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain3->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain3->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain3->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain3->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain3->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain3->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain3->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain3->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain3->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain3->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain3->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain3->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain3->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain3->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+  readerCTrain3->AddVariable("var_BvsDSeprator", &var_BvsDSeprator);
+  
+
+
+  //  readerATrain3->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain3->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_11_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train4 : *** defined the bdt reader for event selection; readerATrain4- category A, readerBTrain4 - category B ...
+  readerATrain4 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain4->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain4->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain4->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain4->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain4->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain4->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain4->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain4->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain4->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain4->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain4->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain4->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain4->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain4->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain4->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain4->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerATrain4->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerATrain4->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerATrain4->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+
+  //  readerATrain4->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain4->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_7_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain4 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain4->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain4->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain4->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain4->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain4->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain4->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain4->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain4->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain4->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain4->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain4->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain4->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain4->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain4->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain4->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain4->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerBTrain4->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerBTrain4->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerBTrain4->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain4->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain4->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_7_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain4 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain4->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain4->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain4->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain4->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain4->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain4->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain4->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain4->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain4->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain4->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain4->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain4->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain4->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain4->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain4->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain4->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerCTrain4->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerCTrain4->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerCTrain4->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain4->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain4->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_7_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train5 : *** defined the bdt reader for event selection; readerATrain5- category A, readerBTrain5 - category B ...
+  readerATrain5 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain5->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain5->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain5->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain5->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain5->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain5->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain5->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain5->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain5->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain5->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain5->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain5->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerATrain5->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerATrain5->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+
+  //  readerATrain5->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain5->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_3_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain5 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain5->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain5->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain5->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain5->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain5->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain5->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain5->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain5->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain5->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain5->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain5->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain5->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerBTrain5->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerBTrain5->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain5->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain5->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_3_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain5 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain5->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain5->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain5->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain5->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain5->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain5->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain5->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain5->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain5->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain5->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain5->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain5->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerCTrain5->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerCTrain5->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain5->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain5->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_3_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train6 : *** defined the bdt reader for event selection; readerATrain6- category A, readerBTrain6 - category B ...
+  readerATrain6 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain6->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain6->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain6->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain6->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain6->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain6->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain6->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain6->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain6->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain6->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain6->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerATrain6->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerATrain6->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+
+  //  readerATrain6->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain6->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_14_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain6 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain6->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain6->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain6->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain6->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain6->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain6->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain6->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain6->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain6->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain6->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain6->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerBTrain6->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerBTrain6->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain6->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain6->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_14_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain6 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain6->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain6->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain6->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain6->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain6->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain6->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain6->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain6->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain6->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain6->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain6->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerCTrain6->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerCTrain6->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain6->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain6->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_14_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train7 : *** defined the bdt reader for event selection; readerATrain7- category A, readerBTrain7 - category B ...
+  readerATrain7 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain7->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain7->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain7->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain7->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain7->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain7->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain7->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain7->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain7->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain7->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain7->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain7->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain7->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain7->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain7->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain7->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain7->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+
+  //  readerATrain7->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain7->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_5_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain7 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain7->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain7->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain7->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain7->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain7->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain7->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain7->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain7->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain7->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain7->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain7->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain7->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain7->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain7->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain7->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain7->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain7->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+  //  readerATrain7->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain7->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_5_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain7 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain7->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain7->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain7->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain7->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain7->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain7->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain7->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain7->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain7->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain7->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain7->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain7->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain7->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain7->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain7->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain7->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain7->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+  //  readerATrain7->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain7->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_5_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train8 : *** defined the bdt reader for event selection; readerATrain8- category A, readerBTrain8 - category B ...
+  readerATrain8 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain8->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain8->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain8->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain8->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain8->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain8->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain8->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain8->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain8->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain8->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain8->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain8->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain8->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain8->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+
+
+
+  //  readerATrain8->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain8->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_2_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain8 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain8->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain8->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain8->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain8->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain8->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain8->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain8->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain8->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain8->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain8->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain8->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain8->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain8->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain8->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+
+
+  //  readerATrain8->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain8->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_2_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain8 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain8->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain8->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain8->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain8->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain8->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain8->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain8->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain8->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain8->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain8->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain8->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain8->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain8->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain8->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+
+
+  //  readerATrain8->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain8->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_2_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train9 : *** defined the bdt reader for event selection; readerATrain9- category A, readerBTrain9 - category B ...
+  readerATrain9 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain9->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain9->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain9->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain9->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain9->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain9->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain9->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain9->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain9->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain9->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain9->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain9->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain9->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain9->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain9->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain9->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain9->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerATrain9->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+
+
+
+  //  readerATrain9->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain9->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_9_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain9 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain9->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain9->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain9->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain9->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain9->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain9->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain9->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain9->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain9->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain9->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain9->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain9->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain9->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain9->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain9->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain9->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain9->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerBTrain9->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+
+
+  //  readerATrain9->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain9->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_9_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain9 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain9->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain9->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain9->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain9->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain9->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain9->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain9->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain9->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain9->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain9->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain9->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain9->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain9->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain9->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain9->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain9->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain9->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerCTrain9->AddVariable("var_Vertex2muTrkKF", &var_Vertex2muTrkKF);
+
+
+  //  readerATrain9->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain9->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_9_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train10 : *** defined the bdt reader for event selection; readerATrain10- category A, readerBTrain10 - category B ...
+  readerATrain10 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain10->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain10->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain10->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain10->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain10->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain10->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain10->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain10->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain10->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain10->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain10->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerATrain10->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerATrain10->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerATrain10->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerATrain10->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain10->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain10->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerATrain10->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerATrain10->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerATrain10->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+
+  //  readerATrain10->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain10->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_6_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain10 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain10->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain10->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain10->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain10->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain10->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain10->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain10->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain10->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain10->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain10->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain10->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerBTrain10->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerBTrain10->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerBTrain10->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerBTrain10->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain10->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain10->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerBTrain10->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerBTrain10->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerBTrain10->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain10->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain10->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_6_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain10 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain10->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain10->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain10->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain10->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain10->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain10->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain10->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain10->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain10->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain10->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain10->AddVariable("var_maxMuonsDca",  &var_maxMuonsDca);
+  readerCTrain10->AddVariable("var_IsoKStarMass_Mu1", &var_IsoKStarMass_Mu1);
+  readerCTrain10->AddVariable("var_IsoKStarMass_Mu2", &var_IsoKStarMass_Mu2);
+  readerCTrain10->AddVariable("var_IsoKStarMass_Mu3", &var_IsoKStarMass_Mu3);
+  readerCTrain10->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain10->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain10->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+  readerCTrain10->AddVariable("var_IsoPhiKKMass_Mu1", &var_IsoPhiKKMass_Mu1);
+  readerCTrain10->AddVariable("var_IsoPhiKKMass_Mu2", &var_IsoPhiKKMass_Mu2);
+  readerCTrain10->AddVariable("var_IsoPhiKKMass_Mu3", &var_IsoPhiKKMass_Mu3);
+
+
+  //  readerATrain10->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain10->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_6_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train11 : *** defined the bdt reader for event selection; readerATrain11- category A, readerBTrain11 - category B ...
+  readerATrain11 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain11->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain11->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain11->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+
+
+
+  //  readerATrain11->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain11->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_19_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain11 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain11->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain11->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain11->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+
+
+  //  readerATrain11->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain11->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_19_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain11 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain11->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain11->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain11->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+
+
+  //  readerATrain11->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain11->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_19_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train12 : *** defined the bdt reader for event selection; readerATrain12- category A, readerBTrain12 - category B ...
+  readerATrain12 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain12->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain12->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain12->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain12->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+
+
+
+  //  readerATrain12->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain12->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_20_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain12 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain12->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain12->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain12->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain12->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+
+
+  //  readerATrain12->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain12->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_20_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain12 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain12->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain12->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain12->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain12->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+
+
+  //  readerATrain12->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain12->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_20_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train13 : *** defined the bdt reader for event selection; readerATrain13- category A, readerBTrain13 - category B ...
+  readerATrain13 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain13->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain13->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain13->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain13->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain13->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  
+
+
+
+  //  readerATrain13->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain13->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_21_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain13 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain13->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain13->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain13->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain13->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain13->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  
+
+
+  //  readerATrain13->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain13->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_21_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain13 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain13->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain13->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain13->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain13->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain13->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  
+
+
+  //  readerATrain13->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain13->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_21_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train14 : *** defined the bdt reader for event selection; readerATrain14- category A, readerBTrain14 - category B ...
+  readerATrain14 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain14->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain14->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain14->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain14->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain14->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain14->AddVariable("var_flightLenSig", &var_flightLenSig);
+  
+
+
+
+  //  readerATrain14->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain14->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_22_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain14 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain14->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain14->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain14->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain14->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain14->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain14->AddVariable("var_flightLenSig", &var_flightLenSig);
+  
+
+
+  //  readerATrain14->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain14->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_22_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain14 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain14->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain14->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain14->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain14->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain14->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain14->AddVariable("var_flightLenSig", &var_flightLenSig);
+  
+
+
+  //  readerATrain14->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain14->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_22_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train15 : *** defined the bdt reader for event selection; readerATrain15- category A, readerBTrain15 - category B ...
+  readerATrain15 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain15->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain15->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain15->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain15->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain15->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain15->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain15->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  
+
+
+
+  //  readerATrain15->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain15->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_23_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain15 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain15->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain15->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain15->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain15->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain15->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain15->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain15->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  
+
+
+  //  readerATrain15->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain15->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_23_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain15 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain15->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain15->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain15->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain15->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain15->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain15->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain15->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  
+
+
+  //  readerATrain15->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain15->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_23_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train16 : *** defined the bdt reader for event selection; readerATrain16- category A, readerBTrain16 - category B ...
+  readerATrain16 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain16->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain16->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain16->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain16->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain16->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain16->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain16->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain16->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+
+
+
+  //  readerATrain16->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain16->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_24_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain16 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain16->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain16->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain16->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain16->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain16->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain16->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain16->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain16->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+
+
+  //  readerATrain16->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain16->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_24_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain16 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain16->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain16->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain16->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain16->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain16->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain16->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain16->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain16->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+
+
+  //  readerATrain16->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain16->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_24_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train17 : *** defined the bdt reader for event selection; readerATrain17- category A, readerBTrain17 - category B ...
+  readerATrain17 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain17->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain17->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain17->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain17->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain17->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain17->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain17->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain17->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain17->AddVariable("var_NtracksClose", &var_NtracksClose);
+
+
+
+  //  readerATrain17->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain17->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_25_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain17 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain17->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain17->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain17->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain17->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain17->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain17->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain17->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain17->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain17->AddVariable("var_NtracksClose", &var_NtracksClose);
+
+
+  //  readerATrain17->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain17->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_25_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain17 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain17->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain17->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain17->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain17->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain17->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain17->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain17->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain17->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain17->AddVariable("var_NtracksClose", &var_NtracksClose);
+
+
+  //  readerATrain17->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain17->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_25_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train18 : *** defined the bdt reader for event selection; readerATrain18- category A, readerBTrain18 - category B ...
+  readerATrain18 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain18->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain18->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain18->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain18->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain18->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain18->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain18->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain18->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain18->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain18->AddVariable("var_Iso08", &var_Iso08);
+
+
+
+  //  readerATrain18->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain18->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_26_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain18 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain18->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain18->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain18->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain18->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain18->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain18->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain18->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain18->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain18->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain18->AddVariable("var_Iso08", &var_Iso08);
+
+
+  //  readerATrain18->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain18->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_26_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain18 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain18->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain18->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain18->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain18->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain18->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain18->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain18->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain18->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain18->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain18->AddVariable("var_Iso08", &var_Iso08);
+
+
+  //  readerATrain18->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain18->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_26_C/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //Train19 : *** defined the bdt reader for event selection; readerATrain19- category A, readerBTrain19 - category B ...
+  readerATrain19 = new TMVA::Reader( "!Color:!Silent" );
+  readerATrain19->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerATrain19->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerATrain19->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerATrain19->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerATrain19->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerATrain19->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerATrain19->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerATrain19->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerATrain19->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerATrain19->AddVariable("var_Iso08", &var_Iso08);
+  readerATrain19->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerATrain19->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerATrain19->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+
+  //  readerATrain19->AddSpectator("var_tauMass",&var_tauMass);
+  readerATrain19->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_16_A/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+
+
+  readerBTrain19 = new TMVA::Reader( "!Color:!Silent" );
+  readerBTrain19->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerBTrain19->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerBTrain19->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerBTrain19->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerBTrain19->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerBTrain19->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerBTrain19->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerBTrain19->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerBTrain19->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerBTrain19->AddVariable("var_Iso08", &var_Iso08);
+  readerBTrain19->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerBTrain19->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerBTrain19->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+  //  readerATrain19->AddSpectator("var_tauMass",&var_tauMass);
+  readerBTrain19->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_16_B/weights/TMVAClassification_BDT.weights.xml"); 
+
+
+  readerCTrain19 = new TMVA::Reader( "!Color:!Silent" );
+  readerCTrain19->AddVariable("var_vertexKFChi2",  &var_vertexKFChi2);
+  readerCTrain19->AddVariable("var_svpvTauAngle",  &var_svpvTauAngle);
+  readerCTrain19->AddVariable("var_flightLenSig", &var_flightLenSig);
+  readerCTrain19->AddVariable("var_MindcaTrackSV", &var_MindcaTrackSV);
+  readerCTrain19->AddVariable("var_Muon1DetID", &var_Muon1DetID);
+  readerCTrain19->AddVariable("var_Muon2DetID", &var_Muon2DetID);
+  readerCTrain19->AddVariable("var_Muon3DetID", &var_Muon3DetID);
+  readerCTrain19->AddVariable("var_MaxVertexPairQuality", &var_MaxVertexPairQuality);
+  readerCTrain19->AddVariable("var_NtracksClose", &var_NtracksClose);
+  readerCTrain19->AddVariable("var_Iso08", &var_Iso08);
+  readerCTrain19->AddVariable("var_IsoMuMuMass_Mu1", &var_IsoMuMuMass_Mu1);
+  readerCTrain19->AddVariable("var_IsoMuMuMass_Mu2", &var_IsoMuMuMass_Mu2);
+  readerCTrain19->AddVariable("var_IsoMuMuMass_Mu3", &var_IsoMuMuMass_Mu3);
+
+
+  //  readerATrain19->AddSpectator("var_tauMass",&var_tauMass);
+  readerCTrain19->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_16_C/weights/TMVAClassification_BDT.weights.xml");
 
 
 
@@ -522,174 +1739,16 @@ void  CommonSelector::Configure(){
   TauPt =HConfig.GetTH1D(Name+"_TauPt","TauPt",30,0,50,"p_{T}(#tau), GeV","Events");
   TauP =HConfig.GetTH1D(Name+"_TauP","TauP",40,0,70,"|p|(#tau), GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASV","Mu1TrackInvariantMassBeforeMVASV",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASV","Mu2TrackInvariantMassBeforeMVASV",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVASV =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASV","Mu3TrackInvariantMassBeforeMVASV",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVASVAngle0 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASVAngle0","Mu1TrackInvariantMassBeforeMVASVAngle0",100,0,2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVASVAngle0 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASVAngle0","Mu2TrackInvariantMassBeforeMVASVAngle0",100,0,2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVASVAngle0 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASVAngle0","Mu3TrackInvariantMassBeforeMVASVAngle0",100,0,2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVASVAngle1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASVAngle1","Mu1TrackInvariantMassBeforeMVASVAngle1",50,0,0.1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVASVAngle1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASVAngle1","Mu2TrackInvariantMassBeforeMVASVAngle1",50,0,0.1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVASVAngle1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASVAngle1","Mu3TrackInvariantMassBeforeMVASVAngle1",50,0,0.1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVASVAngle2 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASVAngle2","Mu1TrackInvariantMassBeforeMVASVAngle2",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVASVAngle2 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASVAngle2","Mu2TrackInvariantMassBeforeMVASVAngle2",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVASVAngle2 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASVAngle2","Mu3TrackInvariantMassBeforeMVASVAngle2",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVASVAngle3 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVASVAngle3","Mu1TrackInvariantMassBeforeMVASVAngle3",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVASVAngle3 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVASVAngle3","Mu2TrackInvariantMassBeforeMVASVAngle3",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVASVAngle3 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVASVAngle3","Mu3TrackInvariantMassBeforeMVASVAngle3",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSV","Mu1TrackInvariantMassBeforeMVAKStarSV",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSV","Mu2TrackInvariantMassBeforeMVAKStarSV",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarSV =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSV","Mu3TrackInvariantMassBeforeMVAKStarSV",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarSVAngle0 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSVAngle0","Mu1TrackInvariantMassBeforeMVAKStarSVAngle0",100,0,2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarSVAngle0 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSVAngle0","Mu2TrackInvariantMassBeforeMVAKStarSVAngle0",100,0,2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarSVAngle0 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSVAngle0","Mu3TrackInvariantMassBeforeMVAKStarSVAngle0",100,0,2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarSVAngle1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSVAngle1","Mu1TrackInvariantMassBeforeMVAKStarSVAngle1",50,0,0.1,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarSVAngle1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSVAngle1","Mu2TrackInvariantMassBeforeMVAKStarSVAngle1",50,0,0.1,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarSVAngle1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSVAngle1","Mu3TrackInvariantMassBeforeMVAKStarSVAngle1",50,0,0.1,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarSVAngle2 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSVAngle2","Mu1TrackInvariantMassBeforeMVAKStarSVAngle2",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarSVAngle2 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSVAngle2","Mu2TrackInvariantMassBeforeMVAKStarSVAngle2",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarSVAngle2 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSVAngle2","Mu3TrackInvariantMassBeforeMVAKStarSVAngle2",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarSVAngle3 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarSVAngle3","Mu1TrackInvariantMassBeforeMVAKStarSVAngle3",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarSVAngle3 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarSVAngle3","Mu2TrackInvariantMassBeforeMVAKStarSVAngle3",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarSVAngle3 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarSVAngle3","Mu3TrackInvariantMassBeforeMVAKStarSVAngle3",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVA","Mu1TrackInvariantMassBeforeMVA",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVA","Mu2TrackInvariantMassBeforeMVA",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVA","Mu3TrackInvariantMassBeforeMVA",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStar","Mu1TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStar","Mu2TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStar =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStar","Mu3TrackInvariantMassBeforeMVAKStar",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAFiner","Mu1TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAFiner","Mu2TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAFiner =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAFiner","Mu3TrackInvariantMassBeforeMVAFiner",80,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVACoarser","Mu1TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVACoarser","Mu2TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVACoarser =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVACoarser","Mu3TrackInvariantMassBeforeMVACoarser",35,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
   MuOSSS1InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS1InvariantMassBeforeMVA","MuOSSS1InvariantMassBeforeMVA",200,0.95,1.2,"OS - SS1 #mu Invariant Mass, GeV","Events");
   MuOSSS2InvariantMassBeforeMVA =HConfig.GetTH1D(Name+"_MuOSSS2InvariantMassBeforeMVA","MuOSSS2InvariantMassBeforeMVA",200,0.95,1.2,"OS - SS2 #mu Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdR","Mu1TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdR","Mu2TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdR","Mu3TrackInvariantMassBeforeMVABestdR",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdR","Mu1TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdR","Mu2TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdR =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdR","Mu3TrackInvariantMassBeforeMVAKStarBestdR",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRIncrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRIncrease","Mu1TrackInvariantMassBeforeMVABestdRIncrease",100,0,0.1,"SV dR SS2","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRDecrease =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRDecrease","Mu1TrackInvariantMassBeforeMVABestdRDecrease",100,0,0.2,"#Delta #theta - #pi SS2","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd","Mu1TrackInvariantMassBeforeMVABestdRLtd",100,0,30,"OS #mu - Isolation Track Chi2","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd","Mu2TrackInvariantMassBeforeMVABestdRLtd",100,0,30,"SS1 #mu - Isolation Track Chi2","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd","Mu3TrackInvariantMassBeforeMVABestdRLtd",100,0,30,"SS2 #mu - Isolation Track Chi2","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd1","Mu1TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd1","Mu2TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd1","Mu3TrackInvariantMassBeforeMVABestdRLtd1",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd2 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd2","Mu1TrackInvariantMassBeforeMVABestdRLtd2",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd2 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd2","Mu2TrackInvariantMassBeforeMVABestdRLtd2",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd2 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd2","Mu3TrackInvariantMassBeforeMVABestdRLtd2",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd3 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd3","Mu1TrackInvariantMassBeforeMVABestdRLtd3",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd3 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd3","Mu2TrackInvariantMassBeforeMVABestdRLtd3",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd3 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd3","Mu3TrackInvariantMassBeforeMVABestdRLtd3",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd4 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd4","Mu1TrackInvariantMassBeforeMVABestdRLtd4",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd4 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd4","Mu2TrackInvariantMassBeforeMVABestdRLtd4",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd4 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd4","Mu3TrackInvariantMassBeforeMVABestdRLtd4",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd5 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd5","Mu1TrackInvariantMassBeforeMVABestdRLtd5",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd5 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd5","Mu2TrackInvariantMassBeforeMVABestdRLtd5",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd5 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd5","Mu3TrackInvariantMassBeforeMVABestdRLtd5",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd6 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd6","Mu1TrackInvariantMassBeforeMVABestdRLtd6",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd6 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd6","Mu2TrackInvariantMassBeforeMVABestdRLtd6",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd6 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd6","Mu3TrackInvariantMassBeforeMVABestdRLtd6",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestdRLtd7 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestdRLtd7","Mu1TrackInvariantMassBeforeMVABestdRLtd7",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestdRLtd7 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestdRLtd7","Mu2TrackInvariantMassBeforeMVABestdRLtd7",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestdRLtd7 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestdRLtd7","Mu3TrackInvariantMassBeforeMVABestdRLtd7",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7 =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7","Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7 =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7","Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7 =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7","Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVABestMass","Mu1TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVABestMass","Mu2TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVABestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVABestMass","Mu3TrackInvariantMassBeforeMVABestMass",40,0.95,1.07,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassBeforeMVAKStarBestMass","Mu1TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassBeforeMVAKStarBestMass","Mu2TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassBeforeMVAKStarBestMass =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassBeforeMVAKStarBestMass","Mu3TrackInvariantMassBeforeMVAKStarBestMass",100,0.6,1.6,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
   IsolationTrackCount =HConfig.GetTH1D(Name+"_IsolationTrackCount","IsolationTrackCount",21,-0.5,20.5,"No of tracks","Events");
   
-  Mu1TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA1MVA","Mu1TrackInvariantMassAfterA1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA1MVA","Mu2TrackInvariantMassAfterA1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterA1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA1MVA","Mu3TrackInvariantMassAfterA1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
   
-  Mu1TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB1MVA","Mu1TrackInvariantMassAfterB1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB1MVA","Mu2TrackInvariantMassAfterB1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterB1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB1MVA","Mu3TrackInvariantMassAfterB1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC1MVA","Mu1TrackInvariantMassAfterC1MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC1MVA","Mu2TrackInvariantMassAfterC1MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterC1MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC1MVA","Mu3TrackInvariantMassAfterC1MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterA2MVA","Mu1TrackInvariantMassAfterA2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterA2MVA","Mu2TrackInvariantMassAfterA2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterA2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterA2MVA","Mu3TrackInvariantMassAfterA2MVA",150,0.9,1.2,"SS2 #mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterB2MVA","Mu1TrackInvariantMassAfterB2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterB2MVA","Mu2TrackInvariantMassAfterB2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterB2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterB2MVA","Mu3TrackInvariantMassAfterB2MVA",150,0.9,1.2,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
-  
-  Mu1TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu1TrackInvariantMassAfterC2MVA","Mu1TrackInvariantMassAfterC2MVA",150,0.9,1.2,"OS #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu2TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu2TrackInvariantMassAfterC2MVA","Mu2TrackInvariantMassAfterC2MVA",150,0.9,1.2,"SS1 #mu - Isolation Track Invariant Mass, GeV","Events");
-  Mu3TrackInvariantMassAfterC2MVA =HConfig.GetTH1D(Name+"_Mu3TrackInvariantMassAfterC2MVA","Mu3TrackInvariantMassAfterC2MVA",150,0.9,1.2,"SS2#mu - Isolation Track Invariant Mass, GeV","Events");
   
   TauAngleTest  =HConfig.GetTH1D(Name+"_TauAngleTest","3#mu  mass",60,1.65,1.95,"  M_{#tau} , GeV","Events");
 
@@ -800,9 +1859,85 @@ void  CommonSelector::Configure(){
   TriggerMatchdR2 =HConfig.GetTH1D(Name+"_TriggerMatchdR2","TriggerMatchdR2",50,0,1,"trigger match #Delta R 2","Events");
   TriggerMatchdR3 =HConfig.GetTH1D(Name+"_TriggerMatchdR3","TriggerMatchdR3",50,0,1,"trigger match #Delta R 3","Events");
 
-  BDTOutputA = HConfig.GetTH1D(Name+"_BDTOutputA","BDTOutputA",50,-0.4,0.4,"BDT Output","Events");
-  BDTOutputB = HConfig.GetTH1D(Name+"_BDTOutputB","BDTOutputB",50,-0.4,0.4,"BDT Output","Events");
-  BDTOutputC = HConfig.GetTH1D(Name+"_BDTOutputC","BDTOutputC",50,-0.4,0.4,"BDT Output","Events");
+  BDTOutputATrain0 = HConfig.GetTH1D(Name+"_BDTOutputATrain0","BDTOutputATrain0",50,-0.4,0.4,"BDT Output Train0 cat A","Events");
+  BDTOutputBTrain0 = HConfig.GetTH1D(Name+"_BDTOutputBTrain0","BDTOutputBTrain0",50,-0.4,0.4,"BDT Output Train0 cat B","Events");
+  BDTOutputCTrain0 = HConfig.GetTH1D(Name+"_BDTOutputCTrain0","BDTOutputCTrain0",50,-0.4,0.4,"BDT Output Train0 cat C","Events");
+  
+  BDTOutputATrain1 = HConfig.GetTH1D(Name+"_BDTOutputATrain1","BDTOutputATrain1",50,-0.4,0.4,"BDT Output Train1 cat A","Events");
+  BDTOutputBTrain1 = HConfig.GetTH1D(Name+"_BDTOutputBTrain1","BDTOutputBTrain1",50,-0.4,0.4,"BDT Output Train1 cat B","Events");
+  BDTOutputCTrain1 = HConfig.GetTH1D(Name+"_BDTOutputCTrain1","BDTOutputCTrain1",50,-0.4,0.4,"BDT Output Train1 cat C","Events");
+  
+  BDTOutputATrain2 = HConfig.GetTH1D(Name+"_BDTOutputATrain2","BDTOutputATrain2",50,-0.4,0.4,"BDT Output Train2 cat A","Events");
+  BDTOutputBTrain2 = HConfig.GetTH1D(Name+"_BDTOutputBTrain2","BDTOutputBTrain2",50,-0.4,0.4,"BDT Output Train2 cat B","Events");
+  BDTOutputCTrain2 = HConfig.GetTH1D(Name+"_BDTOutputCTrain2","BDTOutputCTrain2",50,-0.4,0.4,"BDT Output Train2 cat C","Events");
+  
+  BDTOutputATrain3 = HConfig.GetTH1D(Name+"_BDTOutputATrain3","BDTOutputATrain3",50,-0.4,0.4,"BDT Output Train3 cat A","Events");
+  BDTOutputBTrain3 = HConfig.GetTH1D(Name+"_BDTOutputBTrain3","BDTOutputBTrain3",50,-0.4,0.4,"BDT Output Train3 cat B","Events");
+  BDTOutputCTrain3 = HConfig.GetTH1D(Name+"_BDTOutputCTrain3","BDTOutputCTrain3",50,-0.4,0.4,"BDT Output Train3 cat C","Events");
+  
+  BDTOutputATrain4 = HConfig.GetTH1D(Name+"_BDTOutputATrain4","BDTOutputATrain4",50,-0.4,0.4,"BDT Output Train4 cat A","Events");
+  BDTOutputBTrain4 = HConfig.GetTH1D(Name+"_BDTOutputBTrain4","BDTOutputBTrain4",50,-0.4,0.4,"BDT Output Train4 cat B","Events");
+  BDTOutputCTrain4 = HConfig.GetTH1D(Name+"_BDTOutputCTrain4","BDTOutputCTrain4",50,-0.4,0.4,"BDT Output Train4 cat C","Events");
+  
+  BDTOutputATrain5 = HConfig.GetTH1D(Name+"_BDTOutputATrain5","BDTOutputATrain5",50,-0.4,0.4,"BDT Output Train5 cat A","Events");
+  BDTOutputBTrain5 = HConfig.GetTH1D(Name+"_BDTOutputBTrain5","BDTOutputBTrain5",50,-0.4,0.4,"BDT Output Train5 cat B","Events");
+  BDTOutputCTrain5 = HConfig.GetTH1D(Name+"_BDTOutputCTrain5","BDTOutputCTrain5",50,-0.4,0.4,"BDT Output Train5 cat C","Events");
+  
+  BDTOutputATrain6 = HConfig.GetTH1D(Name+"_BDTOutputATrain6","BDTOutputATrain6",50,-0.4,0.4,"BDT Output Train6 cat A","Events");
+  BDTOutputBTrain6 = HConfig.GetTH1D(Name+"_BDTOutputBTrain6","BDTOutputBTrain6",50,-0.4,0.4,"BDT Output Train6 cat B","Events");
+  BDTOutputCTrain6 = HConfig.GetTH1D(Name+"_BDTOutputCTrain6","BDTOutputCTrain6",50,-0.4,0.4,"BDT Output Train6 cat C","Events");
+  
+  BDTOutputATrain7 = HConfig.GetTH1D(Name+"_BDTOutputATrain7","BDTOutputATrain7",50,-0.4,0.4,"BDT Output Train7 cat A","Events");
+  BDTOutputBTrain7 = HConfig.GetTH1D(Name+"_BDTOutputBTrain7","BDTOutputBTrain7",50,-0.4,0.4,"BDT Output Train7 cat B","Events");
+  BDTOutputCTrain7 = HConfig.GetTH1D(Name+"_BDTOutputCTrain7","BDTOutputCTrain7",50,-0.4,0.4,"BDT Output Train7 cat C","Events");
+  
+  BDTOutputATrain8 = HConfig.GetTH1D(Name+"_BDTOutputATrain8","BDTOutputATrain8",50,-0.4,0.4,"BDT Output Train8 cat A","Events");
+  BDTOutputBTrain8 = HConfig.GetTH1D(Name+"_BDTOutputBTrain8","BDTOutputBTrain8",50,-0.4,0.4,"BDT Output Train8 cat B","Events");
+  BDTOutputCTrain8 = HConfig.GetTH1D(Name+"_BDTOutputCTrain8","BDTOutputCTrain8",50,-0.4,0.4,"BDT Output Train8 cat C","Events");
+  
+  BDTOutputATrain9 = HConfig.GetTH1D(Name+"_BDTOutputATrain9","BDTOutputATrain9",50,-0.4,0.4,"BDT Output Train9 cat A","Events");
+  BDTOutputBTrain9 = HConfig.GetTH1D(Name+"_BDTOutputBTrain9","BDTOutputBTrain9",50,-0.4,0.4,"BDT Output Train9 cat B","Events");
+  BDTOutputCTrain9 = HConfig.GetTH1D(Name+"_BDTOutputCTrain9","BDTOutputCTrain9",50,-0.4,0.4,"BDT Output Train9 cat C","Events");
+  
+  BDTOutputATrain10 = HConfig.GetTH1D(Name+"_BDTOutputATrain10","BDTOutputATrain10",50,-0.4,0.4,"BDT Output Train10 cat A","Events");
+  BDTOutputBTrain10 = HConfig.GetTH1D(Name+"_BDTOutputBTrain10","BDTOutputBTrain10",50,-0.4,0.4,"BDT Output Train10 cat B","Events");
+  BDTOutputCTrain10 = HConfig.GetTH1D(Name+"_BDTOutputCTrain10","BDTOutputCTrain10",50,-0.4,0.4,"BDT Output Train10 cat C","Events");
+  
+  BDTOutputATrain11 = HConfig.GetTH1D(Name+"_BDTOutputATrain11","BDTOutputATrain11",50,-0.4,0.4,"BDT Output Train11 cat A","Events");
+  BDTOutputBTrain11 = HConfig.GetTH1D(Name+"_BDTOutputBTrain11","BDTOutputBTrain11",50,-0.4,0.4,"BDT Output Train11 cat B","Events");
+  BDTOutputCTrain11 = HConfig.GetTH1D(Name+"_BDTOutputCTrain11","BDTOutputCTrain11",50,-0.4,0.4,"BDT Output Train11 cat C","Events");
+  
+  BDTOutputATrain12 = HConfig.GetTH1D(Name+"_BDTOutputATrain12","BDTOutputATrain12",50,-0.4,0.4,"BDT Output Train12 cat A","Events");
+  BDTOutputBTrain12 = HConfig.GetTH1D(Name+"_BDTOutputBTrain12","BDTOutputBTrain12",50,-0.4,0.4,"BDT Output Train12 cat B","Events");
+  BDTOutputCTrain12 = HConfig.GetTH1D(Name+"_BDTOutputCTrain12","BDTOutputCTrain12",50,-0.4,0.4,"BDT Output Train12 cat C","Events");
+  
+  BDTOutputATrain13 = HConfig.GetTH1D(Name+"_BDTOutputATrain13","BDTOutputATrain13",50,-0.4,0.4,"BDT Output Train13 cat A","Events");
+  BDTOutputBTrain13 = HConfig.GetTH1D(Name+"_BDTOutputBTrain13","BDTOutputBTrain13",50,-0.4,0.4,"BDT Output Train13 cat B","Events");
+  BDTOutputCTrain13 = HConfig.GetTH1D(Name+"_BDTOutputCTrain13","BDTOutputCTrain13",50,-0.4,0.4,"BDT Output Train13 cat C","Events");
+  
+  BDTOutputATrain14 = HConfig.GetTH1D(Name+"_BDTOutputATrain14","BDTOutputATrain14",50,-0.4,0.4,"BDT Output Train14 cat A","Events");
+  BDTOutputBTrain14 = HConfig.GetTH1D(Name+"_BDTOutputBTrain14","BDTOutputBTrain14",50,-0.4,0.4,"BDT Output Train14 cat B","Events");
+  BDTOutputCTrain14 = HConfig.GetTH1D(Name+"_BDTOutputCTrain14","BDTOutputCTrain14",50,-0.4,0.4,"BDT Output Train14 cat C","Events");
+  
+  BDTOutputATrain15 = HConfig.GetTH1D(Name+"_BDTOutputATrain15","BDTOutputATrain15",50,-0.4,0.4,"BDT Output Train15 cat A","Events");
+  BDTOutputBTrain15 = HConfig.GetTH1D(Name+"_BDTOutputBTrain15","BDTOutputBTrain15",50,-0.4,0.4,"BDT Output Train15 cat B","Events");
+  BDTOutputCTrain15 = HConfig.GetTH1D(Name+"_BDTOutputCTrain15","BDTOutputCTrain15",50,-0.4,0.4,"BDT Output Train15 cat C","Events");
+  
+  BDTOutputATrain16 = HConfig.GetTH1D(Name+"_BDTOutputATrain16","BDTOutputATrain16",50,-0.4,0.4,"BDT Output Train16 cat A","Events");
+  BDTOutputBTrain16 = HConfig.GetTH1D(Name+"_BDTOutputBTrain16","BDTOutputBTrain16",50,-0.4,0.4,"BDT Output Train16 cat B","Events");
+  BDTOutputCTrain16 = HConfig.GetTH1D(Name+"_BDTOutputCTrain16","BDTOutputCTrain16",50,-0.4,0.4,"BDT Output Train16 cat C","Events");
+  
+  BDTOutputATrain17 = HConfig.GetTH1D(Name+"_BDTOutputATrain17","BDTOutputATrain17",50,-0.4,0.4,"BDT Output Train17 cat A","Events");
+  BDTOutputBTrain17 = HConfig.GetTH1D(Name+"_BDTOutputBTrain17","BDTOutputBTrain17",50,-0.4,0.4,"BDT Output Train17 cat B","Events");
+  BDTOutputCTrain17 = HConfig.GetTH1D(Name+"_BDTOutputCTrain17","BDTOutputCTrain17",50,-0.4,0.4,"BDT Output Train17 cat C","Events");
+  
+  BDTOutputATrain18 = HConfig.GetTH1D(Name+"_BDTOutputATrain18","BDTOutputATrain18",50,-0.4,0.4,"BDT Output Train18 cat A","Events");
+  BDTOutputBTrain18 = HConfig.GetTH1D(Name+"_BDTOutputBTrain18","BDTOutputBTrain18",50,-0.4,0.4,"BDT Output Train18 cat B","Events");
+  BDTOutputCTrain18 = HConfig.GetTH1D(Name+"_BDTOutputCTrain18","BDTOutputCTrain18",50,-0.4,0.4,"BDT Output Train18 cat C","Events");
+  
+  BDTOutputATrain19 = HConfig.GetTH1D(Name+"_BDTOutputATrain19","BDTOutputATrain19",50,-0.4,0.4,"BDT Output Train19 cat A","Events");
+  BDTOutputBTrain19 = HConfig.GetTH1D(Name+"_BDTOutputBTrain19","BDTOutputBTrain19",50,-0.4,0.4,"BDT Output Train19 cat B","Events");
+  BDTOutputCTrain19 = HConfig.GetTH1D(Name+"_BDTOutputCTrain19","BDTOutputCTrain19",50,-0.4,0.4,"BDT Output Train19 cat C","Events");
 
   BvsDBDTG  = HConfig.GetTH1D(Name+"_BvsDBDTG","BvsDBDTG",50,-1.0,1.0," B vs D BDTG","Events");
 
@@ -924,6 +2059,27 @@ void  CommonSelector::Configure(){
 
   BetterMuMuVertex=HConfig.GetTH1D(Name+"_BetterMuMuVertex","BetterMuMuVertex",30,0,5,"vertex pair quality (close)","");
   WorseMuMuVertex=HConfig.GetTH1D(Name+"_WorseMuMuVertex","WorseMuMuVertex",30,0,5,"vertex pair quality (far)","");
+  
+  BDTOutputCTrain0_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain0_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain1_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain1_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain2_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain2_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain3_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain3_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain4_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain4_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain5_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain5_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain6_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain6_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain7_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain7_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain8_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain8_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain9_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain9_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain10_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain10_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain11_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain11_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain12_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain12_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain13_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain13_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain14_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain14_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain15_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain15_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain16_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain16_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain17_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain17_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain18_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain18_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
+  BDTOutputCTrain19_Vs_TauMass=HConfig.GetTH2D(Name+"_BDTOutputCTrain19_Vs_TauMass","BDT C vs 3#mu mass",50,-0.4,0.4,60,1.5,2.1,"BDT","3#mu mass, GeV");
 
 
 
@@ -933,9 +2089,9 @@ void  CommonSelector::Configure(){
 
 
 
-void  CommonSelector::Store_ExtraDist(){ 
+void  BDTSelector::Store_ExtraDist(){ 
 
-
+  /*
   Extradist1d.push_back(&PairMassDRSorted1A);
   Extradist1d.push_back(&PairMassDRSorted2A);
 
@@ -961,173 +2117,16 @@ void  CommonSelector::Store_ExtraDist(){
   
   Extradist1d.push_back(&TauAngleTest);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASV);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASV);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASV);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASVAngle0);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASVAngle0);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASVAngle0);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASVAngle1);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASVAngle1);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASVAngle1);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASVAngle2);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASVAngle2);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASVAngle2);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVASVAngle3);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVASVAngle3);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVASVAngle3);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSV);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSV);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSV);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSVAngle0);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSVAngle0);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSVAngle0);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSVAngle1);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSVAngle1);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSVAngle1);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSVAngle2);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSVAngle2);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSVAngle2);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarSVAngle3);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarSVAngle3);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarSVAngle3);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStar);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStar);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStar);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAFiner);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAFiner);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAFiner);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVACoarser);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVACoarser);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVACoarser);
   
   Extradist1d.push_back(&MuOSSS1InvariantMassBeforeMVA);
   Extradist1d.push_back(&MuOSSS2InvariantMassBeforeMVA);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdR);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdR);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdR);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdR);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdR);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdR);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRIncrease);
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRDecrease);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd1);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd1);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd1);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd2);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd2);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd2);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd3);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd3);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd3);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd4);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd4);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd4);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd5);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd5);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd5);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd6);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd6);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd6);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestdRLtd7);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestdRLtd7);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestdRLtd7);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7);
   
   Extradist1d.push_back(&IsolationTrackCount);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVABestMass);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVABestMass);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVABestMass);
   
-  Extradist1d.push_back(&Mu1TrackInvariantMassBeforeMVAKStarBestMass);
-  Extradist1d.push_back(&Mu2TrackInvariantMassBeforeMVAKStarBestMass);
-  Extradist1d.push_back(&Mu3TrackInvariantMassBeforeMVAKStarBestMass);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterA1MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterA1MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterA1MVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterB1MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterB1MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterB1MVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterC1MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterC1MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterC1MVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterA2MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterA2MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterA2MVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterB2MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterB2MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterB2MVA);
-  
-  Extradist1d.push_back(&Mu1TrackInvariantMassAfterC2MVA);
-  Extradist1d.push_back(&Mu2TrackInvariantMassAfterC2MVA);
-  Extradist1d.push_back(&Mu3TrackInvariantMassAfterC2MVA);
 
   Extradist1d.push_back(&TauMassRefitABC1);  
   Extradist1d.push_back(&TauMassRefitABC2);
@@ -1210,15 +2209,115 @@ void  CommonSelector::Store_ExtraDist(){
   Extradist1d.push_back(&EventMassResolution_PtEtaPhi);
   Extradist1d.push_back(&NSignalCandidates);
 
-
-  Extradist1d.push_back(&BDTOutputA);
-  Extradist1d.push_back(&BDTOutputB);
-  Extradist1d.push_back(&BDTOutputC);
+  */
+  Extradist1d.push_back(&BDTOutputATrain0);
+  Extradist1d.push_back(&BDTOutputBTrain0);
+  Extradist1d.push_back(&BDTOutputCTrain0);
+  
+  Extradist1d.push_back(&BDTOutputATrain1);
+  Extradist1d.push_back(&BDTOutputBTrain1);
+  Extradist1d.push_back(&BDTOutputCTrain1);
+  
+  Extradist1d.push_back(&BDTOutputATrain2);
+  Extradist1d.push_back(&BDTOutputBTrain2);
+  Extradist1d.push_back(&BDTOutputCTrain2);
+  
+  Extradist1d.push_back(&BDTOutputATrain3);
+  Extradist1d.push_back(&BDTOutputBTrain3);
+  Extradist1d.push_back(&BDTOutputCTrain3);
+  
+  Extradist1d.push_back(&BDTOutputATrain4);
+  Extradist1d.push_back(&BDTOutputBTrain4);
+  Extradist1d.push_back(&BDTOutputCTrain4);
+  
+  Extradist1d.push_back(&BDTOutputATrain5);
+  Extradist1d.push_back(&BDTOutputBTrain5);
+  Extradist1d.push_back(&BDTOutputCTrain5);
+  
+  Extradist1d.push_back(&BDTOutputATrain6);
+  Extradist1d.push_back(&BDTOutputBTrain6);
+  Extradist1d.push_back(&BDTOutputCTrain6);
+  
+  Extradist1d.push_back(&BDTOutputATrain7);
+  Extradist1d.push_back(&BDTOutputBTrain7);
+  Extradist1d.push_back(&BDTOutputCTrain7);
+  
+  Extradist1d.push_back(&BDTOutputATrain8);
+  Extradist1d.push_back(&BDTOutputBTrain8);
+  Extradist1d.push_back(&BDTOutputCTrain8);
+  
+  Extradist1d.push_back(&BDTOutputATrain9);
+  Extradist1d.push_back(&BDTOutputBTrain9);
+  Extradist1d.push_back(&BDTOutputCTrain9);
+  
+  Extradist1d.push_back(&BDTOutputATrain10);
+  Extradist1d.push_back(&BDTOutputBTrain10);
+  Extradist1d.push_back(&BDTOutputCTrain10);
+  
+  Extradist1d.push_back(&BDTOutputATrain11);
+  Extradist1d.push_back(&BDTOutputBTrain11);
+  Extradist1d.push_back(&BDTOutputCTrain11);
+  
+  Extradist1d.push_back(&BDTOutputATrain12);
+  Extradist1d.push_back(&BDTOutputBTrain12);
+  Extradist1d.push_back(&BDTOutputCTrain12);
+  
+  Extradist1d.push_back(&BDTOutputATrain13);
+  Extradist1d.push_back(&BDTOutputBTrain13);
+  Extradist1d.push_back(&BDTOutputCTrain13);
+  
+  Extradist1d.push_back(&BDTOutputATrain14);
+  Extradist1d.push_back(&BDTOutputBTrain14);
+  Extradist1d.push_back(&BDTOutputCTrain14);
+  
+  Extradist1d.push_back(&BDTOutputATrain15);
+  Extradist1d.push_back(&BDTOutputBTrain15);
+  Extradist1d.push_back(&BDTOutputCTrain15);
+  
+  Extradist1d.push_back(&BDTOutputATrain16);
+  Extradist1d.push_back(&BDTOutputBTrain16);
+  Extradist1d.push_back(&BDTOutputCTrain16);
+  
+  Extradist1d.push_back(&BDTOutputATrain17);
+  Extradist1d.push_back(&BDTOutputBTrain17);
+  Extradist1d.push_back(&BDTOutputCTrain17);
+  
+  Extradist1d.push_back(&BDTOutputATrain18);
+  Extradist1d.push_back(&BDTOutputBTrain18);
+  Extradist1d.push_back(&BDTOutputCTrain18);
+  
+  Extradist1d.push_back(&BDTOutputATrain19);
+  Extradist1d.push_back(&BDTOutputBTrain19);
+  Extradist1d.push_back(&BDTOutputCTrain19);
+  
+  
   Extradist1d.push_back(&BvsDBDTG);
 
   Extradist1d.push_back(&BvsDBDTG_ABC1);
   Extradist1d.push_back(&BvsDBDTG_ABC2);
-
+  
+  Extradist2d.push_back(&BDTOutputCTrain0_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain1_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain2_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain3_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain4_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain5_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain6_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain7_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain8_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain9_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain10_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain11_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain12_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain13_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain14_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain15_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain16_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain17_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain18_Vs_TauMass);
+  Extradist2d.push_back(&BDTOutputCTrain19_Vs_TauMass);
+  
+  /*
   Extradist2d.push_back(&PairMass);
   Extradist2d.push_back(&KKMass_dR_sort);
   Extradist1d.push_back(&KKMass_dR_sort1);
@@ -1285,12 +2384,12 @@ void  CommonSelector::Store_ExtraDist(){
 
   Extradist2d.push_back(&PairMass1TauPhiMassSorting);
   Extradist2d.push_back(&PairMass2TauPhiMassSorting);
-
+  */
 
 }
 
 
-void  CommonSelector::doEvent(){ 
+void  BDTSelector::doEvent(){ 
 
   
   unsigned int t;
@@ -1438,10 +2537,10 @@ void  CommonSelector::doEvent(){
   pass.at(Mu3PtCut) = (value.at(Mu3PtCut) >= cut.at(Mu3PtCut));
   pass.at(MuonID)   =(value.at(MuonID)  == cut.at(MuonID));
   pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
-  pass.at(PhiVeto1) = true;//(value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
-  pass.at(OmegaVeto1) = true;//(value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
-  pass.at(PhiVeto2) = true;//(value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
-  pass.at(OmegaVeto2) = true;//(value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
+  pass.at(PhiVeto1) = (value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
+  pass.at(OmegaVeto1) = (value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
+  pass.at(PhiVeto2) = (value.at(PhiVeto2) < 0.98 || value.at(PhiVeto2) > 1.06 );
+  pass.at(OmegaVeto2) = (value.at(OmegaVeto2) < 0.742 || value.at(OmegaVeto2) > 0.822 );
   pass.at(TauMassCut) =( (value.at(TauMassCut) > tauMinSideBand_)  &&   (value.at(TauMassCut) < tauMaxSideBand_ ));
 
   std::vector<unsigned int> exclude_cuts;
@@ -1503,6 +2602,8 @@ void  CommonSelector::doEvent(){
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+    
+    var_Vertex2muTrkKF = Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx);
 
 
 
@@ -1565,974 +2666,7 @@ void  CommonSelector::doEvent(){
     MuOSSS1InvariantMassBeforeMVA.at(t).Fill((MuonOSReassigned+MuonSS1Reassigned).M(),1);
     MuOSSS2InvariantMassBeforeMVA.at(t).Fill((MuonOSReassigned+MuonSS2Reassigned).M(),1);
     
-    double dR1 = 99.0;
-    double dR2 = 99.0;
-    double dR3 = 99.0;
     
-    double M1dR = 99.0;
-    double M2dR = 99.0;
-    double M3dR = 99.0;
-    
-    double M1best = 99.0;
-    double M2best = 99.0;
-    double M3best = 99.0;
-    
-    double KdR1 = 99.0;
-    double KdR2 = 99.0;
-    double KdR3 = 99.0;
-    
-    double KM1dR = 99.0;
-    double KM2dR = 99.0;
-    double KM3dR = 99.0;
-    
-    double KM1best = 99.0;
-    double KM2best = 99.0;
-    double KM3best = 99.0;
-    
-    double OSdRSV=99.0*sqrt(2);
-    double SS1dRSV=99.0*sqrt(2);
-    double SS2dRSV=99.0*sqrt(2);
-    
-    double M1bestSV = 99.0;
-    double M2bestSV = 99.0;
-    double M3bestSV = 99.0;
-    
-    double M1bestSVKStar = 99.0;
-    double M2bestSVKStar = 99.0;
-    double M3bestSVKStar = 99.0;
-    
-    double bestpTSV1 = -1.0;
-    double bestpTSV2 = -1.0;
-    double bestpTSV3 = -1.0;
-    
-    double bestpTSVKStar1 = -1.0;
-    double bestpTSVKStar2 = -1.0;
-    double bestpTSVKStar3 = -1.0;
-    
-    double bestpSV1 = -1.0;
-    double bestpSV2 = -1.0;
-    double bestpSV3 = -1.0;
-    
-    double bestpSVKStar1 = -1.0;
-    double bestpSVKStar2 = -1.0;
-    double bestpSVKStar3 = -1.0;
-    
-    double BestOSSVAngle = 99.0;
-    double BestSS1SVAngle = 99.0;
-    double BestSS2SVAngle = 99.0;
-        
-    double BestOSSVAngleMass = 99.0;
-    double BestSS1SVAngleMass = 99.0;
-    double BestSS2SVAngleMass = 99.0;
-    
-    double BestOSSVAngleKStar = 99.0;
-    double BestSS1SVAngleKStar = 99.0;
-    double BestSS2SVAngleKStar = 99.0;
-        
-    double BestOSSVAngleMassKStar = 99.0;
-    double BestSS1SVAngleMassKStar = 99.0;
-    double BestSS2SVAngleMassKStar = 99.0;
-    
-    double bestOSAng = 99.0;
-    double bestOSAngM = 99.0;
-    double bestOSAngMK = 99.0;
-    
-    double bestSS1Ang = 99.0;
-    double bestSS1AngM = 99.0;
-    double bestSS1AngMK = 99.0;
-    
-    double bestSS2Ang = 99.0;
-    double bestSS2AngM = 99.0;
-    double bestSS2AngMK = 99.0;
-    
-    double M1bestSVQual1 = 99.0;
-    double M2bestSVQual1 = 99.0;
-    double M3bestSVQual1 = 99.0;
-    
-    double Mu1bestChi2 = 199.0;
-    double Mu2bestChi2 = 199.0;
-    double Mu3bestChi2 = 199.0;
-    
-    double M1bestChi2 = 99.0;
-    double M2bestChi2 = 99.0;
-    double M3bestChi2 = 99.0;
-    
-    double M1KStarbestChi2 = 99.0;
-    double M2KStarbestChi2 = 99.0;
-    double M3KStarbestChi2 = 99.0;
-    
-    double Mu1bestChi2AngleDiff = 99.0;//angle between SVPV and muon-track combination
-    double Mu2bestChi2AngleDiff = 99.0;
-    double Mu3bestChi2AngleDiff = 99.0;
-    
-    double Mu1bestChi2DistRatio = 99.0;//ratio of SVPV dist and c t gamma
-    double Mu2bestChi2DistRatio = 99.0;
-    double Mu3bestChi2DistRatio = 99.0;
-    
-    double Mu1KSbestChi2DistRatio = 99.0;//ratio of SVPV dist and c t gamma
-    double Mu2KSbestChi2DistRatio = 99.0;
-    double Mu3KSbestChi2DistRatio = 99.0;
-    
-    for(int i=0;i<Ntp->NIsolationTrack(signal_idx);i++){
-      for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-        if(Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,j)){
-          Mu1TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
-        }
-        if(Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,j)){
-          Mu2TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
-        }
-        if(Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,i)&&Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,j)){
-          Mu3TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill((Ntp->IsolationTrack_p4(signal_idx,i)+Ntp->IsolationTrack_p4(signal_idx,j)).M(),1);
-        }
-      }
-    }
-    
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      TLorentzVector CombOSPhi = ParticleLVReassigned+MuonOSReassigned;
-      TLorentzVector CombOSKS = ParticleLV+MuonOSReassigned;
-      
-      TLorentzVector CombSS1Phi = ParticleLVReassigned+MuonSS1Reassigned;
-      TLorentzVector CombSS1KS = ParticleLV+MuonSS1Reassigned;
-      
-      TLorentzVector CombSS2Phi = ParticleLVReassigned+MuonSS2Reassigned;
-      TLorentzVector CombSS2KS = ParticleLV+MuonSS2Reassigned;
-      
-      //MassDifference.at(t).Fill(ParticleLV.M()-0.493677,1);
-      
-      //std::cout<<"The charge of OS is "<<Ntp->Muon_charge(os_mu_idx)<<" SS1 is "<<Ntp->Muon_charge(ss1_mu_idx)<<" SS2 is "<<Ntp->Muon_charge(ss2_mu_idx)<< std::endl;
-      //std::cout<<"The charge of Particle is "<<Ntp->IsolationTrack_charge(signal_idx,j)<<std::endl;
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon1IsValid(signal_idx,j)){
-        Mu1TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-        Mu1TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-        Mu1TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-        
-        TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon1Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
-        TVector3 CombDirOS = CombOSPhi.Vect();
-        
-        Mu1bestChi2DistRatio =  (4.6345*pow(10,-12)*CombOSPhi.Gamma())/(SVPVVect.Mag());
-        Mu1KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombOSKS.Gamma())/(SVPVVect.Mag());
-        
-        if(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j)<Mu1bestChi2){
-          Mu1bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j);
-          M1bestChi2=(ParticleLVReassigned+MuonOSReassigned).M();
-          M1KStarbestChi2=(ParticleLV+MuonOSReassigned).M();
-          
-          Mu1bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirOS));
-          
-          Mu1bestChi2DistRatio =  (4.6345*pow(10,-12)*CombOSPhi.Gamma())/(SVPVVect.Mag());
-          Mu1KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombOSKS.Gamma())/(SVPVVect.Mag());
-        }
-        
-        Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon1Chi2(signal_idx,j),1);
-        
-        
-        
-        if(fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned))<dR1){//try to find the pair with the lowest dR
-          dR1=fabs(ParticleLVReassigned.DeltaR(MuonOSReassigned));
-          M1dR=(ParticleLVReassigned+MuonOSReassigned).M();
-        }
-        
-        if(fabs((ParticleLVReassigned+MuonOSReassigned).M()-1.019461)<fabs(M1best-1.019461)){//find the pair that is closest in mass
-          M1best=(ParticleLVReassigned+MuonOSReassigned).M();
-        }
-        
-        Mu1TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonOSReassigned).M(),1);//For the Kstars
-        
-        if(fabs(ParticleLV.DeltaR(MuonOSReassigned))<KdR1){//try to find the pair with the lowest dR
-          KdR1=fabs(ParticleLV.DeltaR(MuonOSReassigned));
-          KM1dR=(ParticleLV+MuonOSReassigned).M();
-        }
-        
-        if(fabs((ParticleLV+MuonOSReassigned).M()-0.892)<fabs(KM1best-0.892)){//find the pair that is closest in mass
-          KM1best=(ParticleLV+MuonOSReassigned).M();
-        }
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon2IsValid(signal_idx,j)){
-        Mu2TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-        Mu2TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-        Mu2TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-        
-        TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon2Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
-        TVector3 CombDirSS1 = CombSS1Phi.Vect();
-        
-        if(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j)<Mu2bestChi2){
-          Mu2bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j);
-          M2bestChi2=(ParticleLVReassigned+MuonSS1Reassigned).M();
-          M2KStarbestChi2=(ParticleLV+MuonSS1Reassigned).M();
-          
-          Mu2bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirSS1));
-          
-          Mu2bestChi2DistRatio =  (4.6345*pow(10,-12)*CombSS1Phi.Gamma())/(SVPVVect.Mag());
-          Mu2KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombSS1KS.Gamma())/(SVPVVect.Mag());
-        }
-        
-        Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon2Chi2(signal_idx,j),1);
-        
-        if(fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned))<dR2){//try to find the pair with the lowest dR
-          dR2=fabs(ParticleLVReassigned.DeltaR(MuonSS1Reassigned));
-          M2dR=(ParticleLVReassigned+MuonSS1Reassigned).M();
-        }
-        
-        if(fabs((ParticleLVReassigned+MuonSS1Reassigned).M()-1.019461)<fabs(M2best-1.019461)){//find the pair that is closest in mass
-          M2best=(ParticleLVReassigned+MuonSS1Reassigned).M();
-        }
-        
-        Mu2TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonSS1Reassigned).M(),1);
-        
-        if(fabs(ParticleLV.DeltaR(MuonSS1Reassigned))<KdR2){//try to find the pair with the lowest dR
-          KdR2=fabs(ParticleLV.DeltaR(MuonSS1Reassigned));
-          KM2dR=(ParticleLV+MuonSS1Reassigned).M();
-        }
-        
-        if(fabs((ParticleLV+MuonSS1Reassigned).M()-0.892)<fabs(KM2best-0.892)){//find the pair that is closest in mass
-          KM2best=(ParticleLV+MuonSS1Reassigned).M();
-        }
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))&&Ntp->IsolationTrack_VertexWithSignalMuon3IsValid(signal_idx,j)){
-        Mu3TrackInvariantMassBeforeMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-        Mu3TrackInvariantMassBeforeMVAFiner.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-        Mu3TrackInvariantMassBeforeMVACoarser.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-        
-        TVector3 SVPVVect =  Ntp->IsolationTrack_VertexWithSignalMuon3Position(signal_idx,j)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
-        TVector3 CombDirSS2 = CombSS2Phi.Vect();
-        
-        if(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j)<Mu3bestChi2){
-          Mu3bestChi2=Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j);
-          M3bestChi2=(ParticleLVReassigned+MuonSS2Reassigned).M();
-          M3KStarbestChi2=(ParticleLV+MuonSS2Reassigned).M();
-          
-          Mu3bestChi2AngleDiff=fabs(SVPVVect.Angle(CombDirSS2));
-          
-          Mu3bestChi2DistRatio =  (4.6345*pow(10,-12)*CombSS2Phi.Gamma())/(SVPVVect.Mag());
-          Mu3KSbestChi2DistRatio =  (4.1594*pow(10,-13)*CombSS2KS.Gamma())/(SVPVVect.Mag());
-        }
-        
-        Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(Ntp->IsolationTrack_VertexWithSignalMuon3Chi2(signal_idx,j),1);
-        
-        if(fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned))<dR3){//try to find the pair with the lowest dR
-          dR3=fabs(ParticleLVReassigned.DeltaR(MuonSS2Reassigned));
-          M3dR=(ParticleLVReassigned+MuonSS2Reassigned).M();
-        }
-        
-        if(fabs((ParticleLVReassigned+MuonSS2Reassigned).M()-1.019461)<fabs(M3best-1.019461)){//find the pair that is closest in mass
-          M3best=(ParticleLVReassigned+MuonSS2Reassigned).M();
-        }
-        
-        Mu3TrackInvariantMassBeforeMVAKStar.at(t).Fill((ParticleLV+MuonSS2Reassigned).M(),1);
-        
-        if(fabs(ParticleLV.DeltaR(MuonSS2Reassigned))<KdR3){//try to find the pair with the lowest dR
-          KdR3=fabs(ParticleLV.DeltaR(MuonSS2Reassigned));
-          KM3dR=(ParticleLV+MuonSS2Reassigned).M();
-        }
-        
-        if(fabs((ParticleLV+MuonSS2Reassigned).M()-0.892)<fabs(KM3best-0.892)){//find the pair that is closest in mass
-          KM3best=(ParticleLV+MuonSS2Reassigned).M();
-        }
-      }
-      
-      
-      /*
-      if(dRmu1<dRmu2){
-        if(dRmu1<dRmu3){
-          Mu1TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-          if(dRmu2<dRmu3){
-            Mu2TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-          }
-          else {
-            Mu3TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-          }
-        }
-        else {
-          Mu1TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-          if(dRmu1<dRmu2){
-            Mu2TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-          }
-          else {
-            Mu3TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-          }
-        }
-      }
-      else {
-        if(dRmu2<dRmu3){
-          Mu1TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-          if(dRmu1<dRmu3){
-            Mu2TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-          }
-          else {
-            Mu3TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-          }
-        }
-        else {
-          Mu1TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-          if(dRmu1<dRmu2){
-            Mu2TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-          }
-          else {
-            Mu3TrackInvariantMassAfterMVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-          }
-        }
-      }
-      */
-      
-      
-      //MassDifference.at(t).Fill((ParticleLV+Muon2LV).M(),1);
-      //MassDifference.at(t).Fill((ParticleLV+Muon2LV).M(),1);
-      //std::cout<<"Mass of particle "<<j<<" is "<<ParticleLV.M()<<" GeV"<< std::endl;
-      for(int m=0;m<Ntp->NSecondaryVertices();m++){
-        
-        double OSdRSV1=99.0*sqrt(2);
-        double OSdRSV1mu=99.0;
-        double OSdRSV1track=99.0;
-        
-        double SS1dRSV1=99.0*sqrt(2);
-        double SS1dRSV1mu=99.0;
-        double SS1dRSV1track=99.0;
-        
-        double SS2dRSV1=99.0*sqrt(2);
-        double SS2dRSV1mu=99.0;
-        double SS2dRSV1track=99.0;
-        
-        double M1bestSV1 = 99.0;
-        double M2bestSV1 = 99.0;
-        double M3bestSV1 = 99.0;
-        
-        
-        TLorentzVector MuLVSV1(0.,0.,0.,0.);
-        TLorentzVector PtLVSV1(0.,0.,0.,0.);
-        TLorentzVector MuLVSV2(0.,0.,0.,0.);
-        TLorentzVector PtLVSV2(0.,0.,0.,0.);
-        TLorentzVector MuLVSV3(0.,0.,0.,0.);
-        TLorentzVector PtLVSV3(0.,0.,0.,0.);
-        
-        
-        for(int n=0;n<Ntp->NTracksAtSecondaryVertex(m);n++){//for each MuLV, ParticleLV pair, try to find the tracks with common SV that closely match
-          
-          //std::cout<<"The mass of the track is "<< Ntp->SecondaryVertexTrack_P4(m,n).M() <<"GeV"<<std::endl;
-          
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->Muon_charge(os_mu_idx)&&sqrt(pow(MuonOSReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1track*OSdRSV1track)<OSdRSV1){
-           OSdRSV1=sqrt(pow(MuonOSReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1track*OSdRSV1track);
-           OSdRSV1mu=MuonOSReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           MuLVSV1=Ntp->SecondaryVertexTrack_P4(m,n);
-           MuLVSV1.SetE(sqrt(MuLVSV1.Px()*MuLVSV1.Px()+MuLVSV1.Py()*MuLVSV1.Py()+MuLVSV1.Pz()*MuLVSV1.Pz()+0.493677*0.493677));
-           M1bestSV1=(MuLVSV1+PtLVSV1).M();
-         }
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==(-1*Ntp->Muon_charge(os_mu_idx))&&Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->IsolationTrack_charge(signal_idx,j)&&sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1mu*OSdRSV1mu)<OSdRSV1){//only tracks with opposite charge of muon consiered
-           OSdRSV1=sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+OSdRSV1mu*OSdRSV1mu);
-           OSdRSV1track=ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           PtLVSV1=Ntp->SecondaryVertexTrack_P4(m,n);
-           PtLVSV1.SetE(sqrt(PtLVSV1.Px()*PtLVSV1.Px()+PtLVSV1.Py()*PtLVSV1.Py()+PtLVSV1.Pz()*PtLVSV1.Pz()+0.493677*0.493677));
-           M1bestSV1=(MuLVSV1+PtLVSV1).M();
-         }
-         
-         
-         
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->Muon_charge(ss1_mu_idx)&&sqrt(pow(MuonSS1Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS1dRSV1track*SS1dRSV1track)<SS1dRSV1){
-           SS1dRSV1=sqrt(pow(MuonSS1Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS1dRSV1track*SS1dRSV1track);
-           SS1dRSV1mu=MuonSS1Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           MuLVSV2=Ntp->SecondaryVertexTrack_P4(m,n);
-           MuLVSV2.SetE(sqrt(MuLVSV2.Px()*MuLVSV2.Px()+MuLVSV2.Py()*MuLVSV2.Py()+MuLVSV2.Pz()*MuLVSV2.Pz()+0.493677*0.493677));
-           M2bestSV1=(MuLVSV2+PtLVSV2).M();
-         }
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==(-1*Ntp->Muon_charge(ss1_mu_idx))&&Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->IsolationTrack_charge(signal_idx,j)&&sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS1dRSV1mu*SS1dRSV1mu)<SS1dRSV1){
-           SS1dRSV1=sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS1dRSV1mu*SS1dRSV1mu);
-           SS1dRSV1track=ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           PtLVSV2=Ntp->SecondaryVertexTrack_P4(m,n);
-           PtLVSV2.SetE(sqrt(PtLVSV2.Px()*PtLVSV2.Px()+PtLVSV2.Py()*PtLVSV2.Py()+PtLVSV2.Pz()*PtLVSV2.Pz()+0.493677*0.493677));
-           M2bestSV1=(MuLVSV2+PtLVSV2).M();
-         }
-         
-         
-         
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->Muon_charge(ss2_mu_idx)&&sqrt(pow(MuonSS2Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS2dRSV1track*SS2dRSV1track)<SS2dRSV1){
-           SS2dRSV1=sqrt(pow(MuonSS2Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS2dRSV1track*SS2dRSV1track);
-           SS2dRSV1mu=MuonSS2Reassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           MuLVSV3=Ntp->SecondaryVertexTrack_P4(m,n);
-           MuLVSV3.SetE(sqrt(MuLVSV3.Px()*MuLVSV3.Px()+MuLVSV3.Py()*MuLVSV3.Py()+MuLVSV3.Pz()*MuLVSV3.Pz()+0.493677*0.493677));
-           M3bestSV1=(MuLVSV3+PtLVSV3).M();
-         }
-         if(Ntp->SecondaryVertexTrackCharge(m,n)==(-1*Ntp->Muon_charge(ss2_mu_idx))&&Ntp->SecondaryVertexTrackCharge(m,n)==Ntp->IsolationTrack_charge(signal_idx,j)&&sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS2dRSV1mu*SS2dRSV1mu)<SS2dRSV1){
-           SS2dRSV1=sqrt(pow(ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n)),2)+SS2dRSV1mu*SS2dRSV1mu);
-           SS2dRSV1track=ParticleLVReassigned.DeltaR(Ntp->SecondaryVertexTrack_P4(m,n));
-           PtLVSV3=Ntp->SecondaryVertexTrack_P4(m,n);
-           PtLVSV3.SetE(sqrt(PtLVSV3.Px()*PtLVSV3.Px()+PtLVSV3.Py()*PtLVSV3.Py()+PtLVSV3.Pz()*PtLVSV3.Pz()+0.493677*0.493677));
-           M3bestSV1=(MuLVSV3+PtLVSV3).M();
-         }
-         
-         
-         
-        }//end of n loop
-        
-        TVector3 SVPVVect =  Ntp->SecondaryVertexPosition(m)-Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
-        TVector3 CombDirOS = (MuonOSReassigned+ParticleLV).Vect();
-        TVector3 CombDirSS1 = (MuonSS1Reassigned+ParticleLV).Vect();
-        TVector3 CombDirSS2 = (MuonSS2Reassigned+ParticleLV).Vect();
-        
-        if(OSdRSV1<OSdRSV){
-          OSdRSV=OSdRSV1;
-          M1bestSV=M1bestSV1;
-          M1bestSVKStar=(MuonOSReassigned+ParticleLV).M();
-          
-          bestpTSV1=(MuonOSReassigned+ParticleLVReassigned).Pt();
-          bestpTSVKStar1=(MuonOSReassigned+ParticleLV).Pt();
-          
-          bestpSV1=(MuonOSReassigned+ParticleLVReassigned).P();
-          bestpSVKStar1=(MuonOSReassigned+ParticleLV).P();
-          
-        }
-        
-               
-        if(SS1dRSV1<SS1dRSV){
-          SS1dRSV=SS1dRSV1;
-          M2bestSV=M2bestSV1;
-          M2bestSVKStar=(MuonSS1Reassigned+ParticleLV).M();
-          
-          bestpTSV2=(MuonSS1Reassigned+ParticleLVReassigned).Pt();
-          bestpTSVKStar2=(MuonSS1Reassigned+ParticleLV).Pt();
-          
-          bestpSV2=(MuonSS1Reassigned+ParticleLVReassigned).P();
-          bestpSVKStar2=(MuonSS1Reassigned+ParticleLV).P();
-        }
-        
-        if(SS2dRSV1<SS2dRSV){
-          SS2dRSV=SS2dRSV1;
-          M3bestSV=M3bestSV1;
-          M3bestSVKStar=(MuonSS2Reassigned+ParticleLV).M();
-          
-          bestpTSV3=(MuonSS2Reassigned+ParticleLVReassigned).Pt();
-          bestpTSVKStar3=(MuonSS2Reassigned+ParticleLV).Pt();
-          
-          bestpSV3=(MuonSS2Reassigned+ParticleLVReassigned).P();
-          bestpSVKStar3=(MuonSS2Reassigned+ParticleLV).P();
-        }
-        
-        if(OSdRSV1<0.00001){
-        }
-        
-        
-        if(OSdRSV1<0.00001){
-          //Mu1TrackInvariantMassBeforeMVASV.at(t).Fill(M1bestSV,1);
-          //Mu1TrackInvariantMassBeforeMVAKStarSV.at(t).Fill((MuonOSReassigned+ParticleLV).M(),1);
-          
-          if(fabs(SVPVVect.Angle(CombDirOS))<bestOSAng){
-            bestOSAng=fabs(SVPVVect.Angle(CombDirOS));
-            bestOSAngM=(MuonOSReassigned+ParticleLVReassigned).M();
-            bestOSAngMK=(MuonOSReassigned+ParticleLV).M();
-          }
-          
-          TLorentzVector MuTest=MuonOSReassigned;
-          TLorentzVector PtTest=ParticleLVReassigned;
-          TLorentzVector SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestOSSVAngle){//0.03
-            BestOSSVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestOSSVAngleMass=M1bestSV1;
-          }
-          
-          
-          
-          
-          MuTest=MuonOSReassigned;//For K star 896, neutral
-          PtTest=ParticleLV;
-          SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestOSSVAngleKStar){//0.03
-            BestOSSVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestOSSVAngleMassKStar=(MuonOSReassigned+ParticleLV).M();
-          }
-        }
-        
-        
-        if(SS1dRSV1<0.00001){
-          //Mu2TrackInvariantMassBeforeMVASV.at(t).Fill(M2bestSV,1);
-          //Mu2TrackInvariantMassBeforeMVAKStarSV.at(t).Fill((MuonSS1Reassigned+ParticleLV).M(),1);
-          
-          if(fabs(SVPVVect.Angle(CombDirSS1))<bestSS1Ang){
-            bestSS1Ang=fabs(SVPVVect.Angle(CombDirSS1));
-            bestSS1AngM=(MuonSS1Reassigned+ParticleLVReassigned).M();
-            bestSS1AngMK=(MuonSS1Reassigned+ParticleLV).M();
-          }
-          
-          TLorentzVector MuTest=MuonSS1Reassigned;
-          TLorentzVector PtTest=ParticleLVReassigned;
-          TLorentzVector SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS1SVAngle){//0.03
-            BestSS1SVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestSS1SVAngleMass=M2bestSV1;
-          }
-          
-          
-          
-          MuTest=MuonSS1Reassigned;//For K star 896, neutral
-          PtTest=ParticleLV;
-          SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS1SVAngleKStar){//0.03
-            BestSS1SVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestSS1SVAngleMassKStar=(MuonSS1Reassigned+ParticleLV).M();
-          }
-        }
-        
-        
-        
-        if(SS2dRSV1<0.00001){
-        
-          //std::cout<<"The dR is, for SS2dRSV1, : "<< SS2dRSV1 <<std::endl; it's around 10^-8
-          //Mu3TrackInvariantMassBeforeMVASV.at(t).Fill(M3bestSV,1);
-          //Mu3TrackInvariantMassBeforeMVAKStarSV.at(t).Fill((MuonSS2Reassigned+ParticleLV).M(),1);
-          
-          if(fabs(SVPVVect.Angle(CombDirSS2))<bestSS2Ang){
-            bestSS2Ang=fabs(SVPVVect.Angle(CombDirSS2));
-            bestSS2AngM=(MuonSS2Reassigned+ParticleLVReassigned).M();
-            bestSS2AngMK=(MuonSS2Reassigned+ParticleLV).M();
-          }
-          
-          TLorentzVector MuTest=MuonSS2Reassigned;
-          TLorentzVector PtTest=ParticleLVReassigned;
-          TLorentzVector SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+1.019461*1.019461));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          Mu1TrackInvariantMassBeforeMVABestdRDecrease.at(t).Fill(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793),1);
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS2SVAngle){//0.03
-            BestSS2SVAngle=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestSS2SVAngleMass=M3bestSV1;
-          }
-          
-          
-          
-          
-          Mu1TrackInvariantMassBeforeMVABestdRIncrease.at(t).Fill(MuLVSV3.DeltaR(PtLVSV3),1);
-          
-          MuTest=MuonSS2Reassigned;//For K star 896, neutral
-          PtTest=ParticleLV;
-          SumLV=MuTest+PtTest;
-          SumLV.SetE(sqrt(SumLV.Px()*SumLV.Px()+SumLV.Py()*SumLV.Py()+SumLV.Pz()*SumLV.Pz()+0.896*0.896));
-          MuTest.Boost(-1*SumLV.BoostVector());
-          PtTest.Boost(-1*SumLV.BoostVector());
-          
-          if(fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793)<BestSS2SVAngleKStar){//0.03
-            BestSS2SVAngleKStar=fabs(MuTest.Vect().Angle(PtTest.Vect())-3.141592653589793);
-            BestSS2SVAngleMassKStar=(MuonSS2Reassigned+ParticleLV).M();
-          }
-        }
-        
-        
-      }//end of m loop
-    }
-    
-    
-    /*
-    if(OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVASV.at(t).Fill(bestOSAngM,1);
-      Mu1TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestOSAngMK,1);
-      
-      if(M1bestSV<1.03&&M1bestSV>1.01){
-        Mu1TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(bestpTSV1,1);
-        Mu1TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(bestOSAng,1);
-      }
-      if(M1bestSVKStar<0.95&&M1bestSVKStar>0.8){
-        Mu1TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(bestpTSVKStar1,1);
-        Mu1TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(bestOSAng,1);
-      }
-    }
-    
-    if(SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVASV.at(t).Fill(bestSS1AngM,1);
-      Mu2TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS1AngMK,1);
-      
-      if(M2bestSV<1.03&&M2bestSV>1.01){
-        Mu2TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(bestpTSV2,1);
-        Mu2TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(bestSS1Ang,1);
-      }
-      if(M2bestSVKStar<0.95&&M2bestSVKStar>0.8){
-        Mu2TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(bestpTSVKStar2,1);
-        Mu2TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(bestSS1Ang,1);
-      }
-    }
-    
-    if(SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVASV.at(t).Fill(bestSS2AngM,1);
-      Mu3TrackInvariantMassBeforeMVAKStarSV.at(t).Fill(bestSS2AngMK,1);
-      
-      if(M3bestSV<1.03&&M3bestSV>1.01){
-        Mu3TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(bestpTSV3,1);
-        Mu3TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(bestSS2Ang,1);
-      }
-      if(M3bestSVKStar<0.95&&M3bestSVKStar>0.8){
-        Mu3TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(bestpTSVKStar3,1);
-        Mu3TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(bestSS2Ang,1);
-      }
-    }
-    */
-    
-    
-    
-    
-    
-    IsolationTrackCount.at(t).Fill(Ntp->NIsolationTrack(signal_idx),1);
-    
-    Mu1TrackInvariantMassBeforeMVABestdR.at(t).Fill(M1dR,1);
-    Mu2TrackInvariantMassBeforeMVABestdR.at(t).Fill(M2dR,1);
-    Mu3TrackInvariantMassBeforeMVABestdR.at(t).Fill(M3dR,1);
-    
-    if(bestOSAng<0.02&&bestpTSV1>6){
-      Mu1TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(bestOSAngM,1);
-    }
-    if(bestSS1Ang<0.02&&bestpTSV2>6){
-      Mu2TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(bestSS1AngM,1);
-    }
-    if(bestSS2Ang<0.02&&bestpTSV3>6){
-      Mu3TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(bestSS2AngM,1);
-    }
-    
-    if(bestOSAng<0.05&&bestpTSV1>6){
-      Mu1TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(bestOSAngM,1);
-    }
-    if(bestSS1Ang<0.05&&bestpTSV2>6){
-      Mu2TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(bestSS1AngM,1);
-    }
-    if(bestSS2Ang<0.05&&bestpTSV3>6){
-      Mu3TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(bestSS2AngM,1);
-    }
-    
-    //KStar angles
-    
-    if(bestOSAng<0.02&&bestpTSV1>6){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(bestOSAngMK,1);
-    }
-    if(bestSS1Ang<0.02&&bestpTSV2>6){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(bestSS1AngMK,1);
-    }
-    if(bestSS2Ang<0.02&&bestpTSV3>6){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(bestSS2AngMK,1);
-    }
-    
-    if(bestOSAng<0.05&&bestpTSV1>6){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(bestOSAngMK,1);
-    }
-    if(bestSS1Ang<0.05&&bestpTSV2>6){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(bestSS1AngMK,1);
-    }
-    if(bestSS2Ang<0.05&&bestpTSV3>6){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(bestSS2AngMK,1);
-    }
-    
-    
-    if(1==1){
-      Mu1TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(Mu1bestChi2DistRatio,1);
-    }
-    if(1==1){
-      Mu2TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(Mu2bestChi2DistRatio,1);
-    }
-    if(1==1){
-      Mu3TrackInvariantMassBeforeMVASVAngle0.at(t).Fill(Mu3bestChi2DistRatio,1);
-    }
-    
-    /*
-    
-    if(bestpTSV1>3&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(M1bestSV,1);
-    }
-    if(bestpTSV2>3&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(M2bestSV,1);
-    }
-    if(bestpTSV3>3&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVASVAngle1.at(t).Fill(M3bestSV,1);
-    }
-    */
-    /*
-    if(bestpTSV1>3&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(M1bestSV,1);
-    }
-    if(bestpTSV2>3&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(M2bestSV,1);
-    }
-    if(bestpTSV3>3&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVASVAngle2.at(t).Fill(M3bestSV,1);
-    }
-    
-    
-    if(bestpTSV1>10&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(M1bestSV,1);
-    }
-    if(bestpTSV2>10&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(M2bestSV,1);
-    }
-    if(bestpTSV3>10&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVASVAngle3.at(t).Fill(M3bestSV,1);
-    }
-    */
-    
-    
-    //KStar
-    
-    if(1==1){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(Mu1KSbestChi2DistRatio,1);
-    }
-    if(1==1){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(Mu2KSbestChi2DistRatio,1);
-    }
-    if(1==1){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle0.at(t).Fill(Mu3KSbestChi2DistRatio,1);
-    }
-    
-    /*
-    if(bestpTSV1>3&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(M1bestSVKStar,1);
-    }
-    if(bestpTSV2>3&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(M2bestSVKStar,1);
-    }
-    if(bestpTSV3>3&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle1.at(t).Fill(M3bestSVKStar,1);
-    }
-    */
-    /*
-    if(bestpTSV1>3&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(M1bestSVKStar,1);
-    }
-    if(bestpTSV2>3&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(M2bestSVKStar,1);
-    }
-    if(bestpTSV3>3&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle2.at(t).Fill(M3bestSVKStar,1);
-    }
-    
-    
-    if(bestpTSV1>10&&OSdRSV<0.00001){
-      Mu1TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(M1bestSVKStar,1);
-    }
-    if(bestpTSV2>10&&SS1dRSV<0.00001){
-      Mu2TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(M2bestSVKStar,1);
-    }
-    if(bestpTSV3>10&&SS2dRSV<0.00001){
-      Mu3TrackInvariantMassBeforeMVAKStarSVAngle3.at(t).Fill(M3bestSVKStar,1);
-    }
-    */
-    
-    
-    
-    /*
-    if(OSdRSV<0.002){
-      Mu1TrackInvariantMassBeforeMVABestdR.at(t).Fill(M1bestSV,1);
-    }
-    if(SS1dRSV<0.002){
-      Mu2TrackInvariantMassBeforeMVABestdR.at(t).Fill(M2bestSV,1);
-    }
-    if(SS2dRSV<0.002){
-      Mu3TrackInvariantMassBeforeMVABestdR.at(t).Fill(M3bestSV,1);
-    }
-    */
-    
-    Mu1TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM1dR,1);
-    Mu2TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM2dR,1);
-    Mu3TrackInvariantMassBeforeMVAKStarBestdR.at(t).Fill(KM3dR,1);
-    
-    /*
-    Mu1TrackInvariantMassBeforeMVABestdRIncrease.at(t).Fill(OSdRSV,1);
-    
-    
-    Mu1TrackInvariantMassBeforeMVABestdRDecrease.at(t).Fill(SS2dRSV,1);
-    
-    */
-    
-    //Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR1,1);
-    //Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR2,1);
-    //Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(dR3,1);
-    
-    /*
-    
-    if(dR1<0.125){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M1dR,1);
-    }
-    if(dR2<0.125){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M2dR,1);
-    }
-    if(dR3<0.125){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd.at(t).Fill(M3dR,1);
-    }
-    
-    */
-    
-    Mu1TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M1bestChi2,1);
-    
-    
-    Mu2TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M2bestChi2,1);
-    
-    
-    Mu3TrackInvariantMassBeforeMVABestdRLtd1.at(t).Fill(M3bestChi2,1);
-    
-    /*
-    if(Mu1bestChi2<100){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<100){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<100){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd2.at(t).Fill(M3bestChi2,1);
-    }
-    */
-    
-    if(Mu1bestChi2<20){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd3.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<20){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd3.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<20){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd3.at(t).Fill(M3bestChi2,1);
-    }
-    
-    if(Mu1bestChi2<10){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd4.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<10){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd4.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<10){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd4.at(t).Fill(M3bestChi2,1);
-    }
-    
-    if(Mu1bestChi2<3){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd5.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<3){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd5.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<3){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd5.at(t).Fill(M3bestChi2,1);
-    }
-    
-    if(Mu1bestChi2<1){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd6.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<1){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd6.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<1){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd6.at(t).Fill(M3bestChi2,1);
-    }
-    
-    if(Mu1bestChi2<0.5){
-      Mu1TrackInvariantMassBeforeMVABestdRLtd7.at(t).Fill(M1bestChi2,1);
-    }
-    if(Mu2bestChi2<0.5){
-      Mu2TrackInvariantMassBeforeMVABestdRLtd7.at(t).Fill(M2bestChi2,1);
-    }
-    if(Mu3bestChi2<0.5){
-      Mu3TrackInvariantMassBeforeMVABestdRLtd7.at(t).Fill(M3bestChi2,1);
-    }
-    
-    Mu1TrackInvariantMassBeforeMVABestMass.at(t).Fill(M1best,1);
-    Mu2TrackInvariantMassBeforeMVABestMass.at(t).Fill(M2best,1);
-    Mu3TrackInvariantMassBeforeMVABestMass.at(t).Fill(M3best,1);
-    
-    
-    if(KdR1<0.125){//for kstars
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM1dR,1);
-    }
-    if(KdR2<0.125){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM2dR,1);
-    }
-    if(KdR3<0.125){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd.at(t).Fill(KM3dR,1);
-    }
-    
-    
-    
-    Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(M1KStarbestChi2,1);
-    
-    
-    Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(M2KStarbestChi2,1);
-    
-    
-    Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd1.at(t).Fill(M3KStarbestChi2,1);
-    
-    
-    if(Mu1bestChi2<100){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd2.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<100){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd2.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<100){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd2.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    if(Mu1bestChi2<20){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd3.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<20){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd3.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<20){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd3.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    if(Mu1bestChi2<10){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd4.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<10){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd4.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<10){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd4.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    if(Mu1bestChi2<3){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd5.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<3){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd5.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<3){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd5.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    if(Mu1bestChi2<1){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd6.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<1){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd6.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<1){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd6.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    if(Mu1bestChi2<0.5){
-      Mu1TrackInvariantMassBeforeMVAKStarBestdRLtd7.at(t).Fill(M1KStarbestChi2,1);
-    }
-    if(Mu2bestChi2<0.5){
-      Mu2TrackInvariantMassBeforeMVAKStarBestdRLtd7.at(t).Fill(M2KStarbestChi2,1);
-    }
-    if(Mu3bestChi2<0.5){
-      Mu3TrackInvariantMassBeforeMVAKStarBestdRLtd7.at(t).Fill(M3KStarbestChi2,1);
-    }
-    
-    Mu1TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM1best,1);
-    Mu2TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM2best,1);
-    Mu3TrackInvariantMassBeforeMVAKStarBestMass.at(t).Fill(KM3best,1);
 
 
     double VertexQuality_OS_SS1;    
@@ -2650,9 +2784,9 @@ void  CommonSelector::doEvent(){
       PairMass2AllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),w);
       MuMuMassAllignedSorting.at(t).Fill((MuonOS+MuonSS2).M(),(MuonOS+MuonSS1).M());
     }
-    /*
+    
 
-    if(id == 40 or id == 60 or id == 119 or id == 120 ){// or id == 40){
+    if(id==60){//   if(id == 40 or id == 60 or id == 119 or id == 120 ){// or id == 40){
       std::cout<<"-------------- All categoris ----------------"<< std::endl;
       std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
       std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
@@ -2663,7 +2797,7 @@ void  CommonSelector::doEvent(){
       Ntp->printMCDecayChainOfEvent(true, true, true, true);
       std::cout<< "\n\n\n\n\n\n";
     }
-    */
+    
 
   
   
@@ -3270,7 +3404,7 @@ void  CommonSelector::doEvent(){
 
 
 
-    double var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
+    var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
     BvsDBDTG.at(t).Fill(var_BvsDSeprator,1);
 
 
@@ -3501,10 +3635,30 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_)
 	  {
 
-	    TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerA->EvaluateMVA("BDT"));
-	    BDTOutputA.at(t).Fill(    readerA->EvaluateMVA("BDT"),1 );
+	    TauMass_allVsBDTA.at(t).Fill(TauRefitLV.M(),readerATrain0->EvaluateMVA("BDT"));
+         
+         BDTOutputATrain0.at(t).Fill(    readerATrain0->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain1.at(t).Fill(    readerATrain1->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain2.at(t).Fill(    readerATrain2->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain3.at(t).Fill(    readerATrain3->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain4.at(t).Fill(    readerATrain4->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain5.at(t).Fill(    readerATrain5->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain6.at(t).Fill(    readerATrain6->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain7.at(t).Fill(    readerATrain7->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain8.at(t).Fill(    readerATrain8->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain9.at(t).Fill(    readerATrain9->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain10.at(t).Fill(    readerATrain10->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain11.at(t).Fill(    readerATrain11->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain12.at(t).Fill(    readerATrain12->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain13.at(t).Fill(    readerATrain13->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain14.at(t).Fill(    readerATrain14->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain15.at(t).Fill(    readerATrain15->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain16.at(t).Fill(    readerATrain16->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain17.at(t).Fill(    readerATrain17->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain18.at(t).Fill(    readerATrain18->EvaluateMVA("BDT"),1 );
+         BDTOutputATrain19.at(t).Fill(    readerATrain19->EvaluateMVA("BDT"),1 );
 
-	    if(readerA->EvaluateMVA("BDT") > mvaA2_){
+	    if(readerATrain0->EvaluateMVA("BDT") > mvaA2_){
 	      //	      if(phiVeto && rmgVeto)
 	      if(phiVeto)
 		//if(CrossVeto)
@@ -3547,25 +3701,7 @@ void  CommonSelector::doEvent(){
 		      TauMassRefitABC1FullEtaVetoCut.at(t).Fill(TauRefitLV.M(),1);
 		    }
             
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterA1MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterA1MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterA1MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
     
     
     
@@ -3598,10 +3734,30 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_)
 	  {
 
-	    TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerB->EvaluateMVA("BDT"));
-	    BDTOutputB.at(t).Fill(readerB->EvaluateMVA("BDT"), 1);
+	    TauMass_allVsBDTB.at(t).Fill(TauRefitLV.M(),readerBTrain0->EvaluateMVA("BDT"));
+         
+	    BDTOutputBTrain0.at(t).Fill(    readerBTrain0->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain1.at(t).Fill(    readerBTrain1->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain2.at(t).Fill(    readerBTrain2->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain3.at(t).Fill(    readerBTrain3->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain4.at(t).Fill(    readerBTrain4->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain5.at(t).Fill(    readerBTrain5->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain6.at(t).Fill(    readerBTrain6->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain7.at(t).Fill(    readerBTrain7->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain8.at(t).Fill(    readerBTrain8->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain9.at(t).Fill(    readerBTrain9->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain10.at(t).Fill(    readerBTrain10->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain11.at(t).Fill(    readerBTrain11->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain12.at(t).Fill(    readerBTrain12->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain13.at(t).Fill(    readerBTrain13->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain14.at(t).Fill(    readerBTrain14->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain15.at(t).Fill(    readerBTrain15->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain16.at(t).Fill(    readerBTrain16->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain17.at(t).Fill(    readerBTrain17->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain18.at(t).Fill(    readerBTrain18->EvaluateMVA("BDT"),1 );
+	    BDTOutputBTrain19.at(t).Fill(    readerBTrain19->EvaluateMVA("BDT"),1 );
 
-	    if(readerB->EvaluateMVA("BDT") > mvaB2_){
+	    if(readerBTrain0->EvaluateMVA("BDT") > mvaB2_){
 	      //	      if(phiVeto && rmgVeto)
 	      if(phiVeto)
 			//if(CrossVeto)
@@ -3642,25 +3798,7 @@ void  CommonSelector::doEvent(){
 		    TauMassRefitABC1FullEtaVetoCut.at(t).Fill(TauRefitLV.M(),1);
 		  }
         
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterB1MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterB1MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterB1MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
 		  
 		}
 	    }
@@ -3670,10 +3808,51 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_)
 	  {
 
-	    TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerC->EvaluateMVA("BDT"));
-	    BDTOutputC.at(t).Fill(    readerC->EvaluateMVA("BDT") );
+	    TauMass_allVsBDTC.at(t).Fill(TauRefitLV.M(),readerCTrain0->EvaluateMVA("BDT"));
+         
+	       BDTOutputCTrain0.at(t).Fill(    readerCTrain0->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain1.at(t).Fill(    readerCTrain1->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain2.at(t).Fill(    readerCTrain2->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain3.at(t).Fill(    readerCTrain3->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain4.at(t).Fill(    readerCTrain4->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain5.at(t).Fill(    readerCTrain5->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain6.at(t).Fill(    readerCTrain6->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain7.at(t).Fill(    readerCTrain7->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain8.at(t).Fill(    readerCTrain8->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain9.at(t).Fill(    readerCTrain9->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain10.at(t).Fill(    readerCTrain10->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain11.at(t).Fill(    readerCTrain11->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain12.at(t).Fill(    readerCTrain12->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain13.at(t).Fill(    readerCTrain13->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain14.at(t).Fill(    readerCTrain14->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain15.at(t).Fill(    readerCTrain15->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain16.at(t).Fill(    readerCTrain16->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain17.at(t).Fill(    readerCTrain17->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain18.at(t).Fill(    readerCTrain18->EvaluateMVA("BDT"),1 );
+         BDTOutputCTrain19.at(t).Fill(    readerCTrain19->EvaluateMVA("BDT"),1 );
+         
+         BDTOutputCTrain0_Vs_TauMass.at(t).Fill(readerCTrain0->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain1_Vs_TauMass.at(t).Fill(readerCTrain1->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain2_Vs_TauMass.at(t).Fill(readerCTrain2->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain3_Vs_TauMass.at(t).Fill(readerCTrain3->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain4_Vs_TauMass.at(t).Fill(readerCTrain4->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain5_Vs_TauMass.at(t).Fill(readerCTrain5->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain6_Vs_TauMass.at(t).Fill(readerCTrain6->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain7_Vs_TauMass.at(t).Fill(readerCTrain7->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain8_Vs_TauMass.at(t).Fill(readerCTrain8->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain9_Vs_TauMass.at(t).Fill(readerCTrain9->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain10_Vs_TauMass.at(t).Fill(readerCTrain10->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain11_Vs_TauMass.at(t).Fill(readerCTrain11->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain12_Vs_TauMass.at(t).Fill(readerCTrain12->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain13_Vs_TauMass.at(t).Fill(readerCTrain13->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain14_Vs_TauMass.at(t).Fill(readerCTrain14->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain15_Vs_TauMass.at(t).Fill(readerCTrain15->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain16_Vs_TauMass.at(t).Fill(readerCTrain16->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain17_Vs_TauMass.at(t).Fill(readerCTrain17->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain18_Vs_TauMass.at(t).Fill(readerCTrain18->EvaluateMVA("BDT"),TauRefitLV.M());
+         BDTOutputCTrain19_Vs_TauMass.at(t).Fill(readerCTrain19->EvaluateMVA("BDT"),TauRefitLV.M());
 
-	    if(readerC->EvaluateMVA("BDT") > mvaC2_){
+	    if(readerCTrain0->EvaluateMVA("BDT") > mvaC2_){
 	      //	      	      if(phiVeto && rmgVeto)
 	      if(phiVeto)
 			//if(CrossVeto)
@@ -3714,25 +3893,7 @@ void  CommonSelector::doEvent(){
 		  }
         
         
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterC1MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterC1MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterC1MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
 		
 		}
 	    }
@@ -3742,7 +3903,7 @@ void  CommonSelector::doEvent(){
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_)
 	  {
 
-	    if(readerA->EvaluateMVA("BDT") > mvaA1_ && readerA->EvaluateMVA("BDT") < mvaA2_){
+	    if(readerATrain0->EvaluateMVA("BDT") > mvaA1_ && readerATrain0->EvaluateMVA("BDT") < mvaA2_){
 	      //	      	      if(phiVeto && rmgVeto)
    	      if(phiVeto)
 			//	      if(CrossVeto)
@@ -3780,25 +3941,7 @@ void  CommonSelector::doEvent(){
 		    TauMassRefitABC2FullEtaVetoCut.at(t).Fill(TauRefitLV.M(),1);
 		  }
         
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterA2MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterA2MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterA2MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
 
 		}
 	    }
@@ -3807,7 +3950,7 @@ void  CommonSelector::doEvent(){
 	//Category B2
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_)
 	  {
-	    if(readerB->EvaluateMVA("BDT") > mvaB1_ && readerB->EvaluateMVA("BDT") < mvaB2_){
+	    if(readerBTrain0->EvaluateMVA("BDT") > mvaB1_ && readerBTrain0->EvaluateMVA("BDT") < mvaB2_){
 	      //	      	      if(phiVeto && rmgVeto)
      	      if(phiVeto)
 			//if(CrossVeto)
@@ -3847,25 +3990,7 @@ void  CommonSelector::doEvent(){
 		  }
         
         
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterB2MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterB2MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterB2MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
 
 		}
 	    }
@@ -3874,7 +3999,7 @@ void  CommonSelector::doEvent(){
 	//Category C2
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_)
 	  {
-	    if(readerC->EvaluateMVA("BDT") > mvaC1_ && readerC->EvaluateMVA("BDT")< mvaC2_){
+	    if(readerCTrain0->EvaluateMVA("BDT") > mvaC1_ && readerCTrain0->EvaluateMVA("BDT")< mvaC2_){
 	      //	      	      if(phiVeto && rmgVeto)
       	      if(phiVeto)
 			//if(CrossVeto)
@@ -3914,25 +4039,7 @@ void  CommonSelector::doEvent(){
 		  }
         
         
-    for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){
-      TLorentzVector ParticleLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      TLorentzVector ParticleLVReassigned = ParticleLV;//reassign the masses to be similar to a kaon
-      ParticleLVReassigned.SetE(sqrt(ParticleLV.Px()*ParticleLV.Px()+ParticleLV.Py()*ParticleLV.Py()+ParticleLV.Pz()*ParticleLV.Pz()+0.493677*0.493677));
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(os_mu_idx))){
-        Mu1TrackInvariantMassAfterC2MVA.at(t).Fill((ParticleLVReassigned+MuonOSReassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss1_mu_idx))){
-        Mu2TrackInvariantMassAfterC2MVA.at(t).Fill((ParticleLVReassigned+MuonSS1Reassigned).M(),1);
-      }
-      
-      if(Ntp->IsolationTrack_charge(signal_idx,j)==(-1*Ntp->Muon_charge(ss2_mu_idx))){
-        Mu3TrackInvariantMassAfterC2MVA.at(t).Fill((ParticleLVReassigned+MuonSS2Reassigned).M(),1);
-      }
-      
-      
-    }
+    
     
     
     
@@ -3989,17 +4096,17 @@ void  CommonSelector::doEvent(){
 
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut1_ ){
 	  category = 1;
-	  bdt = readerA->EvaluateMVA("BDT");
+	  bdt = readerATrain0->EvaluateMVA("BDT");
 	}
     
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut1_ && Ntp->TauMassResolution(EtaSortedIndices,1,false) < PEMassResolutionCut2_){
 	  category = 2;
-	  bdt = readerB->EvaluateMVA("BDT");
+	  bdt = readerBTrain0->EvaluateMVA("BDT");
 	}
 
 	if(Ntp->TauMassResolution(EtaSortedIndices,1,false) > PEMassResolutionCut2_){
 	  category = 3;
-	  bdt = readerC->EvaluateMVA("BDT");
+	  bdt = readerCTrain0->EvaluateMVA("BDT");
 	}
 
 
@@ -4021,7 +4128,7 @@ void  CommonSelector::doEvent(){
 }
 
 
-void  CommonSelector::Finish(){
+void  BDTSelector::Finish(){
 
   //*** write down the T3MMiniTree.root for statistical analysis
   T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");

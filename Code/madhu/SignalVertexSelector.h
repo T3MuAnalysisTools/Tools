@@ -1,9 +1,11 @@
-#ifndef CommonSelector_h
-#define CommonSelector_h
+#ifndef SignalVertexSelector_h
+#define SignalVertexSelector_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
+#include "TError.h"
+#include "PDGInfo.h"
 
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
@@ -12,15 +14,21 @@
 #include "SimpleFits/FitSoftware/interface/TrackParticle.h"
 #include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
 #include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+#include "TDecompBK.h"
+#include <TMatrixT.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TVectorD.h>
+#include "TMatrixDSymEigen.h"
 
 
 
 
-class CommonSelector : public Selection {
+class SignalVertexSelector : public Selection {
 
  public:
-  CommonSelector(TString Name_, TString id_);
-  virtual ~CommonSelector();
+  SignalVertexSelector(TString Name_, TString id_);
+  virtual ~SignalVertexSelector();
 
   virtual void  Configure();
   virtual void  Finish();
@@ -450,9 +458,147 @@ class CommonSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
-
-
-
+  
+  std::vector<TH1D>  WhetherdRMatch;
+  std::vector<TH1D>  WhetherTau3Mu;
+  
+  std::vector<TH1D>  IsoTrackToMCdR01;
+  std::vector<TH1D>  IsoTrackToMCdR08;
+  std::vector<TH1D>  IsoTrackToMCAngle01;
+  
+  std::vector<TH1D>  NumberOfFS_ChargedParticles;
+  std::vector<TH1D>  NumberOfFS_ChargedParticles_RecoMatch;
+  
+  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC1;
+  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC2;
+  std::vector<TH1D>  NumberOfRecoChargedParticlesIfMC3;
+  
+  std::vector<TH1D>  TwoProngInvariantMassReco;
+  std::vector<TH1D>  TwoProngInvariantMassMC;
+  
+  std::vector<TH1D>  ThreeProngInvariantMassReco;
+  std::vector<TH1D>  ThreeProngInvariantMassMC;
+  
+  std::vector<TH1D>  TwoProngInvariantMassReco005;
+  std::vector<TH1D>  TwoProngInvariantMassMC005;
+  
+  std::vector<TH1D>  ThreeProngInvariantMassReco005;
+  std::vector<TH1D>  ThreeProngInvariantMassMC005;
+  
+  std::vector<TH1D>  TwoProngTrackPt;
+  std::vector<TH1D>  TwoProngTrack2Pt;
+  
+  std::vector<TH1D>  ThreeProngTrackPt;
+  std::vector<TH1D>  ThreeProngTrack2Pt;
+  std::vector<TH1D>  ThreeProngTrack3Pt;
+  
+  std::vector<TH1D>  TrackToTauDr2Prong;
+  std::vector<TH1D>  TrackToTauDr3Prong;
+  std::vector<TH1D>  TrackToTauDrAll;
+  
+  std::vector<TH1D>  TwoProngTrackEta;
+  std::vector<TH1D>  TwoProngTrack2Eta;
+  
+  std::vector<TH2D>  dR_vs_dP;
+  
+  std::vector<TH2D>  InvMass2_vs_pdgid;
+  std::vector<TH2D>  InvMass3_vs_pdgid;
+  
+  std::vector<TH2D>  dRmin_sum_vs_InvariantMass_2prong;
+  std::vector<TH2D>  dRmin_sum_vs_InvariantMass_3prong;
+  
+  std::vector<TH1D>  NoOfIsoTracks2Prong;
+  std::vector<TH1D>  NoOfIsoTracks3Prong;
+  
+  std::vector<TH1D>  RankMatchedTrackpT;
+  std::vector<TH1D>  RankMatchedTrackdR;
+  std::vector<TH1D>  RankMatchedTrackdR_trim;
+  
+  std::vector<TH1D>  RankMatchedTrackAvgDiff;
+  std::vector<TH1D>  RankMatchedTrackCombn;
+  
+  std::vector<TH1D>  var_All_7_Iso_dR;
+  std::vector<TH1D>  var_Correct_Iso_dR;
+  
+  std::vector<TH1D>  var_All_7_Iso_AvgDiff;
+  std::vector<TH1D>  var_Correct_Iso_AvgDiff;
+  
+  std::vector<TH1D>  var_All_7_Iso_Avg;
+  std::vector<TH1D>  var_Correct_Iso_Avg;
+  
+  std::vector<TH1D>  var_All_7_Iso_Combn;
+  std::vector<TH1D>  var_Correct_Iso_Combn;
+  
+  std::vector<TH1D>  var_All_7_Iso_Trial;
+  std::vector<TH1D>  var_Correct_Iso_Trial;
+  
+  std::vector<TH1D>  RankMatchedTrackdR_cut;
+  
+  std::vector<TH1D>  RankMatchedTrackPairdR;
+  std::vector<TH1D>  TrackPairdR_Crt;
+  std::vector<TH1D>  TrackPairdR_Bkg;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_1;
+  std::vector<TH1D>  IsoTrackMatchedToSV_TwoMatched;
+  std::vector<TH1D>  IsoTrackMatchedToSV_TwoCrtIso;
+  std::vector<TH1D>  IsoTrackMatchedToSV_MassMatch;
+  std::vector<TH1D>  IsoTrackMatchedToSV_MassMatch1;
+  std::vector<TH1D>  IsoTrackMatchedToSV_CombMatch;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_Count;
+  
+  std::vector<TH1D>  CombMatch_Avg1;
+  std::vector<TH1D>  CombMatch_Avg2;
+  
+  std::vector<TH1D>  Angle_SVPV_iSVSV;
+  std::vector<TH1D>  Angle_SVPV_isvSV;
+  
+  std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch;
+  std::vector<TH1D>  IsoTrackMatchedToSV_ThreeMassMatch1;
+  
+  std::vector<TH1D>  iSVSV_Distance;
+  std::vector<TH1D>  iSVSV_Distance_Sig;
+  
+  std::vector<TH1D>  isvSV_Distance;
+  std::vector<TH1D>  isvSV_Distance_Sig;
+  
+  std::vector<TH1D>  InvMass2ProngMatched;
+  std::vector<TH1D>  InvMass2ProngMatchedSV;
+  std::vector<TH1D>  InvMass2ProngNotMatched;
+  
+  std::vector<TH1D>  SVSize;
+  std::vector<TH1D>  SVNoOfTracksMatched;
+  std::vector<TH1D>  SVNoOfTracksMatchedThree;
+  std::vector<TH1D>  SVNoOfTracksUnmatched;
+  
+  std::vector<TH1D>  InvMass3ProngMatched;
+  std::vector<TH1D>  InvMass3ProngMatchedSV;
+  std::vector<TH1D>  InvMass3ProngNotMatched;
+  
+  std::vector<TH1D>  InvMassTotal;
+  std::vector<TH1D>  InvMassTotal1;
+  std::vector<TH1D>  InvMassTotal2;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu;
+  std::vector<TH1D>  SVCollectionNoOfNeither;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu_if1;
+  std::vector<TH1D>  SVCollectionNoOfNeither_if1;
+  
+  std::vector<TH1D>  SVCollectionNoOfSignalMu_ifmore1;
+  std::vector<TH1D>  SVCollectionNoOfNeither_ifmore1;
+  
+  std::vector<TH1D>  SVCollectionNoOfCrt;
+  std::vector<TH1D>  SVCollectionNoOfCrt_if3;
+  
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso;
+  
+  std::vector<TH1D>  Rank_Correct_1iso3mu_Chi2;
+  std::vector<TH1D>  Rank_Correct_2iso_Chi2;
+  std::vector<TH1D>  Rank_Correct_2iso3mu_Chi2;
+  std::vector<TH1D>  Rank_Correct_3iso_Chi2;
+  std::vector<TH1D>  Rank_Correct_3iso3mu_Chi2;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
