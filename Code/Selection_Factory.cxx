@@ -23,7 +23,7 @@
 #include "cherepanov/DsPhiPeak.h"
 #include "cherepanov/VertexFits.h"
 #include "cherepanov/DebugFit.h"
-
+#include "cherepanov/SignalVertexSelector.h"
 
 #endif
 
@@ -93,7 +93,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("commonselector"))s=new CommonSelector(Analysis,UncertType);
   else if(Analysis.Contains("vertexfits"))s=new VertexFits(Analysis,UncertType);
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
-
+  else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
 
 
 
