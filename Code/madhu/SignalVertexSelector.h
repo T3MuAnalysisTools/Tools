@@ -4,6 +4,8 @@
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
+#include "TError.h"
+#include "PDGInfo.h"
 
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
@@ -12,6 +14,12 @@
 #include "SimpleFits/FitSoftware/interface/TrackParticle.h"
 #include "SimpleFits/FitSoftware/interface/LorentzVectorParticle.h"
 #include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
+#include "TDecompBK.h"
+#include <TMatrixT.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TVectorD.h>
+#include "TMatrixDSymEigen.h"
 
 
 
@@ -582,6 +590,14 @@ class SignalVertexSelector : public Selection {
   
   std::vector<TH1D>  SVCollectionNoOfCrt;
   std::vector<TH1D>  SVCollectionNoOfCrt_if3;
+  
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso;
+  
+  std::vector<TH1D>  Rank_Correct_1iso3mu_Chi2;
+  std::vector<TH1D>  Rank_Correct_2iso_Chi2;
+  std::vector<TH1D>  Rank_Correct_2iso3mu_Chi2;
+  std::vector<TH1D>  Rank_Correct_3iso_Chi2;
+  std::vector<TH1D>  Rank_Correct_3iso3mu_Chi2;
   
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
