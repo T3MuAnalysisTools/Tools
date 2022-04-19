@@ -87,9 +87,9 @@ void  SignalVertexSelector::Configure(){
 
 
 
-
   TString basedir = "";
   basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/";
+  /*
 
   //*** defined the bdt reader for event selection; readerA- category A, readerB - category B ...
   readerA = new TMVA::Reader( "!Color:!Silent" );
@@ -144,7 +144,7 @@ void  SignalVertexSelector::Configure(){
   //  readerA->AddSpectator("var_tauMass",&var_tauMass);
   readerC->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVAWithFilterMay_09_2021/Code/CommonUtils/IterativeTrain/output_0_C/weights/TMVAClassification_BDT.weights.xml"); 
 
-
+  */
 
 
 
@@ -201,7 +201,7 @@ void  SignalVertexSelector::Configure(){
   readerMuIDEndcap->AddSpectator("mu_SoftMVA" ,&mu_SoftMVA);
   readerMuIDEndcap->BookMVA( "BDT", basedir+"MuonMVA_02may_endcap/weights/TMVA_new_BDT.weights.xml" ); // weights xml file after training, place it to CommonFiles
 
-
+  /*
   readerBvsD= new TMVA::Reader( "!Color:!Silent" );
   readerBvsD->AddVariable("var_flightLenSig",&var_flightLenSig);
   readerBvsD->AddVariable("var_svpvTauAngle",&var_svpvTauAngle);
@@ -361,7 +361,7 @@ void  SignalVertexSelector::Configure(){
   readerDTrainC->AddVariable("var_IsoPhiKKMass_Mu2",&var_IsoPhiKKMass_Mu2);
   readerDTrainC->AddVariable("var_IsoPhiKKMass_Mu3",&var_IsoPhiKKMass_Mu3);
   readerDTrainC->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/Analysis/workdirMakeMVATree_Verify1Apr_27_2021/Code/CommonUtils/IterativeTrain/output_7_C_DS/weights/TMVAClassification_BDT.weights.xml");
-
+  */
 
 
   for(int i=0; i<NCuts;i++){
@@ -1743,6 +1743,7 @@ void  SignalVertexSelector::doEvent(){
       
       dR_No.push_back({TrackLV.DeltaR(TauLV),j});
       pT_No.push_back({TrackLV.Perp(),j});
+
     }
     
     sort( dR_No.begin(), dR_No.end() ); // sort based on first column, lowest first
@@ -1861,6 +1862,8 @@ void  SignalVertexSelector::doEvent(){
       Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
       PairFittedVertex.Fit();
       
+
+      
       bool Whether_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1]))==1?true:false;
       
       
@@ -1880,7 +1883,7 @@ void  SignalVertexSelector::doEvent(){
     if(MatchedIsoTrackNo.size()>0){
       std::cout<<" The required isolation track indices are: " << std::endl;
       for(int i=0;i<MatchedIsoTrackNo.size();i++){
-        std::cout<<" index : " << MatchedIsoTrackNo[i] << std::endl;
+        std::cout<<" index : " << MatchedIsoTrackNo[i] <<  "    pT: " << Ntp-> IsolationTrack_p4(signal_idx, MatchedIsoTrackNo[i]).Pt() <<std::endl;
       }
     }
     
@@ -1889,6 +1892,8 @@ void  SignalVertexSelector::doEvent(){
     Matrix TwoProngChi2_With3mu;
     Matrix TwoProngVtxDist;
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>1;i++){
+
+      std::cout<<" -------------- All iso tracks pT:  "  << Ntp-> IsolationTrack_p4(signal_idx, dR_No[i][1]).Pt() <<std::endl;
       for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){// combinations of tracks with indices from 0 - 6
         
         std::vector<TrackParticle> TrackPair;
@@ -1905,7 +1910,7 @@ void  SignalVertexSelector::doEvent(){
         bool Pair_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[j][1]))==2?true:false;
         
         double Pair_dR = (Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1])).DeltaR(Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]));
-        
+        TLorentzVector TrackPairSum = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]) + Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]);
         double Product1 = (Pair_dR*Testing[i][0]*Testing[j][0]*100000)/3;
         double Product2 = (Testing[i][0]*Testing[j][0]*1000)/2;
         
@@ -1915,13 +1920,19 @@ void  SignalVertexSelector::doEvent(){
         
         Chi2VertexFitter  PairFitted_WithMus_Vertex(TrackPair,FirstGuess);
         PairFitted_WithMus_Vertex.Fit();
-        
-        TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare()});
-        
         TVector3 PrVtx = PairFittedVertex.GetVertex();
+	TVector3 PairVPV_Vector = PrVtx - Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
+
+
+	TMatrixTSym<double> PairVertexCov = PairFittedVertex.GetVertexError();
+
+	double SV_TrackVertex_Significance = Ntp->FlightLength_significance(PrVtx,PairVertexCov,tau_vtx,Ntp->Vertex_Signal_KF_Covariance(signal_idx));
+        TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(), PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect())});
+        
+
         
         TwoProngChi2_With3mu.push_back({PairFitted_WithMus_Vertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFittedVertex.ChiSquare()});
-        TwoProngVtxDist.push_back({PairFittedVertex.ChiSquare(),(PrVtx-tau_vtx).Mag()});
+        TwoProngVtxDist.push_back({PairFittedVertex.ChiSquare(),(PrVtx-tau_vtx).Mag(),SV_TrackVertex_Significance});
       }
     }
     sort( TwoProngChi2.begin(), TwoProngChi2.end() ); // sort based on first column, lowest first
@@ -1929,26 +1940,43 @@ void  SignalVertexSelector::doEvent(){
     sort( TwoProngChi2_With3mu.begin(), TwoProngChi2_With3mu.end() ); // sort based on first column, lowest first
     
     if(MatchedIsoTrackNo.size()>1){
-      
+      /*
       std::cout<<" The dR sorted indices of the isolation tracks are: " << std::endl;
       
       for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>0;i++){
-        std::cout<< "Index : " << dR_No[i][1] << " dR : " << dR_No[i][0] << " dR to refl: " << dRtoTauRefl[i][0] << " dR to SVPV: " << dRtoSVPV[i][0] << " Distance_Difference_Avg: " << Distance_Difference_Avg[i][0] << " Distance_SV_Avg: " << Distance_SV_Avg[i][0] << " Chi2_Avg: " << Chi2_Avg[i][0] << "  Angle1:" << Angles3[i][0] << "Angle2:" << Angles3[i][1] << "Angle1:" << Angles3[i][2] << " Cross:" << PosSV_Avg_1D_Perp[i][0] << " Dot:" << PosSV_Avg_1D_SVPV[i][0] << " Testing1:" << Testing1[i][0] << std::endl;
+	std::cout << std::left << std::setw(25) << "Index : " << dR_No[i][1] << " dR : " << dR_No[i][0] 
+		  << " dR to refl: " << dRtoTauRefl[i][0] << " dR to SVPV: " << dRtoSVPV[i][0] 
+		  << " Distance_Difference_Avg: " << Distance_Difference_Avg[i][0] << " Distance_SV_Avg: " 
+		  << Distance_SV_Avg[i][0] << " Chi2_Avg: " << Chi2_Avg[i][0] << "  Angle1:" << Angles3[i][0] 
+		  << "Angle2:" << Angles3[i][1] << "Angle1:" << Angles3[i][2] << " Cross:" << PosSV_Avg_1D_Perp[i][0] 
+		  << " Dot:" << PosSV_Avg_1D_SVPV[i][0] << " Testing1:" << Testing1[i][0] << std::endl;
       }
       std::cout<<" The Testing1 sorted indices of the isolation tracks are: " << std::endl;
       
-      for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut;i++){
-        std::cout<<" Testing1 : " << Testing1[i][0] << " index : " << Testing1[i][1] << std::endl;
-      }
-      
+            for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut;i++){
+              std::cout<<" Testing1 : " << Testing1[i][0] << " index : " << Testing1[i][1] << std::endl;
+            }
+      */
+
+
+
+
+
+
     }
     
     for(int i=0;i<TwoProngChi2.size()&&MatchedIsoTrackNo.size()>1;i++){// Selecting Chi squares of 7 track combinations with lowest Chi2
-      std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] <<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " << TwoProngVtxDist[i][1] <<" pair dr: "<< TwoProngChi2[i][7] << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
+      
+      std::cout << std::left << std::setw(25)<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] 
+		<<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " 
+		<< TwoProngVtxDist[i][2] <<" pair dr: "<< TwoProngChi2[i][7] << " SVPV - TrackVertexPV  dR:  " 
+		<< TwoProngChi2[i][10]   <<" TrackVertexPV - TrackPairSum dR:  " << TwoProngChi2[i][11]   
+		<< " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
       
       if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[i][2]))==2){
         Rank_Correct_2iso_Chi2.at(t).Fill(i,1);
       }
+
       if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][2]))==2){
         Rank_Correct_2iso3mu_Chi2.at(t).Fill(i,1);
       }
@@ -2000,6 +2028,7 @@ void  SignalVertexSelector::doEvent(){
         }
       }
     }
+
     sort( ThreeProngChi2.begin(), ThreeProngChi2.end() ); // sort based on first column, lowest first
     sort( ThreeProngChi2_With3mu.begin(), ThreeProngChi2_With3mu.end() ); // sort based on first column, lowest first
     
@@ -2026,6 +2055,7 @@ void  SignalVertexSelector::doEvent(){
     bool var_IsoTrackMatchedToSV_TwoCrtIso(false);
     bool var_IsoTrackMatchedToSV_MassMatch(false);//TwoMassMatch: matching two correct iso tracks
     bool var_IsoTrackMatchedToSV_ThreeMassMatch(false);
+
     for(int i=0;i<Ntp->NSecondaryVertices();i++){// see if we can get matched tracks in SecondaryVertexTrack_P4 std::count
       std::vector<int> matched_track_from_SV_to_iso;// iso track index
       std::vector<int> matched_track_from_SV_to_iso_SVIndex;// SVIndex = SV track index
@@ -2108,7 +2138,9 @@ void  SignalVertexSelector::doEvent(){
           //std::cout<<"Before Invariant mass-3 (crt): "<<(LV1+LV2+LV3).M()<<" Invariant mass-3 (from SV): "<<(LV4+LV5+LV6).M()<<std::endl;
           
           if(abs((LV1+LV2+LV3).M()-(LV4+LV5+LV6).M())<0.01&&IsoTrackMatchedToSV_ThreeMassMatch_Index.size()==0){
-            //std::cout<<"Invariant mass-3 (crt): "<<(LV1+LV2+LV3).M()<<" Invariant mass-3 (from SV): "<<(LV4+LV5+LV6).M()<<std::endl;
+            //std::cout<<"Invariant mass-3 (crt):
+            //"<<(LV1+LV2+LV3).M()<<" Invariant mass-3 (from SV):
+            //"<<(LV4+LV5+LV6).M()<<std::endl;
             var_IsoTrackMatchedToSV_ThreeMassMatch=true;
             IsoTrackMatchedToSV_ThreeMassMatch_Index.push_back({i,matched_track_from_SV_to_correct_SVIndex[0],matched_track_from_SV_to_correct_IsoIndex[0]});
             IsoTrackMatchedToSV_ThreeMassMatch_Index.push_back({i,matched_track_from_SV_to_correct_SVIndex[1],matched_track_from_SV_to_correct_IsoIndex[1]});
@@ -2374,21 +2406,23 @@ void  SignalVertexSelector::doEvent(){
      }
      
      dRmin_sum_vs_InvariantMass_2prong.at(t).Fill((dR_min_reco.at(0)+dR_min_reco.at(1)),(L1_Track+L2_Track).M(),1);
-     /*
-     if((L1_MC+L2_MC).M()<0.6){
-       if(id ==60 ||  id ==90){// or id == 40){
-        std::cout<<"--------------  Low mass ----------------"<< (L1_MC+L2_MC).M() <<std::endl;
-        std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
-        std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
-        std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
-        Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
-        Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
-        Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
-        Ntp->printMCDecayChainOfEvent(true, true, true, true);
-        std::cout<< "\n\n\n\n\n\n";
-       }
-     }
-     */
+    
+     ///     if((L1_MC+L2_MC).M()<0.6)7
+    
+     //       {
+     //  if(id ==60 ||  id ==90){// or id == 40){
+     //  std::cout<<"--------------  Low mass ----------------"<< (L1_MC+L2_MC).M() <<std::endl;
+     //   std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+     //   std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+     //   std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+     //   Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+     //   Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+     //   Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+     //   Ntp->printMCDecayChainOfEvent(true, true, true, true);
+     //   std::cout<< "\n\n\n\n\n\n";
+     //  }
+     // }
+    
      
     }// if(b_meson_full_childidx_FS_RecoMC.size()==2)
     //---------------------- Fit signal vertex
@@ -2585,6 +2619,7 @@ void  SignalVertexSelector::doEvent(){
       }
     }
     */
+    
     
     
     
