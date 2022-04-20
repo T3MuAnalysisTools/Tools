@@ -267,9 +267,8 @@ if( $ARGV[0] eq "--Local" ){
     # generate init script 
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
-    system(sprintf("echo \"cd Code\" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:\$PWD/CommonUtils/lib\" >> $OutputDir/workdir$set/init.sh "));
-    system(sprintf("echo \"cd ..\" >> $OutputDir/workdir$set/init.sh "));
 
 
 
@@ -463,9 +462,9 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/CommonUtils/CMSSW_9_3_8/src\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cd -\" >> $OutputDir/workdir$set/init.sh "));
-    system(sprintf("echo \"cd Code\" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:\$PWD/CommonUtils/lib\" >> $OutputDir/workdir$set/init.sh "));
-    system(sprintf("echo \"cd ..\" >> $OutputDir/workdir$set/init.sh "));
+
 
     # generate compile script
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
@@ -609,6 +608,8 @@ if( $ARGV[0] eq "--DCache" ){
 			system(sprintf("echo \"$OutputDir/workdir$set/Code/Analysis.exe 2>&1 | tee >(sed -r \\\"s/\\\\x1B\\\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\\\" > Set_$B.output) \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
          system(sprintf("echo \"echo 'Cleaning EPS' \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"rm EPS/*eps  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+#			system(sprintf("echo \"rm *.o  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
+#			system(sprintf("echo \"rm *.output  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"cp -r *  $OutputDir/workdir$set/Set_$B/ \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"source $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
 			system(sprintf("echo \"rm -r   $RemoteDir/workdir$set-Set_$B  \" >> $OutputDir/workdir$set/Set_$B/Set_$B.sh"));
