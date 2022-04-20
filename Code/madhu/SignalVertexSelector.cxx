@@ -1064,11 +1064,42 @@ void  SignalVertexSelector::Configure(){
   Whether_Lowest_Chi2_is_Correct_2iso=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso","Whether_Lowest_Chi2_is_Correct_2iso",2,-0.5,1.5,"Whether 2 vertex with lowest chi2 is correct","Entries");
   Rank_Correct_2iso_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_2iso_Chi2","Rank_Correct_2iso_Chi2",22,-0.5,21.5,"Rank of matched iso pair by chi2","Events");
   Rank_Correct_2iso3mu_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_2iso3mu_Chi2","Rank_Correct_2iso3mu_Chi2",22,-0.5,21.5,"Rank of matched iso pair and 3mu by chi2","Events");
+  Rank_Correct_2iso_PairAngle =HConfig.GetTH1D(Name+"_Rank_Correct_2iso_PairAngle","Rank_Correct_2iso_PairAngle",22,-0.5,21.5,"Rank of matched iso pair by angle","Events");
   
   Rank_Correct_1iso3mu_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_1iso3mu_Chi2","Rank_Correct_1iso3mu_Chi2",8,-0.5,7.5,"Rank of matched iso and 3mu by chi2","Events");
   
   Rank_Correct_3iso_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_3iso_Chi2","Rank_Correct_3iso_Chi2",36,-0.5,35.5,"Rank of matched iso triplet by chi2","Events");
   Rank_Correct_3iso3mu_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_3iso3mu_Chi2","Rank_Correct_3iso3mu_Chi2",36,-0.5,35.5,"Rank of matched iso triplet and 3mu by chi2","Events");
+  
+  TauEnergyVsPairdR=HConfig.GetTH2D(Name+"_TauEnergyVsPairdR","TauEnergyVsPairdR",110,10.0,65.0,40,0,0.2,"E","dR");
+  EnergyVsPairdR=HConfig.GetTH2D(Name+"_EnergyVsPairdR","EnergyFractionVsPairdR",100,0.0,1.0,80,0,0.8,"E fraction, Tau","dR");
+  EnergyVsPairdR_1=HConfig.GetTH2D(Name+"_EnergyVsPairdR_1","EnergyFractionVsPairdR",100,0.0,1.0,80,0,0.8,"E fraction, Iso Pair","dR");
+  EnergyVsPairdR_2=HConfig.GetTH2D(Name+"_EnergyVsPairdR_2","dR vs Angle Sum",100,0.0,6.0,80,0,0.8,"Sum of Angles","dR");
+  EnergyVsPairdR_Circular=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Circular","Angular Distribution in COM frame, wrt B Meson",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Tau=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Tau","Angular Distribution in COM frame, wrt Tau",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Circular_reco=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Circular_reco","Reco angular Distribution in COM frame, wrt B Meson",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Tau_reco=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Tau_reco","Reco angular Distribution in COM frame, wrt Tau",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Circular_dR=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Circular_dR","Angular Distribution in COM frame, Vtx",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Circular_Incorrect=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Circular_Incorrect","EnergyVsPairdR_Circular_Incorrect",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  EnergyVsPairdR_Circular_Incorrect_reco=HConfig.GetTH2D(Name+"_EnergyVsPairdR_Circular_Incorrect_reco","EnergyVsPairdR_Circular_Incorrect_reco",40,-4.,4.,40,0.,4.,"#phi","#theta");
+  
+  GammaVs_Tau_Energy=HConfig.GetTH2D(Name+"_GammaVs_Tau_Energy","B Meson Gamma vs Tau Energy",100,0.0,100.0,80,0,80.0,"E, Tau","#Gamma");
+  GammaVs_Pair_Energy=HConfig.GetTH2D(Name+"_GammaVs_Pair_Energy","B Meson Gamma vs Pair Energy",100,0.0,100.0,80,0,80.0,"E, Iso Pair","#Gamma");
+  
+  PairAngle_2Cor =HConfig.GetTH1D(Name+"_PairAngle_2Cor","PairAngle_2Cor",80,0,1.6,"Pair dR, 2 Correct","Events");
+  PairAngle_1Cor =HConfig.GetTH1D(Name+"_PairAngle_1Cor","PairAngle_1Cor",80,0,1.6,"Pair dR, 1 Correct","Events");
+  PairAngle_0Cor =HConfig.GetTH1D(Name+"_PairAngle_0Cor","PairAngle_0Cor",80,0,1.6,"Pair dR, 0 Correct","Events");
+  
+  PairMass_2Cor =HConfig.GetTH1D(Name+"_PairMass_2Cor","PairMass_2Cor",50,0,5.0,"Pair Mass, 2 Correct","Events");
+  PairMass_1Cor =HConfig.GetTH1D(Name+"_PairMass_1Cor","PairMass_1Cor",50,0,5.0,"Pair Mass, 1 Correct","Events");
+  PairMass_0Cor =HConfig.GetTH1D(Name+"_PairMass_0Cor","PairMass_0Cor",50,0,5.0,"Pair Mass, 0 Correct","Events");
+  
+  Angle_SVPV_BMeson =HConfig.GetTH1D(Name+"_Angle_SVPV_BMeson","Angle_SVPV_BMeson",100,0.,0.25,"Angle between SVPV and BMeson","Events");
+  Angle_Reco_Comparison =HConfig.GetTH1D(Name+"_Angle_Reco_Comparison","Angle_Reco_Comparison",100,0.,2.5,"Angle between boosted tracks","Events");
+  Angle_Tau_Vtx =HConfig.GetTH1D(Name+"_Angle_Tau_Vtx","Angle_Tau_Vtx",100,0,3.14159265,"Angle between tau and vtx dirn.","Events");
+  
+  Angle_dVtx_Pair_Crt =HConfig.GetTH1D(Name+"_Angle_dVtx_Pair_Crt","Angle_dVtx_Pair_Crt",100,0,3.14159265,"Angle between dVertex and Pair dirn.","Events");
+  Angle_dVtx_Pair_InCrt =HConfig.GetTH1D(Name+"_Angle_dVtx_Pair_InCrt","Angle_dVtx_Pair_InCrt",100,0,3.14159265,"Angle between dVertex and Pair dirn.","Events");
   
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -1214,8 +1245,39 @@ void  SignalVertexSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Rank_Correct_1iso3mu_Chi2);
   Extradist1d.push_back(&Rank_Correct_2iso_Chi2);
   Extradist1d.push_back(&Rank_Correct_2iso3mu_Chi2);
+  Extradist1d.push_back(&Rank_Correct_2iso_PairAngle);
   Extradist1d.push_back(&Rank_Correct_3iso_Chi2);
   Extradist1d.push_back(&Rank_Correct_3iso3mu_Chi2);
+  
+  Extradist2d.push_back(&TauEnergyVsPairdR);
+  Extradist2d.push_back(&EnergyVsPairdR);
+  Extradist2d.push_back(&EnergyVsPairdR_1);
+  Extradist2d.push_back(&EnergyVsPairdR_2);
+  Extradist2d.push_back(&EnergyVsPairdR_Circular);
+  Extradist2d.push_back(&EnergyVsPairdR_Tau);
+  Extradist2d.push_back(&EnergyVsPairdR_Circular_reco);
+  Extradist2d.push_back(&EnergyVsPairdR_Tau_reco);
+  Extradist2d.push_back(&EnergyVsPairdR_Circular_dR);
+  Extradist2d.push_back(&EnergyVsPairdR_Circular_Incorrect);
+  Extradist2d.push_back(&EnergyVsPairdR_Circular_Incorrect_reco);
+  
+  Extradist2d.push_back(&GammaVs_Tau_Energy);
+  Extradist2d.push_back(&GammaVs_Pair_Energy);
+  
+  Extradist1d.push_back(&PairAngle_2Cor);
+  Extradist1d.push_back(&PairAngle_1Cor);
+  Extradist1d.push_back(&PairAngle_0Cor);
+  
+  Extradist1d.push_back(&PairMass_2Cor);
+  Extradist1d.push_back(&PairMass_1Cor);
+  Extradist1d.push_back(&PairMass_0Cor);
+  
+  Extradist1d.push_back(&Angle_SVPV_BMeson);
+  Extradist1d.push_back(&Angle_Reco_Comparison);
+  Extradist1d.push_back(&Angle_Tau_Vtx);
+  
+  Extradist1d.push_back(&Angle_dVtx_Pair_Crt);
+  Extradist1d.push_back(&Angle_dVtx_Pair_InCrt);
 
 
 }
@@ -1566,6 +1628,8 @@ void  SignalVertexSelector::doEvent(){
     
     std::vector<float> MatchedIsoTrackNo; // Just the index, 'j' of the matched isolation track
     
+    TLorentzVector LV_BMeson; //LV of B Meson from MC
+    
     //Trying to figure out if there are final state particles coming from b signal that match the isolation tracks
     for(int gen_part_index=0; gen_part_index < Ntp->NMCParticles(); gen_part_index++){        
           //std::cout<<"Particle PDGID is:"<< Ntp->MCParticle_pdgid(gen_part_index) << std::endl;
@@ -1591,7 +1655,7 @@ void  SignalVertexSelector::doEvent(){
                 
                 //Create a vector of indices of all children of parent of tau
                 int tau_parent_idx = Ntp->MCParticle_midx(gen_part_index);
-                
+                LV_BMeson=Ntp->MCParticle_p4(tau_parent_idx);
                 
                 for(int all_index=0; all_index < Ntp->NMCParticles(); all_index++){//used to get indices of all children of parent of tau, excluding tau and 3 muons
                   
@@ -1719,7 +1783,7 @@ void  SignalVertexSelector::doEvent(){
               }
               //if(!Three_Children){std::cout<<"Tau not found with index: "<< gen_part_index << std::endl;}
               WhetherTau3Mu.at(t).Fill(Three_Children,1);
-            }
+            }//if(abs(Ntp->MCParticle_pdgid(gen_part_index)) == 15)
             
             
             
@@ -1728,6 +1792,12 @@ void  SignalVertexSelector::doEvent(){
           
           
     }//end of gen_part_index for loop
+    
+    // Attempt at reconstructing B-Meson LV from estimate of gamma and direction
+    double B_Gamma = 0.341265 * TauLV.E() + 0.883522;
+    double B_Beta = sqrt(1-(1/(B_Gamma*B_Gamma)));
+    TVector3 B_Vector_reco = ((5.2795*B_Gamma*B_Beta)/SVPV_Vector.Mag())*SVPV_Vector;
+    TLorentzVector LV_BMeson_reco(B_Vector_reco,5.2795*B_Gamma);
     
     using Row = vector<double>;
     using Matrix = vector<Row>;
@@ -1748,6 +1818,41 @@ void  SignalVertexSelector::doEvent(){
     sort( dR_No.begin(), dR_No.end() ); // sort based on first column, lowest first
     sort( pT_No.rbegin(), pT_No.rend() ); // sort based on first column, highest first
     
+    //Adding conditions for cuts applied on iso tracks:
+    Matrix Selection_Status_OneProng;
+    //for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>0;i++){
+    //}
+    Matrix Selection_Status_TwoProng;
+    for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>1;i++){
+      for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){// combinations of tracks with indices from 0 - 6
+        TLorentzVector TrackLV1 = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]);
+        TLorentzVector TrackLV2 = Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]);
+        
+        bool Mass_Cut = ((TrackLV1+TrackLV2).M()<2.0)?true:false;
+        bool Angle_Cut = (fabs((TrackLV1.Vect()).Angle(TrackLV2.Vect()))<1.0)?true:false;
+        if(Mass_Cut&&Angle_Cut){
+          Selection_Status_TwoProng.push_back({true,i,j});
+        }
+        else{
+          Selection_Status_TwoProng.push_back({false,i,j});
+        }
+      }
+    }
+    /*
+    Matrix Selection_Status_ThreeProng;
+    for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>2;i++){
+      for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){
+        for(int k=0;k<dR_No.size()&&k<NoOfTracksAfterdRCut&&k<j;k++){// combinations of tracks with indices from 0 - 6
+          if(){
+            Selection_Status_TwoProng.push_back({true,i,j,k});
+          }
+          else{
+            Selection_Status_TwoProng.push_back({false,i,j,k});
+          }
+        }
+      }
+    }
+    */
     
     /*
     for(int i=0;i<pT_No.size();i++){
@@ -1772,7 +1877,7 @@ void  SignalVertexSelector::doEvent(){
       }
       
     }
-
+    
     Matrix Distance_SV_Avg;// Average of distance of common vertex (btw iso track and signal muons) from the signal vertex
     Matrix Distance_SV_Sum;// Sum of positions common vertex (btw iso track and signal muons) from the signal vertex
     Matrix Distance_Difference_Avg;
@@ -1789,6 +1894,117 @@ void  SignalVertexSelector::doEvent(){
     
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut;i++){// Selecting pTs of the 7 tracks (indices 0 - 6) that are closest to tau
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]);
+      
+      bool Whether_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1]))==1?true:false;
+      
+      // Transform everything so that Track1 is along Z-axis (beam axis). +X points from CMS to Saint Genis (phi is measured from that)
+      TLorentzVector TrackLV_mod = TrackLV;
+      TLorentzVector TauLV_mod = TauLV;
+      TrackLV_mod.Boost(-1*LV_BMeson.BoostVector());
+      TauLV_mod.Boost(-1*LV_BMeson.BoostVector());
+      
+      TVector3 Bmeson_mod = LV_BMeson.Vect();
+      TVector3 Tau_mod = TauLV_mod.Vect();
+      TVector3 Track_mod = TrackLV_mod.Vect();
+      
+      //Making Bmeson point towards Z axis (and making phi = 0 for the tau: commented)
+      double Phi_init = Bmeson_mod.Phi();
+      double Theta_init = Bmeson_mod.Theta();
+      if(Phi_init >= TMath::Pi()) Phi_init = Phi_init-2*TMath::Pi();
+      if(Phi_init <=-TMath::Pi()) Phi_init = Phi_init+2*TMath::Pi();
+      Bmeson_mod.RotateZ(-Phi_init);
+      Bmeson_mod.RotateY(-Theta_init);
+      Tau_mod.RotateZ(-Phi_init);
+      Tau_mod.RotateY(-Theta_init);
+      Track_mod.RotateZ(-Phi_init);
+      Track_mod.RotateY(-Theta_init);
+      
+      //double Phi_Second = Tau_mod.Phi();
+      //if(Phi_Second >= TMath::Pi()) Phi_Second = Phi_Second-2*TMath::Pi();
+      //if(Phi_Second <=-TMath::Pi()) Phi_Second = Phi_Second+2*TMath::Pi();
+      //Bmeson_mod.RotateZ(-Phi_Second);
+      //Tau_mod.RotateZ(-Phi_Second);
+      //Track_mod.RotateZ(-Phi_Second);
+      
+      
+      //Making tau point towards Z axis
+      TVector3 Bmeson_mod1 = LV_BMeson.Vect();
+      TVector3 Tau_mod1 = TauLV_mod.Vect();
+      TVector3 Track_mod1 = TrackLV_mod.Vect();
+      double Phi_init1 = Tau_mod1.Phi();
+      double Theta_init1 = Tau_mod1.Theta();
+      if(Phi_init1 >= TMath::Pi()) Phi_init1 = Phi_init1-2*TMath::Pi();
+      if(Phi_init1 <=-TMath::Pi()) Phi_init1 = Phi_init1+2*TMath::Pi();
+      Tau_mod1.RotateZ(-Phi_init1);
+      Tau_mod1.RotateY(-Theta_init1);
+      Track_mod1.RotateZ(-Phi_init1);
+      Track_mod1.RotateY(-Theta_init1);
+      
+      // Trying everything Fully Reco
+      // Transform everything so that Track1 is along Z-axis (beam axis). +X points from CMS to Saint Genis (phi is measured from that) : fully reco
+      TLorentzVector TrackLV_mod_reco = TrackLV;
+      TLorentzVector TauLV_mod_reco = TauLV;
+      TrackLV_mod_reco.Boost(-1*LV_BMeson_reco.BoostVector());
+      TauLV_mod_reco.Boost(-1*LV_BMeson_reco.BoostVector());
+      TVector3 Bmeson_mod_reco = LV_BMeson_reco.Vect();
+      TVector3 Tau_mod_reco = TauLV_mod_reco.Vect();
+      TVector3 Track_mod_reco = TrackLV_mod_reco.Vect();
+      
+      //Making Bmeson point towards Z axis (and making phi = 0 for the tau: commented): fully reco
+      double Phi_init_reco = Bmeson_mod_reco.Phi();
+      double Theta_init_reco = Bmeson_mod_reco.Theta();
+      if(Phi_init_reco >= TMath::Pi()) Phi_init_reco = Phi_init_reco-2*TMath::Pi();
+      if(Phi_init_reco <=-TMath::Pi()) Phi_init_reco = Phi_init_reco+2*TMath::Pi();
+      Bmeson_mod_reco.RotateZ(-Phi_init_reco);
+      Bmeson_mod_reco.RotateY(-Theta_init_reco);
+      Tau_mod_reco.RotateZ(-Phi_init_reco);
+      Tau_mod_reco.RotateY(-Theta_init_reco);
+      Track_mod_reco.RotateZ(-Phi_init_reco);
+      Track_mod_reco.RotateY(-Theta_init_reco);
+      
+      //Making tau point towards Z axis: fully reco
+      TVector3 Bmeson_mod_reco1 = LV_BMeson_reco.Vect();
+      TVector3 Tau_mod_reco1 = TauLV_mod_reco.Vect();
+      TVector3 Track_mod_reco1 = TrackLV_mod_reco.Vect();
+      double Phi_init_reco1 = Tau_mod_reco1.Phi();
+      double Theta_init_reco1 = Tau_mod_reco1.Theta();
+      if(Phi_init_reco1 >= TMath::Pi()) Phi_init_reco1 = Phi_init_reco1-2*TMath::Pi();
+      if(Phi_init_reco1 <=-TMath::Pi()) Phi_init_reco1 = Phi_init_reco1+2*TMath::Pi();
+      Tau_mod_reco1.RotateZ(-Phi_init_reco1);
+      Tau_mod_reco1.RotateY(-Theta_init_reco1);
+      Track_mod_reco1.RotateZ(-Phi_init_reco1);
+      Track_mod_reco1.RotateY(-Theta_init_reco1);
+      
+      
+      if(Whether_Matched){
+        EnergyVsPairdR_Circular.at(t).Fill(Track_mod.Phi(),Track_mod.Theta());
+        EnergyVsPairdR_Tau.at(t).Fill(Track_mod1.Phi(),Track_mod1.Theta());
+        
+        EnergyVsPairdR_Circular_reco.at(t).Fill(Track_mod_reco.Phi(),Track_mod_reco.Theta());
+        EnergyVsPairdR_Tau_reco.at(t).Fill(Track_mod_reco1.Phi(),Track_mod_reco1.Theta());
+        
+        Angle_Reco_Comparison.at(t).Fill(fabs((Track_mod).Angle(Track_mod_reco)),1);
+        
+        /*
+        if(Track_mod1.Theta()<0.5){//print out events where track is in a similar dirn. as tau
+          if(id ==60 ||  id ==90){// or id == 40){
+            std::cout<<"-------------- All categoris ----------------"<< std::endl;
+            std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+            std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+            std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+            Muon1LV.Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Muon1LV) << std::endl;
+            Muon2LV.Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Muon2LV) << std::endl;
+            Muon3LV.Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Muon3LV) << std::endl;
+            Ntp->printMCDecayChainOfEvent(true, true, true, true);
+            std::cout<< "\n\n\n\n\n\n";
+          }
+        }
+        */
+      }
+      if(!Whether_Matched){
+        EnergyVsPairdR_Circular_Incorrect.at(t).Fill(Track_mod.Phi(),Track_mod.Theta());
+        EnergyVsPairdR_Circular_Incorrect_reco.at(t).Fill(Track_mod_reco.Phi(),Track_mod_reco.Theta());
+      }
       
       //pT_No_7.push_back({TrackLV.Perp(TauLV.Vect()),dR_No[i][1]});
       pT_No_7.push_back({(TrackLV.Vect()).Dot(TauLV.Vect()),dR_No[i][1]});
@@ -1844,10 +2060,11 @@ void  SignalVertexSelector::doEvent(){
     
     sort( Testing1.begin(), Testing1.end() ); // sort based on first column, lowest first
     
-    
+    int OneProngCount(0);
     Matrix OneProngChi2;// n x 3 matrix where first column is chi2 of fit of four tracks, second column is the index of one isolation track, third column is the index of one isolation track
     TVector3 tau_vtx = Ntp->Vertex_Signal_KF_pos(signal_idx);
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>0;i++){
+      OneProngCount+=1;
       
       std::vector<TrackParticle> TrackPair;
       TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[i][1]));
@@ -1859,7 +2076,7 @@ void  SignalVertexSelector::doEvent(){
       
       //using signal SV_Position as the first guess
       Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
-      PairFittedVertex.Fit();
+      //PairFittedVertex.Fit();
       
       bool Whether_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1]))==1?true:false;
       
@@ -1878,18 +2095,29 @@ void  SignalVertexSelector::doEvent(){
       }
     }
     if(MatchedIsoTrackNo.size()>0){
+      //std::cout<<" Mass of B meson is: " << LV_BMeson.M() << std::endl;
+      
       std::cout<<" The required isolation track indices are: " << std::endl;
       for(int i=0;i<MatchedIsoTrackNo.size();i++){
         std::cout<<" index : " << MatchedIsoTrackNo[i] << std::endl;
       }
     }
     
-    
+    GammaVs_Tau_Energy.at(t).Fill(TauLV.E(),LV_BMeson.Gamma());
+    Angle_SVPV_BMeson.at(t).Fill(fabs((SVPV_Vector).Angle(LV_BMeson.Vect())),1);
+    //std::cout<<" Size of Selection_Status_TwoProng: " << Selection_Status_TwoProng.size() << std::endl;
+    int TwoProngCount(-1);
     Matrix TwoProngChi2;// n x 3 matrix where first column is chi2 of fit of two tracks, second column is the index of one isolation track, third column is the index of one isolation track
     Matrix TwoProngChi2_With3mu;
     Matrix TwoProngVtxDist;
+    Matrix TwoProngChi2_OtherVar;
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>1;i++){
       for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){// combinations of tracks with indices from 0 - 6
+        //TwoProngCount+=1;
+        
+        //if (!Selection_Status_TwoProng[TwoProngCount][0]) {
+        //  continue;
+        //}
         
         std::vector<TrackParticle> TrackPair;
         TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[i][1]));
@@ -1897,17 +2125,55 @@ void  SignalVertexSelector::doEvent(){
         TVector3 SV_Position = Ntp->Vertex_Signal_KF_pos(signal_idx);
         TVector3 FirstGuess(0.1,0.1,0.1);
         
+        TLorentzVector TrackLV1 = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]);
+        TLorentzVector TrackLV2 = Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]);
+        
+        int IsoTrack_Charge1 = Ntp->IsolationTrack_charge(signal_idx,dR_No[i][1]);
+        int IsoTrack_Charge2 = Ntp->IsolationTrack_charge(signal_idx,dR_No[j][1]);
+        
+        double TauCharge = Ntp->Muon_charge(Muon_index_1) + Ntp->Muon_charge(Muon_index_2) + Ntp->Muon_charge(Muon_index_3);
+        
         //Removed Chi2 temporarily to get rid of errors
         //using signal SV_Position as the first guess
         Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
         PairFittedVertex.Fit();
         
         bool Pair_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[j][1]))==2?true:false;
+        bool One_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[j][1]))==1?true:false;
         
         double Pair_dR = (Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1])).DeltaR(Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]));
         
         double Product1 = (Pair_dR*Testing[i][0]*Testing[j][0]*100000)/3;
         double Product2 = (Testing[i][0]*Testing[j][0]*1000)/2;
+        
+        
+        double AngleDiff=fabs((TrackLV1.Vect()).Angle(TrackLV2.Vect()));
+        
+        
+        TLorentzVector LVhalf1=TauLV;
+        TLorentzVector LVhalf2=TrackLV1+TrackLV2;
+        TLorentzVector LVmod1=TrackLV1;
+        TLorentzVector LVmod2=TrackLV2;
+        TLorentzVector LVCombination=LVhalf1+LVhalf2;
+        LVCombination.SetE(sqrt(LVCombination.Px()*LVCombination.Px()+LVCombination.Py()*LVCombination.Py()+LVCombination.Pz()*LVCombination.Pz()+5.2795*5.2795));
+        //LVhalf1.Boost(-1*LVCombination.BoostVector());
+        //LVhalf2.Boost(-1*LVCombination.BoostVector());
+        
+        LVhalf1.Boost(-1*LV_BMeson.BoostVector());
+        LVhalf2.Boost(-1*LV_BMeson.BoostVector());
+        
+        LVmod1.Boost(-1*LV_BMeson.BoostVector());
+        LVmod2.Boost(-1*LV_BMeson.BoostVector());
+        
+        //double AngleCheck=fabs(LVhalf1.Vect().Angle(LVhalf2.Vect())-3.141592653589793);
+        double AngleCheck=LVhalf1.Vect().Angle(LVhalf2.Vect());
+        
+        double AngleWithBMesonDir=LVmod1.Vect().Angle(LV_BMeson.Vect())+LVmod2.Vect().Angle(LV_BMeson.Vect());
+        
+        //if(fabs(LVhalf1.Vect().Angle(LVhalf2.Vect())-3.141592653589793)<0.02){
+        //  TauAngleTest.at(t).Fill((MuonOS+MuonSS1+MuonSS2).M(),1);
+        //}
+        
         
         TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
         TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
@@ -1916,17 +2182,101 @@ void  SignalVertexSelector::doEvent(){
         Chi2VertexFitter  PairFitted_WithMus_Vertex(TrackPair,FirstGuess);
         PairFitted_WithMus_Vertex.Fit();
         
-        TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare()});
+        TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M()});
+        TwoProngChi2_OtherVar.push_back({AngleDiff,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),PairFittedVertex.ChiSquare(),AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge});
         
         TVector3 PrVtx = PairFittedVertex.GetVertex();
+        TVector3 PrVtx_WithMu = PairFitted_WithMus_Vertex.GetVertex();
         
         TwoProngChi2_With3mu.push_back({PairFitted_WithMus_Vertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFittedVertex.ChiSquare()});
         TwoProngVtxDist.push_back({PairFittedVertex.ChiSquare(),(PrVtx-tau_vtx).Mag()});
+        
+        
+        TVector3 Vector_A = (PrVtx-PrVtx_WithMu);
+        TVector3 Vector_B = (tau_vtx-PrVtx_WithMu);
+        bool Whether_Tau_Dirn_Matches_dVtx(true);
+        if(fabs((Vector_A).Angle(TauLV.Vect()))>TMath::Pi()/2){
+          Vector_A= -1 * Vector_A;
+          Vector_B= -1 * Vector_B;
+          Whether_Tau_Dirn_Matches_dVtx=false;
+        }
+        
+        if(Pair_Matched){
+          
+          Angle_Tau_Vtx.at(t).Fill(fabs((tau_vtx-PrVtx_WithMu).Angle(TauLV.Vect())),1);
+          
+          TVector3 Vector_1 = Vector_A*(((LV_BMeson_reco-TauLV).Vect()).Mag()/(Vector_A).Mag());
+          TVector3 Vector_2 = Vector_B*(((TauLV).Vect()).Mag()/(Vector_B).Mag());
+          TLorentzVector PseudoLV_Iso(Vector_1,0.);
+          TLorentzVector PseudoLV_Tau(Vector_2,0.);
+          PseudoLV_Iso.SetE(sqrt(Vector_1.Px()*Vector_1.Px()+Vector_1.Py()*Vector_1.Py()+Vector_1.Pz()*Vector_1.Pz()+2.006*2.006));
+          PseudoLV_Tau.SetE(sqrt(Vector_2.Px()*Vector_2.Px()+Vector_2.Py()*Vector_2.Py()+Vector_2.Pz()*Vector_2.Pz()+1.776*1.776));
+          
+          PseudoLV_Iso.Boost(-1*LV_BMeson.BoostVector());
+          PseudoLV_Tau.Boost(-1*LV_BMeson.BoostVector());
+          
+          //Making tau point towards Z axis
+          TVector3 Tau_mod1 = PseudoLV_Tau.Vect();
+          TVector3 Track_mod1 = PseudoLV_Iso.Vect();
+          double Phi_init1 = Tau_mod1.Phi();
+          double Theta_init1 = Tau_mod1.Theta();
+          if(Phi_init1 >= TMath::Pi()) Phi_init1 = Phi_init1-2*TMath::Pi();
+          if(Phi_init1 <=-TMath::Pi()) Phi_init1 = Phi_init1+2*TMath::Pi();
+          Track_mod1.RotateZ(-Phi_init1);
+          Track_mod1.RotateY(-Theta_init1);
+          
+          EnergyVsPairdR_Circular_dR.at(t).Fill(Track_mod1.Phi(),Track_mod1.Theta());
+          
+          GammaVs_Pair_Energy.at(t).Fill((TrackLV1+TrackLV2).E(),LV_BMeson.Gamma());
+          
+          //check what (PrVtx-PrVtx_WithMu) matches to
+          double Ang_min(99.0);
+          int Min_idx(20);
+          for(int m : b_meson_full_childidx){
+            TLorentzVector ProductParticleLV = Ntp->MCParticle_p4(m);
+            TVector3 ProductVect = ProductParticleLV.Vect();
+            double Angle1 = fabs((Vector_A).Angle(ProductVect));
+            //if(Angle1 >= TMath::Pi()/2) Angle1 = TMath::Pi()-Angle1;
+            if(Angle1<Ang_min){
+              Ang_min=Angle1;
+              Min_idx=m;
+            }
+          }
+          if(Ang_min<0.25){
+            std::cout<< "For indices: "<< i <<" and "<< j <<" PDGID of MC particle is: " <<Ntp->MCParticle_pdgid(Min_idx)<<std::endl;
+          }
+          
+          // check the angle from d(Vertex) to charged pair
+          double AngleCh = fabs((Vector_A).Angle((TrackLV1+TrackLV2).Vect()));
+          //if(AngleCh >= TMath::Pi()/2) AngleCh = TMath::Pi()-AngleCh;
+          //if(!Whether_Tau_Dirn_Matches_dVtx){
+            Angle_dVtx_Pair_Crt.at(t).Fill(AngleCh,1);
+          //}
+        }//if(Pair_Matched)
+        if(!Pair_Matched){
+          // check the angle from d(Vertex) to charged pair
+          double AngleCh = fabs((Vector_A).Angle((TrackLV1+TrackLV2).Vect()));
+          //if(AngleCh >= TMath::Pi()/2) AngleCh = TMath::Pi()-AngleCh;
+          //if(!Whether_Tau_Dirn_Matches_dVtx){
+            Angle_dVtx_Pair_InCrt.at(t).Fill(AngleCh,1);
+          //}
+        }
+      }
+    }// end i and j loops
+    Matrix TwoProngChi2_AfterCuts;// n x 3 matrix where first column is chi2 of fit of two tracks, second column is the index of one isolation track, third column is the index of one isolation track
+    Matrix TwoProngChi2_With3mu_AfterCuts;
+    for(int i=0;i<TwoProngChi2.size();i++){
+      if(TwoProngChi2[i][4]){
+        TwoProngChi2_AfterCuts.push_back(TwoProngChi2[i]);
+        TwoProngChi2_With3mu_AfterCuts.push_back(TwoProngChi2_With3mu[i]);
       }
     }
+    
     sort( TwoProngChi2.begin(), TwoProngChi2.end() ); // sort based on first column, lowest first
     sort( TwoProngVtxDist.begin(), TwoProngVtxDist.end() ); // sort based on first column, lowest first
     sort( TwoProngChi2_With3mu.begin(), TwoProngChi2_With3mu.end() ); // sort based on first column, lowest first
+    sort( TwoProngChi2_OtherVar.begin(), TwoProngChi2_OtherVar.end() ); // sort based on first column, lowest first
+    
     
     if(MatchedIsoTrackNo.size()>1){
       
@@ -1941,23 +2291,45 @@ void  SignalVertexSelector::doEvent(){
         std::cout<<" Testing1 : " << Testing1[i][0] << " index : " << Testing1[i][1] << std::endl;
       }
       
+      std::cout<<"Tau energy: " << TauLV.E() << std::endl;
+      
     }
     
+    
     for(int i=0;i<TwoProngChi2.size()&&MatchedIsoTrackNo.size()>1;i++){// Selecting Chi squares of 7 track combinations with lowest Chi2
-      std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] <<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " << TwoProngVtxDist[i][1] <<" pair dr: "<< TwoProngChi2[i][7] << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
+      std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] <<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " << TwoProngVtxDist[i][1] <<" pair dr: "<< TwoProngChi2[i][7]<<" pair angle: "<< TwoProngChi2[i][10]<< " Angle after boosting: "<< TwoProngChi2[i][11] << " Sum of charges: " << TwoProngChi2[i][12] + TwoProngChi2[i][13] << " Tau charge: " << TwoProngChi2[i][14] << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
       
-      if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[i][2]))==2){
+      if(TwoProngChi2[i][4]){//if 2 correct iso tracks
         Rank_Correct_2iso_Chi2.at(t).Fill(i,1);
+        
+        TauEnergyVsPairdR.at(t).Fill(TauLV.E(),TwoProngChi2[i][7]);
+        EnergyVsPairdR.at(t).Fill(1-(TauLV.E()/LV_BMeson.E()),TwoProngChi2[i][7]);
+        EnergyVsPairdR_1.at(t).Fill(TwoProngChi2[i][15]/LV_BMeson.E(),TwoProngChi2[i][7]);
+        EnergyVsPairdR_2.at(t).Fill(TwoProngChi2[i][16],TwoProngChi2[i][7]);
+        
+        PairAngle_2Cor.at(t).Fill(TwoProngChi2[i][7],1);
+        PairMass_2Cor.at(t).Fill(TwoProngChi2[i][18],1);
+      }
+      if(TwoProngChi2[i][17]){//if 1 correct iso track
+        PairAngle_1Cor.at(t).Fill(TwoProngChi2[i][7],1);
+        PairMass_1Cor.at(t).Fill(TwoProngChi2[i][18],1);
+      }
+      if(!TwoProngChi2[i][17]&&!TwoProngChi2[i][4]){//if no correct iso tracks
+        PairAngle_0Cor.at(t).Fill(TwoProngChi2[i][7],1);
+        PairMass_0Cor.at(t).Fill(TwoProngChi2[i][18],1);
       }
       if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][2]))==2){
         Rank_Correct_2iso3mu_Chi2.at(t).Fill(i,1);
       }
+      if(TwoProngChi2_OtherVar[i][4]){
+        Rank_Correct_2iso_PairAngle.at(t).Fill(i,1);
+      }
     }
     
     
-    if(dR_No.size()>1){
+    if(dR_No.size()>1&&TwoProngChi2.size()>0){
       bool Lowest_Chi2_is_Correct_2iso(false);//whether the lowest Chi2 is the correct one
-      if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[0][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2[0][2]))==2){
+      if(TwoProngChi2[0][4]){
         Lowest_Chi2_is_Correct_2iso=true;
       }
       Whether_Lowest_Chi2_is_Correct_2iso.at(t).Fill(Lowest_Chi2_is_Correct_2iso,1);
@@ -1966,11 +2338,13 @@ void  SignalVertexSelector::doEvent(){
     
     // Three iso track vertex
     
+    int ThreeProngCount(0);
     Matrix ThreeProngChi2;// n x 3 matrix where first column is chi2 of fit of two tracks, second column is the index of one isolation track, third column is the index of one isolation track
     Matrix ThreeProngChi2_With3mu;
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>2;i++){
       for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){
         for(int k=0;k<dR_No.size()&&k<NoOfTracksAfterdRCut&&k<j;k++){// combinations of tracks with indices from 0 - 6
+          ThreeProngCount+=1;
           
           std::vector<TrackParticle> TrackPair;
           TrackPair.push_back(Ntp->IsolationTrack_TrackParticle(dR_No[i][1]));
@@ -1982,14 +2356,14 @@ void  SignalVertexSelector::doEvent(){
           
           //using signal SV_Position as the first guess
           Chi2VertexFitter  PairFittedVertex(TrackPair,FirstGuess);
-          PairFittedVertex.Fit();
+          //PairFittedVertex.Fit();
           
           TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
           TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
           TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
           
           Chi2VertexFitter  PairFitted_WithMus_Vertex(TrackPair,FirstGuess);
-          PairFitted_WithMus_Vertex.Fit();
+          //PairFitted_WithMus_Vertex.Fit();
           
           bool Whether_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[j][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[k][1]))==3?true:false;
           
@@ -2058,7 +2432,7 @@ void  SignalVertexSelector::doEvent(){
             matched_track_from_SV_to_SignalMu_SortedChargeMuIndex.push_back(k);
           }
         }
-        for(int k=0;k<2&&dR_No.size()>1;k++){// for sorted TwoProngChi2
+        for(int k=0;k<2&&dR_No.size()>1&&TwoProngChi2.size()>0;k++){// for sorted TwoProngChi2
           TLorentzVector Track_LV = Ntp->IsolationTrack_p4(signal_idx,TwoProngChi2[0][k+1]);
           if(SV_Track_LV.DeltaR(Track_LV)<0.001&&(std::count(matched_track_from_SV_to_Sorted_Combination.begin(), matched_track_from_SV_to_Sorted_Combination.end(), TwoProngChi2[0][k+1]))==0){
             matched_track_from_SV_to_Sorted_Combination_SVIndex.push_back(j);
@@ -2145,7 +2519,7 @@ void  SignalVertexSelector::doEvent(){
       }
       
       if(IsoTrackMatchedToSV_Combination_Index.size()==0&&matched_track_from_SV_to_Sorted_Combination_SVIndex.size()>1){// for matching with sorted combinations
-        for(int j=0;j<matched_track_from_SV_to_Sorted_Combination_SVIndex.size();j++){
+        for(int j=0;j<matched_track_from_SV_to_Sorted_Combination_SVIndex.size()&&TwoProngChi2.size()>0;j++){
           IsoTrackMatchedToSV_Combination_Index.push_back({i,matched_track_from_SV_to_Sorted_Combination_SVIndex[j],matched_track_from_SV_to_Sorted_Combination[j],TwoProngChi2[0][3]});//note: this has both SV and iso track indices
         }
       }

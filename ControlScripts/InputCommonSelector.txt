@@ -1,7 +1,7 @@
 Thin: False
 Skim: False
 HistoFile: InputData/HistoScaletoLumiWorking.txt
-Analysis: DebugFit
+Analysis: SignalVertexSelector
 UncertType: default
 SkimInfo: InputData/2018DataMC_Working.log
 Lumi: 58345.2884618

@@ -595,9 +595,42 @@ class SignalVertexSelector : public Selection {
   
   std::vector<TH1D>  Rank_Correct_1iso3mu_Chi2;
   std::vector<TH1D>  Rank_Correct_2iso_Chi2;
+  std::vector<TH1D>  Rank_Correct_2iso_PairAngle;
   std::vector<TH1D>  Rank_Correct_2iso3mu_Chi2;
   std::vector<TH1D>  Rank_Correct_3iso_Chi2;
   std::vector<TH1D>  Rank_Correct_3iso3mu_Chi2;
+  
+  std::vector<TH2D> TauEnergyVsPairdR;
+  std::vector<TH2D> EnergyVsPairdR;
+  std::vector<TH2D> EnergyVsPairdR_1;
+  std::vector<TH2D> EnergyVsPairdR_2;
+  
+  std::vector<TH2D> EnergyVsPairdR_Circular;
+  std::vector<TH2D> EnergyVsPairdR_Tau;
+  std::vector<TH2D> EnergyVsPairdR_Circular_reco;
+  std::vector<TH2D> EnergyVsPairdR_Tau_reco;
+  std::vector<TH2D> EnergyVsPairdR_Circular_dR;
+  std::vector<TH2D> EnergyVsPairdR_Circular_Incorrect;
+  std::vector<TH2D> EnergyVsPairdR_Circular_Incorrect_reco;
+  
+  
+  std::vector<TH1D>  PairAngle_2Cor;
+  std::vector<TH1D>  PairAngle_1Cor;
+  std::vector<TH1D>  PairAngle_0Cor;
+  
+  std::vector<TH1D>  PairMass_2Cor;
+  std::vector<TH1D>  PairMass_1Cor;
+  std::vector<TH1D>  PairMass_0Cor;
+  
+  std::vector<TH2D> GammaVs_Tau_Energy;
+  std::vector<TH2D> GammaVs_Pair_Energy;
+  
+  std::vector<TH1D>  Angle_SVPV_BMeson;
+  std::vector<TH1D>  Angle_Reco_Comparison;
+  std::vector<TH1D>  Angle_Tau_Vtx;
+  
+  std::vector<TH1D>  Angle_dVtx_Pair_Crt;
+  std::vector<TH1D>  Angle_dVtx_Pair_InCrt;
   
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
