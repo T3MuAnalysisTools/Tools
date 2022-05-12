@@ -1062,6 +1062,11 @@ void  SignalVertexSelector::Configure(){
   SVCollectionNoOfCrt_if3=HConfig.GetTH1D(Name+"_SVCollectionNoOfCrt_if3","SVCollectionNoOfCrt_if3",11,-0.5,10.5,"No of correct tracks in SV","Entries");
   
   Whether_Lowest_Chi2_is_Correct_2iso=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso","Whether_Lowest_Chi2_is_Correct_2iso",2,-0.5,1.5,"Whether 2 vertex with lowest chi2 is correct","Entries");
+  Whether_Lowest_Chi2_is_Correct_2iso_VarAngle=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso_VarAngle","Whether_Lowest_Chi2_is_Correct_2iso_VarAngle",2,-0.5,1.5,"Whether pair with lowest angle is correct","Entries");
+  Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum","Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum",2,-0.5,1.5,"Whether pair with lowest chi2sum is correct","Entries");
+  Whether_Lowest_Chi2_is_Correct_2iso_varProduct=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso_varProduct","Whether_Lowest_Chi2_is_Correct_2iso_varProduct",2,-0.5,1.5,"Whether pair with lowest product is correct","Entries");
+  Whether_Lowest_Chi2_is_Correct_2iso_varProduct1=HConfig.GetTH1D(Name+"_Whether_Lowest_Chi2_is_Correct_2iso_varProduct1","Whether_Lowest_Chi2_is_Correct_2iso_varProduct1",2,-0.5,1.5,"Whether pair with lowest product1 is correct","Entries");
+  
   Rank_Correct_2iso_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_2iso_Chi2","Rank_Correct_2iso_Chi2",22,-0.5,21.5,"Rank of matched iso pair by chi2","Events");
   Rank_Correct_2iso3mu_Chi2 =HConfig.GetTH1D(Name+"_Rank_Correct_2iso3mu_Chi2","Rank_Correct_2iso3mu_Chi2",22,-0.5,21.5,"Rank of matched iso pair and 3mu by chi2","Events");
   Rank_Correct_2iso_PairAngle =HConfig.GetTH1D(Name+"_Rank_Correct_2iso_PairAngle","Rank_Correct_2iso_PairAngle",22,-0.5,21.5,"Rank of matched iso pair by angle","Events");
@@ -1100,6 +1105,24 @@ void  SignalVertexSelector::Configure(){
   
   Angle_dVtx_Pair_Crt =HConfig.GetTH1D(Name+"_Angle_dVtx_Pair_Crt","Angle_dVtx_Pair_Crt",100,0,3.14159265,"Angle between dVertex and Pair dirn.","Events");
   Angle_dVtx_Pair_InCrt =HConfig.GetTH1D(Name+"_Angle_dVtx_Pair_InCrt","Angle_dVtx_Pair_InCrt",100,0,3.14159265,"Angle between dVertex and Pair dirn.","Events");
+  
+  PairVtxPV_dRto_SVPV_2Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_SVPV_2Cor","PairVtxPV_dRto_SVPV_2Cor",80,0,0.8,"PairVtxPV dR to SVPV, 2 Correct","Events");
+  PairVtxPV_dRto_PairLV_2Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_PairLV_2Cor","PairVtxPV_dRto_PairLV_2Cor",80,0,0.8,"PairVtxPV dR to PairLV, 2 Correct","Events");
+  PairVtxPV_SV_Significance_2Cor=HConfig.GetTH1D(Name+"_PairVtxPV_SV_Significance_2Cor","PairVtxPV_SV_Significance_2Cor",50,0,15,"PairVtxPV SV FLS, 2 Correct","Events");
+  PairVtxDist_2Cor=HConfig.GetTH1D(Name+"_PairVtxDist_2Cor","PairVtxDist_2Cor",100,0,10,"Pair Vertex Distance, 2 Correct","Events");
+  PairProduct_2Cor=HConfig.GetTH1D(Name+"_PairProduct_2Cor","PairProduct_2Cor",100,0,100.0,"Pair Product of Vars, 2 Correct","Events");
+  
+  PairVtxPV_dRto_SVPV_1Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_SVPV_1Cor","PairVtxPV_dRto_SVPV_1Cor",80,0,0.8,"PairVtxPV dR to SVPV, 1 Correct","Events");
+  PairVtxPV_dRto_PairLV_1Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_PairLV_1Cor","PairVtxPV_dRto_PairLV_1Cor",80,0,0.8,"PairVtxPV dR to PairLV, 1 Correct","Events");
+  PairVtxPV_SV_Significance_1Cor=HConfig.GetTH1D(Name+"_PairVtxPV_SV_Significance_1Cor","PairVtxPV_SV_Significance_1Cor",50,0,15,"PairVtxPV SV FLS, 1 Correct","Events");
+  PairVtxDist_1Cor=HConfig.GetTH1D(Name+"_PairVtxDist_1Cor","PairVtxDist_1Cor",100,0,10,"Pair Vertex Distance, 1 Correct","Events");
+  PairProduct_1Cor=HConfig.GetTH1D(Name+"_PairProduct_1Cor","PairProduct_1Cor",100,0,100.0,"Pair Product of Vars, 1 Correct","Events");
+  
+  PairVtxPV_dRto_SVPV_0Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_SVPV_0Cor","PairVtxPV_dRto_SVPV_0Cor",80,0,0.8,"PairVtxPV dR to SVPV, 0 Correct","Events");
+  PairVtxPV_dRto_PairLV_0Cor=HConfig.GetTH1D(Name+"_PairVtxPV_dRto_PairLV_0Cor","PairVtxPV_dRto_PairLV_0Cor",80,0,0.8,"PairVtxPV dR to PairLV, 0 Correct","Events");
+  PairVtxPV_SV_Significance_0Cor=HConfig.GetTH1D(Name+"_PairVtxPV_SV_Significance_0Cor","PairVtxPV_SV_Significance_0Cor",50,0,15,"PairVtxPV SV FLS, 0 Correct","Events");
+  PairVtxDist_0Cor=HConfig.GetTH1D(Name+"_PairVtxDist_0Cor","PairVtxDist_0Cor",100,0,10,"Pair Vertex Distance, 0 Correct","Events");
+  PairProduct_0Cor=HConfig.GetTH1D(Name+"_PairProduct_0Cor","PairProduct_0Cor",100,0,100.0,"Pair Product of Vars, 0 Correct","Events");
   
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
@@ -1241,6 +1264,10 @@ void  SignalVertexSelector::Store_ExtraDist(){
   Extradist1d.push_back(&SVCollectionNoOfCrt_if3);
   
   Extradist1d.push_back(&Whether_Lowest_Chi2_is_Correct_2iso);
+  Extradist1d.push_back(&Whether_Lowest_Chi2_is_Correct_2iso_VarAngle);
+  Extradist1d.push_back(&Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum);
+  Extradist1d.push_back(&Whether_Lowest_Chi2_is_Correct_2iso_varProduct);
+  Extradist1d.push_back(&Whether_Lowest_Chi2_is_Correct_2iso_varProduct1);
   
   Extradist1d.push_back(&Rank_Correct_1iso3mu_Chi2);
   Extradist1d.push_back(&Rank_Correct_2iso_Chi2);
@@ -1278,6 +1305,24 @@ void  SignalVertexSelector::Store_ExtraDist(){
   
   Extradist1d.push_back(&Angle_dVtx_Pair_Crt);
   Extradist1d.push_back(&Angle_dVtx_Pair_InCrt);
+  
+  Extradist1d.push_back(&PairVtxPV_dRto_SVPV_2Cor);
+  Extradist1d.push_back(&PairVtxPV_dRto_PairLV_2Cor);
+  Extradist1d.push_back(&PairVtxPV_SV_Significance_2Cor);
+  Extradist1d.push_back(&PairVtxDist_2Cor);
+  Extradist1d.push_back(&PairProduct_2Cor);
+  
+  Extradist1d.push_back(&PairVtxPV_dRto_SVPV_1Cor);
+  Extradist1d.push_back(&PairVtxPV_dRto_PairLV_1Cor);
+  Extradist1d.push_back(&PairVtxPV_SV_Significance_1Cor);
+  Extradist1d.push_back(&PairVtxDist_1Cor);
+  Extradist1d.push_back(&PairProduct_1Cor);
+  
+  Extradist1d.push_back(&PairVtxPV_dRto_SVPV_0Cor);
+  Extradist1d.push_back(&PairVtxPV_dRto_PairLV_0Cor);
+  Extradist1d.push_back(&PairVtxPV_SV_Significance_0Cor);
+  Extradist1d.push_back(&PairVtxDist_0Cor);
+  Extradist1d.push_back(&PairProduct_0Cor);
 
 
 }
@@ -1888,6 +1933,7 @@ void  SignalVertexSelector::doEvent(){
     Matrix PosSV_Avg_1D_SVPV;
     Matrix Testing;
     Matrix Testing1;
+    Matrix BoostedReco;
     Matrix dRtoTauRefl;
     Matrix dRtoSVPV;
     Matrix all_vars;
@@ -2053,6 +2099,8 @@ void  SignalVertexSelector::doEvent(){
       
       all_vars.push_back({dR_No[i][0],dR_No[i][1],Distance_SV_Avg_var,dR_No[i][0]*Distance_SV_Avg_var*pow(Chi2_Avg_var,0.5)});
       
+      BoostedReco.push_back({Track_mod_reco.Theta(),dR_No[i][1]});
+      
       //Distance_Difference_Avg and Distance_SV_Difference_Avg are the same because you're just looking at differences after coordinate transformation
       
       
@@ -2111,6 +2159,10 @@ void  SignalVertexSelector::doEvent(){
     Matrix TwoProngChi2_With3mu;
     Matrix TwoProngVtxDist;
     Matrix TwoProngChi2_OtherVar;
+    Matrix TwoProngChi2_OtherVar1;
+    Matrix TwoProngChi2_OtherVar2;
+    Matrix TwoProngChi2_OtherVar3;
+    
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>1;i++){
       for(int j=0;j<dR_No.size()&&j<NoOfTracksAfterdRCut&&j<i;j++){// combinations of tracks with indices from 0 - 6
         //TwoProngCount+=1;
@@ -2142,9 +2194,10 @@ void  SignalVertexSelector::doEvent(){
         bool One_Matched = (std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), dR_No[j][1]))==1?true:false;
         
         double Pair_dR = (Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1])).DeltaR(Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]));
+        TLorentzVector TrackPairSum = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]) + Ntp->IsolationTrack_p4(signal_idx,dR_No[j][1]);
         
         double Product1 = (Pair_dR*Testing[i][0]*Testing[j][0]*100000)/3;
-        double Product2 = (Testing[i][0]*Testing[j][0]*1000)/2;
+        double Product2 = (Testing[i][0]*Testing[j][0]*100000)/2;
         
         
         double AngleDiff=fabs((TrackLV1.Vect()).Angle(TrackLV2.Vect()));
@@ -2174,7 +2227,6 @@ void  SignalVertexSelector::doEvent(){
         //  TauAngleTest.at(t).Fill((MuonOS+MuonSS1+MuonSS2).M(),1);
         //}
         
-        
         TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_1));
         TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_2));
         TrackPair.push_back(Ntp->Muon_TrackParticle(Muon_index_3));
@@ -2182,15 +2234,9 @@ void  SignalVertexSelector::doEvent(){
         Chi2VertexFitter  PairFitted_WithMus_Vertex(TrackPair,FirstGuess);
         PairFitted_WithMus_Vertex.Fit();
         
-        TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M()});
-        TwoProngChi2_OtherVar.push_back({AngleDiff,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),PairFittedVertex.ChiSquare(),AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge});
-        
         TVector3 PrVtx = PairFittedVertex.GetVertex();
         TVector3 PrVtx_WithMu = PairFitted_WithMus_Vertex.GetVertex();
-        
-        TwoProngChi2_With3mu.push_back({PairFitted_WithMus_Vertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFittedVertex.ChiSquare()});
-        TwoProngVtxDist.push_back({PairFittedVertex.ChiSquare(),(PrVtx-tau_vtx).Mag()});
-        
+        TVector3 PairVPV_Vector = PrVtx - Ntp->Vertex_MatchedPrimaryVertex(signal_idx);
         
         TVector3 Vector_A = (PrVtx-PrVtx_WithMu);
         TVector3 Vector_B = (tau_vtx-PrVtx_WithMu);
@@ -2200,6 +2246,35 @@ void  SignalVertexSelector::doEvent(){
           Vector_B= -1 * Vector_B;
           Whether_Tau_Dirn_Matches_dVtx=false;
         }
+        
+        TMatrixTSym<double> PairVertexCov = PairFittedVertex.GetVertexError();
+        double SV_TrackVertex_Significance = Ntp->FlightLength_significance(PrVtx,PairVertexCov,tau_vtx,Ntp->Vertex_Signal_KF_Covariance(signal_idx));
+        TwoProngVtxDist.push_back({PairFittedVertex.ChiSquare(),(PrVtx-tau_vtx).Mag(),SV_TrackVertex_Significance});
+        
+        //double ChiSq_Sum = SignalVertexSelector::CalculateChi(Product2,0.5,27.4229) + SignalVertexSelector::CalculateChi((PrVtx-tau_vtx).Mag(),0.05,1.64012) + SignalVertexSelector::CalculateChi(PairVPV_Vector.DeltaR(SVPV_Vector),0.025,0.0894129) + SignalVertexSelector::CalculateChi(PairVPV_Vector.DeltaR(TrackPairSum.Vect()),0.045,0.0877042) + SignalVertexSelector::CalculateChi(SV_TrackVertex_Significance,0.45,2.89835) + SignalVertexSelector::CalculateChi(Pair_dR,0.03,0.158807);
+        
+        double ChiSq_Sum = SignalVertexSelector::CalculateChi(Product2,0.5,27.4229) + SignalVertexSelector::CalculateChi(PairVPV_Vector.DeltaR(SVPV_Vector),0.025,0.0894129) + SignalVertexSelector::CalculateChi(Pair_dR,0.03,0.158807);
+        
+        double Product3 = Product2*SV_TrackVertex_Significance*Pair_dR*PairVPV_Vector.DeltaR(SVPV_Vector)*PairVPV_Vector.DeltaR(TrackPairSum.Vect())*BoostedReco[i][0]*BoostedReco[j][0];
+        
+        double Product4 = Product2*Pair_dR*PairVPV_Vector.DeltaR(SVPV_Vector);
+        
+        //TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3});
+        
+        TwoProngChi2.push_back({Product4,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3,Whether_Tau_Dirn_Matches_dVtx});
+        
+        TwoProngChi2_OtherVar.push_back({Pair_dR,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),PairFittedVertex.ChiSquare(),AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge});
+        
+        TwoProngChi2_OtherVar1.push_back({Product3,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3});
+        
+        TwoProngChi2_OtherVar2.push_back({ChiSq_Sum,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3});
+        
+        TwoProngChi2_OtherVar3.push_back({Product4,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3});
+        
+        TwoProngChi2_With3mu.push_back({PairFitted_WithMus_Vertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFittedVertex.ChiSquare()});
+        
+        //TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(), PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect())});
+        
         
         if(Pair_Matched){
           
@@ -2276,10 +2351,13 @@ void  SignalVertexSelector::doEvent(){
     sort( TwoProngVtxDist.begin(), TwoProngVtxDist.end() ); // sort based on first column, lowest first
     sort( TwoProngChi2_With3mu.begin(), TwoProngChi2_With3mu.end() ); // sort based on first column, lowest first
     sort( TwoProngChi2_OtherVar.begin(), TwoProngChi2_OtherVar.end() ); // sort based on first column, lowest first
+    sort( TwoProngChi2_OtherVar1.begin(), TwoProngChi2_OtherVar1.end() ); // sort based on first column, lowest first
+    sort( TwoProngChi2_OtherVar2.begin(), TwoProngChi2_OtherVar2.end() ); // sort based on first column, lowest first
+    sort( TwoProngChi2_OtherVar3.begin(), TwoProngChi2_OtherVar3.end() ); // sort based on first column, lowest first
     
     
     if(MatchedIsoTrackNo.size()>1){
-      
+      /*
       std::cout<<" The dR sorted indices of the isolation tracks are: " << std::endl;
       
       for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut&&dR_No.size()>0;i++){
@@ -2292,12 +2370,20 @@ void  SignalVertexSelector::doEvent(){
       }
       
       std::cout<<"Tau energy: " << TauLV.E() << std::endl;
+      */
       
     }
     
     
     for(int i=0;i<TwoProngChi2.size()&&MatchedIsoTrackNo.size()>1;i++){// Selecting Chi squares of 7 track combinations with lowest Chi2
-      std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] <<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " << TwoProngVtxDist[i][1] <<" pair dr: "<< TwoProngChi2[i][7]<<" pair angle: "<< TwoProngChi2[i][10]<< " Angle after boosting: "<< TwoProngChi2[i][11] << " Sum of charges: " << TwoProngChi2[i][12] + TwoProngChi2[i][13] << " Tau charge: " << TwoProngChi2[i][14] << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
+      //std::cout<<"Chi2 of 2-prong track: "<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] <<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " << TwoProngVtxDist[i][1] <<" pair dr: "<< TwoProngChi2[i][7]<<" pair angle: "<< TwoProngChi2[i][10]<< " Angle after boosting: "<< TwoProngChi2[i][11] << " Sum of charges: " << TwoProngChi2[i][12] + TwoProngChi2[i][13] << " Tau charge: " << TwoProngChi2[i][14] << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
+      
+      std::cout << std::left << std::setw(25)<< TwoProngChi2[i][0] <<" Chi2 with 3mu: "<< TwoProngChi2[i][9] 
+  		<<" avg dR: "<<TwoProngChi2[i][3]<<" avg dR2: "<<TwoProngChi2[i][8]<< " TwoProngVtxDist: " 
+  		<< TwoProngVtxDist[i][2] <<" pair dr: "<< TwoProngChi2[i][7] << " SVPV - TrackVertexPV  dR:  " 
+  		<< TwoProngChi2[i][19]   <<" TrackVertexPV - TrackPairSum dR:  " << TwoProngChi2[i][20]   
+      <<" Chi2 Sum:  " << TwoProngChi2[i][21]  <<" Variable Product:  " << TwoProngChi2[i][22] 
+  		<< " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
       
       if(TwoProngChi2[i][4]){//if 2 correct iso tracks
         Rank_Correct_2iso_Chi2.at(t).Fill(i,1);
@@ -2309,16 +2395,40 @@ void  SignalVertexSelector::doEvent(){
         
         PairAngle_2Cor.at(t).Fill(TwoProngChi2[i][7],1);
         PairMass_2Cor.at(t).Fill(TwoProngChi2[i][18],1);
+        
+        PairVtxPV_dRto_SVPV_2Cor.at(t).Fill(TwoProngChi2[i][19],1);
+        PairVtxPV_dRto_PairLV_2Cor.at(t).Fill(TwoProngChi2[i][20],1);
+        PairVtxPV_SV_Significance_2Cor.at(t).Fill(TwoProngVtxDist[i][2],1);
+        
+        PairVtxDist_2Cor.at(t).Fill(TwoProngVtxDist[i][1],1);
+        PairProduct_2Cor.at(t).Fill(TwoProngChi2[i][8],1);
+        
       }
       if(TwoProngChi2[i][17]){//if 1 correct iso track
         PairAngle_1Cor.at(t).Fill(TwoProngChi2[i][7],1);
         PairMass_1Cor.at(t).Fill(TwoProngChi2[i][18],1);
+        
+        PairVtxPV_dRto_SVPV_1Cor.at(t).Fill(TwoProngChi2[i][19],1);
+        PairVtxPV_dRto_PairLV_1Cor.at(t).Fill(TwoProngChi2[i][20],1);
+        PairVtxPV_SV_Significance_1Cor.at(t).Fill(TwoProngVtxDist[i][2],1);
+        
+        PairVtxDist_1Cor.at(t).Fill(TwoProngVtxDist[i][1],1);
+        PairProduct_1Cor.at(t).Fill(TwoProngChi2[i][8],1);
+        
       }
       if(!TwoProngChi2[i][17]&&!TwoProngChi2[i][4]){//if no correct iso tracks
         PairAngle_0Cor.at(t).Fill(TwoProngChi2[i][7],1);
         PairMass_0Cor.at(t).Fill(TwoProngChi2[i][18],1);
+        
+        PairVtxPV_dRto_SVPV_0Cor.at(t).Fill(TwoProngChi2[i][19],1);
+        PairVtxPV_dRto_PairLV_0Cor.at(t).Fill(TwoProngChi2[i][20],1);
+        PairVtxPV_SV_Significance_0Cor.at(t).Fill(TwoProngVtxDist[i][2],1);
+        
+        PairVtxDist_0Cor.at(t).Fill(TwoProngVtxDist[i][1],1);
+        PairProduct_0Cor.at(t).Fill(TwoProngChi2[i][8],1);
+        
       }
-      if((std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][1])+std::count(MatchedIsoTrackNo.begin(), MatchedIsoTrackNo.end(), TwoProngChi2_With3mu[i][2]))==2){
+      if(TwoProngChi2_With3mu[i][4]){
         Rank_Correct_2iso3mu_Chi2.at(t).Fill(i,1);
       }
       if(TwoProngChi2_OtherVar[i][4]){
@@ -2327,12 +2437,34 @@ void  SignalVertexSelector::doEvent(){
     }
     
     
-    if(dR_No.size()>1&&TwoProngChi2.size()>0){
+    if(TwoProngChi2.size()>0&&MatchedIsoTrackNo.size()>1){
       bool Lowest_Chi2_is_Correct_2iso(false);//whether the lowest Chi2 is the correct one
+      bool Lowest_Chi2_is_Correct_2iso_VarAngle(false);//whether the lowest Angle is the correct one
+      bool Lowest_Chi2_is_Correct_2iso_varChi2Sum(false);//whether the lowest Chi2Sum is the correct one
+      bool Lowest_Chi2_is_Correct_2iso_varProduct(false);//whether the lowest Product is the correct one
+      bool Lowest_Chi2_is_Correct_2iso_varProduct1(false);//whether the lowest Product is the correct one
       if(TwoProngChi2[0][4]){
         Lowest_Chi2_is_Correct_2iso=true;
       }
+      if(TwoProngChi2_OtherVar[0][4]){
+        Lowest_Chi2_is_Correct_2iso_VarAngle=true;
+      }
+      if(TwoProngChi2_OtherVar1[0][4]){
+        Lowest_Chi2_is_Correct_2iso_varProduct=true;
+      }
+      if(TwoProngChi2_OtherVar2[0][4]){
+        Lowest_Chi2_is_Correct_2iso_varChi2Sum=true;
+      }
+      if(TwoProngChi2_OtherVar3[0][4]){
+        Lowest_Chi2_is_Correct_2iso_varProduct1=true;
+      }
+      //if(TwoProngChi2[0][23]){
       Whether_Lowest_Chi2_is_Correct_2iso.at(t).Fill(Lowest_Chi2_is_Correct_2iso,1);
+      Whether_Lowest_Chi2_is_Correct_2iso_VarAngle.at(t).Fill(Lowest_Chi2_is_Correct_2iso_VarAngle,1);
+      Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum.at(t).Fill(Lowest_Chi2_is_Correct_2iso_varChi2Sum,1);
+      Whether_Lowest_Chi2_is_Correct_2iso_varProduct.at(t).Fill(Lowest_Chi2_is_Correct_2iso_varProduct,1);
+      Whether_Lowest_Chi2_is_Correct_2iso_varProduct1.at(t).Fill(Lowest_Chi2_is_Correct_2iso_varProduct1,1);
+      //}
     }
     
     

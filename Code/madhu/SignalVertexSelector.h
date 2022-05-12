@@ -32,6 +32,11 @@ class SignalVertexSelector : public Selection {
 
   virtual void  Configure();
   virtual void  Finish();
+  
+  double CalculateChi(double x1, double mean, double sigma){
+    double chi=(x1-mean)/sigma;
+    return chi*chi;
+  }
 
   enum cuts {L1T=0,HLT,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID,PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, TriggerMatch, TauMassCut,NCuts}; 
 
@@ -592,6 +597,10 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  SVCollectionNoOfCrt_if3;
   
   std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso;
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso_VarAngle;
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso_varChi2Sum;
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso_varProduct;
+  std::vector<TH1D>  Whether_Lowest_Chi2_is_Correct_2iso_varProduct1;
   
   std::vector<TH1D>  Rank_Correct_1iso3mu_Chi2;
   std::vector<TH1D>  Rank_Correct_2iso_Chi2;
@@ -631,6 +640,33 @@ class SignalVertexSelector : public Selection {
   
   std::vector<TH1D>  Angle_dVtx_Pair_Crt;
   std::vector<TH1D>  Angle_dVtx_Pair_InCrt;
+  
+  std::vector<TH1D>  PairVtxPV_dRto_SVPV_2Cor;
+  std::vector<TH1D>  PairVtxPV_dRto_PairLV_2Cor;
+  std::vector<TH1D>  PairVtxPV_SV_Significance_2Cor;
+  std::vector<TH1D>  PairVtxDist_2Cor;
+  std::vector<TH1D>  PairProduct_2Cor;
+  
+  std::vector<TH1D>  PairVtxPV_dRto_SVPV_1Cor;
+  std::vector<TH1D>  PairVtxPV_dRto_PairLV_1Cor;
+  std::vector<TH1D>  PairVtxPV_SV_Significance_1Cor;
+  std::vector<TH1D>  PairVtxDist_1Cor;
+  std::vector<TH1D>  PairProduct_1Cor;
+  
+  std::vector<TH1D>  PairVtxPV_dRto_SVPV_0Cor;
+  std::vector<TH1D>  PairVtxPV_dRto_PairLV_0Cor;
+  std::vector<TH1D>  PairVtxPV_SV_Significance_0Cor;
+  std::vector<TH1D>  PairVtxDist_0Cor;
+  std::vector<TH1D>  PairProduct_0Cor;
+  
+  std::vector<TH1D>  Chi2Sum_2Cor;
+  std::vector<TH1D>  Chi2Product_2Cor;
+  
+  std::vector<TH1D>  Chi2Sum_1Cor;
+  std::vector<TH1D>  Chi2Product_1Cor;
+  
+  std::vector<TH1D>  Chi2Sum_0Cor;
+  std::vector<TH1D>  Chi2Product_0Cor;
   
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
