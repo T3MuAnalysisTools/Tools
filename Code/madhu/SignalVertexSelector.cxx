@@ -2242,9 +2242,18 @@ void  SignalVertexSelector::doEvent(){
         TVector3 Vector_B = (tau_vtx-PrVtx_WithMu);
         bool Whether_Tau_Dirn_Matches_dVtx(true);
         if(fabs((Vector_A).Angle(TauLV.Vect()))>TMath::Pi()/2){
-          Vector_A= -1 * Vector_A;
-          Vector_B= -1 * Vector_B;
+          //Vector_A= -1 * Vector_A;
+          //Vector_B= -1 * Vector_B;
           Whether_Tau_Dirn_Matches_dVtx=false;
+        }
+        bool Whether_Tau_Dirn_Matches_dVtxTau(true);
+        if(fabs((Vector_B).Angle(TauLV.Vect()))>TMath::Pi()/2){
+          Whether_Tau_Dirn_Matches_dVtxTau=false;
+        }
+        
+        bool Whether_PairVtxIsForward(true);
+        if(fabs((PrVtx-tau_vtx).Angle(TauLV.Vect()))>TMath::Pi()/2){
+          Whether_PairVtxIsForward=false;
         }
         
         TMatrixTSym<double> PairVertexCov = PairFittedVertex.GetVertexError();
@@ -2261,7 +2270,7 @@ void  SignalVertexSelector::doEvent(){
         
         //TwoProngChi2.push_back({PairFittedVertex.ChiSquare(),dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3});
         
-        TwoProngChi2.push_back({Product4,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3,Whether_Tau_Dirn_Matches_dVtx});
+        TwoProngChi2.push_back({Product4,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),AngleDiff,AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge,TrackLV1.E()+TrackLV2.E(),AngleWithBMesonDir,One_Matched,(TrackLV1+TrackLV2).M(),PairVPV_Vector.DeltaR(SVPV_Vector), PairVPV_Vector.DeltaR(TrackPairSum.Vect()),ChiSq_Sum,Product3,Whether_Tau_Dirn_Matches_dVtx,Whether_Tau_Dirn_Matches_dVtxTau,Whether_PairVtxIsForward});
         
         TwoProngChi2_OtherVar.push_back({Pair_dR,dR_No[i][1],dR_No[j][1],Product1,Pair_Matched,dR_No[i][0],dR_No[j][0],Pair_dR,Product2,PairFitted_WithMus_Vertex.ChiSquare(),PairFittedVertex.ChiSquare(),AngleCheck,IsoTrack_Charge1,IsoTrack_Charge2,TauCharge});
         
@@ -2324,17 +2333,31 @@ void  SignalVertexSelector::doEvent(){
           // check the angle from d(Vertex) to charged pair
           double AngleCh = fabs((Vector_A).Angle((TrackLV1+TrackLV2).Vect()));
           //if(AngleCh >= TMath::Pi()/2) AngleCh = TMath::Pi()-AngleCh;
-          //if(!Whether_Tau_Dirn_Matches_dVtx){
+          /*
+          if(!Whether_Tau_Dirn_Matches_dVtxTau){
             Angle_dVtx_Pair_Crt.at(t).Fill(AngleCh,1);
-          //}
+          }
+          */
+          if(!Whether_Tau_Dirn_Matches_dVtxTau){
+            //Angle_dVtx_Pair_Crt.at(t).Fill(fabs((PrVtx-tau_vtx).Angle(TauLV.Vect())),1);
+            Angle_dVtx_Pair_Crt.at(t).Fill(AngleCh,1);
+          }
+          //Angle_dVtx_Pair_Crt.at(t).Fill(fabs((PrVtx-tau_vtx).Angle(TauLV.Vect())),1);
         }//if(Pair_Matched)
         if(!Pair_Matched){
           // check the angle from d(Vertex) to charged pair
           double AngleCh = fabs((Vector_A).Angle((TrackLV1+TrackLV2).Vect()));
           //if(AngleCh >= TMath::Pi()/2) AngleCh = TMath::Pi()-AngleCh;
-          //if(!Whether_Tau_Dirn_Matches_dVtx){
+          /*
+          if(!Whether_Tau_Dirn_Matches_dVtxTau){
             Angle_dVtx_Pair_InCrt.at(t).Fill(AngleCh,1);
-          //}
+          }
+          */
+          if(!Whether_Tau_Dirn_Matches_dVtxTau){
+            //Angle_dVtx_Pair_InCrt.at(t).Fill(fabs((PrVtx-tau_vtx).Angle(TauLV.Vect())),1);
+            Angle_dVtx_Pair_InCrt.at(t).Fill(AngleCh,1);
+          }
+          //Angle_dVtx_Pair_InCrt.at(t).Fill(fabs((PrVtx-tau_vtx).Angle(TauLV.Vect())),1);
         }
       }
     }// end i and j loops
@@ -2383,7 +2406,9 @@ void  SignalVertexSelector::doEvent(){
   		<< TwoProngVtxDist[i][2] <<" pair dr: "<< TwoProngChi2[i][7] << " SVPV - TrackVertexPV  dR:  " 
   		<< TwoProngChi2[i][19]   <<" TrackVertexPV - TrackPairSum dR:  " << TwoProngChi2[i][20]   
       <<" Chi2 Sum:  " << TwoProngChi2[i][21]  <<" Variable Product:  " << TwoProngChi2[i][22] 
-  		<< " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
+      <<" Whether_Tau_Dirn_Matches_dVtx:  " << TwoProngChi2[i][23] <<" Whether_Tau_Dirn_Matches_dVtxTau:  " << TwoProngChi2[i][24]
+      <<" Whether_PairVtxIsForward:  " << TwoProngChi2[i][25]
+      << " index1 and 2: " << TwoProngChi2[i][1] << " , " << TwoProngChi2[i][2] <<std::endl;
       
       if(TwoProngChi2[i][4]){//if 2 correct iso tracks
         Rank_Correct_2iso_Chi2.at(t).Fill(i,1);
