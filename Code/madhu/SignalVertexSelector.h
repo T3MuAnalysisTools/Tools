@@ -668,6 +668,11 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  Chi2Sum_0Cor;
   std::vector<TH1D>  Chi2Product_0Cor;
   
+  std::vector<TH1D>  VertexPosition_Cat1;
+  std::vector<TH1D>  VertexPosition_Cat2;
+  std::vector<TH1D>  VertexPosition_Cat3;
+  std::vector<TH1D>  VertexPosition_Cat4;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
