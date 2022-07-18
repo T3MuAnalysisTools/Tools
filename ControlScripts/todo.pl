@@ -463,7 +463,7 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"cmsenv \" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cd -\" >> $OutputDir/workdir$set/init.sh "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/init.sh "));
-    system(sprintf("echo \"export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:\$PWD/CommonUtils/lib\" >> $OutputDir/workdir$set/init.sh "));
+    system(sprintf("echo \"export LD_LIBRARY_PATH=$ENV{$LD_LIBRARY_PATH}:\$PWD/CommonUtils/lib\" >> $OutputDir/workdir$set/init.sh "));
 
 
     # generate compile script
