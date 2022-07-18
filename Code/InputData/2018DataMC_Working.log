@@ -1,8 +1,4 @@
 ID= 1 AllEvt=  171021000.0000 AllEvtErr= 13077.4998  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 171021000.0000 SelEvtnoweight= 0.000000 Nfile= 16
-ID= 40 AllEvt= 11362869.0000 AllEvtErr= 3370.88 SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 11362869.0000 SelEvtnoweight= 0.000000 Nfile= 16
 ID= 60 AllEvt= 3002106.0000 AllEvtErr= 1732.66  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 3002106.0000 SelEvtnoweight= 0.000000 Nfile= 16
 ID= 90 AllEvt= 2869476.0000 AllEvtErr= 1693.95 SelEvt= 0.00000  SelEvtErr= 0.000000 AllEvtnoweight= 2869476.0000 SelEvtnoweight= 0.000000 Nfile= 16
-ID= 119 AllEvt= 2869476.0000 AllEvtErr= 1693.95 SelEvt= 0.00000  SelEvtErr= 0.000000 AllEvtnoweight= 2869476.0000 SelEvtnoweight= 0.000000 Nfile= 16
-ID= 120 AllEvt= 2869476.0000 AllEvtErr= 1693.95 SelEvt= 0.00000  SelEvtErr= 0.000000 AllEvtnoweight= 2869476.0000 SelEvtnoweight= 0.000000 Nfile= 16
-ID= 121 AllEvt= 2869476.0000 AllEvtErr= 1693.95 SelEvt= 0.00000  SelEvtErr= 0.000000 AllEvtnoweight= 2869476.0000 SelEvtnoweight= 0.000000 Nfile= 16
-ID= 122 AllEvt=  587343.0000 AllEvtErr= 766.383  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 587343.0000 SelEvtnoweight= 0.000000 Nfile= 16
+ID= 40 AllEvt= 11362869.0000 AllEvtErr= 3370.88 SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 11362869.0000 SelEvtnoweight= 0.000000 Nfile= 16
