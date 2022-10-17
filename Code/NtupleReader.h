@@ -172,6 +172,7 @@ public :
    std::vector<std::vector<float> > *Tau_p4;
    std::vector<int> *Tau_charge;
    std::vector<int> *Tau_DecayMode;
+   std::vector<int> *Tau_DecayModeFinding;
    std::vector<int> *Tau_byLooseDeepTau2017v2p1VSe;
    std::vector<int> *Tau_byMediumDeepTau2017v2p1VSe;
    std::vector<int> *Tau_byTightDeepTau2017v2p1VSe;
@@ -460,6 +461,7 @@ public :
    TBranch        *b_Tau_p4;   //!
    TBranch        *b_Tau_charge;   //!
    TBranch        *b_Tau_DecayMode;   //!
+   TBranch        *b_Tau_DecayModeFinding;   //!
    TBranch        *b_Tau_byLooseDeepTau2017v2p1VSe;   //!
    TBranch        *b_Tau_byMediumDeepTau2017v2p1VSe;   //!
    TBranch        *b_Tau_byTightDeepTau2017v2p1VSe;   //!
@@ -810,6 +812,7 @@ void NtupleReader::Init(TTree *tree)
    Tau_p4 = 0;
    Tau_charge = 0;
    Tau_DecayMode = 0;
+   Tau_DecayModeFinding = 0;
    Tau_byLooseDeepTau2017v2p1VSe = 0;
    Tau_byMediumDeepTau2017v2p1VSe = 0;
    Tau_byTightDeepTau2017v2p1VSe = 0;
@@ -1100,6 +1103,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Tau_p4", &Tau_p4, &b_Tau_p4);
    fChain->SetBranchAddress("Tau_charge", &Tau_charge, &b_Tau_charge);
    fChain->SetBranchAddress("Tau_DecayMode", &Tau_DecayMode, &b_Tau_DecayMode);
+   fChain->SetBranchAddress("Tau_DecayModeFinding", &Tau_DecayModeFinding, &b_Tau_DecayModeFinding);
    fChain->SetBranchAddress("Tau_byLooseDeepTau2017v2p1VSe", &Tau_byLooseDeepTau2017v2p1VSe, &b_Tau_byLooseDeepTau2017v2p1VSe);
    fChain->SetBranchAddress("Tau_byMediumDeepTau2017v2p1VSe", &Tau_byMediumDeepTau2017v2p1VSe, &b_Tau_byMediumDeepTau2017v2p1VSe);
    fChain->SetBranchAddress("Tau_byTightDeepTau2017v2p1VSe", &Tau_byTightDeepTau2017v2p1VSe, &b_Tau_byTightDeepTau2017v2p1VSe);

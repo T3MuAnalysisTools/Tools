@@ -202,6 +202,7 @@ class Ntuple_Controller{
       int                      Tau_charge(unsigned int i){return Ntp->Tau_charge->at(i);}
       TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}
       int                      Tau_DecayMode(unsigned int i){return Ntp->Tau_DecayMode->at(i);}
+      int                      Tau_DecayModeFinding(unsigned int i){return Ntp->Tau_DecayModeFinding->at(i);}
       int                      Tau_byLooseDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSe->at(i);}
       int                      Tau_byMediumDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSe->at(i);}
       int                      Tau_byTightDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSe->at(i);}
