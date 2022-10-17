@@ -179,10 +179,18 @@ class Ntuple_Controller{
       Int_t     RunNumber(){return Ntp->Event_RunNumber;}
       Int_t     DataMC_Type(){return Ntp->Event_DataMC_Type;}
       Int_t     LuminosityBlock(){return Ntp->Event_luminosityBlock;}
+      float     METEt(){return Ntp->Event_METEt ;}
+      float     METPhi{return Ntp->Event_METPhi ;}
+      float     METXX{return Ntp->Event_METXX ;}
+      float     METXY{return Ntp->Event_METXY ;}
+      float     METYY{return Ntp->Event_METYY ;}
+
+
       float     NVtx(){return Ntp->Vertex_N_primary;}
       double    DeltaPhi(double, double);
       double    TruthNumberOfInteraction(){return Ntp->puN;}
       TString   WhichEra(int year);
+
 
 
       unsigned int   NTracks(){return Ntp->Track_p4->size();}
