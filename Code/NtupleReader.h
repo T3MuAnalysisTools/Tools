@@ -167,6 +167,22 @@ public :
    std::vector<float>   *Muon_M;
    std::vector<std::vector<float> > *Muon_par;
    std::vector<std::vector<float> > *Muon_cov;
+
+
+   std::vector<std::vector<float> > *Tau_p4;
+   std::vector<int> *Tau_charge;
+   std::vector<int> *Tau_DecayMode;
+   std::vector<int> *Tau_byLooseDeepTau2017v2p1VSe;
+   std::vector<int> *Tau_byMediumDeepTau2017v2p1VSe;
+   std::vector<int> *Tau_byTightDeepTau2017v2p1VSe;
+   std::vector<int> *Tau_byLooseDeepTau2017v2p1VSmu;
+   std::vector<int> *Tau_byMediumDeepTau2017v2p1VSmu;
+   std::vector<int> *Tau_byTightDeepTau2017v2p1VSmu;
+   std::vector<int> *Tau_byLooseDeepTau2017v2p1VSjet;
+   std::vector<int> *Tau_byMediumDeepTau2017v2p1VSjet;
+   std::vector<int> *Tau_byTightDeepTau2017v2p1VSjet;
+
+
    std::vector<std::vector<float> > *Gamma_P4;
    std::vector<int>     *Gamma_hasPixelSeed;
    std::vector<int>     *Gamma_hasConversionTracks;
@@ -441,6 +457,18 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
+   TBranch        *b_Tau_p4;   //!
+   TBranch        *b_Tau_charge;   //!
+   TBranch        *b_Tau_DecayMode;   //!
+   TBranch        *b_Tau_byLooseDeepTau2017v2p1VSe;   //!
+   TBranch        *b_Tau_byMediumDeepTau2017v2p1VSe;   //!
+   TBranch        *b_Tau_byTightDeepTau2017v2p1VSe;   //!
+   TBranch        *b_Tau_byLooseDeepTau2017v2p1VSmu;   //!
+   TBranch        *b_Tau_byMediumDeepTau2017v2p1VSmu;   //!
+   TBranch        *b_Tau_byTightDeepTau2017v2p1VSmu;   //!
+   TBranch        *b_Tau_byLooseDeepTau2017v2p1VSjet;   //!
+   TBranch        *b_Tau_byMediumDeepTau2017v2p1VSjet;   //!
+   TBranch        *b_Tau_byTightDeepTau2017v2p1VSjet;   //!
    TBranch        *b_Gamma_P4;   //!
    TBranch        *b_Gamma_hasPixelSeed;   //!
    TBranch        *b_Gamma_hasConversionTracks;   //!
@@ -779,6 +807,18 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
+   Tau_p4 = 0;
+   Tau_charge = 0;
+   Tau_DecayMode = 0;
+   Tau_byLooseDeepTau2017v2p1VSe = 0;
+   Tau_byMediumDeepTau2017v2p1VSe = 0;
+   Tau_byTightDeepTau2017v2p1VSe = 0;
+   Tau_byLooseDeepTau2017v2p1VSmu = 0;
+   Tau_byMediumDeepTau2017v2p1VSmu = 0;
+   Tau_byTightDeepTau2017v2p1VSmu = 0;
+   Tau_byLooseDeepTau2017v2p1VSjet = 0;
+   Tau_byMediumDeepTau2017v2p1VSjet = 0;
+   Tau_byTightDeepTau2017v2p1VSjet = 0;
    Gamma_P4 = 0;
    Gamma_hasPixelSeed = 0;
    Gamma_hasConversionTracks = 0;
@@ -1056,6 +1096,20 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
+
+   fChain->SetBranchAddress("Tau_p4", &Tau_p4, &b_Tau_p4);
+   fChain->SetBranchAddress("Tau_charge", &Tau_charge, &b_Tau_charge);
+   fChain->SetBranchAddress("Tau_DecayMode", &Tau_DecayMode, &b_Tau_DecayMode);
+   fChain->SetBranchAddress("Tau_byLooseDeepTau2017v2p1VSe", &Tau_byLooseDeepTau2017v2p1VSe, &b_Tau_byLooseDeepTau2017v2p1VSe);
+   fChain->SetBranchAddress("Tau_byMediumDeepTau2017v2p1VSe", &Tau_byMediumDeepTau2017v2p1VSe, &b_Tau_byMediumDeepTau2017v2p1VSe);
+   fChain->SetBranchAddress("Tau_byTightDeepTau2017v2p1VSe", &Tau_byTightDeepTau2017v2p1VSe, &b_Tau_byTightDeepTau2017v2p1VSe);
+   fChain->SetBranchAddress("Tau_byLooseDeepTau2017v2p1VSmu", &Tau_byLooseDeepTau2017v2p1VSmu, &b_Tau_byLooseDeepTau2017v2p1VSmu);
+   fChain->SetBranchAddress("Tau_byMediumDeepTau2017v2p1VSmu", &Tau_byMediumDeepTau2017v2p1VSmu, &b_Tau_byMediumDeepTau2017v2p1VSmu);
+   fChain->SetBranchAddress("Tau_byTightDeepTau2017v2p1VSmu", &Tau_byTightDeepTau2017v2p1VSmu, &b_Tau_byTightDeepTau2017v2p1VSmu);
+   fChain->SetBranchAddress("Tau_byLooseDeepTau2017v2p1VSjet", &Tau_byLooseDeepTau2017v2p1VSjet, &b_Tau_byLooseDeepTau2017v2p1VSjet);
+   fChain->SetBranchAddress("Tau_byMediumDeepTau2017v2p1VSjet", &Tau_byMediumDeepTau2017v2p1VSjet, &b_Tau_byMediumDeepTau2017v2p1VSjet);
+   fChain->SetBranchAddress("Tau_byTightDeepTau2017v2p1VSjet", &Tau_byTightDeepTau2017v2p1VSjet, &b_Tau_byTightDeepTau2017v2p1VSjet);
+
    fChain->SetBranchAddress("Gamma_P4", &Gamma_P4, &b_Gamma_P4);
    fChain->SetBranchAddress("Gamma_hasPixelSeed", &Gamma_hasPixelSeed, &b_Gamma_hasPixelSeed);
    fChain->SetBranchAddress("Gamma_hasConversionTracks", &Gamma_hasConversionTracks, &b_Gamma_hasConversionTracks);
