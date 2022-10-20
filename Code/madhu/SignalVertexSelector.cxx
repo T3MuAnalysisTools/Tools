@@ -84,8 +84,12 @@ void  SignalVertexSelector::Configure(){
   T3MMiniTree->Branch("B2",&mvaB2);
   T3MMiniTree->Branch("C1",&mvaC1);
   T3MMiniTree->Branch("C2",&mvaC2);
-
-
+  
+  
+  EventData= new TTree("EventData","EventData");
+  EventData->Branch("B1",&mvaB1);
+  EventData->Branch("var_list1",&var_list1);
+  EventData->Branch("var_list2",&var_list2);
 
 
   TString basedir = "";
@@ -1129,6 +1133,9 @@ void  SignalVertexSelector::Configure(){
   VertexPosition_Cat3=HConfig.GetTH1D(Name+"_VertexPosition_Cat3","VertexPosition_Cat3",50,-2.0,2.0,"Relative Vertex Position","Events");
   VertexPosition_Cat4=HConfig.GetTH1D(Name+"_VertexPosition_Cat4","VertexPosition_Cat4",50,-2.0,2.0,"Relative Vertex Position","Events");
   
+  All_Track_Pt =HConfig.GetTH1D(Name+"_All_Track_Pt","All_Track_Pt",50,0,1.0,"All Track Pt","Events");
+  All_Track_Pt_noSel =HConfig.GetTH1D(Name+"_All_Track_Pt_noSel","All_Track_Pt_noSel",50,0,1.0,"All Track Pt","Events");
+  
   Selection::ConfigureHistograms(); //do not remove
   HConfig.GetHistoInfo(types,CrossSectionandAcceptance,legend,colour); // do not remove
 }
@@ -1333,6 +1340,9 @@ void  SignalVertexSelector::Store_ExtraDist(){
   Extradist1d.push_back(&VertexPosition_Cat2);
   Extradist1d.push_back(&VertexPosition_Cat3);
   Extradist1d.push_back(&VertexPosition_Cat4);
+  
+  Extradist1d.push_back(&All_Track_Pt);
+  Extradist1d.push_back(&All_Track_Pt_noSel);
 
 
 }
@@ -1533,6 +1543,16 @@ void  SignalVertexSelector::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   bool status=AnalysisCuts(t,w,wobs);
+
+
+  if(Ntp->NThreeMuons()>0){
+    for(int j=0;j<Ntp->NIsolationTrack(0);j++){//loop over isolation tracks
+    TLorentzVector TrackLV = Ntp->IsolationTrack_p4(0,j);
+
+    All_Track_Pt_noSel.at(t).Fill(TrackLV.Perp());
+    }
+  }
+
 
 
   //  if(id!=1)  std::cout<<" id:   "<< id << "  NMCSignalParticles  "<< Ntp->NMCSignalParticles() << "  NMCTaus   "<< Ntp->NMCTaus() << std::endl;
@@ -1741,9 +1761,9 @@ void  SignalVertexSelector::doEvent(){
                   }
                   
                 }// end of all_index for loop
-                
-                //std::cout<<"Children of parent of tau with index: "<< gen_part_index << std::endl;
-                //for(int i : b_meson_full_childidx){std::cout<<"Particle index: "<< i <<" with pdgid "<< Ntp->MCParticle_pdgid(i)<< " charge "<<Ntp->MCParticle_charge(i)<<" status "<< Ntp->MCParticle_status(i)<< std::endl;}
+	                    
+                std::cout<<"Children of parent of tau with index: "<< gen_part_index << std::endl;
+                for(int i : b_meson_full_childidx){std::cout<<"Particle index: "<< i <<" with pdgid "<< Ntp->MCParticle_pdgid(i)<< " charge "<<Ntp->MCParticle_charge(i)<<" status "<< Ntp->MCParticle_status(i)<< std::endl;}
                 
                 
                 for(int i : b_meson_full_childidx){if(Ntp->MCParticle_status(i)==1&&abs(Ntp->MCParticle_charge(i))>0){//here, try to match charged MC final state particles to isolation tracks
@@ -1833,7 +1853,9 @@ void  SignalVertexSelector::doEvent(){
                   }
                   
                   WhetherdRMatch.at(t).Fill(dR_Match,1);
-                }}//end of i for loop?
+                }
+                
+                }//end of i for loop?
                 
               }
               //if(!Three_Children){std::cout<<"Tau not found with index: "<< gen_part_index << std::endl;}
@@ -1861,13 +1883,16 @@ void  SignalVertexSelector::doEvent(){
     Matrix pT_No;// n x 2 matrix where first column is pT and second column is the index of the isolation track
     
     Matrix pT_No_7;// n x 2 matrix where first column is pT and second column is the index of the isolation track. These are the 7 tracks closest to tau by dR
-    
+  
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
       TrackToTauDrAll.at(t).Fill(TrackLV.DeltaR(TauLV));
       
+      All_Track_Pt.at(t).Fill(TrackLV.Perp());
+      
       dR_No.push_back({TrackLV.DeltaR(TauLV),j});
       pT_No.push_back({TrackLV.Perp(),j});
+      
     }
     
     sort( dR_No.begin(), dR_No.end() ); // sort based on first column, lowest first
@@ -1947,6 +1972,10 @@ void  SignalVertexSelector::doEvent(){
     Matrix dRtoTauRefl;
     Matrix dRtoSVPV;
     Matrix all_vars;
+    Matrix Individual_Track_Vars;
+    
+    var_list1.clear();
+    var_list2.clear();
     
     for(int i=0;i<dR_No.size()&&i<NoOfTracksAfterdRCut;i++){// Selecting pTs of the 7 tracks (indices 0 - 6) that are closest to tau
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,dR_No[i][1]);
@@ -2113,8 +2142,15 @@ void  SignalVertexSelector::doEvent(){
       
       //Distance_Difference_Avg and Distance_SV_Difference_Avg are the same because you're just looking at differences after coordinate transformation
       
+      Individual_Track_Vars.push_back({dR_No[i][0],dR_No[i][1],Whether_Matched,Distance_SV_Avg_var,dR_No[i][0]*Distance_SV_Avg_var*pow(Chi2_Avg_var,0.5),Chi2_Avg_var,PosSV_Avg_1D_Perp_var,PosSV_Avg_1D_SVPV_var,Track_mod_reco1.Theta(),TrackLV.DeltaR(TauLV_Reflection),TrackLV.DeltaR(SVPV_LV),(Pos1SV+Pos2SV+Pos3SV).Mag()});
+      
       
     }
+    
+    var_list1=Individual_Track_Vars;
+    var_list2=Individual_Track_Vars;
+    
+    EventData->Fill();
     
     sort( Testing1.begin(), Testing1.end() ); // sort based on first column, lowest first
     
@@ -3242,6 +3278,11 @@ void  SignalVertexSelector::Finish(){
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
+  
+  T3MEventData = new TFile("EventData.root","recreate");
+  EventData->SetDirectory(T3MEventData);
+  T3MEventData->Write();
+  T3MEventData->Close();
 
 
   //*** extra actions

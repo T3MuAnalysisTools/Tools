@@ -63,6 +63,9 @@ class SignalVertexSelector : public Selection {
 
   TTree *T3MMiniTree;
   TFile *T3MFMiniTree;
+  
+  TTree *EventData;
+  TFile *T3MEventData;
 
   TRandom rndm;
   double random_num;
@@ -673,6 +676,9 @@ class SignalVertexSelector : public Selection {
   std::vector<TH1D>  VertexPosition_Cat3;
   std::vector<TH1D>  VertexPosition_Cat4;
   
+  std::vector<TH1D>  All_Track_Pt;
+  std::vector<TH1D>  All_Track_Pt_noSel;
+  
   TMVA::Reader *readerA;
   TMVA::Reader *readerB;
   TMVA::Reader *readerC;
@@ -818,6 +824,12 @@ class SignalVertexSelector : public Selection {
   Float_t Muon1DetID;
   Float_t Muon2DetID;
   Float_t Muon3DetID;
+  
+  using Row = vector<double>;
+  using Matrix = vector<Row>;
+  
+  Matrix var_list1;
+  Matrix var_list2;
 
 
 };
