@@ -469,6 +469,7 @@ if( $ARGV[0] eq "--DCache" ){
     system(sprintf("echo \"cd  ..\" >> $OutputDir/workdir$set/init.sh "));
 
 
+
     # generate compile script
     system(sprintf("echo \"#! /bin/bash\" >> $OutputDir/workdir$set/compile "));
     system(sprintf("echo \"cd  $OutputDir/workdir$set/Code/\" >> $OutputDir/workdir$set/compile "));

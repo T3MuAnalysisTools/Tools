@@ -24,7 +24,7 @@
 #include "cherepanov/VertexFits.h"
 #include "cherepanov/DebugFit.h"
 #include "cherepanov/SignalVertexSelector.h"
-
+#include "cherepanov/SimpleTauSelector.h"
 #endif
 
 
@@ -94,6 +94,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("vertexfits"))s=new VertexFits(Analysis,UncertType);
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
   else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
+  else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
 
 
 

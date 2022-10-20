@@ -179,10 +179,18 @@ class Ntuple_Controller{
       Int_t     RunNumber(){return Ntp->Event_RunNumber;}
       Int_t     DataMC_Type(){return Ntp->Event_DataMC_Type;}
       Int_t     LuminosityBlock(){return Ntp->Event_luminosityBlock;}
+      float     METEt(){return Ntp->Event_METEt ;}
+      float     METPhi{return Ntp->Event_METPhi ;}
+      float     METXX{return Ntp->Event_METXX ;}
+      float     METXY{return Ntp->Event_METXY ;}
+      float     METYY{return Ntp->Event_METYY ;}
+
+
       float     NVtx(){return Ntp->Vertex_N_primary;}
       double    DeltaPhi(double, double);
       double    TruthNumberOfInteraction(){return Ntp->puN;}
       TString   WhichEra(int year);
+
 
 
       unsigned int   NTracks(){return Ntp->Track_p4->size();}
@@ -196,6 +204,23 @@ class Ntuple_Controller{
       double         Track_dz(unsigned int i){return  Ntp->Track_dz->at(i);}
       double         Track_dxyError(unsigned int i){return  Ntp->Track_dxyError->at(i);}
       double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
+
+
+      unsigned int             NTaus(){return Ntp->Tau_p4->size();}
+      int                      Tau_charge(unsigned int i){return Ntp->Tau_charge->at(i);}
+      TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}
+      int                      Tau_DecayMode(unsigned int i){return Ntp->Tau_DecayMode->at(i);}
+      int                      Tau_DecayModeFinding(unsigned int i){return Ntp->Tau_DecayModeFinding->at(i);}
+      int                      Tau_byLooseDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSe->at(i);}
+      int                      Tau_byMediumDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSe->at(i);}
+      int                      Tau_byTightDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSe->at(i);}
+      int                      Tau_byLooseDeepTau2017v2p1VSmu(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSmu->at(i);}
+      int                      Tau_byMediumDeepTau2017v2p1VSmu(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSmu->at(i);}
+      int                      Tau_byTightDeepTau2017v2p1VSmu(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSmu->at(i);}
+      int                      Tau_byLooseDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSjet->at(i);}
+      int                      Tau_byMediumDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSjet->at(i);}
+      int                      Tau_byTightDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSjet->at(i);}
+
 
       unsigned int   NMuons(){return Ntp->Muon_p4->size();}
       TLorentzVector Muon_P4(unsigned int i){return TLorentzVector(Ntp->Muon_p4->at(i).at(1),Ntp->Muon_p4->at(i).at(2), Ntp->Muon_p4->at(i).at(3), Ntp->Muon_p4->at(i).at(0));}
