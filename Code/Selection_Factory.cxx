@@ -55,6 +55,7 @@
 #include "madhu/MakeMVATree.h"
 #include "madhu/SignalVertexSelector.h"
 #include "madhu/DebugFit.h"
+#include "madhu/SimpleTauSelector.h"
 
 #endif
 
@@ -120,6 +121,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("makemvatree"))s=new MakeMVATree(Analysis,UncertType);
   else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
+  else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
 #endif
 
 

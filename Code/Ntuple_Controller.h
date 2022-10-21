@@ -180,10 +180,10 @@ class Ntuple_Controller{
       Int_t     DataMC_Type(){return Ntp->Event_DataMC_Type;}
       Int_t     LuminosityBlock(){return Ntp->Event_luminosityBlock;}
       float     METEt(){return Ntp->Event_METEt ;}
-      float     METPhi{return Ntp->Event_METPhi ;}
-      float     METXX{return Ntp->Event_METXX ;}
-      float     METXY{return Ntp->Event_METXY ;}
-      float     METYY{return Ntp->Event_METYY ;}
+      float     METPhi(){return Ntp->Event_METPhi ;}
+      float     METXX(){return Ntp->Event_METXX ;}
+      float     METXY(){return Ntp->Event_METXY ;}
+      float     METYY(){return Ntp->Event_METYY ;}
 
 
       float     NVtx(){return Ntp->Vertex_N_primary;}
