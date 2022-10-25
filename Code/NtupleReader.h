@@ -987,7 +987,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Event_METPhi", &Event_METPhi , &b_Event_METPhi);
    fChain->SetBranchAddress("Event_METXX", &Event_METXX , &b_Event_METXX);
    fChain->SetBranchAddress("Event_METXY", &Event_METXY , &b_Event_METXY);
-   fChain->SetBranchAddress("Event_METYY", & , &b_Event_METYY);
+   fChain->SetBranchAddress("Event_METYY", &Event_METYY , &b_Event_METYY);
 
 
    fChain->SetBranchAddress("puN", &puN, &b_puN);
