@@ -220,6 +220,10 @@ class Ntuple_Controller{
       int                      Tau_byLooseDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSjet->at(i);}
       int                      Tau_byMediumDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSjet->at(i);}
       int                      Tau_byTightDeepTau2017v2p1VSjet(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSjet->at(i);}
+      int                      Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits->at(i);}
+      int                      Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i);}
+      int                      Tau_byTightCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byTightCombinedIsolationDeltaBetaCorr3Hits->at(i);}
+
 
 
       unsigned int   NMuons(){return Ntp->Muon_p4->size();}
