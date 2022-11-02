@@ -188,6 +188,9 @@ public :
    std::vector<int> *Tau_byLooseDeepTau2017v2p1VSjet;
    std::vector<int> *Tau_byMediumDeepTau2017v2p1VSjet;
    std::vector<int> *Tau_byTightDeepTau2017v2p1VSjet;
+   std::vector<int> *Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;
+   std::vector<int> *Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
+   std::vector<int> *Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;
 
 
    std::vector<std::vector<float> > *Gamma_P4;
@@ -483,6 +486,9 @@ public :
    TBranch        *b_Tau_byLooseDeepTau2017v2p1VSjet;   //!
    TBranch        *b_Tau_byMediumDeepTau2017v2p1VSjet;   //!
    TBranch        *b_Tau_byTightDeepTau2017v2p1VSjet;   //!
+   TBranch        *b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;   //!
+   TBranch        *b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;   //!
+   TBranch        *b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;   //!
    TBranch        *b_Gamma_P4;   //!
    TBranch        *b_Gamma_hasPixelSeed;   //!
    TBranch        *b_Gamma_hasConversionTracks;   //!
@@ -834,6 +840,9 @@ void NtupleReader::Init(TTree *tree)
    Tau_byLooseDeepTau2017v2p1VSjet = 0;
    Tau_byMediumDeepTau2017v2p1VSjet = 0;
    Tau_byTightDeepTau2017v2p1VSjet = 0;
+   Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits = 0;
+   Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits = 0;
+   Tau_byTightCombinedIsolationDeltaBetaCorr3Hits = 0;
    Gamma_P4 = 0;
    Gamma_hasPixelSeed = 0;
    Gamma_hasConversionTracks = 0;
@@ -1133,6 +1142,9 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Tau_byLooseDeepTau2017v2p1VSjet", &Tau_byLooseDeepTau2017v2p1VSjet, &b_Tau_byLooseDeepTau2017v2p1VSjet);
    fChain->SetBranchAddress("Tau_byMediumDeepTau2017v2p1VSjet", &Tau_byMediumDeepTau2017v2p1VSjet, &b_Tau_byMediumDeepTau2017v2p1VSjet);
    fChain->SetBranchAddress("Tau_byTightDeepTau2017v2p1VSjet", &Tau_byTightDeepTau2017v2p1VSjet, &b_Tau_byTightDeepTau2017v2p1VSjet);
+   fChain->SetBranchAddress("Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits", &Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits);
+   fChain->SetBranchAddress("Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits", &Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits);
+   fChain->SetBranchAddress("Tau_byTightCombinedIsolationDeltaBetaCorr3Hits", &Tau_byTightCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits);
 
    fChain->SetBranchAddress("Gamma_P4", &Gamma_P4, &b_Gamma_P4);
    fChain->SetBranchAddress("Gamma_hasPixelSeed", &Gamma_hasPixelSeed, &b_Gamma_hasPixelSeed);
