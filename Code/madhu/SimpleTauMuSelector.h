@@ -1,20 +1,20 @@
-#ifndef SimpleTauSelector_h
-#define SimpleTauSelector_h
+#ifndef SimpleTauMuSelector_h
+#define SimpleTauMuSelector_h
 
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
 
-class SimpleTauSelector : public Selection {
+class SimpleTauMuSelector : public Selection {
 
  public:
-  SimpleTauSelector(TString Name_, TString id_);
-  virtual ~SimpleTauSelector();
+  SimpleTauMuSelector(TString Name_, TString id_);
+  virtual ~SimpleTauMuSelector();
 
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0, nTaus , SignalCandidate, OSCharge, DeepTauVsJ, DeepTauVsMu, DeepTauVsE, pTCut1, pTCut2, DM,  NCuts}; 
+  enum cuts {TriggerOk=0, nMuons , SignalCandidate, OSCharge, pTCut1, pTCut2,  NCuts}; 
 
 
  protected:
@@ -23,13 +23,12 @@ class SimpleTauSelector : public Selection {
 
  private:
 
-  std::vector<TH1D>   NumberOfTaus;
+  std::vector<TH1D>   NumberOfMuons;
   std::vector<TH2D>   NumTausvsNumMuons;
   
-  std::vector<TH1D>   TauX_TauCand_Inv_Mass_1;
-  std::vector<TH1D>   TauX_TauCand_Inv_Mass_2;
-  std::vector<TH1D>   TauX_TauCand_Inv_Mass_3;
-  std::vector<TH1D>   DecayModes;
+  std::vector<TH1D>   Mu_TauCand_Inv_Mass_1;
+  std::vector<TH1D>   Mu_TauCand_Inv_Mass_2;
+  std::vector<TH1D>   Mu_TauCand_Inv_Mass_3;
   std::vector<TH1D>   MET_Et;
   std::vector<TH1D>   MET_Phi;
   std::vector<TH1D>   Tau3muMass;

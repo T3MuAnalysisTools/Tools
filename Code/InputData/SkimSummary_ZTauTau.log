@@ -1,5 +1,3 @@
-ID= 1 AllEvt=  171247556.0000 AllEvtErr= 13086.15894  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 171247556.0000 SelEvtnoweight= 0.000000 Nfile= 16 
-ID= 210 AllEvt= 900506.0000 AllEvtErr= 948.9499 SelEvt= 0.0000  SelEvtErr= 0.000000 AllEvtnoweight= 900506.0000 SelEvtnoweight= 0.000000 Nfile= 16 
-
-
+ID= 1 AllEvt=  171755.0 AllEvtErr= 13086.15894  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 171247556.0000 SelEvtnoweight= 0.000000 Nfile= 16 
+ID= 210 AllEvt=  32801.0 AllEvtErr= 181.11  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 32801.0000 SelEvtnoweight= 0.000000 Nfile= 16 
 
