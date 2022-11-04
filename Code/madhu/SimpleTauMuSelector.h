@@ -14,7 +14,7 @@ class SimpleTauMuSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0, nMuons , SignalCandidate, OSCharge, pTCut1, pTCut2,  NCuts}; 
+  enum cuts {TriggerOk=0, nMuons , SignalCandidate, OSCharge, pTCut1, pTCut2, pTCut3, pTCutTauMu,  NCuts}; 
 
 
  protected:

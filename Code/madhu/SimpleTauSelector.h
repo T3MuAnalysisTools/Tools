@@ -14,7 +14,7 @@ class SimpleTauSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0, nTaus , SignalCandidate, OSCharge, DeepTauVsJ, DeepTauVsMu, DeepTauVsE, pTCut1, pTCut2, DM,  NCuts}; 
+  enum cuts {TriggerOk=0, nTaus , SignalCandidate, TauHIsolation, OSCharge, DeepTauVsJ, DeepTauVsMu, DeepTauVsE, pTCut1, pTCut2, pTCut3, pTCutTauX, DM,  NCuts}; 
 
 
  protected:
