@@ -175,6 +175,18 @@ public :
    std::vector<std::vector<float> > *Muon_cov;
 
 
+   std::vector<std::vector<float> > *Electron_p4;
+   std::vector<int>                 *Electron_Charge;
+   std::vector<float>               *Electron_puppiNeutralHadronIso;
+   std::vector<float>               *Electron_puppiPhotonIso;
+   std::vector<float>               *Electron_trackIso;
+   std::vector<bool>                *Electron_isPF;
+   std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_veto;
+   std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_loose;
+   std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_medium;
+   std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_tight;
+
+
    std::vector<std::vector<float> > *Tau_p4;
    std::vector<int> *Tau_charge;
    std::vector<int> *Tau_DecayMode;
@@ -473,6 +485,16 @@ public :
    TBranch        *b_Muon_M;   //!
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
+   TBranch        *b_Electron_p4;   //!
+   TBranch        *b_Electron_Charge;   //!
+   TBranch        *b_Electron_puppiNeutralHadronIso;   //!
+   TBranch        *b_Electron_puppiPhotonIso;   //!
+   TBranch        *b_Electron_trackIso;   //!
+   TBranch        *b_Electron_isPF;   //!
+   TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_veto;   //!
+   TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_loose;   //!
+   TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_medium;   //!
+   TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_tight;   //!
    TBranch        *b_Tau_p4;   //!
    TBranch        *b_Tau_charge;   //!
    TBranch        *b_Tau_DecayMode;   //!
@@ -827,6 +849,16 @@ void NtupleReader::Init(TTree *tree)
    Muon_M = 0;
    Muon_par = 0;
    Muon_cov = 0;
+   Electron_p4 = 0;
+   Electron_Charge = 0;
+   Electron_puppiNeutralHadronIso = 0;
+   Electron_puppiPhotonIso = 0;
+   Electron_trackIso = 0;
+   Electron_isPF = 0;
+   Electron_cutBasedElectronID_Fall17_94X_V2_veto = 0;
+   Electron_cutBasedElectronID_Fall17_94X_V2_loose = 0;
+   Electron_cutBasedElectronID_Fall17_94X_V2_medium = 0;
+   Electron_cutBasedElectronID_Fall17_94X_V2_tight = 0;
    Tau_p4 = 0;
    Tau_charge = 0;
    Tau_DecayMode = 0;
@@ -1128,6 +1160,20 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_M", &Muon_M, &b_Muon_M);
    fChain->SetBranchAddress("Muon_par", &Muon_par, &b_Muon_par);
    fChain->SetBranchAddress("Muon_cov", &Muon_cov, &b_Muon_cov);
+
+
+
+   fChain->SetBranchAddress("Electron_p4", &Electron_p4, &b_Electron_p4);
+   fChain->SetBranchAddress("Electron_Charge", &Electron_Charge, &b_Electron_Charge);
+   fChain->SetBranchAddress("Electron_puppiNeutralHadronIso", &Electron_puppiNeutralHadronIso, &b_Electron_puppiNeutralHadronIso);
+   fChain->SetBranchAddress("Electron_puppiPhotonIso", &Electron_puppiPhotonIso, &b_Electron_puppiPhotonIso);
+   fChain->SetBranchAddress("Electron_trackIso", &Electron_trackIso, &b_Electron_trackIso);
+   fChain->SetBranchAddress("Electron_isPF", &Electron_isPF, &b_Electron_isPF);
+   fChain->SetBranchAddress("Electron_cutBasedElectronID_Fall17_94X_V2_veto", &Electron_cutBasedElectronID_Fall17_94X_V2_veto, &b_Electron_cutBasedElectronID_Fall17_94X_V2_veto);
+   fChain->SetBranchAddress("Electron_cutBasedElectronID_Fall17_94X_V2_loose", &Electron_cutBasedElectronID_Fall17_94X_V2_loose, &b_Electron_cutBasedElectronID_Fall17_94X_V2_loose);
+   fChain->SetBranchAddress("Electron_cutBasedElectronID_Fall17_94X_V2_medium", &Electron_cutBasedElectronID_Fall17_94X_V2_medium, &b_Electron_cutBasedElectronID_Fall17_94X_V2_medium);
+   fChain->SetBranchAddress("Electron_cutBasedElectronID_Fall17_94X_V2_tight", &Electron_cutBasedElectronID_Fall17_94X_V2_tight, &b_Electron_cutBasedElectronID_Fall17_94X_V2_tight);
+
 
    fChain->SetBranchAddress("Tau_p4", &Tau_p4, &b_Tau_p4);
    fChain->SetBranchAddress("Tau_charge", &Tau_charge, &b_Tau_charge);
