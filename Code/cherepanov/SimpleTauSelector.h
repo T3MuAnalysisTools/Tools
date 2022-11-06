@@ -14,7 +14,13 @@ class SimpleTauSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,PrimeVtx, nTaus ,NCuts}; 
+  enum cuts {TriggerOk=0,
+	     PrimeVtx, 
+	     SignalCandidate,
+	     MuonCandidate,
+	     OSCharge,
+	     nTaus,
+	     NCuts}; 
 
 
  protected:
@@ -24,7 +30,10 @@ class SimpleTauSelector : public Selection {
  private:
 
   std::vector<TH1D>   NumberOfTaus;
+  std::vector<TH1D>   Mu3MuVisibleMass;
+  std::vector<TH1D>   Mu3MudPhi;
   std::vector<TH2D>   NumTausvsNumMuons;
+
 
 };
 #endif
