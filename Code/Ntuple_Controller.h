@@ -206,6 +206,18 @@ class Ntuple_Controller{
       double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
 
 
+      bool                     Vertex_HighestPtVertexIsValid(){return Ntp->Vertex_HighestPt_PrimaryVertex->size();}
+      TVector3                 Vertex_HighestPt_PrimaryVertex(){
+
+	if(Ntp->Vertex_HighestPt_PrimaryVertex->size() == 0) return TVector3(0,0,0);
+	return TVector3(Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(0),
+			Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(1),
+			Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(2));
+      } 
+      
+      TMatrixTSym<double>  Vertex_HighestPt_PrimaryVertex_Covariance();
+	
+
       unsigned int             NTaus(){return Ntp->Tau_p4->size();}
       int                      Tau_charge(unsigned int i){return Ntp->Tau_charge->at(i);}
       TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}

@@ -284,6 +284,8 @@ public :
    std::vector<bool>    *Vertex_RefitPVisValid;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex_covariance;
+   std::vector<std::vector<float> >  *Vertex_HighestPt_PrimaryVertex;
+   std::vector<std::vector<double> > *Vertex_HighestPt_PrimaryVertex_covariance;
    std::vector<std::vector<double> > *Vertex_d0_reco;
    std::vector<std::vector<double> > *Vertex_dz_reco;
    std::vector<std::vector<double> > *Vertex_d0SV_reco;
@@ -597,6 +599,8 @@ public :
    TBranch        *b_Vertex_RefitPVisValid;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex_covariance;   //!
+   TBranch        *b_Vertex_HighestPt_PrimaryVertex;   //!
+   TBranch        *b_Vertex_HighestPt_PrimaryVertex_covariance;   //!
    TBranch        *b_Vertex_d0_reco;   //!
    TBranch        *b_Vertex_dz_reco;   //!
    TBranch        *b_Vertex_d0SV_reco;   //!
@@ -958,6 +962,8 @@ void NtupleReader::Init(TTree *tree)
    Vertex_RefitPVisValid = 0;
    Vertex_MatchedRefitPrimaryVertex = 0;
    Vertex_MatchedRefitPrimaryVertex_covariance = 0;
+   Vertex_HighestPt_PrimaryVertex = 0;
+   Vertex_HighestPt_PrimaryVertex_covariance = 0;
    Vertex_d0_reco = 0;
    Vertex_dz_reco = 0;
    Vertex_d0SV_reco = 0;
@@ -1279,6 +1285,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex", &Vertex_MatchedRefitPrimaryVertex, &b_Vertex_MatchedRefitPrimaryVertex);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex_covariance", &Vertex_MatchedRefitPrimaryVertex_covariance, &b_Vertex_MatchedRefitPrimaryVertex_covariance);
+   fChain->SetBranchAddress("Vertex_HighestPt_PrimaryVertex", &Vertex_HighestPt_PrimaryVertex, &b_Vertex_HighestPt_PrimaryVertex);
+   fChain->SetBranchAddress("Vertex_HighestPt_PrimaryVertex_covariance", &Vertex_HighestPt_PrimaryVertex_covariance, &b_Vertex_HighestPt_PrimaryVertex_covariance);
    fChain->SetBranchAddress("Vertex_d0_reco", &Vertex_d0_reco, &b_Vertex_d0_reco);
    fChain->SetBranchAddress("Vertex_dz_reco", &Vertex_dz_reco, &b_Vertex_dz_reco);
    fChain->SetBranchAddress("Vertex_d0SV_reco", &Vertex_d0SV_reco, &b_Vertex_d0SV_reco);

@@ -810,6 +810,26 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned 
    return V_cov;
 }
 
+
+
+
+TMatrixTSym<double> Ntuple_Controller::Vertex_HighestPt_PrimaryVertex_Covariance(){
+   TMatrixTSym<float> V_cov(3);
+   int l=0;
+   for(int j=0;j<3;j++){
+      for(int k=j;k<3;k++){
+         //if(j==k) V_cov(i,j)=pow(0.0001,2.0);
+         V_cov(j,k)=Ntp->Vertex_HighestPt_PrimaryVertex_covariance->at(0).at(l);
+         V_cov(k,j)=Ntp->Vertex_HighestPt_PrimaryVertex_covariance->at(0).at(l);
+         l++;
+      }
+   }
+   return V_cov;
+}
+
+
+
+
 TVector3  Ntuple_Controller::SVPVDirection(TVector3 SV, TVector3 PV){
    return SV-PV;
 }
