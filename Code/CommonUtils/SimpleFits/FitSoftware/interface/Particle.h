@@ -12,7 +12,7 @@ public:
   Particle(TMatrixT<double> par_, TMatrixTSym<double> cov_, int pdgid_, double charge_, double b_);
   virtual ~Particle(){};
 
-  virtual double Parameter(int i) {
+  virtual double Parameter(int i) const {
     if (0<=i && i<par.GetNrows()) {
       return par(i, 0);
     }

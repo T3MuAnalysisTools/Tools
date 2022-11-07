@@ -17,14 +17,11 @@ class TrackParticle : public Particle {
   int NParameters(){return NHelixPar;}
 
   double Mass() const{return mass;}
+  double Pt() const {return fabs(BField()/Parameter(TrackParticle::kappa));}
+  double P() const {return Pt()/cos(Parameter(TrackParticle::lambda));}
 
-
-
-
-  
  private:
   double mass;
-
 };
 #endif
 
