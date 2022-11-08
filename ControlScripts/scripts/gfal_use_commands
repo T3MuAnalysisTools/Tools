@@ -1,1 +1,2 @@
 gfal-ls davs://cmsio7.rc.ufl.edu:1094//store/user/cherepan/
+gfal-rm -r davs://cmsio7.rc.ufl.edu:1094/store/user/cherepan/test
