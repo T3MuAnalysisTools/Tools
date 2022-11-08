@@ -26,6 +26,7 @@ class ThreeProngOneProngFitter : public LagrangeMultipliersFitter{
   enum ParsTrunc{tau_px=0,tau_py,tau_pz,npartr};
 
   // Number of Hard Constraints
+  //  virtual double NConstraints(){ return 2;}
   virtual double NConstraints(){ return 2;}
 
   // Number of Soft Constraints

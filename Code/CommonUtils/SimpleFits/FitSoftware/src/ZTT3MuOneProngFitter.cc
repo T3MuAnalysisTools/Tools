@@ -1,7 +1,7 @@
-#include "SimpleFits/FitSoftware/interface/ZTT3MuOneProngFitter.h"
-#include "SimpleFits/FitSoftware/interface/ChiSquareFunctionUpdator.h"
-#include "SimpleFits/FitSoftware/interface/PDGInfo.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "TauPolSoftware/SimpleFits/interface/ZTT3MuOneProngFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/ChiSquareFunctionUpdator.h"
+#include "TauPolSoftware/SimpleFits/interface/PDGInfo.h"
+#include "TauPolSoftware/SimpleFits/interface/Logger.h"
 #include "Minuit2/FunctionMinimum.h"
 #include "Minuit2/MnUserParameters.h"
 #include "Minuit2/MnPrint.h"
@@ -30,7 +30,7 @@ ZTT3MuOneProngFitter::ZTT3MuOneProngFitter(LorentzVectorParticle TauThreeProng, 
 ZTT3MuOneProngFitter::ZTT3MuOneProngFitter(LorentzVectorParticle TauThreeProng, LorentzVectorParticle ThreeProng, TrackParticle OneProngTrack, PTObject ResPtEstimate, TVector3 PVertex, TMatrixTSym<double> VertexCov, double MassConstraint):
   LagrangeMultipliersFitter()
 {
-  debug = false;
+  debug = true;
   AnalyticalCovariance_ =false;
 
   ResPtEstimate_ = ResPtEstimate;
@@ -41,6 +41,7 @@ ZTT3MuOneProngFitter::ZTT3MuOneProngFitter(LorentzVectorParticle TauThreeProng, 
   MassConstraint_ = MassConstraint;
 
   Configure(TauThreeProng, ThreeProng, OneProngTrack, PVertex, VertexCov);
+
 }
 
 void ZTT3MuOneProngFitter::Configure(LorentzVectorParticle TauThreeProng, LorentzVectorParticle ThreeProng, TrackParticle OneProngTrack, TVector3 PVertex, TMatrixTSym<double> VertexCov){
@@ -49,13 +50,17 @@ void ZTT3MuOneProngFitter::Configure(LorentzVectorParticle TauThreeProng, Lorent
   OneProngTrack_ = OneProngTrack;
   ThreeProng_ = ThreeProng;
   PV_ = PVertex;
-
+  Logger::Instance()->SetLevel(Logger::Warning);
   LorentzVectorParticle  TauOneProngGuess;
   LorentzVectorParticle  DiTau;
   if(!useFullRecoil_)
     TauOneProngGuess = TauOneProngStartingPoint(OneProngTrack, TauThreeProng, PVertex, VertexCov, TauThreeProng.Vertex(), TauThreeProng.VertexCov());
   else
     TauOneProngGuess = TauOneProngStartingPointwithFullRecoil(OneProngTrack, TauThreeProng, ResPtEstimate_, PVertex, VertexCov, TauThreeProng.Vertex(), TauThreeProng.VertexCov());
+
+  std::cout<<"   TauOneProngGuess  "<<TauOneProngGuess.LV().M() <<std::endl;
+  TauOneProngGuess.LV().Print(); 
+
 
   Logger(Logger::Debug) << "TauThreeProng covariance: " << std::endl;
   if(Logger::Instance()->Level() == Logger::Debug){
@@ -68,6 +73,8 @@ void ZTT3MuOneProngFitter::Configure(LorentzVectorParticle TauThreeProng, Lorent
   Logger(Logger::Debug) << "Passed: TauOneProngStartingPoint" << std::endl;
 
   ThetaForConstrTemporaryImplementation_=TauOneProngGuess.LV().Theta();
+
+
   particles_.push_back(TauThreeProng);
   particles_.push_back(TauOneProngGuess);
 
@@ -82,7 +89,7 @@ void ZTT3MuOneProngFitter::Configure(LorentzVectorParticle TauThreeProng, Lorent
   int sizeTrunc = 3;
   TMatrixT<double>    inpar(size,1);
   TMatrixTSym<double> incov(size);
-
+  //  std::cout<<" deb2  "<< std::endl;
   // Get primary vertex information
   if(VertexCov.GetNrows()!=LorentzVectorParticle::NVertex)return;
 
@@ -141,6 +148,7 @@ void ZTT3MuOneProngFitter::Configure(LorentzVectorParticle TauThreeProng, Lorent
   PARb_0=ComputeExpParToParb(exppar_);
   for(int i=0; i<npartr;i++)parb_0(i)=PARb_0(i,0);
   y_.ResizeTo(npartr,1); y_ = convertToMatrix(para_0);
+  std::cout<<"   ------ y_"<< std::endl;  y_.Print();
 
   covb_0=ErrorMatrixPropagator::PropagateError(&ZTT3MuOneProngFitter::ComputeExpParToParb,exppar_,expcov_);
   parb.ResizeTo(npartr);
@@ -244,6 +252,8 @@ bool ZTT3MuOneProngFitter::Fit(){
           parbprev = parbprev_;
           para_0 = paraprev_ + para_delta;
           parb_0 = parbprev_ + parb_delta;
+
+	  
           // if(Logger::Instance()->Level() == Logger::Debug){
           // Logger(Logger::Debug) << "para_0: after i = " << i_CutStep << " Cutsteps: " << std::endl;
           // para_0.Print();
@@ -543,11 +553,15 @@ TVectorD ZTT3MuOneProngFitter::HardValue(TVectorD &va,TVectorD &vb,bool debug){
 
   TLorentzVector z=TauThreeProng+TauOneProng;
   TVectorD d(NConstraints());
+  d.ResizeTo(2);
+  //  TVectorD d(1);
 
 	//d(0) = pow(TauThreeProng.E() + TauOneProng.E(), 2.) - (TauThreeProng.Vect() + TauOneProng.Vect()).Mag2()- pow(MassConstraint_,2.);
 	//d(1) = TauOneProng.Pz() - CosThetaTauOneProng(TauOneProng)*TauOneProng.P();
-  //	d(0) = z.M() - MassConstraint_;
-	d(0) = TauOneProng.Pz() - CosThetaTauOneProng(TauOneProng)*TauOneProng.P();
+    d(0) = z.M() - MassConstraint_;
+    d(1) = TauOneProng.Pz() - CosThetaTauOneProng(TauOneProng)*TauOneProng.P();
+    Logger(Logger::Debug) << "HCVec: " << d(0) << ", " <<  z.M() - MassConstraint_ << std::endl;
+
   return d;
 }
 
@@ -555,7 +569,7 @@ TVectorD ZTT3MuOneProngFitter::SoftValue(TVectorD &va,TVectorD &vb,bool debug){
   TLorentzVector TauThreeProng,TauOneProng;
   CovertParToObjects(va,vb,TauThreeProng,TauOneProng);
   TVectorD d(NSoftConstraints());
-
+  //  std::cout<<"  XCHECK:      "<< TauThreeProng.Px() <<"  "<< TauThreeProng.Py()<< "   "<< TauThreeProng.Pz() << std::endl;
   if(!useFullRecoil_){
     d(0) = TauThreeProng.Px() + TauOneProng.Px();
     d(1) = TauThreeProng.Py() + TauOneProng.Py();
@@ -568,10 +582,17 @@ TVectorD ZTT3MuOneProngFitter::SoftValue(TVectorD &va,TVectorD &vb,bool debug){
   else{
     d(0) = TauThreeProng.Px() + TauOneProng.Px() - RecoilX_;
     d(1) = TauThreeProng.Py() + TauOneProng.Py() - RecoilY_;
-    if(debug){
-      Logger(Logger::Debug) << "SCVec: " << d(0) << ", " << d(1) << std::endl;
-      Logger(Logger::Debug) << "RecoilX_: " << RecoilX_ << ", RecoilY_: " << RecoilY_ << std::endl;
-    }
+    //    if(debug){
+    //      Logger(Logger::Debug) << "SCVec: " << d(0) << ", " << d(1) << std::endl;
+    //      Logger(Logger::Debug) << "RecoilX_: " << RecoilX_ << ", RecoilY_: " << RecoilY_ << std::endl;
+    //      Logger(Logger::Debug) << "TauThreeProng Px(): " <<  TauThreeProng.Px() << ", TauOneProng Px(): " << TauOneProng.Px() << std::endl;
+    //      Logger(Logger::Debug) << "TauThreeProng Py(): " <<  TauThreeProng.Py() << ", TauOneProng Py(): " << TauOneProng.Py() << std::endl;
+
+    //        std::cout<< "SCVec: " << d(0) << ", " << d(1) << std::endl;
+    //        std::cout<< "RecoilX_: " << RecoilX_ << ", RecoilY_: " << RecoilY_ << std::endl;
+    //        std::cout<< "TauThreeProng Px(): " <<  TauThreeProng.Px() << ", TauOneProng Px(): " << TauOneProng.Px() << std::endl;
+    //        std::cout<< "TauThreeProng Py(): " <<  TauThreeProng.Py() << ", TauOneProng Py(): " << TauOneProng.Py() << std::endl;
+      //    }
   }
   return d;
 }

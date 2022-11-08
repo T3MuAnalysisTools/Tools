@@ -541,11 +541,12 @@ TVectorD ThreeProngOneProngFitter::HardValue(TVectorD &va,TVectorD &vb,bool debu
   CovertParToObjects(va,vb,TauThreeProng,TauOneProng);
 
   TLorentzVector z=TauThreeProng+TauOneProng;
-  TVectorD d(NConstraints());
-
+    TVectorD d(NConstraints());
+  //  TVectorD d;
+  //  d.ResizeTo(1);
 	//d(0) = pow(TauThreeProng.E() + TauOneProng.E(), 2.) - (TauThreeProng.Vect() + TauOneProng.Vect()).Mag2()- pow(MassConstraint_,2.);
 	//d(1) = TauOneProng.Pz() - CosThetaTauOneProng(TauOneProng)*TauOneProng.P();
-	d(0) = z.M() - MassConstraint_;
+  	d(0) = z.M() - MassConstraint_;
 	d(1) = TauOneProng.Pz() - CosThetaTauOneProng(TauOneProng)*TauOneProng.P();
   return d;
 }

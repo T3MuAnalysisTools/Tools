@@ -70,7 +70,7 @@ class GlobalEventFit{
   PTObject AddA1s(PTObject MET);
   PTObject AddMuon(PTObject MET);
   PTObject AddNeutralPion(PTObject MET);
-
+  PTObject AddTriplet(PTObject MET);
  private:
   int minimizer_;
   bool isConfigured_;

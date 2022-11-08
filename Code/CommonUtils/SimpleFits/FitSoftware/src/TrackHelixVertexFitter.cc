@@ -152,6 +152,7 @@ LorentzVectorParticle TrackHelixVertexFitter::GetMother(int pdgid){
   FreePar(par.GetNrows()+BField0,0)=b;
   TMatrixT<double>    mpar=ComputeMotherLorentzVectorPar(FreePar);
   TMatrixTSym<double> mcov=ErrorMatrixPropagator::PropagateError(&TrackHelixVertexFitter::ComputeMotherLorentzVectorPar,FreePar,FreeParCov);
+
   return LorentzVectorParticle(mpar,mcov,pdgid,c,b);
 }
 

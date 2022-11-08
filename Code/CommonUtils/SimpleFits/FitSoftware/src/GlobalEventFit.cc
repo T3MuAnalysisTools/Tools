@@ -155,6 +155,7 @@ void GlobalEventFit::Configure(TrackParticle OneProng, LorentzVectorParticle Muo
          isValid_ = false;
          pionDecay_ = true;
          Track_ = OneProng;
+	 Muon_ = OneProng;
          MuonsTriplet_= MuonsTriplet;
          PVCov_.ResizeTo(PVCov);
          PVCov_= PVCov;
@@ -247,8 +248,19 @@ GEFObject GlobalEventFit::Fit(){
 
 	if(ZTT3Mu_)  //   here a part of Z -> tau(3mu) - tau(1 prong)  
 	  {
-	    ZTT3MuOneProngFitter *ptr2Fitter = NULL;
-	    ptr2Fitter = new ZTT3MuOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, MET_, PV_, PVCov_, 91.5); 
+	    //	    ZTT3MuOneProngFitter *ptr2Fitter = NULL;
+	    ThreeProngOneProngFitter *ptr2Fitter = NULL;
+	    //	    PTObject ZPtEst(MET_);
+	    //	    AddA1(ZPtEst);
+	    PTObject ZPtEst_Muon=  AddMuon(MET_);
+	    PTObject ZPtEst_Full=  AddTriplet(ZPtEst_Muon);
+
+	    std::cout<<" MET   "<< MET_.X() << "   "<< MET_.Y() << std::endl;
+	    std::cout<<" ZPtEst   "<< ZPtEst_Full.X() << "   "<< ZPtEst_Full.Y() << std::endl;
+	    //	    METMinusNeutrino.push_back(ZPtEst);
+	    //	    ptr2Fitter = new ZTT3MuOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, MET_, PV_, PVCov_, 91.5); 
+	    ptr2Fitter = new ThreeProngOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, ZPtEst_Full, PV_, PVCov_, 91.5);
+	    //ptr2Fitter = new ZTT3MuOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, ZPtEst_Full, PV_, PVCov_, 91.5); 
 	    ptr2Fitter->SetFittingMode(minimizer_);
 	    //	    std::cout<<"  A1s_.size()   "<< A1s_.size() << std::endl;
 	    for(int i=0; i<2;i++){
@@ -259,9 +271,13 @@ GEFObject GlobalEventFit::Fit(){
 	      isValid_ = isValid_ || fitvalid.back();
 	      // fitstatus.push_back(fitvalid.back() && ptr2Fitter->isConverged());
 	      fitstatus.push_back(fitvalid.back());
-	      if(fitvalid.back()){
+ 	      if(fitvalid.back()){
+		std::cout<<"   chi2=========================  "<< ptr2Fitter->ChiSquare()<<std::endl;
 		FitResonance.push_back(ptr2Fitter->GetMother());
 		RefitDaughters.push_back(ptr2Fitter->GetReFitDaughters());
+
+		ptr2Fitter->GetReFitDaughters().at(0).LV().Print();
+		ptr2Fitter->GetReFitDaughters().at(1).LV().Print();
 		Chi2Vecs.push_back(ptr2Fitter->ChiSquareVector());
 		Chi2s.push_back(ptr2Fitter->ChiSquare());
 		Niterats.push_back(ptr2Fitter->NIter());
@@ -326,7 +342,7 @@ GEFObject GlobalEventFit::Fit(){
 				else{
 				  // ptr2Fitter = new DiTauConstrainedFitter(Taus.at(0).at(Ambiguity), A1_, Muon_, METMinusNeutrino.at(Ambiguity), PV_, PVCov_, MassConstraint_);
 				  ptr2Fitter = new ThreeProngOneProngFitter(Taus.at(0).at(Ambiguity), A1_, Muon_, METMinusNeutrino.at(Ambiguity), PV_, PVCov_, MassConstraint_);
-					Logger(Logger::Debug) << "Case 2: With Recoil, User MassConstraint: " << ptr2Fitter->GetMassConstraint() << std::endl;
+				  Logger(Logger::Debug) << "Case 2: With Recoil, User MassConstraint: " << ptr2Fitter->GetMassConstraint() << std::endl;
 				}
 			}
 			// else{
@@ -492,7 +508,12 @@ GEFObject GlobalEventFit::Fit(){
 	    Logger(Logger::Verbose) << " >> AmbiguitySolver failed: Fit did not converge." << std::endl;
 	  }
 	}
+	foundSolution = true;  IndexToReturn = 0; // ----------------------------------------  dont forget to remove;
 	Logger(Logger::Info) << "IndexToReturn: " << IndexToReturn << std::endl;
+	std::cout<<" am i ever here ??? " << RefitDaughters.size() <<std::endl;
+	RefitDaughters.at(0).at(0).LV().Print();
+	RefitDaughters.at(0).at(1).LV().Print();
+
 	return GEFObject(InitDaughters,
 			 InitResonance,
 			 RefitDaughters,
@@ -762,6 +783,28 @@ PTObject GlobalEventFit::AddA1(PTObject MET){
   return METPlusA1;
 }
 
+
+
+
+PTObject GlobalEventFit::AddTriplet(PTObject MET){
+  TMatrixT<double> METPlusTripletPar; METPlusTripletPar.ResizeTo(2,1);
+  TMatrixTSym<double> METPlusTripletCov; METPlusTripletCov.ResizeTo(2,2);
+
+  for(int i=0; i<METPlusTripletCov.GetNrows(); i++){
+	METPlusTripletPar(i,0) = MET.Par()(i,0) + MuonsTriplet_.getParMatrix()(i,0);
+	for(int j=0; j<METPlusTripletCov.GetNcols(); j++){
+	  METPlusTripletCov(i,j) = MET.Cov()(i,j) + MuonsTriplet_.getCovMatrix()(i+3,j+3);
+	}
+  }
+
+  PTObject METPlusTriplet(METPlusTripletPar, METPlusTripletCov);
+
+  return METPlusTriplet;
+}
+
+
+
+
 PTObject GlobalEventFit::AddA1s(PTObject MET){
   TMatrixT<double> METPlusA1Par; METPlusA1Par.ResizeTo(2,1);
   TMatrixTSym<double> METPlusA1Cov; METPlusA1Cov.ResizeTo(2,2);
@@ -804,6 +847,13 @@ PTObject GlobalEventFit::AddMuon(PTObject MET){
   double phi0 = Muon_.Parameter(TrackParticle::phi);
   METPlusMuonPar(0,0) = MET.Par()(0,0) + fabs(alpha/kappa)*cos(phi0);
   METPlusMuonPar(1,0) = MET.Par()(1,0) + fabs(alpha/kappa)*sin(phi0);
+
+
+  std::cout<<"  Add Muon " <<fabs(alpha/kappa)*cos(phi0) << "  "<< fabs(alpha/kappa)*sin(phi0) << std::endl;
+
+  std::cout<<"    MET   "<< MET.Par()(0,0) << "   " << MET.Par()(1,0)<<std::endl;
+  std::cout<<"    MET+   "<< METPlusMuonPar(0,0) << "   " << METPlusMuonPar(1,0)<<std::endl;
+
 
   // Logger(Logger::Info) << "fabs(alpha/kappa): " << fabs(alpha/kappa) << "\n";
   // Logger(Logger::Info) << "fabs(alpha/kappa)*cos(phi0): " << fabs(alpha/kappa)*cos(phi0) << "\n";

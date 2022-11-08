@@ -40,11 +40,11 @@ bool Chi2VertexFitter::Fit(){
   // give return flag based on status
   if(min.IsAboveMaxEdm()){std::cout << "Found Vertex that is above EDM " << std::endl; return false;}
   if(!min.IsValid()){
-    std::cout << "Chi2VertexFitter::Fit(): Failed min.IsValid()" << std::endl; 
-    if(!min.HasValidParameters()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidParameters()" << std::endl; }
-    if(!min.HasValidCovariance()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidCovariance()" << std::endl; }
-    if(!min.HesseFailed()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HesseFailed()" << std::endl; }
-    if(!min.HasReachedCallLimit()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasReachedCallLimit()" << std::endl; }
+    //    std::cout << "Chi2VertexFitter::Fit(): Failed min.IsValid()" << std::endl; 
+    // if(!min.HasValidParameters()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidParameters()" << std::endl; }
+    // if(!min.HasValidCovariance()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidCovariance()" << std::endl; }
+    //if(!min.HesseFailed()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HesseFailed()" << std::endl; }
+    // if(!min.HasReachedCallLimit()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasReachedCallLimit()" << std::endl; }
     return false;
   }
 
