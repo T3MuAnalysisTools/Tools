@@ -255,8 +255,8 @@ GEFObject GlobalEventFit::Fit(){
 	    PTObject ZPtEst_Muon=  AddMuon(MET_);
 	    PTObject ZPtEst_Full=  AddTriplet(ZPtEst_Muon);
 
-	    std::cout<<" MET   "<< MET_.X() << "   "<< MET_.Y() << std::endl;
-	    std::cout<<" ZPtEst   "<< ZPtEst_Full.X() << "   "<< ZPtEst_Full.Y() << std::endl;
+	    //	    std::cout<<" MET   "<< MET_.X() << "   "<< MET_.Y() << std::endl;
+	    //	    std::cout<<" ZPtEst   "<< ZPtEst_Full.X() << "   "<< ZPtEst_Full.Y() << std::endl;
 	    //	    METMinusNeutrino.push_back(ZPtEst);
 	    //	    ptr2Fitter = new ZTT3MuOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, MET_, PV_, PVCov_, 91.5); 
 	    ptr2Fitter = new ThreeProngOneProngFitter(MuonsTriplet_, MuonsTriplet_, Track_, ZPtEst_Full, PV_, PVCov_, 91.5);
@@ -272,12 +272,10 @@ GEFObject GlobalEventFit::Fit(){
 	      // fitstatus.push_back(fitvalid.back() && ptr2Fitter->isConverged());
 	      fitstatus.push_back(fitvalid.back());
  	      if(fitvalid.back()){
-		std::cout<<"   chi2=========================  "<< ptr2Fitter->ChiSquare()<<std::endl;
+		//		std::cout<<"   chi2=========================  "<< ptr2Fitter->ChiSquare()<<std::endl;
 		FitResonance.push_back(ptr2Fitter->GetMother());
 		RefitDaughters.push_back(ptr2Fitter->GetReFitDaughters());
 
-		ptr2Fitter->GetReFitDaughters().at(0).LV().Print();
-		ptr2Fitter->GetReFitDaughters().at(1).LV().Print();
 		Chi2Vecs.push_back(ptr2Fitter->ChiSquareVector());
 		Chi2s.push_back(ptr2Fitter->ChiSquare());
 		Niterats.push_back(ptr2Fitter->NIter());
@@ -298,7 +296,7 @@ GEFObject GlobalEventFit::Fit(){
 	      }
 	    }
 
-	    std::cout<<" >>>>>>>>>>>>>>>>>>>>> ZTT Fit status   "<< ptr2Fitter->Fit() <<std::endl;
+	    //	    std::cout<<" >>>>>>>>>>>>>>>>>>>>> ZTT Fit status   "<< ptr2Fitter->Fit() <<std::endl;
 
 
 	  }
@@ -510,9 +508,7 @@ GEFObject GlobalEventFit::Fit(){
 	}
 	foundSolution = true;  IndexToReturn = 0; // ----------------------------------------  dont forget to remove;
 	Logger(Logger::Info) << "IndexToReturn: " << IndexToReturn << std::endl;
-	std::cout<<" am i ever here ??? " << RefitDaughters.size() <<std::endl;
-	RefitDaughters.at(0).at(0).LV().Print();
-	RefitDaughters.at(0).at(1).LV().Print();
+	//	std::cout<<" am i ever here ??? " << RefitDaughters.size() <<std::endl;
 
 	return GEFObject(InitDaughters,
 			 InitResonance,
@@ -849,10 +845,10 @@ PTObject GlobalEventFit::AddMuon(PTObject MET){
   METPlusMuonPar(1,0) = MET.Par()(1,0) + fabs(alpha/kappa)*sin(phi0);
 
 
-  std::cout<<"  Add Muon " <<fabs(alpha/kappa)*cos(phi0) << "  "<< fabs(alpha/kappa)*sin(phi0) << std::endl;
+  //  std::cout<<"  Add Muon " <<fabs(alpha/kappa)*cos(phi0) << "  "<< fabs(alpha/kappa)*sin(phi0) << std::endl;
 
-  std::cout<<"    MET   "<< MET.Par()(0,0) << "   " << MET.Par()(1,0)<<std::endl;
-  std::cout<<"    MET+   "<< METPlusMuonPar(0,0) << "   " << METPlusMuonPar(1,0)<<std::endl;
+  //  std::cout<<"    MET   "<< MET.Par()(0,0) << "   " << MET.Par()(1,0)<<std::endl;
+  //  std::cout<<"    MET+   "<< METPlusMuonPar(0,0) << "   " << METPlusMuonPar(1,0)<<std::endl;
 
 
   // Logger(Logger::Info) << "fabs(alpha/kappa): " << fabs(alpha/kappa) << "\n";

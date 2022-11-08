@@ -704,6 +704,28 @@ double Ntuple_Controller::TauMassResolution(std::vector<unsigned int>  indices, 
 }
 
 
+
+
+LorentzVectorParticle Ntuple_Controller::Tau3mu_LVP(unsigned int i){
+  TMatrixT<double>    t3m_par(LorentzVectorParticle::NLorentzandVertexPar,1);
+  TMatrixTSym<double> t3m_cov(LorentzVectorParticle::NLorentzandVertexPar);
+  int l=0;
+  if(Ntp->signalTau_lvp->at(i).size()==LorentzVectorParticle::NLorentzandVertexPar){
+    for(int k=0; k<LorentzVectorParticle::NLorentzandVertexPar; k++){
+      t3m_par(k,0)=Ntp->signalTau_lvp->at(i).at(k);
+      for(int j=k; j<LorentzVectorParticle::NLorentzandVertexPar; j++){
+        t3m_cov(k,j)=Ntp->signalTau_cov->at(i).at(l);
+        t3m_cov(j,k)=Ntp->signalTau_cov->at(i).at(l);
+        l++;
+      }
+    }
+  }
+  return LorentzVectorParticle(t3m_par,t3m_cov,Ntp->signalTau_pdgid->at(i),Ntp->signalTau_charge->at(i),Ntp->signalTau_B->at(i));
+}
+
+
+
+
 TLorentzVector Ntuple_Controller::Boost(TLorentzVector pB, TLorentzVector frame){// make the boost of vector pB to the "frame"
    TMatrixT<double> transform(4,4);
    TMatrixT<double> result(4,1);

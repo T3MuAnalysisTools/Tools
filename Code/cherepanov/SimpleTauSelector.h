@@ -10,7 +10,7 @@
 #include "SimpleFits/FitSoftware/interface/ErrorMatrixPropagator.h"
 #include "SimpleFits/FitSoftware/interface/PTObject.h"
 
-#include "SimpleFits/FitSoftware/interface/TPTRObject.h"
+
 #include "SimpleFits/FitSoftware/interface/GEFObject.h"
 #include "SimpleFits/FitSoftware/interface/GlobalEventFit.h"
 #include "SimpleFits/FitSoftware/interface/TrackHelixVertexFitter.h"
@@ -47,6 +47,10 @@ class SimpleTauSelector : public Selection {
   std::vector<TH1D>   Mu3MudPhi;
   std::vector<TH2D>   NumTausvsNumMuons;
   std::vector<TH2D> VertexChi2KF_vs_HelixFit;
+  std::vector<TH1D>   EventFitChi2;
+  std::vector<TH1D>   EventFitResonanceMass;
+
+
 
 };
 #endif

@@ -50,9 +50,6 @@ GEFObject::GEFObject(std::vector< std::vector<LorentzVectorParticle> > InitDaugh
   csum_ = csum;
   Niterations_ = Niterations;
   fitconverged_ = fitconverged;
-   std::cout << "isvalid_: " << isvalid_ << "\n";
-   std::cout << "fitconverged_: " << fitconverged_ << "\n";
-   std::cout << "Index: " << Index << "\n";
   if(fitconverged){
     Index_ = Index;
     InitTauH_ = InitDaughters.at(Index_).at(0);

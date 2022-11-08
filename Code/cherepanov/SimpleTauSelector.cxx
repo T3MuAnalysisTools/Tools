@@ -106,6 +106,8 @@ void  SimpleTauSelector::Configure(){
   Mu3MuVisibleMass=HConfig.GetTH1D(Name+"_Mu3MuVisibleMass","Mu3MuVisibleMass",60,0,120,"M_{#mu-3#mu}, GeV (Visible Mass)","Events");
   Mu3MudPhi=HConfig.GetTH1D(Name+"_Mu3MudPhi","Mu3MudPhi",30,-3.14,3.14,"#Delta #phi{#mu-3#mu}","Events");
   VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",50,0,10,50,0,10,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
+  EventFitChi2=HConfig.GetTH1D(Name+"_EventFitChi2","EventFitChi2",50,0,20,"Event fit #chi^{2}","Events");
+  EventFitResonanceMass=HConfig.GetTH1D(Name+"_EventFitResonanceMass","EventFitResonanceMass",50,70,120,"M_{#tau#tau}","Events");
 
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -129,6 +131,9 @@ void  SimpleTauSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Mu3MuVisibleMass);
   Extradist1d.push_back(&Mu3MudPhi);
   Extradist2d.push_back(&VertexChi2KF_vs_HelixFit);
+  Extradist1d.push_back(&EventFitChi2);
+  Extradist1d.push_back(&EventFitResonanceMass);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,7 +286,7 @@ void  SimpleTauSelector::doEvent(){
 
     LorentzVectorParticle Tau3MuLVP = Ntp->Tau3mu_LVP(  signal_idx );
     std::cout<<"  LVP from the ntuple    " << std::endl;
-    Tau3MuLVP.LV().Print();
+    //    Tau3MuLVP.LV().Print();
 
 
     unsigned int nMetComponents = 2;
@@ -316,17 +321,20 @@ void  SimpleTauSelector::doEvent(){
     TPTRObject tauReco = globalEventFit->getTPTRObject();
     GEFObject  fitResult = globalEventFit->Fit();
 
+    //    std::cout<<"   chi2 "<<      fitResult.getChi2()<<"  mass    "  <<(fitResult.getTauH().LV() + fitResult.getTauMu().LV()).M() <<std::endl;
+    EventFitChi2.at(t).Fill(fitResult.getChi2(),1);
+    EventFitResonanceMass.at(t).Fill((fitResult.getTauH().LV() + fitResult.getTauMu().LV()).M(),1);
 
-  std:cout<<"   Tau3MuLVP  "<< Tau3MuLVP.LV().Px() << "  "<<Tau3MuLVP.LV().Py() << "  "<<Tau3MuLVP.LV().Pz() <<std::endl;
+    //  std:cout<<"   Tau3MuLVP  "<< Tau3MuLVP.LV().Px() << "  "<<Tau3MuLVP.LV().Py() << "  "<<Tau3MuLVP.LV().Pz() <<std::endl;
 
-    std::cout<<"========================================  Refit Particles  "<< std::endl;
-    std::cout<<"==";    fitResult.getTauH().LV().Print();
-    std::cout<<"==";    fitResult.getTauMu().LV().Print();
-    std::cout<<"========================================  Refit Particles  "<< std::endl;
-    std::cout<<"========================================  Initial Particles  "<< std::endl;
-    std::cout<<"==";    fitResult.getInitTauH().LV().Print();
-    std::cout<<"==";    fitResult.getInitTauMu().LV().Print();
-    std::cout<<"========================================  Initial Particles  "<< std::endl;
+    //    std::cout<<"========================================  Refit Particles  "<< std::endl;
+    //    std::cout<<"==";    fitResult.getTauH().LV().Print();
+    //    std::cout<<"==";    fitResult.getTauMu().LV().Print();
+    //    std::cout<<"========================================  Refit Particles  "<< std::endl;
+    //    std::cout<<"========================================  Initial Particles  "<< std::endl;
+    //    std::cout<<"==";    fitResult.getInitTauH().LV().Print();
+    //    std::cout<<"==";    fitResult.getInitTauMu().LV().Print();
+    //    std::cout<<"========================================  Initial Particles  "<< std::endl;
     //    std::cout<<"  ZTT3MuSimpleFitProducer     fit result  "<< fitResult.isValid()<< std::endl;
     //    std::cout<<"  csum, chi2, nIterations   "<< fitResult.getCsum() << "  "<< fitResult.getChi2() << "   "<< fitResult.getNiterations() << std::endl;
     //    std::cout<<"  Taus Pt  "<< fitResult.getTaus().at(0).LV().Pt() << "  resonance mass  " <<fitResult.getResonance().LV().M() << std::endl;
