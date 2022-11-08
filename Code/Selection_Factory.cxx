@@ -57,6 +57,7 @@
 #include "madhu/DebugFit.h"
 #include "madhu/SimpleTauSelector.h"
 #include "madhu/SimpleTauMuSelector.h"
+#include "madhu/SimpleTauESelector.h"
 
 #endif
 
@@ -125,6 +126,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
   else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
   else if(Analysis.Contains("simpletaumuselector"))s=new SimpleTauMuSelector(Analysis,UncertType);
+  else if(Analysis.Contains("simpletaueselector"))s=new SimpleTauESelector(Analysis,UncertType);
 #endif
 
 

@@ -309,16 +309,16 @@ void  SimpleTauSelector::doEvent(){
   
   for(unsigned int i = 0; i < taus_dm_idx.size() && Ntp->NThreeMuons()>0; i++){
   
-    if(Ntp->Tau_charge(taus_dm_idx.at(i)) * cand_charge == -1 ) taus_dm_os_idx.push_back(taus_dm_idx.at(i));
+    if(Ntp->Tau_charge(taus_dm_idx.at(i)) * cand_charge == -1 ){
     
-    for(unsigned int j = 0; j < taus_dm_os_idx.size() && Ntp->NThreeMuons()>0; j++){
+      taus_dm_os_idx.push_back(taus_dm_idx.at(i));
     
-      TLorentzVector TauXLV_i = Ntp->Tau_P4(taus_dm_os_idx.at(j));
-      double taux_tau3mu_dPhi = abs(Ntp->DeltaPhi(Ntp->Tau_P4(taus_dm_os_idx.at(j)).Phi(), Tau_3mu_LV.Phi()));
+      TLorentzVector TauXLV_i = Ntp->Tau_P4(taus_dm_idx.at(i));
+      double taux_tau3mu_dPhi = abs(Ntp->DeltaPhi(TauXLV_i.Phi(), Tau_3mu_LV.Phi()));
       
       if(taux_tau3mu_dPhi > max_dPhi){
         max_dPhi = taux_tau3mu_dPhi;
-        TauX_PhiCand_idx = taus_dm_os_idx.at(j);
+        TauX_PhiCand_idx = taus_dm_idx.at(i);
         TauXLV_PhiCand=TauXLV_i;
       }
       
@@ -361,9 +361,6 @@ void  SimpleTauSelector::doEvent(){
   value.at(pTCutTauX) = 0.0;
   
   if(taus_dm_os_idx.size()>0 && Ntp->NThreeMuons()>0){
-    unsigned int mu1_idx = Ntp->ThreeMuonIndices(signal_idx).at(0);
-    unsigned int mu2_idx = Ntp->ThreeMuonIndices(signal_idx).at(1);
-    unsigned int mu3_idx = Ntp->ThreeMuonIndices(signal_idx).at(2);
     
     value.at(pTCut1) = Ntp->Muon_P4(mu1_idx).Pt();
     value.at(pTCut2) = Ntp->Muon_P4(mu2_idx).Pt();
@@ -395,7 +392,7 @@ void  SimpleTauSelector::doEvent(){
     
     //    std::cout << "Next Event: " <<std::endl;
     
-    Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
+    //Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
 
 
     NumberOfTaus.at(t).Fill(Ntp->NTaus());

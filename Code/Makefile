@@ -74,7 +74,7 @@ ifdef USE_menendez
 endif
 
 ifdef USE_madhu
-	TARGETS += MyTest MCBackgroundStudy ThreeMuonDecay CommonSelector BDTSelector MakeMVATree SignalVertexSelector DebugFit SimpleTauSelector SimpleTauMuSelector
+	TARGETS += MyTest MCBackgroundStudy ThreeMuonDecay CommonSelector BDTSelector MakeMVATree SignalVertexSelector DebugFit SimpleTauSelector SimpleTauMuSelector SimpleTauESelector
 	DEFS += -DUSE_madhu=1
 endif
 
