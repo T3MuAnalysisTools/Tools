@@ -4,7 +4,7 @@
 #include "HistoConfig.h"
 #include "PDG_Var.h"
 #include <iostream>
-#include "Logger.h"
+//#include "Logger.h"
 
 SimpleTauSelector::SimpleTauSelector(TString Name_, TString id_):
   Selection(Name_,id_)
@@ -105,6 +105,8 @@ void  SimpleTauSelector::Configure(){
 
   Mu3MuVisibleMass=HConfig.GetTH1D(Name+"_Mu3MuVisibleMass","Mu3MuVisibleMass",60,0,120,"M_{#mu-3#mu}, GeV (Visible Mass)","Events");
   Mu3MudPhi=HConfig.GetTH1D(Name+"_Mu3MudPhi","Mu3MudPhi",30,-3.14,3.14,"#Delta #phi{#mu-3#mu}","Events");
+  VertexChi2KF_vs_HelixFit=HConfig.GetTH2D(Name+"_VertexChi2KF_vs_HelixFit","VertexChi2KF_vs_HelixFit",50,0,10,50,0,10,"Kalman Vertex #chi^{2}","Helix Vertex  Fitter #chi^{2}");
+
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -126,7 +128,7 @@ void  SimpleTauSelector::Store_ExtraDist(){
   Extradist2d.push_back(&NumTausvsNumMuons);
   Extradist1d.push_back(&Mu3MuVisibleMass);
   Extradist1d.push_back(&Mu3MudPhi);
-
+  Extradist2d.push_back(&VertexChi2KF_vs_HelixFit);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,19 +221,11 @@ void  SimpleTauSelector::doEvent(){
   if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
   else{w=1;}
   
-  std::cout<<"  N eles "<< Ntp->NElectrons() <<std::endl;
-  for(unsigned int ie=0; ie < Ntp->NElectrons(); ie++)
-    {
-      std::cout<<      Ntp->Electron_P4(ie).Pt()  << std::endl;
-	//      std::cout<<"  charge  "<< Ntp->Electron_charge(ie) << " trackiso  "<< Ntp->Electron_puppiPhotonIso(ie) << "  medium  " << Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_medium(ie) << std::endl;
-    }
 
   
   bool status=AnalysisCuts(t,w,wobs);
   NumTausvsNumMuons.at(t).Fill(Ntp->NTaus(), Ntp->NThreeMuons());
   if(status){ 
-
-
 
 
     //      std::cout<<" Nsignal particles  "<< Ntp->NMCSignalParticles() << std::endl;
@@ -256,13 +250,13 @@ void  SimpleTauSelector::doEvent(){
 
     //    std::cout<<"   n truth taus   : "<< Ntp->NMCTaus() << std::endl;
 
-    for(unsigned int itau = 0 ; itau<  Ntp->NTaus(); itau++){
+    //    for(unsigned int itau = 0 ; itau<  Ntp->NTaus(); itau++){
       //      std::cout<<" ------------------- "<< std::endl;
-      for(unsigned int idautau =0; idautau< Ntp->NMCTauDecayProducts(itau); idautau++){
+    //      for(unsigned int idautau =0; idautau< Ntp->NMCTauDecayProducts(itau); idautau++){
 	//	std::cout<<"   daus pdgid   "<< Ntp->MCTauandProd_pdgid(itau,idautau) << std::endl;
-	Ntp->MCTauandProd_p4(itau,idautau).Print();
-      }
-    }
+    //	Ntp->MCTauandProd_p4(itau,idautau).Print();
+    //      }
+    //    }
     //    std::cout<<" recoed muon "<< std::endl;
 
 
@@ -275,6 +269,94 @@ void  SimpleTauSelector::doEvent(){
     //  bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;}
     // TrackParticle Muon_TrackParticle(unsigned int i){
 
+    TrackParticle MuonTP = Ntp->Muon_TrackParticle(muon_idx);
+
+
+    //    std::cout<<"   dxy  "<<     MuonTP.Parameter(TrackParticle::dxy)<< std::endl;
+    //    std::cout<<"   phi  "<<     MuonTP.Parameter(TrackParticle::phi)<< std::endl;
+    //    std::cout<<"   lambda "<<     MuonTP.Parameter(TrackParticle::lambda)<< std::endl;
+    ///    std::cout<<"   dz "<<     MuonTP.Parameter(TrackParticle::dz)<< std::endl;
+    //    std::cout<<"   kappa "<<     MuonTP.Parameter(TrackParticle::kappa)<< std::endl;
+    //    MuonTP.getParMatrix();
+
+    LorentzVectorParticle Tau3MuLVP = Ntp->Tau3mu_LVP(  signal_idx );
+    std::cout<<"  LVP from the ntuple    " << std::endl;
+    Tau3MuLVP.LV().Print();
+
+
+    unsigned int nMetComponents = 2;
+    TMatrixT<double> metVector(nMetComponents, 1);
+    TMatrixTSym<double> metCovariance; metCovariance.ResizeTo(nMetComponents, nMetComponents);
+
+    metVector[0][0] = Ntp->METEt() * cos( Ntp->METPhi());
+    metVector[1][0] = Ntp->METEt() * sin( Ntp->METPhi());
+
+    metCovariance[0][0]= Ntp->METXX();
+    metCovariance[1][1]= Ntp->METYY();
+    metCovariance[0][1]= Ntp->METXY();
+    metCovariance[1][0]= Ntp->METXY();
+
+
+    PTObject metInput(metVector, metCovariance);
+
+    TVector3 pvInput = Ntp->Vertex_HighestPt_PrimaryVertex();
+    TMatrixTSym<double> pvCovarianceInput = Ntp->Vertex_HighestPt_PrimaryVertex_Covariance();
+
+    //    void SetLevel(level _l){l=_l;}
+    //    Logger::Instance()->SetLevel(Logger::Warning);
+
+    //    std::cout<<" LVP vertex "<<std::endl;    Tau3MuLVP.Vertex().Print();
+    //    std::cout<<"   ntuple SV "<< std::endl;  Ntp->Vertex_Signal_KF_pos(signal_idx).Print();
+    
+    GlobalEventFit* globalEventFit = nullptr;
+    globalEventFit = new GlobalEventFit(MuonTP,  Tau3MuLVP , metInput, pvInput, pvCovarianceInput, true);
+
+
+    globalEventFit->setMinimizer("Default");
+    TPTRObject tauReco = globalEventFit->getTPTRObject();
+    GEFObject  fitResult = globalEventFit->Fit();
+
+
+  std:cout<<"   Tau3MuLVP  "<< Tau3MuLVP.LV().Px() << "  "<<Tau3MuLVP.LV().Py() << "  "<<Tau3MuLVP.LV().Pz() <<std::endl;
+
+    std::cout<<"========================================  Refit Particles  "<< std::endl;
+    std::cout<<"==";    fitResult.getTauH().LV().Print();
+    std::cout<<"==";    fitResult.getTauMu().LV().Print();
+    std::cout<<"========================================  Refit Particles  "<< std::endl;
+    std::cout<<"========================================  Initial Particles  "<< std::endl;
+    std::cout<<"==";    fitResult.getInitTauH().LV().Print();
+    std::cout<<"==";    fitResult.getInitTauMu().LV().Print();
+    std::cout<<"========================================  Initial Particles  "<< std::endl;
+    //    std::cout<<"  ZTT3MuSimpleFitProducer     fit result  "<< fitResult.isValid()<< std::endl;
+    //    std::cout<<"  csum, chi2, nIterations   "<< fitResult.getCsum() << "  "<< fitResult.getChi2() << "   "<< fitResult.getNiterations() << std::endl;
+    //    std::cout<<"  Taus Pt  "<< fitResult.getTaus().at(0).LV().Pt() << "  resonance mass  " <<fitResult.getResonance().LV().M() << std::endl;
+    
+
+
+
+
+
+    //    metVector.Print();
+    //    metCovariance.Print();
+    /*
+    TVector3 vguess(0.1,0.1,0.1);
+    std::vector<TrackParticle> MuonsTrackParticles;
+    MuonsTrackParticles.push_back(    Ntp->Muon_TrackParticle(Ntp->ThreeMuonIndices(signal_idx).at(0)) );
+    MuonsTrackParticles.push_back(    Ntp->Muon_TrackParticle(Ntp->ThreeMuonIndices(signal_idx).at(1)) );
+    MuonsTrackParticles.push_back(    Ntp->Muon_TrackParticle(Ntp->ThreeMuonIndices(signal_idx).at(2)) );
+
+
+    Chi2VertexFitter  Fitter(MuonsTrackParticles,vguess);
+   
+    Fitter.Fit();
+    VertexChi2KF_vs_HelixFit.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx),Fitter.ChiSquare());
+    std::vector<LorentzVectorParticle> ReffitedLVParticles = Fitter.GetReFitLorentzVectorParticles();
+
+    TLorentzVector ReffitedTau = Fitter.GetMother(444).LV();
+      
+    */
+
+    //  if()
 
 
     Mu3MuVisibleMass.at(t).Fill( (Tau3muLV+MuLV).M() , 1.);
