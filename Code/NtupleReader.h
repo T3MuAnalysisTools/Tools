@@ -204,8 +204,8 @@ public :
    std::vector<int> *Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<int> *Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<std::vector<float> >  *Tau_PFTauTrack_p4;
-   std::vector<std::vector<float> >  *Tau_Track_par;
-   std::vector<std::vector<float> >  *Tau_Track_cov;
+   std::vector<std::vector<double> >  *Tau_Track_par;
+   std::vector<std::vector<double> >  *Tau_Track_cov;
    std::vector<std::vector<int> >    *Tau_Track_Charge;
    std::vector<std::vector<int> >    *Tau_Track_pdgid;
    std::vector<std::vector<float> >  *Tau_Track_B;
@@ -216,8 +216,8 @@ public :
    std::vector<std::vector<int> >    *Tau_a1_pdgid;
    std::vector<std::vector<float> >  *Tau_a1_B;
    std::vector<std::vector<float> >  *Tau_a1_M;
-   std::vector<std::vector<float> >  *Tau_a1_lvp;
-   std::vector<std::vector<float> >  *Tau_a1_cov;
+   std::vector<std::vector<double> >  *Tau_a1_lvp;
+   std::vector<std::vector<double> >  *Tau_a1_cov;
 
 
 

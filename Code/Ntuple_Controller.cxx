@@ -723,7 +723,45 @@ LorentzVectorParticle Ntuple_Controller::Tau3mu_LVP(unsigned int i){
   return LorentzVectorParticle(t3m_par,t3m_cov,Ntp->signalTau_pdgid->at(i),Ntp->signalTau_charge->at(i),Ntp->signalTau_B->at(i));
 }
 
+// 'LorentzVectorParticle::LorentzVectorParticle(TMatrixT<double>&, TMatrixTSym<double>&, __gnu_cxx::__alloc_traits<std::allocator<std::vector<int> > >::value_type&, __gnu_cxx::__alloc_traits<std::allocator<std::vector<int> > >::value_type&, __gnu_cxx::__alloc_traits<std::allocator<std::vector<float> > >::value_type&)'
+// return LorentzVectorParticle(tau_track_par,tau_track_cov,Ntp->Tau_Track_pdgid->at(i),Ntp->Tau_Track_Charge->at(i),Ntp->Tau_Track_B->at(i));
 
+
+LorentzVectorParticle Ntuple_Controller::Tau_a1_LVP(unsigned int i){
+  TMatrixT<double>    tau_a1_par(LorentzVectorParticle::NLorentzandVertexPar,1);
+  TMatrixTSym<double> tau_a1_cov(LorentzVectorParticle::NLorentzandVertexPar);
+  int l=0;
+  if(Ntp->Tau_a1_lvp->at(i).size()==LorentzVectorParticle::NLorentzandVertexPar){
+    for(int k=0; k<LorentzVectorParticle::NLorentzandVertexPar; k++){
+      tau_a1_par(k,0)=Ntp->Tau_a1_lvp->at(i).at(k);
+      for(int j=k; j<LorentzVectorParticle::NLorentzandVertexPar; j++){
+        tau_a1_cov(k,j)=Ntp->Tau_a1_cov->at(i).at(l);
+        tau_a1_cov(j,k)=Ntp->Tau_a1_cov->at(i).at(l);
+        l++;
+      }
+    }
+  }
+  //  return LorentzVectorParticle(tau_a1_par,tau_a1_cov,Ntp->Tau_a1_pdgid->at(i),Ntp->Tau_a1_charge->at(i),Ntp->Tau_a1_B->at(i));
+  return LorentzVectorParticle(tau_a1_par,tau_a1_cov,Ntp->Tau_a1_pdgid->at(i).at(0),Ntp->Tau_a1_charge->at(i).at(0),Ntp->Tau_a1_B->at(i).at(0));
+}
+
+
+LorentzVectorParticle Ntuple_Controller::Tau_Track_LVP(unsigned int i){
+  TMatrixT<double>    tau_track_par(LorentzVectorParticle::NLorentzandVertexPar,1);
+  TMatrixTSym<double> tau_track_cov(LorentzVectorParticle::NLorentzandVertexPar);
+  int l=0;
+  if(Ntp->Tau_Track_par->at(i).size()==LorentzVectorParticle::NLorentzandVertexPar){
+    for(int k=0; k<LorentzVectorParticle::NLorentzandVertexPar; k++){
+      tau_track_par(k,0)=Ntp->Tau_Track_par->at(i).at(k);
+      for(int j=k; j<LorentzVectorParticle::NLorentzandVertexPar; j++){
+        tau_track_cov(k,j)=Ntp->Tau_Track_cov->at(i).at(l);
+        tau_track_cov(j,k)=Ntp->Tau_Track_cov->at(i).at(l);
+        l++;
+      }
+    }
+  }
+  return LorentzVectorParticle(tau_track_par,tau_track_cov,Ntp->Tau_Track_pdgid->at(i).at(0),Ntp->Tau_Track_Charge->at(i).at(0),Ntp->Tau_Track_B->at(i).at(0));
+}
 
 
 TLorentzVector Ntuple_Controller::Boost(TLorentzVector pB, TLorentzVector frame){// make the boost of vector pB to the "frame"
@@ -848,6 +886,22 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_HighestPt_PrimaryVertex_Covariance
    }
    return V_cov;
 }
+
+
+TMatrixTSym<float> Ntuple_Controller::Tau_SVCov(unsigned int i){
+  TMatrixTSym<float> V_cov(3);
+  int l=0;
+  for(int j=0;j<3;j++){
+    for(int k=j;k<3;k++){
+      //if(j==k) V_cov(i,j)=pow(0.0001,2.0);
+      V_cov(j,k)=Ntp->Tau_SVCov->at(i).at(l);
+      V_cov(k,j)=Ntp->Tau_SVCov->at(i).at(l);
+      l++;
+    }
+  }
+  return V_cov;
+}
+
 
 
 
