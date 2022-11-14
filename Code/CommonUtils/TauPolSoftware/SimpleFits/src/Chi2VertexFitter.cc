@@ -1,5 +1,5 @@
-#include "SimpleFits/FitSoftware/interface/Chi2VertexFitter.h"
-#include "SimpleFits/FitSoftware/interface/ChiSquareFunctionUpdator.h"
+#include "TauPolSoftware/SimpleFits/interface/Chi2VertexFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/ChiSquareFunctionUpdator.h"
 #include "Minuit2/FunctionMinimum.h"
 #include "Minuit2/MnUserParameters.h"
 #include "Minuit2/MnPrint.h"
@@ -25,7 +25,7 @@ bool Chi2VertexFitter::Fit(){
     // if not limited (vhigh <= vlow)
     MnPar.Add(name.Data(),par(i,0),sqrt(fabs(parcov(i,i))),par(i,0)-nsigma*sqrt(fabs(parcov(i,i))),par(i,0)+nsigma*sqrt(fabs(parcov(i,i))));
   }
-  //  std::cout<<"  do we work here? ??   " << std::endl;
+
   unsigned int max=10;
   int numberofcalls=200+par.GetNrows()*100+par.GetNrows()*par.GetNrows()*5;
   double tolerance(0.01);
@@ -40,18 +40,14 @@ bool Chi2VertexFitter::Fit(){
   // give return flag based on status
   if(min.IsAboveMaxEdm()){std::cout << "Found Vertex that is above EDM " << std::endl; return false;}
   if(!min.IsValid()){
-    //    std::cout << "Chi2VertexFitter::Fit(): Failed min.IsValid()" << std::endl; 
-    // if(!min.HasValidParameters()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidParameters()" << std::endl; }
-    // if(!min.HasValidCovariance()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidCovariance()" << std::endl; }
-    //if(!min.HesseFailed()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HesseFailed()" << std::endl; }
-    // if(!min.HasReachedCallLimit()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasReachedCallLimit()" << std::endl; }
+    std::cout << "Chi2VertexFitter::Fit(): Failed min.IsValid()" << std::endl; 
+    if(!min.HasValidParameters()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidParameters()" << std::endl; }
+    if(!min.HasValidCovariance()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasValidCovariance()" << std::endl; }
+    if(!min.HesseFailed()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HesseFailed()" << std::endl; }
+    if(!min.HasReachedCallLimit()){std::cout << "Chi2VertexFitter::Fit(): Failed min.HasReachedCallLimit()" << std::endl; }
     return false;
   }
-
-
   chi2=min.Fval();
-  if(min.Fval() < 0 ) return false;
-  
   // Get output parameters
   for(int i=0;i<par.GetNrows();i++){ par(i,0)=min.UserParameters().Value(i);}
   // Get output covariance

@@ -206,6 +206,21 @@ class Ntuple_Controller{
       double         Track_dzError(unsigned int i){return  Ntp->Track_dzError->at(i);}
 
 
+
+
+
+
+      bool                     Vertex_HighestPtVertexIsValid(){return Ntp->Vertex_HighestPt_PrimaryVertex->size();}
+      TVector3                 Vertex_HighestPt_PrimaryVertex(){
+
+	if(Ntp->Vertex_HighestPt_PrimaryVertex->size() == 0) return TVector3(0,0,0);
+	return TVector3(Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(0),
+			Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(1),
+			Ntp->Vertex_HighestPt_PrimaryVertex->at(0).at(2));
+      } 
+      TMatrixTSym<double>  Vertex_HighestPt_PrimaryVertex_Covariance();
+	
+
       unsigned int             NTaus(){return Ntp->Tau_p4->size();}
       int                      Tau_charge(unsigned int i){return Ntp->Tau_charge->at(i);}
       TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}
@@ -223,6 +238,29 @@ class Ntuple_Controller{
       unsigned int             Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits->at(i);}
       unsigned int             Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i);}
       unsigned int             Tau_byTightCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byTightCombinedIsolationDeltaBetaCorr3Hits->at(i);}
+
+
+
+
+      int                      Tau_NTracks(){return Ntp->Tau_PFTauTrack_p4->size() ; }  //   This is either 0 or 1  
+      TLorentzVector           Tau_PFTauTrack_p4(unsigned int i){return TLorentzVector(Ntp->Tau_PFTauTrack_p4->at(i).at(1),
+										       Ntp->Tau_PFTauTrack_p4->at(i).at(2),
+										       Ntp->Tau_PFTauTrack_p4->at(i).at(3),
+										       Ntp->Tau_PFTauTrack_p4->at(i).at(0));}
+
+      bool                     Tau_SV_isValid(unsigned int i){return Ntp->Tau_SVPos->at(i).size();}
+      TVector3                 Tau_SVPos(unsigned int i){
+	if(Ntp->Tau_SVPos->at(i).size() == 0) return TVector3(0,0,0);
+	return TVector3(Ntp->Tau_SVPos->at(i).at(0),
+			Ntp->Tau_SVPos->at(i).at(1),
+			Ntp->Tau_SVPos->at(i).at(2));
+      } 
+      TMatrixTSym<float>  Tau_SVCov(unsigned int i);
+
+
+      LorentzVectorParticle    Tau_a1_LVP(unsigned int i);
+      LorentzVectorParticle    Tau_Track_LVP(unsigned int i);
+
 
       unsigned int             NElectrons(){return Ntp->Electron_p4->size();}
       int                      Electron_charge(unsigned int i){return Ntp->Electron_Charge->at(i);}
@@ -388,6 +426,11 @@ class Ntuple_Controller{
       int Photon_isPF(unsigned int i){return Ntp->Gamma_isPFPhoton->at(i);}
 
       LorentzVectorParticle Tau3mu_LVP(unsigned int i);
+
+
+
+
+
 
       bool Muon_TrackParticleHasMomentum(unsigned int i){if(Ntp->Muon_par->at(i).size()!=0)return true; return false;} 
       TrackParticle Muon_TrackParticle(unsigned int i){

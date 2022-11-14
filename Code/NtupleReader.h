@@ -203,6 +203,24 @@ public :
    std::vector<int> *Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<int> *Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<int> *Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;
+   std::vector<std::vector<float> >  *Tau_PFTauTrack_p4;
+   std::vector<std::vector<double> >  *Tau_Track_par;
+   std::vector<std::vector<double> >  *Tau_Track_cov;
+   std::vector<std::vector<int> >    *Tau_Track_Charge;
+   std::vector<std::vector<int> >    *Tau_Track_pdgid;
+   std::vector<std::vector<float> >  *Tau_Track_B;
+   std::vector<std::vector<float> >  *Tau_Track_M;
+   std::vector<std::vector<float> >  *Tau_SVPos;
+   std::vector<std::vector<float> >  *Tau_SVCov;
+   std::vector<std::vector<int> >    *Tau_a1_charge;
+   std::vector<std::vector<int> >    *Tau_a1_pdgid;
+   std::vector<std::vector<float> >  *Tau_a1_B;
+   std::vector<std::vector<float> >  *Tau_a1_M;
+   std::vector<std::vector<double> >  *Tau_a1_lvp;
+   std::vector<std::vector<double> >  *Tau_a1_cov;
+
+
+
 
 
    std::vector<std::vector<float> > *Gamma_P4;
@@ -284,6 +302,8 @@ public :
    std::vector<bool>    *Vertex_RefitPVisValid;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex;
    std::vector<std::vector<double> > *Vertex_MatchedRefitPrimaryVertex_covariance;
+   std::vector<std::vector<float> >  *Vertex_HighestPt_PrimaryVertex;
+   std::vector<std::vector<double> > *Vertex_HighestPt_PrimaryVertex_covariance;
    std::vector<std::vector<double> > *Vertex_d0_reco;
    std::vector<std::vector<double> > *Vertex_dz_reco;
    std::vector<std::vector<double> > *Vertex_d0SV_reco;
@@ -511,6 +531,24 @@ public :
    TBranch        *b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;   //!
    TBranch        *b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;   //!
    TBranch        *b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;   //!
+   TBranch        *b_Tau_PFTauTrack_p4;   //!
+   TBranch        *b_Tau_Track_par;   //!
+   TBranch        *b_Tau_Track_cov;   //!
+   TBranch        *b_Tau_Track_Charge;   //!
+   TBranch        *b_Tau_Track_pdgid;   //!
+   TBranch        *b_Tau_Track_B;   //!
+   TBranch        *b_Tau_Track_M;   //!
+   TBranch        *b_Tau_SVPos;   //!
+   TBranch        *b_Tau_SVCov;   //!
+   TBranch        *b_Tau_a1_charge;   //!
+   TBranch        *b_Tau_a1_pdgid;   //!
+   TBranch        *b_Tau_a1_B;   //!
+   TBranch        *b_Tau_a1_M;   //!
+   TBranch        *b_Tau_a1_lvp;   //!
+   TBranch        *b_Tau_a1_cov;   //!
+
+
+
    TBranch        *b_Gamma_P4;   //!
    TBranch        *b_Gamma_hasPixelSeed;   //!
    TBranch        *b_Gamma_hasConversionTracks;   //!
@@ -597,6 +635,8 @@ public :
    TBranch        *b_Vertex_RefitPVisValid;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex;   //!
    TBranch        *b_Vertex_MatchedRefitPrimaryVertex_covariance;   //!
+   TBranch        *b_Vertex_HighestPt_PrimaryVertex;   //!
+   TBranch        *b_Vertex_HighestPt_PrimaryVertex_covariance;   //!
    TBranch        *b_Vertex_d0_reco;   //!
    TBranch        *b_Vertex_dz_reco;   //!
    TBranch        *b_Vertex_d0SV_reco;   //!
@@ -875,6 +915,21 @@ void NtupleReader::Init(TTree *tree)
    Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits = 0;
    Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits = 0;
    Tau_byTightCombinedIsolationDeltaBetaCorr3Hits = 0;
+   Tau_PFTauTrack_p4 = 0;
+   Tau_Track_par = 0;
+   Tau_Track_cov = 0;
+   Tau_Track_Charge = 0;
+   Tau_Track_pdgid = 0;
+   Tau_Track_B = 0;
+   Tau_Track_M = 0;
+   Tau_SVPos = 0;
+   Tau_SVCov = 0;
+   Tau_a1_charge = 0;
+   Tau_a1_pdgid = 0;
+   Tau_a1_B = 0;
+   Tau_a1_M = 0;
+   Tau_a1_lvp = 0;
+   Tau_a1_cov = 0;
    Gamma_P4 = 0;
    Gamma_hasPixelSeed = 0;
    Gamma_hasConversionTracks = 0;
@@ -958,6 +1013,8 @@ void NtupleReader::Init(TTree *tree)
    Vertex_RefitPVisValid = 0;
    Vertex_MatchedRefitPrimaryVertex = 0;
    Vertex_MatchedRefitPrimaryVertex_covariance = 0;
+   Vertex_HighestPt_PrimaryVertex = 0;
+   Vertex_HighestPt_PrimaryVertex_covariance = 0;
    Vertex_d0_reco = 0;
    Vertex_dz_reco = 0;
    Vertex_d0SV_reco = 0;
@@ -1191,7 +1248,21 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits", &Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits);
    fChain->SetBranchAddress("Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits", &Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits);
    fChain->SetBranchAddress("Tau_byTightCombinedIsolationDeltaBetaCorr3Hits", &Tau_byTightCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits);
-
+   fChain->SetBranchAddress("Tau_PFTauTrack_p4", &Tau_PFTauTrack_p4, &b_Tau_PFTauTrack_p4);
+   fChain->SetBranchAddress("Tau_Track_par", &Tau_Track_par, &b_Tau_Track_par);
+   fChain->SetBranchAddress("Tau_Track_cov", &Tau_Track_cov, &b_Tau_Track_cov);
+   fChain->SetBranchAddress("Tau_Track_Charge", &Tau_Track_Charge, &b_Tau_Track_Charge);
+   fChain->SetBranchAddress("Tau_Track_pdgid", &Tau_Track_pdgid, &b_Tau_Track_pdgid);
+   fChain->SetBranchAddress("Tau_Track_B", &Tau_Track_B, &b_Tau_Track_B);
+   fChain->SetBranchAddress("Tau_Track_M", &Tau_Track_M, &b_Tau_Track_M);
+   fChain->SetBranchAddress("Tau_SVPos", &Tau_SVPos, &b_Tau_SVPos);
+   fChain->SetBranchAddress("Tau_SVCov", &Tau_SVCov, &b_Tau_SVCov);
+   fChain->SetBranchAddress("Tau_a1_charge", &Tau_a1_charge, &b_Tau_a1_charge);
+   fChain->SetBranchAddress("Tau_a1_pdgid", &Tau_a1_pdgid, &b_Tau_a1_pdgid);
+   fChain->SetBranchAddress("Tau_a1_B", &Tau_a1_B, &b_Tau_a1_B);
+   fChain->SetBranchAddress("Tau_a1_M", &Tau_a1_M, &b_Tau_a1_M);
+   fChain->SetBranchAddress("Tau_a1_lvp", &Tau_a1_lvp, &b_Tau_a1_lvp);
+   fChain->SetBranchAddress("Tau_a1_cov", &Tau_a1_cov, &b_Tau_a1_cov);
    fChain->SetBranchAddress("Gamma_P4", &Gamma_P4, &b_Gamma_P4);
    fChain->SetBranchAddress("Gamma_hasPixelSeed", &Gamma_hasPixelSeed, &b_Gamma_hasPixelSeed);
    fChain->SetBranchAddress("Gamma_hasConversionTracks", &Gamma_hasConversionTracks, &b_Gamma_hasConversionTracks);
@@ -1279,6 +1350,8 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_RefitPVisValid", &Vertex_RefitPVisValid, &b_Vertex_RefitPVisValid);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex", &Vertex_MatchedRefitPrimaryVertex, &b_Vertex_MatchedRefitPrimaryVertex);
    fChain->SetBranchAddress("Vertex_MatchedRefitPrimaryVertex_covariance", &Vertex_MatchedRefitPrimaryVertex_covariance, &b_Vertex_MatchedRefitPrimaryVertex_covariance);
+   fChain->SetBranchAddress("Vertex_HighestPt_PrimaryVertex", &Vertex_HighestPt_PrimaryVertex, &b_Vertex_HighestPt_PrimaryVertex);
+   fChain->SetBranchAddress("Vertex_HighestPt_PrimaryVertex_covariance", &Vertex_HighestPt_PrimaryVertex_covariance, &b_Vertex_HighestPt_PrimaryVertex_covariance);
    fChain->SetBranchAddress("Vertex_d0_reco", &Vertex_d0_reco, &b_Vertex_d0_reco);
    fChain->SetBranchAddress("Vertex_dz_reco", &Vertex_dz_reco, &b_Vertex_dz_reco);
    fChain->SetBranchAddress("Vertex_d0SV_reco", &Vertex_d0SV_reco, &b_Vertex_d0SV_reco);

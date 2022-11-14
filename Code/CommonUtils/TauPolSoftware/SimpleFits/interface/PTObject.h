@@ -30,5 +30,6 @@ class PTObject{
   TMatrixT<double> par_;
   TMatrixTSym<double> cov_;
   bool isValid_;
+
 };
 #endif /* PTObject_H_ */

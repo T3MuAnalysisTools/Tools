@@ -3,13 +3,13 @@
 
 #include "Minuit2/FCNBase.h"
 #include "TMatrixT.h"
-#include "SimpleFits/FitSoftware/interface/TrackHelixVertexFitter.h"
-#include "SimpleFits/FitSoftware/interface/LagrangeMultipliersFitter.h"
-#include "SimpleFits/FitSoftware/interface/DiTauConstrainedFitter.h"
-#include "SimpleFits/FitSoftware/interface/ThreeProngOneProngFitter.h"
-#include "SimpleFits/FitSoftware/interface/ThreeProngThreeProngFitter.h"
-#include "SimpleFits/FitSoftware/interface/ZTT3MuOneProngFitter.h"
-#include "SimpleFits/FitSoftware/interface/Logger.h"
+#include "TauPolSoftware/SimpleFits/interface/TrackHelixVertexFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/LagrangeMultipliersFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/DiTauConstrainedFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/ThreeProngOneProngFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/ThreeProngThreeProngFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/ZTT3MuOneProngFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/Logger.h"
 
 class ChiSquareFunctionUpdator  : public ROOT::Minuit2::FCNBase {
  public:

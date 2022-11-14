@@ -1,7 +1,7 @@
 #ifndef TrackParticle_h
 #define TrackParticle_h
 
-#include "SimpleFits/FitSoftware/interface/Particle.h"
+#include "TauPolSoftware/SimpleFits/interface/Particle.h"
 #include "TString.h"
 
 class TrackParticle : public Particle {

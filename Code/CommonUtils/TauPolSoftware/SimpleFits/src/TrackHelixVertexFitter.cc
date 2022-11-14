@@ -1,4 +1,4 @@
-#include "SimpleFits/FitSoftware/interface/TrackHelixVertexFitter.h"
+#include "TauPolSoftware/SimpleFits/interface/TrackHelixVertexFitter.h"
 #include "TDecompBK.h"
 #include <iostream>
 
@@ -19,7 +19,6 @@ TrackHelixVertexFitter::TrackHelixVertexFitter(std::vector<TrackParticle> &parti
       val(MeasuredValueIndex(j,p),0)=particles.at(p).Parameter(j);
       for(unsigned int k=0; k<TrackParticle::NHelixPar;k++){
 	cov(MeasuredValueIndex(j,p),MeasuredValueIndex(k,p))=particles.at(p).Covariance(j,k);
-	cov(MeasuredValueIndex(k,p),MeasuredValueIndex(j,p))=particles.at(p).Covariance(k,j); ///  here to make it dioganol
       }
     }
   }
@@ -34,10 +33,6 @@ TrackHelixVertexFitter::TrackHelixVertexFitter(std::vector<TrackParticle> &parti
   cov_inv.ResizeTo(nVal,nVal);
   cov_inv=Inverter.Invert();
   ndf=nVal-nPar;
-
-
-
-
   // Set Initial conditions within reason
   par(x0,0)  = vguess.X(); parcov(x0,x0)=pow(1.0,2.0);
   par(y0,0)  = vguess.Y(); parcov(y0,y0)=pow(1.0,2.0);
@@ -64,31 +59,13 @@ TrackHelixVertexFitter::TrackHelixVertexFitter(std::vector<TrackParticle> &parti
   for(int i=0;i<parcov.GetNrows();i++){
     for(int j=0;j<parcov.GetNrows();j++)  std::cout << parcov(i,j) << " ";
     std::cout << std::endl;
-  }
-
-  TMatrixDSymEigen eigen(cov_inv);
-  TVectorD cov_inv_eigen_val = eigen.GetEigenValues();
-  TMatrixD cov_inv_eigen_vec = eigen.GetEigenVectors();
-  TMatrixT<double> cov_inv_eigen_vec2 = cov_inv.EigenVectors(cov_inv_eigen_val);
-
-  std::cout<<" inv cov eigen values  "<< std::endl;
-  cov_inv_eigen_val.Print();
-
-  std::cout<<" inv cov eigen vectors 1 "<< std::endl;
-  cov_inv_eigen_vec.Print();
-
-  std::cout<<" inv cov eigen vectors 2  "<< std::endl;
-  cov_inv_eigen_vec2.Print();
-
-
-  */
+    }*/
   ////////////////////////////////////////////////////////////////
 }
 
 TrackHelixVertexFitter::~TrackHelixVertexFitter(){}
 
 double TrackHelixVertexFitter::UpdateChisquare(TMatrixT<double> inpar){
-
   TMatrixT<double> vprime=ComputePar(inpar);
   TMatrixT<double> dalpha=vprime-val;
   TMatrixT<double> dalphaT=dalpha;  dalphaT.T();
@@ -152,7 +129,6 @@ LorentzVectorParticle TrackHelixVertexFitter::GetMother(int pdgid){
   FreePar(par.GetNrows()+BField0,0)=b;
   TMatrixT<double>    mpar=ComputeMotherLorentzVectorPar(FreePar);
   TMatrixTSym<double> mcov=ErrorMatrixPropagator::PropagateError(&TrackHelixVertexFitter::ComputeMotherLorentzVectorPar,FreePar,FreeParCov);
-
   return LorentzVectorParticle(mpar,mcov,pdgid,c,b);
 }
 
