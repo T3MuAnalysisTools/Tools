@@ -14,7 +14,7 @@ class SimpleTauSelector : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0, nTaus , SignalCandidate, TauHIsolation, OSCharge, DeepTauVsJ, DeepTauVsMu, DeepTauVsE, pTCut1, pTCut2, pTCut3, pTCutTauX, DM,  NCuts}; 
+  enum cuts {TriggerOk=0, nTaus , SignalCandidate, OSCharge, TauHIsolation, DeepTauVsJ, DeepTauVsMu, DeepTauVsE, pTCut1, pTCut2, pTCut3, pTCutTauX, DM,  NCuts}; 
 
 
  protected:
@@ -39,6 +39,9 @@ class SimpleTauSelector : public Selection {
   std::vector<TH1D>   Kinematics_1;
   std::vector<TH1D>   Kinematics_MissingTrMass;
   std::vector<TH2D>   Kinematics_TauXPtEta;
+  
+  std::vector<TH1D>   FL_Significance_PV_SV_3mu;
+  std::vector<TH1D>   FL_Significance_PV_SV_tauh;
   
   TRandom rndm;
   double random_num;

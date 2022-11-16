@@ -31,9 +31,9 @@ void  SimpleTauMuSelector::Configure(){
     if(i==nMuons)           cut.at(nMuons)=4;
     if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
     if(i==OSCharge)         cut.at(OSCharge)=0;
-    if(i==pTCut1)           cut.at(pTCut1)=5;
-    if(i==pTCut2)           cut.at(pTCut2)=5;
-    if(i==pTCut3)           cut.at(pTCut3)=5;
+    if(i==pTCut1)           cut.at(pTCut1)=15;
+    if(i==pTCut2)           cut.at(pTCut2)=8.5;
+    if(i==pTCut3)           cut.at(pTCut3)=0;
     if(i==pTCutTauMu)       cut.at(pTCutTauMu)=5;
 
   }
@@ -74,7 +74,7 @@ void  SimpleTauMuSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OSCharge_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==pTCut1){
-      title.at(i)="$pT(\\mu_{1}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{1}) > 15 GeV$";
       hlabel="$pT(\\mu_{1})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -83,7 +83,7 @@ void  SimpleTauMuSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut1_",htitle,25,5,50,hlabel,"Events"));
     }
     else if(i==pTCut2){
-      title.at(i)="$pT(\\mu_{2}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{2}) > 8.5 GeV$";
       hlabel="$pT(\\mu_{2})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -92,7 +92,7 @@ void  SimpleTauMuSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut2_",htitle,25,5,25,hlabel,"Events"));
     }
     else if(i==pTCut3){
-      title.at(i)="$pT(\\mu_{3}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{3}) > 0 GeV$";
       hlabel="$pT(\\mu_{3})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -265,7 +265,7 @@ void  SimpleTauMuSelector::doEvent(){
     TLorentzVector TMuonLV_i = Ntp->Muon_P4(num);
     for(unsigned int i =0; i < 3; i++){
       
-      if(TMuonLV_i.DeltaR(Ntp->Muon_P4(i)) < 0.0001 ){
+      if(TMuonLV_i.DeltaR(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(i))) < 0.0001 ){
         muon_matched+=1;
       }
     }
@@ -330,7 +330,7 @@ void  SimpleTauMuSelector::doEvent(){
     
     //    std::cout << "Next Event: " <<std::endl;
     
-    //Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
+    Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
 
     NumberOfMuons.at(t).Fill(Ntp->NMuons());
     
@@ -343,6 +343,20 @@ void  SimpleTauMuSelector::doEvent(){
       //if(std::count(taus_dm_os_idx.begin(), taus_dm_os_idx.end(), idx) == 1){
       
         Mu_TauCand_Inv_Mass_1.at(t).Fill( (MuFromTau_idx+Tau_3mu_LV).M() );
+        
+        if((MuFromTau_idx+Tau_3mu_LV).M()<5.0 && id!=1){
+          int pdg_idx = Ntp->matchTruth(MuFromTau_idx);
+          //std::cout << "pdgid for mu if (MuFromTau_idx+Tau_3mu_LV).M()<5.0: "<< pdg_idx << " MC Index is: " << Ntp->getMatchTruthIndex(MuFromTau_idx) <<std::endl;
+          //std::cout << "mu1 idx: "<< Ntp->getMatchTruthIndex(Ntp->Muon_P4(mu1_idx)) << "mu2 idx: "<< Ntp->getMatchTruthIndex(Ntp->Muon_P4(mu2_idx)) << "mu3 idx: "<< Ntp->getMatchTruthIndex(Ntp->Muon_P4(mu3_idx)) <<std::endl;
+          //std::cout << "dR1 is: "<< MuFromTau_idx.DeltaR(Ntp->Muon_P4(mu1_idx)) <<std::endl;
+          //std::cout << "dR2 is: "<< MuFromTau_idx.DeltaR(Ntp->Muon_P4(mu2_idx)) <<std::endl;
+          //std::cout << "dR3 is: "<< MuFromTau_idx.DeltaR(Ntp->Muon_P4(mu3_idx)) <<std::endl;
+        }
+        
+        if((MuFromTau_idx+Tau_3mu_LV).M()>5.0 && id!=1){
+          int pdg_idx = Ntp->matchTruth(MuFromTau_idx);
+          //std::cout << "pdgid for mu if (MuFromTau_idx+Tau_3mu_LV).M()>5.0: "<< pdg_idx <<std::endl;
+        }
         
         Kinematics_TauXPtEta.at(t).Fill(MuFromTau_idx.Pt(),MuFromTau_idx.Eta());
         

@@ -31,9 +31,9 @@ void  SimpleTauESelector::Configure(){
     if(i==nElectrons)       cut.at(nElectrons)=1;
     if(i==SignalCandidate)  cut.at(SignalCandidate)=1;
     if(i==OSCharge)         cut.at(OSCharge)=0;
-    if(i==pTCut1)           cut.at(pTCut1)=5;
-    if(i==pTCut2)           cut.at(pTCut2)=5;
-    if(i==pTCut3)           cut.at(pTCut3)=5;
+    if(i==pTCut1)           cut.at(pTCut1)=15;
+    if(i==pTCut2)           cut.at(pTCut2)=8.5;
+    if(i==pTCut3)           cut.at(pTCut3)=0;
     if(i==pTCutTauE)        cut.at(pTCutTauE)=5;
 
   }
@@ -74,7 +74,7 @@ void  SimpleTauESelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OSCharge_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==pTCut1){
-      title.at(i)="$pT(\\mu_{1}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{1}) > 15 GeV$";
       hlabel="$pT(\\mu_{1})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -83,7 +83,7 @@ void  SimpleTauESelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut1_",htitle,25,5,50,hlabel,"Events"));
     }
     else if(i==pTCut2){
-      title.at(i)="$pT(\\mu_{2}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{2}) > 8.5 GeV$";
       hlabel="$pT(\\mu_{2})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -92,7 +92,7 @@ void  SimpleTauESelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut2_",htitle,25,5,25,hlabel,"Events"));
     }
     else if(i==pTCut3){
-      title.at(i)="$pT(\\mu_{3}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{3}) > 0 GeV$";
       hlabel="$pT(\\mu_{3})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -119,8 +119,8 @@ void  SimpleTauESelector::Configure(){
   El_TauCand_Inv_Mass_3=HConfig.GetTH1D(Name+"_El_TauCand_Inv_Mass_3","El_TauCand_Inv_Mass_3",100,0.0,160.0,"#tau_{e} + #nu_{e} + #tau (3#mu) Inv Mass, GeV","Events");
   MET_Et=HConfig.GetTH1D(Name+"_MET_Et","MET_Et",100,0.0,100.0,"MET Et, GeV","Events");
   MET_Phi=HConfig.GetTH1D(Name+"_MET_Phi","MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");
-  Kinematics=HConfig.GetTH1D(Name+"_Kinematics","Kinematics",20,0,3.2,"#tau_{#mu} , #tau (3#mu) opening angle","Events");
-  Kinematics_1=HConfig.GetTH1D(Name+"_Kinematics_1","Kinematics_1",40,-3.2,3.2,"#tau_{#mu} , #tau (3#mu) #Delta#Phi","Events");
+  Kinematics=HConfig.GetTH1D(Name+"_Kinematics","Kinematics",20,0,3.2,"#tau_{#e} , #tau (3#mu) opening angle","Events");
+  Kinematics_1=HConfig.GetTH1D(Name+"_Kinematics_1","Kinematics_1",40,-3.2,3.2,"#tau_{#e} , #tau (3#mu) #Delta#Phi","Events");
   Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_Kinematics_MissingTrMass","Kinematics_MissingTrMass",100,0,500.,"MissingTrMass ","Events");
   NumTausvsNumElectrons=HConfig.GetTH2D(Name+"_NumTausvsNumElectrons","NumTausvsNumElectrons",5,-0.5,4.5,5,-0.5,4.5,"N 3#mu ","N #mu");
   Kinematics_TauXPtEta=HConfig.GetTH2D(Name+"_Kinematics_TauXPtEta","Kinematics_TauXPtEta",20,0.,20.,20,0,2.5,"pT, GeV","eta ");
@@ -242,7 +242,7 @@ void  SimpleTauESelector::doEvent(){
   pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
   
   value.at(nElectrons) = Ntp->NElectrons();
-  std::cout << "No of electrons: " << Ntp->NElectrons() << std::endl;
+  //std::cout << "No of electrons: " << Ntp->NElectrons() << std::endl;
   pass.at(nElectrons)  = ( value.at(nElectrons) >= cut.at(nElectrons) );
   
   std::vector<int> electrons_idx;
@@ -329,7 +329,7 @@ void  SimpleTauESelector::doEvent(){
     
     //    std::cout << "Next Event: " <<std::endl;
     
-    //Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
+    Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
 
     NumberOfElectrons.at(t).Fill(Ntp->NElectrons());
     
@@ -342,6 +342,16 @@ void  SimpleTauESelector::doEvent(){
       //if(std::count(taus_dm_os_idx.begin(), taus_dm_os_idx.end(), idx) == 1){
       
         El_TauCand_Inv_Mass_1.at(t).Fill( (ElFromTau_idx+Tau_3mu_LV).M() );
+        
+        if((ElFromTau_idx+Tau_3mu_LV).M()<10.0 && id!=1){
+          int pdg_idx = Ntp->matchTruth(ElFromTau_idx);
+          std::cout << "pdgid for e if (ElFromTau_idx+Tau_3mu_LV).M()<5.0: "<< pdg_idx <<std::endl;
+        }
+        
+        if((ElFromTau_idx+Tau_3mu_LV).M()>10.0 && id!=1){
+          int pdg_idx = Ntp->matchTruth(ElFromTau_idx);
+          std::cout << "pdgid for e if (ElFromTau_idx+Tau_3mu_LV).M()>5.0: "<< pdg_idx <<std::endl;
+        }
         
         Kinematics_TauXPtEta.at(t).Fill(ElFromTau_idx.Pt(),ElFromTau_idx.Eta());
         

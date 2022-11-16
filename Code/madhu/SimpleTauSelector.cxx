@@ -35,9 +35,9 @@ void  SimpleTauSelector::Configure(){
     if(i==DeepTauVsJ)       cut.at(DeepTauVsJ)=1;
     if(i==DeepTauVsMu)      cut.at(DeepTauVsMu)=1;
     if(i==DeepTauVsE)       cut.at(DeepTauVsE)=1;
-    if(i==pTCut1)           cut.at(pTCut1)=5;
-    if(i==pTCut2)           cut.at(pTCut2)=5;
-    if(i==pTCut3)           cut.at(pTCut3)=5;
+    if(i==pTCut1)           cut.at(pTCut1)=15;
+    if(i==pTCut2)           cut.at(pTCut2)=8.5;
+    if(i==pTCut3)           cut.at(pTCut3)=0;
     if(i==pTCutTauX)        cut.at(pTCutTauX)=20;
     if(i==DM)               cut.at(DM)=1;
 
@@ -88,8 +88,8 @@ void  SimpleTauSelector::Configure(){
 
 
     else if(i==TauHIsolation){
-      title.at(i)="$\\tau_{h}$  Isolation Cut";
-      hlabel="$\\tau_{h}$  Isolation";
+      title.at(i)="Medium $\\tau_{h}$  Isolation Cut";
+      hlabel="Medium $\\tau_{h}$  Isolation";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -115,7 +115,7 @@ void  SimpleTauSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_DeepTauVsE_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==pTCut1){
-      title.at(i)="$pT(\\mu_{1}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{1}) > 15 GeV$";
       hlabel="$pT(\\mu_{1})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -124,7 +124,7 @@ void  SimpleTauSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut1_",htitle,25,5,50,hlabel,"Events"));
     }
     else if(i==pTCut2){
-      title.at(i)="$pT(\\mu_{2}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{2}) > 8.5 GeV$";
       hlabel="$pT(\\mu_{2})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -133,7 +133,7 @@ void  SimpleTauSelector::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCut2_",htitle,25,5,25,hlabel,"Events"));
     }
     else if(i==pTCut3){
-      title.at(i)="$pT(\\mu_{3}) > 5 GeV$";
+      title.at(i)="$pT(\\mu_{3}) > 0 GeV$";
       hlabel="$pT(\\mu_{3})$";
       htitle=title.at(i);
       htitle.ReplaceAll("$","");
@@ -147,8 +147,8 @@ void  SimpleTauSelector::Configure(){
       hlabel="pT$(\\tau_{h})$, GeV";      
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_pTCutTauX_",htitle,25,19,60,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCutTauX_",htitle,25,19,60,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_pTCutTauX_",htitle,40,18,60,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_pTCutTauX_",htitle,40,18,60,hlabel,"Events"));
     }
     else if(i==DM){
       title.at(i)="Decay Mode Finding";
@@ -170,6 +170,8 @@ void  SimpleTauSelector::Configure(){
   Kinematics=HConfig.GetTH1D(Name+"_Kinematics","Kinematics",20,0,3.2,"#tau_{h} , #tau (3#mu) opening angle","Events");
   Kinematics_1=HConfig.GetTH1D(Name+"_Kinematics_1","Kinematics_1",20,-3.2,3.2,"#tau_{h} , #tau (3#mu) #Delta#Phi","Events");
   Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_Kinematics_MissingTrMass","Kinematics_MissingTrMass",100,0,500.,"MissingTrMass ","Events");
+  FL_Significance_PV_SV_3mu=HConfig.GetTH1D(Name+"_FL_Significance_PV_SV_3mu","FL_Significance_PV_SV_3mu",50,0,15,"PV - SV (3#mu) FL  significance","Events");
+  FL_Significance_PV_SV_tauh=HConfig.GetTH1D(Name+"_FL_Significance_PV_SV_tauh","FL_Significance_PV_SV_tauh",50,0,15,"PV - SV (#tau_{h}) FL  significance","Events");
   NumTausvsNumMuons=HConfig.GetTH2D(Name+"_NumTausvsNumMuons","NumTausvsNumMuons",5,-0.5,4.5,5,-0.5,4.5,"N 3#mu ","N #tau_{h}");
   Kinematics_TauXPtEta=HConfig.GetTH2D(Name+"_Kinematics_TauXPtEta","Kinematics_TauXPtEta",40,15.,90.,20,0,2.8,"pT, GeV","#eta");
   Tau3muMass=HConfig.GetTH1D(Name+"_Tau3muMass","Tau3muMass",50,1.4,2.,"M_{3#mu}, GeV","Events");
@@ -199,6 +201,9 @@ void  SimpleTauSelector::Store_ExtraDist(){
   Extradist1d.push_back(&Kinematics);
   Extradist1d.push_back(&Kinematics_1);
   Extradist1d.push_back(&Kinematics_MissingTrMass);
+  
+  Extradist1d.push_back(&FL_Significance_PV_SV_3mu);
+  Extradist1d.push_back(&FL_Significance_PV_SV_tauh);
 
 
   Extradist1d.push_back(&Tau3muMass);
@@ -392,7 +397,7 @@ void  SimpleTauSelector::doEvent(){
     
     //    std::cout << "Next Event: " <<std::endl;
     
-    //Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
+    Tau3muMass.at(t).Fill(Tau_3mu_LV.M(),1);
 
 
     NumberOfTaus.at(t).Fill(Ntp->NTaus());
@@ -413,75 +418,84 @@ void  SimpleTauSelector::doEvent(){
     //    std::cout << "No of matched taus is: " << tau_matched <<std::endl;
     
     //for(unsigned int i =0; i < taus_dm_idx.size(); i++){
-      //int idx = taus_dm_idx.at(i);
-      int idx = TauX_PhiCand_idx;
-      TLorentzVector TauXLV_idx = Ntp->Tau_P4(idx);
+    //int idx = taus_dm_idx.at(i);
+    int idx = TauX_PhiCand_idx;
+    TLorentzVector TauXLV_idx = Ntp->Tau_P4(idx);
+    
+    //if(std::count(taus_dm_os_idx.begin(), taus_dm_os_idx.end(), idx) == 1){
+    
+    TauX_TauCand_Inv_Mass_1.at(t).Fill( (TauXLV_idx+Tau_3mu_LV).M() );
+    
+    //DecayModes.at(t).Fill( Ntp->Tau_DecayMode(idx) );
+    
+    Kinematics_TauXPtEta.at(t).Fill(TauXLV_idx.Pt(),TauXLV_idx.Eta());
+    
+    //if((TauXLV_idx+Tau_3mu_LV).M()>10.0){
+      DecayModes.at(t).Fill( Ntp->Tau_DecayMode(idx) );
+    //}
+    /*
+    for(unsigned int i =0; i < 3; i++){
+      if((TauXLV_idx+Tau_3mu_LV).M()<10.0){
+        std::cout << "Tau dR when Inv Mass < 10.0 is: " << TauXLV_idx.DeltaR(Ntp->Muon_P4(i)) <<std::endl;
+      }
       
-      //if(std::count(taus_dm_os_idx.begin(), taus_dm_os_idx.end(), idx) == 1){
-      
-        TauX_TauCand_Inv_Mass_1.at(t).Fill( (TauXLV_idx+Tau_3mu_LV).M() );
-        
-        //DecayModes.at(t).Fill( Ntp->Tau_DecayMode(idx) );
-        
-        Kinematics_TauXPtEta.at(t).Fill(TauXLV_idx.Pt(),TauXLV_idx.Eta());
-        
-        //if((TauXLV_idx+Tau_3mu_LV).M()>10.0){
-          DecayModes.at(t).Fill( Ntp->Tau_DecayMode(idx) );
-        //}
-        /*
-        for(unsigned int i =0; i < 3; i++){
-          if((TauXLV_idx+Tau_3mu_LV).M()<10.0){
-            std::cout << "Tau dR when Inv Mass < 10.0 is: " << TauXLV_idx.DeltaR(Ntp->Muon_P4(i)) <<std::endl;
-          }
-          
-          if((TauXLV_idx+Tau_3mu_LV).M()>=10.0){
-            std::cout << "Tau dR when Inv Mass > 10.0 is: " << TauXLV_idx.DeltaR(Ntp->Muon_P4(i)) <<std::endl;
-          }
-        }
-        */
-        
-        // Kinematics
-        
-        //Making Bmeson point towards Z axis (and making phi = 0 for the tau: commented): fully reco
-        double Phi_init_reco = Tau_3mu_LV.Phi();
-        double Theta_init_reco = Tau_3mu_LV.Theta();
-        TLorentzVector Tau_3mu_LV_mod = Tau_3mu_LV;
-        TLorentzVector TauXLV_idx_mod = TauXLV_idx;
-        if(Phi_init_reco >= TMath::Pi()) Phi_init_reco = Phi_init_reco-2*TMath::Pi();
-        if(Phi_init_reco <=-TMath::Pi()) Phi_init_reco = Phi_init_reco+2*TMath::Pi();
-        TauXLV_idx_mod.RotateZ(-Phi_init_reco);
-        TauXLV_idx_mod.RotateY(-Theta_init_reco);
-        Tau_3mu_LV_mod.RotateZ(-Phi_init_reco);
-        Tau_3mu_LV_mod.RotateY(-Theta_init_reco);
-        
-        TVector3 p1 = Tau_3mu_LV.Vect();
-        TVector3 p2 = TauXLV_idx.Vect();
-        p1.SetZ(0.);
-        p2.SetZ(0.);
-        
-        Kinematics.at(t).Fill(TauXLV_idx_mod.Theta());
-        Kinematics_1.at(t).Fill(p1.DeltaPhi(p2));
-        
-        // Missing transverse mass
-        Kinematics_MissingTrMass.at(t).Fill(2*Ntp->METEt()*TMath::Sqrt(1.776*1.776+Tau_3mu_LV.Pz()*Tau_3mu_LV.Pz())*(1-TMath::Cos(Ntp->METPhi()-Tau_3mu_LV.Phi()))); //use definition transverse mass for 2 particles
-        
-        //Approximate neutrino LV
-        
-        TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(TauXLV_idx.Theta()));
-        TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
-        
-        if((TauXLV_idx+Tau_3mu_LV).M()>10.0){
-          TauX_TauCand_Inv_Mass_3.at(t).Fill( (TauXLV_idx+Tau_3mu_LV+Neutrino_LV).M() );
-        }
-        
-      //}
-    //}// end i
+      if((TauXLV_idx+Tau_3mu_LV).M()>=10.0){
+        std::cout << "Tau dR when Inv Mass > 10.0 is: " << TauXLV_idx.DeltaR(Ntp->Muon_P4(i)) <<std::endl;
+      }
+    }
+    */
+    
+    // Kinematics
+    
+    //Making Bmeson point towards Z axis (and making phi = 0 for the tau: commented): fully reco
+    double Phi_init_reco = Tau_3mu_LV.Phi();
+    double Theta_init_reco = Tau_3mu_LV.Theta();
+    TLorentzVector Tau_3mu_LV_mod = Tau_3mu_LV;
+    TLorentzVector TauXLV_idx_mod = TauXLV_idx;
+    if(Phi_init_reco >= TMath::Pi()) Phi_init_reco = Phi_init_reco-2*TMath::Pi();
+    if(Phi_init_reco <=-TMath::Pi()) Phi_init_reco = Phi_init_reco+2*TMath::Pi();
+    TauXLV_idx_mod.RotateZ(-Phi_init_reco);
+    TauXLV_idx_mod.RotateY(-Theta_init_reco);
+    Tau_3mu_LV_mod.RotateZ(-Phi_init_reco);
+    Tau_3mu_LV_mod.RotateY(-Theta_init_reco);
+    
+    TVector3 p1 = Tau_3mu_LV.Vect();
+    TVector3 p2 = TauXLV_idx.Vect();
+    p1.SetZ(0.);
+    p2.SetZ(0.);
+    
+    Kinematics.at(t).Fill(TauXLV_idx_mod.Theta());
+    Kinematics_1.at(t).Fill(p1.DeltaPhi(p2));
+    
+    // Missing transverse mass
+    Kinematics_MissingTrMass.at(t).Fill(2*Ntp->METEt()*TMath::Sqrt(1.776*1.776+Tau_3mu_LV.Pz()*Tau_3mu_LV.Pz())*(1-TMath::Cos(Ntp->METPhi()-Tau_3mu_LV.Phi()))); //use definition transverse mass for 2 particles
+    
+    //Approximate neutrino LV
+    
+    TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(TauXLV_idx.Theta()));
+    TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
+    
+    if((TauXLV_idx+Tau_3mu_LV).M()>10.0){
+      TauX_TauCand_Inv_Mass_3.at(t).Fill( (TauXLV_idx+Tau_3mu_LV+Neutrino_LV).M() );
+    }
+    
+    
     
     TauX_TauCand_Inv_Mass_2.at(t).Fill( (TauXLV_PhiCand+Tau_3mu_LV).M() );
     
     MET_Et.at(t).Fill( Ntp->METEt() );
     
     MET_Phi.at(t).Fill( Ntp->METPhi() );
+    
+    if(Ntp->Tau_DecayMode(TauX_PhiCand_idx)==10||Ntp->Tau_DecayMode(TauX_PhiCand_idx)==11){
+      //std::cout << "Number of decay products: " << Ntp->NMCTauDecayProducts(TauX_PhiCand_idx) << " No of taus: "<< Ntp->NTaus() << " cand_idx is "<< TauX_PhiCand_idx <<std::endl;
+      //std::cout << "Vertex_HighestPt_PrimaryVertex: " << Ntp->Vertex_HighestPt_PrimaryVertex().X() <<std::endl;
+      //std::cout << "Vertex_HighestPt_PrimaryVertex_Covariance: " << Ntp->Vertex_HighestPt_PrimaryVertex_Covariance().GetNrows() <<std::endl;
+      //std::cout << "Tau_SVPos: " << Ntp->Tau_SVPos(TauX_PhiCand_idx).X() <<std::endl;
+      //std::cout << "Tau_SVCov: " << Ntp->Tau_SVCov(TauX_PhiCand_idx).GetNrows() <<std::endl;
+      //double FL_Sig_PVSV_tauh = Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),Ntp->Tau_SVPos(TauX_PhiCand_idx),Ntp->Tau_SVCov(TauX_PhiCand_idx));
+      //FL_Significance_PV_SV_tauh.at(t).Fill( FL_Sig_PVSV_tauh );
+    }
     
   }
 }
