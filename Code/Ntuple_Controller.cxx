@@ -859,7 +859,7 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned 
    unsigned int index = i + channel*NThreeMuons();
    TMatrixTSym<float> V_cov(3);
    int l=0;
-   std::cout<<"  size  "<< Ntp->Vertex_MatchedRefitPrimaryVertex_covariance->size() << "  subsize   "<< std::endl;
+
    for(int j=0;j<3;j++){
       for(int k=j;k<3;k++){
          //if(j==k) V_cov(i,j)=pow(0.0001,2.0);
@@ -877,7 +877,7 @@ TMatrixTSym<double> Ntuple_Controller::Vertex_PrimaryVertex_Covariance(unsigned 
 TMatrixTSym<double> Ntuple_Controller::Vertex_HighestPt_PrimaryVertex_Covariance(){
    TMatrixTSym<float> V_cov(3);
    int l=0;
-   std::cout<<"  size  "<< Ntp->Vertex_HighestPt_PrimaryVertex_covariance->size() << "  subsize   "<< std::endl;
+
    for(int j=0;j<3;j++){
       for(int k=j;k<3;k++){
          //if(j==k) V_cov(i,j)=pow(0.0001,2.0);
