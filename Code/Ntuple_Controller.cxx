@@ -1150,6 +1150,14 @@ TLorentzVector Ntuple_Controller::MuonToPion(unsigned int index){
   return p;
 }
 
+
+
+bool Ntuple_Controller::isLooseMuon(unsigned int i){
+  if(!Muon_isPFMuon(i)) return false;
+  if(!(Muon_isGlobalMuon(i) || Muon_isTrackerMuon(i))) return false;
+  return true;
+}
+
 std::vector<int> Ntuple_Controller::MuonCustomID(unsigned int MuonIndex){
 
    std::vector<int> out;
@@ -1178,6 +1186,8 @@ std::vector<int> Ntuple_Controller::MuonCustomID(unsigned int MuonIndex){
 
    return out;
 }
+
+
 
 
 std::vector<int> Ntuple_Controller::MuonStandardSelectorBitMask(unsigned int MuonIndex){

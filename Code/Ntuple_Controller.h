@@ -293,6 +293,7 @@ class Ntuple_Controller{
       bool           Muon_isIsolationValid(unsigned int i){return Ntp->Muon_isIsolationValid->at(i);}
       bool           Muon_isQualityValid(unsigned int i){return Ntp->Muon_isQualityValid->at(i);}
       bool           Muon_isTimeValid(unsigned int i){return Ntp->Muon_isTimeValid->at(i);}
+      bool           isLooseMuon(unsigned int i);
       float          Muon_emEt03(unsigned int i){return Ntp->Muon_emEt03->at(i);}
       float          Muon_emVetoEt03(unsigned int i){return Ntp->Muon_emVetoEt03->at(i);}
       float          Muon_hadEt03(unsigned int i){return Ntp->Muon_hadEt03->at(i);}

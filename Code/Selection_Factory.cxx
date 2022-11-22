@@ -1,5 +1,5 @@
 #include "Selection_Factory.h"
-#include "Logger.h"
+//#include "Logger.h"
 
 #include "Example.h"
 #ifdef USE_cherepanov
@@ -25,6 +25,9 @@
 #include "cherepanov/DebugFit.h"
 #include "cherepanov/SignalVertexSelector.h"
 #include "cherepanov/SimpleTauSelector.h"
+#include "cherepanov/ZTau3MuTauh.h"
+#include "cherepanov/ZTau3MuTaue.h"
+#include "cherepanov/ZTau3MuTaumu.h"
 #endif
 
 
@@ -96,6 +99,9 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
   else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
   else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutauh"))s=new ZTau3MuTauh(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaue"))s=new ZTau3MuTaue(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaumu"))s=new ZTau3MuTaumu(Analysis,UncertType);
 
 
 
