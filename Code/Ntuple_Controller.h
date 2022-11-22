@@ -323,7 +323,7 @@ class Ntuple_Controller{
       float          Muon_sumPhotonEt04(unsigned int i){return Ntp->Muon_sumPhotonEt04->at(i);}
       float          Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
       float          Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
-
+      float          Muon_RelIso(unsigned int i){return Muon_sumChargedHadronPt04(i) + std::max(0., Muon_sumNeutralHadronEt04(i) + Muon_sumPhotonEt04(i) -0.5 * Muon_sumPUPt04(i)) ;}
       double         Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
       double         Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
       double         Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
