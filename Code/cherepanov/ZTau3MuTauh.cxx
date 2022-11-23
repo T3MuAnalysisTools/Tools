@@ -91,7 +91,7 @@ void  ZTau3MuTauh::Configure(){
 
     else if(i==OppositeSide){
       title.at(i)="At least one  $\\tau_{h}$ is on opposite side $|\\Delta R| > 1/2$";
-      hlabel="delta phi ";
+      hlabel="#Delta R (#tau_{h} - #tau_{3#mu}) > 1/2";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
@@ -118,8 +118,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,5,-0.5,4.5,hlabel,"Events"));
     }
     else if(i==OSCharge){
-      title.at(i)="Charge $\\tau_{h}$ * $\\tau_{3\\mu}$ =  ";
-      title.at(i)+=cut.at(OSCharge);
+      title.at(i)="Charge $\\tau_{h}$ * $\\tau_{3\\mu}$ =  -1; ";
       title.at(i)+=" (at least one)";
       htitle=title.at(i);
       hlabel="Opposite charge? ";
@@ -140,10 +139,13 @@ void  ZTau3MuTauh::Configure(){
 
   Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_Tau3MuRelativeIsolation","Tau3MuRelativeIsolation",50,0.,1.,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");
   TauHDecayMode=HConfig.GetTH1D(Name+"_TauHDecayMode","TauHDecayMode",12,-0.5,11.5,"HPS #tau_{h} decay mode","Events");
-  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",50,20,100,"M_{#tau(h) - #tau(3#mu)}, GeV (visible mass)","Events");
-  MTT=HConfig.GetTH1D(Name+"_MTT","MTT",50,60,120,"M_{#tau(h) - #tau(3#mu)}, GeV (collinear approximation)","Events");
-  TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",30,1.4,2.2,"M_{3#mu}, GeV","Events");
+  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",70,0.,140,"M_{#tau(h) - #tau(3#mu)}, GeV (visible mass)","Events");
+  MTT=HConfig.GetTH1D(Name+"_MTT","MTT",70,0.,140,"M_{#tau(h) - #tau(3#mu)}, GeV (collinear approximation)","Events");
+  TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",30,1.1,2.2,"M_{3#mu}, GeV","Events");
 
+
+  matched_pdgId=HConfig.GetTH1D(Name+"_matched_pdgId","matched_pdgId",25,-0.5,24.5,"pdgID MC matched","Events");
+  matched_dR=HConfig.GetTH1D(Name+"_matched_dR","matched_dR",50,-0.1,0.5,"#Delta R(MC-RECO) Object opposite to #tau_{3#mu}","Events");
 
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -168,6 +170,8 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   Extradist1d.push_back(&VisibleDiTauMass);
   Extradist1d.push_back(&MTT);
   Extradist1d.push_back(&TripletMass);
+  Extradist1d.push_back(&matched_pdgId);
+  Extradist1d.push_back(&matched_dR);
 
 
 
@@ -276,7 +280,7 @@ void  ZTau3MuTauh::doEvent(){
 
     }
 
-    pass.at(OppositeSide) = (value.at(OSCharge) >= cut.at(OSCharge));  
+    pass.at(OppositeSide) = (value.at(OppositeSide) >= cut.at(OppositeSide));  
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));  
 
 
@@ -356,7 +360,6 @@ void  ZTau3MuTauh::doEvent(){
   if(status){ 
 
     unsigned int tau_h_idx = PassedDeepElectronsLoose.at(0);
-
     NumberOfTaus.at(t).Fill(Ntp->NTaus());
 
     TLorentzVector TauHLV = Ntp->Tau_P4(tau_h_idx);
@@ -388,16 +391,20 @@ void  ZTau3MuTauh::doEvent(){
     float RelativeIsolationMu2 = Ntp->Muon_RelIso(muon_2_idx);
     float RelativeIsolationMu3 = Ntp->Muon_RelIso(muon_3_idx);
 
-    //    std::cout<<"  rel iso  "<<RelativeIsolationMu1<< "   "
-    //	     <<RelativeIsolationMu2 << "    "
-    //	     <<RelativeIsolationMu3 <<std::endl;
-
     Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()),1);
     TauHDecayMode.at(t).Fill(Ntp->Tau_DecayMode(tau_h_idx), 1);
     VisibleDiTauMass.at(t).Fill((TauHLV + Tau3muLV).M(), 1);
     MTT.at(t).Fill( (Tau3muLV + TauHLV  + Neutrino_LV).M(), 1);
 
     TripletMass.at(t).Fill(Tau3muLV.M(),1);
+    ////////////////////////////////////////
+    ///
+    TLorentzVector OppositeSideLV = TauHLV;
+    if(id != 1)
+      {
+	matched_pdgId.at(t).Fill(Ntp->matchTruth(OppositeSideLV),1);
+	matched_dR.at(t).Fill(Ntp->matchToTruthTauDecay(OppositeSideLV).DeltaR(OppositeSideLV),1);
+      }
 
   }
 }

@@ -51,6 +51,8 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   VisibleDiTauMass;
   std::vector<TH1D>   MTT;
   std::vector<TH1D>   TripletMass;
+  std::vector<TH1D>   matched_pdgId;
+  std::vector<TH1D>   matched_dR;
 
 
 

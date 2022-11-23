@@ -46,13 +46,13 @@ void  ZTau3MuTaumu::Configure(){
     // book here the N-1 and N-0 histrogramms for each cut
     if(i==TriggerOk){
       title.at(i)="Trigger ";
-      hlabel="Trigger ";
+      hlabel="Trigger Ok";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nMuons){
       title.at(i)=" At least one extra loose(PF+Gl/Tr) $\\mu$, $pT>15 GeV, |\\eta| < 2.4$ ";
-      hlabel="number of muons";
+      hlabel="At least one extra muon (loose)";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_nMuons_",htitle,4,-0.5,3.5,hlabel,"Events"));
@@ -62,7 +62,7 @@ void  ZTau3MuTaumu::Configure(){
 
     else if(i==OppositeSide){
       title.at(i)="At least one  $\\mu$ is on opposite side $|\\Delta R| > 1/2$";
-      hlabel="delta phi ";
+      hlabel="#Delta R > 1/2";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
@@ -72,7 +72,7 @@ void  ZTau3MuTaumu::Configure(){
     else if(i==TripletKinematics){
       title.at(i)="3,3,2 GeV,  $|\\eta| < 2.4$";
       htitle=title.at(i);
-      hlabel="3mu kinematics";
+      hlabel="#tau_{3#mu} pass kinematics";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TripletKinematics_",htitle,2,-0.5,1.5,hlabel,"Events"));
@@ -89,11 +89,10 @@ void  ZTau3MuTaumu::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,5,-0.5,4.5,hlabel,"Events"));
     }
     else if(i==OSCharge){
-      title.at(i)="Charge $\\mu$ * $\\tau_{3\\mu}$ =  ";
-      title.at(i)+=cut.at(OSCharge);
+      title.at(i)="Charge $\\mu$ * $\\tau_{3\\mu}$ = -1; ";
       title.at(i)+=" (at least one)";
       htitle=title.at(i);
-      hlabel="Opposite charge? ";
+      hlabel="Opposite charge ";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OSCharge_",htitle,4,-0.5,3.5,hlabel,"Events"));
@@ -111,9 +110,12 @@ void  ZTau3MuTaumu::Configure(){
   Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_Tau3MuRelativeIsolation","Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");
   OppositeMuRelativeIsolation=HConfig.GetTH1D(Name+"_OppositeMuRelativeIsolation","OppositeMuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");
   
-  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",50,20,100,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");
-  MTT=HConfig.GetTH1D(Name+"_MTT","MTT",50,60,120,"M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)","Events");
-  TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",30,1.4,2.2,"M_{3#mu}, GeV","Events");
+  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");
+  MTT=HConfig.GetTH1D(Name+"_MTT","MTT",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)","Events");
+  TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",30,1.1,2.2,"M_{3#mu}, GeV","Events");
+
+  matched_pdgId=HConfig.GetTH1D(Name+"_matched_pdgId","matched_pdgId",25,-0.5,24.5,"pdgID MC matched","Events");
+  matched_dR=HConfig.GetTH1D(Name+"_matched_dR","matched_dR",50,-0.1,0.5,"#Delta R(MC-RECO) Object opposite to #tau_{3#mu}","Events");
 
 
 
@@ -139,6 +141,8 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&VisibleDiTauMass);
   Extradist1d.push_back(&MTT);
   Extradist1d.push_back(&TripletMass);
+  Extradist1d.push_back(&matched_pdgId);
+  Extradist1d.push_back(&matched_dR);
 
 
 
@@ -231,6 +235,8 @@ void  ZTau3MuTaumu::doEvent(){
 	}
       value.at(OppositeSide)= Muons_OppositeHemisphere.size();
 
+
+
       for(auto i : Muons_OppositeHemisphere)
 	{
 
@@ -244,7 +250,7 @@ void  ZTau3MuTaumu::doEvent(){
 
     }
 
-    pass.at(OppositeSide) = (value.at(OSCharge) >= cut.at(OSCharge));  
+    pass.at(OppositeSide) = (value.at(OppositeSide) >= cut.at(OppositeSide));  
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));  
 
 
@@ -304,6 +310,14 @@ void  ZTau3MuTaumu::doEvent(){
     MTT.at(t).Fill( (Tau3muLV + MuLV  + Neutrino_LV).M(), 1);
 
     TripletMass.at(t).Fill(Tau3muLV.M(),1);
+
+    TLorentzVector OppositeSideLV = MuLV;
+    if(id != 1)
+      {
+        matched_pdgId.at(t).Fill(Ntp->matchTruth(OppositeSideLV),1);
+        matched_dR.at(t).Fill(Ntp->matchToTruthTauDecay(OppositeSideLV).DeltaR(OppositeSideLV),1);
+      }
+
 
   }
 }
