@@ -30,12 +30,15 @@ class ZTau3MuTauh : public Selection {
   enum cuts {TriggerOk=0,
 	     SignalCandidate,
 	     TripletKinematics,
+	     TripletPT,
 	     nTaus,
 	     OppositeSide,
 	     OSCharge,
 	     DeepTauJets,
 	     DeepTauMuons,
 	     DeepTauElectrons,
+	     Tau3MuIsolation,
+	     VisMass,
 	     NCuts}; 
 
 
@@ -54,8 +57,16 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   matched_pdgId;
   std::vector<TH1D>   matched_dR;
 
+  std::vector<TH1D>   Muon1DRToTruth;
+  std::vector<TH1D>   Muon2DRToTruth;
+  std::vector<TH1D>   Muon3DRToTruth;
+  std::vector<TH1D>   dR_betweenTruth_VisibleTaus;
 
+  std::vector<TH1D>   PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PairMass_OppositeSign_dR13;
 
+  std::vector<TH1D>   TripletPt;
+  std::vector<TH1D>   OppositeTauPt;
 
 
 };
