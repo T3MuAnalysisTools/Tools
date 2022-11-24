@@ -32,10 +32,12 @@ class ZTau3MuTaue : public Selection {
 	     SignalCandidate,
 	     TripletKinematics,
 	     nElectrons,
-	     TriggerMatch,
        OppositeSide,
 	     OSCharge,
-	     NCuts}; 
+	     TriggerMatch,
+       Tau3MuIsolation,
+       VisMass,
+       NCuts}; 
 
 
  protected:
