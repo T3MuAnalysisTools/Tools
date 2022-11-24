@@ -59,6 +59,11 @@
 #include "madhu/SignalVertexSelector.h"
 #include "madhu/DebugFit.h"
 #include "madhu/SimpleTauSelector.h"
+#include "madhu/SimpleTauMuSelector.h"
+#include "madhu/SimpleTauESelector.h"
+#include "madhu/ZTau3MuTauh.h"
+#include "madhu/ZTau3MuTaue.h"
+#include "madhu/ZTau3MuTaumu.h"
 
 #endif
 
@@ -128,6 +133,11 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("signalvertexselector"))s=new SignalVertexSelector(Analysis,UncertType);
   else if(Analysis.Contains("debugfit"))s=new DebugFit(Analysis,UncertType);
   else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
+  else if(Analysis.Contains("simpletaumuselector"))s=new SimpleTauMuSelector(Analysis,UncertType);
+  else if(Analysis.Contains("simpletaueselector"))s=new SimpleTauESelector(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutauh"))s=new ZTau3MuTauh(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaue"))s=new ZTau3MuTaue(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaumu"))s=new ZTau3MuTaumu(Analysis,UncertType);
 #endif
 
 
