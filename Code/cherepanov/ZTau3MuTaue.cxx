@@ -110,13 +110,23 @@ void  ZTau3MuTaue::Configure(){
   Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_Tau3MuRelativeIsolation","Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");
   ElectronSumIsolation=HConfig.GetTH1D(Name+"_ElectronSumIsolation","ElectronSumIsolation",50,0.,10,"I= neutralH + chargedH + photon Iso, GeV","Events ");
   
-  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");
+  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");
   MTT=HConfig.GetTH1D(Name+"_MTT","MTT",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)","Events");
   TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",40,1.1,2.2,"M_{3#mu}, GeV","Events");
+  PairMass_OppositeSign_dR12=HConfig.GetTH1D(Name+"_PairMass_OppositeSign_dR12","PairMass_OppositeSign_dR12",40,0.2,2.,"M_{1}, GeV (OS - SS dR sorted)","Events");
+  PairMass_OppositeSign_dR13=HConfig.GetTH1D(Name+"_PairMass_OppositeSign_dR13","PairMass_OppositeSign_dR13",40,0.2,2.,"M_{2}, GeV (OS - SS dR sorted)","Events");
+
+
+
 
 
   matched_pdgId=HConfig.GetTH1D(Name+"_matched_pdgId","matched_pdgId",25,-0.5,24.5,"pdgID MC matched","Events");
   matched_dR=HConfig.GetTH1D(Name+"_matched_dR","matched_dR",50,-0.1,0.5,"#Delta R(MC-RECO) Object opposite to #tau_{3#mu}","Events");
+
+  Muon1DRToTruth=HConfig.GetTH1D(Name+"_Muon1DRToTruth","Muon1DRToTruth",20,0,0.02,"#Delta R (reco - mc) #mu_{1} ","Events");
+  Muon2DRToTruth=HConfig.GetTH1D(Name+"_Muon2DRToTruth","Muon2DRToTruth",20,0,0.02,"#Delta R (reco - mc) #mu_{2} ","Events");
+  Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"#Delta R (reco - mc) #mu_{3} ","Events");
+  dR_betweenTruth_VisibleTaus=HConfig.GetTH1D(Name+"_dR_betweenTruth_VisibleTaus","dR_betweenTruth_VisibleTaus",20,0,0.02,"#Delta R Truth #tau's prods ","Events");
 
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -144,6 +154,12 @@ void  ZTau3MuTaue::Store_ExtraDist(){
   Extradist1d.push_back(&matched_pdgId);
   Extradist1d.push_back(&matched_dR);
 
+  Extradist1d.push_back(&Muon1DRToTruth);
+  Extradist1d.push_back(&Muon2DRToTruth);
+  Extradist1d.push_back(&Muon3DRToTruth);
+  Extradist1d.push_back(&dR_betweenTruth_VisibleTaus);
+  Extradist1d.push_back(&PairMass_OppositeSign_dR12);
+  Extradist1d.push_back(&PairMass_OppositeSign_dR13);
 
 
 }
@@ -276,13 +292,49 @@ void  ZTau3MuTaue::doEvent(){
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
 
 
+    ////////////////////////   sort muons by charge and dR and fill pair masses :
+    /////
+    vector<unsigned int> idx_vec;
+    idx_vec.push_back(muon_1_idx);
+    idx_vec.push_back(muon_2_idx);
+    idx_vec.push_back(muon_3_idx);
+
+    unsigned int os_mu_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
+    unsigned int ss1_mu_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
+    unsigned int ss2_mu_idx = Ntp->SortedChargeMuons(idx_vec).at(2);
+
+    TLorentzVector MuonOS  = Ntp->Muon_P4(os_mu_idx);
+    TLorentzVector MuonSS1 = Ntp->Muon_P4(ss1_mu_idx);
+    TLorentzVector MuonSS2 = Ntp->Muon_P4(ss2_mu_idx);
+
+
+
+    if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+
+      PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+      PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+
+
+    }else{
+
+      PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+      PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+
+    }
+    //////
+    ///////////////////////////
+
+
+
+    TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
+    TLorentzVector Muon2LV = Ntp->Muon_P4(muon_2_idx);
+    TLorentzVector Muon3LV = Ntp->Muon_P4(muon_3_idx);
+
+
+
     TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
-
-    int Tau3MuCharge = Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) +
-      Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
-      Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 
 
     TLorentzVector ElectronLV = Ntp->Electron_P4(electron_idx);
@@ -317,6 +369,19 @@ void  ZTau3MuTaue::doEvent(){
       {
         matched_pdgId.at(t).Fill(Ntp->matchTruth(OppositeSideLV),1);
         matched_dR.at(t).Fill(Ntp->matchToTruthTauDecay(OppositeSideLV).DeltaR(OppositeSideLV),1);
+
+        TLorentzVector MCMuon1LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)));
+        TLorentzVector MCMuon2LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)));
+        TLorentzVector MCMuon3LV= Ntp->matchToTruthTauDecay(Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2)));
+        TLorentzVector MCTauLV  = MCMuon1LV+ MCMuon2LV + MCMuon3LV;
+
+        Muon1DRToTruth.at(t).Fill(Muon1LV.DeltaR(MCMuon1LV),1);
+        Muon2DRToTruth.at(t).Fill(Muon2LV.DeltaR(MCMuon2LV),1);
+        Muon3DRToTruth.at(t).Fill(Muon3LV.DeltaR(MCMuon3LV),1);
+	dR_betweenTruth_VisibleTaus.at(t).Fill(MCTauLV.DeltaR(Ntp->matchToTruthTauDecay(OppositeSideLV)),1);
+
+
+
       }
 
 

@@ -1090,7 +1090,7 @@ TLorentzVector Ntuple_Controller::matchToTruthTauDecay(TLorentzVector vector){
    for(int i=0; i < NMCTaus(); i++ ){
       for(int j =0; j < NMCTauDecayProducts(i); j++){
          if(MCTauandProd_p4(i,j).DeltaR(vector) < dr){
-            out=MCTauandProd_p4(i,j);
+            out = MCTauandProd_p4(i,j);
             dr = MCTauandProd_p4(i,j).DeltaR(vector);
          }
       }
