@@ -178,6 +178,7 @@ public :
    std::vector<std::vector<float> > *Electron_p4;
    std::vector<int>                 *Electron_Charge;
    std::vector<float>               *Electron_puppiNeutralHadronIso;
+   std::vector<float>               *Electron_puppiChargedHadronIso;
    std::vector<float>               *Electron_puppiPhotonIso;
    std::vector<float>               *Electron_trackIso;
    std::vector<bool>                *Electron_isPF;
@@ -203,6 +204,12 @@ public :
    std::vector<int> *Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<int> *Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
    std::vector<int> *Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;
+   std::vector<int>                 *Tau_NewDecayModeFinding;
+   std::vector<float>               *Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits;
+   std::vector<std::vector<float> > *Tau_FloatDiscriminants;
+   std::vector<std::vector<int> >   *Tau_IntDiscriminants;
+
+
    std::vector<std::vector<float> >  *Tau_PFTauTrack_p4;
    std::vector<std::vector<double> >  *Tau_Track_par;
    std::vector<std::vector<double> >  *Tau_Track_cov;
@@ -508,6 +515,7 @@ public :
    TBranch        *b_Electron_p4;   //!
    TBranch        *b_Electron_Charge;   //!
    TBranch        *b_Electron_puppiNeutralHadronIso;   //!
+   TBranch        *b_Electron_puppiChargedHadronIso;   //!
    TBranch        *b_Electron_puppiPhotonIso;   //!
    TBranch        *b_Electron_trackIso;   //!
    TBranch        *b_Electron_isPF;   //!
@@ -531,6 +539,10 @@ public :
    TBranch        *b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits;   //!
    TBranch        *b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits;   //!
    TBranch        *b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits;   //!
+   TBranch        *b_Tau_NewDecayModeFinding;   //!
+   TBranch        *b_Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits;   //!
+   TBranch        *b_Tau_FloatDiscriminants;   //!
+   TBranch        *b_Tau_IntDiscriminants;   //!
    TBranch        *b_Tau_PFTauTrack_p4;   //!
    TBranch        *b_Tau_Track_par;   //!
    TBranch        *b_Tau_Track_cov;   //!
@@ -892,6 +904,7 @@ void NtupleReader::Init(TTree *tree)
    Electron_p4 = 0;
    Electron_Charge = 0;
    Electron_puppiNeutralHadronIso = 0;
+   Electron_puppiChargedHadronIso = 0;
    Electron_puppiPhotonIso = 0;
    Electron_trackIso = 0;
    Electron_isPF = 0;
@@ -915,6 +928,10 @@ void NtupleReader::Init(TTree *tree)
    Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits = 0;
    Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits = 0;
    Tau_byTightCombinedIsolationDeltaBetaCorr3Hits = 0;
+   Tau_NewDecayModeFinding = 0;
+   Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits = 0;
+   Tau_FloatDiscriminants = 0;
+   Tau_IntDiscriminants = 0;
    Tau_PFTauTrack_p4 = 0;
    Tau_Track_par = 0;
    Tau_Track_cov = 0;
@@ -1223,6 +1240,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Electron_p4", &Electron_p4, &b_Electron_p4);
    fChain->SetBranchAddress("Electron_Charge", &Electron_Charge, &b_Electron_Charge);
    fChain->SetBranchAddress("Electron_puppiNeutralHadronIso", &Electron_puppiNeutralHadronIso, &b_Electron_puppiNeutralHadronIso);
+   fChain->SetBranchAddress("Electron_puppiChargedHadronIso", &Electron_puppiChargedHadronIso, &b_Electron_puppiChargedHadronIso);  
    fChain->SetBranchAddress("Electron_puppiPhotonIso", &Electron_puppiPhotonIso, &b_Electron_puppiPhotonIso);
    fChain->SetBranchAddress("Electron_trackIso", &Electron_trackIso, &b_Electron_trackIso);
    fChain->SetBranchAddress("Electron_isPF", &Electron_isPF, &b_Electron_isPF);
@@ -1248,6 +1266,10 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits", &Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits);
    fChain->SetBranchAddress("Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits", &Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits);
    fChain->SetBranchAddress("Tau_byTightCombinedIsolationDeltaBetaCorr3Hits", &Tau_byTightCombinedIsolationDeltaBetaCorr3Hits, &b_Tau_byTightCombinedIsolationDeltaBetaCorr3Hits);
+   fChain->SetBranchAddress("Tau_NewDecayModeFinding", &Tau_NewDecayModeFinding, &b_Tau_NewDecayModeFinding);
+   fChain->SetBranchAddress("Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits", &Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits, &b_Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits);
+   fChain->SetBranchAddress("Tau_FloatDiscriminants", &Tau_FloatDiscriminants, &b_Tau_FloatDiscriminants);
+   fChain->SetBranchAddress("Tau_IntDiscriminants", &Tau_IntDiscriminants, &b_Tau_IntDiscriminants);
    fChain->SetBranchAddress("Tau_PFTauTrack_p4", &Tau_PFTauTrack_p4, &b_Tau_PFTauTrack_p4);
    fChain->SetBranchAddress("Tau_Track_par", &Tau_Track_par, &b_Tau_Track_par);
    fChain->SetBranchAddress("Tau_Track_cov", &Tau_Track_cov, &b_Tau_Track_cov);

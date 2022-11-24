@@ -226,6 +226,7 @@ class Ntuple_Controller{
       TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}
       int                      Tau_DecayMode(unsigned int i){return Ntp->Tau_DecayMode->at(i);}
       int                      Tau_DecayModeFinding(unsigned int i){return Ntp->Tau_DecayModeFinding->at(i);}
+      int                      Tau_NewDecayModeFinding(unsigned int i){return Ntp->Tau_NewDecayModeFinding->at(i);}
       unsigned int             Tau_byLooseDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byLooseDeepTau2017v2p1VSe->at(i);}
       unsigned int             Tau_byMediumDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byMediumDeepTau2017v2p1VSe->at(i);}
       unsigned int             Tau_byTightDeepTau2017v2p1VSe(unsigned int i){return Ntp->Tau_byTightDeepTau2017v2p1VSe->at(i);}
@@ -238,7 +239,9 @@ class Ntuple_Controller{
       unsigned int             Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byLooseCombinedIsolationDeltaBetaCorr3Hits->at(i);}
       unsigned int             Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i);}
       unsigned int             Tau_byTightCombinedIsolationDeltaBetaCorr3Hits(unsigned int i){return Ntp->Tau_byTightCombinedIsolationDeltaBetaCorr3Hits->at(i);}
-
+      float                    Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits(unsigned int i){return Ntp->Tau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i);}
+      float                    Tau_RawDiscriminator(unsigned int i, unsigned int j){return Ntp->Tau_FloatDiscriminants->at(i).at(j);}
+      int                      Tau_Discriminator(unsigned int i, unsigned int j){return Ntp->Tau_IntDiscriminants->at(i).at(j);}
 
 
 
@@ -270,6 +273,7 @@ class Ntuple_Controller{
 										 Ntp->Electron_p4->at(i).at(0));}
 
       float                    Electron_puppiNeutralHadronIso(unsigned int i){return Ntp->Electron_puppiNeutralHadronIso->at(i);}
+      float                    Electron_puppiChargedHadronIso(unsigned int i){return Ntp->Electron_puppiChargedHadronIso->at(i);}
       float                    Electron_puppiPhotonIso(unsigned int i){return Ntp->Electron_puppiPhotonIso->at(i);}
       float                    Electron_trackIso(unsigned int i){return Ntp->Electron_trackIso->at(i);}
       int                      Electron_isPF(unsigned int i){return Ntp->Electron_isPF->at(i);}
@@ -289,6 +293,7 @@ class Ntuple_Controller{
       bool           Muon_isIsolationValid(unsigned int i){return Ntp->Muon_isIsolationValid->at(i);}
       bool           Muon_isQualityValid(unsigned int i){return Ntp->Muon_isQualityValid->at(i);}
       bool           Muon_isTimeValid(unsigned int i){return Ntp->Muon_isTimeValid->at(i);}
+      bool           isLooseMuon(unsigned int i);
       float          Muon_emEt03(unsigned int i){return Ntp->Muon_emEt03->at(i);}
       float          Muon_emVetoEt03(unsigned int i){return Ntp->Muon_emVetoEt03->at(i);}
       float          Muon_hadEt03(unsigned int i){return Ntp->Muon_hadEt03->at(i);}
@@ -319,7 +324,7 @@ class Ntuple_Controller{
       float          Muon_sumPhotonEt04(unsigned int i){return Ntp->Muon_sumPhotonEt04->at(i);}
       float          Muon_sumPhotonEtHighThreshold04(unsigned int i){return Ntp->Muon_sumPhotonEtHighThreshold04->at(i);}
       float          Muon_sumPUPt04(unsigned int i){return Ntp->Muon_sumPUPt04->at(i);}
-
+      float          Muon_RelIso(unsigned int i){return Muon_sumChargedHadronPt04(i) + std::max(0., Muon_sumNeutralHadronEt04(i) + Muon_sumPhotonEt04(i) -0.5 * Muon_sumPUPt04(i)) ;}
       double         Muon_ptError(unsigned int i){return Ntp->Muon_ptError->at(i);}
       double         Muon_phiError(unsigned int i){return Ntp->Muon_phiError->at(i);}
       double         Muon_etaError(unsigned int i){return Ntp->Muon_etaError->at(i);}
