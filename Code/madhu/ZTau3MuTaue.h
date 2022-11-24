@@ -28,7 +28,7 @@ class ZTau3MuTaue : public Selection {
   virtual void  Finish();
 
   enum cuts {L1_TriggerOk=0,
-	     HLT_TriggerOk=0,
+	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TripletKinematics,
 	     nElectrons,
