@@ -27,9 +27,11 @@ class ZTau3MuTauh : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {TriggerOk=0,
+  enum cuts {L1_TriggerOk=0,
+	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TripletKinematics,
+	     TriggerMatch,
 	     TripletPT,
 	     nTaus,
 	     OppositeSide,
@@ -67,7 +69,9 @@ class ZTau3MuTauh : public Selection {
 
   std::vector<TH1D>   TripletPt;
   std::vector<TH1D>   OppositeTauPt;
-
+  
+  TRandom rndm;
+  double random_num;
 
 };
 #endif

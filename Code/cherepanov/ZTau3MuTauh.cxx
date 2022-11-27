@@ -27,7 +27,8 @@ void  ZTau3MuTauh::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==TriggerOk)          cut.at(TriggerOk)=1;
+    if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
+    if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     if(i==TripletKinematics)  cut.at(TripletKinematics)=1;
     if(i==TripletPT)          cut.at(TripletPT)=25;
@@ -38,6 +39,7 @@ void  ZTau3MuTauh::Configure(){
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nTaus)              cut.at(nTaus)=1;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.7;
+    if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==VisMass)            cut.at(VisMass)=1;
 
 
@@ -51,11 +53,17 @@ void  ZTau3MuTauh::Configure(){
     dist.push_back(std::vector<float>());
     TString c="_Cut_";c+=i;
     // book here the N-1 and N-0 histrogramms for each cut
-    if(i==TriggerOk){
-      title.at(i)="Trigger ";
-      hlabel="Trigger ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    if(i==L1_TriggerOk){
+      title.at(i)="L1 Trigger ";
+      hlabel="L1 Trigger ";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_L1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_L1_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==HLT_TriggerOk){
+      title.at(i)="HLT Trigger ";
+      hlabel="HLT Trigger ";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus){
       title.at(i)=" At least one $\\tau_{h}$, $pT>20 GeV, |\\eta| < 2.4$ ";
@@ -65,7 +73,6 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_nTaus_",htitle,4,-0.5,3.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nTaus_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
-
     else if(i==DeepTauJets){
       title.at(i)=" At least one $\\tau_{h}$ pass DeepTauVsJets (tight WP) ";
       hlabel=" deep tau jets";
@@ -161,6 +168,12 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_VisMass_",htitle,70,0,150,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_VisMass_",htitle,70,0,150,hlabel,"Events"));
     }
+    else if(i==TriggerMatch){
+      title.at(i)="Selected 3$\\mu$ matched to trg";
+      hlabel="Trigger Matched ";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
 
 
 
@@ -247,21 +260,46 @@ void  ZTau3MuTauh::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-
-
-
+  
+  
   bool HLTOk(false);
   bool L1Ok(false);
-
+  bool DoubleMu0Fired(false);
+  bool DoubleMu4Fired(false);
+  bool DoubleMuFired(false);
+  bool TripleMuFired(false);
+  bool randomFailed(false);
+  
+  
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLTName = Ntp->HLTName(iTrigger);
     //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
     if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
   }
   
+  random_num = rndm.Rndm();
   
-  value.at(TriggerOk)=HLTOk;
-  pass.at(TriggerOk)=(value.at(TriggerOk) == cut.at(TriggerOk)); 
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
+    
+    if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
+    if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
+    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
+    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
+    if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
+      randomFailed = true;
+    }
+  }
+  
+  if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
+  if (DoubleMuFired || TripleMuFired) L1Ok = true;
+
+  value.at(L1_TriggerOk)=(L1Ok);
+  pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
+  
+  value.at(HLT_TriggerOk)=(HLTOk);
+  pass.at(HLT_TriggerOk)=(value.at(HLT_TriggerOk)==cut.at(HLT_TriggerOk));
 
 
 
@@ -325,11 +363,30 @@ void  ZTau3MuTauh::doEvent(){
   value.at(nTaus)  = Taus.size();
   pass.at(nTaus)  = ( value.at(nTaus) >= cut.at(nTaus) );
   
+  
+  // Figuring out dR
+  TLorentzVector TauMC1(0,0,0,0);
+  TLorentzVector TauMC2(0,0,0,0);
+  for(int i=0; i<Ntp->NMCTauDecayProducts(0); i++){
+    TauMC1 = TauMC1 + Ntp->MCTauandProd_p4(0,i);
+  }
+  for(int i=0; i<Ntp->NMCTauDecayProducts(1); i++){
+    TauMC2 = TauMC2 + Ntp->MCTauandProd_p4(1,i);
+  }
+  //std::cout<< "Loop over taus" << std::endl;
+  for(auto i : Taus){
+    if(id != 1 && pass.at(TripletKinematics)){
+      //std::cout<< "dR to MC tau1: "  << Ntp->Tau_P4(i).DeltaR(TauMC1) << "dR to MC tau2: "  << Ntp->Tau_P4(i).DeltaR(TauMC2) << std::endl;
+      //std::cout<< "No of MC taus: "  << Ntp->NMCTaus() << " pdgid: "  << Ntp->matchTruth(Ntp->Tau_P4(i)) << "  dR: "  << Ntp->matchToTruthTauDecay(Ntp->Tau_P4(i)).DeltaR(Tau3MuLV) << "  dPhi: "  << Ntp->DeltaPhi(Ntp->Tau_P4(i).Phi(), Tau3MuLV.Phi() ) << std::endl;
+    }
+  }
+  
 
   value.at(OppositeSide)=0; 
   value.at(OSCharge)    =0;
   value.at(Tau3MuIsolation)   = -1;
   value.at(VisMass)           = -1;
+  bool triggerCheck = false;
 
   if(pass.at(TripletKinematics))
     {
@@ -360,15 +417,37 @@ void  ZTau3MuTauh::doEvent(){
       value.at(Tau3MuIsolation) = TripletmuLV.Pt()/  (TripletmuLV.Pt()  + Ntp->Muon_RelIso(index_mu_1) +
 						                          Ntp->Muon_RelIso(index_mu_2) +
 						                          Ntp->Muon_RelIso(index_mu_3) );
+    
+    
+      //Trigger Matching
+      value.at(TriggerMatch) = 0;
+      if(pass.at(HLT_TriggerOk))
+        {
+          vector<TLorentzVector> trigobjTriplet;
+          for (int i=0; i<Ntp->NTriggerObjects(); i++)
+            {
+              TString name = Ntp->TriggerObject_name(i);
+              //        if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+              TLorentzVector tmp;
+              tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+              trigobjTriplet.push_back(tmp);
+            }
+	  std::vector<TLorentzVector> muonTriplet;
+          muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)));
+          muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1)));
+          muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2)));
 
+          if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
+        }
+      value.at(TriggerMatch) = triggerCheck;
 
-
+    
     }
-
+    
+    pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));    
     pass.at(OppositeSide) = (value.at(OppositeSide) >= cut.at(OppositeSide));  
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));  
-
-
+    
 
 
   for(auto i : Taus_OppositeHemisphere_OppositeCharge)
