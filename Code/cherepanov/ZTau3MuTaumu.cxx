@@ -30,12 +30,12 @@ void  ZTau3MuTaumu::Configure(){
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==TripletPT)          cut.at(TripletPT)=25;
+    if(i==TripletPT)          cut.at(TripletPT)=30;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nMuons)             cut.at(nMuons)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.6;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.8;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
-    if(i==MuonIsolation)      cut.at(MuonIsolation)=0.8;
+    if(i==MuonIsolation)      cut.at(MuonIsolation)=0.85;
     if(i==VisMass)            cut.at(VisMass)=1;
   }
 
@@ -70,7 +70,7 @@ void  ZTau3MuTaumu::Configure(){
     }
 
     else if(i==TripletPT){
-      title.at(i)="pT(3$\\mu$)  $>$ 25 GeV";
+      title.at(i)="pT(3$\\mu$)  $>$ 30 GeV";
       htitle=title.at(i);
       hlabel="pT(#tau_{3#mu}) , GeV ";
       htitle.ReplaceAll("$","");
@@ -113,7 +113,7 @@ void  ZTau3MuTaumu::Configure(){
 
 
     else if(i==MuonIsolation){
-      title.at(i)="Opposite $\\mu $ Relative Isolation  $ > $ 0.6";
+      title.at(i)="Opposite $\\mu $ Relative Isolation  $ > $ 0.85";
       //      title.at(i)+= cut.at(MuonIsolation);
       htitle=title.at(i);
       hlabel="I(#mu)= p_{T}(#mu)/(p_{T}(#mu) + #sum p_{T})";
@@ -124,7 +124,7 @@ void  ZTau3MuTaumu::Configure(){
     }
 
     else if(i==VisMass){
-      title.at(i)="30 GeV $< M(\\tau(\\mu) - \\tau(3\\mu))  < $ 100 GeV";
+      title.at(i)="40 GeV $< M(\\tau(\\mu) - \\tau(3\\mu))  < $ 85 GeV";
       htitle=title.at(i);
       hlabel="M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)";
       htitle.ReplaceAll("$","");
@@ -398,7 +398,7 @@ void  ZTau3MuTaumu::doEvent(){
 
     pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
     pass.at(MuonIsolation)   = (value.at(MuonIsolation)   > cut.at(MuonIsolation));
-    pass.at(VisMass)         = (value.at(VisMass) > 30 && value.at(VisMass) < 100);
+    pass.at(VisMass)         = (value.at(VisMass) > 45 && value.at(VisMass) < 85);
     //    std::cout<<"  ----  "<< std::endl;
     /*    for(unsigned int i = 0 ; i< NCuts; i++)
       {

@@ -30,13 +30,13 @@ void  ZTau3MuTauh::Configure(){
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==TripletPT)          cut.at(TripletPT)=25;
+    if(i==TripletPT)          cut.at(TripletPT)=30;
     if(i==DeepTauJets)        cut.at(DeepTauJets)=1;
     if(i==DeepTauMuons)       cut.at(DeepTauMuons)=1;
     if(i==DeepTauElectrons)   cut.at(DeepTauElectrons)=1;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nTaus)              cut.at(nTaus)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.7;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.8;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==VisMass)            cut.at(VisMass)=1;
 
@@ -128,10 +128,10 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OSCharge_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
     else if(i==Tau3MuIsolation){
-      title.at(i)="$ 3\\mu $ Relative Isolation  $ > $ 0.7";
+      title.at(i)="$ 3\\mu $ Relative Isolation  $ > $ 0.8";
       //      title.at(i)+= cut.at(MuonIsolation);
       htitle=title.at(i);
-      hlabel="I(#mu)= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})";
+      hlabel="I(3#mu)= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
