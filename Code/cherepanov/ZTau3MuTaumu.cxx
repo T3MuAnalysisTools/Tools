@@ -368,7 +368,7 @@ void  ZTau3MuTaumu::doEvent(){
 	  //	  if(fabs(Ntp->DeltaPhi(Ntp->Tau_P4(i).Phi(), Tau3MuLV.Phi() ))  > TMath::Pi() / 2    ) Taus_OppositeHemisphere.push_back(i);
 
 	}
-      std::cout<<"  ====   "<< Muons_OppositeHemisphere.size() << std::endl;
+
       value.at(OppositeSide)= Muons_OppositeHemisphere.size();
 
 
