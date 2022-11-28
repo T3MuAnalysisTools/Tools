@@ -35,7 +35,7 @@ void  ZTau3MuTaue::Configure(){
     if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.6;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
-    if(i==TripletPT)          cut.at(TripletPT)=25;
+    if(i==TripletPT)          cut.at(TripletPT)=30;
     if(i==VisMass)            cut.at(VisMass)=1;
 
   }
@@ -69,7 +69,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nElectrons_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
     else if(i==TripletPT){
-      title.at(i)="pT(3$\\mu$)  $>$ 25 GeV";
+      title.at(i)="pT(3$\\mu$)  $>$ 30 GeV";
       htitle=title.at(i);
       hlabel="pT(#tau_{3#mu}) , GeV ";
       htitle.ReplaceAll("$","");
