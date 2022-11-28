@@ -35,7 +35,6 @@ void  ZTau3MuTauh::Configure(){
     if(i==DeepTauJets)        cut.at(DeepTauJets)=1;
     if(i==DeepTauMuons)       cut.at(DeepTauMuons)=1;
     if(i==DeepTauElectrons)   cut.at(DeepTauElectrons)=1;
-    if(i==OppositeSide)       cut.at(OppositeSide)=1;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nTaus)              cut.at(nTaus)=1;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.7;
@@ -66,7 +65,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus){
-      title.at(i)=" At least one $\\tau_{h}$, $pT>20 GeV, |\\eta| < 2.4$ ";
+      title.at(i)=" At least one $\\tau_{h}$, $pT>20 GeV, |\\eta| < 2.4$  $\\Delta R (\\tau_{h}-3\\mu) >$ 1/2";
       hlabel="number of taus";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -100,15 +99,6 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_DeepTauElectrons_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
 
-    else if(i==OppositeSide){
-      title.at(i)="At least one  $\\tau_{h}$ is on opposite side $|\\Delta R| > 1/2$";
-      hlabel="#Delta R (#tau_{h} - #tau_{3#mu}) > 1/2";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
-    }
-
     else if(i==TripletKinematics){
       title.at(i)="3,3,2 GeV,  $|\\eta| < 2.4$";
       htitle=title.at(i);
@@ -127,7 +117,6 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TripletPT_",htitle,50,5,80,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TripletPT_",htitle,50,5,80,hlabel,"Events"));
     }
-
 
     else if(i==SignalCandidate){
       title.at(i)="At least one $\\tau_{3\\mu}$ candidate";
@@ -269,6 +258,7 @@ void  ZTau3MuTauh::doEvent(){
   bool DoubleMuFired(false);
   bool TripleMuFired(false);
   bool randomFailed(false);
+
   
   
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
@@ -291,9 +281,13 @@ void  ZTau3MuTauh::doEvent(){
       randomFailed = true;
     }
   }
-  
+
+  value.at(L1_TriggerOk)=0;
+  value.at(HLT_TriggerOk)=0;  
   if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
   if (DoubleMuFired || TripleMuFired) L1Ok = true;
+
+
 
   value.at(L1_TriggerOk)=(L1Ok);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
@@ -354,35 +348,21 @@ void  ZTau3MuTauh::doEvent(){
 
 
 
-
+  //  value.at(nTaus)  = 0;
   for(unsigned int itau=0; itau < Ntp->NTaus(); itau++)
     {
-      if(Ntp->Tau_P4(itau).Pt() > 20 && fabs(Ntp->Tau_P4(itau).Eta()) < 2.3) Taus.push_back(itau);
+      if(pass.at(pass.at(TripletKinematics)))
+	{
+	  if(Ntp->Tau_P4(itau).Pt() > 20 && fabs(Ntp->Tau_P4(itau).Eta()) < 2.3 && 
+	     Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > 0.5 ) Taus_OppositeHemisphere.push_back(itau);
+	}
     }
 
-  value.at(nTaus)  = Taus.size();
+  value.at(nTaus)  = Taus_OppositeHemisphere.size();
   pass.at(nTaus)  = ( value.at(nTaus) >= cut.at(nTaus) );
   
-  
-  // Figuring out dR
-  TLorentzVector TauMC1(0,0,0,0);
-  TLorentzVector TauMC2(0,0,0,0);
-  for(int i=0; i<Ntp->NMCTauDecayProducts(0); i++){
-    TauMC1 = TauMC1 + Ntp->MCTauandProd_p4(0,i);
-  }
-  for(int i=0; i<Ntp->NMCTauDecayProducts(1); i++){
-    TauMC2 = TauMC2 + Ntp->MCTauandProd_p4(1,i);
-  }
-  //std::cout<< "Loop over taus" << std::endl;
-  for(auto i : Taus){
-    if(id != 1 && pass.at(TripletKinematics)){
-      //std::cout<< "dR to MC tau1: "  << Ntp->Tau_P4(i).DeltaR(TauMC1) << "dR to MC tau2: "  << Ntp->Tau_P4(i).DeltaR(TauMC2) << std::endl;
-      //std::cout<< "No of MC taus: "  << Ntp->NMCTaus() << " pdgid: "  << Ntp->matchTruth(Ntp->Tau_P4(i)) << "  dR: "  << Ntp->matchToTruthTauDecay(Ntp->Tau_P4(i)).DeltaR(Tau3MuLV) << "  dPhi: "  << Ntp->DeltaPhi(Ntp->Tau_P4(i).Phi(), Tau3MuLV.Phi() ) << std::endl;
-    }
-  }
-  
 
-  value.at(OppositeSide)=0; 
+
   value.at(OSCharge)    =0;
   value.at(Tau3MuIsolation)   = -1;
   value.at(VisMass)           = -1;
@@ -390,24 +370,6 @@ void  ZTau3MuTauh::doEvent(){
 
   if(pass.at(TripletKinematics))
     {
-      for(auto i : Taus)
-	{
-	  if(  Ntp->Tau_P4(i).DeltaR(Tau3MuLV) > 0.5   ) Taus_OppositeHemisphere.push_back(i);
-	  //	  if(fabs(Ntp->DeltaPhi(Ntp->Tau_P4(i).Phi(), Tau3MuLV.Phi() ))  > TMath::Pi() / 2    ) Taus_OppositeHemisphere.push_back(i);
-
-	}
-      value.at(OppositeSide)= Taus_OppositeHemisphere.size();
-
-      for(auto i : Taus_OppositeHemisphere)
-	{
-
-	  int Tau3MuCharge = Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) +
-	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
-	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
-
-	  if(Ntp->Tau_charge(i)*Tau3MuCharge == -1) Taus_OppositeHemisphere_OppositeCharge.push_back(i);
-	}
-      value.at(OSCharge) = Taus_OppositeHemisphere_OppositeCharge.size();
       int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
       int index_mu_2 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
       int index_mu_3 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -440,12 +402,22 @@ void  ZTau3MuTauh::doEvent(){
           if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
         }
       value.at(TriggerMatch) = triggerCheck;
-
     
+      if(pass.at(nTaus))
+	{
+	  for(auto i : Taus_OppositeHemisphere)
+	    {
+	      
+	      int Tau3MuCharge = Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) +
+		Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
+		Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
+	      if(Ntp->Tau_charge(i)*Tau3MuCharge == -1) Taus_OppositeHemisphere_OppositeCharge.push_back(i);
+	    }
+	  value.at(OSCharge) = Taus_OppositeHemisphere_OppositeCharge.size();
+	}
     }
     
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));    
-    pass.at(OppositeSide) = (value.at(OppositeSide) >= cut.at(OppositeSide));  
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));  
     
 
@@ -466,10 +438,11 @@ void  ZTau3MuTauh::doEvent(){
 
 
   //value.at(DeepTauJets) = Taus_DeepTauJetsLoose.size(); // Loose
-  //  value.at(DeepTauJets) = Taus_DeepTauJetsMedium.size(); // Medium
+  //value.at(DeepTauJets) = Taus_DeepTauJetsMedium.size(); // Medium
   value.at(DeepTauJets) = Taus_DeepTauJetsTight.size(); // Tight
 
   pass.at(DeepTauJets) = (value.at(DeepTauJets) >= cut.at(DeepTauJets));
+
 
 
   value.at(DeepTauMuons) = 0;
@@ -585,6 +558,10 @@ void  ZTau3MuTauh::doEvent(){
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 
+    TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0) +
+      Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1) +
+      Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,2);
+
 
 
     LorentzVectorParticle Tau3MuLVP = Ntp->Tau3mu_LVP(  signal_idx );
@@ -602,7 +579,13 @@ void  ZTau3MuTauh::doEvent(){
     VisibleDiTauMass.at(t).Fill((TauHLV + Tau3muLV).M(), 1);
     MTT.at(t).Fill( (Tau3muLV + TauHLV  + Neutrino_LV).M(), 1);
 
-    TripletMass.at(t).Fill(Tau3muLV.M(),1);
+    bool PlotMCOnly(false);  // and blind for data
+    if(id!=1) PlotMCOnly = true;
+    if(id==1 && ( (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.74) or (TauRefitLV.M() > 1.812 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
+
+
+    if(PlotMCOnly)    TripletMass.at(t).Fill(Tau3muLV.M(),1);
+
     //////////// kinematics 
     TripletPt.at(t).Fill(Tau3muLV.Pt(),1);
     OppositeTauPt.at(t).Fill(TauHLV.Pt(),1);

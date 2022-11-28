@@ -31,9 +31,9 @@ void  ZTau3MuTaue::Configure(){
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     if(i==TripletKinematics)  cut.at(TripletKinematics)=1;
-    if(i==OppositeSide)       cut.at(OppositeSide)=1;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nElectrons)         cut.at(nElectrons)=1;
+    if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.6;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==VisMass)            cut.at(VisMass)=1;
@@ -61,7 +61,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nElectrons){
-      title.at(i)=" At least e, $pT>15 GeV, |\\eta| < 2.4$, PF + cutBasedElectronID ( loose WP ) ";
+      title.at(i)=" At least e, $pT>15 GeV, |\\eta| < 2.4$, PF + cutBasedElectronID ( medium WP ) $\\Delta R (e-3\\mu) >$ 1/2 ";
       hlabel="number of electrons";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -69,15 +69,6 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nElectrons_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
 
-
-    else if(i==OppositeSide){
-      title.at(i)="At least one e is on opposite side $|\\Delta R| > 1/2$";
-      hlabel="delta phi ";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_OppositeSide_",htitle,4,-0.5,3.5,hlabel,"Events"));
-    }
 
     else if(i==TripletKinematics){
       title.at(i)="3,3,2 GeV,  $|\\eta| < 2.4$";
@@ -118,6 +109,17 @@ void  ZTau3MuTaue::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
     }
+    else if(i==ElectronIsolation){
+      title.at(i)="Electron ISolation ";
+      //      title.at(i)+= cut.at(Tau3MuIsolation);
+      htitle=title.at(i);
+      hlabel="Electron Isolation Sum (dummy for now)";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_ElectronIsolation_",htitle,25,0,20.1,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_ElectronIsolation_",htitle,25,0,20.1,hlabel,"Events"));
+    }
+
     else if(i==VisMass){
       title.at(i)="50 GeV $< M(\\tau(\\mu) - \\tau(3\\mu))  < $ 100 GeV";
       htitle=title.at(i);
@@ -240,7 +242,8 @@ void  ZTau3MuTaue::doEvent(){
       randomFailed = true;
     }
   }
-  
+  value.at(L1_TriggerOk)=0;  
+  value.at(HLT_TriggerOk)= 0 ;
   if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
   if (DoubleMuFired || TripleMuFired) L1Ok = true;
 
@@ -293,39 +296,28 @@ void  ZTau3MuTaue::doEvent(){
 
   for(unsigned int ie=0; ie < Ntp->NElectrons(); ie++)
     {
-      if(Ntp->Electron_P4(ie).Pt() > 20 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3) Electrons.push_back(ie);
+      if(Ntp->Electron_P4(ie).Pt() > 20 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3 && Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_medium(ie) &&
+	 Ntp->Electron_P4(ie).DeltaR(Tau3MuLV) > 0.5   ) Electrons_OppositeHemisphere.push_back(ie);
     }
 
-  value.at(nElectrons)  = Electrons.size();
+  value.at(nElectrons)  = Electrons_OppositeHemisphere.size();
   pass.at(nElectrons)  = ( value.at(nElectrons) >= cut.at(nElectrons) );
 
-  value.at(OppositeSide)=0; 
+  if(pass.at(nElectrons))
+    {
+      unsigned int electron_idx = Electrons_OppositeHemisphere.at(0);
+      value.at(ElectronIsolation)=  Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx) + Ntp->Electron_puppiChargedHadronIso(electron_idx);
+    }
+
+  pass.at(ElectronIsolation) = true;
+
   value.at(OSCharge)    =0;
   value.at(Tau3MuIsolation) = -1;
   value.at(VisMass)         = -1;
   bool triggerCheck = false;
   
-  
   if(pass.at(TripletKinematics))
     {
-      for(auto i : Electrons)
-	{
-	  if(  Ntp->Electron_P4(i).DeltaR(Tau3MuLV) > 0.5   ) Electrons_OppositeHemisphere.push_back(i);
-	  //	  if(fabs(Ntp->DeltaPhi(Ntp->Tau_P4(i).Phi(), Tau3MuLV.Phi() ))  > TMath::Pi() / 2    ) Taus_OppositeHemisphere.push_back(i);
-
-	}
-      value.at(OppositeSide)= Electrons_OppositeHemisphere.size();
-
-      for(auto i : Electrons_OppositeHemisphere)
-	{
-
-	  int Tau3MuCharge = Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) +
-	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
-	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
-
-	  if(Ntp->Electron_charge(i)*Tau3MuCharge == -1) Electrons_OppositeHemisphere_OppositeCharge.push_back(i);
-	}
-      value.at(OSCharge) = Electrons_OppositeHemisphere_OppositeCharge.size();
 
     
     int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);  
@@ -361,11 +353,23 @@ void  ZTau3MuTaue::doEvent(){
 	if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
       }
     value.at(TriggerMatch) = triggerCheck;
+    if(pass.at(nElectrons))
+      {
+      for(auto i : Electrons_OppositeHemisphere)
+	{
+
+	  int Tau3MuCharge = Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) +
+	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
+	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
+
+	  if(Ntp->Electron_charge(i)*Tau3MuCharge == -1) Electrons_OppositeHemisphere_OppositeCharge.push_back(i);
+	}
+      value.at(OSCharge) = Electrons_OppositeHemisphere_OppositeCharge.size();
+      }
     }
   
-  pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
+   pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
   
-    pass.at(OppositeSide) = (value.at(OppositeSide) >= cut.at(OppositeSide));  
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));
     
     if(pass.at(OSCharge)){
@@ -376,10 +380,6 @@ void  ZTau3MuTaue::doEvent(){
     pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
     pass.at(VisMass)         = (value.at(VisMass) > 50 && value.at(VisMass) < 100);
     
-
-
-
-
 
 
 
@@ -448,6 +448,11 @@ void  ZTau3MuTaue::doEvent(){
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 
+    TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0) +
+      Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1) +
+      Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,2);
+
+
 
     TLorentzVector ElectronLV = Ntp->Electron_P4(electron_idx);
 
@@ -472,7 +477,15 @@ void  ZTau3MuTaue::doEvent(){
     VisibleDiTauMass.at(t).Fill((ElectronLV + Tau3muLV).M(), 1);
     MTT.at(t).Fill( (Tau3muLV + ElectronLV  + Neutrino_LV).M(), 1);
 
-    TripletMass.at(t).Fill(Tau3muLV.M(),1);
+
+    bool PlotMCOnly(false);  // and blind for data
+    if(id!=1) PlotMCOnly = true;
+    if(id==1 && (  (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.74) or (TauRefitLV.M() > 1.812 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
+
+
+    if(PlotMCOnly)  TripletMass.at(t).Fill(TauRefitLV.M(),1);
+
+
 
     ////////////////////////////////////////
     ///

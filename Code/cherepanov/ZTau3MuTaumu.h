@@ -34,10 +34,9 @@ class ZTau3MuTaumu : public Selection {
 	     TriggerMatch,
 	     TripletPT,
 	     nMuons,
-	     OppositeSide,
-	     OSCharge,
 	     Tau3MuIsolation,
 	     MuonIsolation,
+	     OSCharge,
 	     VisMass,
 	     NCuts}; 
 

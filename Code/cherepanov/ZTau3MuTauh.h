@@ -33,13 +33,12 @@ class ZTau3MuTauh : public Selection {
 	     TripletKinematics,
 	     TriggerMatch,
 	     TripletPT,
+	     Tau3MuIsolation,
 	     nTaus,
-	     OppositeSide,
-	     OSCharge,
 	     DeepTauJets,
 	     DeepTauMuons,
 	     DeepTauElectrons,
-	     Tau3MuIsolation,
+	     OSCharge,
 	     VisMass,
 	     NCuts}; 
 
