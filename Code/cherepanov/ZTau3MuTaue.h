@@ -30,12 +30,12 @@ class ZTau3MuTaue : public Selection {
   enum cuts {L1_TriggerOk=0,
 	     HLT_TriggerOk,
 	     SignalCandidate,
-	     TripletKinematics,
 	     TriggerMatch,
+	     TripletPT,
 	     nElectrons,
+	     OSCharge,
 	     ElectronIsolation,
 	     Tau3MuIsolation,
-	     OSCharge,
 	     VisMass,
 	     NCuts}; 
 

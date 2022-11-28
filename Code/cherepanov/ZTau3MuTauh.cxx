@@ -30,7 +30,6 @@ void  ZTau3MuTauh::Configure(){
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==TripletKinematics)  cut.at(TripletKinematics)=1;
     if(i==TripletPT)          cut.at(TripletPT)=25;
     if(i==DeepTauJets)        cut.at(DeepTauJets)=1;
     if(i==DeepTauMuons)       cut.at(DeepTauMuons)=1;
@@ -99,15 +98,6 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_DeepTauElectrons_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
 
-    else if(i==TripletKinematics){
-      title.at(i)="3,3,2 GeV,  $|\\eta| < 2.4$";
-      htitle=title.at(i);
-      hlabel="3mu kinematics";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TripletKinematics_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TripletKinematics_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
     else if(i==TripletPT){
       title.at(i)="pT(3$\\mu$)  $>$ 25 GeV";
       htitle=title.at(i);
@@ -119,7 +109,7 @@ void  ZTau3MuTauh::Configure(){
     }
 
     else if(i==SignalCandidate){
-      title.at(i)="At least one $\\tau_{3\\mu}$ candidate";
+      title.at(i)="At least one $\\tau_{3\\mu}$ candidate (3,3,2 GeV,  $|\\eta| < 2.4$)";
       htitle=title.at(i);
       hlabel="N $3\\mu$ candidates";
       htitle.ReplaceAll("$","");
@@ -299,10 +289,10 @@ void  ZTau3MuTauh::doEvent(){
 
   value.at(SignalCandidate) = Ntp->NThreeMuons();
 
-  unsigned int  signal_idx=0;
+  int  signal_idx=-1;
   double min_chi2(99.);
 
-  for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
+  for(int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
     if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
       min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
       signal_idx = i_idx;
@@ -312,29 +302,16 @@ void  ZTau3MuTauh::doEvent(){
   TLorentzVector Tau3MuLV(0,0,0,0);
   pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
 
-  value.at(TripletKinematics) = 0;
-
-  if( pass.at(SignalCandidate) )
+  value.at(TripletPT)=0;
+  if(signal_idx!=-1)
     {
       Tau3MuLV = Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0))+
-	Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1))+
-	Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2));
+        Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1))+
+        Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2));
       
-      if(  (Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)).Pt() >=3 && fabs(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)).Eta())  < 2.4)  &&
-	   (Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1)).Pt() >=3 && fabs(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1)).Eta())  < 2.4)  &&
-	   (Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2)).Pt() >=3 && fabs(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2)).Eta())  < 2.4) )
-	value.at(TripletKinematics) = 1;
-
-    }
-
-  pass.at(TripletKinematics) = (value.at(TripletKinematics) == cut.at(TripletKinematics));
-
-  value.at(TripletPT)=0;
-  if(pass.at(TripletKinematics))
-    {
       value.at(TripletPT) = Tau3MuLV.Pt();
     }
-
+  
   pass.at(TripletPT) = (value.at(TripletPT) >= cut.at(TripletPT));
 
 
@@ -351,7 +328,7 @@ void  ZTau3MuTauh::doEvent(){
   //  value.at(nTaus)  = 0;
   for(unsigned int itau=0; itau < Ntp->NTaus(); itau++)
     {
-      if(pass.at(pass.at(TripletKinematics)))
+      if(signal_idx!=-1)
 	{
 	  if(Ntp->Tau_P4(itau).Pt() > 20 && fabs(Ntp->Tau_P4(itau).Eta()) < 2.3 && 
 	     Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > 0.5 ) Taus_OppositeHemisphere.push_back(itau);
@@ -366,9 +343,10 @@ void  ZTau3MuTauh::doEvent(){
   value.at(OSCharge)    =0;
   value.at(Tau3MuIsolation)   = -1;
   value.at(VisMass)           = -1;
-  bool triggerCheck = false;
+  value.at(TriggerMatch) = 0;
 
-  if(pass.at(TripletKinematics))
+
+  if(signal_idx!=-1)
     {
       int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
       int index_mu_2 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
@@ -382,7 +360,7 @@ void  ZTau3MuTauh::doEvent(){
     
     
       //Trigger Matching
-      value.at(TriggerMatch) = 0;
+      bool triggerCheck = 0.1;
       if(pass.at(HLT_TriggerOk))
         {
           vector<TLorentzVector> trigobjTriplet;
