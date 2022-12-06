@@ -554,7 +554,7 @@ if( $ARGV[0] eq "--DCache" ){
 	#	system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cmsuf/data$DS/ \" | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/) | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/)  >> junk0"));
-    system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio6.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
+    system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
     system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
 
 
@@ -686,7 +686,7 @@ if( $ARGV[0] eq "--DCache" ){
 #uberftp  cmsio.rc.ufl.edu 'cd /cmsuf/data//store/user/cherepan/DoubleMuonLowMass/Prod_07_10_2019_DoubleMuonLowMass__Run2017F-17Nov2017-v1/191007_093213/0000; get DsT3MNtuple_1.root'
 	#	    system(sprintf("echo \"    uberftp  cmsio.rc.ufl.edu 'cd /cmsuf/data/$DS/; get $myfiletrunc ' \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 	#	    system(sprintf("echo \"gfal-copy gsiftp://cmsio.rc.ufl.edu/cmsuf/data/$file . \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
- 		    system(sprintf("echo \"    \(eval \\\`scram unsetenv -sh\\\`; gfal-copy davs://cmsio6.rc.ufl.edu:1094$DS/$myfiletrunc ./\) \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
+ 		    system(sprintf("echo \"    \(eval \\\`scram unsetenv -sh\\\`; gfal-copy davs://cmsio7.rc.ufl.edu:1094$DS/$myfiletrunc ./\) \"  >> $OutputDir/workdir$set/Set_$B/Set_$B-get.sh"));
 		    system(sprintf("echo \" File:  $Filedir/$myfiletrunc \"     >> $OutputDir/workdir$set/Set_$B/Input.txt")) ;
 		    system(sprintf("echo \"rm -rf $Filedir/$myfiletrunc \"    >> $OutputDir/workdir$set/Set_$B/Set_$B-clean.sh"));
 
