@@ -26,20 +26,33 @@ class ZTau3MuTaumu : public Selection {
 
   virtual void  Configure();
   virtual void  Finish();
-
+  /*
   enum cuts {L1_TriggerOk=0,
 	     HLT_TriggerOk,
 	     SignalCandidate,
-	     TripletKinematics,
+	     TriggerMatch,
 	     TripletPT,
 	     nMuons,
-	     OppositeSide,
 	     OSCharge,
 	     Tau3MuIsolation,
-       TriggerMatch,
 	     MuonIsolation,
 	     VisMass,
-	     NCuts}; 
+	     NCuts};
+  */
+  enum cuts {L1_TriggerOk=0,
+	     HLT_TriggerOk,
+	     SignalCandidate,
+	     TriggerMatch,
+	     TripletPT,
+	     nMuons_PF_GL,
+             nMuons_pT,
+             nMuons_eta,
+             nMuons_dR,
+	     OSCharge,
+	     Tau3MuIsolation,
+	     MuonIsolation,
+	     VisMass,
+	     NCuts};
 
 
  protected:
@@ -69,6 +82,25 @@ class ZTau3MuTaumu : public Selection {
 
   std::vector<TH1D>   TripletEta;
   std::vector<TH1D>   OppositeMuonEta;
+  
+  std::vector<TH1D>   dR_betweenTruth_NeutrinoGuess;
+  std::vector<TH1D>   dR_betweenTruth_Tau;
+  std::vector<TH1D>   Z_Pt;
+  std::vector<TH2D>   OS_vs_3mu_trigger;
+  
+  std::vector<TH1D>   Selection_Cut_Mu1_Pt;
+  std::vector<TH1D>   Selection_Cut_Mu1_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu2_Pt;
+  std::vector<TH1D>   Selection_Cut_Mu2_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu3_Pt;
+  std::vector<TH1D>   Selection_Cut_Mu3_Eta;
+  std::vector<TH1D>   Selection_Cut_3mu_Pt;
+  std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
+  std::vector<TH1D>   Selection_Cut_muon_Pt;
+  std::vector<TH1D>   Selection_Cut_muon_Eta;
+  std::vector<TH1D>   Selection_Cut_muon_DeltaR_3mu;
+  std::vector<TH1D>   Selection_Cut_muon_Rel_Iso;
+  std::vector<TH1D>   Selection_Cut_Vis_InvM;
   
   TRandom rndm;
   double random_num;
