@@ -39,7 +39,16 @@ class ZTau3MuTaumu : public Selection {
 	     VisMass,
 	     NCuts};
   */
-  enum cuts {L1_TriggerOk=0,
+  enum cuts {WhetherDecayFound=0,
+	     Mu1_Candidate,
+	     Mu2_Candidate,
+	     Mu3_Candidate,
+	     Tau_mu_Candidate,
+             Mu1_Candidate_recod,
+	     Mu2_Candidate_recod,
+	     Mu3_Candidate_recod,
+	     Tau_mu_Candidate_recod,
+             L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TriggerMatch,
@@ -88,12 +97,6 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   Z_Pt;
   std::vector<TH2D>   OS_vs_3mu_trigger;
   
-  std::vector<TH1D>   Selection_Cut_Mu1_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu1_Eta;
-  std::vector<TH1D>   Selection_Cut_Mu2_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu2_Eta;
-  std::vector<TH1D>   Selection_Cut_Mu3_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu3_Eta;
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
   std::vector<TH1D>   Selection_Cut_muon_Pt;
@@ -101,6 +104,22 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   Selection_Cut_muon_DeltaR_3mu;
   std::vector<TH1D>   Selection_Cut_muon_Rel_Iso;
   std::vector<TH1D>   Selection_Cut_Vis_InvM;
+  
+  std::vector<TH1D>   Selection_Cut_Mu1_P;
+  std::vector<TH1D>   Selection_Cut_Mu1_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu1_dR;
+  std::vector<TH1D>   Selection_Cut_Mu2_P;
+  std::vector<TH1D>   Selection_Cut_Mu2_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu2_dR;
+  std::vector<TH1D>   Selection_Cut_Mu3_P;
+  std::vector<TH1D>   Selection_Cut_Mu3_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu3_dR;
+  std::vector<TH1D>   Selection_Cut_mu_Pt;
+  std::vector<TH1D>   Selection_Cut_mu_Eta;
+  std::vector<TH1D>   Selection_Cut_mu_dR;
+  
+  std::vector<TH1D>   Selection_Cut_RecoMu_P;
+  std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
   
   TRandom rndm;
   double random_num;

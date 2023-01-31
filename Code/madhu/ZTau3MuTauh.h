@@ -42,7 +42,16 @@ class ZTau3MuTauh : public Selection {
 	     NCuts}; 
   */
   
-  enum cuts {L1_TriggerOk=0,
+  enum cuts {WhetherDecayFound=0,
+	     Mu1_Candidate,
+             Mu2_Candidate,
+	     Mu3_Candidate,
+	     Tau_h_Candidate,
+             Mu1_Candidate_recod,
+	     Mu2_Candidate_recod,
+	     Mu3_Candidate_recod,
+	     Tau_h_Candidate_recod,
+             L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TriggerMatch,
@@ -89,18 +98,30 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   Z_Pt;
   std::vector<TH2D>   OS_vs_3mu_trigger;
   
-  std::vector<TH1D>   Selection_Cut_Mu1_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu1_Eta;
-  std::vector<TH1D>   Selection_Cut_Mu2_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu2_Eta;
-  std::vector<TH1D>   Selection_Cut_Mu3_Pt;
-  std::vector<TH1D>   Selection_Cut_Mu3_Eta;
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
   std::vector<TH1D>   Selection_Cut_tauh_Pt;
   std::vector<TH1D>   Selection_Cut_tauh_Eta;
   std::vector<TH1D>   Selection_Cut_tauh_DeltaR_3mu;
   std::vector<TH1D>   Selection_Cut_Vis_InvM;
+  
+  std::vector<TH1D>   Selection_Cut_Mu1_P;
+  std::vector<TH1D>   Selection_Cut_Mu1_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu1_dR;
+  std::vector<TH1D>   Selection_Cut_Mu2_P;
+  std::vector<TH1D>   Selection_Cut_Mu2_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu2_dR;
+  std::vector<TH1D>   Selection_Cut_Mu3_P;
+  std::vector<TH1D>   Selection_Cut_Mu3_Eta;
+  std::vector<TH1D>   Selection_Cut_Mu3_dR;
+  std::vector<TH1D>   Selection_Cut_h_Pt;
+  std::vector<TH1D>   Selection_Cut_h_Eta;
+  std::vector<TH1D>   Selection_Cut_h_dR;
+  
+  std::vector<TH1D>   Selection_Cut_RecoMu_P;
+  std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
+  std::vector<TH1D>   Selection_Cut_RecoH_Pt;
+  std::vector<TH1D>   Selection_Cut_RecoH_Eta;
   
   Double_t m3m;
   Double_t dataMCtype;
