@@ -36,7 +36,7 @@ void  ZTau3MuTauh::Configure(){
     if(i==DeepTauElectrons)   cut.at(DeepTauElectrons)=1;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nTaus)              cut.at(nTaus)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.8;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.75;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==VisMass)            cut.at(VisMass)=1;
 
@@ -64,7 +64,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus){
-      title.at(i)=" At least one $\\tau_{h}$, $pT>20 GeV, |\\eta| < 2.4$  $\\Delta R (\\tau_{h}-3\\mu) >$ 1/2";
+      title.at(i)=" At least one $\\tau_{h}$, $pT>20 GeV, |\\eta| < 2.4$ and  $\\Delta R (\\tau_{h}-3\\mu) >$ 1/2";
       hlabel="number of taus";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -131,7 +131,7 @@ void  ZTau3MuTauh::Configure(){
       title.at(i)="$ 3\\mu $ Relative Isolation  $ > $ 0.8";
       //      title.at(i)+= cut.at(MuonIsolation);
       htitle=title.at(i);
-      hlabel="I(3#mu)= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})";
+      hlabel="I(#tau_{3#mu})= p_{T}(#tau_{3#mu})/(p_{T}(#tau_{3#mu}) + #sum p_{T})";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
@@ -183,7 +183,7 @@ void  ZTau3MuTauh::Configure(){
   Muon3DRToTruth=HConfig.GetTH1D(Name+"_Muon3DRToTruth","Muon3DRToTruth",20,0,0.02,"#Delta R (reco - mc) #mu_{3} ","Events");
   dR_betweenTruth_VisibleTaus=HConfig.GetTH1D(Name+"_dR_betweenTruth_VisibleTaus","dR_betweenTruth_VisibleTaus",20,0,0.02,"#Delta R Truth #tau's prods ","Events");
 
-
+  SingleVsThreeMuTrigger=HConfig.GetTH2D(Name+"_SingleVsThreeMuTrigger","SingleVsThreeMuTrigger",2,-0.5,1.5,2,-0.5,1.5,"HLT_Tau3Mu ... ","HLT_IsoMu27(24)");
 
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
@@ -225,7 +225,7 @@ void  ZTau3MuTauh::Store_ExtraDist(){
 
   Extradist1d.push_back(&TripletPt);
   Extradist1d.push_back(&OppositeTauPt);
-
+  Extradist2d.push_back(&SingleVsThreeMuTrigger);
 
 
 }
@@ -239,7 +239,7 @@ void  ZTau3MuTauh::doEvent(){
   int id(Ntp->GetMCID());
   if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
   // Apply Selection
-  
+
   
   bool HLTOk(false);
   bool L1Ok(false);
@@ -249,20 +249,32 @@ void  ZTau3MuTauh::doEvent(){
   bool TripleMuFired(false);
   bool randomFailed(false);
 
-  
-  
+  bool Tau3muHLT(false);
+  bool TauIsoMu(false);
+
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+
     TString HLTName = Ntp->HLTName(iTrigger);
-    //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
-    if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
+    //    if(Ntp->HLTDecision(iTrigger))    std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
+    //    if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
+
+
+    if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { Tau3muHLT = true;}
+    if(  ( HLTName.Contains("HLT_IsoMu27_v1") || HLTName.Contains("HLT_IsoMu24_v1") ) && Ntp->HLTDecision(iTrigger) ) { HLTOk = true; TauIsoMu = true;}
   }
-  
+
+
+
+
   random_num = rndm.Rndm();
-  
+
+
+
+
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
-    //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
-    
+    //    if(Ntp->L1Decision(il1))    std::cout<<" l1 name  "<< Ntp->L1Name(il1) <<  " =   "<<Ntp->L1Decision(il1) <<std::endl;
+    //    std::cout<<" random number   "<< random_num << std::endl;
     if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
     if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
     if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
@@ -272,19 +284,36 @@ void  ZTau3MuTauh::doEvent(){
     }
   }
 
+
+
+
+  bool SingleMu(false);
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    //    if(Ntp->L1Decision(il1))    std::cout<<" l1 name  "<< Ntp->L1Name(il1) <<  " =   "<<Ntp->L1Decision(il1) <<std::endl;
+    //    std::cout<<" random number   "<< random_num << std::endl;
+    if(L1TriggerName.Contains("L1_SingleMu") && Ntp->L1Decision(il1)) { SingleMu = true; }
+  }
+
+
   value.at(L1_TriggerOk)=0;
-  value.at(HLT_TriggerOk)=0;  
+  value.at(HLT_TriggerOk)=0;
   if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
   if (DoubleMuFired || TripleMuFired) L1Ok = true;
 
+  //  value.at(L1_TriggerOk)=(L1Ok);
+  //  pass.at(L1_TriggerOk)=true;//(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
 
 
-  value.at(L1_TriggerOk)=(L1Ok);
+
+  value.at(L1_TriggerOk)=(SingleMu);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
-  
+
+
   value.at(HLT_TriggerOk)=(HLTOk);
   pass.at(HLT_TriggerOk)=(value.at(HLT_TriggerOk)==cut.at(HLT_TriggerOk));
 
+  SingleVsThreeMuTrigger.at(t).Fill(Tau3muHLT*L1Ok,TauIsoMu*SingleMu);
 
 
   value.at(SignalCandidate) = Ntp->NThreeMuons();
@@ -359,6 +388,8 @@ void  ZTau3MuTauh::doEvent(){
 						                          Ntp->Muon_RelIso(index_mu_3) );
     
     
+
+
       //Trigger Matching
       bool triggerCheck = 0.1;
       if(pass.at(HLT_TriggerOk))
@@ -552,7 +583,7 @@ void  ZTau3MuTauh::doEvent(){
     float RelativeIsolationMu2 = Ntp->Muon_RelIso(muon_2_idx);
     float RelativeIsolationMu3 = Ntp->Muon_RelIso(muon_3_idx);
 
-    Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()),1);
+    Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()) , 1);
     TauHDecayMode.at(t).Fill(Ntp->Tau_DecayMode(tau_h_idx), 1);
     VisibleDiTauMass.at(t).Fill((TauHLV + Tau3muLV).M(), 1);
     MTT.at(t).Fill( (Tau3muLV + TauHLV  + Neutrino_LV).M(), 1);
