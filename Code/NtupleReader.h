@@ -181,11 +181,16 @@ public :
    std::vector<float>               *Electron_puppiChargedHadronIso;
    std::vector<float>               *Electron_puppiPhotonIso;
    std::vector<float>               *Electron_trackIso;
+   std::vector<float>               *Electron_relativeIsolation;
    std::vector<bool>                *Electron_isPF;
    std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_veto;
    std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_loose;
    std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_medium;
    std::vector<bool>                *Electron_cutBasedElectronID_Fall17_94X_V2_tight;
+
+
+
+
 
 
    std::vector<std::vector<float> > *Tau_p4;
@@ -517,6 +522,7 @@ public :
    TBranch        *b_Electron_puppiNeutralHadronIso;   //!
    TBranch        *b_Electron_puppiChargedHadronIso;   //!
    TBranch        *b_Electron_puppiPhotonIso;   //!
+   TBranch        *b_Electron_relativeIsolation;   //!
    TBranch        *b_Electron_trackIso;   //!
    TBranch        *b_Electron_isPF;   //!
    TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_veto;   //!
@@ -906,6 +912,7 @@ void NtupleReader::Init(TTree *tree)
    Electron_puppiNeutralHadronIso = 0;
    Electron_puppiChargedHadronIso = 0;
    Electron_puppiPhotonIso = 0;
+   Electron_relativeIsolation =0 ;
    Electron_trackIso = 0;
    Electron_isPF = 0;
    Electron_cutBasedElectronID_Fall17_94X_V2_veto = 0;
@@ -1242,6 +1249,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Electron_puppiNeutralHadronIso", &Electron_puppiNeutralHadronIso, &b_Electron_puppiNeutralHadronIso);
    fChain->SetBranchAddress("Electron_puppiChargedHadronIso", &Electron_puppiChargedHadronIso, &b_Electron_puppiChargedHadronIso);  
    fChain->SetBranchAddress("Electron_puppiPhotonIso", &Electron_puppiPhotonIso, &b_Electron_puppiPhotonIso);
+   fChain->SetBranchAddress("Electron_relativeIsolation", &Electron_relativeIsolation, &b_Electron_relativeIsolation);
    fChain->SetBranchAddress("Electron_trackIso", &Electron_trackIso, &b_Electron_trackIso);
    fChain->SetBranchAddress("Electron_isPF", &Electron_isPF, &b_Electron_isPF);
    fChain->SetBranchAddress("Electron_cutBasedElectronID_Fall17_94X_V2_veto", &Electron_cutBasedElectronID_Fall17_94X_V2_veto, &b_Electron_cutBasedElectronID_Fall17_94X_V2_veto);
