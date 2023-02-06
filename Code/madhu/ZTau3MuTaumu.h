@@ -26,24 +26,16 @@ class ZTau3MuTaumu : public Selection {
 
   virtual void  Configure();
   virtual void  Finish();
-  /*
-  enum cuts {L1_TriggerOk=0,
-	     HLT_TriggerOk,
-	     SignalCandidate,
-	     TriggerMatch,
-	     TripletPT,
-	     nMuons,
-	     OSCharge,
-	     Tau3MuIsolation,
-	     MuonIsolation,
-	     VisMass,
-	     NCuts};
-  */
+  
   enum cuts {WhetherDecayFound=0,
-	     Mu1_Candidate,
-	     Mu2_Candidate,
-	     Mu3_Candidate,
-	     Tau_mu_Candidate,
+	     Mu1_Candidate_p,
+             Mu1_Candidate_eta,
+             Mu2_Candidate_p,
+             Mu2_Candidate_eta,
+	     Mu3_Candidate_p,
+             Mu3_Candidate_eta,
+	     Tau_mu_Candidate_p,
+             Tau_mu_Candidate_eta,
              Mu1_Candidate_recod,
 	     Mu2_Candidate_recod,
 	     Mu3_Candidate_recod,
@@ -108,15 +100,31 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   Selection_Cut_Mu1_P;
   std::vector<TH1D>   Selection_Cut_Mu1_Eta;
   std::vector<TH1D>   Selection_Cut_Mu1_dR;
+  std::vector<TH1D>   Selection_Cut_Mu1_dR_large_scale;
+  std::vector<TH2D>   Selection_Cut_Mu1_p_eta_before;
+  std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after;
+  std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after_reco;
   std::vector<TH1D>   Selection_Cut_Mu2_P;
   std::vector<TH1D>   Selection_Cut_Mu2_Eta;
   std::vector<TH1D>   Selection_Cut_Mu2_dR;
+  std::vector<TH1D>   Selection_Cut_Mu2_dR_large_scale;
+  std::vector<TH2D>   Selection_Cut_Mu2_p_eta_before;
+  std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after;
+  std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after_reco;
   std::vector<TH1D>   Selection_Cut_Mu3_P;
   std::vector<TH1D>   Selection_Cut_Mu3_Eta;
   std::vector<TH1D>   Selection_Cut_Mu3_dR;
-  std::vector<TH1D>   Selection_Cut_mu_Pt;
+  std::vector<TH1D>   Selection_Cut_Mu3_dR_large_scale;
+  std::vector<TH2D>   Selection_Cut_Mu3_p_eta_before;
+  std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after;
+  std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after_reco;
+  std::vector<TH1D>   Selection_Cut_mu_P;
   std::vector<TH1D>   Selection_Cut_mu_Eta;
   std::vector<TH1D>   Selection_Cut_mu_dR;
+  std::vector<TH1D>   Selection_Cut_mu_dR_large_scale;
+  std::vector<TH2D>   Selection_Cut_mu_p_eta_before;
+  std::vector<TH2D>   Selection_Cut_mu_p_eta_after;
+  std::vector<TH2D>   Selection_Cut_mu_p_eta_after_reco;
   
   std::vector<TH1D>   Selection_Cut_RecoMu_P;
   std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
