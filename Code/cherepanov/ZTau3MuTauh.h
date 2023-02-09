@@ -67,7 +67,8 @@ class ZTau3MuTauh : public Selection {
 
   std::vector<TH1D>   TripletPt;
   std::vector<TH1D>   OppositeTauPt;
-  
+  std::vector<TH2D>   SingleVsThreeMuTrigger;
+
   TRandom rndm;
   double random_num;
 

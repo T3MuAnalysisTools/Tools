@@ -52,6 +52,7 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   VisibleDiTauMass;
   std::vector<TH1D>   MTT;
   std::vector<TH1D>   TripletMass;
+  std::vector<TH1D>   TripletMassWR;
   std::vector<TH1D>   matched_pdgId;
   std::vector<TH1D>   matched_dR;
 
@@ -67,6 +68,9 @@ class ZTau3MuTaumu : public Selection {
 
   std::vector<TH1D>   TripletEta;
   std::vector<TH1D>   OppositeMuonEta;
+
+  std::vector<TH2D>   SingleVsThreeMuTrigger;
+
   
   TRandom rndm;
   double random_num;

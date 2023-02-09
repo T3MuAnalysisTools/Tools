@@ -276,6 +276,7 @@ class Ntuple_Controller{
       float                    Electron_puppiChargedHadronIso(unsigned int i){return Ntp->Electron_puppiChargedHadronIso->at(i);}
       float                    Electron_puppiPhotonIso(unsigned int i){return Ntp->Electron_puppiPhotonIso->at(i);}
       float                    Electron_trackIso(unsigned int i){return Ntp->Electron_trackIso->at(i);}
+      float                    Electron_relativeIsolation(unsigned int i){return Ntp->Electron_relativeIsolation->at(i);}
       int                      Electron_isPF(unsigned int i){return Ntp->Electron_isPF->at(i);}
       int                      Electron_cutBasedElectronID_Fall17_94X_V2_veto(unsigned int i){return Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_veto->at(i);}
       int                      Electron_cutBasedElectronID_Fall17_94X_V2_loose(unsigned int i){return Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_loose->at(i);}

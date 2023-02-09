@@ -61,7 +61,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nElectrons){
-      title.at(i)=" At least e, $pT>15 GeV, |\\eta| < 2.4$, PF + cutBasedElectronID ( medium WP ) $\\Delta R (e-3\\mu) >$ 1/2 ";
+      title.at(i)=" At least e, $pT>15 GeV, |\\eta| < 2.4$, PF + cutBasedElectronID ( loose WP ) and $\\Delta R (e-3\\mu) >$ 1/2 ";
       hlabel="number of electrons";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -69,7 +69,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nElectrons_",htitle,4,-0.5,3.5,hlabel,"Events"));
     }
     else if(i==TripletPT){
-      title.at(i)="pT(3$\\mu$)  $>$ 30 GeV";
+      title.at(i)="pT(3$\\mu$)  $>$ 25 GeV";
       htitle=title.at(i);
       hlabel="pT(#tau_{3#mu}) , GeV ";
       htitle.ReplaceAll("$","");
@@ -102,14 +102,14 @@ void  ZTau3MuTaue::Configure(){
       title.at(i)="$3\\mu $ Relative Isolation  $ > $ 0.6 ";
       //      title.at(i)+= cut.at(Tau3MuIsolation);
       htitle=title.at(i);
-      hlabel="I(3#mu)= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})";
+      hlabel="I(#tau_{3#mu})= p_{T}(#tau_{3#mu})/(p_{T}(#tau_{3#mu}) + #sum p_{T})";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
     }
     else if(i==ElectronIsolation){
-      title.at(i)="Electron ISolation ";
+      title.at(i)="Electron Isolation ";
       //      title.at(i)+= cut.at(Tau3MuIsolation);
       htitle=title.at(i);
       hlabel="Electron Isolation Sum (dummy for now)";
@@ -293,7 +293,7 @@ void  ZTau3MuTaue::doEvent(){
 
   for(unsigned int ie=0; ie < Ntp->NElectrons(); ie++)
     {
-      if(Ntp->Electron_P4(ie).Pt() > 20 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3 && Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_medium(ie) &&
+      if(Ntp->Electron_P4(ie).Pt() > 20 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3 && Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_loose(ie) &&
 	 Ntp->Electron_P4(ie).DeltaR(Tau3MuLV) > 0.5   ) Electrons_OppositeHemisphere.push_back(ie);
     }
 
