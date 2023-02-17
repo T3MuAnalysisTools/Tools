@@ -93,7 +93,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==WhetherDecayFound){
-      title.at(i)="$\\tau_{3\\mu}$ decay information found in ntuple";
+      title.at(i)="$Z \\rightarrow \\tau_{h}, \\tau_{3\\mu}$ decay information found in ntuple";
       hlabel="Decay information found in ntuple ";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
@@ -256,7 +256,7 @@ void  ZTau3MuTauh::Configure(){
     }
 
     else if(i==SignalCandidate){
-      title.at(i)="At least one $\\tau_{3\\mu}$ candidate (3,3,2 GeV,  $|\\eta| < 2.4$, isolated, total charge = +-1)";
+      title.at(i)="At least one $\\tau_{3\\mu}$ candidate (3,3,2 GeV,  $|\\eta| < 2.4$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
       htitle=title.at(i);
       hlabel="N $3\\mu$ candidates";
       htitle.ReplaceAll("$","");
@@ -295,7 +295,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_VisMass_",htitle,70,0,150,hlabel,"Events"));
     }
     else if(i==TriggerMatch){
-      title.at(i)="Selected (by $Chi^2$) 3$\\mu$ matched to trg";
+      title.at(i)="Selected (by $\\chi^2$) 3$\\mu$ matched to trg";
       hlabel="Trigger Matched ";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
@@ -343,43 +343,43 @@ void  ZTau3MuTauh::Configure(){
   Selection_Cut_tauh_DeltaR_3mu=HConfig.GetTH1D(Name+"_Selection_Cut_tauh_DeltaR_3mu","Selection_Cut_tauh_DeltaR_3mu",60,0,1.2,"#Delta R (#tau_{h}-3#mu)","Events");
   Selection_Cut_Vis_InvM=HConfig.GetTH1D(Name+"_Selection_Cut_Vis_InvM","Selection_Cut_Vis_InvM",75,0,150.0,"M_{#tau(h) + #tau(3#mu)}, GeV (visible mass)","Events");
   
-  Selection_Cut_Mu1_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_P","Selection_Cut_Mu1_P",160,0.0,80.0,"#mu_{1} p, GeV","Events");
+  Selection_Cut_Mu1_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_P","Selection_Cut_Mu1_P",200,0.0,100.0,"#mu_{1} p, GeV","Events");
   Selection_Cut_Mu1_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_Eta","Selection_Cut_Mu1_Eta",30,0,3.14,"#mu_{1} |#eta|","Events");
-  Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",40,0.0,80.0,30,0,3.14,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",40,0.0,80.0,30,0,3.14,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",40,0.0,80.0,30,0,3.14,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   
-  Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",160,0.0,80.0,"#mu_{2} p, GeV","Events");
+  Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",200,0.0,100.0,"#mu_{2} p, GeV","Events");
   Selection_Cut_Mu2_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_Eta","Selection_Cut_Mu2_Eta",30,0,3.14,"#mu_{2} |#eta|","Events");
-  Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",40,0.0,80.0,30,0,3.14,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",40,0.0,80.0,30,0,3.14,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",40,0.0,80.0,30,0,3.14,"#mu_{2} p, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   
-  Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",160,0.0,80.0,"#mu_{3} p, GeV","Events");
-  Selection_Cut_Mu3_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_Eta","Selection_Cut_Mu3_Eta",30,0,3.14,"#mu_{3} |#eta|","Events");
-  Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",40,0.0,80.0,30,0,3.14,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",40,0.0,80.0,30,0,3.14,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",40,0.0,80.0,30,0,3.14,"#mu_{3} p, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",200,0.0,100.0,"#mu_{3} p, GeV","Events");
+  Selection_Cut_Mu3_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_Eta","Selection_Cut_Mu3_Eta",100,0,5.0,"#mu_{3} |#eta|","Events");
+  Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   
   Selection_Cut_h_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_h_Pt","Selection_Cut_h_Pt",40,0.0,80.0,"#tau_{h}, p_{T}, GeV","Events");
   Selection_Cut_h_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_h_Eta","Selection_Cut_h_Eta",30,0,3.14,"#tau_{h}, |#eta|","Events");
-  Selection_Cut_h_pt_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_before","Selection_Cut_h_pt_eta_before",40,0.0,80.0,30,0,3.14,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
-  Selection_Cut_h_pt_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after","Selection_Cut_h_pt_eta_after",40,0.0,80.0,30,0,3.14,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
-  Selection_Cut_h_pt_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_reco","Selection_Cut_h_pt_eta_after_reco",40,0.0,80.0,30,0,3.14,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
+  Selection_Cut_h_pt_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_before","Selection_Cut_h_pt_eta_before",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
+  Selection_Cut_h_pt_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after","Selection_Cut_h_pt_eta_after",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
+  Selection_Cut_h_pt_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_reco","Selection_Cut_h_pt_eta_after_reco",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   
-  Selection_Cut_Mu1_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR","Selection_Cut_Mu1_dR",100,0,0.05,"#Delta R","Events");
-  Selection_Cut_Mu2_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR","Selection_Cut_Mu2_dR",100,0,0.05,"#Delta R","Events");
-  Selection_Cut_Mu3_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR","Selection_Cut_Mu3_dR",100,0,0.05,"#Delta R","Events");
-  Selection_Cut_h_dR=HConfig.GetTH1D(Name+"Selection_Cut_h_dR","Selection_Cut_h_dR",100,0,0.05,"#Delta R","Events");
+  Selection_Cut_Mu1_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR","Selection_Cut_Mu1_dR",200,0,0.002,"#Delta R","Events");
+  Selection_Cut_Mu2_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR","Selection_Cut_Mu2_dR",200,0,0.002,"#Delta R","Events");
+  Selection_Cut_Mu3_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR","Selection_Cut_Mu3_dR",200,0,0.002,"#Delta R","Events");
+  Selection_Cut_h_dR=HConfig.GetTH1D(Name+"Selection_Cut_h_dR","Selection_Cut_h_dR",200,0,0.003,"#Delta R","Events");
   Selection_Cut_Mu1_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR_large_scale","Selection_Cut_Mu1_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_Mu2_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR_large_scale","Selection_Cut_Mu2_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_Mu3_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR_large_scale","Selection_Cut_Mu3_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_h_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_h_dR_large_scale","Selection_Cut_h_dR_large_scale",100,0,2.0,"#Delta R","Events");
   
-  Selection_Cut_RecoMu_P=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_P","Selection_Cut_RecoMu_P",160,0.0,80.0,"#mu p, GeV","Events");
-  Selection_Cut_RecoMu_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_Eta","Selection_Cut_RecoMu_Eta",30,0,3.14,"#mu |#eta|","Events");
-  Selection_Cut_RecoH_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Pt","Selection_Cut_RecoH_Pt",160,0.0,80.0,"p_{T}, GeV","Events");
-  Selection_Cut_RecoH_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Eta","Selection_Cut_RecoH_Eta",30,0,3.14,"|#eta|","Events");
+  Selection_Cut_RecoMu_P=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_P","Selection_Cut_RecoMu_P",100,0.0,5.0,"#mu p, GeV","Events");
+  Selection_Cut_RecoMu_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_Eta","Selection_Cut_RecoMu_Eta",50,2,3.0,"#mu |#eta|","Events");
+  Selection_Cut_RecoH_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Pt","Selection_Cut_RecoH_Pt",100,10.0,20.0,"p_{T}, GeV","Events");
+  Selection_Cut_RecoH_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Eta","Selection_Cut_RecoH_Eta",50,2,3.0,"|#eta|","Events");
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -547,7 +547,9 @@ void  ZTau3MuTauh::doEvent(){
     }
   }
   
-  if(id!=1){
+  //  std::cout << "Test 1. " << std::endl;
+  bool WhetherSignalMC = id==210||id==210231||id==210232||id==210233;
+  if(WhetherSignalMC){
   
   int Whether_decay_found(0);
   int TausFromZ_Count(0);
@@ -736,21 +738,60 @@ void  ZTau3MuTauh::doEvent(){
                   Selection_Cut_h_Eta.at(t).Fill(abs(Tau_h_LV.Eta()),1 );
                   
                   Selection_Cut_Mu1_p_eta_before.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                  if(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta)){
+                    Selection_Cut_Mu1_p_eta_after.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                    if(!pass.at(Mu1_Candidate_recod)){
+                      Selection_Cut_Mu1_p_eta_after_reco.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                    }
+                  }
+                  
+                  if(passAllUntil(Mu1_Candidate_eta)){
                   Selection_Cut_Mu2_p_eta_before.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                  if(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta)){
+                    Selection_Cut_Mu2_p_eta_after.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                    if(!pass.at(Mu2_Candidate_recod)){
+                      Selection_Cut_Mu2_p_eta_after_reco.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                    }
+                  }
+                  }
+                  
+                  if(passAllUntil(Mu2_Candidate_eta)){
                   Selection_Cut_Mu3_p_eta_before.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                  if(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta)){
+                    Selection_Cut_Mu3_p_eta_after.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                    if(!pass.at(Mu3_Candidate_recod)){
+                      Selection_Cut_Mu3_p_eta_after_reco.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                    }
+                  }
+                  }
+                  
+                  if(passAllUntil(Mu3_Candidate_eta)){
+                  Selection_Cut_h_pt_eta_before.at(t).Fill(Tau_h_LV.Pt(),abs(Tau_h_LV.Eta()));
+                  if(pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta)){
+                    Selection_Cut_h_pt_eta_after.at(t).Fill(Tau_h_LV.Pt(),abs(Tau_h_LV.Eta()));
+                    if(!pass.at(Tau_h_Candidate_recod)){
+                      Selection_Cut_h_pt_eta_after_reco.at(t).Fill(Tau_h_LV.Pt(),abs(Tau_h_LV.Eta()));
+                    }
+                  }
+                  }
                   
                   Selection_Cut_Mu1_dR.at(t).Fill(dR1_max,1 );
                   Selection_Cut_Mu2_dR.at(t).Fill(dR2_max,1 );
                   Selection_Cut_Mu3_dR.at(t).Fill(dR3_max,1 );
                   Selection_Cut_h_dR.at(t).Fill(dR4_max,1 );
                   
+                  Selection_Cut_Mu1_dR_large_scale.at(t).Fill(dR1_max,1 );
+                  Selection_Cut_Mu2_dR_large_scale.at(t).Fill(dR2_max,1 );
+                  Selection_Cut_Mu3_dR_large_scale.at(t).Fill(dR3_max,1 );
+                  Selection_Cut_h_dR_large_scale.at(t).Fill(dR4_max,1 );
+                  
           }
           
   }
   
   }//if(id!=1)
-  
-  if(id==1){
+  //  std::cout << "Test 2. " << std::endl;
+  if(!WhetherSignalMC){
     pass.at(WhetherDecayFound)=1;
     pass.at(Mu1_Candidate_p)=1;
     pass.at(Mu1_Candidate_eta)=1;
@@ -765,7 +806,7 @@ void  ZTau3MuTauh::doEvent(){
     pass.at(Mu3_Candidate_recod)=1;
     pass.at(Tau_h_Candidate_recod)=1;
   }
-  
+  //  std::cout << "Test 3. " << std::endl;
 
   TLorentzVector Tau3MuLV(0,0,0,0);
   pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
@@ -785,7 +826,11 @@ void  ZTau3MuTauh::doEvent(){
 
 
 
+  //  std::cout << "Test 4. " << std::endl;
   std::vector<int> Taus;
+  std::vector<int> Taus_OppositeHemisphere_pT;
+  std::vector<int> Taus_OppositeHemisphere_eta;
+  std::vector<int> Taus_OppositeHemisphere_dR;
   std::vector<int> Taus_OppositeHemisphere;
   std::vector<int> Taus_OppositeHemisphere_OppositeCharge;
   std::vector<int> Taus_DeepTauJetsMedium;
@@ -801,9 +846,13 @@ void  ZTau3MuTauh::doEvent(){
     {
       if(signal_idx!=-1)
 	{
-	  value.at(nTaus_pT)  = Ntp->Tau_P4(itau).Pt();
-          value.at(nTaus_eta)  = fabs(Ntp->Tau_P4(itau).Eta());
-          value.at(nTaus_dR)  = Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
+	  //value.at(nTaus_pT)  = Ntp->Tau_P4(itau).Pt();
+          //value.at(nTaus_eta)  = fabs(Ntp->Tau_P4(itau).Eta());
+          //value.at(nTaus_dR)  = Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
+          
+          if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) ) Taus_OppositeHemisphere_pT.push_back(itau);
+          if(fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) ) Taus_OppositeHemisphere_eta.push_back(itau);
+          if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere_dR.push_back(itau);
           
           if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) && fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) && 
 	     Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere.push_back(itau);
@@ -816,12 +865,13 @@ void  ZTau3MuTauh::doEvent(){
 	}
     }
 
-  pass.at(nTaus_pT)  = ( value.at(nTaus_pT) >= cut.at(nTaus_pT) );
+  pass.at(nTaus_pT)  = ( Taus_OppositeHemisphere_pT.size() > 0 );
   
-  pass.at(nTaus_eta) = ( value.at(nTaus_eta) <= cut.at(nTaus_eta) );
+  pass.at(nTaus_eta) = ( Taus_OppositeHemisphere_eta.size() > 0 );
   
-  pass.at(nTaus_dR)  = ( value.at(nTaus_dR) >= cut.at(nTaus_dR) );
+  pass.at(nTaus_dR)  = ( Taus_OppositeHemisphere_dR.size() > 0 );
   
+  //  std::cout << "Test 5. " << std::endl;
 
 
   value.at(OSCharge)    =0;
@@ -830,6 +880,7 @@ void  ZTau3MuTauh::doEvent(){
   value.at(TriggerMatch) = 0;
 
 
+  //  std::cout << "Test 6. " << std::endl;
   if(signal_idx!=-1)
     {
       int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
@@ -881,6 +932,7 @@ void  ZTau3MuTauh::doEvent(){
 	}
     }
     
+  //    std::cout << "Test 7. " << std::endl;
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));    
     pass.at(OSCharge) = (value.at(OSCharge) >= cut.at(OSCharge));  
     
@@ -958,6 +1010,8 @@ void  ZTau3MuTauh::doEvent(){
 
   pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
   pass.at(VisMass)         = (value.at(VisMass) > 50 && value.at(VisMass) < 100);
+  
+
 
 
 
@@ -974,6 +1028,8 @@ void  ZTau3MuTauh::doEvent(){
 
   if(status){ 
 
+    //   std::cout << "Test 1. " << std::endl;
+    
     unsigned int tau_h_idx = PassedDeepElectronsLoose.at(0);
     NumberOfTaus.at(t).Fill(Ntp->NTaus());
 
@@ -1057,7 +1113,7 @@ void  ZTau3MuTauh::doEvent(){
     OppositeTauPt.at(t).Fill(TauHLV.Pt(),1);
     //////////// kinematics 
 
-
+    //    std::cout << "Test 1.5 " << std::endl;
 
 
 
@@ -1065,7 +1121,8 @@ void  ZTau3MuTauh::doEvent(){
     ///
     TLorentzVector OppositeSideLV = TauHLV;
     TLorentzVector Neutrino_LV_Guess_Result;//Guessed Neutrino LV
-    if(id != 1)
+    //    if(id == WhetherSignalMC)
+    if(false)
       {
 	matched_pdgId.at(t).Fill(Ntp->matchTruth(OppositeSideLV),1);
 	matched_dR.at(t).Fill(Ntp->matchToTruthTauDecay(OppositeSideLV).DeltaR(OppositeSideLV),1);
@@ -1188,7 +1245,7 @@ void  ZTau3MuTauh::doEvent(){
         LumiScale = 1.;
         T3MMiniTree->Fill();
   
-  
+	//  std::cout << "Test 2. " << std::endl;
   }
 }
 
