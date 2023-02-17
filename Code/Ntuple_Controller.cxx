@@ -542,6 +542,52 @@ std::vector<unsigned int> Ntuple_Controller::SortedPtMuons(std::vector<unsigned 
 }
 
 
+std::vector<int> Ntuple_Controller::SortedPtMuons_MC(std::vector<int> indices){
+
+   std::vector<int> out;
+   int i1,i2,i3;
+   double pt1 = MCParticle_p4(indices.at(0)).Pt();
+   double pt2 = MCParticle_p4(indices.at(1)).Pt();
+   double pt3 = MCParticle_p4(indices.at(2)).Pt();
+
+   if(pt1>pt2)
+   {
+      if(pt2>pt3)
+      {
+         i1=indices.at(0); i2 = indices.at(1); i3 = indices.at(2);
+      }
+      else if(pt1>pt3)
+      {
+         i1=indices.at(0); i2 = indices.at(2); i3 = indices.at(1);
+      }
+      else
+      {
+         i1=indices.at(2); i2 = indices.at(0); i3 = indices.at(1);
+      }
+   }
+   else
+   {
+      if(pt1>pt3)
+      {
+         i1=indices.at(1); i2 = indices.at(0); i3 = indices.at(2);
+      }
+      else if(pt2>pt3)
+      {
+         i1=indices.at(1); i2 = indices.at(2); i3 = indices.at(0);
+      }
+      else
+      {
+         i1=indices.at(2); i2 = indices.at(1); i3 = indices.at(0);
+      }
+   }
+   out.push_back(i1);
+   out.push_back(i2);
+   out.push_back(i3);
+
+   return out;
+}
+
+
 
 std::vector<unsigned int> Ntuple_Controller::SortedEtaMuons(std::vector<unsigned int> indices){
 

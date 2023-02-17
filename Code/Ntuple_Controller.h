@@ -925,6 +925,7 @@ class Ntuple_Controller{
 
       //Tool functions
       std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
+      std::vector<int> SortedPtMuons_MC(std::vector<int> indices);
       std::vector<unsigned int> SortedEtaMuons(std::vector<unsigned int> indixes);
       double TauMassResolution(std::vector<unsigned int>  indices, int type, bool UseRefited); // type = 0 - only pt propagation; type = 1 - indluding direction
       TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
