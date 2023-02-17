@@ -832,7 +832,8 @@ void  ZTau3MuTaue::doEvent(){
   if(Electrons_OppositeHemisphere.size()>0)
     {
       unsigned int electron_idx = Electrons_OppositeHemisphere.at(0);
-      value.at(ElectronIsolation)=  Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx) + Ntp->Electron_puppiChargedHadronIso(electron_idx);
+      //value.at(ElectronIsolation)=  Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx) + Ntp->Electron_puppiChargedHadronIso(electron_idx);
+      value.at(ElectronIsolation)=  Ntp->Electron_relativeIsolation(electron_idx);
     }
 
   pass.at(ElectronIsolation) = true;
