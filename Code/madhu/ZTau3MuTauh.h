@@ -27,28 +27,16 @@ class ZTau3MuTauh : public Selection {
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {WhetherDecayFound=0,
-	     Mu1_Candidate_p,
-             Mu1_Candidate_eta,
-             Mu2_Candidate_p,
-             Mu2_Candidate_eta,
-	     Mu3_Candidate_p,
-             Mu3_Candidate_eta,
-	     Tau_h_Candidate_p,
-             Tau_h_Candidate_eta,
-             Mu1_Candidate_recod,
-	     Mu2_Candidate_recod,
-	     Mu3_Candidate_recod,
-	     Tau_h_Candidate_recod,
+  enum cuts {PassedFiducialCuts=0,
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TriggerMatch,
              TripletPT,
              Tau3MuIsolation,
-	     nTaus_pT,
-             nTaus_eta,
              nTaus_dR,
+             nTaus_pT,
+             nTaus_eta,
 	     OSCharge,
 	     DeepTauJets,
 	     DeepTauMuons,
@@ -86,6 +74,9 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   dR_betweenTruth_Tau;
   std::vector<TH1D>   Z_Pt;
   std::vector<TH2D>   OS_vs_3mu_trigger;
+  
+  std::vector<TH1D>   MET_Et;
+  std::vector<TH1D>   MET_Phi;
   
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
@@ -133,9 +124,15 @@ class ZTau3MuTauh : public Selection {
   Double_t event_weight;
   Double_t m12;
   Double_t m13;
-  Double_t mDr1;
-  Double_t mDr2;
   Double_t LumiScale;
+  
+  Double_t var_TripletPT;
+  Double_t var_Tau3MuIsolation;
+  Double_t var_Tau_pT;
+  Double_t var_VisMass;
+  Double_t var_mu1_pT;
+  Double_t var_mu2_pT;
+  Double_t var_mu3_pT;
   
   TTree *T3MMiniTree;
   TFile *T3MFMiniTree;

@@ -27,28 +27,16 @@ class ZTau3MuTaumu : public Selection {
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {WhetherDecayFound=0,
-	     Mu1_Candidate_p,
-             Mu1_Candidate_eta,
-             Mu2_Candidate_p,
-             Mu2_Candidate_eta,
-	     Mu3_Candidate_p,
-             Mu3_Candidate_eta,
-	     Tau_mu_Candidate_p,
-             Tau_mu_Candidate_eta,
-             Mu1_Candidate_recod,
-	     Mu2_Candidate_recod,
-	     Mu3_Candidate_recod,
-	     Tau_mu_Candidate_recod,
+  enum cuts {PassedFiducialCuts=0,
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TriggerMatch,
 	     TripletPT,
 	     nMuons_PF_GL,
+             nMuons_dR,
              nMuons_pT,
              nMuons_eta,
-             nMuons_dR,
 	     OSCharge,
 	     Tau3MuIsolation,
 	     MuonIsolation,
@@ -89,6 +77,9 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   Z_Pt;
   std::vector<TH2D>   OS_vs_3mu_trigger;
   
+  std::vector<TH1D>   MET_Et;
+  std::vector<TH1D>   MET_Phi;
+  
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
   std::vector<TH1D>   Selection_Cut_muon_Pt;
@@ -128,6 +119,25 @@ class ZTau3MuTaumu : public Selection {
   
   std::vector<TH1D>   Selection_Cut_RecoMu_P;
   std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
+  
+  Double_t m3m;
+  Double_t dataMCtype;
+  Double_t event_weight;
+  Double_t m12;
+  Double_t m13;
+  Double_t LumiScale;
+  
+  Double_t var_TripletPT;
+  Double_t var_Tau3MuIsolation;
+  Double_t var_MuonIsolation;
+  Double_t var_Muon_pT;
+  Double_t var_VisMass;
+  Double_t var_mu1_pT;
+  Double_t var_mu2_pT;
+  Double_t var_mu3_pT;
+  
+  TTree *T3MMiniTree;
+  TFile *T3MFMiniTree;
   
   TRandom rndm;
   double random_num;

@@ -27,28 +27,16 @@ class ZTau3MuTaue : public Selection {
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {WhetherDecayFound=0,
-	     Mu1_Candidate_p,
-             Mu1_Candidate_eta,
-             Mu2_Candidate_p,
-             Mu2_Candidate_eta,
-	     Mu3_Candidate_p,
-             Mu3_Candidate_eta,
-	     Tau_e_Candidate_p,
-             Tau_e_Candidate_eta,
-             Mu1_Candidate_recod,
-	     Mu2_Candidate_recod,
-	     Mu3_Candidate_recod,
-	     Tau_e_Candidate_recod,
+  enum cuts {PassedFiducialCuts=0,
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     TriggerMatch,
 	     TripletPT,
 	     nElectrons_PF_cut,
+             nElectrons_dR,
              nElectrons_pT,
              nElectrons_eta,
-             nElectrons_dR,
 	     OSCharge,
 	     ElectronIsolation,
 	     Tau3MuIsolation,
@@ -83,6 +71,9 @@ class ZTau3MuTaue : public Selection {
   std::vector<TH1D>   dR_betweenTruth_Tau;
   std::vector<TH1D>   Z_Pt;
   std::vector<TH2D>   OS_vs_3mu_trigger;
+  
+  std::vector<TH1D>   MET_Et;
+  std::vector<TH1D>   MET_Phi;
   
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
@@ -124,6 +115,30 @@ class ZTau3MuTaue : public Selection {
   std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
   std::vector<TH1D>   Selection_Cut_RecoEl_Pt;
   std::vector<TH1D>   Selection_Cut_RecoEl_Eta;
+  
+  std::vector<TH1D>   Electron_Isolation_relative;
+  std::vector<TH1D>   Electron_Isolation_trackIso;
+  std::vector<TH1D>   Electron_Isolation_puppiPhotonIso;
+  std::vector<TH1D>   Electron_Isolation_puppiNeutralHadronIso;
+  std::vector<TH1D>   Electron_Isolation_puppiChargedHadronIso;
+  
+  Double_t m3m;
+  Double_t dataMCtype;
+  Double_t event_weight;
+  Double_t m12;
+  Double_t m13;
+  Double_t LumiScale;
+  
+  Double_t var_TripletPT;
+  Double_t var_Tau3MuIsolation;
+  Double_t var_Electron_pT;
+  Double_t var_VisMass;
+  Double_t var_mu1_pT;
+  Double_t var_mu2_pT;
+  Double_t var_mu3_pT;
+  
+  TTree *T3MMiniTree;
+  TFile *T3MFMiniTree;
   
   TRandom rndm;
   double random_num;

@@ -23,7 +23,7 @@ ZTau3MuTauh::~ZTau3MuTauh(){
 
 void  ZTau3MuTauh::Configure(){
 
-  //  This mini tree is for limit extraction
+  //  Mini tree for limit extraction
 
   T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
 
@@ -32,28 +32,22 @@ void  ZTau3MuTauh::Configure(){
   T3MMiniTree->Branch("event_weight",&event_weight);
   T3MMiniTree->Branch("m12",&m12);
   T3MMiniTree->Branch("m13",&m13);
-  T3MMiniTree->Branch("mDr1",&mDr1);
-  T3MMiniTree->Branch("mDr2",&mDr2);
   T3MMiniTree->Branch("LumiScale",&LumiScale);
+  
+  T3MMiniTree->Branch("var_TripletPT",&var_TripletPT);
+  T3MMiniTree->Branch("var_Tau3MuIsolation",&var_Tau3MuIsolation);
+  T3MMiniTree->Branch("var_Tau_pT",&var_Tau_pT);
+  T3MMiniTree->Branch("var_VisMass",&var_VisMass);
+  T3MMiniTree->Branch("var_mu1_pT",&var_mu1_pT);
+  T3MMiniTree->Branch("var_mu2_pT",&var_mu2_pT);
+  T3MMiniTree->Branch("var_mu3_pT",&var_mu3_pT);
 
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==WhetherDecayFound)        cut.at(WhetherDecayFound)=1;
-    if(i==Mu1_Candidate_p)          cut.at(Mu1_Candidate_p)=2.49;
-    if(i==Mu1_Candidate_eta)        cut.at(Mu1_Candidate_eta)=2.41;
-    if(i==Mu2_Candidate_p)          cut.at(Mu2_Candidate_p)=2.49;
-    if(i==Mu2_Candidate_eta)        cut.at(Mu2_Candidate_eta)=2.41;
-    if(i==Mu3_Candidate_p)          cut.at(Mu3_Candidate_p)=2.49;
-    if(i==Mu3_Candidate_eta)        cut.at(Mu3_Candidate_eta)=2.41;
-    if(i==Tau_h_Candidate_p)        cut.at(Tau_h_Candidate_p)=18.0;
-    if(i==Tau_h_Candidate_eta)      cut.at(Tau_h_Candidate_eta)=2.41;
-    if(i==Mu1_Candidate_recod)      cut.at(Mu1_Candidate_recod)=1;
-    if(i==Mu2_Candidate_recod)      cut.at(Mu2_Candidate_recod)=1;
-    if(i==Mu3_Candidate_recod)      cut.at(Mu3_Candidate_recod)=1;
-    if(i==Tau_h_Candidate_recod)    cut.at(Tau_h_Candidate_recod)=1;
+    if(i==PassedFiducialCuts) cut.at(PassedFiducialCuts)=1;
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
@@ -92,107 +86,11 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==WhetherDecayFound){
-      title.at(i)="$Z \\rightarrow \\tau_{h}, \\tau_{3\\mu}$ decay information found in ntuple";
-      hlabel="Decay information found in ntuple ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==Mu1_Candidate_p){
-      title.at(i)=" Whether GEN level $\\mu_{1}$ has $p>2.49 GeV$ ";
-      hlabel="$\\mu_{1}$ $p, GeV$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-    }
-    else if(i==Mu1_Candidate_eta){
-      title.at(i)=" Whether GEN level $\\mu_{1}$ has $|\\eta| < 2.41$ ";
-      hlabel="$\\mu_{1}$ $|\\eta|$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-    }
-    else if(i==Mu2_Candidate_p){
-      title.at(i)=" Whether GEN level $\\mu_{2}$ has $p>2.49 GeV$ ";
-      hlabel="$\\mu_{2}$ $p, GeV$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-    }
-    else if(i==Mu2_Candidate_eta){
-      title.at(i)=" Whether GEN level $\\mu_{2}$ has $|\\eta| < 2.41$ ";
-      hlabel="$\\mu_{1}$ $|\\eta|$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-    }
-    else if(i==Mu3_Candidate_p){
-      title.at(i)=" Whether GEN level $\\mu_{3}$ has $p>2.49 GeV$ ";
-      hlabel="$\\mu_{3}$ $p, GeV$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
-    }
-    else if(i==Mu3_Candidate_eta){
-      title.at(i)=" Whether GEN level $\\mu_{3}$ has $|\\eta| < 2.41$ ";
-      hlabel="$\\mu_{3}$ $|\\eta|$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-    }
-    else if(i==Tau_h_Candidate_p){
-      title.at(i)=" Whether GEN level $\\tau_{h}$ has $pT>18 GeV$ ";
-      hlabel="$\\tau_{h}$ $p, GeV$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_p_",htitle,40,0.0,80.0,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_p_",htitle,40,0.0,80.0,hlabel,"Events"));
-    }
-    else if(i==Tau_h_Candidate_eta){
-      title.at(i)=" Whether GEN level $\\tau_{h}$ has $|\\eta| < 2.41$ ";
-      hlabel="$\\tau_{h}$ $|\\eta|$";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
-    }
-    else if(i==Mu1_Candidate_recod){
-      title.at(i)=" Whether $\\mu_{1}$ is reconstructed in MC ";
-      hlabel="If $\\mu_{1}$ is reconstructed in MC";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==Mu2_Candidate_recod){
-      title.at(i)=" Whether $\\mu_{2}$ is reconstructed in MC ";
-      hlabel="If $\\mu_{2}$ is reconstructed in MC";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==Mu3_Candidate_recod){
-      title.at(i)=" Whether $\\mu_{3}$ is reconstructed in MC ";
-      hlabel="If $\\mu_{3}$ is reconstructed in MC";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-    }
-    else if(i==Tau_h_Candidate_recod){
-      title.at(i)=" Whether $\\tau_{h}$ is reconstructed in MC ";
-      hlabel="If $\\tau_{h}$ is reconstructed in MC";
-      htitle.ReplaceAll("$","");
-      htitle.ReplaceAll("\\","#");
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    else if(i==PassedFiducialCuts){
+      title.at(i)="Passed fiducial cuts";
+      hlabel="Passed fiducial cuts ";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus_pT){
       title.at(i)=" At least one $\\tau_{h}$, $pT>17.5 GeV$";
@@ -335,6 +233,8 @@ void  ZTau3MuTauh::Configure(){
   Z_Pt=HConfig.GetTH1D(Name+"_Z_Pt","Z_Pt",50,0,70,"Z_{pT}","Events");
   OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
+  MET_Et=HConfig.GetTH1D(Name+"_MET_Et","MET_Et",100,0.0,100.0,"MET Et, GeV","Events");
+  MET_Phi=HConfig.GetTH1D(Name+"_MET_Phi","MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");
   
   Selection_Cut_3mu_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Pt","Selection_Cut_3mu_Pt",100,0,50.0,"3#mu p_{T}, GeV","Events");
   Selection_Cut_3mu_Rel_Iso=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Rel_Iso","Selection_Cut_3mu_Rel_Iso",50,0,1.1,"3 #mu Relative Isolation, p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","Events");
@@ -425,6 +325,9 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   Extradist1d.push_back(&dR_betweenTruth_Tau);
   Extradist1d.push_back(&Z_Pt);
   Extradist2d.push_back(&OS_vs_3mu_trigger);
+  
+  Extradist1d.push_back(&MET_Et);
+  Extradist1d.push_back(&MET_Phi);
   
   Extradist1d.push_back(&Selection_Cut_3mu_Pt);
   Extradist1d.push_back(&Selection_Cut_3mu_Rel_Iso);
@@ -634,32 +537,21 @@ void  ZTau3MuTauh::doEvent(){
   }
   
   
-  value.at(WhetherDecayFound)=(Whether_decay_found);
-  pass.at(WhetherDecayFound)=(value.at(WhetherDecayFound)==cut.at(WhetherDecayFound));
+  double cut_Mu_Candidate_p=2.49;
+  double cut_Mu_Candidate_eta=2.41;
+  double cut_Tau_h_Candidate_p=18.0;
+  double cut_Tau_h_Candidate_eta=2.41;
   
-  value.at(Mu1_Candidate_p)=(Mu1_LV.Vect().Mag());
-  pass.at(Mu1_Candidate_p)=value.at(Mu1_Candidate_p)>cut.at(Mu1_Candidate_p);
+  bool var_Whether_decay_found = Whether_decay_found;
+  bool var_Mu1_Candidate_p = (Mu1_LV.Vect().Mag()) > cut_Mu_Candidate_p;
+  bool var_Mu1_Candidate_eta = (abs(Mu1_LV.Eta())) < cut_Mu_Candidate_eta;
+  bool var_Mu2_Candidate_p = (Mu2_LV.Vect().Mag()) > cut_Mu_Candidate_p;
+  bool var_Mu2_Candidate_eta = (abs(Mu2_LV.Eta())) < cut_Mu_Candidate_eta;
+  bool var_Mu3_Candidate_p = (Mu3_LV.Vect().Mag()) > cut_Mu_Candidate_p;
+  bool var_Mu3_Candidate_eta = (abs(Mu3_LV.Eta())) < cut_Mu_Candidate_eta;
+  bool var_Tau_h_Candidate_p = (Tau_h_LV.Pt()) > cut_Tau_h_Candidate_p;
+  bool var_Tau_h_Candidate_eta = (abs(Tau_h_LV.Eta())) < cut_Tau_h_Candidate_eta;
   
-  value.at(Mu1_Candidate_eta)=(abs(Mu1_LV.Eta()));
-  pass.at(Mu1_Candidate_eta)=value.at(Mu1_Candidate_eta)<cut.at(Mu1_Candidate_eta);
-  
-  value.at(Mu2_Candidate_p)=(Mu2_LV.Vect().Mag());
-  pass.at(Mu2_Candidate_p)=value.at(Mu2_Candidate_p)>cut.at(Mu2_Candidate_p);
-  
-  value.at(Mu2_Candidate_eta)=(abs(Mu2_LV.Eta()));
-  pass.at(Mu2_Candidate_eta)=value.at(Mu2_Candidate_eta)<cut.at(Mu2_Candidate_eta);
-  
-  value.at(Mu3_Candidate_p)=(Mu3_LV.Vect().Mag());
-  pass.at(Mu3_Candidate_p)=value.at(Mu3_Candidate_p)>cut.at(Mu3_Candidate_p);
-  
-  value.at(Mu3_Candidate_eta)=(abs(Mu3_LV.Eta()));
-  pass.at(Mu3_Candidate_eta)=value.at(Mu3_Candidate_eta)<cut.at(Mu3_Candidate_eta);
-  
-  value.at(Tau_h_Candidate_p)=(Tau_h_LV.Pt());
-  pass.at(Tau_h_Candidate_p)=value.at(Tau_h_Candidate_p)>cut.at(Tau_h_Candidate_p);
-  
-  value.at(Tau_h_Candidate_eta)=(abs(Tau_h_LV.Eta()));
-  pass.at(Tau_h_Candidate_eta)=value.at(Tau_h_Candidate_eta)<cut.at(Tau_h_Candidate_eta);
   
   double dR1_max(99.0);
   double dR2_max(99.0);
@@ -696,15 +588,13 @@ void  ZTau3MuTauh::doEvent(){
       Selection_Cut_RecoH_Eta.at(t).Fill(abs(Ntp->Tau_P4(itau).Eta()),1 );
     }
   
-  value.at(Mu1_Candidate_recod)=(dR1_max<0.01);
-  pass.at(Mu1_Candidate_recod)=value.at(Mu1_Candidate_recod);
-  value.at(Mu2_Candidate_recod)=(dR2_max<0.01);
-  pass.at(Mu2_Candidate_recod)=value.at(Mu2_Candidate_recod);
-  value.at(Mu3_Candidate_recod)=(dR3_max<0.01);
-  pass.at(Mu3_Candidate_recod)=value.at(Mu3_Candidate_recod);
+  bool var_Mu1_Candidate_recod = (dR1_max<0.01);
+  bool var_Mu2_Candidate_recod = (dR2_max<0.01);
+  bool var_Mu3_Candidate_recod = (dR3_max<0.01);
+  bool var_Tau_h_Candidate_recod = (dR4_max<0.05);
   
-  value.at(Tau_h_Candidate_recod)=(dR4_max<0.05);
-  pass.at(Tau_h_Candidate_recod)=value.at(Tau_h_Candidate_recod);
+  value.at(PassedFiducialCuts)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_h_Candidate_p&&var_Tau_h_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_h_Candidate_recod;
+  pass.at(PassedFiducialCuts)=(value.at(PassedFiducialCuts)==cut.at(PassedFiducialCuts));
   
   // This is to print out selected event content
   if(id==210233){
@@ -728,6 +618,7 @@ void  ZTau3MuTauh::doEvent(){
                     }
                   }
                   */
+                  /*
                   Selection_Cut_Mu1_P.at(t).Fill(Mu1_LV.Vect().Mag(),1 );
                   Selection_Cut_Mu1_Eta.at(t).Fill(abs(Mu1_LV.Eta()),1 );
                   Selection_Cut_Mu2_P.at(t).Fill(Mu2_LV.Vect().Mag(),1 );
@@ -774,7 +665,7 @@ void  ZTau3MuTauh::doEvent(){
                     }
                   }
                   }
-                  
+                  */
                   Selection_Cut_Mu1_dR.at(t).Fill(dR1_max,1 );
                   Selection_Cut_Mu2_dR.at(t).Fill(dR2_max,1 );
                   Selection_Cut_Mu3_dR.at(t).Fill(dR3_max,1 );
@@ -792,19 +683,8 @@ void  ZTau3MuTauh::doEvent(){
   }//if(id!=1)
   //  std::cout << "Test 2. " << std::endl;
   if(!WhetherSignalMC){
-    pass.at(WhetherDecayFound)=1;
-    pass.at(Mu1_Candidate_p)=1;
-    pass.at(Mu1_Candidate_eta)=1;
-    pass.at(Mu2_Candidate_p)=1;
-    pass.at(Mu2_Candidate_eta)=1;
-    pass.at(Mu3_Candidate_p)=1;
-    pass.at(Mu3_Candidate_eta)=1;
-    pass.at(Tau_h_Candidate_p)=1;
-    pass.at(Tau_h_Candidate_eta)=1;
-    pass.at(Mu1_Candidate_recod)=1;
-    pass.at(Mu2_Candidate_recod)=1;
-    pass.at(Mu3_Candidate_recod)=1;
-    pass.at(Tau_h_Candidate_recod)=1;
+    value.at(PassedFiducialCuts)=1;
+    pass.at(PassedFiducialCuts)=1;
   }
   //  std::cout << "Test 3. " << std::endl;
 
@@ -842,29 +722,55 @@ void  ZTau3MuTauh::doEvent(){
   value.at(nTaus_pT)  = -1;
   value.at(nTaus_eta)  = -1;
   value.at(nTaus_dR)  = 99.0;
+  
+  double highest_pT(-1.0);//highest value determines whether it passes (when there are multiple taus)
+  double lowest_eta(10.0);
+  double highest_dR(-1.0);
+  
   for(unsigned int itau=0; itau < Ntp->NTaus(); itau++)
     {
       if(signal_idx!=-1)
 	{
-	  //value.at(nTaus_pT)  = Ntp->Tau_P4(itau).Pt();
-          //value.at(nTaus_eta)  = fabs(Ntp->Tau_P4(itau).Eta());
-          //value.at(nTaus_dR)  = Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
+	  if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV)>highest_dR){
+            highest_dR=Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
+          }
           
-          if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) ) Taus_OppositeHemisphere_pT.push_back(itau);
-          if(fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) ) Taus_OppositeHemisphere_eta.push_back(itau);
-          if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere_dR.push_back(itau);
+          if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ){
+                  Taus_OppositeHemisphere_dR.push_back(itau);
+                  
+                  if(Ntp->Tau_P4(itau).Pt() > highest_pT){
+                    highest_pT=Ntp->Tau_P4(itau).Pt();
+                  }
+                  
+                  if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) ){
+                          Taus_OppositeHemisphere_pT.push_back(itau);
+                          
+                          if(fabs(Ntp->Tau_P4(itau).Eta()) < lowest_eta){
+                            lowest_eta=fabs(Ntp->Tau_P4(itau).Eta());
+                          }
+                          
+                          if(fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) ){
+                            Taus_OppositeHemisphere_eta.push_back(itau);
+                          }
+                  }
+          }
+          
           
           if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) && fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) && 
 	     Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere.push_back(itau);
-	       
-    Selection_Cut_tauh_Pt.at(t).Fill(Ntp->Tau_P4(itau).Pt());
-    Selection_Cut_tauh_Eta.at(t).Fill(fabs(Ntp->Tau_P4(itau).Eta()));
-    Selection_Cut_tauh_DeltaR_3mu.at(t).Fill(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV));
 	  
       
 	}
     }
 
+  value.at(nTaus_pT)  = highest_pT;
+  value.at(nTaus_eta)  = lowest_eta;
+  value.at(nTaus_dR)  = highest_dR;
+  
+  Selection_Cut_tauh_Pt.at(t).Fill(highest_pT);
+  Selection_Cut_tauh_Eta.at(t).Fill(lowest_eta);
+  Selection_Cut_tauh_DeltaR_3mu.at(t).Fill(highest_dR);
+  
   pass.at(nTaus_pT)  = ( Taus_OppositeHemisphere_pT.size() > 0 );
   
   pass.at(nTaus_eta) = ( Taus_OppositeHemisphere_eta.size() > 0 );
@@ -967,7 +873,7 @@ void  ZTau3MuTauh::doEvent(){
   std::vector<int> PassedDeepMuonsMedium;
   std::vector<int> PassedDeepMuonsTight;
 
-  for(auto i : Taus_DeepTauJetsMedium)
+  for(auto i : Taus_DeepTauJetsLoose)
     {
       if(Ntp->Tau_byLooseDeepTau2017v2p1VSmu(i)) PassedDeepMuonsLoose.push_back(i);
       if(Ntp->Tau_byMediumDeepTau2017v2p1VSmu(i)) PassedDeepMuonsMedium.push_back(i);
@@ -999,23 +905,32 @@ void  ZTau3MuTauh::doEvent(){
 
   pass.at(DeepTauMuons) = (value.at(DeepTauMuons) >= cut.at(DeepTauMuons));
   pass.at(DeepTauElectrons) = (value.at(DeepTauElectrons) >= cut.at(DeepTauElectrons));
+  
+  double central_VisMass(250.0);//most central value determines whether it passes (when there are multiple taus)
 
   if(pass.at(DeepTauElectrons))
     {
-      unsigned int tau_index = PassedDeepElectronsLoose.at(0);
-      value.at(VisMass) = (Tau3MuLV + Ntp->Tau_P4(tau_index)).M();
+      for(unsigned int i = 0 ; i< PassedDeepElectronsLoose.size(); i++){
+           
+           int tau_index = PassedDeepElectronsLoose.at(i);
+           
+           double VisMass_val = (Tau3MuLV + Ntp->Tau_P4(tau_index)).M();
+           if(fabs(VisMass_val-75.0)   < fabs(central_VisMass-75.0)  ){
+             central_VisMass=VisMass_val;
+           }
+      }
       
-      Selection_Cut_Vis_InvM.at(t).Fill(value.at(VisMass));
     }
 
+  value.at(VisMass) = central_VisMass;
+  
   pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
   pass.at(VisMass)         = (value.at(VisMass) > 50 && value.at(VisMass) < 100);
   
-
-
-
-
-
+  std::vector<unsigned int> exclude_cuts;
+  exclude_cuts.push_back(VisMass);
+  if(passAllBut(exclude_cuts)) Selection_Cut_Vis_InvM.at(t).Fill(value.at(VisMass));
+  
   double wobs=1;
   double w;  
              
@@ -1038,6 +953,16 @@ void  ZTau3MuTauh::doEvent(){
     unsigned int muon_1_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+    
+    Selection_Cut_Mu1_P.at(t).Fill(Ntp->Muon_P4(muon_1_idx).Pt(),1 );
+    Selection_Cut_Mu1_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_1_idx).Eta()),1 );
+    Selection_Cut_Mu2_P.at(t).Fill(Ntp->Muon_P4(muon_2_idx).Pt(),1 );
+    Selection_Cut_Mu2_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_2_idx).Eta()),1 );
+    Selection_Cut_Mu3_P.at(t).Fill(Ntp->Muon_P4(muon_3_idx).Pt(),1 );
+    Selection_Cut_Mu3_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_3_idx).Eta()),1 );
+    
+    Selection_Cut_h_Pt.at(t).Fill(highest_pT,1 );
+    Selection_Cut_h_Eta.at(t).Fill(lowest_eta,1 );
 
     ////////////////////////   sort muons by charge and dR and fill pair masses :
     /////
@@ -1070,6 +995,9 @@ void  ZTau3MuTauh::doEvent(){
     }
     //////
     ///////////////////////////
+    
+    MET_Et.at(t).Fill( Ntp->METEt() );
+    MET_Phi.at(t).Fill( Ntp->METPhi() );
 
 
     TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
@@ -1222,30 +1150,32 @@ void  ZTau3MuTauh::doEvent(){
 
         //*** fill up the T3MMiniTree.root for statistical analysis
         
-        m3m = TauRefitLV.M();
+        m3m = Tau3muLV.M();
         
         dataMCtype = id;
         event_weight =1; // 1 for data
         if(dataMCtype == 1){event_weight =1;}
-        else if(dataMCtype == 210233){event_weight =5.00e-04;} // event_weight is a value Lumi Scale ; Lumi 45710; Evno 5625
-        else if(dataMCtype == 210232){event_weight =4.93e-04;} // Lumi 45710; Evno 5659
-        else if(dataMCtype == 210231){event_weight =4.87e-04;} // Lumi 45710; Evno 21314
+        else if(dataMCtype == 210233){event_weight =5.00e-04;}
+        else if(dataMCtype == 210232){event_weight =4.93e-04;}
+        else if(dataMCtype == 210231){event_weight =4.87e-04;}
         
-        if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
-          mDr1 = (MuonOS+MuonSS2).M();
-          mDr2 = (MuonOS+MuonSS1).M();
-        }else{
-          mDr1 = (MuonOS+MuonSS1).M();
-          mDr2 = (MuonOS+MuonSS2).M();
-        }
-        
+        LumiScale = 1.;
         
         m12 = (MuonOS+MuonSS1).M();
         m13 = (MuonOS+MuonSS2).M();
-        LumiScale = 1.;
+        
+        var_TripletPT=Tau3muLV.Pt();
+        var_Tau3MuIsolation=Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
+        var_Tau_pT=TauHLV.Pt();
+        var_VisMass=(Tau3muLV + TauHLV ).M();
+        var_mu1_pT=Muon1LV.Pt();
+        var_mu2_pT=Muon2LV.Pt();
+        var_mu3_pT=Muon3LV.Pt();
+        
+        
+        
         T3MMiniTree->Fill();
-  
-	//  std::cout << "Test 2. " << std::endl;
+        
   }
 }
 
@@ -1253,7 +1183,7 @@ void  ZTau3MuTauh::doEvent(){
 void  ZTau3MuTauh::Finish(){
 
   //*** write down the T3MMiniTree.root for statistical analysis
-  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
+  T3MFMiniTree = new TFile("T3MMiniTree_tauh.root","recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
