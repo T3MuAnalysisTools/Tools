@@ -31,16 +31,6 @@ class ZTau3MuTaue_Skimmer : public Selection {
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
-	     TriggerMatch,
-	     TripletPT,
-	     nElectrons_PF_cut,
-             nElectrons_dR,
-             nElectrons_pT,
-             nElectrons_eta,
-	     OSCharge,
-	     ElectronIsolation,
-	     Tau3MuIsolation,
-	     VisMass,
 	     NCuts}; 
 
  protected:
