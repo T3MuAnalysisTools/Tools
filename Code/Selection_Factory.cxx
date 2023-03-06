@@ -64,6 +64,12 @@
 #include "madhu/ZTau3MuTauh.h"
 #include "madhu/ZTau3MuTaue.h"
 #include "madhu/ZTau3MuTaumu.h"
+#include "madhu/ZTau3MuTauh_Efficiency.h"
+#include "madhu/ZTau3MuTaue_Efficiency.h"
+#include "madhu/ZTau3MuTaumu_Efficiency.h"
+#include "madhu/ZTau3MuTauh_Skimmer.h"
+#include "madhu/ZTau3MuTaue_Skimmer.h"
+#include "madhu/ZTau3MuTaumu_Skimmer.h"
 
 #endif
 
@@ -135,6 +141,12 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("simpletauselector"))s=new SimpleTauSelector(Analysis,UncertType);
   else if(Analysis.Contains("simpletaumuselector"))s=new SimpleTauMuSelector(Analysis,UncertType);
   else if(Analysis.Contains("simpletaueselector"))s=new SimpleTauESelector(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutauh_efficiency"))s=new ZTau3MuTauh_Efficiency(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaue_efficiency"))s=new ZTau3MuTaue_Efficiency(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaumu_efficiency"))s=new ZTau3MuTaumu_Efficiency(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutauh_skimmer"))s=new ZTau3MuTauh_Skimmer(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaue_skimmer"))s=new ZTau3MuTaue_Skimmer(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaumu_skimmer"))s=new ZTau3MuTaumu_Skimmer(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutauh"))s=new ZTau3MuTauh(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaue"))s=new ZTau3MuTaue(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaumu"))s=new ZTau3MuTaumu(Analysis,UncertType);
