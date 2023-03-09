@@ -329,6 +329,7 @@ void  ZTau3MuTaumu_Skimmer::doEvent(){
 
 
   value.at(SignalCandidate) = Ntp->NThreeMuons();
+  pass.at(SignalCandidate)=(value.at(SignalCandidate)>=cut.at(SignalCandidate));
 
   int  signal_idx=-1;
   double min_chi2(99.);
