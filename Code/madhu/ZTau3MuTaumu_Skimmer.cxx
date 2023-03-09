@@ -576,11 +576,6 @@ void  ZTau3MuTaumu_Skimmer::doEvent(){
              
     if(!Ntp->isData()){w = 1; /*Ntp->PUReweight(); */} //  No weights to data
     else{w=1;}
-    
-    std::vector<unsigned int> exclude_cuts;
-    exclude_cuts.push_back(VisMass);
-    if(passAllBut(exclude_cuts)) Selection_Cut_Vis_InvM.at(t).Fill(value.at(VisMass));
-    Selection_Cut_muon_Rel_Iso.at(t).Fill(highest_MuonIsolation);
   
 
   bool status=AnalysisCuts(t,w,wobs);
