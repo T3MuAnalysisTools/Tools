@@ -481,6 +481,16 @@ if( $ARGV[0] eq "--DCache" ){
  
     # copy helpers
     system(sprintf("cp scripts/run_rest.py  $OutputDir/workdir$set/"));
+    
+    
+    # Generate script to copy skimmed files to T2
+    system(sprintf("echo \"import os\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("echo \"\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("echo \"pathbase='$OutputDir/workdir$set/'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("echo \"username='$UserID'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("echo \"tag='$set'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("echo \"\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    system(sprintf("cat scripts/CopySkimmedFiles.py >> $OutputDir/workdir$set/CopySkimmedFiles.py"));
 
 
     # Generate Combine script 
