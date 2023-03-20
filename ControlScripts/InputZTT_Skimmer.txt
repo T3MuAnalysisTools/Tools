@@ -1,0 +1,15 @@
+Thin: False
+Skim: True
+HistoFile: InputData/Histo_ZTauTau.txt
+Analysis: ZTau3MuTauh_Skimmer
+Analysis: ZTau3MuTaue_Skimmer
+Analysis: ZTau3MuTaumu_Skimmer
+UncertType: default
+SkimInfo: InputData/SkimSummary_ZTauTau.log
+Lumi: 58800
+PlotStyle: style2
+
+
+
+# DO NOT modify the fields in curly brackets {xyz}, they are set by the framework
+InputNtuples: {FileDir}

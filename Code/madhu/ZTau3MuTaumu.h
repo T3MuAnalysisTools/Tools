@@ -79,6 +79,8 @@ class ZTau3MuTaumu : public Selection {
   
   std::vector<TH1D>   MET_Et;
   std::vector<TH1D>   MET_Phi;
+  std::vector<TH2D>   MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   MET_vs_NeutrinoPt;
   
   std::vector<TH1D>   Selection_Cut_3mu_Pt;
   std::vector<TH1D>   Selection_Cut_3mu_Rel_Iso;
@@ -119,6 +121,16 @@ class ZTau3MuTaumu : public Selection {
   
   std::vector<TH1D>   Selection_Cut_RecoMu_P;
   std::vector<TH1D>   Selection_Cut_RecoMu_Eta;
+  
+  std::vector<TH1D>   FLSignificance;
+  std::vector<TH1D>   SVPVTauDirAngle;
+  std::vector<TH1D>   SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   VertexChi2KF;
+  std::vector<TH1D>   MinDistToIsoTrack;
+  std::vector<TH1D>   Kinematics_MissingTrMass;
+  std::vector<TH1D>   VisibleDiTauMass_Collinear;
+  
+  std::vector<TH1D>   prod_size;
   
   Double_t m3m;
   Double_t dataMCtype;

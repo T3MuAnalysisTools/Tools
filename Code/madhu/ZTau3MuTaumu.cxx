@@ -240,6 +240,9 @@ void  ZTau3MuTaumu::Configure(){
   MET_Et=HConfig.GetTH1D(Name+"_MET_Et","MET_Et",100,0.0,100.0,"MET Et, GeV","Events");
   MET_Phi=HConfig.GetTH1D(Name+"_MET_Phi","MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");
   
+  MET_Phi_vs_NeutrinoPhi=HConfig.GetTH2D(Name+"_MET_Phi_vs_NeutrinoPhi","MET_Phi_vs_NeutrinoPhi",40,-3.2,3.2,40,-3.2,3.2,"MET #Phi","#nu #Phi");
+  MET_vs_NeutrinoPt=HConfig.GetTH2D(Name+"_MET_vs_NeutrinoPt","MET_vs_NeutrinoPt",50,0,100,50,0,100,"MET Et, GeV","#nu p_{T}, GeV");
+  
   Selection_Cut_3mu_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Pt","Selection_Cut_3mu_Pt",100,0,50.0,"3#mu p_{T}, GeV","Events");
   Selection_Cut_3mu_Rel_Iso=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Rel_Iso","Selection_Cut_3mu_Rel_Iso",50,0,1.1,"3 #mu Relative Isolation, p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","Events");
   Selection_Cut_muon_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_muon_Pt","Selection_Cut_muon_Pt",100,0,50.0,"#mu p_{T}, GeV","Events");
@@ -283,6 +286,16 @@ void  ZTau3MuTaumu::Configure(){
   
   Selection_Cut_RecoMu_P=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_P","Selection_Cut_RecoMu_P",100,0.0,5.0,"#mu p, GeV","Events");
   Selection_Cut_RecoMu_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_Eta","Selection_Cut_RecoMu_Eta",50,2,3.0,"#mu |#eta|","Events");
+  
+  FLSignificance=HConfig.GetTH1D(Name+"_FLSignificance","FLSignificance",50,0,25,"PV - SV distance  significance","Events");
+  SVPVTauDirAngle=HConfig.GetTH1D(Name+"_SVPVTauDirAngle","SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events");
+  SVPVTauDirAngle_largescale=HConfig.GetTH1D(Name+"_SVPVTauDirAngle_largescale","SVPVTauDirAngle_largescale",50,-3.2,3.2,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events");
+  VertexChi2KF=HConfig.GetTH1D(Name+"_VertexChi2KF","VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events");
+  MinDistToIsoTrack=HConfig.GetTH1D(Name+"_MinDistToIsoTrack","MinDistToIsoTrack",100,0,0.1,"Min dR To IsoTrack","Events");
+  Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_Kinematics_MissingTrMass","Kinematics_MissingTrMass",100,0,100.,"M_{T}, GeV","Events");
+  VisibleDiTauMass_Collinear=HConfig.GetTH1D(Name+"_VisibleDiTauMass_Collinear","VisibleDiTauMass_Collinear",70,20.,170,"M_{#tau(#mu) + #tau(3#mu) + #nu}, GeV","Events");
+  
+  prod_size=HConfig.GetTH1D(Name+"_prod_size","prod_size",7,-0.5,6.5,"no. of visible products","Events");
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -330,6 +343,8 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   
   Extradist1d.push_back(&MET_Et);
   Extradist1d.push_back(&MET_Phi);
+  Extradist2d.push_back(&MET_Phi_vs_NeutrinoPhi);
+  Extradist2d.push_back(&MET_vs_NeutrinoPt);
   
   Extradist1d.push_back(&Selection_Cut_3mu_Pt);
   Extradist1d.push_back(&Selection_Cut_3mu_Rel_Iso);
@@ -373,6 +388,16 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   
   Extradist1d.push_back(&Selection_Cut_RecoMu_P);
   Extradist1d.push_back(&Selection_Cut_RecoMu_Eta);
+  
+  Extradist1d.push_back(&FLSignificance);
+  Extradist1d.push_back(&SVPVTauDirAngle);
+  Extradist1d.push_back(&SVPVTauDirAngle_largescale);
+  Extradist1d.push_back(&VertexChi2KF);
+  Extradist1d.push_back(&MinDistToIsoTrack);
+  Extradist1d.push_back(&Kinematics_MissingTrMass);
+  Extradist1d.push_back(&VisibleDiTauMass_Collinear);
+  
+  Extradist1d.push_back(&prod_size);
 
 
 }
@@ -449,6 +474,7 @@ void  ZTau3MuTaumu::doEvent(){
   }
   
   TLorentzVector Muon_LV;
+  TLorentzVector MC_NeutrinoSum_LV(0.,0.,0.,0.);
   int Whether_decay_found(0);
   
   bool WhetherSignalMC = id==210||id==210231||id==210232||id==210233;
@@ -520,6 +546,7 @@ void  ZTau3MuTaumu::doEvent(){
   TLorentzVector Mu2_LV;
   TLorentzVector Mu3_LV;
   //TLorentzVector Muon_LV;
+  
   if(Whether_decay_found==1){
     std::vector<int> Sorted_MC_Indices = Ntp->SortedPtMuons_MC(Ntp->MCParticle_childidx(tau_3mu_idx));
     
@@ -530,6 +557,9 @@ void  ZTau3MuTaumu::doEvent(){
     for(int i = 0; i < Ntp->MCParticle_childpdgid(tau_mu_idx).size(); i++){
       if(abs(Ntp->MCParticle_childpdgid(tau_mu_idx).at(i))==13){
         Muon_LV=Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_mu_idx).at(i));
+      }
+      if(abs(Ntp->MCParticle_childpdgid(tau_mu_idx).at(i))==12||abs(Ntp->MCParticle_childpdgid(tau_mu_idx).at(i))==14||abs(Ntp->MCParticle_childpdgid(tau_mu_idx).at(i))==16){
+        MC_NeutrinoSum_LV=MC_NeutrinoSum_LV+Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_mu_idx).at(i));
       }
     }
   }
@@ -936,12 +966,18 @@ void  ZTau3MuTaumu::doEvent(){
     //    std::cout<<"pass nMuons "<< pass.at(nMuons) <<    "  triplet pT    "<< pass.at(TripletPT)  << std::endl;
     //    std::cout<<"   how many muons i have  " << Muons_OppositeHemisphere_OppositeCharge .size() << std::endl;
     unsigned int muon_idx = Muons_OppositeHemisphere_OppositeCharge.at(0);
+    TLorentzVector MuLV = Ntp->Muon_P4(muon_idx);
     
+    prod_size.at(t).Fill(Muons_OppositeHemisphere_OppositeCharge.size());
 
 
     unsigned int muon_1_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+    
+    TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
+      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
+      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
     ////////////////////////   sort muons by charge and dR and fill pair masses :
     /////
     vector<unsigned int> idx_vec;
@@ -958,6 +994,22 @@ void  ZTau3MuTaumu::doEvent(){
     
     Selection_Cut_mu_P.at(t).Fill(highest_pT,1 );
     Selection_Cut_mu_Eta.at(t).Fill(lowest_eta,1 );
+    
+    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
+								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
+    VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx));
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+    SVPVTauDirAngle.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
+    SVPVTauDirAngle_largescale.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
+    MinDistToIsoTrack.at(t).Fill(Ntp->Isolation_MinDist(signal_idx));
+    
+    // Missing transverse mass
+    Kinematics_MissingTrMass.at(t).Fill(sqrt(   2*Ntp->METEt()*TMath::Sqrt(MuLV.Px()*MuLV.Px()+MuLV.Py()*MuLV.Py())*(1-TMath::Cos(Ntp->METPhi()-(MuLV.Vect()).Phi()))   )); //use definition transverse mass for 2 particles
+    
+    TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(MuLV.Theta()));
+    TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
+    VisibleDiTauMass_Collinear.at(t).Fill((MuLV + Tau3muLV + Neutrino_LV).M(), 1);
+    
 
     unsigned int os_mu_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
     unsigned int ss1_mu_idx = Ntp->SortedChargeMuons(idx_vec).at(1);
@@ -986,30 +1038,26 @@ void  ZTau3MuTaumu::doEvent(){
     
     MET_Et.at(t).Fill( Ntp->METEt() );
     MET_Phi.at(t).Fill( Ntp->METPhi() );
+    MET_Phi_vs_NeutrinoPhi.at(t).Fill( Ntp->METPhi(),(MC_NeutrinoSum_LV.Vect()).Phi() );
+    MET_vs_NeutrinoPt.at(t).Fill( Ntp->METEt(),MC_NeutrinoSum_LV.Pt() );
+    
 
 
     TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
     TLorentzVector Muon2LV = Ntp->Muon_P4(muon_2_idx);
     TLorentzVector Muon3LV = Ntp->Muon_P4(muon_3_idx);
 
-
-
-    TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
-      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
-      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
-
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0) + 
       Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1) + 
       Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,2);
 
 
-    TLorentzVector MuLV = Ntp->Muon_P4(muon_idx);
+    
 
 
 
     LorentzVectorParticle Tau3MuLVP = Ntp->Tau3mu_LVP(  signal_idx );
-    TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(MuLV.Theta()));
-    TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
+    
 
 
 
