@@ -50,6 +50,7 @@ class ZTau3MuTaue : public Selection {
  private:
 
 
+  TString AnalysisName;
   std::vector<TH1D>   Tau3MuRelativeIsolation;
   std::vector<TH1D>   ElectronSumIsolation;
   std::vector<TH1D>   VisibleDiTauMass;

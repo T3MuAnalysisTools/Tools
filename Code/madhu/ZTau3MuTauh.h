@@ -50,6 +50,7 @@ class ZTau3MuTauh : public Selection {
 
  private:
 
+  TString AnalysisName;
   std::vector<TH1D>   NumberOfTaus;
   std::vector<TH1D>   Tau3MuRelativeIsolation;
   std::vector<TH1D>   TauHDecayMode;

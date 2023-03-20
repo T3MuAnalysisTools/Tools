@@ -7,7 +7,8 @@
 //#include "Logger.h"
 
 ZTau3MuTaumu::ZTau3MuTaumu(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  AnalysisName(Name_)
 {
   // This is a class constructor;
 }
@@ -25,7 +26,13 @@ void  ZTau3MuTaumu::Configure(){
 
   //  Mini tree for limit extraction
 
-  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
+
+  TString treeprefix;
+  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+
+
+  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
 
   T3MMiniTree->Branch("m3m",&m3m);
   T3MMiniTree->Branch("dataMCtype",&dataMCtype);
@@ -296,6 +303,8 @@ void  ZTau3MuTaumu::Configure(){
   VisibleDiTauMass_Collinear=HConfig.GetTH1D(Name+"_VisibleDiTauMass_Collinear","VisibleDiTauMass_Collinear",70,20.,170,"M_{#tau(#mu) + #tau(3#mu) + #nu}, GeV","Events");
   
   prod_size=HConfig.GetTH1D(Name+"_prod_size","prod_size",7,-0.5,6.5,"no. of visible products","Events");
+  
+  Vertex_Dist=HConfig.GetTH1D(Name+"_Vertex_Dist","Vertex_Dist",100,0.0,1.0,"Vertex shift, cm","Events");
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -354,14 +363,14 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&Selection_Cut_muon_Rel_Iso);
   Extradist1d.push_back(&Selection_Cut_Vis_InvM);
   
-  Extradist1d.push_back(&Selection_Cut_Mu1_P);
-  Extradist1d.push_back(&Selection_Cut_Mu1_Eta);
-  Extradist1d.push_back(&Selection_Cut_Mu2_P);
-  Extradist1d.push_back(&Selection_Cut_Mu2_Eta);
-  Extradist1d.push_back(&Selection_Cut_Mu3_P);
-  Extradist1d.push_back(&Selection_Cut_Mu3_Eta);
-  Extradist1d.push_back(&Selection_Cut_mu_P);
-  Extradist1d.push_back(&Selection_Cut_mu_Eta);
+  //Extradist1d.push_back(&Selection_Cut_Mu1_P);
+  //Extradist1d.push_back(&Selection_Cut_Mu1_Eta);
+  //Extradist1d.push_back(&Selection_Cut_Mu2_P);
+  //Extradist1d.push_back(&Selection_Cut_Mu2_Eta);
+  //Extradist1d.push_back(&Selection_Cut_Mu3_P);
+  //Extradist1d.push_back(&Selection_Cut_Mu3_Eta);
+  //Extradist1d.push_back(&Selection_Cut_mu_P);
+  //Extradist1d.push_back(&Selection_Cut_mu_Eta);
   
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_before);
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after);
@@ -398,6 +407,8 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&VisibleDiTauMass_Collinear);
   
   Extradist1d.push_back(&prod_size);
+  
+  Extradist1d.push_back(&Vertex_Dist);
 
 
 }
@@ -734,7 +745,7 @@ void  ZTau3MuTaumu::doEvent(){
   std::vector<int> Muons_OppositeHemisphere_pT;
   std::vector<int> Muons_OppositeHemisphere_eta;
   std::vector<int> Muons_OppositeHemisphere_dR;
-  std::vector<int> Muons_OppositeHemisphere_OppositeCharge;
+  std::vector<std::vector<double>> Muons_OppositeHemisphere_OppositeCharge;
 
 
 
@@ -884,7 +895,8 @@ void  ZTau3MuTaumu::doEvent(){
 		  Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
 		  Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 		
-		if(Ntp->Muon_charge(i)*Tau3MuCharge == -1) Muons_OppositeHemisphere_OppositeCharge.push_back(i);
+		if(Ntp->Muon_charge(i)*Tau3MuCharge == -1) Muons_OppositeHemisphere_OppositeCharge.push_back({Ntp->Muon_P4(i).DeltaR(Tau3MuLV),i});
+                
 	      }
 	    value.at(OSCharge) = Muons_OppositeHemisphere_OppositeCharge.size();
 	  }
@@ -907,7 +919,7 @@ void  ZTau3MuTaumu::doEvent(){
       
       for(unsigned int i = 0 ; i< Muons_OppositeHemisphere_OppositeCharge.size(); i++){
            
-           int muon_index = Muons_OppositeHemisphere_OppositeCharge.at(i);
+           int muon_index = Muons_OppositeHemisphere_OppositeCharge[i][1];
            
            double MuonIsolation_val = Ntp->Muon_P4(muon_index).Pt()  /  (Ntp->Muon_P4(muon_index).Pt()  +   Ntp->Muon_RelIso(muon_index) );
            double VisMass_val = (Tau3MuLV + Ntp->Muon_P4(muon_index)).M();
@@ -965,7 +977,8 @@ void  ZTau3MuTaumu::doEvent(){
     
     //    std::cout<<"pass nMuons "<< pass.at(nMuons) <<    "  triplet pT    "<< pass.at(TripletPT)  << std::endl;
     //    std::cout<<"   how many muons i have  " << Muons_OppositeHemisphere_OppositeCharge .size() << std::endl;
-    unsigned int muon_idx = Muons_OppositeHemisphere_OppositeCharge.at(0);
+    sort( Muons_OppositeHemisphere_OppositeCharge.rbegin(), Muons_OppositeHemisphere_OppositeCharge.rend() ); // sort based on first column, highest first
+    unsigned int muon_idx = Muons_OppositeHemisphere_OppositeCharge[0][1];
     TLorentzVector MuLV = Ntp->Muon_P4(muon_idx);
     
     prod_size.at(t).Fill(Muons_OppositeHemisphere_OppositeCharge.size());
@@ -995,10 +1008,10 @@ void  ZTau3MuTaumu::doEvent(){
     Selection_Cut_mu_P.at(t).Fill(highest_pT,1 );
     Selection_Cut_mu_Eta.at(t).Fill(lowest_eta,1 );
     
-    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
-								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
+    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),
+	   							Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx));
-    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_HighestPt_PrimaryVertex());
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     SVPVTauDirAngle_largescale.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     MinDistToIsoTrack.at(t).Fill(Ntp->Isolation_MinDist(signal_idx));
@@ -1009,6 +1022,26 @@ void  ZTau3MuTaumu::doEvent(){
     TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(MuLV.Theta()));
     TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
     VisibleDiTauMass_Collinear.at(t).Fill((MuLV + Tau3muLV + Neutrino_LV).M(), 1);
+    
+    // Common vertex
+    TVector3 FirstGuess(0.1,0.1,0.1);
+    std::vector<TrackParticle> Triplet_set;
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_1_idx));
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_2_idx));
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_3_idx));
+    Chi2VertexFitter  Triplet_FittedVertex(Triplet_set,Ntp->Vertex_Signal_KF_pos(signal_idx));
+    Triplet_FittedVertex.Fit();
+    
+    std::vector<TrackParticle> Triplet_plus_mu_set;
+    Triplet_plus_mu_set=Triplet_set;
+    Triplet_plus_mu_set.push_back(Ntp->Muon_TrackParticle(muon_idx));
+    Chi2VertexFitter  Four_Particle_FittedVertex(Triplet_plus_mu_set,Triplet_FittedVertex.GetVertex());
+    Four_Particle_FittedVertex.Fit();
+    
+    //std::cout << "Triplet_FittedVertex mag: " << Triplet_FittedVertex.GetVertex().Mag() << std::endl;
+    //std::cout << "Four_Particle_FittedVertex mag: " << Four_Particle_FittedVertex.GetVertex().Mag() << std::endl;
+    
+    Vertex_Dist.at(t).Fill(fabs((Triplet_FittedVertex.GetVertex()-Four_Particle_FittedVertex.GetVertex()).Mag()),1 );
     
 
     unsigned int os_mu_idx  = Ntp->SortedChargeMuons(idx_vec).at(0);
@@ -1221,12 +1254,19 @@ void  ZTau3MuTaumu::doEvent(){
 
 void  ZTau3MuTaumu::Finish(){
 
+  if(mode == RECONSTRUCT){
+      double scale(1.0);
+      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      ScaleAllHistOfType(1,scale);
+  }
+
   //*** write down the T3MMiniTree.root for statistical analysis
-  T3MFMiniTree = new TFile("T3MMiniTree_taumu.root","recreate");
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
-  
+
+
   Selection::Finish();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

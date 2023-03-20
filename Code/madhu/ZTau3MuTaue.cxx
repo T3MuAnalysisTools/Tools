@@ -7,7 +7,8 @@
 //#include "Logger.h"
 
 ZTau3MuTaue::ZTau3MuTaue(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  AnalysisName(Name_)
 {
   // This is a class constructor;
 }
@@ -24,8 +25,12 @@ ZTau3MuTaue::~ZTau3MuTaue(){
 void  ZTau3MuTaue::Configure(){
 
   //  Mini tree for limit extraction
+  
+  TString treeprefix;
+  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
 
-  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
+  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
 
   T3MMiniTree->Branch("m3m",&m3m);
   T3MMiniTree->Branch("dataMCtype",&dataMCtype);
@@ -726,7 +731,7 @@ void  ZTau3MuTaue::doEvent(){
   std::vector<int> Electrons_OppositeHemisphere_pT;
   std::vector<int> Electrons_OppositeHemisphere_eta;
   std::vector<int> Electrons_OppositeHemisphere_dR;
-  std::vector<int> Electrons_OppositeHemisphere_OppositeCharge;
+  std::vector<std::vector<double>> Electrons_OppositeHemisphere_OppositeCharge;
 
 
 
@@ -863,7 +868,7 @@ void  ZTau3MuTaue::doEvent(){
 	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) +
 	    Ntp->Muon_charge(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 
-	  if(Ntp->Electron_charge(i)*Tau3MuCharge == -1) Electrons_OppositeHemisphere_OppositeCharge.push_back(i);
+	  if(Ntp->Electron_charge(i)*Tau3MuCharge == -1) Electrons_OppositeHemisphere_OppositeCharge.push_back({Ntp->Electron_P4(i).DeltaR(Tau3MuLV),i});
 	}
       value.at(OSCharge) = Electrons_OppositeHemisphere_OppositeCharge.size();
       }
@@ -878,7 +883,7 @@ void  ZTau3MuTaue::doEvent(){
       {
     	for(unsigned int i = 0 ; i< Electrons_OppositeHemisphere_OppositeCharge.size(); i++){
            
-           int electron_index = Electrons_OppositeHemisphere_OppositeCharge.at(i);
+           int electron_index = Electrons_OppositeHemisphere_OppositeCharge[i][1];
            
            double VisMass_val = (Tau3MuLV + Ntp->Electron_P4(electron_index)).M();
            if(fabs(VisMass_val-60.0)   < fabs(central_VisMass-60.0)  ){
@@ -911,7 +916,8 @@ void  ZTau3MuTaue::doEvent(){
   if(status){ 
 
     //    std::cout<<"   how many electrons i have  " << Electrons_OppositeHemisphere_OppositeCharge .size() << std::endl;
-    unsigned int electron_idx = Electrons_OppositeHemisphere_OppositeCharge.at(0);
+    sort( Electrons_OppositeHemisphere_OppositeCharge.rbegin(), Electrons_OppositeHemisphere_OppositeCharge.rend() ); // sort based on first column, highest first
+    unsigned int electron_idx = Electrons_OppositeHemisphere_OppositeCharge[0][1];
     TLorentzVector ElectronLV = Ntp->Electron_P4(electron_idx);
     
     prod_size.at(t).Fill(Electrons_OppositeHemisphere_OppositeCharge.size());
@@ -935,10 +941,10 @@ void  ZTau3MuTaue::doEvent(){
     Selection_Cut_El_Pt.at(t).Fill(highest_pT,1 );
     Selection_Cut_El_Eta.at(t).Fill(lowest_eta,1 );
     
-    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
-								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
+    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),
+	   							Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx));
-    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_HighestPt_PrimaryVertex());
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     SVPVTauDirAngle_largescale.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     MinDistToIsoTrack.at(t).Fill(Ntp->Isolation_MinDist(signal_idx));
@@ -1153,8 +1159,14 @@ void  ZTau3MuTaue::doEvent(){
 
 void  ZTau3MuTaue::Finish(){
 
+  if(mode == RECONSTRUCT){
+      double scale(1.0);
+      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      ScaleAllHistOfType(1,scale);
+  }
+
   //*** write down the T3MMiniTree.root for statistical analysis
-  T3MFMiniTree = new TFile("T3MMiniTree_taue.root","recreate");
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();

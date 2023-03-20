@@ -50,7 +50,7 @@ class ZTau3MuTaumu : public Selection {
 
  private:
 
-
+  TString AnalysisName;
   std::vector<TH1D>   Tau3MuRelativeIsolation;
   std::vector<TH1D>   OppositeMuRelativeIsolation;
   std::vector<TH1D>   VisibleDiTauMass;
@@ -131,6 +131,8 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   VisibleDiTauMass_Collinear;
   
   std::vector<TH1D>   prod_size;
+  
+  std::vector<TH1D>   Vertex_Dist;
   
   Double_t m3m;
   Double_t dataMCtype;

@@ -7,7 +7,8 @@
 //#include "Logger.h"
 
 ZTau3MuTauh::ZTau3MuTauh(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  AnalysisName(Name_)
 {
   // This is a class constructor;
 }
@@ -24,8 +25,12 @@ ZTau3MuTauh::~ZTau3MuTauh(){
 void  ZTau3MuTauh::Configure(){
 
   //  Mini tree for limit extraction
+  
+  TString treeprefix;
+  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
 
-  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
+  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
 
   T3MMiniTree->Branch("m3m",&m3m);
   T3MMiniTree->Branch("dataMCtype",&dataMCtype);
@@ -917,14 +922,15 @@ void  ZTau3MuTauh::doEvent(){
   //  value.at(DeepTauMuons) = PassedDeepMuonsTight.size();  // Tight
 
 
-  std::vector<int> PassedDeepElectronsLoose;
-  std::vector<int> PassedDeepElectronsMedium;
-  std::vector<int> PassedDeepElectronsTight;
+  std::vector<std::vector<double>> PassedDeepElectronsLoose;
+  std::vector<std::vector<double>> PassedDeepElectronsMedium;
+  std::vector<std::vector<double>> PassedDeepElectronsTight;
+  
   for(auto i : PassedDeepMuonsLoose)
     {
-      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back(i);
-      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back(i);
-      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back(i);
+      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
+      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
+      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
 
     }
 
@@ -943,7 +949,7 @@ void  ZTau3MuTauh::doEvent(){
     {
       for(unsigned int i = 0 ; i< PassedDeepElectronsLoose.size(); i++){
            
-           int tau_index = PassedDeepElectronsLoose.at(i);
+           int tau_index = PassedDeepElectronsLoose[i][1];
            
            double VisMass_val = (Tau3MuLV + Ntp->Tau_P4(tau_index)).M();
            if(fabs(VisMass_val-75.0)   < fabs(central_VisMass-75.0)  ){
@@ -976,7 +982,8 @@ void  ZTau3MuTauh::doEvent(){
 
     //   std::cout << "Test 1. " << std::endl;
     
-    unsigned int tau_h_idx = PassedDeepElectronsLoose.at(0);
+    sort( PassedDeepElectronsLoose.rbegin(), PassedDeepElectronsLoose.rend() ); // sort based on first column, highest first
+    unsigned int tau_h_idx = PassedDeepElectronsLoose[0][1];
     NumberOfTaus.at(t).Fill(Ntp->NTaus());
     
     prod_size.at(t).Fill(PassedDeepElectronsLoose.size());
@@ -1001,10 +1008,11 @@ void  ZTau3MuTauh::doEvent(){
     Selection_Cut_h_Pt.at(t).Fill(highest_pT,1 );
     Selection_Cut_h_Eta.at(t).Fill(lowest_eta,1 );
     
-    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_MatchedPrimaryVertex(signal_idx),Ntp->Vertex_PrimaryVertex_Covariance(signal_idx),
-								   Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
+    //Primary Vertex
+    FLSignificance.at(t).Fill(Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),
+	   							Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx)));
     VertexChi2KF.at(t).Fill(Ntp->Vertex_signal_KF_Chi2(signal_idx));
-    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_MatchedPrimaryVertex(signal_idx));
+    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_HighestPt_PrimaryVertex());
     SVPVTauDirAngle.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     SVPVTauDirAngle_largescale.at(t).Fill(SVPV.Angle(Tau3muLV.Vect()));
     MinDistToIsoTrack.at(t).Fill(Ntp->Isolation_MinDist(signal_idx));
@@ -1015,6 +1023,18 @@ void  ZTau3MuTauh::doEvent(){
     TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(TauHLV.Theta()));
     TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
     VisibleDiTauMass_Collinear.at(t).Fill((TauHLV + Tau3muLV + Neutrino_LV).M(), 1);
+    
+    
+    // Common vertex
+    std::vector<TrackParticle> Triplet_set;
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_1_idx));
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_2_idx));
+    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_3_idx));
+    //Chi2VertexFitter  TripletFittedVertex(Triplet_set,Ntp->Vertex_Signal_KF_pos(signal_idx));
+    
+    //std::vector<TrackParticle> Triplet_plus_mu_set;
+    //Triplet_plus_mu_set=Triplet_set;
+    //Triplet_plus_mu_set.push_back(Ntp->Muon_TrackParticle(tau_h_idx));
     
     
 
@@ -1232,8 +1252,14 @@ void  ZTau3MuTauh::doEvent(){
 
 void  ZTau3MuTauh::Finish(){
 
+  if(mode == RECONSTRUCT){
+      double scale(1.0);
+      if(Nminus0.at(0).at(1).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      ScaleAllHistOfType(1,scale);
+  }
+
   //*** write down the T3MMiniTree.root for statistical analysis
-  T3MFMiniTree = new TFile("T3MMiniTree_tauh.root","recreate");
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
