@@ -39,12 +39,16 @@ class ZTau3MuTaue : public Selection {
 	     VisMass,
 	     NCuts}; 
 
+  TString AnalysisName;
 
  protected:
   virtual void doEvent();  
   virtual void Store_ExtraDist();
 
  private:
+
+  TTree *T3MMiniTree;
+  TFile *T3MFMiniTree;
 
 
   std::vector<TH1D>   Tau3MuRelativeIsolation;
@@ -63,9 +67,22 @@ class ZTau3MuTaue : public Selection {
 
   std::vector<TH1D>   PairMass_OppositeSign_dR12;
   std::vector<TH1D>   PairMass_OppositeSign_dR13;
+
+
+
   
   TRandom rndm;
   double random_num;
+
+
+  float  mini_m3m;
+  float  mini_dataMCtype;
+  float  mini_event_weight;
+  float  mini_TripletPt;
+  float  mini_Tau3MuRelativeIsolation;
+  float  mini_ElectronPt;
+  float  mini_ditaumass;
+
   
 };
 #endif
