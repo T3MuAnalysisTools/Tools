@@ -36,16 +36,16 @@ def doTrain(configs,training_cuts,mlist,infname):
     for train in configs:
         for category_wagon in train.keys():
 
-
+            print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ",category_wagon
             prefix = ""
-            outfname = "category_"+str(count)+"_"+category_wagon+prefix+".root"
+            outfname = "Trainin_N_"+str(count)+"_"+category_wagon+prefix+".root"
             outputFile = TFile(outfname , 'RECREATE' )
 
 
             factory = TMVA.Factory( "TMVAClassification", outputFile,
                                     "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" )
 
-            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+category_wagon + prefix)
+            dataloader = TMVA.DataLoader("Trainin_N_"+str(count)+"_"+category_wagon + prefix)
             factory.SetVerbose( True  )
 
 
@@ -80,7 +80,6 @@ def doTrain(configs,training_cuts,mlist,infname):
                 dataloader.AddSignalTree    ( signal_ztt_mu3mu,      signalWeight          );
                 dataloader.AddBackgroundTree( background,            backgroundWeight      );
 
-
             if category_wagon=="ZTT_tau3mu":
                 categoryCut=''
                 cuts  = cuts + 'dataMCtype      == 210233   '
@@ -97,18 +96,6 @@ def doTrain(configs,training_cuts,mlist,infname):
                 background     = input.Get("DoubleMuonLowMass_ztau3mutaue")
                 dataloader.AddSignalTree    ( signal_ztt_mu3mu,     signalWeight          );
                 dataloader.AddBackgroundTree( background,           backgroundWeight      );
-
-
-
-
-
-
-
-  
- 
-
-
-
 
 
             mycutSig = TCut(  cuts + categoryCut) 

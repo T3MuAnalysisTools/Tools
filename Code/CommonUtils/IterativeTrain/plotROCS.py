@@ -64,9 +64,11 @@ if __name__== "__main__":
     for ifile in args.files:
         print ifile
         datasets_prefix = ifile[:-5]
+        print datasets_prefix
         color +=2
         rdict = get_file_dict(ifile)
-        hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
+#        hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
+        hist = rdict[datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
 #output_4_A
 
         hist.SetTitle("")
