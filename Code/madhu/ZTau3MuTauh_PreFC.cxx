@@ -1,4 +1,4 @@
-#include "ZTau3MuTauh.h"
+#include "ZTau3MuTauh_PreFC.h"
 #include "TLorentzVector.h"
 #include <cstdlib>
 #include "HistoConfig.h"
@@ -6,14 +6,13 @@
 #include <iostream>
 //#include "Logger.h"
 
-ZTau3MuTauh::ZTau3MuTauh(TString Name_, TString id_):
-  Selection(Name_,id_),
-  AnalysisName(Name_)
+ZTau3MuTauh_PreFC::ZTau3MuTauh_PreFC(TString Name_, TString id_):
+  Selection(Name_,id_)
 {
   // This is a class constructor;
 }
 
-ZTau3MuTauh::~ZTau3MuTauh(){
+ZTau3MuTauh_PreFC::~ZTau3MuTauh_PreFC(){
   for(unsigned int j=0; j<Npassed.size(); j++){
 	 Logger(Logger::Info) << "Selection Summary before: "
 	 << Npassed.at(j).GetBinContent(1)     << " +/- " << Npassed.at(j).GetBinError(1)     << " after: "
@@ -22,49 +21,39 @@ ZTau3MuTauh::~ZTau3MuTauh(){
   Logger(Logger::Info) << "complete." << std::endl;
 }
 
-void  ZTau3MuTauh::Configure(){
+void  ZTau3MuTauh_PreFC::Configure(){
 
-  //  Mini tree for limit extraction
-  
-  TString treeprefix;
-  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
-  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+  //  This mini tree is for limit extraction
 
-  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
+  T3MMiniTree= new TTree("T3MMiniTree","T3MMiniTree");
 
   T3MMiniTree->Branch("m3m",&m3m);
   T3MMiniTree->Branch("dataMCtype",&dataMCtype);
   T3MMiniTree->Branch("event_weight",&event_weight);
   T3MMiniTree->Branch("m12",&m12);
   T3MMiniTree->Branch("m13",&m13);
-  
-  T3MMiniTree->Branch("var_TripletPT",&var_TripletPT);
-  T3MMiniTree->Branch("var_TripletEta",&var_TripletEta);
-  T3MMiniTree->Branch("var_Tau3MuIsolation",&var_Tau3MuIsolation);
-  T3MMiniTree->Branch("var_mu1_pT",&var_mu1_pT);
-  T3MMiniTree->Branch("var_mu2_pT",&var_mu2_pT);
-  T3MMiniTree->Branch("var_mu3_pT",&var_mu3_pT);
-  
-  T3MMiniTree->Branch("var_Tau_pT",&var_Tau_pT);
-  
-  T3MMiniTree->Branch("var_FLSignificance",&var_FLSignificance);
-  T3MMiniTree->Branch("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
-  T3MMiniTree->Branch("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
-  T3MMiniTree->Branch("var_MinDistToIsoTrack",&var_MinDistToIsoTrack);
-  T3MMiniTree->Branch("var_DeltaPhi",&var_DeltaPhi);
-  
-  T3MMiniTree->Branch("var_MET_Et",&var_MET_Et);
-  T3MMiniTree->Branch("var_MET_Phi",&var_MET_Phi);
-  
-  T3MMiniTree->Branch("var_VisMass",&var_VisMass);
-  T3MMiniTree->Branch("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
+  T3MMiniTree->Branch("mDr1",&mDr1);
+  T3MMiniTree->Branch("mDr2",&mDr2);
+  T3MMiniTree->Branch("LumiScale",&LumiScale);
 
 
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==PassedFiducialCuts) cut.at(PassedFiducialCuts)=1;
+    if(i==WhetherDecayFound)        cut.at(WhetherDecayFound)=1;
+    if(i==Mu1_Candidate_p)          cut.at(Mu1_Candidate_p)=2.49;
+    if(i==Mu1_Candidate_eta)        cut.at(Mu1_Candidate_eta)=2.41;
+    if(i==Mu2_Candidate_p)          cut.at(Mu2_Candidate_p)=2.49;
+    if(i==Mu2_Candidate_eta)        cut.at(Mu2_Candidate_eta)=2.41;
+    if(i==Mu3_Candidate_p)          cut.at(Mu3_Candidate_p)=2.49;
+    if(i==Mu3_Candidate_eta)        cut.at(Mu3_Candidate_eta)=2.41;
+    if(i==Tau_h_Candidate_p)        cut.at(Tau_h_Candidate_p)=18.0;
+    if(i==Tau_h_Candidate_eta)      cut.at(Tau_h_Candidate_eta)=2.41;
+    if(i==Mu1_Candidate_recod)      cut.at(Mu1_Candidate_recod)=1;
+    if(i==Mu2_Candidate_recod)      cut.at(Mu2_Candidate_recod)=1;
+    if(i==Mu3_Candidate_recod)      cut.at(Mu3_Candidate_recod)=1;
+    if(i==Tau_h_Candidate_recod)    cut.at(Tau_h_Candidate_recod)=1;
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
@@ -103,11 +92,107 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==PassedFiducialCuts){
-      title.at(i)="Passed fiducial cuts";
-      hlabel="Passed fiducial cuts ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    else if(i==WhetherDecayFound){
+      title.at(i)="$Z \\rightarrow \\tau_{h}, \\tau_{3\\mu}$ decay information found in ntuple";
+      hlabel="Decay information found in ntuple ";
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu1_Candidate_p){
+      title.at(i)=" Whether GEN level $\\mu_{1}$ has $p>2.49 GeV$ ";
+      hlabel="$\\mu_{1}$ $p, GeV$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+    }
+    else if(i==Mu1_Candidate_eta){
+      title.at(i)=" Whether GEN level $\\mu_{1}$ has $|\\eta| < 2.41$ ";
+      hlabel="$\\mu_{1}$ $|\\eta|$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+    }
+    else if(i==Mu2_Candidate_p){
+      title.at(i)=" Whether GEN level $\\mu_{2}$ has $p>2.49 GeV$ ";
+      hlabel="$\\mu_{2}$ $p, GeV$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+    }
+    else if(i==Mu2_Candidate_eta){
+      title.at(i)=" Whether GEN level $\\mu_{2}$ has $|\\eta| < 2.41$ ";
+      hlabel="$\\mu_{1}$ $|\\eta|$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+    }
+    else if(i==Mu3_Candidate_p){
+      title.at(i)=" Whether GEN level $\\mu_{3}$ has $p>2.49 GeV$ ";
+      hlabel="$\\mu_{3}$ $p, GeV$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_p_",htitle,160,0.0,80.0,hlabel,"Events"));
+    }
+    else if(i==Mu3_Candidate_eta){
+      title.at(i)=" Whether GEN level $\\mu_{3}$ has $|\\eta| < 2.41$ ";
+      hlabel="$\\mu_{3}$ $|\\eta|$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+    }
+    else if(i==Tau_h_Candidate_p){
+      title.at(i)=" Whether GEN level $\\tau_{h}$ has $pT>18 GeV$ ";
+      hlabel="$\\tau_{h}$ $p, GeV$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_p_",htitle,40,0.0,80.0,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_p_",htitle,40,0.0,80.0,hlabel,"Events"));
+    }
+    else if(i==Tau_h_Candidate_eta){
+      title.at(i)=" Whether GEN level $\\tau_{h}$ has $|\\eta| < 2.41$ ";
+      hlabel="$\\tau_{h}$ $|\\eta|$";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_eta_",htitle,30,0,3.14,hlabel,"Events"));
+    }
+    else if(i==Mu1_Candidate_recod){
+      title.at(i)=" Whether $\\mu_{1}$ is reconstructed in MC ";
+      hlabel="If $\\mu_{1}$ is reconstructed in MC";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu1_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu1_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu2_Candidate_recod){
+      title.at(i)=" Whether $\\mu_{2}$ is reconstructed in MC ";
+      hlabel="If $\\mu_{2}$ is reconstructed in MC";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu2_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu2_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Mu3_Candidate_recod){
+      title.at(i)=" Whether $\\mu_{3}$ is reconstructed in MC ";
+      hlabel="If $\\mu_{3}$ is reconstructed in MC";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Mu3_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Mu3_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+    }
+    else if(i==Tau_h_Candidate_recod){
+      title.at(i)=" Whether $\\tau_{h}$ is reconstructed in MC ";
+      hlabel="If $\\tau_{h}$ is reconstructed in MC";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau_h_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau_h_Candidate_recod_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus_pT){
       title.at(i)=" At least one $\\tau_{h}$, $pT>17.5 GeV$";
@@ -199,6 +284,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_Tau3MuIsolation_",htitle,50,0,1.1,hlabel,"Events"));
     }
+
     else if(i==VisMass){
       title.at(i)="50 GeV $< M(\\tau(h) + \\tau(3\\mu))  < $ 100 GeV";
       htitle=title.at(i);
@@ -220,9 +306,22 @@ void  ZTau3MuTauh::Configure(){
   }
   // Setup NPassed Histogams
 
+  NumberOfTaus=HConfig.GetTH1D(Name+"_NumberOfTaus","NumberOfTaus",5,-0.5,4.5,"Number of #tau ","Events");
+
+
+
+  Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_Tau3MuRelativeIsolation","Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");
+  TauHDecayMode=HConfig.GetTH1D(Name+"_TauHDecayMode","TauHDecayMode",12,-0.5,11.5,"HPS #tau_{h} decay mode","Events");
+  VisibleDiTauMass=HConfig.GetTH1D(Name+"_VisibleDiTauMass","VisibleDiTauMass",70,0.,150,"M_{#tau(h) - #tau(3#mu)}, GeV (visible mass)","Events");
+  MTT=HConfig.GetTH1D(Name+"_MTT","MTT",70,0.,140,"M_{#tau(h) - #tau(3#mu)}, GeV (collinear approximation)","Events");
+  TripletMass=HConfig.GetTH1D(Name+"_TripletMass","TripletMass",30,1.1,2.2,"M_{3#mu}, GeV","Events");
   PairMass_OppositeSign_dR12=HConfig.GetTH1D(Name+"_PairMass_OppositeSign_dR12","PairMass_OppositeSign_dR12",40,0.2,2.,"M_{1}, GeV (OS - SS dR sorted)","Events");
   PairMass_OppositeSign_dR13=HConfig.GetTH1D(Name+"_PairMass_OppositeSign_dR13","PairMass_OppositeSign_dR13",40,0.2,2.,"M_{2}, GeV (OS - SS dR sorted)","Events");
 
+  TripletPt=HConfig.GetTH1D(Name+"_TripletPt","TripletPt",50,2,80,"pT(3#mu), GeV ","Events");
+  OppositeTauPt=HConfig.GetTH1D(Name+"_OppositeTauPt","OppositeTauPt",50,2,40,"pT(#tau), GeV ","Events");
+
+ 
   matched_pdgId=HConfig.GetTH1D(Name+"_matched_pdgId","matched_pdgId",25,-0.5,24.5,"pdgID MC matched","Events");
   matched_dR=HConfig.GetTH1D(Name+"_matched_dR","matched_dR",50,-0.1,0.5,"#Delta R(MC-RECO) Object opposite to #tau_{3#mu}","Events");
 
@@ -236,23 +335,34 @@ void  ZTau3MuTauh::Configure(){
   Z_Pt=HConfig.GetTH1D(Name+"_Z_Pt","Z_Pt",50,0,70,"Z_{pT}","Events");
   OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
+  
   Selection_Cut_3mu_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Pt","Selection_Cut_3mu_Pt",100,0,50.0,"3#mu p_{T}, GeV","Events");
   Selection_Cut_3mu_Rel_Iso=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Rel_Iso","Selection_Cut_3mu_Rel_Iso",50,0,1.1,"3 #mu Relative Isolation, p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","Events");
   Selection_Cut_tauh_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_tauh_Pt","Selection_Cut_tauh_Pt",100,0,50.0,"#tau_{h} p_{T}, GeV","Events");
   Selection_Cut_tauh_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_tauh_Eta","Selection_Cut_tauh_Eta",30,0,3.0,"#tau_{h} |#eta|","Events");
   Selection_Cut_tauh_DeltaR_3mu=HConfig.GetTH1D(Name+"_Selection_Cut_tauh_DeltaR_3mu","Selection_Cut_tauh_DeltaR_3mu",60,0,1.2,"#Delta R (#tau_{h}-3#mu)","Events");
   Selection_Cut_Vis_InvM=HConfig.GetTH1D(Name+"_Selection_Cut_Vis_InvM","Selection_Cut_Vis_InvM",75,0,150.0,"M_{#tau(h) + #tau(3#mu)}, GeV (visible mass)","Events");
-
-
+  
+  Selection_Cut_Mu1_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_P","Selection_Cut_Mu1_P",200,0.0,100.0,"#mu_{1} p, GeV","Events");
+  Selection_Cut_Mu1_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_Eta","Selection_Cut_Mu1_Eta",30,0,3.14,"#mu_{1} |#eta|","Events");
   Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  
+  Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",200,0.0,100.0,"#mu_{2} p, GeV","Events");
+  Selection_Cut_Mu2_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_Eta","Selection_Cut_Mu2_Eta",30,0,3.14,"#mu_{2} |#eta|","Events");
   Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
+  
+  Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",200,0.0,100.0,"#mu_{3} p, GeV","Events");
+  Selection_Cut_Mu3_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_Eta","Selection_Cut_Mu3_Eta",100,0,5.0,"#mu_{3} |#eta|","Events");
   Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
+  
+  Selection_Cut_h_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_h_Pt","Selection_Cut_h_Pt",40,0.0,80.0,"#tau_{h}, p_{T}, GeV","Events");
+  Selection_Cut_h_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_h_Eta","Selection_Cut_h_Eta",30,0,3.14,"#tau_{h}, |#eta|","Events");
   Selection_Cut_h_pt_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_before","Selection_Cut_h_pt_eta_before",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after","Selection_Cut_h_pt_eta_after",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_reco","Selection_Cut_h_pt_eta_after_reco",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
@@ -270,46 +380,6 @@ void  ZTau3MuTauh::Configure(){
   Selection_Cut_RecoMu_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_Eta","Selection_Cut_RecoMu_Eta",50,2,3.0,"#mu |#eta|","Events");
   Selection_Cut_RecoH_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Pt","Selection_Cut_RecoH_Pt",100,10.0,20.0,"p_{T}, GeV","Events");
   Selection_Cut_RecoH_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Eta","Selection_Cut_RecoH_Eta",50,2,3.0,"|#eta|","Events");
-  
-  PostSelection_NumberOfTaus=HConfig.GetTH1D(Name+"_PostSelection_NumberOfTaus","PostSelection_NumberOfTaus",5,-0.5,4.5,"Number of #tau ","Events");InputFeatureCollection.push_back(&PostSelection_NumberOfTaus);
-
-  PostSelection_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostSelection_Tau3MuRelativeIsolation","PostSelection_Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostSelection_Tau3MuRelativeIsolation);
-  PostSelection_TauHDecayMode=HConfig.GetTH1D(Name+"_PostSelection_TauHDecayMode","PostSelection_TauHDecayMode",12,-0.5,11.5,"HPS #tau_{h} decay mode","Events");
-  PostSelection_VisibleDiTauMass=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass","PostSelection_VisibleDiTauMass",70,0.,150,"M_{#tau(h) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass);
-  PostSelection_MTT=HConfig.GetTH1D(Name+"_PostSelection_MTT","PostSelection_MTT",70,0.,140,"M_{#tau(h) - #tau(3#mu)}, GeV (collinear approximation)","Events");
-  PostSelection_TripletMass=HConfig.GetTH1D(Name+"_PostSelection_TripletMass","PostSelection_TripletMass",40,1.1,2.2,"M_{3#mu}, GeV","Events");
-  
-  PostSelection_TripletPt=HConfig.GetTH1D(Name+"_PostSelection_TripletPt","PostSelection_TripletPt",50,2,80,"pT(3#mu), GeV ","Events");InputFeatureCollection.push_back(&PostSelection_TripletPt);
-  PostSelection_OppositeTauPt=HConfig.GetTH1D(Name+"_PostSelection_OppositeTauPt","PostSelection_OppositeTauPt",50,2,40,"pT(h), GeV ","Events");
-  PostSelection_TripletEta=HConfig.GetTH1D(Name+"_PostSelection_TripletEta","PostSelection_TripletEta",50,-2.5,2.5,"#eta(3#mu)","Events");InputFeatureCollection.push_back(&PostSelection_TripletEta);
-  PostSelection_OppositeTauEta=HConfig.GetTH1D(Name+"_PostSelection_OppositeTauEta","PostSelection_OppositeTauEta",50,-2.5,2.5,"#eta(h)","Events");
-  
-  PostSelection_MET_Et=HConfig.GetTH1D(Name+"_PostSelection_MET_Et","PostSelection_MET_Et",100,0.0,100.0,"MET Et, GeV","Events");InputFeatureCollection.push_back(&PostSelection_MET_Et);
-  PostSelection_MET_Phi=HConfig.GetTH1D(Name+"_PostSelection_MET_Phi","PostSelection_MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");InputFeatureCollection.push_back(&PostSelection_MET_Phi);
-  PostSelection_MET_Phi_vs_NeutrinoPhi=HConfig.GetTH2D(Name+"_PostSelection_MET_Phi_vs_NeutrinoPhi","PostSelection_MET_Phi_vs_NeutrinoPhi",40,-3.2,3.2,40,-3.2,3.2,"MET #Phi","#nu #Phi");
-  PostSelection_MET_vs_NeutrinoPt=HConfig.GetTH2D(Name+"_PostSelection_MET_vs_NeutrinoPt","PostSelection_MET_vs_NeutrinoPt",50,0,100,50,0,100,"MET Et, GeV","#nu p_{T}, GeV");
-  
-  PostSelection_Mu1_Pt=HConfig.GetTH1D(Name+"_PostSelection_Mu1_Pt","PostSelection_Mu1_Pt",200,0.0,100.0,"#mu_{1} p, GeV","Events");InputFeatureCollection.push_back(&PostSelection_Mu1_Pt);
-  PostSelection_Mu1_Eta=HConfig.GetTH1D(Name+"_PostSelection_Mu1_Eta","PostSelection_Mu1_Eta",30,0,3.14,"#mu_{1} |#eta|","Events");InputFeatureCollection.push_back(&PostSelection_Mu1_Eta);
-  PostSelection_Mu2_Pt=HConfig.GetTH1D(Name+"_PostSelection_Mu2_Pt","PostSelection_Mu2_Pt",200,0.0,100.0,"#mu_{2} p, GeV","Events");InputFeatureCollection.push_back(&PostSelection_Mu2_Pt);
-  PostSelection_Mu2_Eta=HConfig.GetTH1D(Name+"_PostSelection_Mu2_Eta","PostSelection_Mu2_Eta",30,0,3.14,"#mu_{2} |#eta|","Events");InputFeatureCollection.push_back(&PostSelection_Mu2_Eta);
-  PostSelection_Mu3_Pt=HConfig.GetTH1D(Name+"_PostSelection_Mu3_Pt","PostSelection_Mu3_Pt",200,0.0,100.0,"#mu_{3} p, GeV","Events");InputFeatureCollection.push_back(&PostSelection_Mu3_Pt);
-  PostSelection_Mu3_Eta=HConfig.GetTH1D(Name+"_PostSelection_Mu3_Eta","PostSelection_Mu3_Eta",100,0,5.0,"#mu_{3} |#eta|","Events");InputFeatureCollection.push_back(&PostSelection_Mu3_Eta);
-  PostSelection_h_Pt=HConfig.GetTH1D(Name+"_PostSelection_h_Pt","PostSelection_h_Pt",40,15.0,80.0,"#tau_{h}, p_{T}, GeV","Events");InputFeatureCollection.push_back(&PostSelection_h_Pt);
-  PostSelection_h_Eta=HConfig.GetTH1D(Name+"_PostSelection_h_Eta","PostSelection_h_Eta",30,0,3.14,"#tau_{h}, |#eta|","Events");InputFeatureCollection.push_back(&PostSelection_h_Eta);
-  
-  PostSelection_FLSignificance=HConfig.GetTH1D(Name+"_PostSelection_FLSignificance","PostSelection_FLSignificance",60,0,30,"PV - SV distance  significance","Events"); InputFeatureCollection.push_back(&PostSelection_FLSignificance);
-  PostSelection_SVPVTauDirAngle=HConfig.GetTH1D(Name+"_PostSelection_SVPVTauDirAngle","PostSelection_SVPVTauDirAngle",50,0,0.15,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events"); InputFeatureCollection.push_back(&PostSelection_SVPVTauDirAngle);
-  PostSelection_SVPVTauDirAngle_largescale=HConfig.GetTH1D(Name+"_PostSelection_SVPVTauDirAngle_largescale","PostSelection_SVPVTauDirAngle_largescale",50,-3.2,3.2,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events");
-  PostSelection_VertexChi2KF=HConfig.GetTH1D(Name+"_PostSelection_VertexChi2KF","PostSelection_VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events"); InputFeatureCollection.push_back(&PostSelection_VertexChi2KF);
-  PostSelection_MinDistToIsoTrack=HConfig.GetTH1D(Name+"_PostSelection_MinDistToIsoTrack","PostSelection_MinDistToIsoTrack",100,0,0.1,"Min dR To IsoTrack","Events");InputFeatureCollection.push_back(&PostSelection_MinDistToIsoTrack);
-  PostSelection_Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_PostSelection_Kinematics_MissingTrMass","PostSelection_Kinematics_MissingTrMass",100,0,100.,"M_{T}, GeV","Events");
-  PostSelection_Kinematics_MissingTrMass_cos=HConfig.GetTH1D(Name+"_PostSelection_Kinematics_MissingTrMass_cos","PostSelection_Kinematics_MissingTrMass_cos",100,-1,1.,"cos(#theta)","Events");InputFeatureCollection.push_back(&PostSelection_Kinematics_MissingTrMass_cos);
-  PostSelection_VisibleDiTauMass_Collinear=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass_Collinear","PostSelection_VisibleDiTauMass_Collinear",70,30.,180,"M_{#tau(h) + #tau(3#mu) + #nu}, GeV","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass_Collinear);
-  
-  PostSelection_prod_size=HConfig.GetTH1D(Name+"PostSelection__prod_size","PostSelection_prod_size",7,-0.5,6.5,"no. of visible products","Events");InputFeatureCollection.push_back(&PostSelection_prod_size);
-  
-  
 
   Npassed=HConfig.GetTH1D(Name+"_NPass","Cut Flow",NCuts+1,-1,NCuts,"Number of Accumulative Cuts Passed","Events"); // Do not remove
   // Setup Extra Histograms
@@ -323,9 +393,16 @@ void  ZTau3MuTauh::Configure(){
 
 
 
-void  ZTau3MuTauh::Store_ExtraDist(){ 
+void  ZTau3MuTauh_PreFC::Store_ExtraDist(){ 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Here you must push back all analysis histograms, otherwise they wont be propagated to the output
+
+  Extradist1d.push_back(&NumberOfTaus);
+  Extradist1d.push_back(&Tau3MuRelativeIsolation);
+  Extradist1d.push_back(&TauHDecayMode);
+  Extradist1d.push_back(&VisibleDiTauMass);
+  Extradist1d.push_back(&MTT);
+  Extradist1d.push_back(&TripletMass);
 
   Extradist1d.push_back(&PairMass_OppositeSign_dR12);
   Extradist1d.push_back(&PairMass_OppositeSign_dR13);
@@ -340,6 +417,9 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   Extradist1d.push_back(&Muon3DRToTruth);
 
   Extradist1d.push_back(&dR_betweenTruth_VisibleTaus);
+
+  Extradist1d.push_back(&TripletPt);
+  Extradist1d.push_back(&OppositeTauPt);
   
   Extradist1d.push_back(&dR_betweenTruth_NeutrinoGuess);
   Extradist1d.push_back(&dR_betweenTruth_Tau);
@@ -352,6 +432,15 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   Extradist1d.push_back(&Selection_Cut_tauh_Eta);
   Extradist1d.push_back(&Selection_Cut_tauh_DeltaR_3mu);
   Extradist1d.push_back(&Selection_Cut_Vis_InvM);
+  
+  Extradist1d.push_back(&Selection_Cut_Mu1_P);
+  Extradist1d.push_back(&Selection_Cut_Mu1_Eta);
+  Extradist1d.push_back(&Selection_Cut_Mu2_P);
+  Extradist1d.push_back(&Selection_Cut_Mu2_Eta);
+  Extradist1d.push_back(&Selection_Cut_Mu3_P);
+  Extradist1d.push_back(&Selection_Cut_Mu3_Eta);
+  Extradist1d.push_back(&Selection_Cut_h_Pt);
+  Extradist1d.push_back(&Selection_Cut_h_Eta);
   
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_before);
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after);
@@ -380,43 +469,6 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   Extradist1d.push_back(&Selection_Cut_RecoMu_Eta);
   Extradist1d.push_back(&Selection_Cut_RecoH_Pt);
   Extradist1d.push_back(&Selection_Cut_RecoH_Eta);
-  
-  Extradist1d.push_back(&PostSelection_NumberOfTaus);
-  Extradist1d.push_back(&PostSelection_Tau3MuRelativeIsolation);
-  Extradist1d.push_back(&PostSelection_TauHDecayMode);
-  Extradist1d.push_back(&PostSelection_VisibleDiTauMass);
-  Extradist1d.push_back(&PostSelection_MTT);
-  Extradist1d.push_back(&PostSelection_TripletMass);
-  
-  Extradist1d.push_back(&PostSelection_TripletPt);
-  Extradist1d.push_back(&PostSelection_OppositeTauPt);
-  Extradist1d.push_back(&PostSelection_TripletEta);
-  Extradist1d.push_back(&PostSelection_OppositeTauEta);
-  
-  Extradist1d.push_back(&PostSelection_MET_Et);
-  Extradist1d.push_back(&PostSelection_MET_Phi);
-  Extradist2d.push_back(&PostSelection_MET_Phi_vs_NeutrinoPhi);
-  Extradist2d.push_back(&PostSelection_MET_vs_NeutrinoPt);
-  
-  Extradist1d.push_back(&PostSelection_Mu1_Pt);
-  Extradist1d.push_back(&PostSelection_Mu1_Eta);
-  Extradist1d.push_back(&PostSelection_Mu2_Pt);
-  Extradist1d.push_back(&PostSelection_Mu2_Eta);
-  Extradist1d.push_back(&PostSelection_Mu3_Pt);
-  Extradist1d.push_back(&PostSelection_Mu3_Eta);
-  Extradist1d.push_back(&PostSelection_h_Pt);
-  Extradist1d.push_back(&PostSelection_h_Eta);
-  
-  Extradist1d.push_back(&PostSelection_FLSignificance);
-  Extradist1d.push_back(&PostSelection_SVPVTauDirAngle);
-  Extradist1d.push_back(&PostSelection_SVPVTauDirAngle_largescale);
-  Extradist1d.push_back(&PostSelection_VertexChi2KF);
-  Extradist1d.push_back(&PostSelection_MinDistToIsoTrack);
-  Extradist1d.push_back(&PostSelection_Kinematics_MissingTrMass);
-  Extradist1d.push_back(&PostSelection_Kinematics_MissingTrMass_cos);
-  Extradist1d.push_back(&PostSelection_VisibleDiTauMass_Collinear);
-  
-  Extradist1d.push_back(&PostSelection_prod_size);
 
 
 
@@ -425,7 +477,7 @@ void  ZTau3MuTauh::Store_ExtraDist(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is called on each event
 
-void  ZTau3MuTauh::doEvent(){ 
+void  ZTau3MuTauh_PreFC::doEvent(){ 
 
   unsigned int t;
   int id(Ntp->GetMCID());
@@ -486,7 +538,7 @@ void  ZTau3MuTauh::doEvent(){
   value.at(SignalCandidate) = Ntp->NThreeMuons();
 
   int  signal_idx=-1;
-  double min_chi2(299.);
+  double min_chi2(99.);
 
   for(int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
     if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
@@ -495,7 +547,7 @@ void  ZTau3MuTauh::doEvent(){
     }
   }
   
-  TLorentzVector MC_NeutrinoSum_LV(0.,0.,0.,0.);
+  //  std::cout << "Test 1. " << std::endl;
   bool WhetherSignalMC = id==210||id==210231||id==210232||id==210233;
   if(WhetherSignalMC){
   
@@ -577,29 +629,37 @@ void  ZTau3MuTauh::doEvent(){
       if(abs(Ntp->MCParticle_childpdgid(tau_h_idx).at(i))==16){
         Tau_nu_LV=Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_h_idx).at(i));
       }
-      if(abs(Ntp->MCParticle_childpdgid(tau_h_idx).at(i))==12||abs(Ntp->MCParticle_childpdgid(tau_h_idx).at(i))==14||abs(Ntp->MCParticle_childpdgid(tau_h_idx).at(i))==16){
-        MC_NeutrinoSum_LV=MC_NeutrinoSum_LV+Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_h_idx).at(i));
-      }
     }
     Tau_h_LV = Ntp->MCParticle_p4(tau_h_idx) - Tau_nu_LV;
   }
   
   
-  double cut_Mu_Candidate_p=2.49;
-  double cut_Mu_Candidate_eta=2.41;
-  double cut_Tau_h_Candidate_p=18.0;
-  double cut_Tau_h_Candidate_eta=2.41;
+  value.at(WhetherDecayFound)=(Whether_decay_found);
+  pass.at(WhetherDecayFound)=(value.at(WhetherDecayFound)==cut.at(WhetherDecayFound));
   
-  bool var_Whether_decay_found = Whether_decay_found;
-  bool var_Mu1_Candidate_p = (Mu1_LV.Vect().Mag()) > cut_Mu_Candidate_p;
-  bool var_Mu1_Candidate_eta = (abs(Mu1_LV.Eta())) < cut_Mu_Candidate_eta;
-  bool var_Mu2_Candidate_p = (Mu2_LV.Vect().Mag()) > cut_Mu_Candidate_p;
-  bool var_Mu2_Candidate_eta = (abs(Mu2_LV.Eta())) < cut_Mu_Candidate_eta;
-  bool var_Mu3_Candidate_p = (Mu3_LV.Vect().Mag()) > cut_Mu_Candidate_p;
-  bool var_Mu3_Candidate_eta = (abs(Mu3_LV.Eta())) < cut_Mu_Candidate_eta;
-  bool var_Tau_h_Candidate_p = (Tau_h_LV.Pt()) > cut_Tau_h_Candidate_p;
-  bool var_Tau_h_Candidate_eta = (abs(Tau_h_LV.Eta())) < cut_Tau_h_Candidate_eta;
+  value.at(Mu1_Candidate_p)=(Mu1_LV.Vect().Mag());
+  pass.at(Mu1_Candidate_p)=value.at(Mu1_Candidate_p)>cut.at(Mu1_Candidate_p);
   
+  value.at(Mu1_Candidate_eta)=(abs(Mu1_LV.Eta()));
+  pass.at(Mu1_Candidate_eta)=value.at(Mu1_Candidate_eta)<cut.at(Mu1_Candidate_eta);
+  
+  value.at(Mu2_Candidate_p)=(Mu2_LV.Vect().Mag());
+  pass.at(Mu2_Candidate_p)=value.at(Mu2_Candidate_p)>cut.at(Mu2_Candidate_p);
+  
+  value.at(Mu2_Candidate_eta)=(abs(Mu2_LV.Eta()));
+  pass.at(Mu2_Candidate_eta)=value.at(Mu2_Candidate_eta)<cut.at(Mu2_Candidate_eta);
+  
+  value.at(Mu3_Candidate_p)=(Mu3_LV.Vect().Mag());
+  pass.at(Mu3_Candidate_p)=value.at(Mu3_Candidate_p)>cut.at(Mu3_Candidate_p);
+  
+  value.at(Mu3_Candidate_eta)=(abs(Mu3_LV.Eta()));
+  pass.at(Mu3_Candidate_eta)=value.at(Mu3_Candidate_eta)<cut.at(Mu3_Candidate_eta);
+  
+  value.at(Tau_h_Candidate_p)=(Tau_h_LV.Pt());
+  pass.at(Tau_h_Candidate_p)=value.at(Tau_h_Candidate_p)>cut.at(Tau_h_Candidate_p);
+  
+  value.at(Tau_h_Candidate_eta)=(abs(Tau_h_LV.Eta()));
+  pass.at(Tau_h_Candidate_eta)=value.at(Tau_h_Candidate_eta)<cut.at(Tau_h_Candidate_eta);
   
   double dR1_max(99.0);
   double dR2_max(99.0);
@@ -636,13 +696,15 @@ void  ZTau3MuTauh::doEvent(){
       Selection_Cut_RecoH_Eta.at(t).Fill(abs(Ntp->Tau_P4(itau).Eta()),1 );
     }
   
-  bool var_Mu1_Candidate_recod = (dR1_max<0.01);
-  bool var_Mu2_Candidate_recod = (dR2_max<0.01);
-  bool var_Mu3_Candidate_recod = (dR3_max<0.01);
-  bool var_Tau_h_Candidate_recod = (dR4_max<0.05);
+  value.at(Mu1_Candidate_recod)=(dR1_max<0.01);
+  pass.at(Mu1_Candidate_recod)=value.at(Mu1_Candidate_recod);
+  value.at(Mu2_Candidate_recod)=(dR2_max<0.01);
+  pass.at(Mu2_Candidate_recod)=value.at(Mu2_Candidate_recod);
+  value.at(Mu3_Candidate_recod)=(dR3_max<0.01);
+  pass.at(Mu3_Candidate_recod)=value.at(Mu3_Candidate_recod);
   
-  value.at(PassedFiducialCuts)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_h_Candidate_p&&var_Tau_h_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_h_Candidate_recod;
-  pass.at(PassedFiducialCuts)=(value.at(PassedFiducialCuts)==cut.at(PassedFiducialCuts));
+  value.at(Tau_h_Candidate_recod)=(dR4_max<0.05);
+  pass.at(Tau_h_Candidate_recod)=value.at(Tau_h_Candidate_recod);
   
   // This is to print out selected event content
   if(id==210233){
@@ -666,7 +728,6 @@ void  ZTau3MuTauh::doEvent(){
                     }
                   }
                   */
-                  /*
                   Selection_Cut_Mu1_P.at(t).Fill(Mu1_LV.Vect().Mag(),1 );
                   Selection_Cut_Mu1_Eta.at(t).Fill(abs(Mu1_LV.Eta()),1 );
                   Selection_Cut_Mu2_P.at(t).Fill(Mu2_LV.Vect().Mag(),1 );
@@ -713,7 +774,7 @@ void  ZTau3MuTauh::doEvent(){
                     }
                   }
                   }
-                  */
+                  
                   Selection_Cut_Mu1_dR.at(t).Fill(dR1_max,1 );
                   Selection_Cut_Mu2_dR.at(t).Fill(dR2_max,1 );
                   Selection_Cut_Mu3_dR.at(t).Fill(dR3_max,1 );
@@ -731,10 +792,21 @@ void  ZTau3MuTauh::doEvent(){
   }//if(id!=1)
   //  std::cout << "Test 2. " << std::endl;
   if(!WhetherSignalMC){
-    value.at(PassedFiducialCuts)=1;
-    pass.at(PassedFiducialCuts)=1;
+    pass.at(WhetherDecayFound)=1;
+    pass.at(Mu1_Candidate_p)=1;
+    pass.at(Mu1_Candidate_eta)=1;
+    pass.at(Mu2_Candidate_p)=1;
+    pass.at(Mu2_Candidate_eta)=1;
+    pass.at(Mu3_Candidate_p)=1;
+    pass.at(Mu3_Candidate_eta)=1;
+    pass.at(Tau_h_Candidate_p)=1;
+    pass.at(Tau_h_Candidate_eta)=1;
+    pass.at(Mu1_Candidate_recod)=1;
+    pass.at(Mu2_Candidate_recod)=1;
+    pass.at(Mu3_Candidate_recod)=1;
+    pass.at(Tau_h_Candidate_recod)=1;
   }
-  
+  //  std::cout << "Test 3. " << std::endl;
 
   TLorentzVector Tau3MuLV(0,0,0,0);
   pass.at(SignalCandidate) = (value.at(SignalCandidate) >= cut.at(SignalCandidate));
@@ -748,11 +820,9 @@ void  ZTau3MuTauh::doEvent(){
       
       value.at(TripletPT) = Tau3MuLV.Pt();
       Selection_Cut_3mu_Pt.at(t).Fill(value.at(TripletPT));
-      
     }
   
   pass.at(TripletPT) = (value.at(TripletPT) >= cut.at(TripletPT));
-  
 
 
 
@@ -772,55 +842,29 @@ void  ZTau3MuTauh::doEvent(){
   value.at(nTaus_pT)  = -1;
   value.at(nTaus_eta)  = -1;
   value.at(nTaus_dR)  = 99.0;
-  
-  double highest_pT(-1.0);//highest value determines whether it passes (when there are multiple taus)
-  double lowest_eta(10.0);
-  double highest_dR(-1.0);
-  
   for(unsigned int itau=0; itau < Ntp->NTaus(); itau++)
     {
       if(signal_idx!=-1)
 	{
-	  if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV)>highest_dR){
-            highest_dR=Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
-          }
+	  //value.at(nTaus_pT)  = Ntp->Tau_P4(itau).Pt();
+          //value.at(nTaus_eta)  = fabs(Ntp->Tau_P4(itau).Eta());
+          //value.at(nTaus_dR)  = Ntp->Tau_P4(itau).DeltaR(Tau3MuLV);
           
-          if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ){
-                  Taus_OppositeHemisphere_dR.push_back(itau);
-                  
-                  if(Ntp->Tau_P4(itau).Pt() > highest_pT){
-                    highest_pT=Ntp->Tau_P4(itau).Pt();
-                  }
-                  
-                  if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) ){
-                          Taus_OppositeHemisphere_pT.push_back(itau);
-                          
-                          if(fabs(Ntp->Tau_P4(itau).Eta()) < lowest_eta){
-                            lowest_eta=fabs(Ntp->Tau_P4(itau).Eta());
-                          }
-                          
-                          if(fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) ){
-                            Taus_OppositeHemisphere_eta.push_back(itau);
-                          }
-                  }
-          }
-          
+          if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) ) Taus_OppositeHemisphere_pT.push_back(itau);
+          if(fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) ) Taus_OppositeHemisphere_eta.push_back(itau);
+          if(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere_dR.push_back(itau);
           
           if(Ntp->Tau_P4(itau).Pt() > cut.at(nTaus_pT) && fabs(Ntp->Tau_P4(itau).Eta()) < cut.at(nTaus_eta) && 
 	     Ntp->Tau_P4(itau).DeltaR(Tau3MuLV) > cut.at(nTaus_dR) ) Taus_OppositeHemisphere.push_back(itau);
+	       
+    Selection_Cut_tauh_Pt.at(t).Fill(Ntp->Tau_P4(itau).Pt());
+    Selection_Cut_tauh_Eta.at(t).Fill(fabs(Ntp->Tau_P4(itau).Eta()));
+    Selection_Cut_tauh_DeltaR_3mu.at(t).Fill(Ntp->Tau_P4(itau).DeltaR(Tau3MuLV));
 	  
       
 	}
     }
 
-  value.at(nTaus_pT)  = highest_pT;
-  value.at(nTaus_eta)  = lowest_eta;
-  value.at(nTaus_dR)  = highest_dR;
-  
-  Selection_Cut_tauh_Pt.at(t).Fill(highest_pT);
-  Selection_Cut_tauh_Eta.at(t).Fill(lowest_eta);
-  Selection_Cut_tauh_DeltaR_3mu.at(t).Fill(highest_dR);
-  
   pass.at(nTaus_pT)  = ( Taus_OppositeHemisphere_pT.size() > 0 );
   
   pass.at(nTaus_eta) = ( Taus_OppositeHemisphere_eta.size() > 0 );
@@ -923,7 +967,7 @@ void  ZTau3MuTauh::doEvent(){
   std::vector<int> PassedDeepMuonsMedium;
   std::vector<int> PassedDeepMuonsTight;
 
-  for(auto i : Taus_DeepTauJetsLoose)
+  for(auto i : Taus_DeepTauJetsMedium)
     {
       if(Ntp->Tau_byLooseDeepTau2017v2p1VSmu(i)) PassedDeepMuonsLoose.push_back(i);
       if(Ntp->Tau_byMediumDeepTau2017v2p1VSmu(i)) PassedDeepMuonsMedium.push_back(i);
@@ -936,15 +980,14 @@ void  ZTau3MuTauh::doEvent(){
   //  value.at(DeepTauMuons) = PassedDeepMuonsTight.size();  // Tight
 
 
-  std::vector<std::vector<double>> PassedDeepElectronsLoose;
-  std::vector<std::vector<double>> PassedDeepElectronsMedium;
-  std::vector<std::vector<double>> PassedDeepElectronsTight;
-  
+  std::vector<int> PassedDeepElectronsLoose;
+  std::vector<int> PassedDeepElectronsMedium;
+  std::vector<int> PassedDeepElectronsTight;
   for(auto i : PassedDeepMuonsLoose)
     {
-      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
-      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
-      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back({Ntp->Tau_P4(i).DeltaR(Tau3MuLV),i});
+      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back(i);
+      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back(i);
+      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back(i);
 
     }
 
@@ -956,37 +999,23 @@ void  ZTau3MuTauh::doEvent(){
 
   pass.at(DeepTauMuons) = (value.at(DeepTauMuons) >= cut.at(DeepTauMuons));
   pass.at(DeepTauElectrons) = (value.at(DeepTauElectrons) >= cut.at(DeepTauElectrons));
-  
-  double central_VisMass(250.0);//most central value determines whether it passes (when there are multiple taus)
 
   if(pass.at(DeepTauElectrons))
     {
-      for(unsigned int i = 0 ; i< PassedDeepElectronsLoose.size(); i++){
-           
-           int tau_index = PassedDeepElectronsLoose[i][1];
-           
-           double VisMass_val = (Tau3MuLV + Ntp->Tau_P4(tau_index)).M();
-           if(fabs(VisMass_val-75.0)   < fabs(central_VisMass-75.0)  ){
-             central_VisMass=VisMass_val;
-           }
-      }
+      unsigned int tau_index = PassedDeepElectronsLoose.at(0);
+      value.at(VisMass) = (Tau3MuLV + Ntp->Tau_P4(tau_index)).M();
       
+      Selection_Cut_Vis_InvM.at(t).Fill(value.at(VisMass));
     }
 
-  value.at(VisMass) = central_VisMass;
-  
   pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
   pass.at(VisMass)         = (value.at(VisMass) > 50 && value.at(VisMass) < 100);
   
-  std::vector<unsigned int> exclude_cuts;
-  exclude_cuts.push_back(VisMass);
-  if(passAllBut(exclude_cuts)) Selection_Cut_Vis_InvM.at(t).Fill(value.at(VisMass));
-  
-  pass.at(TripletPT) = 1;
-  pass.at(nTaus_pT) = 1;
-  pass.at(Tau3MuIsolation) = 1;
-  pass.at(VisMass) = 1;
-  
+
+
+
+
+
   double wobs=1;
   double w;  
              
@@ -1001,70 +1030,14 @@ void  ZTau3MuTauh::doEvent(){
 
     //   std::cout << "Test 1. " << std::endl;
     
-    sort( PassedDeepElectronsLoose.rbegin(), PassedDeepElectronsLoose.rend() ); // sort based on first column, highest first
-    unsigned int tau_h_idx = PassedDeepElectronsLoose[0][1];
-    PostSelection_NumberOfTaus.at(t).Fill(Ntp->NTaus());
-    
-    PostSelection_prod_size.at(t).Fill(PassedDeepElectronsLoose.size());
+    unsigned int tau_h_idx = PassedDeepElectronsLoose.at(0);
+    NumberOfTaus.at(t).Fill(Ntp->NTaus());
 
     TLorentzVector TauHLV = Ntp->Tau_P4(tau_h_idx);
 
     unsigned int muon_1_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
-    
-    TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
-      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
-      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
-    
-    PostSelection_Mu1_Pt.at(t).Fill(Ntp->Muon_P4(muon_1_idx).Pt(),1 );
-    PostSelection_Mu1_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_1_idx).Eta()),1 );
-    PostSelection_Mu2_Pt.at(t).Fill(Ntp->Muon_P4(muon_2_idx).Pt(),1 );
-    PostSelection_Mu2_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_2_idx).Eta()),1 );
-    PostSelection_Mu3_Pt.at(t).Fill(Ntp->Muon_P4(muon_3_idx).Pt(),1 );
-    PostSelection_Mu3_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_3_idx).Eta()),1 );
-    
-    PostSelection_h_Pt.at(t).Fill(highest_pT,1 );
-    PostSelection_h_Eta.at(t).Fill(lowest_eta,1 );
-    
-    //Primary Vertex
-    double val_FLSignificance=Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),
-	   							Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx));
-    TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_HighestPt_PrimaryVertex());
-    double val_SVPVTauDirAngle=SVPV.Angle(Tau3muLV.Vect());
-    double val_ThreeMuVertexChi2KF=Ntp->Vertex_signal_KF_Chi2(signal_idx);
-    double val_MinDistToIsoTrack=Ntp->Isolation_MinDist(signal_idx);
-    double val_DeltaPhi=(1-TMath::Cos(Ntp->METPhi()-(TauHLV.Vect()).Phi()));
-    
-    
-    PostSelection_FLSignificance.at(t).Fill(val_FLSignificance);
-    PostSelection_VertexChi2KF.at(t).Fill(val_ThreeMuVertexChi2KF);
-    PostSelection_SVPVTauDirAngle.at(t).Fill(val_SVPVTauDirAngle);
-    PostSelection_SVPVTauDirAngle_largescale.at(t).Fill(val_SVPVTauDirAngle);
-    PostSelection_MinDistToIsoTrack.at(t).Fill(val_MinDistToIsoTrack);
-    
-    // Missing transverse mass
-    PostSelection_Kinematics_MissingTrMass.at(t).Fill(sqrt(   2*Ntp->METEt()*TMath::Sqrt(TauHLV.Px()*TauHLV.Px()+TauHLV.Py()*TauHLV.Py())*(1-TMath::Cos(Ntp->METPhi()-(TauHLV.Vect()).Phi()))   )); //use definition transverse mass for 2 particles
-    PostSelection_Kinematics_MissingTrMass_cos.at(t).Fill(  val_DeltaPhi   );
-    
-    TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(TauHLV.Theta()));
-    TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
-    double val_DiTauMass_Collinear=(TauHLV + Tau3muLV + Neutrino_LV).M();
-    PostSelection_VisibleDiTauMass_Collinear.at(t).Fill((TauHLV + Tau3muLV + Neutrino_LV).M(), 1);
-    
-    
-    // Common vertex
-    std::vector<TrackParticle> Triplet_set;
-    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_1_idx));
-    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_2_idx));
-    Triplet_set.push_back(Ntp->Muon_TrackParticle(muon_3_idx));
-    //Chi2VertexFitter  TripletFittedVertex(Triplet_set,Ntp->Vertex_Signal_KF_pos(signal_idx));
-    
-    //std::vector<TrackParticle> Triplet_plus_mu_set;
-    //Triplet_plus_mu_set=Triplet_set;
-    //Triplet_plus_mu_set.push_back(Ntp->Muon_TrackParticle(tau_h_idx));
-    
-    
 
     ////////////////////////   sort muons by charge and dR and fill pair masses :
     /////
@@ -1097,19 +1070,15 @@ void  ZTau3MuTauh::doEvent(){
     }
     //////
     ///////////////////////////
-    
-    double val_MET_Et=Ntp->METEt();
-    double val_MET_Phi=Ntp->METPhi();
-    
-    PostSelection_MET_Et.at(t).Fill(val_MET_Et );
-    PostSelection_MET_Phi.at(t).Fill( val_MET_Phi );
-    PostSelection_MET_Phi_vs_NeutrinoPhi.at(t).Fill( Ntp->METPhi(),(MC_NeutrinoSum_LV.Vect()).Phi() );
-    PostSelection_MET_vs_NeutrinoPt.at(t).Fill( Ntp->METEt(),MC_NeutrinoSum_LV.Pt() );
 
 
     TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
     TLorentzVector Muon2LV = Ntp->Muon_P4(muon_2_idx);
     TLorentzVector Muon3LV = Ntp->Muon_P4(muon_3_idx);
+
+    TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
+      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
+      Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
 
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0) +
       Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1) +
@@ -1118,6 +1087,8 @@ void  ZTau3MuTauh::doEvent(){
 
 
     LorentzVectorParticle Tau3MuLVP = Ntp->Tau3mu_LVP(  signal_idx );
+    TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(TauHLV.Theta()));
+    TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
 
 
 
@@ -1125,19 +1096,21 @@ void  ZTau3MuTauh::doEvent(){
     float RelativeIsolationMu2 = Ntp->Muon_RelIso(muon_2_idx);
     float RelativeIsolationMu3 = Ntp->Muon_RelIso(muon_3_idx);
 
-    PostSelection_Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()),1);
-    PostSelection_TauHDecayMode.at(t).Fill(Ntp->Tau_DecayMode(tau_h_idx), 1);
-    PostSelection_VisibleDiTauMass.at(t).Fill((TauHLV + Tau3muLV).M(), 1);
-    PostSelection_MTT.at(t).Fill( (Tau3muLV + TauHLV  + Neutrino_LV).M(), 1);
+    Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()),1);
+    TauHDecayMode.at(t).Fill(Ntp->Tau_DecayMode(tau_h_idx), 1);
+    VisibleDiTauMass.at(t).Fill((TauHLV + Tau3muLV).M(), 1);
+    MTT.at(t).Fill( (Tau3muLV + TauHLV  + Neutrino_LV).M(), 1);
 
     bool PlotMCOnly(false);  // and blind for data
     if(id!=1) PlotMCOnly = true;
     if(id==1 && ( (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.7233333) or (TauRefitLV.M() > 1.8333333 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
-    if(PlotMCOnly)    PostSelection_TripletMass.at(t).Fill(TauRefitLV.M(),1);
+
+
+    if(PlotMCOnly)    TripletMass.at(t).Fill(TauRefitLV.M(),1);
 
     //////////// kinematics 
-    PostSelection_TripletPt.at(t).Fill(Tau3muLV.Pt(),1);
-    PostSelection_OppositeTauPt.at(t).Fill(TauHLV.Pt(),1);
+    TripletPt.at(t).Fill(Tau3muLV.Pt(),1);
+    OppositeTauPt.at(t).Fill(TauHLV.Pt(),1);
     //////////// kinematics 
 
     //    std::cout << "Test 1.5 " << std::endl;
@@ -1249,73 +1222,38 @@ void  ZTau3MuTauh::doEvent(){
 
         //*** fill up the T3MMiniTree.root for statistical analysis
         
-        m3m = Tau3muLV.M();
+        m3m = TauRefitLV.M();
         
         dataMCtype = id;
         event_weight =1; // 1 for data
         if(dataMCtype == 1){event_weight =1;}
-        else if(dataMCtype == 210233){event_weight =5.00e-04;}
-        else if(dataMCtype == 210232){event_weight =4.93e-04;}
-        else if(dataMCtype == 210231){event_weight =4.87e-04;}
+        else if(dataMCtype == 210233){event_weight =5.00e-04;} // event_weight is a value Lumi Scale ; Lumi 45710; Evno 5625
+        else if(dataMCtype == 210232){event_weight =4.93e-04;} // Lumi 45710; Evno 5659
+        else if(dataMCtype == 210231){event_weight =4.87e-04;} // Lumi 45710; Evno 21314
+        
+        if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+          mDr1 = (MuonOS+MuonSS2).M();
+          mDr2 = (MuonOS+MuonSS1).M();
+        }else{
+          mDr1 = (MuonOS+MuonSS1).M();
+          mDr2 = (MuonOS+MuonSS2).M();
+        }
+        
         
         m12 = (MuonOS+MuonSS1).M();
         m13 = (MuonOS+MuonSS2).M();
-        
-        var_TripletPT=Tau3muLV.Pt();
-        var_TripletEta=Tau3muLV.Eta();
-        var_Tau3MuIsolation=Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
-        var_mu1_pT=Muon1LV.Pt();
-        var_mu2_pT=Muon2LV.Pt();
-        var_mu3_pT=Muon3LV.Pt();
-        
-        var_Tau_pT=TauHLV.Pt();
-        
-        var_FLSignificance=val_FLSignificance;
-        var_SVPVTauDirAngle=val_SVPVTauDirAngle;
-        var_ThreeMuVertexChi2KF=val_ThreeMuVertexChi2KF;
-        var_MinDistToIsoTrack=val_MinDistToIsoTrack;
-        var_DeltaPhi=val_DeltaPhi;
-        
-        var_MET_Et=val_MET_Et;
-        var_MET_Phi=val_MET_Phi;
-        
-        var_DiTauMass_Collinear=val_DiTauMass_Collinear;
-        var_VisMass=(Tau3muLV + TauHLV ).M();
-        
+        LumiScale = 1.;
         T3MMiniTree->Fill();
-        
+  
+	//  std::cout << "Test 2. " << std::endl;
   }
 }
 
 
-void  ZTau3MuTauh::Finish(){
-
-  if(mode == RECONSTRUCT){
-      //double scale(1.0);
-      //if(Nminus0.at(0).at(3).Integral()!=0) scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();//Gives raw event no as Integral. Incorrect
-      //ScaleAllHistOfType(3,scale);
-      //std::cout << "Nminus0.at(0).at(0).Integral(): " << Nminus0.at(0).at(0).Integral() << std::endl;
-      //std::cout << "Nminus0.at(0).at(1).Integral(): " << Nminus0.at(0).at(1).Integral() << std::endl;
-      //std::cout << "Nminus0.at(0).at(2).Integral(): " << Nminus0.at(0).at(2).Integral() << std::endl;
-      //std::cout << "Nminus0.at(0).at(3).Integral(): " << Nminus0.at(0).at(3).Integral() << std::endl;
-  }
-  
-  if (mode==RECONSTRUCT){
-    double lumi_scale_1_taue(0.000293); //need to be entered manually
-    double lumi_scale_2_taumu(0.000283);
-    double lumi_scale_3_tauh(0.000280);
-    for ( unsigned int j=0; j<InputFeatureCollection.size(); ++j){
-      double scale(1.0);
-      if(InputFeatureCollection.at(j)->size()>=4){
-        if(InputFeatureCollection.at(j)->at(3).Integral()!=0) scale = InputFeatureCollection.at(j)->at(0).Integral()/(InputFeatureCollection.at(j)->at(3).Integral()*lumi_scale_3_tauh);
-        InputFeatureCollection.at(j)->at(3).Scale(scale);
-      }
-    }
-  }
+void  ZTau3MuTauh_PreFC::Finish(){
 
   //*** write down the T3MMiniTree.root for statistical analysis
-  TString out_file_name  = "MVA_Mini_Tree_"+ AnalysisName+".root";
-  T3MFMiniTree = new TFile(out_file_name,"recreate");
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
