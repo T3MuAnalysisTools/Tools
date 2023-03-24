@@ -28,14 +28,18 @@ void  ZTau3MuTaumu::Configure(){
 
 
   TString treeprefix;
-  if(Ntp->GetInputDatasetName().Contains("z2tautau")) treeprefix="z2tautau";
-  if(Ntp->GetInputDatasetName().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+
+
+
 
   T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
   T3MMiniTree->Branch("m3m",&mini_m3m);
   T3MMiniTree->Branch("dataMCtype",&mini_dataMCtype);
   T3MMiniTree->Branch("event_weight",&mini_event_weight);
   T3MMiniTree->Branch("tripletpt",&mini_TripletPt);
+  T3MMiniTree->Branch("muonpt",&mini_MuonPt);
   T3MMiniTree->Branch("tripletisolation",&mini_Tau3MuRelativeIsolation);
   T3MMiniTree->Branch("oppositemuonisolation",&mini_OppositeMuRelativeIsolation);
   T3MMiniTree->Branch("ditaumass",&mini_ditaumass);
@@ -377,7 +381,7 @@ void  ZTau3MuTaumu::doEvent(){
     {
       if(signal_idx!=-1)
 	{
-	  if(Ntp->Muon_P4(imu).Pt() > 10 && fabs(Ntp->Muon_P4(imu).Eta()) < 2.5 && Ntp->Muon_isPFMuon(imu) 
+	  if(Ntp->Muon_P4(imu).Pt() > 4 && fabs(Ntp->Muon_P4(imu).Eta()) < 2.5 && Ntp->Muon_isPFMuon(imu) 
 	     && ( Ntp->Muon_isGlobalMuon(imu) || Ntp->Muon_isTrackerMuon(imu) ) &&
 	     Ntp->Muon_P4(imu).DeltaR(Tau3MuLV) > 0.5  )Muons_OppositeHemisphere.push_back(imu);
 	}
@@ -624,6 +628,7 @@ void  ZTau3MuTaumu::doEvent(){
     mini_dataMCtype = id;
     mini_event_weight = 1;
     mini_TripletPt = TauRefitLV.Pt();
+    mini_MuonPt = MuLV.Pt();
     mini_Tau3MuRelativeIsolation = Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
     mini_OppositeMuRelativeIsolation = Ntp->Muon_P4(muon_idx).Pt()/(Ntp->Muon_RelIso(muon_idx) +  Ntp->Muon_P4(muon_idx).Pt());
     mini_ditaumass = (MuLV + Tau3muLV).M();
@@ -665,7 +670,8 @@ void  ZTau3MuTaumu::doEvent(){
 void  ZTau3MuTaumu::Finish(){
 
   //*** write down the T3MMiniTree.root for statistical analysis
-  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
+  TString out_file_name  = "MVA_Mini_Tree_"+ AnalysisName+".root";
+  T3MFMiniTree = new TFile(out_file_name,"recreate");
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();

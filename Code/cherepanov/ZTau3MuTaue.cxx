@@ -7,7 +7,8 @@
 //#include "Logger.h"
 
 ZTau3MuTaue::ZTau3MuTaue(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  AnalysisName(Name_)
 {
   // This is a class constructor;
 }
@@ -23,6 +24,28 @@ ZTau3MuTaue::~ZTau3MuTaue(){
 
 void  ZTau3MuTaue::Configure(){
 
+
+
+
+
+  TString treeprefix;
+
+  if(Ntp->GetInputNtuplePath().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputNtuplePath().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+
+
+  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
+  T3MMiniTree->Branch("m3m",&mini_m3m);
+  T3MMiniTree->Branch("dataMCtype",&mini_dataMCtype);
+  T3MMiniTree->Branch("event_weight",&mini_event_weight);
+  T3MMiniTree->Branch("tripletpt",&mini_TripletPt);
+  T3MMiniTree->Branch("tripletisolation",&mini_Tau3MuRelativeIsolation);
+  T3MMiniTree->Branch("ElectronPt",&mini_ElectronPt);
+  T3MMiniTree->Branch("ditaumass",&mini_ditaumass);
+
+
+
+
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -33,9 +56,9 @@ void  ZTau3MuTaue::Configure(){
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nElectrons)         cut.at(nElectrons)=1;
     if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.6;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.4;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
-    if(i==TripletPT)          cut.at(TripletPT)=30;
+    if(i==TripletPT)          cut.at(TripletPT)=15;
     if(i==VisMass)            cut.at(VisMass)=1;
 
   }
@@ -293,7 +316,7 @@ void  ZTau3MuTaue::doEvent(){
 
   for(unsigned int ie=0; ie < Ntp->NElectrons(); ie++)
     {
-      if(Ntp->Electron_P4(ie).Pt() > 20 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3 && Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_loose(ie) &&
+      if(Ntp->Electron_P4(ie).Pt() > 3 && fabs(Ntp->Electron_P4(ie).Eta()) < 2.3 && Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_loose(ie) &&
 	 Ntp->Electron_P4(ie).DeltaR(Tau3MuLV) > 0.5   ) Electrons_OppositeHemisphere.push_back(ie);
     }
 
@@ -476,6 +499,20 @@ void  ZTau3MuTaue::doEvent(){
     MTT.at(t).Fill( (Tau3muLV + ElectronLV  + Neutrino_LV).M(), 1);
 
 
+
+    mini_m3m = TauRefitLV.M();
+    mini_dataMCtype = id;
+    mini_event_weight = 1;
+    mini_TripletPt = TauRefitLV.Pt();
+    mini_Tau3MuRelativeIsolation = Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
+    mini_ElectronPt = ElectronLV.Pt();
+    mini_ditaumass = (ElectronLV + Tau3muLV).M();
+
+    T3MMiniTree->Fill();
+
+
+
+
     bool PlotMCOnly(false);  // and blind for data
     if(id!=1) PlotMCOnly = true;
     if(id==1 && (  (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.74) or (TauRefitLV.M() > 1.812 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
@@ -513,6 +550,13 @@ void  ZTau3MuTaue::doEvent(){
 
 
 void  ZTau3MuTaue::Finish(){
+
+  TString out_file_name  = "MVA_Mini_Tree_"+ AnalysisName+".root";
+  T3MFMiniTree = new TFile(out_file_name,"recreate");
+  T3MMiniTree->SetDirectory(T3MFMiniTree);
+  T3MFMiniTree->Write();
+  T3MFMiniTree->Close();
+
 
   Selection::Finish();
 

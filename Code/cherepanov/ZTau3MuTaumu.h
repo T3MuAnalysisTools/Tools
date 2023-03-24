@@ -82,6 +82,7 @@ class ZTau3MuTaumu : public Selection {
   float  mini_dataMCtype;
   float  mini_event_weight;
   float  mini_TripletPt;
+  float  mini_MuonPt;
   float  mini_Tau3MuRelativeIsolation;
   float  mini_OppositeMuRelativeIsolation;
   float  mini_ditaumass;
