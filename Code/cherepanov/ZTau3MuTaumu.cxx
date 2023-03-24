@@ -7,8 +7,10 @@
 //#include "Logger.h"
 
 ZTau3MuTaumu::ZTau3MuTaumu(TString Name_, TString id_):
-  Selection(Name_,id_)
+  Selection(Name_,id_),
+  AnalysisName(Name_)
 {
+    
   // This is a class constructor;
 }
 
@@ -23,6 +25,22 @@ ZTau3MuTaumu::~ZTau3MuTaumu(){
 
 void  ZTau3MuTaumu::Configure(){
 
+
+
+  TString treeprefix;
+  if(Ntp->GetInputDatasetName().Contains("z2tautau")) treeprefix="z2tautau";
+  if(Ntp->GetInputDatasetName().Contains("DoubleMuonLowMass")) treeprefix="DoubleMuonLowMass";
+
+  T3MMiniTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for mva");
+  T3MMiniTree->Branch("m3m",&mini_m3m);
+  T3MMiniTree->Branch("dataMCtype",&mini_dataMCtype);
+  T3MMiniTree->Branch("event_weight",&mini_event_weight);
+  T3MMiniTree->Branch("tripletpt",&mini_TripletPt);
+  T3MMiniTree->Branch("tripletisolation",&mini_Tau3MuRelativeIsolation);
+  T3MMiniTree->Branch("oppositemuonisolation",&mini_OppositeMuRelativeIsolation);
+  T3MMiniTree->Branch("ditaumass",&mini_ditaumass);
+
+
   for(int i=0; i<NCuts;i++){
     cut.push_back(0);
     value.push_back(0);
@@ -30,12 +48,12 @@ void  ZTau3MuTaumu::Configure(){
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
-    if(i==TripletPT)          cut.at(TripletPT)=30;
+    if(i==TripletPT)          cut.at(TripletPT)=20;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nMuons)             cut.at(nMuons)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.75;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.5;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
-    if(i==MuonIsolation)      cut.at(MuonIsolation)=0.80;
+    if(i==MuonIsolation)      cut.at(MuonIsolation)=0.5;
     if(i==VisMass)            cut.at(VisMass)=1;
   }
 
@@ -299,21 +317,27 @@ void  ZTau3MuTaumu::doEvent(){
   if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
   if (DoubleMuFired || TripleMuFired) L1Ok = true;
 
-  //  value.at(L1_TriggerOk)=(L1Ok);
+  value.at(L1_TriggerOk)=(L1Ok);
   //  pass.at(L1_TriggerOk)=true;//(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
 
 
 
-  value.at(L1_TriggerOk)=(SingleMu);
+  //  value.at(L1_TriggerOk)=(SingleMu);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
   
 
-  value.at(HLT_TriggerOk)=(HLTOk);
+  value.at(HLT_TriggerOk)=(Tau3muHLT);
+  //  value.at(HLT_TriggerOk)=(HLTOk);
   pass.at(HLT_TriggerOk)=(value.at(HLT_TriggerOk)==cut.at(HLT_TriggerOk));
+
+
+
 
   SingleVsThreeMuTrigger.at(t).Fill(Tau3muHLT*L1Ok,TauIsoMu*SingleMu);
 
-  value.at(SignalCandidate) = Ntp->NThreeMuons();
+  //  value.at(SignalCandidate)=0;
+  //  if(Ntp->NThreeMuons() !=0)
+    value.at(SignalCandidate) = Ntp->NThreeMuons();
 
   int  signal_idx=-1;
   double min_chi2(99.);
@@ -372,6 +396,7 @@ void  ZTau3MuTaumu::doEvent(){
   if(signal_idx!=-1)
     {
 
+
       int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);  
       int index_mu_2 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);  
       int index_mu_3 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);  
@@ -381,7 +406,54 @@ void  ZTau3MuTaumu::doEvent(){
       value.at(Tau3MuIsolation) = TripletmuLV.Pt()/  (TripletmuLV.Pt()  + Ntp->Muon_RelIso(index_mu_1) +
  						                          Ntp->Muon_RelIso(index_mu_2) +
 						                          Ntp->Muon_RelIso(index_mu_3) );
+
+
+      if(id ==570){
     
+	std::cout<<"------------------------------- "<< std::endl;
+	std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_1)) << "  midx   " << Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_1))) <<std::endl;
+	std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_2)) << "  midx   " << Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_2))) <<std::endl;
+	std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_3)) << "  midx   " << Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_3))) <<std::endl;
+      
+	Ntp->Muon_P4(index_mu_1).Print(); std::cout<<" idx1:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_1)) << std::endl;
+	Ntp->Muon_P4(index_mu_2).Print(); std::cout<<" idx2:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_2)) << std::endl;
+	Ntp->Muon_P4(index_mu_3).Print(); std::cout<<" idx3:  "<<Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_3)) << std::endl;
+      
+
+
+	for(auto i:Ntp->MCParticle_childpdgid(Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_1)))))
+	  std::cout<<"  daughters of first mother "<< i << std::endl;
+
+	for(auto i:Ntp->MCParticle_childpdgid(Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_2)))))
+	  std::cout<<"  daughters of second  mother "<< i << std::endl;
+
+	for(auto i:Ntp->MCParticle_childpdgid(Ntp->MCParticle_midx(Ntp->getMatchTruthIndex(Ntp->Muon_P4(index_mu_3)))))
+	  std::cout<<"  daughters of third  mother "<< i << std::endl;
+	//	for(unsigned int i=0; i < Ntp->MCParticle_childpdgid(); i++)
+	//{
+	//  std::
+	//}
+
+	//	std::cout<<"  Signal  "<<  Ntp->NMCSignalParticles() << std::endl;
+	//	for(unsigned int i=0; i < Ntp->NMCParticles(); i++){
+	//	  std::cout<<"   Nchilds   "   << Ntp->MCSignalParticle_Nchilds(i) << std::endl;
+	//	}
+
+	//	for(unsigned int i=0; i < Ntp->NMCParticles(); i++)
+	//	  {
+
+	    //	    std::cout<<"  i   "<<i << " pdg   "<< Ntp->MCParticle_pdgid(i) << std::endl;
+	    //	    if(Ntp->MCParticle_pdgid(i) == 23)
+	    //	      {
+		//		for(unsigned int j =0; j<)
+
+	    //	      }
+
+	//	  }
+
+	Ntp->printMCDecayChainOfEvent(true, true, true, true);
+	std::cout<< "\n\n\n\n\n\n";
+      }    
     
     //Trigger Matching
 
@@ -441,7 +513,7 @@ void  ZTau3MuTaumu::doEvent(){
 
     pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
     pass.at(MuonIsolation)   = (value.at(MuonIsolation)   > cut.at(MuonIsolation));
-    pass.at(VisMass)         = (value.at(VisMass) > 45 && value.at(VisMass) < 85);
+    pass.at(VisMass)         = (value.at(VisMass) > 30 && value.at(VisMass) < 100);
     //    std::cout<<"  ----  "<< std::endl;
     /*    for(unsigned int i = 0 ; i< NCuts; i++)
       {
@@ -548,6 +620,16 @@ void  ZTau3MuTaumu::doEvent(){
     MTT.at(t).Fill( (Tau3muLV + MuLV  + Neutrino_LV).M(), 1);
 
 
+    mini_m3m = TauRefitLV.M();
+    mini_dataMCtype = id;
+    mini_event_weight = 1;
+    mini_TripletPt = TauRefitLV.Pt();
+    mini_Tau3MuRelativeIsolation = Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
+    mini_OppositeMuRelativeIsolation = Ntp->Muon_P4(muon_idx).Pt()/(Ntp->Muon_RelIso(muon_idx) +  Ntp->Muon_P4(muon_idx).Pt());
+    mini_ditaumass = (MuLV + Tau3muLV).M();
+  
+    T3MMiniTree->Fill();
+
 
     bool PlotMCOnly(false);  // and blind for data
     if(id!=1) PlotMCOnly = true;
@@ -581,6 +663,12 @@ void  ZTau3MuTaumu::doEvent(){
 
 
 void  ZTau3MuTaumu::Finish(){
+
+  //*** write down the T3MMiniTree.root for statistical analysis
+  T3MFMiniTree = new TFile("T3MMiniTree.root","recreate");
+  T3MMiniTree->SetDirectory(T3MFMiniTree);
+  T3MFMiniTree->Write();
+  T3MFMiniTree->Close();
 
   Selection::Finish();
 

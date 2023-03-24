@@ -301,16 +301,17 @@ void  ZTau3MuTauh::doEvent(){
   if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
   if (DoubleMuFired || TripleMuFired) L1Ok = true;
 
-  //  value.at(L1_TriggerOk)=(L1Ok);
-  //  pass.at(L1_TriggerOk)=true;//(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
-
-
-
-  value.at(L1_TriggerOk)=(SingleMu);
+  value.at(L1_TriggerOk)=(L1Ok);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
 
 
-  value.at(HLT_TriggerOk)=(HLTOk);
+
+  //  value.at(L1_TriggerOk)=(SingleMu);
+  //  pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
+
+
+  //  value.at(HLT_TriggerOk)=(HLTOk);
+  value.at(HLT_TriggerOk)=(Tau3muHLT);
   pass.at(HLT_TriggerOk)=(value.at(HLT_TriggerOk)==cut.at(HLT_TriggerOk));
 
   SingleVsThreeMuTrigger.at(t).Fill(Tau3muHLT*L1Ok,TauIsoMu*SingleMu);
