@@ -258,9 +258,14 @@ void Plots::Plot1D(std::vector<std::vector<TH1D> > histo, std::vector<int> colou
 				EPSName += filename;
 				EPSName += ".eps";
 
+				TString PDFName = "EPS/";
+				PDFName += filename;
+				PDFName += ".pdf";
+
 				// save plot only if it is linear OR ( logarithmic AND ( Nminus plot OR Accumdist plot) )
 				if (linlog == 0 || !filename.Contains("Nminus") || filename.Contains("Accumdist")) {
 					canv.Print(EPSName);
+					canv.Print(PDFName);
 				}
 
 				// save some histograms in extra root file
@@ -715,6 +720,7 @@ void Plots::Plot3D(std::vector<TH3F> histo, std::vector<int> colour, std::vector
 		leg.Draw();
 		TString name = histo.at(0).GetName();
 		TString EPSName = "EPS/";
+		TString PDFName = "EPS/";
 		c.Update();
 		name = histo.at(0).GetName();
 		name += "_index_";
