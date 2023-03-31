@@ -76,7 +76,6 @@ void  ZTau3MuTauh::Configure(){
   reader_Tauh->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   
   reader_Tauh->AddVariable("var_MET_Et",&var_MET_Et);
-  reader_Tauh->AddVariable("var_MET_Phi",&var_MET_Phi);
   
   reader_Tauh->AddVariable("var_VisMass",&var_VisMass);
   reader_Tauh->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
@@ -337,7 +336,7 @@ void  ZTau3MuTauh::Configure(){
   
   PostSelection_prod_size=HConfig.GetTH1D(Name+"PostSelection__prod_size","PostSelection_prod_size",7,-0.5,6.5,"no. of visible products","Events");InputFeatureCollection.push_back(&PostSelection_prod_size);
   
-  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,0,1,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
+  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,-0.5,0.5,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
   
   
   
@@ -1402,7 +1401,7 @@ void  ZTau3MuTauh::doEvent(){
         BDT_Evaluated = reader_Tauh->EvaluateMVA("BDT");
         PostSelection_BDT_Output.at(t).Fill(BDT_Evaluated);
         
-        if(BDT_Evaluated>-10.0){
+        if(BDT_Evaluated>0.1){
         
         PostBDT_TripletPt.at(t).Fill(var_TripletPT);
         PostBDT_TripletEta.at(t).Fill(var_TripletEta);

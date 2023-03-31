@@ -349,7 +349,7 @@ void  ZTau3MuTaumu::Configure(){
   PostSelection_VisibleDiTauMass_peakspectra1=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass_peakspectra1","PostSelection_VisibleDiTauMass_peakspectra1",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass_peakspectra1);
   PostSelection_VisibleDiTauMass_peakspectra2=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass_peakspectra2","PostSelection_VisibleDiTauMass_peakspectra2",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass_peakspectra2);
   
-  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,0,1,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
+  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,-0.5,0.5,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
   
   
   //Plots after BDT
@@ -1542,7 +1542,7 @@ void  ZTau3MuTaumu::doEvent(){
         BDT_Evaluated = reader_Taumu->EvaluateMVA("BDT");
         PostSelection_BDT_Output.at(t).Fill(BDT_Evaluated);
         
-        if(BDT_Evaluated>-10.0){
+        if(BDT_Evaluated>0.1){
         
         PostBDT_TripletPt.at(t).Fill(var_TripletPT);
         PostBDT_TripletEta.at(t).Fill(var_TripletEta);
