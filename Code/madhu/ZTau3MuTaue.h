@@ -17,6 +17,10 @@
 #include "SimpleFits/FitSoftware/interface/PTObject.h"
 #include "SimpleFits/FitSoftware/interface/TPTRObject.h"
 
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
 
 class ZTau3MuTaue : public Selection {
 
@@ -108,6 +112,8 @@ class ZTau3MuTaue : public Selection {
   std::vector<TH1D>   Electron_Isolation_puppiNeutralHadronIso;
   std::vector<TH1D>   Electron_Isolation_puppiChargedHadronIso;
   
+  //After Selection
+  
   std::vector<TH1D>   PostSelection_Tau3MuRelativeIsolation;
   std::vector<TH1D>   PostSelection_ElectronSumIsolation;
   std::vector<TH1D>   PostSelection_VisibleDiTauMass;
@@ -144,35 +150,85 @@ class ZTau3MuTaue : public Selection {
   std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_MET;
   std::vector<TH1D>   PostSelection_VisibleDiTauMass_Collinear;
   
+  std::vector<TH1D>   PostSelection_Phi_Triplet_to_Spectator_Tau;
+  
   std::vector<TH1D>   PostSelection_prod_size;
   
-  Double_t m3m;
-  Double_t dataMCtype;
-  Double_t event_weight;
-  Double_t m12;
-  Double_t m13;
+  std::vector<TH1D>   PostSelection_BDT_Output;
   
-  Double_t var_TripletPT;
-  Double_t var_TripletEta;
-  Double_t var_Tau3MuIsolation;
-  Double_t var_mu1_pT;
-  Double_t var_mu2_pT;
-  Double_t var_mu3_pT;
+  //After BDT
   
-  Double_t var_Electron_pT;
-  Double_t var_ElectronSumIsolation;
+  std::vector<TH1D>   PostBDT_Tau3MuRelativeIsolation;
+  std::vector<TH1D>   PostBDT_ElectronSumIsolation;
+  std::vector<TH1D>   PostBDT_VisibleDiTauMass;
+  std::vector<TH1D>   PostBDT_MTT;
+  std::vector<TH1D>   PostBDT_TripletMass;
   
-  Double_t var_FLSignificance;
-  Double_t var_SVPVTauDirAngle;
-  Double_t var_ThreeMuVertexChi2KF;
-  Double_t var_MinDistToIsoTrack;
-  Double_t var_DeltaPhi;
+  std::vector<TH1D>   PostBDT_TripletPt;
+  std::vector<TH1D>   PostBDT_OppositeElectronPt;
+  std::vector<TH1D>   PostBDT_TripletEta;
+  std::vector<TH1D>   PostBDT_OppositeElectronEta;
   
-  Double_t var_MET_Et;
-  Double_t var_MET_Phi;
+  std::vector<TH1D>   PostBDT_MET_Et;
+  std::vector<TH1D>   PostBDT_MET_Phi;
+  std::vector<TH2D>   PostBDT_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   PostBDT_MET_vs_NeutrinoPt;
   
-  Double_t var_VisMass;
-  Double_t var_DiTauMass_Collinear;
+  std::vector<TH1D>   PostBDT_Mu1_Pt;
+  std::vector<TH1D>   PostBDT_Mu1_Eta;
+  std::vector<TH1D>   PostBDT_Mu2_Pt;
+  std::vector<TH1D>   PostBDT_Mu2_Eta;
+  std::vector<TH1D>   PostBDT_Mu3_Pt;
+  std::vector<TH1D>   PostBDT_Mu3_Eta;
+  std::vector<TH1D>   PostBDT_El_Pt;
+  std::vector<TH1D>   PostBDT_El_Eta;
+  
+  std::vector<TH1D>   PostBDT_FLSignificance;
+  std::vector<TH1D>   PostBDT_SVPVTauDirAngle;
+  std::vector<TH1D>   PostBDT_SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   PostBDT_VertexChi2KF;
+  std::vector<TH1D>   PostBDT_MinDistToIsoTrack;
+  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass;
+  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_cos;
+  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_pT;
+  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_MET;
+  std::vector<TH1D>   PostBDT_VisibleDiTauMass_Collinear;
+  
+  std::vector<TH1D>   PostBDT_Phi_Triplet_to_Spectator_Tau;
+  
+  std::vector<TH1D>   PostBDT_prod_size;
+  
+  Float_t m3m;
+  Float_t dataMCtype;
+  Float_t event_weight;
+  Float_t m12;
+  Float_t m13;
+  
+  Float_t var_TripletPT;
+  Float_t var_TripletEta;
+  Float_t var_Tau3MuIsolation;
+  Float_t var_mu1_pT;
+  Float_t var_mu2_pT;
+  Float_t var_mu3_pT;
+  
+  Float_t var_Electron_pT;
+  Float_t var_ElectronSumIsolation;
+  
+  Float_t var_FLSignificance;
+  Float_t var_SVPVTauDirAngle;
+  Float_t var_ThreeMuVertexChi2KF;
+  Float_t var_MinDistToIsoTrack;
+  Float_t var_DeltaPhi;
+  
+  Float_t var_MET_Et;
+  Float_t var_MET_Phi;
+  
+  Float_t var_VisMass;
+  Float_t var_DiTauMass_Collinear;
+  
+  Float_t BDT_Evaluated;
+  
+  TMVA::Reader *reader_Taue;
   
   
   TTree *T3MMiniTree;
