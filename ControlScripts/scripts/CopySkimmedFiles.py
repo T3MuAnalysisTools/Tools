@@ -28,7 +28,7 @@ while ifDirExists:
   
   if ifSkimmedFileExists:
     os.system(gfalcopy_cmd)
-    print('File Copied')
+    print('File Copied to: '+username+'/'+ tag +'/'+trimmed_sample_path)
   else:
     print('Skimmed file for set ' + setno + ' doesn\'t exist')
   set_no_int=set_no_int+1

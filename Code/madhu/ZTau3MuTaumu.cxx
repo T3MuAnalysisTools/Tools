@@ -24,7 +24,7 @@ ZTau3MuTaumu::~ZTau3MuTaumu(){
 
 void  ZTau3MuTaumu::Configure(){
 
-  //  Mini tree for limit extraction
+  //  Mini tree for BDT
 
 
   TString treeprefix;
@@ -46,15 +46,20 @@ void  ZTau3MuTaumu::Configure(){
   T3MMiniTree->Branch("var_mu1_pT",&var_mu1_pT);
   T3MMiniTree->Branch("var_mu2_pT",&var_mu2_pT);
   T3MMiniTree->Branch("var_mu3_pT",&var_mu3_pT);
+  T3MMiniTree->Branch("var_mu1_eta",&var_mu1_eta);
+  T3MMiniTree->Branch("var_mu2_eta",&var_mu2_eta);
+  T3MMiniTree->Branch("var_mu3_eta",&var_mu3_eta);
   
   T3MMiniTree->Branch("var_MuonIsolation",&var_MuonIsolation);
   T3MMiniTree->Branch("var_Muon_pT",&var_Muon_pT);
+  T3MMiniTree->Branch("var_Muon_eta",&var_Muon_eta);
   
   T3MMiniTree->Branch("var_FLSignificance",&var_FLSignificance);
   T3MMiniTree->Branch("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   T3MMiniTree->Branch("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   T3MMiniTree->Branch("var_MinDistToIsoTrack",&var_MinDistToIsoTrack);
   T3MMiniTree->Branch("var_DeltaPhi",&var_DeltaPhi);
+  T3MMiniTree->Branch("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   
   T3MMiniTree->Branch("var_MET_Et",&var_MET_Et);
   T3MMiniTree->Branch("var_MET_Phi",&var_MET_Phi);
@@ -71,6 +76,8 @@ void  ZTau3MuTaumu::Configure(){
   reader_Taumu->AddVariable("var_mu1_pT",&var_mu1_pT);
   reader_Taumu->AddVariable("var_mu2_pT",&var_mu2_pT);
   reader_Taumu->AddVariable("var_mu3_pT",&var_mu3_pT);
+  reader_Taumu->AddVariable("var_TripletPT",&var_TripletPT);
+  reader_Taumu->AddVariable("var_TripletEta",&var_TripletEta);
   
   reader_Taumu->AddVariable("var_MuonIsolation",&var_MuonIsolation);
   reader_Taumu->AddVariable("var_Muon_pT",&var_Muon_pT);
@@ -79,14 +86,49 @@ void  ZTau3MuTaumu::Configure(){
   reader_Taumu->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Taumu->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   reader_Taumu->AddVariable("var_DeltaPhi",&var_DeltaPhi);
+  reader_Taumu->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   
   reader_Taumu->AddVariable("var_MET_Et",&var_MET_Et);
-  reader_Taumu->AddVariable("var_MET_Phi",&var_MET_Phi);
   
-  reader_Taumu->AddVariable("var_VisMass",&var_VisMass);
-  reader_Taumu->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
+  //reader_Taumu->AddVariable("var_VisMass",&var_VisMass);
+  //reader_Taumu->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
   
-  reader_Taumu->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/BDToutputs/Trainin_N_0_ZTT_mu3mu/weights/TMVAClassification_BDT.weights.xml"); 
+  reader_Taumu->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/BDToutputs/output_0_ZTT_mu3mu/weights/TMVAClassification_BDT.weights.xml"); 
+  
+  
+  //*** define the bdt reader for event selection where the BDT was trained with bbbar/ccbar MC background
+  reader_Taumu_MC_Bkg = new TMVA::Reader( "!Color:!Silent" );
+  
+  reader_Taumu_MC_Bkg->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
+  reader_Taumu_MC_Bkg->AddVariable("var_mu1_pT",&var_mu1_pT);
+  reader_Taumu_MC_Bkg->AddVariable("var_mu2_pT",&var_mu2_pT);
+  reader_Taumu_MC_Bkg->AddVariable("var_mu3_pT",&var_mu3_pT);
+  reader_Taumu_MC_Bkg->AddVariable("var_TripletPT",&var_TripletPT);
+  reader_Taumu_MC_Bkg->AddVariable("var_TripletEta",&var_TripletEta);
+  
+  reader_Taumu_MC_Bkg->AddVariable("var_MuonIsolation",&var_MuonIsolation);
+  reader_Taumu_MC_Bkg->AddVariable("var_Muon_pT",&var_Muon_pT);
+  
+  reader_Taumu_MC_Bkg->AddVariable("var_FLSignificance",&var_FLSignificance);
+  reader_Taumu_MC_Bkg->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
+  reader_Taumu_MC_Bkg->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
+  reader_Taumu_MC_Bkg->AddVariable("var_DeltaPhi",&var_DeltaPhi);
+  reader_Taumu_MC_Bkg->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
+  
+  reader_Taumu_MC_Bkg->AddVariable("var_MET_Et",&var_MET_Et);
+  
+  reader_Taumu_MC_Bkg->AddVariable("var_VisMass",&var_VisMass);
+  reader_Taumu_MC_Bkg->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
+  
+  reader_Taumu_MC_Bkg->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/BDToutputs/output_0_ZTT_mu3mu_MC_Bkg/weights/TMVAClassification_BDT.weights.xml"); 
+  
+  
+  //Mini tree for limit extraction
+  T3MCombineTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for combine");
+
+  T3MCombineTree->Branch("combine_var_m3m",&combine_var_m3m);
+  T3MCombineTree->Branch("combine_var_ID",&combine_var_ID);
+  T3MCombineTree->Branch("combine_var_BDTOutput",&combine_var_BDTOutput);
   
   
   for(int i=0; i<NCuts;i++){
@@ -303,7 +345,7 @@ void  ZTau3MuTaumu::Configure(){
   PostSelection_OppositeMuRelativeIsolation=HConfig.GetTH1D(Name+"_PostSelection_OppositeMuRelativeIsolation","PostSelection_OppositeMuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostSelection_OppositeMuRelativeIsolation);
   PostSelection_VisibleDiTauMass=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass","PostSelection_VisibleDiTauMass",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass);
   PostSelection_MTT=HConfig.GetTH1D(Name+"_PostSelection_MTT","PostSelection_MTT",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)","Events");
-  PostSelection_TripletMass=HConfig.GetTH1D(Name+"_PostSelection_TripletMass","PostSelection_TripletMass",40,1.1,2.2,"M_{3#mu}, GeV","Events");
+  PostSelection_TripletMass=HConfig.GetTH1D(Name+"_PostSelection_TripletMass","PostSelection_TripletMass",40,1.4,2.1,"M_{3#mu}, GeV","Events");
   
   PostSelection_TripletPt=HConfig.GetTH1D(Name+"_PostSelection_TripletPt","PostSelection_TripletPt",50,2,80,"pT(3#mu), GeV ","Events");InputFeatureCollection.push_back(&PostSelection_TripletPt);
   PostSelection_OppositeMuonPt=HConfig.GetTH1D(Name+"_PostSelection_OppositeMuonPt","PostSelection_OppositeMuonPt",50,2,40,"pT(#mu), GeV ","Events");
@@ -329,6 +371,7 @@ void  ZTau3MuTaumu::Configure(){
   PostSelection_SVPVTauDirAngle_largescale=HConfig.GetTH1D(Name+"_PostSelection_SVPVTauDirAngle_largescale","PostSelection_SVPVTauDirAngle_largescale",50,-3.2,3.2,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events");
   PostSelection_VertexChi2KF=HConfig.GetTH1D(Name+"_PostSelection_VertexChi2KF","PostSelection_VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events"); InputFeatureCollection.push_back(&PostSelection_VertexChi2KF);
   PostSelection_MinDistToIsoTrack=HConfig.GetTH1D(Name+"_PostSelection_MinDistToIsoTrack","PostSelection_MinDistToIsoTrack",100,0,1.5,"Min dR To IsoTrack","Events");InputFeatureCollection.push_back(&PostSelection_MinDistToIsoTrack);
+  PostSelection_MinDistToIsoTrack_cm=HConfig.GetTH1D(Name+"_PostSelection_MinDistToIsoTrack_cm","PostSelection_MinDistToIsoTrack_cm",100,0,110,"Min dR To IsoTrack, cm","Events");InputFeatureCollection.push_back(&PostSelection_MinDistToIsoTrack_cm);
   PostSelection_Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_PostSelection_Kinematics_MissingTrMass","PostSelection_Kinematics_MissingTrMass",100,0,100.,"M_{T}, GeV","Events");
   PostSelection_Kinematics_MissingTrMass_cos=HConfig.GetTH1D(Name+"_PostSelection_Kinematics_MissingTrMass_cos","PostSelection_Kinematics_MissingTrMass_cos",100,0,3.14,"#Delta(#phi)","Events");InputFeatureCollection.push_back(&PostSelection_Kinematics_MissingTrMass_cos);
   PostSelection_VisibleDiTauMass_Collinear=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass_Collinear","PostSelection_VisibleDiTauMass_Collinear",70,30.,180,"M_{#tau(#mu) + #tau(3#mu) + #nu}, GeV","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass_Collinear);
@@ -350,15 +393,16 @@ void  ZTau3MuTaumu::Configure(){
   PostSelection_VisibleDiTauMass_peakspectra2=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass_peakspectra2","PostSelection_VisibleDiTauMass_peakspectra2",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass_peakspectra2);
   
   PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,-0.5,0.5,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
+  PostSelection_BDT_Output_MC_Bkg=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output_MC_Bkg","PostSelection_BDT_Output_MC_Bkg",100,-0.9,0.9,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output_MC_Bkg);
   
   
   //Plots after BDT
   
-  PostBDT_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostBDT_Tau3MuRelativeIsolation","PostBDT_Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostBDT_Tau3MuRelativeIsolation);
-  PostBDT_OppositeMuRelativeIsolation=HConfig.GetTH1D(Name+"_PostBDT_OppositeMuRelativeIsolation","PostBDT_OppositeMuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostBDT_OppositeMuRelativeIsolation);
+  PostBDT_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostBDT_Tau3MuRelativeIsolation","PostBDT_Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T}), #Delta R < 0.4","Events");InputFeatureCollection.push_back(&PostBDT_Tau3MuRelativeIsolation);
+  PostBDT_OppositeMuRelativeIsolation=HConfig.GetTH1D(Name+"_PostBDT_OppositeMuRelativeIsolation","PostBDT_OppositeMuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T}), #Delta R < 0.4","Events");InputFeatureCollection.push_back(&PostBDT_OppositeMuRelativeIsolation);
   PostBDT_VisibleDiTauMass=HConfig.GetTH1D(Name+"_PostBDT_VisibleDiTauMass","PostBDT_VisibleDiTauMass",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostBDT_VisibleDiTauMass);
   PostBDT_MTT=HConfig.GetTH1D(Name+"_PostBDT_MTT","PostBDT_MTT",70,0.,140,"M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)","Events");
-  PostBDT_TripletMass=HConfig.GetTH1D(Name+"_PostBDT_TripletMass","PostBDT_TripletMass",40,1.1,2.2,"M_{3#mu}, GeV","Events");
+  PostBDT_TripletMass=HConfig.GetTH1D(Name+"_PostBDT_TripletMass","PostBDT_TripletMass",40,1.4,2.1,"M_{3#mu}, GeV","Events");
   
   PostBDT_TripletPt=HConfig.GetTH1D(Name+"_PostBDT_TripletPt","PostBDT_TripletPt",50,2,80,"pT(3#mu), GeV ","Events");InputFeatureCollection.push_back(&PostBDT_TripletPt);
   PostBDT_OppositeMuonPt=HConfig.GetTH1D(Name+"_PostBDT_OppositeMuonPt","PostBDT_OppositeMuonPt",50,2,40,"pT(#mu), GeV ","Events");
@@ -384,11 +428,12 @@ void  ZTau3MuTaumu::Configure(){
   PostBDT_SVPVTauDirAngle_largescale=HConfig.GetTH1D(Name+"_PostBDT_SVPVTauDirAngle_largescale","PostBDT_SVPVTauDirAngle_largescale",50,-3.2,3.2,"Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad","Events");
   PostBDT_VertexChi2KF=HConfig.GetTH1D(Name+"_PostBDT_VertexChi2KF","PostBDT_VertexChi2KF",50,0,20,"KF vertex #chi^{2}","Events"); InputFeatureCollection.push_back(&PostBDT_VertexChi2KF);
   PostBDT_MinDistToIsoTrack=HConfig.GetTH1D(Name+"_PostBDT_MinDistToIsoTrack","PostBDT_MinDistToIsoTrack",100,0,1.5,"Min dR To IsoTrack","Events");InputFeatureCollection.push_back(&PostBDT_MinDistToIsoTrack);
+  PostBDT_MinDistToIsoTrack_cm=HConfig.GetTH1D(Name+"_PostBDT_MinDistToIsoTrack_cm","PostBDT_MinDistToIsoTrack_cm",100,0,110,"Min dR To IsoTrack, cm","Events");InputFeatureCollection.push_back(&PostBDT_MinDistToIsoTrack_cm);
   PostBDT_Kinematics_MissingTrMass=HConfig.GetTH1D(Name+"_PostBDT_Kinematics_MissingTrMass","PostBDT_Kinematics_MissingTrMass",100,0,100.,"M_{T}, GeV","Events");
   PostBDT_Kinematics_MissingTrMass_cos=HConfig.GetTH1D(Name+"_PostBDT_Kinematics_MissingTrMass_cos","PostBDT_Kinematics_MissingTrMass_cos",100,0,3.14,"#Delta(#phi)","Events");InputFeatureCollection.push_back(&PostBDT_Kinematics_MissingTrMass_cos);
   PostBDT_VisibleDiTauMass_Collinear=HConfig.GetTH1D(Name+"_PostBDT_VisibleDiTauMass_Collinear","PostBDT_VisibleDiTauMass_Collinear",70,30.,180,"M_{#tau(#mu) + #tau(3#mu) + #nu}, GeV","Events");InputFeatureCollection.push_back(&PostBDT_VisibleDiTauMass_Collinear);
   
-  PostBDT_Phi_Triplet_to_Spectator_Tau=HConfig.GetTH1D(Name+"_PostBDT_Phi_Triplet_to_Spectator_Tau","PostBDT_Phi_Triplet_to_Spectator_Tau",100,0,3.2,"#Delta #phi","Events");
+  PostBDT_Phi_Triplet_to_Spectator_Tau=HConfig.GetTH1D(Name+"_PostBDT_Phi_Triplet_to_Spectator_Tau","PostBDT_Phi_Triplet_to_Spectator_Tau",100,0,3.2,"#Delta #phi","Events");InputFeatureCollection.push_back(&PostBDT_Phi_Triplet_to_Spectator_Tau);
   
   PostBDT_Neutrino_Test_Phi=HConfig.GetTH1D(Name+"_PostBDT_Neutrino_Test_Phi","PostBDT_Neutrino_Test_Phi",100,0,3.2,"#Delta #phi","Events");InputFeatureCollection.push_back(&PostBDT_Neutrino_Test_Phi);
   PostBDT_Neutrino_Test_Et=HConfig.GetTH1D(Name+"_PostBDT_Neutrino_Test_Et","PostBDT_Neutrino_Test_Et",100,0,50,"#Delta E, GeV","Events");InputFeatureCollection.push_back(&PostBDT_Neutrino_Test_Et);
@@ -403,6 +448,66 @@ void  ZTau3MuTaumu::Configure(){
   
   PostBDT_VisibleDiTauMass_peakspectra1=HConfig.GetTH1D(Name+"_PostBDT_VisibleDiTauMass_peakspectra1","PostBDT_VisibleDiTauMass_peakspectra1",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostBDT_VisibleDiTauMass_peakspectra1);
   PostBDT_VisibleDiTauMass_peakspectra2=HConfig.GetTH1D(Name+"_PostBDT_VisibleDiTauMass_peakspectra2","PostBDT_VisibleDiTauMass_peakspectra2",70,0.,150,"M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostBDT_VisibleDiTauMass_peakspectra2);
+  
+  PostBDT_PairMass_OppositeSign_dR12=HConfig.GetTH1D(Name+"_PostBDT_PairMass_OppositeSign_dR12","PostBDT_PairMass_OppositeSign_dR12",40,0.2,2.,"M_{1}, GeV (OS - SS dR sorted)","Events");
+  PostBDT_PairMass_OppositeSign_dR13=HConfig.GetTH1D(Name+"_PostBDT_PairMass_OppositeSign_dR13","PostBDT_PairMass_OppositeSign_dR13",40,0.2,2.,"M_{2}, GeV (OS - SS dR sorted)","Events");
+  
+  
+  //Pre BDT 2D scan
+  
+  BDT_2Dscan_Tau3MuRelativeIsolation=HConfig.GetTH2D(Name+"_BDT_2Dscan_Tau3MuRelativeIsolation","BDT_2Dscan_Tau3MuRelativeIsolation",100,-0.9,0.9,50,0.,1.1,"BDT Score","I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Tau3MuRelativeIsolation);
+  BDT_2Dscan_OppositeMuRelativeIsolation=HConfig.GetTH2D(Name+"_BDT_2Dscan_OppositeMuRelativeIsolation","BDT_2Dscan_OppositeMuRelativeIsolation",100,-0.9,0.9,50,0.,1.1,"BDT Score","I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})");InputFeatureCollection_2D.push_back(&BDT_2Dscan_OppositeMuRelativeIsolation);
+  BDT_2Dscan_VisibleDiTauMass=HConfig.GetTH2D(Name+"_BDT_2Dscan_VisibleDiTauMass","BDT_2Dscan_VisibleDiTauMass",100,-0.9,0.9,70,0.,150,"BDT Score","M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)");InputFeatureCollection_2D.push_back(&BDT_2Dscan_VisibleDiTauMass);
+  BDT_2Dscan_MTT=HConfig.GetTH2D(Name+"_BDT_2Dscan_MTT","BDT_2Dscan_MTT",100,-0.9,0.9,70,0.,140,"BDT Score","M_{#tau(#mu) - #tau(3#mu)}, GeV (collinear approximation)");
+  BDT_2Dscan_TripletMass=HConfig.GetTH2D(Name+"_BDT_2Dscan_TripletMass","BDT_2Dscan_TripletMass",100,-0.9,0.9,40,1.4,2.1,"BDT Score","M_{3#mu}, GeV");
+  
+  BDT_2Dscan_TripletPt=HConfig.GetTH2D(Name+"_BDT_2Dscan_TripletPt","BDT_2Dscan_TripletPt",100,-0.9,0.9,50,2,80,"BDT Score","pT(3#mu), GeV ");InputFeatureCollection_2D.push_back(&BDT_2Dscan_TripletPt);
+  BDT_2Dscan_OppositeMuonPt=HConfig.GetTH2D(Name+"_BDT_2Dscan_OppositeMuonPt","BDT_2Dscan_OppositeMuonPt",100,-0.9,0.9,50,2,40,"BDT Score","pT(#mu), GeV ");
+  BDT_2Dscan_TripletEta=HConfig.GetTH2D(Name+"_BDT_2Dscan_TripletEta","BDT_2Dscan_TripletEta",100,-0.9,0.9,50,-2.5,2.5,"BDT Score","#eta(3#mu)");InputFeatureCollection_2D.push_back(&BDT_2Dscan_TripletEta);
+  BDT_2Dscan_OppositeMuonEta=HConfig.GetTH2D(Name+"_BDT_2Dscan_OppositeMuonEta","BDT_2Dscan_OppositeMuonEta",100,-0.9,0.9,50,-2.5,2.5,"BDT Score","#eta(#mu)");
+  
+  BDT_2Dscan_MET_Et=HConfig.GetTH2D(Name+"_BDT_2Dscan_MET_Et","BDT_2Dscan_MET_Et",100,-0.9,0.9,100,0.0,100.0,"BDT Score","MET Et, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_MET_Et);
+  BDT_2Dscan_MET_Phi=HConfig.GetTH2D(Name+"_BDT_2Dscan_MET_Phi","BDT_2Dscan_MET_Phi",100,-0.9,0.9,20,-3.2,3.2,"BDT Score","MET #Phi ");InputFeatureCollection_2D.push_back(&BDT_2Dscan_MET_Phi);
+  BDT_2Dscan_MET_Phi_vs_NeutrinoPhi=HConfig.GetTH2D(Name+"_BDT_2Dscan_MET_Phi_vs_NeutrinoPhi","BDT_2Dscan_MET_Phi_vs_NeutrinoPhi",40,-3.2,3.2,40,-3.2,3.2,"MET #Phi","#nu #Phi");
+  BDT_2Dscan_MET_vs_NeutrinoPt=HConfig.GetTH2D(Name+"_BDT_2Dscan_MET_vs_NeutrinoPt","BDT_2Dscan_MET_vs_NeutrinoPt",50,0,100,50,0,100,"MET Et, GeV","#nu p_{T}, GeV");
+  
+  BDT_2Dscan_Mu1_Pt=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu1_Pt","BDT_2Dscan_Mu1_Pt",100,-0.9,0.9,160,0.0,80.0,"BDT Score","#mu_{1} pT, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu1_Pt);
+  BDT_2Dscan_Mu1_Eta=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu1_Eta","BDT_2Dscan_Mu1_Eta",100,-0.9,0.9,30,0,3.14,"BDT Score","#mu_{1} |#eta|");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu1_Eta);
+  BDT_2Dscan_Mu2_Pt=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu2_Pt","BDT_2Dscan_Mu2_Pt",100,-0.9,0.9,160,0.0,80.0,"BDT Score","#mu_{2} pT, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu2_Pt);
+  BDT_2Dscan_Mu2_Eta=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu2_Eta","BDT_2Dscan_Mu2_Eta",100,-0.9,0.9,30,0,3.14,"BDT Score","#mu_{2} |#eta|");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu2_Eta);
+  BDT_2Dscan_Mu3_Pt=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu3_Pt","BDT_2Dscan_Mu3_Pt",100,-0.9,0.9,160,0.0,80.0,"BDT Score","#mu_{3} pT, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu3_Pt);
+  BDT_2Dscan_Mu3_Eta=HConfig.GetTH2D(Name+"_BDT_2Dscan_Mu3_Eta","BDT_2Dscan_Mu3_Eta",100,-0.9,0.9,30,0,3.14,"BDT Score","#mu_{3} |#eta|");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Mu3_Eta);
+  BDT_2Dscan_mu_Pt=HConfig.GetTH2D(Name+"_BDT_2Dscan_mu_Pt","BDT_2Dscan_mu_Pt",100,-0.9,0.9,40,0.0,80.0,"BDT Score","#mu p_{T}, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_mu_Pt);
+  BDT_2Dscan_mu_Eta=HConfig.GetTH2D(Name+"_BDT_2Dscan_mu_Eta","BDT_2Dscan_mu_Eta",100,-0.9,0.9,30,0,3.14,"BDT Score","#mu |#eta|");InputFeatureCollection_2D.push_back(&BDT_2Dscan_mu_Eta);
+  
+  BDT_2Dscan_FLSignificance=HConfig.GetTH2D(Name+"_BDT_2Dscan_FLSignificance","BDT_2Dscan_FLSignificance",100,-0.9,0.9,60,0,30,"BDT Score","PV - SV distance  significance"); InputFeatureCollection_2D.push_back(&BDT_2Dscan_FLSignificance);
+  BDT_2Dscan_SVPVTauDirAngle=HConfig.GetTH2D(Name+"_BDT_2Dscan_SVPVTauDirAngle","BDT_2Dscan_SVPVTauDirAngle",100,-0.9,0.9,50,0,0.15,"BDT Score","Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad"); InputFeatureCollection_2D.push_back(&BDT_2Dscan_SVPVTauDirAngle);
+  BDT_2Dscan_SVPVTauDirAngle_largescale=HConfig.GetTH2D(Name+"_BDT_2Dscan_SVPVTauDirAngle_largescale","BDT_2Dscan_SVPVTauDirAngle_largescale",100,-0.9,0.9,50,-3.2,3.2,"BDT Score","Angle btw #vec{SV}-#vec{PV} and #vec{3#mu}, rad");
+  BDT_2Dscan_VertexChi2KF=HConfig.GetTH2D(Name+"_BDT_2Dscan_VertexChi2KF","BDT_2Dscan_VertexChi2KF",100,-0.9,0.9,50,0,20,"BDT Score","KF vertex #chi^{2}"); InputFeatureCollection_2D.push_back(&BDT_2Dscan_VertexChi2KF);
+  BDT_2Dscan_MinDistToIsoTrack=HConfig.GetTH2D(Name+"_BDT_2Dscan_MinDistToIsoTrack","BDT_2Dscan_MinDistToIsoTrack",100,-0.9,0.9,100,0,1.5,"BDT Score","Min dR To IsoTrack");InputFeatureCollection_2D.push_back(&BDT_2Dscan_MinDistToIsoTrack);
+  BDT_2Dscan_MinDistToIsoTrack_cm=HConfig.GetTH2D(Name+"_BDT_2Dscan_MinDistToIsoTrack_cm","BDT_2Dscan_MinDistToIsoTrack_cm",100,-0.9,0.9,100,0,110,"BDT Score","Min dR To IsoTrack, cm");InputFeatureCollection_2D.push_back(&BDT_2Dscan_MinDistToIsoTrack_cm);
+  BDT_2Dscan_Kinematics_MissingTrMass=HConfig.GetTH2D(Name+"_BDT_2Dscan_Kinematics_MissingTrMass","BDT_2Dscan_Kinematics_MissingTrMass",100,-0.9,0.9,100,0,100.,"BDT Score","M_{T}, GeV");
+  BDT_2Dscan_Kinematics_MissingTrMass_cos=HConfig.GetTH2D(Name+"_BDT_2Dscan_Kinematics_MissingTrMass_cos","BDT_2Dscan_Kinematics_MissingTrMass_cos",100,-0.9,0.9,100,0,3.14,"BDT Score","#Delta(#phi)");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Kinematics_MissingTrMass_cos);
+  BDT_2Dscan_VisibleDiTauMass_Collinear=HConfig.GetTH2D(Name+"_BDT_2Dscan_VisibleDiTauMass_Collinear","BDT_2Dscan_VisibleDiTauMass_Collinear",100,-0.9,0.9,70,30.,180,"BDT Score","M_{#tau(#mu) + #tau(3#mu) + #nu}, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_VisibleDiTauMass_Collinear);
+  
+  BDT_2Dscan_Phi_Triplet_to_Spectator_Tau=HConfig.GetTH2D(Name+"_BDT_2Dscan_Phi_Triplet_to_Spectator_Tau","BDT_2Dscan_Phi_Triplet_to_Spectator_Tau",100,-0.9,0.9,100,0,3.2,"BDT Score","#Delta #phi");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Phi_Triplet_to_Spectator_Tau);
+  
+  BDT_2Dscan_Neutrino_Test_Phi=HConfig.GetTH2D(Name+"_BDT_2Dscan_Neutrino_Test_Phi","BDT_2Dscan_Neutrino_Test_Phi",100,-0.9,0.9,100,0,3.2,"BDT Score","#Delta #phi");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Neutrino_Test_Phi);
+  BDT_2Dscan_Neutrino_Test_Et=HConfig.GetTH2D(Name+"_BDT_2Dscan_Neutrino_Test_Et","BDT_2Dscan_Neutrino_Test_Et",100,-0.9,0.9,100,0,50,"BDT Score","#Delta E, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Neutrino_Test_Et);
+  BDT_2Dscan_Neutrino_Test_Mass=HConfig.GetTH2D(Name+"_BDT_2Dscan_Neutrino_Test_Mass","BDT_2Dscan_Neutrino_Test_Mass",100,-0.9,0.9,200,0,100,"BDT Score","#Inv Mass, GeV");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Neutrino_Test_Mass);
+  BDT_2Dscan_Neutrino_Test_Phi_Opposing=HConfig.GetTH2D(Name+"_BDT_2Dscan_Neutrino_Test_Phi_Opposing","BDT_2Dscan_Neutrino_Test_Phi_Opposing",100,-0.9,0.9,100,0,6,"BDT Score","#Delta #phi");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Neutrino_Test_Phi_Opposing);
+  
+  BDT_2Dscan_prod_size=HConfig.GetTH2D(Name+"BDT_2Dscan__prod_size","BDT_2Dscan_prod_size",100,-0.9,0.9,7,-0.5,6.5,"BDT Score","no. of visible products");InputFeatureCollection_2D.push_back(&BDT_2Dscan_prod_size);
+  
+  
+  BDT_2Dscan_Vertex_Dist=HConfig.GetTH2D(Name+"_BDT_2Dscan_Vertex_Dist","BDT_2Dscan_Vertex_Dist",100,-0.9,0.9,100,0.0,1.0,"BDT Score","Vertex shift, cm");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Vertex_Dist);
+  BDT_2Dscan_Vertex_Chi2=HConfig.GetTH2D(Name+"_BDT_2Dscan_Vertex_Chi2","BDT_2Dscan_Vertex_Chi2",100,-0.9,0.9,100,0,50,"BDT Score","4#mu Vertex #chi^{2}");InputFeatureCollection_2D.push_back(&BDT_2Dscan_Vertex_Chi2);
+  
+  BDT_2Dscan_VisibleDiTauMass_peakspectra1=HConfig.GetTH2D(Name+"_BDT_2Dscan_VisibleDiTauMass_peakspectra1","BDT_2Dscan_VisibleDiTauMass_peakspectra1",100,-0.9,0.9,70,0.,150,"BDT Score","M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)");InputFeatureCollection_2D.push_back(&BDT_2Dscan_VisibleDiTauMass_peakspectra1);
+  BDT_2Dscan_VisibleDiTauMass_peakspectra2=HConfig.GetTH2D(Name+"_BDT_2Dscan_VisibleDiTauMass_peakspectra2","BDT_2Dscan_VisibleDiTauMass_peakspectra2",100,-0.9,0.9,70,0.,150,"BDT Score","M_{#tau(#mu) - #tau(3#mu)}, GeV (visible mass)");InputFeatureCollection_2D.push_back(&BDT_2Dscan_VisibleDiTauMass_peakspectra2);
+  
+  BDT_2Dscan_PairMass_OppositeSign_dR12=HConfig.GetTH2D(Name+"_BDT_2Dscan_PairMass_OppositeSign_dR12","BDT_2Dscan_PairMass_OppositeSign_dR12",100,-0.9,0.9,40,0.2,2.,"BDT Score","M_{1}, GeV (OS - SS dR sorted)");
+  BDT_2Dscan_PairMass_OppositeSign_dR13=HConfig.GetTH2D(Name+"_BDT_2Dscan_PairMass_OppositeSign_dR13","BDT_2Dscan_PairMass_OppositeSign_dR13",100,-0.9,0.9,40,0.2,2.,"BDT Score","M_{2}, GeV (OS - SS dR sorted)");
   
   
 
@@ -502,6 +607,7 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&PostSelection_SVPVTauDirAngle_largescale);
   Extradist1d.push_back(&PostSelection_VertexChi2KF);
   Extradist1d.push_back(&PostSelection_MinDistToIsoTrack);
+  Extradist1d.push_back(&PostSelection_MinDistToIsoTrack_cm);
   Extradist1d.push_back(&PostSelection_Kinematics_MissingTrMass);
   Extradist1d.push_back(&PostSelection_Kinematics_MissingTrMass_cos);
   Extradist1d.push_back(&PostSelection_VisibleDiTauMass_Collinear);
@@ -521,6 +627,7 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&PostSelection_VisibleDiTauMass_peakspectra2);
   
   Extradist1d.push_back(&PostSelection_BDT_Output);
+  Extradist1d.push_back(&PostSelection_BDT_Output_MC_Bkg);
   
   //Post BDT
   Extradist1d.push_back(&PostBDT_Tau3MuRelativeIsolation);
@@ -547,10 +654,57 @@ void  ZTau3MuTaumu::Store_ExtraDist(){
   Extradist1d.push_back(&PostBDT_SVPVTauDirAngle);
   Extradist1d.push_back(&PostBDT_VertexChi2KF);
   Extradist1d.push_back(&PostBDT_MinDistToIsoTrack);
+  Extradist1d.push_back(&PostBDT_MinDistToIsoTrack_cm);
   Extradist1d.push_back(&PostBDT_Kinematics_MissingTrMass_cos);
   Extradist1d.push_back(&PostBDT_VisibleDiTauMass_Collinear);
   
   Extradist1d.push_back(&PostBDT_Vertex_Chi2);
+  
+  Extradist1d.push_back(&PostBDT_Neutrino_Test_Phi);
+  Extradist1d.push_back(&PostBDT_Neutrino_Test_Et);
+  Extradist1d.push_back(&PostBDT_Neutrino_Test_Phi_Opposing);
+  
+  Extradist1d.push_back(&PostBDT_PairMass_OppositeSign_dR12);
+  Extradist1d.push_back(&PostBDT_PairMass_OppositeSign_dR13);
+  
+  
+  //Pre BDT 2D scan
+  Extradist2d.push_back(&BDT_2Dscan_Tau3MuRelativeIsolation);
+  Extradist2d.push_back(&BDT_2Dscan_OppositeMuRelativeIsolation);
+  Extradist2d.push_back(&BDT_2Dscan_VisibleDiTauMass);
+  Extradist2d.push_back(&BDT_2Dscan_TripletMass);
+  
+  Extradist2d.push_back(&BDT_2Dscan_TripletPt);
+  Extradist2d.push_back(&BDT_2Dscan_TripletEta);
+  
+  Extradist2d.push_back(&BDT_2Dscan_MET_Et);
+  Extradist2d.push_back(&BDT_2Dscan_MET_Phi);
+  
+  Extradist2d.push_back(&BDT_2Dscan_Mu1_Pt);
+  Extradist2d.push_back(&BDT_2Dscan_Mu1_Eta);
+  Extradist2d.push_back(&BDT_2Dscan_Mu2_Pt);
+  Extradist2d.push_back(&BDT_2Dscan_Mu2_Eta);
+  Extradist2d.push_back(&BDT_2Dscan_Mu3_Pt);
+  Extradist2d.push_back(&BDT_2Dscan_Mu3_Eta);
+  Extradist2d.push_back(&BDT_2Dscan_mu_Pt);
+  Extradist2d.push_back(&BDT_2Dscan_mu_Eta);
+  
+  Extradist2d.push_back(&BDT_2Dscan_FLSignificance);
+  Extradist2d.push_back(&BDT_2Dscan_SVPVTauDirAngle);
+  Extradist2d.push_back(&BDT_2Dscan_VertexChi2KF);
+  Extradist2d.push_back(&BDT_2Dscan_MinDistToIsoTrack);
+  Extradist2d.push_back(&BDT_2Dscan_MinDistToIsoTrack_cm);
+  Extradist2d.push_back(&BDT_2Dscan_Kinematics_MissingTrMass_cos);
+  Extradist2d.push_back(&BDT_2Dscan_VisibleDiTauMass_Collinear);
+  
+  Extradist2d.push_back(&BDT_2Dscan_Vertex_Chi2);
+  
+  Extradist2d.push_back(&BDT_2Dscan_Neutrino_Test_Phi);
+  Extradist2d.push_back(&BDT_2Dscan_Neutrino_Test_Et);
+  Extradist2d.push_back(&BDT_2Dscan_Neutrino_Test_Phi_Opposing);
+  
+  Extradist2d.push_back(&BDT_2Dscan_PairMass_OppositeSign_dR12);
+  Extradist2d.push_back(&BDT_2Dscan_PairMass_OppositeSign_dR13);
 
 
 }
@@ -1127,7 +1281,9 @@ void  ZTau3MuTaumu::doEvent(){
     //    std::cout<<"   how many muons i have  " << Muons_OppositeHemisphere_OppositeCharge .size() << std::endl;
     sort( Muons_OppositeHemisphere_OppositeCharge.rbegin(), Muons_OppositeHemisphere_OppositeCharge.rend() ); // sort based on first column, highest first
     unsigned int muon_idx = Muons_OppositeHemisphere_OppositeCharge[0][1];
-    PostSelection_Phi_Triplet_to_Spectator_Tau.at(t).Fill(Muons_OppositeHemisphere_OppositeCharge[0][0]);
+    
+    double val_Phi_To_Opposite_Side=Muons_OppositeHemisphere_OppositeCharge[0][0];
+    PostSelection_Phi_Triplet_to_Spectator_Tau.at(t).Fill(val_Phi_To_Opposite_Side);
     
     TLorentzVector MuLV = Ntp->Muon_P4(muon_idx);
     
@@ -1167,6 +1323,8 @@ void  ZTau3MuTaumu::doEvent(){
     double val_MinDistToIsoTrack=1000.0;
     double val_DeltaPhi=fabs(Ntp->METPhi()-(MuLV.Vect()).Phi());
     
+    double val_MinDistToIsoTrack_cm=Ntp->Isolation_MinDist(signal_idx);
+    
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
       double dR1=fabs(Tau3muLV.DeltaR(TrackLV));
@@ -1180,6 +1338,7 @@ void  ZTau3MuTaumu::doEvent(){
     PostSelection_SVPVTauDirAngle.at(t).Fill(val_SVPVTauDirAngle);
     PostSelection_SVPVTauDirAngle_largescale.at(t).Fill(val_SVPVTauDirAngle);
     PostSelection_MinDistToIsoTrack.at(t).Fill(val_MinDistToIsoTrack);
+    PostSelection_MinDistToIsoTrack_cm.at(t).Fill(val_MinDistToIsoTrack_cm);
     
     // Missing transverse mass
     PostSelection_Kinematics_MissingTrMass.at(t).Fill(sqrt(   2*Ntp->METEt()*TMath::Sqrt(MuLV.Px()*MuLV.Px()+MuLV.Py()*MuLV.Py())*(1-TMath::Cos(Ntp->METPhi()-(MuLV.Vect()).Phi()))   )); //use definition transverse mass for 2 particles
@@ -1203,7 +1362,7 @@ void  ZTau3MuTaumu::doEvent(){
     Triplet_plus_mu_set=Triplet_set;
     Triplet_plus_mu_set.push_back(Ntp->Muon_TrackParticle(muon_idx));
     Chi2VertexFitter  Four_Particle_FittedVertex(Triplet_plus_mu_set,Triplet_FittedVertex.GetVertex());
-    //Four_Particle_FittedVertex.Fit();
+    Four_Particle_FittedVertex.Fit();
     
     //std::cout << "Triplet_FittedVertex mag: " << Triplet_FittedVertex.GetVertex().Mag() << std::endl;
     //std::cout << "Four_Particle_FittedVertex mag: " << Four_Particle_FittedVertex.GetVertex().Mag() << std::endl;
@@ -1296,7 +1455,7 @@ void  ZTau3MuTaumu::doEvent(){
 
     bool PlotMCOnly(false);  // and blind for data
     if(id!=1) PlotMCOnly = true;
-    if(id==1 && ( (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.7233333) or (TauRefitLV.M() > 1.8333333 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
+    if(id==1 && ( (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.715) or (TauRefitLV.M() > 1.8375 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
     if(PlotMCOnly)  PostSelection_TripletMass.at(t).Fill(TauRefitLV.M(),1);
     
     
@@ -1519,15 +1678,20 @@ void  ZTau3MuTaumu::doEvent(){
         var_mu1_pT=Muon1LV.Pt();
         var_mu2_pT=Muon2LV.Pt();
         var_mu3_pT=Muon3LV.Pt();
+        var_mu1_eta=Muon1LV.Eta();
+        var_mu2_eta=Muon2LV.Eta();
+        var_mu3_eta=Muon3LV.Eta();
         
         var_MuonIsolation=Ntp->Muon_P4(muon_idx).Pt()/(Ntp->Muon_RelIso(muon_idx) +  Ntp->Muon_P4(muon_idx).Pt());
         var_Muon_pT=MuLV.Pt();
+        var_Muon_eta=MuLV.Eta();
         
         var_FLSignificance=val_FLSignificance;
         var_SVPVTauDirAngle=val_SVPVTauDirAngle;
         var_ThreeMuVertexChi2KF=val_ThreeMuVertexChi2KF;
         var_MinDistToIsoTrack=val_MinDistToIsoTrack;
         var_DeltaPhi=val_DeltaPhi;
+        var_Phi_To_Opposite_Side=val_Phi_To_Opposite_Side;
         
         var_MET_Et=val_MET_Et;
         var_MET_Phi=val_MET_Phi;
@@ -1542,7 +1706,69 @@ void  ZTau3MuTaumu::doEvent(){
         BDT_Evaluated = reader_Taumu->EvaluateMVA("BDT");
         PostSelection_BDT_Output.at(t).Fill(BDT_Evaluated);
         
-        if(BDT_Evaluated>0.1){
+        //Evaluate BDT with MC bkg
+        BDT_Evaluated_MC_Bkg = reader_Taumu_MC_Bkg->EvaluateMVA("BDT");
+        PostSelection_BDT_Output_MC_Bkg.at(t).Fill(BDT_Evaluated_MC_Bkg);
+        
+        //For combine
+        combine_var_m3m=TauRefitLV.M();
+        combine_var_ID=dataMCtype;
+        combine_var_BDTOutput=BDT_Evaluated;
+        T3MCombineTree->Fill();
+        
+        
+        
+        
+        
+        //Pre BDT 2D scan
+        if(id==1){
+        BDT_2Dscan_TripletPt.at(t).Fill(BDT_Evaluated,var_TripletPT);
+        BDT_2Dscan_TripletEta.at(t).Fill(BDT_Evaluated,var_TripletEta);
+        BDT_2Dscan_Tau3MuRelativeIsolation.at(t).Fill(BDT_Evaluated,var_Tau3MuIsolation);
+        BDT_2Dscan_Mu1_Pt.at(t).Fill(BDT_Evaluated,var_mu1_pT);
+        BDT_2Dscan_Mu2_Pt.at(t).Fill(BDT_Evaluated,var_mu2_pT);
+        BDT_2Dscan_Mu3_Pt.at(t).Fill(BDT_Evaluated,var_mu3_pT);
+        BDT_2Dscan_Mu1_Eta.at(t).Fill(BDT_Evaluated,var_mu1_eta);
+        BDT_2Dscan_Mu2_Eta.at(t).Fill(BDT_Evaluated,var_mu2_eta);
+        BDT_2Dscan_Mu3_Eta.at(t).Fill(BDT_Evaluated,var_mu3_eta);
+        
+        BDT_2Dscan_OppositeMuRelativeIsolation.at(t).Fill(BDT_Evaluated,var_MuonIsolation);
+        BDT_2Dscan_mu_Pt.at(t).Fill(BDT_Evaluated,var_Muon_pT);
+        BDT_2Dscan_mu_Eta.at(t).Fill(BDT_Evaluated,var_Muon_eta);
+        
+        BDT_2Dscan_FLSignificance.at(t).Fill(BDT_Evaluated,var_FLSignificance);
+        BDT_2Dscan_VertexChi2KF.at(t).Fill(BDT_Evaluated,var_ThreeMuVertexChi2KF);
+        BDT_2Dscan_SVPVTauDirAngle.at(t).Fill(BDT_Evaluated,var_SVPVTauDirAngle);
+        BDT_2Dscan_MinDistToIsoTrack.at(t).Fill(BDT_Evaluated,var_MinDistToIsoTrack);
+        BDT_2Dscan_Kinematics_MissingTrMass_cos.at(t).Fill(BDT_Evaluated,var_DeltaPhi);
+        
+        BDT_2Dscan_MET_Et.at(t).Fill(BDT_Evaluated,var_MET_Et);
+        BDT_2Dscan_MET_Phi.at(t).Fill(BDT_Evaluated,var_MET_Phi);
+        
+        BDT_2Dscan_Vertex_Chi2.at(t).Fill(BDT_Evaluated,var_4Mu_Chi2);
+        BDT_2Dscan_VisibleDiTauMass.at(t).Fill(BDT_Evaluated,var_VisMass);
+        BDT_2Dscan_VisibleDiTauMass_Collinear.at(t).Fill(BDT_Evaluated,var_DiTauMass_Collinear);
+        
+        BDT_2Dscan_Neutrino_Test_Phi.at(t).Fill(BDT_Evaluated,  fabs(Neutrino_LV_Guess_Result_faster.Phi() - val_MET_Phi)   );
+        BDT_2Dscan_Neutrino_Test_Et.at(t).Fill(BDT_Evaluated,  fabs(Neutrino_LV_Guess_Result_faster.E() - val_MET_Et)   );
+        BDT_2Dscan_Neutrino_Test_Phi_Opposing.at(t).Fill(BDT_Evaluated,  fabs(Opposite_Side_Full_LV_Rotated.Phi()-Tau3muLV_Rotated.Phi())   );
+        
+        if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+          BDT_2Dscan_PairMass_OppositeSign_dR12.at(t).Fill(BDT_Evaluated,(MuonOS+MuonSS2).M());
+          BDT_2Dscan_PairMass_OppositeSign_dR13.at(t).Fill(BDT_Evaluated,(MuonOS+MuonSS1).M());
+        }else{
+          BDT_2Dscan_PairMass_OppositeSign_dR12.at(t).Fill(BDT_Evaluated,(MuonOS+MuonSS1).M());
+          BDT_2Dscan_PairMass_OppositeSign_dR13.at(t).Fill(BDT_Evaluated,(MuonOS+MuonSS2).M());
+        }
+        if(PlotMCOnly&&(var_4Mu_Chi2>2.0))  BDT_2Dscan_TripletMass.at(t).Fill(BDT_Evaluated,TauRefitLV.M());
+        }
+        
+        
+        
+        
+        
+        //if(BDT_Evaluated>0.329983){
+        if(BDT_Evaluated>0.05){
         
         PostBDT_TripletPt.at(t).Fill(var_TripletPT);
         PostBDT_TripletEta.at(t).Fill(var_TripletEta);
@@ -1550,9 +1776,13 @@ void  ZTau3MuTaumu::doEvent(){
         PostBDT_Mu1_Pt.at(t).Fill(var_mu1_pT);
         PostBDT_Mu2_Pt.at(t).Fill(var_mu2_pT);
         PostBDT_Mu3_Pt.at(t).Fill(var_mu3_pT);
+        PostBDT_Mu1_Eta.at(t).Fill(var_mu1_eta);
+        PostBDT_Mu2_Eta.at(t).Fill(var_mu2_eta);
+        PostBDT_Mu3_Eta.at(t).Fill(var_mu3_eta);
         
         PostBDT_OppositeMuRelativeIsolation.at(t).Fill(var_MuonIsolation);
         PostBDT_mu_Pt.at(t).Fill(var_Muon_pT);
+        PostBDT_mu_Eta.at(t).Fill(var_Muon_eta);
         
         PostBDT_FLSignificance.at(t).Fill(var_FLSignificance);
         PostBDT_VertexChi2KF.at(t).Fill(var_ThreeMuVertexChi2KF);
@@ -1567,7 +1797,25 @@ void  ZTau3MuTaumu::doEvent(){
         PostBDT_VisibleDiTauMass.at(t).Fill(var_VisMass);
         PostBDT_VisibleDiTauMass_Collinear.at(t).Fill(var_DiTauMass_Collinear);
         
-        }//if BDT
+        PostBDT_Neutrino_Test_Phi.at(t).Fill(  fabs(Neutrino_LV_Guess_Result_faster.Phi() - val_MET_Phi)   );
+        PostBDT_Neutrino_Test_Et.at(t).Fill(  fabs(Neutrino_LV_Guess_Result_faster.E() - val_MET_Et)   );
+        PostBDT_Neutrino_Test_Phi_Opposing.at(t).Fill(  fabs(Opposite_Side_Full_LV_Rotated.Phi()-Tau3muLV_Rotated.Phi())   );
+        
+        if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+        
+          PostBDT_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+          PostBDT_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+
+
+        }else{
+      
+          PostBDT_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+          PostBDT_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+      
+        }
+        
+        if(PlotMCOnly&&(var_4Mu_Chi2>2.0))  PostBDT_TripletMass.at(t).Fill(TauRefitLV.M(),1);
+        }//if BDT value
   
   }
 }
@@ -1576,9 +1824,9 @@ void  ZTau3MuTaumu::doEvent(){
 void  ZTau3MuTaumu::Finish(){
 
   if (mode==RECONSTRUCT){
-    double lumi_scale_1_taue(0.000293); //need to be entered manually
-    double lumi_scale_2_taumu(0.000283);
-    double lumi_scale_3_tauh(0.000280);
+    double lumi_scale_1_taue(0.0000293); //need to be entered manually
+    double lumi_scale_2_taumu(0.0000283);
+    double lumi_scale_3_tauh(0.0000280);
     for ( unsigned int j=0; j<InputFeatureCollection.size(); ++j){
       double scale(1.0);
       if(InputFeatureCollection.at(j)->size()>=4){
@@ -1603,6 +1851,13 @@ void  ZTau3MuTaumu::Finish(){
   T3MMiniTree->SetDirectory(T3MFMiniTree);
   T3MFMiniTree->Write();
   T3MFMiniTree->Close();
+  
+  //*** write down the T3MCombineTree.root for limit extraction
+  TString out_file_name_combine  = "Combine_Tree_"+ AnalysisName+".root";
+  T3MFCombineTree = new TFile(out_file_name_combine,"recreate");
+  T3MCombineTree->SetDirectory(T3MFCombineTree);
+  T3MFCombineTree->Write();
+  T3MFCombineTree->Close();
 
 
   Selection::Finish();

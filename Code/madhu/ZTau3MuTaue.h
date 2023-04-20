@@ -151,10 +151,10 @@ class ZTau3MuTaue : public Selection {
   std::vector<TH1D>   PostSelection_VisibleDiTauMass_Collinear;
   
   std::vector<TH1D>   PostSelection_Phi_Triplet_to_Spectator_Tau;
-  
   std::vector<TH1D>   PostSelection_prod_size;
   
   std::vector<TH1D>   PostSelection_BDT_Output;
+  std::vector<TH1D>   PostSelection_BDT_Output_MC_Bkg;
   
   //After BDT
   
@@ -198,6 +198,48 @@ class ZTau3MuTaue : public Selection {
   
   std::vector<TH1D>   PostBDT_prod_size;
   
+  //Pre BDT 2D scan
+  
+  std::vector<TH2D>   BDT_2Dscan_Tau3MuRelativeIsolation;
+  std::vector<TH2D>   BDT_2Dscan_ElectronSumIsolation;
+  std::vector<TH2D>   BDT_2Dscan_VisibleDiTauMass;
+  std::vector<TH2D>   BDT_2Dscan_MTT;
+  std::vector<TH2D>   BDT_2Dscan_TripletMass;
+  
+  std::vector<TH2D>   BDT_2Dscan_TripletPt;
+  std::vector<TH2D>   BDT_2Dscan_OppositeElectronPt;
+  std::vector<TH2D>   BDT_2Dscan_TripletEta;
+  std::vector<TH2D>   BDT_2Dscan_OppositeElectronEta;
+  
+  std::vector<TH2D>   BDT_2Dscan_MET_Et;
+  std::vector<TH2D>   BDT_2Dscan_MET_Phi;
+  std::vector<TH2D>   BDT_2Dscan_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   BDT_2Dscan_MET_vs_NeutrinoPt;
+  
+  std::vector<TH2D>   BDT_2Dscan_Mu1_Pt;
+  std::vector<TH2D>   BDT_2Dscan_Mu1_Eta;
+  std::vector<TH2D>   BDT_2Dscan_Mu2_Pt;
+  std::vector<TH2D>   BDT_2Dscan_Mu2_Eta;
+  std::vector<TH2D>   BDT_2Dscan_Mu3_Pt;
+  std::vector<TH2D>   BDT_2Dscan_Mu3_Eta;
+  std::vector<TH2D>   BDT_2Dscan_El_Pt;
+  std::vector<TH2D>   BDT_2Dscan_El_Eta;
+  
+  std::vector<TH2D>   BDT_2Dscan_FLSignificance;
+  std::vector<TH2D>   BDT_2Dscan_SVPVTauDirAngle;
+  std::vector<TH2D>   BDT_2Dscan_SVPVTauDirAngle_largescale;
+  std::vector<TH2D>   BDT_2Dscan_VertexChi2KF;
+  std::vector<TH2D>   BDT_2Dscan_MinDistToIsoTrack;
+  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass;
+  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_cos;
+  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_pT;
+  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_MET;
+  std::vector<TH2D>   BDT_2Dscan_VisibleDiTauMass_Collinear;
+  
+  std::vector<TH2D>   BDT_2Dscan_Phi_Triplet_to_Spectator_Tau;
+  
+  std::vector<TH2D>   BDT_2Dscan_prod_size;
+  
   Float_t m3m;
   Float_t dataMCtype;
   Float_t event_weight;
@@ -210,8 +252,12 @@ class ZTau3MuTaue : public Selection {
   Float_t var_mu1_pT;
   Float_t var_mu2_pT;
   Float_t var_mu3_pT;
+  Float_t var_mu1_eta;
+  Float_t var_mu2_eta;
+  Float_t var_mu3_eta;
   
   Float_t var_Electron_pT;
+  Float_t var_Electron_eta;
   Float_t var_ElectronSumIsolation;
   
   Float_t var_FLSignificance;
@@ -219,6 +265,7 @@ class ZTau3MuTaue : public Selection {
   Float_t var_ThreeMuVertexChi2KF;
   Float_t var_MinDistToIsoTrack;
   Float_t var_DeltaPhi;
+  Float_t var_Phi_To_Opposite_Side;
   
   Float_t var_MET_Et;
   Float_t var_MET_Phi;
@@ -228,16 +275,29 @@ class ZTau3MuTaue : public Selection {
   
   Float_t BDT_Evaluated;
   
+  Float_t BDT_Evaluated_MC_Bkg;
+  
+  //for combine
+  Float_t combine_var_m3m;
+  Float_t combine_var_ID;
+  Float_t combine_var_BDTOutput;
+  
+  
   TMVA::Reader *reader_Taue;
+  TMVA::Reader *reader_Taue_MC_Bkg;
   
   
   TTree *T3MMiniTree;
   TFile *T3MFMiniTree;
   
+  TTree *T3MCombineTree;
+  TFile *T3MFCombineTree;
+  
   TRandom rndm;
   double random_num;
   
   std::vector<std::vector<TH1D>*> InputFeatureCollection;
+  std::vector<std::vector<TH2D>*> InputFeatureCollection_2D;
   
 };
 #endif
