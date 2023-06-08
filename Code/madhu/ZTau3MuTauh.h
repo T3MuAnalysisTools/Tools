@@ -54,6 +54,13 @@ class ZTau3MuTauh : public Selection {
 
  private:
 
+  double tauMinMass_, tauMaxMass_;
+  double tauMinSideBand_,tauMaxSideBand_;
+  double tauMassResCutLow, tauMassResCutHigh;
+  double phiVetoSigma, omegaVetoSigma;
+  
+  float bdt_cut_1_;  float bdt_cut_2_;
+  
   TString AnalysisName;
   
   std::vector<TH1D>   matched_pdgId;
@@ -152,10 +159,12 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   PostSelection_prod_size;
   
   std::vector<TH1D>   PostSelection_BDT_Output;
-  
   std::vector<TH1D>   PostSelection_BDT_Output_MC_Bkg;
+  std::vector<TH2D>   PostSelection_BDT_Output_Data_vs_MC_Bkg;
   
   //After BDT
+  
+  std::vector<TH1D>   PostBDT_TripletMass_VeryLooseCut;
   
   std::vector<TH1D>   PostBDT_NumberOfTaus;
   std::vector<TH1D>   PostBDT_Tau3MuRelativeIsolation;
@@ -280,10 +289,14 @@ class ZTau3MuTauh : public Selection {
   
   Float_t BDT_Evaluated_MC_Bkg;
   
-  //for combine
-  Float_t combine_var_m3m;
-  Float_t combine_var_ID;
-  Float_t combine_var_BDTOutput;
+  //For combine
+  Float_t tripletMass;
+  Float_t bdt_cv;
+  Float_t category;
+  Float_t isMC;
+  Float_t weight;
+  Float_t dimu_OS1;
+  Float_t dimu_OS2;
   
   TMVA::Reader *reader_Tauh;
   TMVA::Reader *reader_Tauh_MC_Bkg;

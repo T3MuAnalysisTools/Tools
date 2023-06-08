@@ -8,7 +8,15 @@
 
 ZTau3MuTauh::ZTau3MuTauh(TString Name_, TString id_):
   Selection(Name_,id_),
-  AnalysisName(Name_)
+  AnalysisName(Name_),
+  //tauMinMass_(1.73),
+  //tauMaxMass_(1.82),
+  //tauMinSideBand_(1.65),
+  //tauMaxSideBand_(2.02),
+  tauMassResCutLow(0.007),
+  tauMassResCutHigh(0.01),
+  bdt_cut_2_(0.189261),
+  bdt_cut_1_(0.309056)
 {
   // This is a class constructor;
 }
@@ -24,6 +32,8 @@ ZTau3MuTauh::~ZTau3MuTauh(){
 
 void  ZTau3MuTauh::Configure(){
 
+  gErrorIgnoreLevel = kFatal;
+  
   //  Mini tree input for BDT
   
   TString treeprefix;
@@ -120,11 +130,15 @@ void  ZTau3MuTauh::Configure(){
   
   
   //Mini tree for limit extraction
-  T3MCombineTree= new TTree(treeprefix + "_" + AnalysisName,"Mini Tree Input for combine");
+  T3MCombineTree= new TTree(AnalysisName,"Mini Tree Input for combine");
 
-  T3MCombineTree->Branch("combine_var_m3m",&combine_var_m3m);
-  T3MCombineTree->Branch("combine_var_ID",&combine_var_ID);
-  T3MCombineTree->Branch("combine_var_BDTOutput",&combine_var_BDTOutput);
+  T3MCombineTree->Branch("tripletMass",&tripletMass);
+  T3MCombineTree->Branch("bdt_cv",&bdt_cv);
+  T3MCombineTree->Branch("category",&category);
+  T3MCombineTree->Branch("isMC",&isMC);
+  T3MCombineTree->Branch("weight",&weight);
+  T3MCombineTree->Branch("dimu_OS1",&dimu_OS1);
+  T3MCombineTree->Branch("dimu_OS2",&dimu_OS2);
 
 
   for(int i=0; i<NCuts;i++){
@@ -380,12 +394,15 @@ void  ZTau3MuTauh::Configure(){
   
   PostSelection_prod_size=HConfig.GetTH1D(Name+"PostSelection__prod_size","PostSelection_prod_size",7,-0.5,6.5,"no. of visible products","Events");InputFeatureCollection.push_back(&PostSelection_prod_size);
   
-  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,-0.5,0.5,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output);
+  PostSelection_BDT_Output=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output","PostSelection_BDT_Output",100,-0.9,0.9,"BDT Output","Events");//InputFeatureCollection.push_back(&PostSelection_BDT_Output);
   PostSelection_BDT_Output_MC_Bkg=HConfig.GetTH1D(Name+"_PostSelection_BDT_Output_MC_Bkg","PostSelection_BDT_Output_MC_Bkg",100,-0.9,0.9,"BDT Output","Events");InputFeatureCollection.push_back(&PostSelection_BDT_Output_MC_Bkg);
+  PostSelection_BDT_Output_Data_vs_MC_Bkg=HConfig.GetTH2D(Name+"_PostSelection_BDT_Output_Data_vs_MC_Bkg","PostSelection_BDT_Output_Data_vs_MC_Bkg",100,-0.9,0.9,100,-0.9,0.9,"BDT Output Data","BDT Output MC");InputFeatureCollection_2D.push_back(&PostSelection_BDT_Output_Data_vs_MC_Bkg);
   
   
   
   //Plots after BDT
+  PostBDT_TripletMass_VeryLooseCut=HConfig.GetTH1D(Name+"_PostBDT_TripletMass_VeryLooseCut","PostBDT_TripletMass_VeryLooseCut",40,1.4,2.1,"M_{3#mu}, GeV","Events");
+  
   PostBDT_NumberOfTaus=HConfig.GetTH1D(Name+"_PostBDT_NumberOfTaus","PostBDT_NumberOfTaus",5,-0.5,4.5,"Number of #tau ","Events");InputFeatureCollection.push_back(&PostBDT_NumberOfTaus);
 
   PostBDT_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostBDT_Tau3MuRelativeIsolation","PostBDT_Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T}), #Delta R < 0.4","Events");InputFeatureCollection.push_back(&PostBDT_Tau3MuRelativeIsolation);
@@ -580,8 +597,11 @@ void  ZTau3MuTauh::Store_ExtraDist(){
   
   Extradist1d.push_back(&PostSelection_BDT_Output);
   Extradist1d.push_back(&PostSelection_BDT_Output_MC_Bkg);
+  Extradist2d.push_back(&PostSelection_BDT_Output_Data_vs_MC_Bkg);
   
   //Post BDT
+  Extradist1d.push_back(&PostBDT_TripletMass_VeryLooseCut);
+  
   Extradist1d.push_back(&PostBDT_Tau3MuRelativeIsolation);
   Extradist1d.push_back(&PostBDT_TauHDecayMode);
   Extradist1d.push_back(&PostBDT_VisibleDiTauMass);
@@ -1236,6 +1256,18 @@ void  ZTau3MuTauh::doEvent(){
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
     
+    unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
+    unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
+    unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
+    
+    std::vector<unsigned int> EtaSortedIndices;
+    
+    EtaSortedIndices.push_back(Muon_Eta_index_1);
+    EtaSortedIndices.push_back(Muon_Eta_index_2);
+    EtaSortedIndices.push_back(Muon_Eta_index_3);
+    
+    double TauMassRes = Ntp->TauMassResolution(EtaSortedIndices,1,false);
+    
     TLorentzVector Tau3muLV = Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
@@ -1528,10 +1560,36 @@ void  ZTau3MuTauh::doEvent(){
         BDT_Evaluated_MC_Bkg = reader_Tauh_MC_Bkg->EvaluateMVA("BDT");
         PostSelection_BDT_Output_MC_Bkg.at(t).Fill(BDT_Evaluated_MC_Bkg);
         
+        PostSelection_BDT_Output_Data_vs_MC_Bkg.at(t).Fill(BDT_Evaluated,BDT_Evaluated_MC_Bkg);
+        
+        
+        
+        //Category A(ZTT)
+        if(TauMassRes < tauMassResCutLow ){
+              category=0;
+        }
+
+        //Category B(ZTT)
+        if(TauMassRes >= tauMassResCutLow && TauMassRes < tauMassResCutHigh){
+              category =1 ;
+        }
+
+        //Category C(ZTT)
+        if(TauMassRes >= tauMassResCutHigh){
+              category = 2;
+        }
+        
+        
+        
+        
         //For combine
-        combine_var_m3m=TauRefitLV.M();
-        combine_var_ID=dataMCtype;
-        combine_var_BDTOutput=BDT_Evaluated;
+        tripletMass=TauRefitLV.M();
+        //OutputTree=dataMCtype;
+        bdt_cv=BDT_Evaluated;
+        isMC=  (id==1)?0:7; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
+        weight=0.0000280;
+        dimu_OS1=m12;
+        dimu_OS2=m13;
         T3MCombineTree->Fill();
         
         
@@ -1573,10 +1631,15 @@ void  ZTau3MuTauh::doEvent(){
         
         
         
+        //For fitting BDT shape
+        if(BDT_Evaluated>0.05){
+          if(PlotMCOnly)  PostBDT_TripletMass_VeryLooseCut.at(t).Fill(TauRefitLV.M(),1);
+        }
+        
         
         
         //if(BDT_Evaluated>0.309056){
-        if(BDT_Evaluated>0.35){
+        if(BDT_Evaluated>0.309056){
         
         PostBDT_TripletPt.at(t).Fill(var_TripletPT);
         PostBDT_TripletEta.at(t).Fill(var_TripletEta);
