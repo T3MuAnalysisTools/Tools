@@ -16,185 +16,213 @@
 #include "RooSimultaneous.h"
 #include "RooCategory.h"
 #include "TH1F.h"
+#include "TH2F.h"
 #include <cmath>
 #include <iomanip>
 #include <sstream>
+#include <fstream>
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
 
 using namespace RooFit;
 
 void makeYield () 
 {
-    //histo MC
-    TFile * file_tauh = TFile::Open("LOCAL_COMBINED_ztau3mutauh_default_LumiScaled_Lim.root");
-    TH1D * tauh_Vis_Mass   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_14_Nminus0_VisMass_MC1");
-    TH1D * tauh_Vis_Mass_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_14_Nminus0_VisMass_Data");
-    TH1D * tauh_T3Mu   = (TH1D*)file_tauh->Get("ztau3mutauh_default_PostBDT_TripletMass_aMC1");
-    TH1D * tauh_T3Mu_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_PostBDT_TripletMass_aData");
+    //Category names: 0=tauh, 1=taumu, 2=taue
+    TString cat_name[3];
+    cat_name[0] = "ztau3mutauh_default_";
+    cat_name[1] = "ztau3mutaumu_default_";
+    cat_name[2] = "ztau3mutaue_default_";
     
-    TFile * file_taumu = TFile::Open("LOCAL_COMBINED_ztau3mutaumu_default_LumiScaled_Lim.root");
-    TH1D * taumu_Vis_Mass   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_13_Nminus0_VisMass_MC2");
-    TH1D * taumu_Vis_Mass_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_13_Nminus0_VisMass_Data");
-    TH1D * taumu_T3Mu   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_PostBDT_TripletMass_aMC2");
-    TH1D * taumu_T3Mu_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_PostBDT_TripletMass_aData");
+    TString cat_base[3];
+    cat_base[0] = "ztau3mutauh";
+    cat_base[1] = "ztau3mutaumu";
+    cat_base[2] = "ztau3mutaue";
     
-    TFile * file_taue = TFile::Open("LOCAL_COMBINED_ztau3mutaue_default_LumiScaled_Lim.root");
-    TH1D * taue_Vis_Mass   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_13_Nminus0_VisMass_MC3");
-    TH1D * taue_Vis_Mass_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_13_Nminus0_VisMass_Data");
-    TH1D * taue_T3Mu   = (TH1D*)file_taue->Get("ztau3mutaue_default_PostBDT_TripletMass_aMC3");
-    TH1D * taue_T3Mu_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_PostBDT_TripletMass_aData");
-
-    //cout << "tauh MC count: " << tauh_Vis_Mass->Integral() << " tauh Data count: " << tauh_Vis_Mass_Dat->Integral() << endl;
-    //cout << "taumu MC count: " << taumu_Vis_Mass->Integral() << " taumu Data count: " << taumu_Vis_Mass_Dat->Integral() << endl;
-    //cout << "taue MC count: " << taue_Vis_Mass->Integral() << " taue Data count: " << taue_Vis_Mass_Dat->Integral() << endl;
+    TString cat_label[3];
+    cat_label[0] = "{h}";
+    cat_label[1] = "{#mu}";
+    cat_label[2] = "{e}";
     
+    TString print_label[3];
+    print_label[0] = "h";
+    print_label[1] = "mu";
+    print_label[2] = "e";
+    
+    TString hname;
+    
+    //Filename and histograms
+    TFile * file_tau[3];
+    
+    TH1D  * tau_T3Mu[3];
+    TH1D  * tau_T3Mu_Dat[3];
+    TH1D  * tau_BDT_Output_Data[3];
+    TH1D  * tau_BDT_Output_MC[3];
+    TH2D  * tau_T3Mu_vs_BDT_Output_Data[3];
+    TH1D  * tau_T3Mu_vs_BDT_Output_Data_Projection[3];
+    
+    TH2D  * tau_cut1_vs_cut2_vs_sig[3];
+    TH2D  * tau_cut1_vs_cut2_vs_limit[3];
+    
+    TFile *TreeFile = new TFile("Combine_Tree_ztau3mutau.root","READ");
+    TTree *tree[3];
+    
+    Float_t tripletMass;
+    Float_t bdt_cv;
+    Float_t weight;
+    Float_t isMC;
+    for(int i=0; i<3; i++){
+      hname=to_string(i+1);
+      
+      tree[i] = (TTree *) TreeFile->Get(cat_base[i]);
+      
+      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,40,1.4,2.1);
+      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,40,1.4,2.1);
+      tau_BDT_Output_MC[i] = new TH1D("tau_BDT_Output_MC","tau_BDT_Output_MC_"+hname,100,-0.9,0.9);
+      tau_BDT_Output_Data[i] = new TH1D("tau_BDT_Output_Data","tau_BDT_Output_Data_"+hname,100,-0.9,0.9);
+      
+      tree[i]->SetBranchAddress("tripletMass",&tripletMass);
+      tree[i]->SetBranchAddress("bdt_cv",&bdt_cv);
+      tree[i]->SetBranchAddress("weight",&weight);
+      tree[i]->SetBranchAddress("isMC",&isMC);
+      
+      Long64_t nentries = tree[i]->GetEntries();
+      for (Long64_t j=0;j<nentries;j++) {
+        tree[i]->GetEntry(j);
+        
+        if(tripletMass>=1.4 && tripletMass<=2.1 && bdt_cv>=0.405){
+                if(isMC>0){
+                  tau_T3Mu[i]->Fill(tripletMass,weight);
+                  tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
+                }
+                if(isMC==0){
+                  tau_T3Mu_Dat[i]->Fill(tripletMass,weight);
+                  tau_BDT_Output_Data[i]->Fill(bdt_cv,weight);
+                }
+        }
+        
+      }
+      
+      //tau_T3Mu_vs_BDT_Output_Data[i] = (TH2D*)file_tau[i]->Get(cat_name[i]+"BDT_2Dscan_TripletMassData");
+      
+      
+    }
+    
+    
+    
+    
+    
+    
+    //Triplet Mass Fits
     double signal_low = 1.715;
     double signal_high = 1.8375;
-    //For tau h
-    RooRealVar InvMass1("InvMass1","3#mu inv. mass (GeV), #tau_{h}",1.4,2.1);
-    InvMass1.setRange("R1",1.4,signal_low); //background    
-    InvMass1.setRange("R2",signal_high,2.1); //background
-    InvMass1.setRange("R3",1.73,1.82); //signal range for fitting
-    InvMass1.setRange("R4",signal_low,signal_high); //signal range used to obtain signal and background yields.
-    RooPolynomial poly1("poly1","poly(InvMass1)",InvMass1);
-    RooDataHist data1("data1", "data1", InvMass1, Import(*tauh_T3Mu_Dat));
-    RooDataHist mc1("mc1", "mc1", InvMass1, Import(*tauh_T3Mu));
-    RooRealVar LineNorm1("LineNorm1", "LineNorm1", 2.0,0.001,15);
-    RooAddPdf pdf1("pdf1", "pdf1", RooArgList(poly1), RooArgList(LineNorm1));
-    RooFitResult *fitresult1;
-    fitresult1 = pdf1.fitTo(data1, Range("R1,R2"), Save());
     
-    RooRealVar mean1("mean1", "mean1", 1.776,0.,5.);
-    RooRealVar sigma1("sigma1", "sigma1", 0.5,0.001,10);
-    RooRealVar GaussNorm1("GaussNorm1", "GaussNorm1", 0.5,0.001,1.0);
-    RooGaussian Gauss1("Gauss1", "Gauss1", InvMass1, mean1, sigma1);
-    RooAddPdf mc_pdf1("mc_pdf1", "mc_pdf1", RooArgList(Gauss1), RooArgList(GaussNorm1));
-    RooFitResult *mc_fitresult1;
-    mc_fitresult1 = mc_pdf1.fitTo(mc1, Range("R3"), Save());
+    RooRealVar * InvMass[3];
     
+    RooPolynomial * poly[3];
+    RooDataHist * data[3];
+    RooRealVar * LineNorm[3];
+    RooAddPdf * pdf[3];
+    RooFitResult * fitresult[3];
     
-    //For tau mu
-    RooRealVar InvMass2("InvMass2","3#mu inv. mass (GeV), #tau_{#mu}",1.4,2.1);
-    InvMass2.setRange("R1",1.4,signal_low); //background    
-    InvMass2.setRange("R2",signal_high,2.1); //background
-    InvMass2.setRange("R3",1.73,1.82); //signal range for fitting
-    InvMass2.setRange("R4",signal_low,signal_high); //signal range for yield
-    RooPolynomial poly2("poly2","poly(InvMass2)",InvMass2);
-    RooDataHist data2("data2", "data2", InvMass2, Import(*taumu_T3Mu_Dat));
-    RooDataHist mc2("mc2", "mc2", InvMass2, Import(*taumu_T3Mu));
-    RooRealVar LineNorm2("LineNorm2", "LineNorm2", 2.0,0.001,15);
-    RooAddPdf pdf2("pdf2", "pdf2", RooArgList(poly2), RooArgList(LineNorm2));
-    RooFitResult *fitresult2;
-    fitresult2 = pdf2.fitTo(data2, Range("R1,R2"), Save());
+    RooRealVar * mean[3];
+    RooRealVar * sigma[3];
+    RooGaussian * Gauss[3];
+    RooDataHist * mc[3];
+    RooRealVar * GaussNorm[3];
+    RooAddPdf * mc_pdf[3];
+    RooFitResult * mc_fitresult[3];
     
-    RooRealVar mean2("mean2", "mean2", 1.776,0.,5.);
-    RooRealVar sigma2("sigma2", "sigma2", 0.5,0.001,10);
-    RooRealVar GaussNorm2("GaussNorm2", "GaussNorm2", 0.5,0.001,1.0);
-    RooGaussian Gauss2("Gauss2", "Gauss2", InvMass2, mean2, sigma2);
-    RooAddPdf mc_pdf2("mc_pdf2", "mc_pdf2", RooArgList(Gauss2), RooArgList(GaussNorm2));
-    RooFitResult *mc_fitresult2;
-    mc_fitresult2 = mc_pdf2.fitTo(mc2, Range("R3"), Save());
-    
-    
-    //For tau e
-    RooRealVar InvMass3("InvMass3","3#mu inv. mass (GeV), #tau_{e}",1.4,2.1);
-    InvMass3.setRange("R1",1.4,signal_low); //background    
-    InvMass3.setRange("R2",signal_high,2.1); //background
-    InvMass3.setRange("R3",1.71,1.82); //signal range for fitting
-    InvMass3.setRange("R4",signal_low,signal_high); //signal range for yield
-    RooPolynomial poly3("poly3","poly(InvMass3)",InvMass3);
-    RooDataHist data3("data3", "data3", InvMass3, Import(*taue_T3Mu_Dat));
-    RooDataHist mc3("mc3", "mc3", InvMass3, Import(*taue_T3Mu));
-    RooRealVar LineNorm3("LineNorm3", "LineNorm3", 2.0,0.001,15);
-    RooAddPdf pdf3("pdf3", "pdf3", RooArgList(poly3), RooArgList(LineNorm3));
-    RooFitResult *fitresult3;
-    fitresult3 = pdf3.fitTo(data3, Range("R1,R2"), Save());
-    
-    RooRealVar mean3("mean3", "mean3", 1.776,0.,5.);// Not working?
-    RooRealVar sigma3("sigma3", "sigma3", 0.5,0.001,10);
-    RooRealVar GaussNorm3("GaussNorm3", "GaussNorm3", 0.5,0.001,1.0);
-    RooGaussian Gauss3("Gauss3", "Gauss3", InvMass3, mean3, sigma3);
-    RooAddPdf mc_pdf3("mc_pdf3", "mc_pdf3", RooArgList(Gauss3), RooArgList(GaussNorm3));
-    RooFitResult *mc_fitresult3;
-    mc_fitresult3 = mc_pdf3.fitTo(mc3, Range("R3"), Save());
+    for(int i=0; i<3; i++){
+      hname=to_string(i+1);
+      
+      InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],1.4,2.1);
+      InvMass[i]->setRange("R1",1.4,signal_low); //background   
+      InvMass[i]->setRange("R2",signal_high,2.1); //background
+      InvMass[i]->setRange("R3",1.705,1.85); //signal range for fitting
+      InvMass[i]->setRange("R4",signal_low,signal_high); //signal range for yield
+      
+      
+      //Flat fit for data
+      poly[i] = new RooPolynomial("poly"+hname, "poly dist", *InvMass[i]);
+      data[i] = new RooDataHist("data"+hname, "data", *InvMass[i], Import(*tau_T3Mu_Dat[i]));
+      LineNorm[i] = new RooRealVar("LineNorm"+hname, "LineNorm", 2.0,0.001,15);
+      pdf[i] = new RooAddPdf("pdf"+hname, "pdf", RooArgList(*poly[i]), RooArgList(*LineNorm[i]));
+      fitresult[i] = pdf[i]->fitTo(*data[i], Range("R1,R2"), Save());
+      
+      
+      //Gaussian fit for MC
+      mean[i] = new RooRealVar("mean"+hname, "mean" , 1.776,0.,5.) ;
+      sigma[i] = new RooRealVar("sigma"+hname, "sigma" , 0.5,0.001,10) ;
+      
+      Gauss[i] = new RooGaussian("Gauss"+hname, "Gauss dist", *InvMass[i], *mean[i], *sigma[i]);
+      mc[i] = new RooDataHist("mc"+hname, "mc", *InvMass[i], Import(*tau_T3Mu[i]));
+      GaussNorm[i] = new RooRealVar("GaussNorm"+hname, "GaussNorm",  0.5,0.001,1.0);
+      mc_pdf[i] = new RooAddPdf("mc_pdf"+hname, "mc_pdf", RooArgList(*Gauss[i]), RooArgList(*GaussNorm[i]));
+      mc_fitresult[i] = mc_pdf[i]->fitTo(*mc[i], Range("R3"), Save());
+      
+    }
     
     
+    double pdf_integral_restricted[3];
+    double mc_pdf_integral_restricted[3];
+    double nData[3];
+    double nSignal[3];
+    double nSignal_restricted[3];
+    double scaling[3];
+    
+    for(int i=0; i<3; i++){
+      hname=to_string(i+1);
+      
+      // This gives the integral from the fits.
+      pdf_integral_restricted[i] = pdf[i]->createIntegral(*InvMass[i],NormSet(*InvMass[i]),Range("R4"))->getVal();
+      mc_pdf_integral_restricted[i] = mc_pdf[i]->createIntegral(*InvMass[i],NormSet(*InvMass[i]),Range("R4"))->getVal();
+      
+      // Normalizations need to be added manually. The pdfs are normalized to 1 and scaled to the data plotted. nData1 and nSignal1 are for normalization (same region as fit). "R4" is for yields.
+      nData[i] = data[i]->sumEntries("1", "R1,R2");
+      nSignal[i] = mc[i]->sumEntries("1", "R3");
+      nSignal_restricted[i] = mc[i]->sumEntries("1", "R4");// used a separate range for getting the yield and a different range for fitting
+      
+      
+      
+      cout << "  " << endl;
+      
+      cout << "nData "+print_label[i]+" : " << nData[i] << " nSignal "+print_label[i]+" : " << nSignal_restricted[i] << endl;
+      cout << " LineNorm "+print_label[i]+" : " << LineNorm[i]->getValV() << " guessed data in signal region: " << (pdf_integral_restricted[i]/(1-pdf_integral_restricted[i]))*nData[i] << endl;
+      cout << "mc_pdf "+print_label[i]+" _integral: " << GaussNorm[i]->getValV()*mc_pdf_integral_restricted[i] << " pdf "+print_label[i]+" _integral: " << LineNorm[i]->getValV()*pdf_integral_restricted[i] << endl;
+      
+      scaling[i] = mc[i]->sumEntries("1")/(tau_T3Mu[i]->GetEntries());
+      
+      cout << "Unscaled mc "+print_label[i]+" : " << nSignal_restricted[i]/scaling[i] << " scaling  "+print_label[i]+" : " << scaling[i] << endl;// Getting the unweighted content of the signal histogram
+      
+      cout << "  " << endl;
+      
+    }
+    
+    
+    //Triplet Mass Fit Plots
     TCanvas *canvas1 = new TCanvas("canvas1", "canvas1", 1800, 600);
     canvas1->Divide(3, 1);
     
+    RooPlot * xFrame[3];
+    
+    for(int i=0; i<3; i++){
+      hname=to_string(i+1);
+      
+      canvas1->cd( i+1 );
+      xFrame[i] = InvMass[i]->frame();
+      data[i]->plotOn(xFrame[i]);
+      pdf[i]->plotOn(xFrame[i],LineColor(4),LineWidth(2), Normalization(nData[i], RooAbsReal::NumEvent),ProjectionRange("R1,R2"));
+      mc[i]->plotOn(xFrame[i]);
+      mc_pdf[i]->plotOn(xFrame[i],LineColor(1),LineWidth(2), Normalization(nSignal[i], RooAbsReal::NumEvent),ProjectionRange("R3"));
+      xFrame[i]->SetTitle("3#mu inv. mass (GeV), #tau_"+cat_label[i]);
+      xFrame[i]->SetXTitle("3#mu inv. mass (GeV)");
+      xFrame[i]->SetYTitle("Events");
+      xFrame[i]->Draw();
+    }
     
     
-    // This gives the integral from the fits.
-    double pdf1_integral_restricted = pdf1.createIntegral(InvMass1,NormSet(InvMass1),Range("R4"))->getVal();
-    double mc_pdf1_integral_restricted = mc_pdf1.createIntegral(InvMass1,NormSet(InvMass1),Range("R4"))->getVal();
-    double pdf2_integral_restricted = pdf2.createIntegral(InvMass2,NormSet(InvMass2),Range("R4"))->getVal();
-    double mc_pdf2_integral_restricted = mc_pdf2.createIntegral(InvMass2,NormSet(InvMass2),Range("R4"))->getVal();
-    double pdf3_integral_restricted = pdf3.createIntegral(InvMass3,NormSet(InvMass3),Range("R4"))->getVal();
-    double mc_pdf3_integral_restricted = mc_pdf3.createIntegral(InvMass3,NormSet(InvMass3),Range("R4"))->getVal();
-    
-    // Normalizations need to be added manually. The pdfs are normalized to 1 and scaled to the data plotted. nData1 and nSignal1 are for normalization (same region as fit). "R4" is for yields.
-    const double nData1 = data1.sumEntries("1", "R1,R2");
-    const double nSignal1 = mc1.sumEntries("1", "R3");
-    const double nSignal1_restricted = mc1.sumEntries("1", "R4");// used a separate range for getting the yield and a different range for fitting
-    const double nData2 = data2.sumEntries("1", "R1,R2");
-    const double nSignal2 = mc2.sumEntries("1", "R3");
-    const double nSignal2_restricted = mc2.sumEntries("1", "R4");
-    const double nData3 = data3.sumEntries("1", "R1,R2");
-    const double nSignal3 = mc3.sumEntries("1", "R3");
-    const double nSignal3_restricted = mc3.sumEntries("1", "R4");
-    
-    cout << "nData1: " << nData1 << " nSignal1: " << nSignal1_restricted << endl;
-    cout << "nData2: " << nData2 << " nSignal2: " << nSignal2_restricted << endl;
-    cout << "nData3: " << nData3 << " nSignal3: " << nSignal3_restricted << endl;
-    
-    cout << " LineNorm1: " << LineNorm1.getValV() << " guessed data in signal region: " << (pdf1_integral_restricted/(1-pdf1_integral_restricted))*nData1 << endl;
-    cout << " LineNorm1: " << LineNorm2.getValV() << " guessed data in signal region: " << (pdf2_integral_restricted/(1-pdf2_integral_restricted))*nData2 << endl;
-    cout << " LineNorm1: " << LineNorm3.getValV() << " guessed data in signal region: " << (pdf3_integral_restricted/(1-pdf3_integral_restricted))*nData3 << endl;
-    
-    cout << "mc_pdf1_integral: " << GaussNorm1.getValV()*mc_pdf1_integral_restricted << " pdf1_integral: " << LineNorm1.getValV()*pdf1_integral_restricted << endl;
-    cout << "mc_pdf2_integral: " << GaussNorm2.getValV()*mc_pdf2_integral_restricted << " pdf2_integral: " << LineNorm2.getValV()*pdf2_integral_restricted << endl;
-    cout << "mc_pdf3_integral: " << GaussNorm3.getValV()*mc_pdf3_integral_restricted << " pdf3_integral: " << LineNorm3.getValV()*pdf3_integral_restricted << endl;
-    
-    double scaling1 = mc1.sumEntries("1")/tauh_T3Mu->GetEntries();
-    double scaling2 = mc2.sumEntries("1")/taumu_T3Mu->GetEntries();
-    double scaling3 = mc3.sumEntries("1")/taue_T3Mu->GetEntries();
-    
-    cout << "Unscaled mc1: " << nSignal1_restricted/scaling1 << " scaling 1: " << scaling1 << endl;// Getting the unweighted content of the signal histogram
-    cout << "Unscaled mc2: " << nSignal2_restricted/scaling2 << " scaling 2: " << scaling2 << endl;
-    cout << "Unscaled mc3: " << nSignal3_restricted/scaling3 << " scaling 3: " << scaling3 << endl;
-    
-    canvas1->cd( 1 );
-    RooPlot *xFrame1 = InvMass1.frame();
-    data1.plotOn(xFrame1);
-    //mc1.plotOn(xFrame1);
-    pdf1.plotOn(xFrame1,LineColor(4),LineWidth(2), Normalization(nData1, RooAbsReal::NumEvent),ProjectionRange("R1,R2"));
-    mc_pdf1.plotOn(xFrame1,LineColor(1),LineWidth(2), Normalization(nSignal1, RooAbsReal::NumEvent),ProjectionRange("R3"));
-    xFrame1->SetTitle("3#mu inv. mass (GeV), #tau_{h}");
-    xFrame1->SetXTitle("3#mu inv. mass (GeV)");
-    xFrame1->SetYTitle("Events");
-    xFrame1->Draw();
-    
-    canvas1->cd( 2 );
-    RooPlot *xFrame2 = InvMass2.frame();
-    data2.plotOn(xFrame2);
-    //mc2.plotOn(xFrame2);
-    pdf2.plotOn(xFrame2,LineColor(4),LineWidth(2), Normalization(nData2, RooAbsReal::NumEvent),ProjectionRange("R1,R2"));
-    mc_pdf2.plotOn(xFrame2,LineColor(1),LineWidth(2), Normalization(nSignal2, RooAbsReal::NumEvent),ProjectionRange("R3"));
-    xFrame2->SetTitle("3#mu inv. mass (GeV), #tau_{#mu}");
-    xFrame2->SetXTitle("3#mu inv. mass (GeV)");
-    xFrame2->SetYTitle("Events");
-    xFrame2->Draw();
-    
-    canvas1->cd( 3 );
-    RooPlot *xFrame3 = InvMass3.frame();
-    data3.plotOn(xFrame3);
-    //mc3.plotOn(xFrame3);
-pdf3.plotOn(xFrame3);
-    pdf3.plotOn(xFrame3,LineColor(4),LineWidth(2), Normalization(nData3, RooAbsReal::NumEvent),ProjectionRange("R1,R2"));
-    mc_pdf3.plotOn(xFrame3,LineColor(1),LineWidth(2), Normalization(nSignal3, RooAbsReal::NumEvent),ProjectionRange("R3"));
-    xFrame3->SetTitle("3#mu inv. mass (GeV), #tau_{e}");
-    xFrame3->SetXTitle("3#mu inv. mass (GeV)");
-    xFrame3->SetYTitle("Events");
-    xFrame3->Draw();
     
     
 }

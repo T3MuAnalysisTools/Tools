@@ -80,18 +80,6 @@ void makeYield_fromBDTFit ()
       
     }
     */
-    /*
-    TFile *f = new TFile("Combine_Tree_ztau3mutau.root","READ");
-    TTree *tree = (TTree *) f->Get("ztau3mutauh");
-    RooRealVar m3m("tripletMass", "tripletMass", 1.62, 2.0);
-    RooRealVar bdt("bdt_cv", "bdt_cv", -2, 2);
-    RooArgSet variables(m3m);
-    variables.add(bdt);
-    
-    RooDataSet sigds("name", "name", variables, Import(*tree), Cut("(bdt_cv>0.3)"), WeightVar("weight"));
-    TH1* hh_sigmag2_frac = (TH1*) sigds.createHistogram("axis",50) ;
-    */
-    
     
     TFile *TreeFile = new TFile("Combine_Tree_ztau3mutau.root","READ");
     TTree *tree[3];
@@ -351,7 +339,7 @@ void makeYield_fromBDTFit ()
       InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],1.4,2.1);
       InvMass[i]->setRange("R1",1.4,signal_low); //background   
       InvMass[i]->setRange("R2",signal_high,2.1); //background
-      InvMass[i]->setRange("R3",1.71,1.82); //signal range for fitting
+      InvMass[i]->setRange("R3",1.705,1.85); //signal range for fitting
       InvMass[i]->setRange("R4",signal_low,signal_high); //signal range for yield
       
       
@@ -371,7 +359,7 @@ void makeYield_fromBDTFit ()
       mc[i] = new RooDataHist("mc"+hname, "mc", *InvMass[i], Import(*tau_T3Mu[i]));
       GaussNorm[i] = new RooRealVar("GaussNorm"+hname, "GaussNorm",  0.5,0.001,1.0);
       mc_pdf[i] = new RooAddPdf("mc_pdf"+hname, "mc_pdf", RooArgList(*Gauss[i]), RooArgList(*GaussNorm[i]));
-      fitresult_bdt[i] = mc_pdf[i]->fitTo(*mc[i], Range("R3"), Save());
+      mc_fitresult[i] = mc_pdf[i]->fitTo(*mc[i], Range("R3"), Save());
       
     }
     

@@ -73,22 +73,49 @@ void makeYield_fromBDTFit_Combine ()
     TH2D  * tau_cut1_vs_cut2_vs_limit[3];
     
     
+    TFile *TreeFile = new TFile("Combine_Tree_ztau3mutau.root","READ");
+    TTree *tree[3];
+    
+    Float_t tripletMass;
+    Float_t bdt_cv;
+    Float_t weight;
+    Float_t isMC;
     for(int i=0; i<3; i++){
       hname=to_string(i+1);
       
-      file_tau[i] = TFile::Open("LOCAL_COMBINED_"+cat_name[i]+"LumiScaled.root");
+      tree[i] = (TTree *) TreeFile->Get(cat_base[i]);
       
-      tau_T3Mu[i] = (TH1D*)file_tau[i]->Get(cat_name[i]+"PostBDT_TripletMass_VeryLooseCutMC"+hname);
-      tau_T3Mu_Dat[i] = (TH1D*)file_tau[i]->Get(cat_name[i]+"PostBDT_TripletMass_VeryLooseCutData");
-      tau_BDT_Output_Data[i] = (TH1D*)file_tau[i]->Get(cat_name[i]+"PostSelection_BDT_OutputData");
-      tau_BDT_Output_MC[i] = (TH1D*)file_tau[i]->Get(cat_name[i]+"PostSelection_BDT_OutputMC"+hname);
-      tau_T3Mu_vs_BDT_Output_Data[i] = (TH2D*)file_tau[i]->Get(cat_name[i]+"BDT_2Dscan_TripletMassData");
+      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,40,1.4,2.1);
+      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,40,1.4,2.1);
+      tau_BDT_Output_MC[i] = new TH1D("tau_BDT_Output_MC","tau_BDT_Output_MC_"+hname,100,-0.9,0.9);
+      tau_BDT_Output_Data[i] = new TH1D("tau_BDT_Output_Data","tau_BDT_Output_Data_"+hname,100,-0.9,0.9);
+      
+      tree[i]->SetBranchAddress("tripletMass",&tripletMass);
+      tree[i]->SetBranchAddress("bdt_cv",&bdt_cv);
+      tree[i]->SetBranchAddress("weight",&weight);
+      tree[i]->SetBranchAddress("isMC",&isMC);
+      
+      Long64_t nentries = tree[i]->GetEntries();
+      for (Long64_t j=0;j<nentries;j++) {
+        tree[i]->GetEntry(j);
+        
+        if(tripletMass>=1.4&&tripletMass<=2.1){
+                if(isMC>0){
+                  tau_T3Mu[i]->Fill(tripletMass,weight);
+                  tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
+                }
+                if(isMC==0){
+                  tau_T3Mu_Dat[i]->Fill(tripletMass,weight);
+                  tau_BDT_Output_Data[i]->Fill(bdt_cv,weight);
+                }
+        }
+        
+      }
+      
+      //tau_T3Mu_vs_BDT_Output_Data[i] = (TH2D*)file_tau[i]->Get(cat_name[i]+"BDT_2Dscan_TripletMassData");
       
       
     }
-    
-    double sig_norm = 0.0000283 * 0.215; //average normalization factor for the three signal samples
-    tau_BDT_Output_MC[1]->Scale(sig_norm);
     
     
     
@@ -284,7 +311,7 @@ void makeYield_fromBDTFit_Combine ()
       InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],1.4,2.1);
       InvMass[i]->setRange("R1",1.4,signal_low); //background   
       InvMass[i]->setRange("R2",signal_high,2.1); //background
-      InvMass[i]->setRange("R3",1.71,1.82); //signal range for fitting
+      InvMass[i]->setRange("R3",1.705,1.85); //signal range for fitting
       InvMass[i]->setRange("R4",signal_low,signal_high); //signal range for yield
       
       
@@ -481,7 +508,7 @@ void makeYield_fromBDTFit_Combine ()
         //Loop on both cuts in [X_min;X_max]
         Int_t dim = 0;
         //Increase N to increase (a,b) scan granularity!
-        Int_t N = 15; double step = (X_max - X_min)/N;
+        Int_t N = 5; double step = (X_max - X_min)/N;
         
         for(int i=0; i<3; i++){
           hname=to_string(i+1);
