@@ -25,40 +25,40 @@ using namespace RooFit;
 void makeYield () 
 {
     //histo MC
-    TFile * file_tauh = TFile::Open("LOCAL_COMBINED_ztau3mutauh_default_LumiScaled.root");
-    TH1D * tauh_Vis_Mass   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_11_Nminus0_VisMass_MC4");
-    TH1D * tauh_Vis_Mass_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_11_Nminus0_VisMass_Data");
-    TH1D * tauh_T3Mu   = (TH1D*)file_tauh->Get("ztau3mutauh_default_TripletMassMC4");
-    TH1D * tauh_T3Mu_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_TripletMassData");
+    TFile * file_tauh = TFile::Open("LOCAL_COMBINED_ztau3mutauh_default_LumiScaled_Lim.root");
+    TH1D * tauh_Vis_Mass   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_14_Nminus0_VisMass_MC1");
+    TH1D * tauh_Vis_Mass_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_Cut_14_Nminus0_VisMass_Data");
+    TH1D * tauh_T3Mu   = (TH1D*)file_tauh->Get("ztau3mutauh_default_PostBDT_TripletMass_aMC1");
+    TH1D * tauh_T3Mu_Dat   = (TH1D*)file_tauh->Get("ztau3mutauh_default_PostBDT_TripletMass_aData");
     
-    TFile * file_taumu = TFile::Open("LOCAL_COMBINED_ztau3mutaumu_default_LumiScaled.root");
-    TH1D * taumu_Vis_Mass   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_9_Nminus0_VisMass_MC3");
-    TH1D * taumu_Vis_Mass_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_9_Nminus0_VisMass_Data");
-    TH1D * taumu_T3Mu   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_TripletMassMC3");
-    TH1D * taumu_T3Mu_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_TripletMassData");
+    TFile * file_taumu = TFile::Open("LOCAL_COMBINED_ztau3mutaumu_default_LumiScaled_Lim.root");
+    TH1D * taumu_Vis_Mass   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_13_Nminus0_VisMass_MC2");
+    TH1D * taumu_Vis_Mass_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_Cut_13_Nminus0_VisMass_Data");
+    TH1D * taumu_T3Mu   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_PostBDT_TripletMass_aMC2");
+    TH1D * taumu_T3Mu_Dat   = (TH1D*)file_taumu->Get("ztau3mutaumu_default_PostBDT_TripletMass_aData");
     
-    TFile * file_taue = TFile::Open("LOCAL_COMBINED_ztau3mutaue_default_LumiScaled.root");
-    TH1D * taue_Vis_Mass   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_9_Nminus0_VisMass_MC2");
-    TH1D * taue_Vis_Mass_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_9_Nminus0_VisMass_Data");
-    TH1D * taue_T3Mu   = (TH1D*)file_taue->Get("ztau3mutaue_default_TripletMassMC2");
-    TH1D * taue_T3Mu_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_TripletMassData");
+    TFile * file_taue = TFile::Open("LOCAL_COMBINED_ztau3mutaue_default_LumiScaled_Lim.root");
+    TH1D * taue_Vis_Mass   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_13_Nminus0_VisMass_MC3");
+    TH1D * taue_Vis_Mass_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_Cut_13_Nminus0_VisMass_Data");
+    TH1D * taue_T3Mu   = (TH1D*)file_taue->Get("ztau3mutaue_default_PostBDT_TripletMass_aMC3");
+    TH1D * taue_T3Mu_Dat   = (TH1D*)file_taue->Get("ztau3mutaue_default_PostBDT_TripletMass_aData");
 
     //cout << "tauh MC count: " << tauh_Vis_Mass->Integral() << " tauh Data count: " << tauh_Vis_Mass_Dat->Integral() << endl;
     //cout << "taumu MC count: " << taumu_Vis_Mass->Integral() << " taumu Data count: " << taumu_Vis_Mass_Dat->Integral() << endl;
     //cout << "taue MC count: " << taue_Vis_Mass->Integral() << " taue Data count: " << taue_Vis_Mass_Dat->Integral() << endl;
     
-    double signal_low = 1.7233333;
-    double signal_high = 1.8333333;
+    double signal_low = 1.715;
+    double signal_high = 1.8375;
     //For tau h
-    RooRealVar InvMass1("InvMass1","3#mu inv. mass (GeV), #tau_{h}",1.3,2.2);
-    InvMass1.setRange("R1",1.3,signal_low); //background    
-    InvMass1.setRange("R2",signal_high,2.2); //background
-    InvMass1.setRange("R3",1.73,1.82); //signal
+    RooRealVar InvMass1("InvMass1","3#mu inv. mass (GeV), #tau_{h}",1.4,2.1);
+    InvMass1.setRange("R1",1.4,signal_low); //background    
+    InvMass1.setRange("R2",signal_high,2.1); //background
+    InvMass1.setRange("R3",1.73,1.82); //signal range for fitting
     InvMass1.setRange("R4",signal_low,signal_high); //signal range used to obtain signal and background yields.
     RooPolynomial poly1("poly1","poly(InvMass1)",InvMass1);
     RooDataHist data1("data1", "data1", InvMass1, Import(*tauh_T3Mu_Dat));
     RooDataHist mc1("mc1", "mc1", InvMass1, Import(*tauh_T3Mu));
-    RooRealVar LineNorm1("LineNorm1", "LineNorm1", 0.5,0.01,150);
+    RooRealVar LineNorm1("LineNorm1", "LineNorm1", 2.0,0.001,15);
     RooAddPdf pdf1("pdf1", "pdf1", RooArgList(poly1), RooArgList(LineNorm1));
     RooFitResult *fitresult1;
     fitresult1 = pdf1.fitTo(data1, Range("R1,R2"), Save());
@@ -73,15 +73,15 @@ void makeYield ()
     
     
     //For tau mu
-    RooRealVar InvMass2("InvMass2","3#mu inv. mass (GeV), #tau_{#mu}",1.3,2.2);
-    InvMass2.setRange("R1",1.3,signal_low); //background    
-    InvMass2.setRange("R2",signal_high,2.2); //background
-    InvMass2.setRange("R3",1.73,1.82); //signal
+    RooRealVar InvMass2("InvMass2","3#mu inv. mass (GeV), #tau_{#mu}",1.4,2.1);
+    InvMass2.setRange("R1",1.4,signal_low); //background    
+    InvMass2.setRange("R2",signal_high,2.1); //background
+    InvMass2.setRange("R3",1.73,1.82); //signal range for fitting
     InvMass2.setRange("R4",signal_low,signal_high); //signal range for yield
     RooPolynomial poly2("poly2","poly(InvMass2)",InvMass2);
     RooDataHist data2("data2", "data2", InvMass2, Import(*taumu_T3Mu_Dat));
     RooDataHist mc2("mc2", "mc2", InvMass2, Import(*taumu_T3Mu));
-    RooRealVar LineNorm2("LineNorm2", "LineNorm2", 50.0,0.01,150);
+    RooRealVar LineNorm2("LineNorm2", "LineNorm2", 2.0,0.001,15);
     RooAddPdf pdf2("pdf2", "pdf2", RooArgList(poly2), RooArgList(LineNorm2));
     RooFitResult *fitresult2;
     fitresult2 = pdf2.fitTo(data2, Range("R1,R2"), Save());
@@ -96,15 +96,15 @@ void makeYield ()
     
     
     //For tau e
-    RooRealVar InvMass3("InvMass3","3#mu inv. mass (GeV), #tau_{e}",1.3,2.2);
-    InvMass3.setRange("R1",1.3,signal_low); //background    
-    InvMass3.setRange("R2",signal_high,2.2); //background
-    InvMass3.setRange("R3",1.71,1.82); //signal
+    RooRealVar InvMass3("InvMass3","3#mu inv. mass (GeV), #tau_{e}",1.4,2.1);
+    InvMass3.setRange("R1",1.4,signal_low); //background    
+    InvMass3.setRange("R2",signal_high,2.1); //background
+    InvMass3.setRange("R3",1.71,1.82); //signal range for fitting
     InvMass3.setRange("R4",signal_low,signal_high); //signal range for yield
     RooPolynomial poly3("poly3","poly(InvMass3)",InvMass3);
     RooDataHist data3("data3", "data3", InvMass3, Import(*taue_T3Mu_Dat));
     RooDataHist mc3("mc3", "mc3", InvMass3, Import(*taue_T3Mu));
-    RooRealVar LineNorm3("LineNorm3", "LineNorm3", 50.0,0.01,150);
+    RooRealVar LineNorm3("LineNorm3", "LineNorm3", 2.0,0.001,15);
     RooAddPdf pdf3("pdf3", "pdf3", RooArgList(poly3), RooArgList(LineNorm3));
     RooFitResult *fitresult3;
     fitresult3 = pdf3.fitTo(data3, Range("R1,R2"), Save());
@@ -145,6 +145,10 @@ void makeYield ()
     cout << "nData1: " << nData1 << " nSignal1: " << nSignal1_restricted << endl;
     cout << "nData2: " << nData2 << " nSignal2: " << nSignal2_restricted << endl;
     cout << "nData3: " << nData3 << " nSignal3: " << nSignal3_restricted << endl;
+    
+    cout << " LineNorm1: " << LineNorm1.getValV() << " guessed data in signal region: " << (pdf1_integral_restricted/(1-pdf1_integral_restricted))*nData1 << endl;
+    cout << " LineNorm1: " << LineNorm2.getValV() << " guessed data in signal region: " << (pdf2_integral_restricted/(1-pdf2_integral_restricted))*nData2 << endl;
+    cout << " LineNorm1: " << LineNorm3.getValV() << " guessed data in signal region: " << (pdf3_integral_restricted/(1-pdf3_integral_restricted))*nData3 << endl;
     
     cout << "mc_pdf1_integral: " << GaussNorm1.getValV()*mc_pdf1_integral_restricted << " pdf1_integral: " << LineNorm1.getValV()*pdf1_integral_restricted << endl;
     cout << "mc_pdf2_integral: " << GaussNorm2.getValV()*mc_pdf2_integral_restricted << " pdf2_integral: " << LineNorm2.getValV()*pdf2_integral_restricted << endl;
