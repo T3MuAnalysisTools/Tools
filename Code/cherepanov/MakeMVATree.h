@@ -21,7 +21,7 @@ class MakeMVATree : public Selection {
   virtual void  Configure();
   virtual void  Finish();
 
-  enum cuts {L1=0,HLT,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, TRKLWithM, PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2,TriggerMatch, ThreeMuMass, CutCategory,NCuts};
+  enum cuts {L1=0,HLT,SignalCandidate, TriggerMatch ,Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID, TRKLWithM, PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, ThreeMuMass, CutCategory,NCuts};
 
  protected:
   virtual void doEvent();  

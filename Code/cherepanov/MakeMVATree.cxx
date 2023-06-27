@@ -121,7 +121,7 @@ void  MakeMVATree::Configure(){
   readerBvsD->AddVariable("var_dcaTrackPV",&var_dcaTrackPV);
   readerBvsD->AddVariable("var_MinMuonImpactAngle",&var_MinMuonImpactAngle);
   readerBvsD->AddVariable("var_flightLenDist",&var_flightLenDist);
-  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
+  //  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
 
 
 
@@ -1430,11 +1430,11 @@ void  MakeMVATree::doEvent(){
     }
     
     pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
-    pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
-    pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
-    pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
-    pass.at(MuonID)  =  (value.at(MuonID)     == cut.at(MuonID));
-    pass.at(TRKLWithM) = (value.at(TRKLWithM) == cut.at(TRKLWithM));
+    pass.at(Mu1PtCut) = true;//(value.at(Mu1PtCut) > cut.at(Mu1PtCut));
+    pass.at(Mu2PtCut) = true;//(value.at(Mu2PtCut) > cut.at(Mu2PtCut));
+    pass.at(Mu3PtCut) = true;//(value.at(Mu3PtCut) > cut.at(Mu3PtCut));
+    pass.at(MuonID)  =  true;//(value.at(MuonID)     == cut.at(MuonID));
+    pass.at(TRKLWithM) = true;//(value.at(TRKLWithM) == cut.at(TRKLWithM));
     pass.at(TriggerMatch) = (value.at(TriggerMatch) == cut.at(TriggerMatch));
     pass.at(PhiVeto1) = true;//(value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
     pass.at(OmegaVeto1) = true;//(value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
@@ -1444,7 +1444,7 @@ void  MakeMVATree::doEvent(){
 
     //    if(id!=1) pass.at(ThreeMuMass) = true;
     //    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
-    pass.at(ThreeMuMass) =( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
+    pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
 
     double wobs=1;
     double w; 
@@ -1483,7 +1483,7 @@ void  MakeMVATree::doEvent(){
       var_EventNumber = Ntp->EventNumber();
       var_Vertex2muTrkKF = Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx);
       //      std::cout<<"  var_Vertex2muTrkKF   ever -1 ?  " << var_Vertex2muTrkKF << std::endl;
-      std::cout<<" Event NUmber  "<< var_EventNumber << std::endl;
+      //      std::cout<<" Event NUmber  "<< var_EventNumber << std::endl;
       Vertex2muTrkKF.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) ,w);
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
@@ -2893,8 +2893,8 @@ void  MakeMVATree::doEvent(){
 	
 	// ---------------- Evaluate B vs D mva
 
-	var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
-	Separation_BvsD.at(t).Fill(var_BvsDSeprator,1);
+	//	var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
+	//	Separation_BvsD.at(t).Fill(var_BvsDSeprator,1);
 
 	// ---------------- Evaluate B vs D mva
 
