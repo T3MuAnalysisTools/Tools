@@ -110,7 +110,7 @@ void makeYield_fromBDTFit_Combine ()
                   tau_T3Mu[i]->Fill(tripletMass,weight);
                   tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
                 }
-                if(isMC==0 (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
+                if(isMC==0 && (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
                   tau_T3Mu_Dat[i]->Fill(tripletMass);
                   tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
