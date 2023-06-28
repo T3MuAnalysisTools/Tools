@@ -59,6 +59,12 @@ void makeYield_fromBDTFit_Combine ()
     
     TString hname;
     
+    float signal_region_min(1.4);
+    float signal_region_max(2.1);
+    
+    float signal_peak_region_min(1.73);
+    float signal_peak_region_max(1.82);
+    
     //Filename and histograms
     TFile * file_tau[3];
     
@@ -85,8 +91,8 @@ void makeYield_fromBDTFit_Combine ()
       
       tree[i] = (TTree *) TreeFile->Get(cat_base[i]);
       
-      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,40,1.4,2.1);
-      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,40,1.4,2.1);
+      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,40,signal_region_min,signal_region_max);
+      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,40,signal_region_min,signal_region_max);
       tau_BDT_Output_MC[i] = new TH1D("tau_BDT_Output_MC","tau_BDT_Output_MC_"+hname,100,-0.9,0.9);
       tau_BDT_Output_Data[i] = new TH1D("tau_BDT_Output_Data","tau_BDT_Output_Data_"+hname,100,-0.9,0.9);
       
@@ -99,14 +105,14 @@ void makeYield_fromBDTFit_Combine ()
       for (Long64_t j=0;j<nentries;j++) {
         tree[i]->GetEntry(j);
         
-        if(tripletMass>=1.4&&tripletMass<=2.1){
+        if(tripletMass>=signal_region_min&&tripletMass<=signal_region_max){
                 if(isMC>0){
                   tau_T3Mu[i]->Fill(tripletMass,weight);
                   tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
                 }
-                if(isMC==0){
-                  tau_T3Mu_Dat[i]->Fill(tripletMass,weight);
-                  tau_BDT_Output_Data[i]->Fill(bdt_cv,weight);
+                if(isMC==0 (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
+                  tau_T3Mu_Dat[i]->Fill(tripletMass);
+                  tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
         }
         
@@ -286,9 +292,6 @@ void makeYield_fromBDTFit_Combine ()
     
     
     //Triplet Mass Fits
-    double signal_low = 1.715;
-    double signal_high = 1.8375;
-    
     RooRealVar * InvMass[3];
     
     RooPolynomial * poly[3];
@@ -308,11 +311,11 @@ void makeYield_fromBDTFit_Combine ()
     for(int i=0; i<3; i++){
       hname=to_string(i+1);
       
-      InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],1.4,2.1);
-      InvMass[i]->setRange("R1",1.4,signal_low); //background   
-      InvMass[i]->setRange("R2",signal_high,2.1); //background
-      InvMass[i]->setRange("R3",1.705,1.85); //signal range for fitting
-      InvMass[i]->setRange("R4",signal_low,signal_high); //signal range for yield
+      InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],signal_region_min,signal_region_max);
+      InvMass[i]->setRange("R1",signal_region_min,signal_peak_region_min); //background   
+      InvMass[i]->setRange("R2",signal_peak_region_max,signal_region_max); //background
+      InvMass[i]->setRange("R3",1.70,1.85); //signal range for fitting
+      InvMass[i]->setRange("R4",signal_peak_region_min,signal_peak_region_max); //signal range for yield
       
       
       //Flat fit for data
