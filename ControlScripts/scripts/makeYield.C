@@ -54,15 +54,15 @@ void makeYield ()
     
     //BDT Cuts b
     float BDT_Cut_b[3];
-    BDT_Cut_b[0] = 0.18;
-    BDT_Cut_b[1] = 0.216;
-    BDT_Cut_b[2] = 0.243;
+    BDT_Cut_b[0] = 0.4;
+    BDT_Cut_b[1] = 0.4;
+    BDT_Cut_b[2] = 0.44;
     
     //BDT Cuts a
     float BDT_Cut_a[3];
-    BDT_Cut_a[0] = 0.405;
-    BDT_Cut_a[1] = 0.405;
-    BDT_Cut_a[2] = 0.459;
+    BDT_Cut_a[0] = 0.52;
+    BDT_Cut_a[1] = 0.52;
+    BDT_Cut_a[2] = 0.56;
     
     float signal_region_min(1.4);
     float signal_region_max(2.1);
@@ -110,12 +110,12 @@ void makeYield ()
         tree[i]->GetEntry(j);
         
         //if(tripletMass>=signal_region_min && tripletMass<=signal_region_max && bdt_cv>=BDT_Cut_a[i]){
-        if(tripletMass>=signal_region_min && tripletMass<=signal_peak_region_min && bdt_cv >= BDT_Cut_b[i] && bdt_cv < BDT_Cut_a[i]){
+        if(tripletMass>=signal_region_min && tripletMass<=signal_region_max && bdt_cv >= BDT_Cut_b[i] && bdt_cv < BDT_Cut_a[i]){
                 if(isMC>0){
                   tau_T3Mu[i]->Fill(tripletMass,weight);
                   tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
                 }
-                if(isMC==0 && (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
+                if(isMC==0 && (tripletMass<=signal_peak_region_min || tripletMass>=signal_peak_region_max) ){//blinded
                   tau_T3Mu_Dat[i]->Fill(tripletMass);
                   tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
@@ -230,7 +230,7 @@ void makeYield ()
       xFrame[i] = InvMass[i]->frame();
       data[i]->plotOn(xFrame[i]);
       pdf[i]->plotOn(xFrame[i],LineColor(4),LineWidth(2), Normalization(nData[i], RooAbsReal::NumEvent),ProjectionRange("R1,R2"));
-      mc[i]->plotOn(xFrame[i]);
+      //mc[i]->plotOn(xFrame[i]);
       mc_pdf[i]->plotOn(xFrame[i],LineColor(1),LineWidth(2), Normalization(nSignal[i], RooAbsReal::NumEvent),ProjectionRange("R3"));
       xFrame[i]->SetTitle("3#mu inv. mass (GeV), #tau_"+cat_label[i]);
       xFrame[i]->SetXTitle("3#mu inv. mass (GeV)");

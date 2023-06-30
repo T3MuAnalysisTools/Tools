@@ -58,6 +58,8 @@ void makeYield_fromBDTFit ()
     float signal_peak_region_min(1.73);
     float signal_peak_region_max(1.82);
     
+    float Loose_BDT_Cut(0.05);
+    
     //Filename and histograms
     TFile * file_tau[3];
     
@@ -115,11 +117,15 @@ void makeYield_fromBDTFit ()
         
         if(tripletMass>=signal_region_min&&tripletMass<=signal_region_max){
                 if(isMC>0){
-                  tau_T3Mu[i]->Fill(tripletMass,weight);
+                  if(bdt_cv>Loose_BDT_Cut){
+                    tau_T3Mu[i]->Fill(tripletMass,weight);
+                  }
                   tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
                 }
-                if(isMC==0 && (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
-                  tau_T3Mu_Dat[i]->Fill(tripletMass);
+                if(isMC==0 && (tripletMass<=signal_peak_region_min || tripletMass>=signal_peak_region_max) ){//blinded
+                  if(bdt_cv>Loose_BDT_Cut){
+                    tau_T3Mu_Dat[i]->Fill(tripletMass);
+                  }
                   tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
         }
@@ -342,7 +348,7 @@ void makeYield_fromBDTFit ()
       InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],signal_region_min,signal_region_max);
       InvMass[i]->setRange("R1",signal_region_min,signal_peak_region_min); //background   
       InvMass[i]->setRange("R2",signal_peak_region_max,signal_region_max); //background
-      InvMass[i]->setRange("R3",1.70,1.85); //signal range for fitting
+      InvMass[i]->setRange("R3",1.72,1.81); //signal range for fitting
       InvMass[i]->setRange("R4",signal_peak_region_min,signal_peak_region_max); //signal range for yield
       
       
@@ -497,9 +503,9 @@ void makeYield_fromBDTFit ()
     
     
     //From BDT Output:
-    BDTOutput_x[0]->setRange("R_Small",0.309056,100); BDTOutput_x[0]->setRange("R_Large",0.05,100);
-    BDTOutput_x[1]->setRange("R_Small",0.329983,100); BDTOutput_x[1]->setRange("R_Large",0.05,100);
-    BDTOutput_x[2]->setRange("R_Small",0.333186,100); BDTOutput_x[2]->setRange("R_Large",0.05,100);
+    BDTOutput_x[0]->setRange("R_Small",0.309056,100); BDTOutput_x[0]->setRange("R_Large",Loose_BDT_Cut,100);
+    BDTOutput_x[1]->setRange("R_Small",0.329983,100); BDTOutput_x[1]->setRange("R_Large",Loose_BDT_Cut,100);
+    BDTOutput_x[2]->setRange("R_Small",0.333186,100); BDTOutput_x[2]->setRange("R_Large",Loose_BDT_Cut,100);
     
     double TightBDTCutFraction[3];
     
@@ -528,8 +534,8 @@ void makeYield_fromBDTFit ()
         //double X_min = std::min(tau_BDT_Output_Data[0]->GetXaxis()->GetXmin(), tau_BDT_Output_MC[0]->GetXaxis()->GetXmin());
         //double X_max = std::max(tau_BDT_Output_Data[0]->GetXaxis()->GetXmax(), tau_BDT_Output_MC[0]->GetXaxis()->GetXmax());
         
-        double X_min = 0.0;
-        double X_max = 0.9;
+        double X_min = 0.2;
+        double X_max = 0.6;
         
         //Loop on both cuts in [X_min;X_max]
         Int_t dim = 0;
@@ -561,11 +567,21 @@ void makeYield_fromBDTFit ()
                                 
                                 //computing areas in range [a;X_max]
                                 N_s_1[k] = BDT_distributionMC[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_a"))->getVal() * (BDTNormMC[k]->getValV());
-                                N_b_1[k] = (pdf_integral_restricted[k]/(1-pdf_integral_restricted[k]))  *  nData[k]  *   (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_a"))->getVal() / BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal());
+                                N_b_1[k] = (pdf_integral_restricted[k]/(1-pdf_integral_restricted[k]))  *  nData[k]  *   ((BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_a"))->getVal()) / (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal()));
                                 
                                 //computing areas in range [b;a]
                                 N_s_2[k] = BDT_distributionMC[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_b"))->getVal() * (BDTNormMC[k]->getValV());
-                                N_b_2[k] = (pdf_integral_restricted[k]/(1-pdf_integral_restricted[k]))  *  nData[k]  *   (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_b"))->getVal() / BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal());
+                                N_b_2[k] = (pdf_integral_restricted[k]/(1-pdf_integral_restricted[k]))  *  nData[k]  *   ((BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_b"))->getVal()) / (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal()));
+                                
+                                //cout<< "k is: "<< k <<endl;
+                                
+                                /*
+                                cout<< "Count a small: "<< bdt_data[k]->sumEntries("1", "R_a") << " Count a large: "<< bdt_data[k]->sumEntries("1", "R_Large") <<endl;
+                                cout<< "Count b small: "<< bdt_data[k]->sumEntries("1", "R_b") << " Count b large: "<< bdt_data[k]->sumEntries("1", "R_Large") <<endl;
+                                
+                                cout<< "Integral a small: "<< (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_a"))->getVal())*BDTNorm[k]->getValV() << " Integral a large: "<< (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal())*BDTNorm[k]->getValV() <<endl;
+                                cout<< "Integral b small: "<< (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_b"))->getVal())*BDTNorm[k]->getValV() << " Integral b large: "<< (BDT_distribution[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_Large"))->getVal())*BDTNorm[k]->getValV() <<endl;
+                                */
                                 
                                 /*
                                 N_s_1[k] = BDT_distributionMC[k]->createIntegral(*BDTOutput_x[k],NormSet(*BDTOutput_x[k]),Range("R_a"))->getVal() * (BDTNormMC[k]->getValV()) * 4500.0/59.0;

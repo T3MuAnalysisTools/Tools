@@ -65,6 +65,8 @@ void makeYield_fromBDTFit_Combine ()
     float signal_peak_region_min(1.73);
     float signal_peak_region_max(1.82);
     
+    float Loose_BDT_Cut(0.05);
+    
     //Filename and histograms
     TFile * file_tau[3];
     
@@ -107,11 +109,15 @@ void makeYield_fromBDTFit_Combine ()
         
         if(tripletMass>=signal_region_min&&tripletMass<=signal_region_max){
                 if(isMC>0){
-                  tau_T3Mu[i]->Fill(tripletMass,weight);
+                  if(bdt_cv>Loose_BDT_Cut){
+                    tau_T3Mu[i]->Fill(tripletMass,weight);
+                  }
                   tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
                 }
-                if(isMC==0 && (tripletMass<=signal_region_min || tripletMass>=signal_peak_region_max) ){//blinded
-                  tau_T3Mu_Dat[i]->Fill(tripletMass);
+                if(isMC==0 && (tripletMass<=signal_peak_region_min || tripletMass>=signal_peak_region_max) ){//blinded
+                  if(bdt_cv>Loose_BDT_Cut){
+                    tau_T3Mu_Dat[i]->Fill(tripletMass);
+                  }
                   tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
         }
@@ -314,7 +320,7 @@ void makeYield_fromBDTFit_Combine ()
       InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],signal_region_min,signal_region_max);
       InvMass[i]->setRange("R1",signal_region_min,signal_peak_region_min); //background   
       InvMass[i]->setRange("R2",signal_peak_region_max,signal_region_max); //background
-      InvMass[i]->setRange("R3",1.70,1.85); //signal range for fitting
+      InvMass[i]->setRange("R3",1.72,1.81); //signal range for fitting
       InvMass[i]->setRange("R4",signal_peak_region_min,signal_peak_region_max); //signal range for yield
       
       
@@ -334,7 +340,7 @@ void makeYield_fromBDTFit_Combine ()
       mc[i] = new RooDataHist("mc"+hname, "mc", *InvMass[i], Import(*tau_T3Mu[i]));
       GaussNorm[i] = new RooRealVar("GaussNorm"+hname, "GaussNorm",  0.5,0.001,1.0);
       mc_pdf[i] = new RooAddPdf("mc_pdf"+hname, "mc_pdf", RooArgList(*Gauss[i]), RooArgList(*GaussNorm[i]));
-      fitresult_bdt[i] = mc_pdf[i]->fitTo(*mc[i], Range("R3"), Save());
+      mc_fitresult[i] = mc_pdf[i]->fitTo(*mc[i], Range("R3"), Save());
       
     }
     
@@ -469,9 +475,9 @@ void makeYield_fromBDTFit_Combine ()
     
     
     //From BDT Output:
-    BDTOutput_x[0]->setRange("R_Small",0.309056,100); BDTOutput_x[0]->setRange("R_Large",0.05,100);
-    BDTOutput_x[1]->setRange("R_Small",0.329983,100); BDTOutput_x[1]->setRange("R_Large",0.05,100);
-    BDTOutput_x[2]->setRange("R_Small",0.333186,100); BDTOutput_x[2]->setRange("R_Large",0.05,100);
+    BDTOutput_x[0]->setRange("R_Small",0.309056,100); BDTOutput_x[0]->setRange("R_Large",Loose_BDT_Cut,100);
+    BDTOutput_x[1]->setRange("R_Small",0.329983,100); BDTOutput_x[1]->setRange("R_Large",Loose_BDT_Cut,100);
+    BDTOutput_x[2]->setRange("R_Small",0.333186,100); BDTOutput_x[2]->setRange("R_Large",Loose_BDT_Cut,100);
     
     double TightBDTCutFraction[3];
     
@@ -506,7 +512,7 @@ void makeYield_fromBDTFit_Combine ()
         //double X_max = std::max(tau_BDT_Output_Data[0]->GetXaxis()->GetXmax(), tau_BDT_Output_MC[0]->GetXaxis()->GetXmax());
         
         double X_min = 0.2;
-        double X_max = 0.5;
+        double X_max = 0.6;
         
         //Loop on both cuts in [X_min;X_max]
         Int_t dim = 0;
