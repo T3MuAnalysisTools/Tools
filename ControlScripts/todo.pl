@@ -61,7 +61,7 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\nThis code requires one input option. The syntax is:./todo.pl [OPTION]");
     printf("\nPlease choose from the following options:\n");
     printf("\n./todo.pl --help                                   Prints this message\n");
-    printf("\n./todo.pl --DsTauTo3MNtuple <dir>  --Branch <run3> Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
+    printf("\n./todo.pl --DsTauTo3MNtuple <dir> --Branch <run3>  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
     printf("\n                                                    --Branch <branch> developing branch; Default: master; For Run3: Run3 ");
     printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
     printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc7_amd64_gcc700 ");
