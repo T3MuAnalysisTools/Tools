@@ -228,6 +228,8 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     system(sprintf("echo \"cd ../\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/SkimProduction.git\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd SkimProduction; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd ../\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"scram b -j 4\" >> Install_DsTNtuple_$time"));
 
     printf("\n\nInstructions:");
