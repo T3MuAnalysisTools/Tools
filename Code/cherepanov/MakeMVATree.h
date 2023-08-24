@@ -29,7 +29,10 @@ class MakeMVATree : public Selection {
   TFile * file;
   TTree * TMVA_Tree;
 
+
  private:
+
+
   // Selection Variables
   double tauMinMass_, tauMaxMass_;
   double tauMinSideBand_,tauMaxSideBand_;
@@ -49,6 +52,10 @@ class MakeMVATree : public Selection {
   TMVA::Reader *readerMuIDBarrel;
   TMVA::Reader *readerMuIDEndcap;
   TMVA::Reader *readerBvsD;
+
+
+  TMVA::Reader *readerD_v1;
+  TMVA::Reader *readerB_v1;
 
   // Initializhere your analysis histograms
 
@@ -123,8 +130,6 @@ class MakeMVATree : public Selection {
 
   std::vector<TH1D>   NTracksCloseToPV;
   std::vector<TH1D>   NTracksCloseToPVTauDR;
-
-
 
 
   std::vector<TH1D> VertexMu1D0SigPVReco;

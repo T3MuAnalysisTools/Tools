@@ -23,10 +23,10 @@ MakeMVATree::MakeMVATree(TString Name_, TString id_):
 {
     // This is a class constructor;
 
-  TString basedir = "";
-  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2018";
-  PUWeightFile = new TFile(basedir+"/PUWeights_Run2018.root");
-  puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
+  //  TString basedir = "";
+  //  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2018";
+  //  PUWeightFile = new TFile(basedir+"/PUWeights_Run2018.root");
+  //  puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
 
 
 }
@@ -121,13 +121,29 @@ void  MakeMVATree::Configure(){
   readerBvsD->AddVariable("var_dcaTrackPV",&var_dcaTrackPV);
   readerBvsD->AddVariable("var_MinMuonImpactAngle",&var_MinMuonImpactAngle);
   readerBvsD->AddVariable("var_flightLenDist",&var_flightLenDist);
-  //  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
+  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirHFMVAJul_10_2023/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
 
 
 
 
 
-  TMVA_Tree= new TTree("tree","tree");
+
+
+
+  //  Error in <TTree::Fill>: Failed filling branch:tree.var_MinMuon_chi2LocalPosition, nbytes=-1, entry=7975
+
+  TString treeprefix;
+  if(Ntp->GetInputNtuplePath().Contains("Z2TauTau")) treeprefix="DoubleMuonLowMass";
+
+  if(Ntp->GetInputNtuplePath().Contains("DsToTau")) treeprefix="Ds";
+  if(Ntp->GetInputNtuplePath().Contains("DpToTau")) treeprefix="Dp";
+  if(Ntp->GetInputNtuplePath().Contains("BdToTau")) treeprefix="B0";
+  if(Ntp->GetInputNtuplePath().Contains("BuToTau")) treeprefix="Bp";
+
+
+ 
+  TMVA_Tree= new TTree(treeprefix+"_mva_tree","Mini tree for MVA");
+  // this is now working version
   TMVA_Tree->Branch("MC",&MC);
   TMVA_Tree->Branch("category",&category);
   TMVA_Tree->Branch("var_id", &var_id);
@@ -2787,16 +2803,16 @@ void  MakeMVATree::doEvent(){
 	var_MaxD0SigBS = MaxD0BSSignificance;
 	var_MinD0SigBS = MinD0BSSignificance;
 	
-
+	
 	var_VertexMu1D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,0);
 	var_VertexMu2D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,1);
 	var_VertexMu3D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,2);
-
-
+	
+	
 	var_MaxD0SigSV = MaxD0SVSignificance;
 	var_MinD0SigSV = MinD0SVSignificance;
 	
-
+	
 	var_MinMuon_chi2LocalPosition =   std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
 	var_MaxMuon_chi2LocalPosition = std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
 
@@ -2893,8 +2909,8 @@ void  MakeMVATree::doEvent(){
 	
 	// ---------------- Evaluate B vs D mva
 
-	//	var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
-	//	Separation_BvsD.at(t).Fill(var_BvsDSeprator,1);
+	var_BvsDSeprator = readerBvsD->EvaluateMVA("BDTG");
+	Separation_BvsD.at(t).Fill(var_BvsDSeprator,1);
 
 	// ---------------- Evaluate B vs D mva
 
@@ -2909,28 +2925,33 @@ void  MakeMVATree::doEvent(){
 
 void  MakeMVATree::Finish(){
   
-  if(mode == RECONSTRUCT){
-    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-    //    int id(Ntp->GetMCID());
-    /*    double scale(1.);
-    double scaleDsTau(0.637);
-    double scaleBpTau(0.262);
-    double scaleB0Tau(0.099);
-
-    if(Nminus0.at(0).at(1).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
-    ScaleAllHistOfType(1,scale*scaleDsTau);
+  if(mode == RECONSTRUCT)
+    {
+      //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+      //    int id(Ntp->GetMCID());
+      double scale(1.);
+      double scaleDsTau(0.637);
+      double scaleBpTau(0.262);
+      double scaleB0Tau(0.099);
+      double scaleDpTau(0.032);
+      
+      if(Nminus0.at(0).at(1).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      ScaleAllHistOfType(1,scale*scaleDsTau);
     
-    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
-    ScaleAllHistOfType(2,scale*scaleBpTau);
+      if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
+      ScaleAllHistOfType(2,scale*scaleBpTau);
+      
+      if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
+      ScaleAllHistOfType(3,scale*scaleB0Tau);
 
-    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
-    ScaleAllHistOfType(3,scale*scaleB0Tau);
-    */
-    //    }
-  }
+      if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
+      ScaleAllHistOfType(4,scale*scaleDpTau);
+      
+      //    }
+    }
   file= new TFile("TMVATreesInput.root","recreate");
   TMVA_Tree->SetDirectory(file);
-    
+  
   file->Write();
   file->Close();
     
