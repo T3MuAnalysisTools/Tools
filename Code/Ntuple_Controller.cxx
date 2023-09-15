@@ -20,8 +20,8 @@ Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
    ,isInit(false)
 {
    // TChains the ROOTuple file
-    TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
-   // TChain *chain = new TChain("t3mtree"); //  SKIMMED
+   // TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
+  TChain *chain = new TChain("t3mtree"); //  SKIMMED
    //  Logger(Logger::Verbose) << "Loading " << RootFiles.size() << " files" << std::endl;
    for(unsigned int i=0; i<RootFiles.size(); i++){
       chain->Add(RootFiles[i]);
@@ -1065,12 +1065,13 @@ TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>
   }
 
   TVectorD eigen_val = EigenValues(M_infl);
-  for(unsigned int i=0; i<eigen_val.GetNrows(); i++){
+  for(int i=0; i<eigen_val.GetNrows(); i++){
     if(eigen_val(i) < 0){
       coef*=1.01;
       return RegulariseCovariance(M_infl,coef);
     }
   }
+
   return M_infl;
 }
 
@@ -1351,14 +1352,17 @@ void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt,
    }
 }
 
+
 void Ntuple_Controller::printMCDecayChainOfParticle(unsigned int index, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "=== Draw MC decay chain of particle ===" << std::endl;
    printMCDecayChainOfMother(index, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChainOfMother(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "Draw decay chain for mother particle at index " << par << " :" << std::endl;
    printMCDecayChain(par, 0, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChain(unsigned int par, unsigned int level, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    std::ostringstream out;
    for(unsigned int l = 0; l < level; l++) out << "    ";
@@ -1382,4 +1386,196 @@ std::string Ntuple_Controller::MCParticleToString(unsigned int par, bool printSt
    if (printEtaPhi) out << " eta = " << MCParticle_p4(par).Eta() << " phi = " << MCParticle_p4(par).Phi();
    if (printPt || printEtaPhi) out << "]";
    return out.str();
+}
+
+
+std::vector<unsigned int> 
+Ntuple_Controller::findSameAncestors(std::vector<unsigned int> vec)// <--- It returns vector of size 3 with same lement - MC index of the first parent
+{
+
+  
+  std::vector<unsigned int> out;
+  /// Find First Decays Like A -> MU + X   B(MU MU) 
+  std::vector<unsigned int> parents;
+  for(auto i  :  vec)
+    if(MCParticle_hasMother(i))
+      parents.push_back(MCParticle_midx(i));
+  std::vector<unsigned int>  duplicates = findDuplicates(parents);
+  if( duplicates.size() !=0 )
+    {
+      std::sort(parents.begin(),parents.end());
+      if( MCParticle_midx(parents.back()) == (int)parents.front() )   //   simply check that  B has A as a parent particle here
+	{
+	  out.insert(out.end(), 3, parents.front());
+	  return out;
+	}
+    }
+
+
+  for(auto i  :  vec)
+    if(MCParticle_hasMother(i))
+      if(MCParticle_pdgid(MCParticle_midx(i))!=2212)
+	out.push_back(MCParticle_midx(i));
+  
+
+  if( std::count(out.begin(), out.end(), out.front()) == (int)out.size() )
+    {
+
+      std::cout<<"  Ntuple Controller    size ========================= > " <<  ( std::count(out.begin(), out.end(), out.front()) == (int)out.size()) << "            " <<  (int)out.size()  <<std::endl;
+      return out;
+    }
+
+
+
+  return findSameAncestors(out);
+}
+
+int 
+Ntuple_Controller::TypeI1_I2_pair_parent(std::vector<unsigned int> vec)
+{
+
+  if(ClassifyTypeI(vec) == 1 ||          // X -> A(mu)         B (mumu)
+     ClassifyTypeI(vec) == 2    )        // X ->   mu          B (mumu) 
+    {
+
+      std::vector<unsigned int> parents;
+      std::vector<unsigned int> parents_duplicates;
+
+      for(auto i  :  vec)
+	if(MCParticle_hasMother(i))
+	  parents.push_back(MCParticle_midx(i));
+
+      parents_duplicates = findDuplicates(parents);
+
+      if(parents_duplicates.size() == 1)
+	return parents_duplicates.at(0);
+    }
+
+  return -1;
+
+}
+
+int
+Ntuple_Controller::ClassifyTypeI(std::vector<unsigned int> vec)
+{
+  ///////////////////////////////////////////
+  // X -> A(mu)         B (mumu)  return  1
+  // X ->   mu          B (mumu)  return  2
+  // X ->   mu      mu    B (mu)  return  3
+  // X -> A(mu)   B(mu)    C(mu)  return  4
+  // X ->   mu    A(mu)    B(mu)  return  5
+  // X ->   mu      mu       mu   return  6
+  // none above                   return -1  
+  ////////////////////////////////////////////
+
+  int type(-1);
+
+
+  std::vector<unsigned int> parents;
+  std::vector<unsigned int> ancestors;
+  std::vector<unsigned int> parents_duplicates;
+
+
+  ancestors = findSameAncestors(vec);
+  if(ancestors.size() != 3) return type;
+
+
+  for(auto i  :  vec)
+    if(MCParticle_hasMother(i))
+      parents.push_back(MCParticle_midx(i));
+
+  parents_duplicates = findDuplicates(parents);
+
+
+  //  for(auto x  :  parents) std::cout<<"  parents:  " << x << std::endl;
+  //  for(auto x  :  parents_duplicates) std::cout<<"  parents duplicates:  " << x << std::endl;
+  //  for(auto x  :  ancestors) std::cout<<"  ancestors:  " << x << std::endl;
+
+
+  if( parents_duplicates.size() == 1 )
+    {
+
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  ) type = 1;
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 1  ) type = 2;
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 2  ) type = 3;
+
+	
+    }
+  if( parents_duplicates.size() == 0 )
+    {
+
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  ) type = 4;
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 1  ) type = 5;
+
+    }
+
+  if(parents_duplicates.size() == 3) type = 6; // This is typycally DecaysInFlights D-> K pi pi
+
+  return type;
+}
+
+
+bool 
+Ntuple_Controller::isDecayInFlight(unsigned int i)
+{
+
+  if(MCParticle_hasMother(i))
+    if( abs(MCParticle_pdgid(MCParticle_midx(i))) ==  PDGInfo::pi_plus   || 
+	abs(MCParticle_pdgid(MCParticle_midx(i))) ==  PDGInfo::K_plus )
+      {
+	
+	std::vector<unsigned int> decay_chain;
+	for(auto j : MCParticle_childidx(MCParticle_midx(i)))   
+	  decay_chain.push_back(abs(MCParticle_pdgid(j)));
+	if(decay_chain.size() == 2)
+	  if(std::find(decay_chain.begin(), decay_chain.end(), PDGInfo::mu_minus) != decay_chain.end()&&  
+	     std::find(decay_chain.begin(), decay_chain.end(), PDGInfo::nu_mu)    != decay_chain.end() )  
+	    return true;
+      }
+  
+  if( abs(MCParticle_pdgid(i)) ==  PDGInfo::pi_plus   || 
+      abs(MCParticle_pdgid(i)) ==  PDGInfo::K_plus )
+    {
+      std::vector<unsigned int> decay_chain;
+      for(auto j : MCParticle_childidx(i))  
+	decay_chain.push_back(abs(MCParticle_pdgid(j)));
+      if(decay_chain.size() == 2)
+	if(std::find(decay_chain.begin(), decay_chain.end(), PDGInfo::mu_minus) != decay_chain.end()&&
+	   std::find(decay_chain.begin(), decay_chain.end(), PDGInfo::nu_mu)    != decay_chain.end() )
+	  return true;
+      
+    }
+  
+  return false;
+  
+}	      
+	      
+bool
+Ntuple_Controller::isKpiFake(unsigned int i) //   so far fake only means K/pi
+{
+
+  if(isDecayInFlight(i)) return false;
+
+  if(abs(MCParticle_pdgid(i))  ==  PDGInfo::mu_minus) return false;
+
+  if( abs(MCParticle_pdgid(i)) ==  PDGInfo::pi_plus   ||
+      abs(MCParticle_pdgid(i)) ==  PDGInfo::K_plus ) return true;
+  
+  
+  return false;
+}	      
+
+	      
+
+std::vector<unsigned int> 
+Ntuple_Controller::findDuplicates(std::vector<unsigned int> vec)
+{
+  std::vector<unsigned int> duplicates;
+  if(vec.size()!=0)
+    for (unsigned int i=0; i < vec.size() - 1 ; ++i)
+      for(unsigned int j=i+1; j < vec.size(); ++j)
+	if(vec.at(i) == vec.at(j)) 
+	  duplicates.push_back(vec.at(i));
+
+  return duplicates;
 }

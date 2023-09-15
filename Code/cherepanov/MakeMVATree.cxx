@@ -414,7 +414,7 @@ void  MakeMVATree::Configure(){
     if(i==L1)                 cut.at(L1)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
     if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==TRKLWithM)          cut.at(TRKLWithM)=1;
@@ -1286,7 +1286,7 @@ void  MakeMVATree::doEvent(){
     int id(Ntp->GetMCID());
     bool hlt_pass = false;
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
-
+    //    std::cout<<"  id  "<< id << std::endl;
     bool HLTOk(false);
     bool L1Ok(false);
     bool DoubleMu0Fired(false);
@@ -1296,11 +1296,18 @@ void  MakeMVATree::doEvent(){
     bool randomFailed(false);
 
     random_num = rndm.Uniform();
-    
 
     for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-      if(HLT.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
+      
+      //      std::cout<<"   HLT:    "<< Ntp->HLTName(iTrigger) <<"    decision    " <<  Ntp->HLTDecision(iTrigger)  << std::endl;
+      if(HLT.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_") || HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") )
+	{
+	  if( Ntp->HLTDecision(iTrigger)  ) 
+	    {
+	      HLTOk = true;
+	    }
+	}
     }
 
     for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
@@ -1326,7 +1333,7 @@ void  MakeMVATree::doEvent(){
     //    if (HLTFired && !L1Fired && !randomFailed) cout<<"wrong hlt"<<endl;
 
     pass.at(HLT) = (value.at(HLT) == cut.at(HLT));
-    pass.at(L1)  = (value.at(L1) == cut.at(L1));
+    pass.at(L1)  = true;//(value.at(L1) == cut.at(L1));
 
 
 
@@ -1446,9 +1453,9 @@ void  MakeMVATree::doEvent(){
     }
     
     pass.at(SignalCandidate) = (value.at(SignalCandidate) == cut.at(SignalCandidate));
-    pass.at(Mu1PtCut) = true;//(value.at(Mu1PtCut) > cut.at(Mu1PtCut));
-    pass.at(Mu2PtCut) = true;//(value.at(Mu2PtCut) > cut.at(Mu2PtCut));
-    pass.at(Mu3PtCut) = true;//(value.at(Mu3PtCut) > cut.at(Mu3PtCut));
+    pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
+    pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
+    pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
     pass.at(MuonID)  =  true;//(value.at(MuonID)     == cut.at(MuonID));
     pass.at(TRKLWithM) = true;//(value.at(TRKLWithM) == cut.at(TRKLWithM));
     pass.at(TriggerMatch) = (value.at(TriggerMatch) == cut.at(TriggerMatch));
