@@ -71,8 +71,6 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   Muon3DRToTruth;
   std::vector<TH1D>   dR_betweenTruth_VisibleTaus;
 
-  std::vector<TH1D>   PairMass_OppositeSign_dR12;
-  std::vector<TH1D>   PairMass_OppositeSign_dR13;
 
   std::vector<TH1D>   dR_betweenTruth_NeutrinoGuess;
   std::vector<TH1D>   dR_betweenTruth_Tau;
@@ -162,6 +160,14 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   PostSelection_BDT_Output_MC_Bkg;
   std::vector<TH2D>   PostSelection_BDT_Output_Data_vs_MC_Bkg;
   
+  std::vector<TH1D>   PostSelection_HPS_Vtx_DiTauMass;
+  std::vector<TH1D>   PostSelection_HPS_FL_Sigfig;
+  std::vector<TH1D>   PostSelection_HPS_Vtx_Tau_to_Tauh;
+  
+  
+  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR13;
+  
   //After BDT
   
   std::vector<TH1D>   PostBDT_TripletMass_VeryLooseCut;
@@ -172,6 +178,8 @@ class ZTau3MuTauh : public Selection {
   std::vector<TH1D>   PostBDT_VisibleDiTauMass;
   std::vector<TH1D>   PostBDT_MTT;
   std::vector<TH1D>   PostBDT_TripletMass;
+  std::vector<TH1D>   PostBDT_TripletMass_a;
+  std::vector<TH1D>   PostBDT_TripletMass_b;
   
   std::vector<TH1D>   PostBDT_TripletPt;
   std::vector<TH1D>   PostBDT_OppositeTauPt;
@@ -207,6 +215,8 @@ class ZTau3MuTauh : public Selection {
   
   std::vector<TH1D>   PostBDT_prod_size;
   
+  std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR13;
   
   //Pre BDT 2D scan
   
@@ -251,6 +261,9 @@ class ZTau3MuTauh : public Selection {
   
   std::vector<TH2D>   BDT_2Dscan_prod_size;
   
+  std::vector<TH2D>   BDT_2Dscan_PairMass_OppositeSign_dR12;
+  std::vector<TH2D>   BDT_2Dscan_PairMass_OppositeSign_dR13;
+  
   
   Float_t m3m;
   Float_t dataMCtype;
@@ -284,6 +297,10 @@ class ZTau3MuTauh : public Selection {
   
   Float_t var_VisMass;
   Float_t var_DiTauMass_Collinear;
+  
+  Float_t var_Whether_HPS_Tau_Vtx_Exists;
+  Float_t var_HPS_FL_Sig;
+  Float_t var_HPS_Inv_Mass_Z_Tau3mu_SpecTau;
   
   Float_t BDT_Evaluated;
   

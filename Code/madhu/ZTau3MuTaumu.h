@@ -70,8 +70,7 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   Muon2DRToTruth;
   std::vector<TH1D>   Muon3DRToTruth;
   std::vector<TH1D>   dR_betweenTruth_VisibleTaus;
-  std::vector<TH1D>   PairMass_OppositeSign_dR12;
-  std::vector<TH1D>   PairMass_OppositeSign_dR13;
+  
   
   std::vector<TH1D>   dR_betweenTruth_NeutrinoGuess;
   std::vector<TH1D>   dR_betweenTruth_Tau;
@@ -169,6 +168,9 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   PostSelection_BDT_Output_MC_Bkg;
   std::vector<TH2D>   PostSelection_BDT_Output_Data_vs_MC_Bkg;
   
+  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR13;
+  
   //After BDT
   
   std::vector<TH1D>   PostBDT_TripletMass_VeryLooseCut;
@@ -178,6 +180,8 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   PostBDT_VisibleDiTauMass;
   std::vector<TH1D>   PostBDT_MTT;
   std::vector<TH1D>   PostBDT_TripletMass;
+  std::vector<TH1D>   PostBDT_TripletMass_a;
+  std::vector<TH1D>   PostBDT_TripletMass_b;
   
   std::vector<TH1D>   PostBDT_TripletPt;
   std::vector<TH1D>   PostBDT_OppositeMuonPt;
