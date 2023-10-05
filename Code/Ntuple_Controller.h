@@ -977,6 +977,10 @@ class Ntuple_Controller{
 
       std::vector<unsigned int> findDuplicates(std::vector<unsigned int> vec);
       std::vector<unsigned int> findSameAncestors(std::vector<unsigned int> vec);
+      std::vector<int>  triplet_has_mother(std::vector<unsigned int> vec);
+	
+
+
       int ClassifyTypeI(std::vector<unsigned int> vec);
       int TypeI1_I2_pair_parent(std::vector<unsigned int> vec);
 

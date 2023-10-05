@@ -1057,23 +1057,20 @@ TVectorD Ntuple_Controller::EigenValues(TMatrixTSym<double> M){
 //   If the covariance matrix contains the negative eigen values then 
 //   the dioganal elements are recursively increased  by 1%
 
-TMatrixTSym<double>  
-Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>  M, double coef)
-{
+TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>  M, double coef){
 
   TMatrixTSym<double>  M_infl = M;
-  for(unsigned int i=0; i<TrackParticle::NHelixPar;i++)
+  for(unsigned int i=0; i<TrackParticle::NHelixPar;i++){
     M_infl(i,i)*=coef;
-  
+  }
 
   TVectorD eigen_val = EigenValues(M_infl);
-  for(int i=0; i<eigen_val.GetNrows(); i++)
-    if(eigen_val(i) < 0)
-      {
-	coef*=1.01;
-	return RegulariseCovariance(M_infl,coef);
-      }
-  
+  for(int i=0; i<eigen_val.GetNrows(); i++){
+    if(eigen_val(i) < 0){
+      coef*=1.01;
+      return RegulariseCovariance(M_infl,coef);
+    }
+  }
 
   return M_infl;
 }
@@ -1398,6 +1395,7 @@ Ntuple_Controller::findSameAncestors(std::vector<unsigned int> vec)// <--- It re
 
   
   std::vector<unsigned int> out;
+  /*
   /// Find First Decays Like A -> MU + X   B(MU MU) 
   std::vector<unsigned int> parents;
   for(auto i  :  vec)
@@ -1410,21 +1408,101 @@ Ntuple_Controller::findSameAncestors(std::vector<unsigned int> vec)// <--- It re
       if( MCParticle_midx(parents.back()) == (int)parents.front() )   //   simply check that  B has A as a parent particle here
 	{
 	  out.insert(out.end(), 3, parents.front());
+	  std::cout<<"first return   "<<std::endl;
 	  return out;
 	}
     }
+  */
 
 
+
+  int count_protons_childs(0);
+  int count_has_mother(0);
   for(auto i  :  vec)
+
     if(MCParticle_hasMother(i))
-      if(MCParticle_pdgid(MCParticle_midx(i))!=2212)
-	out.push_back(MCParticle_midx(i));
+      {
+	if(MCParticle_pdgid(MCParticle_midx(i)) == 2212)
+	  {
+	    count_protons_childs++;
+	    std::cout<<" N protons counter  " << count_protons_childs << std::endl;
+	    for(auto l : vec) 
+	      {
+		std::cout<<"  before return  "<< l << "    duplicates size  " << findDuplicates(vec).size()  << "  hasMother   " << MCParticle_hasMother(l) <<std::endl;
+	      }
+	    //	    if()
+
+	    if(  count_protons_childs == 3 && findDuplicates(vec).size()  != 0 )
+
+	      {
+		std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!  requires further classification " << std::endl;	return out;  //if more that one particle is coming from proton break it;
+	      }
+
+	    if(	count_protons_childs == 2 && findDuplicates(vec).size()  == 0 )
+	      {
+		std::cout<<" return 2 "<<std::endl;
+		return out;
+	      }
+
+	    ////////////////////////////////////////////
+	    ///////////  these are going to be Type II 
+	    std::vector<int> TripleHasMother = triplet_has_mother(vec);
+	    if(count_protons_childs == 2 && findDuplicates(vec).size() ==1 && std::count(TripleHasMother.begin(), TripleHasMother.end(), 0 )==1 && 
+	       std::count(TripleHasMother.begin(), TripleHasMother.end(), 1  ) == 2 ) return out;  
+
+	    if(count_protons_childs == 1 && findDuplicates(vec).size()  == 1 && std::count(TripleHasMother.begin(), TripleHasMother.end(), 0 )==2 && 
+	       std::count(TripleHasMother.begin(), TripleHasMother.end(), 1 )==1 ) return out;
+	    ///////////  these are going to be Type II 
+	    ////////////////////////////////////////////
+
+
+
+
+	    //	    if(	count_protons_childs == 2 && findDuplicates(vec).size()  != 0 )
+	    //	      {
+	    //		std::cout<<" return 3 "<<std::endl;    return out;
+	    //	      }
+
+	    out.push_back(i);
+	  }
+	else
+	  {
+	    out.push_back(MCParticle_midx(i));
+	  }
+      }
+    else if( MCParticle_status(i) == 2) // keep the particle in the stack if it has not mother -> candidate to be to treee top
+      {
+	out.push_back(i);
+      }
   
+  
+  //  std::cout<<" NC  Anc" << std::endl;
+  int allThreeHave_mother(0);
+  for(auto o : out) 
+    {
+      if(MCParticle_hasMother(o))
+	allThreeHave_mother+=1;
+    }
+  
+  if(allThreeHave_mother == 0)
+    {
+      if(std::count(out.begin(), out.end(), out.front()) != (int)out.size()) 
+	return findDuplicates(out);
+
+      return out;
+      
+    }
+
+
 
   if( std::count(out.begin(), out.end(), out.front()) == (int)out.size() )
     {
+      //      std::cout<<"  Ntuple Controller    size ========================= > " 
+      //	       <<  ( std::count(out.begin(), out.end(), out.front()) == (int)out.size()) 
+      //	       << "            " <<  (int)out.size()  <<std::endl;
+      //      for(auto o : out) std::cout<<" before return  out:   " << o  << "  hasMother    " <<    MCParticle_hasMother(o)   
+      //				 <<"  status    " << MCParticle_status(o)  <<"   id   " << MCParticle_pdgid(o) <<std::endl;
 
-      std::cout<<"  Ntuple Controller    size ========================= > " <<  ( std::count(out.begin(), out.end(), out.front()) == (int)out.size()) << "            " <<  (int)out.size()  <<std::endl;
       return out;
     }
 
@@ -1432,6 +1510,7 @@ Ntuple_Controller::findSameAncestors(std::vector<unsigned int> vec)// <--- It re
 
   return findSameAncestors(out);
 }
+
 
 int 
 Ntuple_Controller::TypeI1_I2_pair_parent(std::vector<unsigned int> vec)
@@ -1478,7 +1557,6 @@ Ntuple_Controller::ClassifyTypeI(std::vector<unsigned int> vec)
   std::vector<unsigned int> ancestors;
   std::vector<unsigned int> parents_duplicates;
 
-
   ancestors = findSameAncestors(vec);
   if(ancestors.size() != 3) return type;
 
@@ -1494,21 +1572,90 @@ Ntuple_Controller::ClassifyTypeI(std::vector<unsigned int> vec)
   //  for(auto x  :  parents_duplicates) std::cout<<"  parents duplicates:  " << x << std::endl;
   //  for(auto x  :  ancestors) std::cout<<"  ancestors:  " << x << std::endl;
 
-
+  std::cout<<" NC   du0olicate size  "<< parents_duplicates.size() << std::endl;
   if( parents_duplicates.size() == 1 )
     {
 
-      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  ) type = 1;
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  )
+	{
+	  type = 1;
+	  std::sort(parents.begin(), parents.end());
+          if(parents.size() == 3)
+	    if(  MCParticle_hasMother( parents.at(2))  )
+	      {
+		if(MCParticle_midx( parents.at(2) )  == parents.at(0))      type = 2;
+		//		if(MCParticle_midx( parents.at(2) )  == parents.at(1))      type = 2;
+
+		
+		std::vector<int> parents_triplet_has_mothers = triplet_has_mother(parents);
+		if(std::count(parents_triplet_has_mothers.begin(), parents_triplet_has_mothers.end(), 1 ) == 3 )
+		  if(MCParticle_hasMother( MCParticle_midx(parents.at(2))) && MCParticle_hasMother( MCParticle_midx(parents.at(1))))
+		    if(parents.at(2) == parents.at(1) && MCParticle_midx(MCParticle_midx(parents.at(2))) == parents.at(0) )type = 2;
+		  
+	      }
+
+
+
+	}
       if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 1  ) type = 2;
       if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 2  ) type = 3;
-
 	
     }
+
+
   if( parents_duplicates.size() == 0 )
     {
 
-      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  ) type = 4;
-      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 1  ) type = 5;
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 0  ) 
+	{
+	  type = 4;
+
+	  ///  Type 4 might be misclassified as type 1, check this case here.
+	  std::sort(parents.begin(), parents.end()); 
+	  if(parents.size() == 3)
+	    if(  MCParticle_hasMother( parents.at(2))  )
+	      {
+		if( MCParticle_hasMother( MCParticle_midx( parents.at(2) ) )  )
+		  {
+		    if(MCParticle_midx( parents.at(2) )  == parents.at(1))      type = 1;    
+		    if( MCParticle_hasMother( MCParticle_midx( MCParticle_midx( parents.at(2) ) ) ) )
+		      if(   MCParticle_midx( MCParticle_midx( parents.at(2) ) )  ==                   parents.at(1) ||
+			    MCParticle_midx( MCParticle_midx( parents.at(2) ) )  ==  MCParticle_midx( parents.at(1)) )    type = 1;
+
+		    std::cout<<"  NC check  "           <<  MCParticle_midx(MCParticle_midx(parents.at(2) ) ) << "  and  "<<parents.at(0) <<std::endl;
+		    std::cout<<"  NC check  "           <<  MCParticle_midx(parents.at(1) )  << "  and  "<<parents.at(0) <<std::endl;
+		    if(MCParticle_midx( parents.at(2) )  == parents.at(1)                 && 
+		       MCParticle_midx(MCParticle_midx(parents.at(2) ) ) == parents.at(0) && 
+		       MCParticle_midx(parents.at(1) )==parents.at(0)  ) type = 2;
+		    
+		  }
+
+
+
+
+		if(MCParticle_hasMother( parents.at(1)))
+		  if(MCParticle_midx( parents.at(2)) == MCParticle_midx( parents.at(1)) )                                  type = 1;
+	      }
+
+	  if(parents.size() == 2)// Rare case, but anyways change type to 1
+	    if(  MCParticle_hasMother( parents.at(1))  )
+                if( MCParticle_hasMother( MCParticle_midx( parents.at(1) ) )  )
+                  if( MCParticle_hasMother( MCParticle_midx( MCParticle_midx( parents.at(1) ) ) ) )
+		    if(   MCParticle_midx( MCParticle_midx( parents.at(1) ) )  ==  parents.at(0)) type =1; 
+	  
+
+	}
+      
+
+      if(  std::count(parents.begin(), parents.end(), ancestors.front()) == 1  ) 
+	{
+	  type = 5;
+	  std::sort(parents.begin(), parents.end());
+          if(parents.size() == 3)
+	    if(MCParticle_hasMother( parents.at(2)) )
+	      if(MCParticle_midx( parents.at(2) ) ==  parents.at(1) ) type = 2;
+	}
+
 
     }
 
@@ -1516,6 +1663,27 @@ Ntuple_Controller::ClassifyTypeI(std::vector<unsigned int> vec)
 
   return type;
 }
+/*
++-> B_0 (status = 2, idx = 25) [pT = 36.4167GeV eta = -1.14809 phi = -2.67679]
++-> nu_mu (status = 1, idx = 81) [pT = 6.2626GeV eta = -1.08735 phi = -2.4876]
++-> mu+ (status = 1, idx = 82) [pT = 9.5089GeV eta = -1.0408 phi = -2.67224]
++-> unknown ID = -10413 (status = 2, idx = 83) [pT = 20.793GeV eta = -1.20575 phi = -2.73555]
+  +-> anti_D_star_2007_0 (status = 2, idx = 108) [pT = 20.4115GeV eta = -1.20255 phi = -2.73025]
+      +-> anti_D_0 (status = 2, idx = 114) [pT = 19.7227GeV eta = -1.1965 phi = -2.73192]
+	   +-> mu- (status = 1, idx = 116) [pT = 8.80237GeV eta = -1.19745 phi = -2.75805]
+	   -> anti_nu_mu (status = 1, idx = 117) [pT = 2.7456GeV eta = -1.15221 phi = -2.83159]
+	      +-> K_star+ (status = 2, idx = 118) [pT = 8.20686GeV eta = -1.20673 phi = -2.67057]
+	         +-> K0 (status = 2, idx = 119) [pT = 4.0564GeV eta = -1.26334 phi = -2.71333]
+		 +-> K_S0 (status = 2, idx = 121) [pT = 4.0564GeV eta = -1.26334 phi = -2.71333]
+		 +-> pi+ (status = 2, idx = 120) [pT = 4.15779GeV eta = -1.14724 phi = -2.62884]
+		   +-> mu+ (status = 1, idx = 122) [pT = 3.89387GeV eta = -1.15211 phi = -2.63094]
+		   +-> nu_mu (status = 1, idx = 123) [pT = 0.264054GeV eta = -1.07272 phi = -2.5979]
+*/		
+
+
+
+
+
 
 
 bool 
@@ -1569,6 +1737,15 @@ Ntuple_Controller::isKpiFake(unsigned int i) //   so far fake only means K/pi
 }	      
 
 	      
+
+std::vector<int> 
+Ntuple_Controller::triplet_has_mother(std::vector<unsigned int> vec)
+{
+  std::vector<int> out;
+  for(auto i : vec)
+    out.push_back(MCParticle_hasMother(i));
+  return out;
+}
 
 std::vector<unsigned int> 
 Ntuple_Controller::findDuplicates(std::vector<unsigned int> vec)
