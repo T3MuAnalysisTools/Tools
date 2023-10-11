@@ -983,6 +983,9 @@ class Ntuple_Controller{
 
       int ClassifyTypeI(std::vector<unsigned int> vec);
       int TypeI1_I2_pair_parent(std::vector<unsigned int> vec);
+      std::vector<unsigned int> AllParentsOfParticle(int index,std::vector<unsigned int> out = {});
+      std::vector<unsigned int> Intersection(std::vector<unsigned int> v1, std::vector<unsigned int> v2);
+
 
 
 

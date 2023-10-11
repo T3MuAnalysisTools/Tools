@@ -1694,7 +1694,6 @@ Ntuple_Controller::isDecayInFlight(unsigned int i)
     if( abs(MCParticle_pdgid(MCParticle_midx(i))) ==  PDGInfo::pi_plus   || 
 	abs(MCParticle_pdgid(MCParticle_midx(i))) ==  PDGInfo::K_plus )
       {
-	
 	std::vector<unsigned int> decay_chain;
 	for(auto j : MCParticle_childidx(MCParticle_midx(i)))   
 	  decay_chain.push_back(abs(MCParticle_pdgid(j)));
@@ -1758,4 +1757,34 @@ Ntuple_Controller::findDuplicates(std::vector<unsigned int> vec)
 	  duplicates.push_back(vec.at(i));
 
   return duplicates;
+}
+
+
+std::vector<unsigned int> 
+Ntuple_Controller::AllParentsOfParticle(int index, std::vector<unsigned int> out)
+{
+
+  if(MCParticle_hasMother(index))
+    if(MCParticle_pdgid(MCParticle_midx(index)) != 2212)
+      {
+	
+	out.push_back(MCParticle_midx(index));
+	return AllParentsOfParticle(MCParticle_midx(index), out);
+
+      }
+  return out;
+}
+
+
+std::vector<unsigned int> Ntuple_Controller::Intersection(std::vector<unsigned int> v1, std::vector<unsigned int> v2)
+{
+  std::vector<unsigned int> out(v1.size() + v2.size());
+  std::sort(v1.begin(), v1.end());
+  std::sort(v2.begin(), v2.end());
+  std::vector<unsigned int>::iterator it;
+  it=std::set_intersection (v1.begin(), v1.end(), v2.begin(), v2.end(), out.begin());
+  out.resize(it - out.begin());
+
+  return out;
+
 }
