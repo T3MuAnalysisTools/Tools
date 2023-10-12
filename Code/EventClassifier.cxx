@@ -146,12 +146,15 @@ EventClassifier::EventType(std::vector<unsigned int> vec)
   ancestors = findSameAncestors(vec);
 
   if(ancestors.size() == 3) 
-    return ClassifyTypeI(vec);
+    {
+      return ClassifyTypeI(vec);
+    }
   else 
-    return ClassifyTypeII(vec);
-  
+    {
+      return ClassifyTypeII(vec);
+    }
 
-    return type;
+  return type;
 }
 
 
@@ -172,9 +175,9 @@ EventClassifier::ClassifyTypeII(std::vector<unsigned int> vec)
   if(ancestors.size() == 1 || ancestors.size() == 2)
     {
 
-      std::vector<unsigned int> A  = Ntp->AllParentsOfParticle(vec.at(0));
-      std::vector<unsigned int> B  = Ntp->AllParentsOfParticle(vec.at(1));
-      std::vector<unsigned int> C  = Ntp->AllParentsOfParticle(vec.at(2));
+      std::vector<unsigned int> A  = AllParentsOfParticle(vec.at(0));
+      std::vector<unsigned int> B  = AllParentsOfParticle(vec.at(1));
+      std::vector<unsigned int> C  = AllParentsOfParticle(vec.at(2));
 
       if(  Intersection(A,B).size() +  Intersection(A,C).size() +  Intersection(B,C).size() != 0 ) type = 7; // at least on of the intersectio in non-zero
       if(  Intersection(A,B).size() +  Intersection(A,C).size() +  Intersection(B,C).size() == 0 ) type = 8; // at least on of the intersectio in non-zero
@@ -226,12 +229,12 @@ EventClassifier::ClassifyTypeI(std::vector<unsigned int> vec)
           if(parents.size() == 3)
 	    if(  Ntp->MCParticle_hasMother( parents.at(2))  )
 	      {
-		if(Ntp->MCParticle_midx( parents.at(2) )  == parents.at(0))      type = 2;
+		if(Ntp->MCParticle_midx( parents.at(2) )  == (int)parents.at(0))      type = 2;
 		
 		std::vector<int> parents_triplet_has_mothers = triplet_has_mother(parents);
 		if(std::count(parents_triplet_has_mothers.begin(), parents_triplet_has_mothers.end(), 1 ) == 3 )
 		  if(Ntp->MCParticle_hasMother( Ntp->MCParticle_midx(parents.at(2))) && Ntp->MCParticle_hasMother( Ntp->MCParticle_midx(parents.at(1))))
-		    if(parents.at(2) == parents.at(1) && Ntp->MCParticle_midx(Ntp->MCParticle_midx(parents.at(2))) == parents.at(0) )type = 2;
+		    if(parents.at(2) == parents.at(1) && Ntp->MCParticle_midx(Ntp->MCParticle_midx(parents.at(2))) == (int)parents.at(0) )type = 2;
 		  
 	      }
 
@@ -256,14 +259,14 @@ EventClassifier::ClassifyTypeI(std::vector<unsigned int> vec)
 	      {
 		if( Ntp->MCParticle_hasMother( Ntp->MCParticle_midx( parents.at(2) ) )  )
 		  {
-		    if(Ntp->MCParticle_midx( parents.at(2) )  == parents.at(1))      type = 1;    
+		    if(Ntp->MCParticle_midx( parents.at(2) )  == (int)parents.at(1))      type = 1;    
 		    if( Ntp->MCParticle_hasMother( Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(2) ) ) ) )
-		      if(   Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(2) ) )  ==                        parents.at(1) ||
+		      if(   Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(2) ) )  ==                       (int)parents.at(1) ||
 			    Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(2) ) )  ==  Ntp->MCParticle_midx( parents.at(1)) )    type = 1;
 		    
-		    if(Ntp->MCParticle_midx( parents.at(2) )                       == parents.at(1) && 
-		       Ntp->MCParticle_midx(Ntp->MCParticle_midx(parents.at(2) ) ) == parents.at(0) && 
-		       Ntp->MCParticle_midx(parents.at(1) )                        == parents.at(0)) type = 2;
+		    if(Ntp->MCParticle_midx( parents.at(2) )                       == (int)parents.at(1) && 
+		       Ntp->MCParticle_midx(Ntp->MCParticle_midx(parents.at(2) ) ) == (int)parents.at(0) && 
+		       Ntp->MCParticle_midx(parents.at(1) )                        == (int)parents.at(0)) type = 2;
 		        
 		  }
 
@@ -275,7 +278,7 @@ EventClassifier::ClassifyTypeI(std::vector<unsigned int> vec)
 	    if(  Ntp->MCParticle_hasMother( parents.at(1))  )
 	      if( Ntp->MCParticle_hasMother( Ntp->MCParticle_midx( parents.at(1) ) )  )
 		if( Ntp->MCParticle_hasMother( Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(1) ) ) ) )
-		  if(   Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(1) ) )  ==  parents.at(0)) type =1; 
+		  if(   Ntp->MCParticle_midx( Ntp->MCParticle_midx( parents.at(1) ) )  == (int)parents.at(0)) type =1; 
 	    
 
 	}
@@ -287,7 +290,7 @@ EventClassifier::ClassifyTypeI(std::vector<unsigned int> vec)
 	  std::sort(parents.begin(), parents.end());
           if(parents.size() == 3)
 	    if(Ntp->MCParticle_hasMother( parents.at(2)) )
-	      if(Ntp->MCParticle_midx( parents.at(2) ) ==  parents.at(1) ) type = 2;
+	      if(Ntp->MCParticle_midx( parents.at(2) ) ==  (int)parents.at(1) ) type = 2;
 	}
 
 
@@ -299,13 +302,28 @@ EventClassifier::ClassifyTypeI(std::vector<unsigned int> vec)
 }
 
 
+int
+EventClassifier::LeParentPremier(std::vector<unsigned int> vec)
+{
+
+  int index(-1);
+  std::vector<unsigned int> ancestors;
+  ancestors = findSameAncestors(vec);
+
+  if(ancestors.size() == 3)
+    {
+      if(std::count(ancestors.begin(), ancestors.end(), ancestors.front()) == (int)ancestors.size()) 
+	index = ancestors.front();
+    }
+
+  return index;
+}
 
 std::vector<unsigned int> 
 EventClassifier::findSameAncestors(std::vector<unsigned int> vec)// <--- It returns vector of size 3 with same lement - MC index of the first parent
 {
   std::vector<unsigned int> out;
   int count_protons_childs(0);
-  int count_has_mother(0);
   for(auto i  :  vec)
     if(Ntp->MCParticle_hasMother(i))
       {
@@ -313,9 +331,9 @@ EventClassifier::findSameAncestors(std::vector<unsigned int> vec)// <--- It retu
 	  {
 	    count_protons_childs++;
 	    if(  count_protons_childs == 3 && findDuplicates(vec).size()  != 0 )
-
 	      {
-		std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!  requires further classification " << std::endl;return out;  //if more that one particle is coming from proton break it;
+		//		std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!  requires further classification " << std::endl;
+		return out;  //if more that one particle is coming from proton break it;
 	      }
 
 	    if(count_protons_childs == 2 && findDuplicates(vec).size()  == 0 )

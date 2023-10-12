@@ -21,6 +21,7 @@ class EventClassifier {
   std::vector<unsigned int> findSameAncestors(std::vector<unsigned int> vec);
   std::vector<int>  triplet_has_mother(std::vector<unsigned int> vec);
 
+  int LeParentPremier(std::vector<unsigned int> vec);
   int EventType(std::vector<unsigned int> vec);
   int ClassifyTypeI(std::vector<unsigned int> vec);
   int ClassifyTypeII(std::vector<unsigned int> vec);
