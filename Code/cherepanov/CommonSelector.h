@@ -4,6 +4,9 @@
 #include "Selection.h"
 #include <vector>
 #include "TString.h"
+#include <algorithm>
+#include <set>
+#include "EventClassifier.h"
 
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
@@ -26,7 +29,7 @@ class CommonSelector : public Selection {
   virtual void  Finish();
 
   enum cuts {L1T=0,HLT,SignalCandidate, Mu1PtCut, Mu2PtCut, Mu3PtCut, MuonID,PhiVeto1, OmegaVeto1, PhiVeto2, OmegaVeto2, TriggerMatch, TauMassCut,NCuts}; 
-
+  enum DecayCategory{ThreeParticlesFrom1Origin=0, TwoParticlesFrom1Origin,  TwoParticlesFrom1OriginQED};
 
  protected:
   virtual void doEvent();  
@@ -168,6 +171,10 @@ class CommonSelector : public Selection {
   std::vector<TH1D> BDTOutputB_train8;
   std::vector<TH1D> BDTOutputC_train8;
 
+  std::vector<TH1D> BDTOutputABC_train2;
+  std::vector<TH1D> BDTOutputABC_train8;
+  std::vector<TH1D> BDTOutputABC_train11;
+
 
 
   std::vector<TH1D> TauMassResolutionRefit;
@@ -268,6 +275,13 @@ class CommonSelector : public Selection {
   std::vector<TH1D>  Muon1MVAID;
   std::vector<TH1D>  Muon2MVAID;
   std::vector<TH1D>  Muon3MVAID;
+
+  std::vector<TH1D> AncestorsSize;
+
+  std::vector<TH1D> TypeI;
+  std::vector<TH1D> TypeI_N_Fakes;
+  std::vector<TH1D> TypeI_N_DecInFlight;
+
 
 
   TMVA::Reader *readerA_train11;

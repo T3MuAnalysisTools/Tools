@@ -48,7 +48,7 @@ $InputDir="/afs/cern.ch/work/$letter/$UserID/InputTest";
 $OutputDir="/afs/cern.ch/work/$letter/$UserID/Analysis";
 $CodeDir="../Code";
 $set="ControlSample_";
-$CMSSWRel="10_6_20";
+$CMSSWRel="12_4_4";
 $maxdata=20;
 $maxmc=5;
 $maxemb=20;
@@ -61,11 +61,11 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\nThis code requires one input option. The syntax is:./todo.pl [OPTION]");
     printf("\nPlease choose from the following options:\n");
     printf("\n./todo.pl --help                                   Prints this message\n");
-    printf("\n./todo.pl --DsTauTo3MNtuple <dir>                  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
-    printf("\n                                                                        --Branch <branch> developing branch; Default: master ");
+    printf("\n./todo.pl --DsTauTo3MNtuple <dir> --Branch <run3>  Clone and compile DsToTau ntuple. Example: ./todo.pl --DsTauTo3MNtuple workdir  ");
+    printf("\n                                                    --Branch <branch> developing branch; Default: master; For Run3: Run3 ");
     printf("\n./todo.pl                                           --MuonPogNtuple <dir> MuonPogNtuple  ");
     printf("\n                                                    --ARCH  <SCRAM_ARCH>   Setup SCRAM_ARCH; Default: slc7_amd64_gcc700 ");
-    printf("\n                                                    --CMSSWRel <X_Y_Z>  Configure CMSSW_X_Y_Z; Default: CMSSW_10_6_20  \n\n");
+    printf("\n                                                    --CMSSWRel <X_Y_Z>  Configure CMSSW_X_Y_Z; Default (Run3 ): CMSSW_12_4_4; For Run2 use CMSSW_10_6_20  \n\n");
     printf("\n./todo.pl --Local <Input.txt>                      INTENTED FOR SMALL SCALE TESTS ONLY");  
     printf("\n                                                   Configure a directory to run locally. <InputPar.txt> name of file that");
     printf("\n                                                   contains input command template.");
@@ -228,6 +228,8 @@ if( $ARGV[0] eq "--DsTauTo3MNtuple"){
 
     system(sprintf("echo \"cd ../\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"git clone git\@github.com:T3MuAnalysisTools/SkimProduction.git\" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd SkimProduction; git checkout $DsdevBranch; \" >> Install_DsTNtuple_$time"));
+    system(sprintf("echo \"cd ../\" >> Install_DsTNtuple_$time"));
     system(sprintf("echo \"scram b -j 4\" >> Install_DsTNtuple_$time"));
 
     printf("\n\nInstructions:");

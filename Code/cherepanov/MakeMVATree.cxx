@@ -23,10 +23,10 @@ MakeMVATree::MakeMVATree(TString Name_, TString id_):
 {
     // This is a class constructor;
 
-  TString basedir = "";
-  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2018";
-  PUWeightFile = new TFile(basedir+"/PUWeights_Run2018.root");
-  puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
+  //  TString basedir = "";
+  //  basedir = (TString)std::getenv("workdir")+"/Code/CommonFiles/PileUp/Collisions2018";
+  //  PUWeightFile = new TFile(basedir+"/PUWeights_Run2018.root");
+  //  puWeights = (TH1D*)PUWeightFile->Get("h1_weights");
 
 
 }
@@ -121,13 +121,29 @@ void  MakeMVATree::Configure(){
   readerBvsD->AddVariable("var_dcaTrackPV",&var_dcaTrackPV);
   readerBvsD->AddVariable("var_MinMuonImpactAngle",&var_MinMuonImpactAngle);
   readerBvsD->AddVariable("var_flightLenDist",&var_flightLenDist);
-  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirMakeMVADec_14_2020/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
+  readerBvsD->BookMVA( "BDTG", "/afs/cern.ch/work/c/cherepan/Analysis/workdirHFMVAJul_10_2023/Code/CommonUtils/IterativeTrain/output_0_MCTrainA/weights/TMVAClassification_BDTG.weights.xml" );
 
 
 
 
 
-  TMVA_Tree= new TTree("tree","tree");
+
+
+
+  //  Error in <TTree::Fill>: Failed filling branch:tree.var_MinMuon_chi2LocalPosition, nbytes=-1, entry=7975
+
+  TString treeprefix;
+  if(Ntp->GetInputNtuplePath().Contains("Z2TauTau")) treeprefix="DoubleMuonLowMass";
+
+  if(Ntp->GetInputNtuplePath().Contains("DsToTau")) treeprefix="Ds";
+  if(Ntp->GetInputNtuplePath().Contains("DpToTau")) treeprefix="Dp";
+  if(Ntp->GetInputNtuplePath().Contains("BdToTau")) treeprefix="B0";
+  if(Ntp->GetInputNtuplePath().Contains("BuToTau")) treeprefix="Bp";
+
+
+ 
+  TMVA_Tree= new TTree(treeprefix+"_mva_tree","Mini tree for MVA");
+  // this is now working version
   TMVA_Tree->Branch("MC",&MC);
   TMVA_Tree->Branch("category",&category);
   TMVA_Tree->Branch("var_id", &var_id);
@@ -398,7 +414,7 @@ void  MakeMVATree::Configure(){
     if(i==L1)                 cut.at(L1)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
     if(i==Mu1PtCut)           cut.at(Mu1PtCut)=3.0;
-    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=3.0;
+    if(i==Mu2PtCut)           cut.at(Mu2PtCut)=2.0;
     if(i==Mu3PtCut)           cut.at(Mu3PtCut)=2.0;
     if(i==MuonID)             cut.at(MuonID)=1;
     if(i==TRKLWithM)          cut.at(TRKLWithM)=1;
@@ -1270,7 +1286,7 @@ void  MakeMVATree::doEvent(){
     int id(Ntp->GetMCID());
     bool hlt_pass = false;
     if(!HConfig.GetHisto(Ntp->isData(),id,t)){ Logger(Logger::Error) << "failed to find id" <<std::endl; return;}
-
+    //    std::cout<<"  id  "<< id << std::endl;
     bool HLTOk(false);
     bool L1Ok(false);
     bool DoubleMu0Fired(false);
@@ -1280,11 +1296,18 @@ void  MakeMVATree::doEvent(){
     bool randomFailed(false);
 
     random_num = rndm.Uniform();
-    
 
     for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
       TString HLT = Ntp->HLTName(iTrigger);
-      if(HLT.Contains("DoubleMu3_TkMu_DsTau3Mu_v") && Ntp->HLTDecision(iTrigger)  ) { HLTOk = true;}
+      
+      //      std::cout<<"   HLT:    "<< Ntp->HLTName(iTrigger) <<"    decision    " <<  Ntp->HLTDecision(iTrigger)  << std::endl;
+      if(HLT.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_") || HLT.Contains("HLT_DoubleMu3_Trk_Tau3mu") || HLT.Contains("HLT_DoubleMu3_TkMu_DsTau3Mu") )
+	{
+	  if( Ntp->HLTDecision(iTrigger)  ) 
+	    {
+	      HLTOk = true;
+	    }
+	}
     }
 
     for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
@@ -1310,7 +1333,7 @@ void  MakeMVATree::doEvent(){
     //    if (HLTFired && !L1Fired && !randomFailed) cout<<"wrong hlt"<<endl;
 
     pass.at(HLT) = (value.at(HLT) == cut.at(HLT));
-    pass.at(L1)  = (value.at(L1) == cut.at(L1));
+    pass.at(L1)  = true;//(value.at(L1) == cut.at(L1));
 
 
 
@@ -1433,8 +1456,8 @@ void  MakeMVATree::doEvent(){
     pass.at(Mu1PtCut) = (value.at(Mu1PtCut) > cut.at(Mu1PtCut));
     pass.at(Mu2PtCut) = (value.at(Mu2PtCut) > cut.at(Mu2PtCut));
     pass.at(Mu3PtCut) = (value.at(Mu3PtCut) > cut.at(Mu3PtCut));
-    pass.at(MuonID)  =  (value.at(MuonID)     == cut.at(MuonID));
-    pass.at(TRKLWithM) = (value.at(TRKLWithM) == cut.at(TRKLWithM));
+    pass.at(MuonID)  =  true;//(value.at(MuonID)     == cut.at(MuonID));
+    pass.at(TRKLWithM) = true;//(value.at(TRKLWithM) == cut.at(TRKLWithM));
     pass.at(TriggerMatch) = (value.at(TriggerMatch) == cut.at(TriggerMatch));
     pass.at(PhiVeto1) = true;//(value.at(PhiVeto1) < 0.98 || value.at(PhiVeto1) > 1.06 );
     pass.at(OmegaVeto1) = true;//(value.at(OmegaVeto1) < 0.742 || value.at(OmegaVeto1) > 0.822 );
@@ -1444,7 +1467,7 @@ void  MakeMVATree::doEvent(){
 
     //    if(id!=1) pass.at(ThreeMuMass) = true;
     //    else  pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_ && value.at(ThreeMuMass) < tauMinMass_)  || (value.at(ThreeMuMass)> tauMaxMass_ && value.at(ThreeMuMass) < tauMaxSideBand_));
-    pass.at(ThreeMuMass) =( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
+    pass.at(ThreeMuMass) = true;//( (value.at(ThreeMuMass) > tauMinSideBand_) &&  (value.at(ThreeMuMass) < tauMaxSideBand_));
 
     double wobs=1;
     double w; 
@@ -1483,7 +1506,7 @@ void  MakeMVATree::doEvent(){
       var_EventNumber = Ntp->EventNumber();
       var_Vertex2muTrkKF = Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx);
       //      std::cout<<"  var_Vertex2muTrkKF   ever -1 ?  " << var_Vertex2muTrkKF << std::endl;
-      std::cout<<" Event NUmber  "<< var_EventNumber << std::endl;
+      //      std::cout<<" Event NUmber  "<< var_EventNumber << std::endl;
       Vertex2muTrkKF.at(t).Fill(Ntp->Vertex_2MuonsIsoTrack_KF_Chi2(final_idx) ,w);
       unsigned int Muon_index_1=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(0);
       unsigned int Muon_index_2=Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(final_idx)).at(1);
@@ -2787,16 +2810,16 @@ void  MakeMVATree::doEvent(){
 	var_MaxD0SigBS = MaxD0BSSignificance;
 	var_MinD0SigBS = MinD0BSSignificance;
 	
-
+	
 	var_VertexMu1D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,0);
 	var_VertexMu2D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,1);
 	var_VertexMu3D0SigSVReco = Ntp->Vertex_d0sigSV_reco(final_idx,2);
-
-
+	
+	
 	var_MaxD0SigSV = MaxD0SVSignificance;
 	var_MinD0SigSV = MinD0SVSignificance;
 	
-
+	
 	var_MinMuon_chi2LocalPosition =   std::min({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
 	var_MaxMuon_chi2LocalPosition = std::max({Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_1),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_2),Ntp->Muon_combinedQuality_chi2LocalPosition(Muon_index_3)  });
 
@@ -2909,28 +2932,33 @@ void  MakeMVATree::doEvent(){
 
 void  MakeMVATree::Finish(){
   
-  if(mode == RECONSTRUCT){
-    //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
-    //    int id(Ntp->GetMCID());
-    /*    double scale(1.);
-    double scaleDsTau(0.637);
-    double scaleBpTau(0.262);
-    double scaleB0Tau(0.099);
-
-    if(Nminus0.at(0).at(1).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
-    ScaleAllHistOfType(1,scale*scaleDsTau);
+  if(mode == RECONSTRUCT)
+    {
+      //    for(unsigned int i=1; i<  Nminus0.at(0).size(); i++){
+      //    int id(Ntp->GetMCID());
+      double scale(1.);
+      double scaleDsTau(0.637);
+      double scaleBpTau(0.262);
+      double scaleB0Tau(0.099);
+      double scaleDpTau(0.032);
+      
+      if(Nminus0.at(0).at(1).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(1).Integral();
+      ScaleAllHistOfType(1,scale*scaleDsTau);
     
-    if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
-    ScaleAllHistOfType(2,scale*scaleBpTau);
+      if(Nminus0.at(0).at(2).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(2).Integral();
+      ScaleAllHistOfType(2,scale*scaleBpTau);
+      
+      if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
+      ScaleAllHistOfType(3,scale*scaleB0Tau);
 
-    if(Nminus0.at(0).at(3).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(3).Integral();
-    ScaleAllHistOfType(3,scale*scaleB0Tau);
-    */
-    //    }
-  }
+      if(Nminus0.at(0).at(4).Integral()!=0)scale = Nminus0.at(0).at(0).Integral()/Nminus0.at(0).at(4).Integral();
+      ScaleAllHistOfType(4,scale*scaleDpTau);
+      
+      //    }
+    }
   file= new TFile("TMVATreesInput.root","recreate");
   TMVA_Tree->SetDirectory(file);
-    
+  
   file->Write();
   file->Close();
     

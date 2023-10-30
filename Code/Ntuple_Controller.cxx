@@ -20,8 +20,8 @@ Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
    ,isInit(false)
 {
    // TChains the ROOTuple file
-    TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
-   // TChain *chain = new TChain("t3mtree"); //  SKIMMED
+   // TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
+  TChain *chain = new TChain("t3mtree"); //  SKIMMED
    //  Logger(Logger::Verbose) << "Loading " << RootFiles.size() << " files" << std::endl;
    for(unsigned int i=0; i<RootFiles.size(); i++){
       chain->Add(RootFiles[i]);
@@ -1065,12 +1065,13 @@ TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>
   }
 
   TVectorD eigen_val = EigenValues(M_infl);
-  for(unsigned int i=0; i<eigen_val.GetNrows(); i++){
+  for(int i=0; i<eigen_val.GetNrows(); i++){
     if(eigen_val(i) < 0){
       coef*=1.01;
       return RegulariseCovariance(M_infl,coef);
     }
   }
+
   return M_infl;
 }
 
@@ -1351,14 +1352,17 @@ void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt,
    }
 }
 
+
 void Ntuple_Controller::printMCDecayChainOfParticle(unsigned int index, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "=== Draw MC decay chain of particle ===" << std::endl;
    printMCDecayChainOfMother(index, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChainOfMother(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "Draw decay chain for mother particle at index " << par << " :" << std::endl;
    printMCDecayChain(par, 0, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChain(unsigned int par, unsigned int level, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    std::ostringstream out;
    for(unsigned int l = 0; l < level; l++) out << "    ";
@@ -1383,3 +1387,4 @@ std::string Ntuple_Controller::MCParticleToString(unsigned int par, bool printSt
    if (printPt || printEtaPhi) out << "]";
    return out.str();
 }
+
