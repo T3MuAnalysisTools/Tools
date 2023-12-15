@@ -36,39 +36,71 @@ void makeYield ()
     cat_name[2] = "ztau3mutaue_default_";
     
     TString cat_base[3];
-    cat_base[0] = "ztau3mutauh";
-    cat_base[1] = "ztau3mutaumu";
-    cat_base[2] = "ztau3mutaue";
+    cat_base[0] = "tree";
+    cat_base[1] = "tree";
+    cat_base[2] = "tree";
     
     TString cat_label[3];
-    cat_label[0] = "{h}";
-    cat_label[1] = "{#mu}";
-    cat_label[2] = "{e}";
+    cat_label[0] = "A";
+    cat_label[1] = "B";
+    cat_label[2] = "C";
     
     TString print_label[3];
-    print_label[0] = "h";
-    print_label[1] = "mu";
-    print_label[2] = "e";
+    print_label[0] = "A";
+    print_label[1] = "B";
+    print_label[2] = "C";
     
     TString hname;
     
     //BDT Cuts b
+    /*
     float BDT_Cut_b[3];
     BDT_Cut_b[0] = 0.275;
     BDT_Cut_b[1] = 0.325;
     BDT_Cut_b[2] = 0.25;
+    */
     
     //BDT Cuts a
     float BDT_Cut_a[3];
-    BDT_Cut_a[0] = 0.425;
-    BDT_Cut_a[1] = 0.45;
-    BDT_Cut_a[2] = 0.4;
+    BDT_Cut_a[0] = 0.994;
+    BDT_Cut_a[1] = 0.994;
+    BDT_Cut_a[2] = 0.991;
     
-    float signal_region_min(1.4);
-    float signal_region_max(2.1);
+    float BDT_Score_Min(0.98);
     
-    float signal_peak_region_min(1.73);
-    float signal_peak_region_max(1.82);
+    int triplet_mass_bins(40);
+    
+    float signal_region_min(1.6);
+    float signal_region_max(2.0);
+    
+    float signal_peak_region_min[3];
+    float signal_peak_region_max[3];
+    
+    float Gaussian_Sigma_From_Loose_BDT_Cut[3];
+    Gaussian_Sigma_From_Loose_BDT_Cut[0] = 0.0115631;
+    Gaussian_Sigma_From_Loose_BDT_Cut[1] = 0.016846;
+    Gaussian_Sigma_From_Loose_BDT_Cut[2] = 0.0216494;
+    
+    for(int i=0; i<3; i++){
+      hname=to_string(i+1);
+      
+      signal_peak_region_min[i]=1.77686-2*Gaussian_Sigma_From_Loose_BDT_Cut[i];
+      signal_peak_region_max[i]=1.77686+2*Gaussian_Sigma_From_Loose_BDT_Cut[i];
+      
+      cout<<"min: "<< signal_peak_region_min[i] <<" max: "<< signal_peak_region_max[i] <<endl;
+      
+      int val_1 = (int)(((signal_peak_region_min[i]-signal_region_min)/((signal_region_max-signal_region_min)/triplet_mass_bins)) + .5);
+      int val_2 = (int)(((signal_peak_region_max[i]-signal_region_min)/((signal_region_max-signal_region_min)/triplet_mass_bins)) + .5);
+      
+      signal_peak_region_min[i]=signal_region_min + val_1 * ((signal_region_max-signal_region_min)/triplet_mass_bins);
+      signal_peak_region_max[i]=signal_region_min + val_2 * ((signal_region_max-signal_region_min)/triplet_mass_bins);
+      
+      cout<<"min: "<< signal_peak_region_min[i] <<" max: "<< signal_peak_region_max[i] <<endl;
+      
+    }
+    
+    double MC_NORM17 = 30541./(500e+3)*(8580+11370)*0.1138/0.1063*1E-7;
+    double MC_NORM18 = 59828./(492e+3)*(8580+11370)*0.1138/0.1063*1E-7;
     
     //Filename and histograms
     TFile * file_tau[3];
@@ -80,43 +112,98 @@ void makeYield ()
     TH2D  * tau_T3Mu_vs_BDT_Output_Data[3];
     TH1D  * tau_T3Mu_vs_BDT_Output_Data_Projection[3];
     
-    TH2D  * tau_cut1_vs_cut2_vs_sig[3];
-    TH2D  * tau_cut1_vs_cut2_vs_limit[3];
+    TFile *TreeFile_sig = new TFile("luca_root/signal_threeMedium_weighted_16Mar2022.root","READ");
+    TFile *TreeFile_bkg = new TFile("luca_root/background_threeMedium-UNBLINDED.root","READ");
+    TTree *tree_MC[3];
+    TTree *tree_bkg[3];
     
-    TFile *TreeFile = new TFile("Combine_Tree_ztau3mutau.root","READ");
-    TTree *tree[3];
     
-    Float_t tripletMass;
-    Float_t bdt_cv;
-    Float_t weight;
-    Float_t isMC;
+    
+    
+    Double_t tripletMass;
+    Double_t bdt_cv;
+    Double_t mcweight;
+    Double_t weight;
+    Double_t isMC;
+    Double_t cand_refit_tau_massE;
+    Float_t year;
+    Double_t tau_sv_ls;
+    
+    bool categ[3];//Categ A B or C
+    
+    
     for(int i=0; i<3; i++){
       hname=to_string(i+1);
       
-      tree[i] = (TTree *) TreeFile->Get(cat_base[i]);
+      tree_MC[i] = (TTree *) TreeFile_sig->Get(cat_base[i]);
+      tree_bkg[i] = (TTree *) TreeFile_bkg->Get(cat_base[i]);
       
-      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,70,signal_region_min,signal_region_max);
-      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,70,signal_region_min,signal_region_max);
-      tau_BDT_Output_MC[i] = new TH1D("tau_BDT_Output_MC","tau_BDT_Output_MC_"+hname,100,-0.9,0.9);
-      tau_BDT_Output_Data[i] = new TH1D("tau_BDT_Output_Data","tau_BDT_Output_Data_"+hname,100,-0.9,0.9);
+      tau_T3Mu[i] = new TH1D("tau_T3Mu","tau_T3Mu_"+hname,triplet_mass_bins,signal_region_min,signal_region_max);
+      tau_T3Mu_Dat[i] = new TH1D("tau_T3Mu_Dat","tau_T3Mu_Dat_"+hname,triplet_mass_bins,signal_region_min,signal_region_max);
+      tau_BDT_Output_MC[i] = new TH1D("tau_BDT_Output_MC","tau_BDT_Output_MC_"+hname,100,BDT_Score_Min,1.0);
+      tau_BDT_Output_Data[i] = new TH1D("tau_BDT_Output_Data","tau_BDT_Output_Data_"+hname,100,BDT_Score_Min,1.0);
       
-      tree[i]->SetBranchAddress("tripletMass",&tripletMass);
-      tree[i]->SetBranchAddress("bdt_cv",&bdt_cv);
-      tree[i]->SetBranchAddress("weight",&weight);
-      tree[i]->SetBranchAddress("isMC",&isMC);
       
-      Long64_t nentries = tree[i]->GetEntries();
-      for (Long64_t j=0;j<nentries;j++) {
-        tree[i]->GetEntry(j);
+      //MC
+      tree_MC[i]->SetBranchAddress("cand_refit_tau_mass",&tripletMass);
+      tree_MC[i]->SetBranchAddress("cand_refit_tau_massE",&cand_refit_tau_massE);
+      tree_MC[i]->SetBranchAddress("bdt",&bdt_cv);
+      tree_MC[i]->SetBranchAddress("mcweight",&mcweight);
+      tree_MC[i]->SetBranchAddress("weight",&weight);
+      tree_MC[i]->SetBranchAddress("year",&year);
+      tree_MC[i]->SetBranchAddress("tau_sv_ls",&tau_sv_ls);
+      
+      
+      
+      Long64_t nentries1 = tree_MC[i]->GetEntries();
+      for (Long64_t j=0;j<nentries1;j++) {
+        tree_MC[i]->GetEntry(j);
         
-        //if(tripletMass>=signal_region_min && tripletMass<=signal_region_max && bdt_cv>=BDT_Cut_a[i]){
-        if(tripletMass>=signal_region_min && tripletMass<=signal_region_max && bdt_cv >= BDT_Cut_b[i] && bdt_cv < BDT_Cut_a[i]){
-                if(isMC>0){
-                  tau_T3Mu[i]->Fill(tripletMass,weight);
-                  tau_BDT_Output_MC[i]->Fill(bdt_cv,weight);
-                }
-                if(isMC==0 && (tripletMass<=signal_peak_region_min || tripletMass>=signal_peak_region_max) ){//blinded
-                  tau_T3Mu_Dat[i]->Fill(tripletMass);
+        //if(j<100){
+        //        cout<<"For MC: mcweight: "<< mcweight << " weight: "<< weight <<endl;
+        //}
+        
+        categ[0]=sqrt(cand_refit_tau_massE)/tripletMass >=0.000 && sqrt(cand_refit_tau_massE)/tripletMass <0.007;
+        categ[1]=sqrt(cand_refit_tau_massE)/tripletMass >=0.007 && sqrt(cand_refit_tau_massE)/tripletMass <0.012;
+        categ[2]=sqrt(cand_refit_tau_massE)/tripletMass >=0.012 && sqrt(cand_refit_tau_massE)/tripletMass <9999.;
+        
+        if(tripletMass>=signal_region_min&&tripletMass<=signal_region_max && categ[i] && year==18 && tau_sv_ls>2.0 ){
+                //MC
+                  if(bdt_cv>BDT_Cut_a[i]){
+                    tau_T3Mu[i]->Fill(tripletMass,mcweight*MC_NORM18);
+                  }
+                  tau_BDT_Output_MC[i]->Fill(bdt_cv,mcweight*MC_NORM18);
+        }
+        
+      }
+      
+      //Bkg
+      tree_bkg[i]->SetBranchAddress("cand_refit_tau_mass",&tripletMass);
+      tree_bkg[i]->SetBranchAddress("cand_refit_tau_massE",&cand_refit_tau_massE);
+      tree_bkg[i]->SetBranchAddress("bdt",&bdt_cv);
+      //tree_bkg[i]->SetBranchAddress("mcweight",&mcweight);
+      //tree_bkg[i]->SetBranchAddress("weight",&weight);
+      tree_bkg[i]->SetBranchAddress("year",&year);
+      tree_bkg[i]->SetBranchAddress("tau_sv_ls",&tau_sv_ls);
+      
+      Long64_t nentries2 = tree_bkg[i]->GetEntries();
+      for (Long64_t j=0;j<nentries2;j++) {
+        tree_bkg[i]->GetEntry(j);
+        
+        //if(j<100){
+        //        cout<<"For Data: mcweight: "<< mcweight << " weight: "<< weight <<endl;
+        //}
+        
+        categ[0]=sqrt(cand_refit_tau_massE)/tripletMass >=0.000 && sqrt(cand_refit_tau_massE)/tripletMass <0.007;
+        categ[1]=sqrt(cand_refit_tau_massE)/tripletMass >=0.007 && sqrt(cand_refit_tau_massE)/tripletMass <0.012;
+        categ[2]=sqrt(cand_refit_tau_massE)/tripletMass >=0.012 && sqrt(cand_refit_tau_massE)/tripletMass <9999.;
+        
+        if(tripletMass>=signal_region_min&&tripletMass<=signal_region_max && categ[i] && year==18 && tau_sv_ls>2.0 ){
+                //Bkg
+                if( (tripletMass<=signal_peak_region_min[i] || tripletMass>=signal_peak_region_max[i]) ){//blinded
+                  if(bdt_cv>BDT_Cut_a[i]){
+                    tau_T3Mu_Dat[i]->Fill(tripletMass);
+                  }
                   tau_BDT_Output_Data[i]->Fill(bdt_cv);
                 }
         }
@@ -150,20 +237,14 @@ void makeYield ()
     RooAddPdf * mc_pdf[3];
     RooFitResult * mc_fitresult[3];
     
-    RooExponential * Expo[3];
-    RooRealVar * lambda[3];
-    RooRealVar * ExpNorm[3];
-    RooAddPdf * exp_pdf[3];
-    RooFitResult * exp_fitresult[3];
-    
     for(int i=0; i<3; i++){
       hname=to_string(i+1);
       
-      InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, #tau_"+cat_label[i],signal_region_min,signal_region_max);
-      InvMass[i]->setRange("R1",signal_region_min,signal_peak_region_min); //background   
-      InvMass[i]->setRange("R2",signal_peak_region_max,signal_region_max); //background
-      InvMass[i]->setRange("R3",1.70,1.85); //signal range for fitting
-      InvMass[i]->setRange("R4",signal_peak_region_min,signal_peak_region_max); //signal range for yield
+      InvMass[i] = new RooRealVar("InvMass"+hname,"InvMass, Cat "+cat_label[i],signal_region_min,signal_region_max);
+      InvMass[i]->setRange("R1",signal_region_min,signal_peak_region_min[i]); //background   
+      InvMass[i]->setRange("R2",signal_peak_region_max[i],signal_region_max); //background
+      InvMass[i]->setRange("R3",1.73,1.82); //signal range for fitting
+      InvMass[i]->setRange("R4",signal_peak_region_min[i],signal_peak_region_max[i]); //signal range for yield
       
       
       //Flat fit for data
@@ -172,14 +253,6 @@ void makeYield ()
       LineNorm[i] = new RooRealVar("LineNorm"+hname, "LineNorm", 2.0,0.001,15);
       pdf[i] = new RooAddPdf("pdf"+hname, "pdf", RooArgList(*poly[i]), RooArgList(*LineNorm[i]));
       fitresult[i] = pdf[i]->fitTo(*data[i], Range("R1,R2"), Save());
-      
-      
-      //Testing Exponential Fit
-      lambda[i] = new RooRealVar("lambda"+hname,"lambda",0.1, -1.5, 1.5);
-      Expo[i] = new RooExponential("Expo"+hname, "Exponential PDF", *InvMass[i],  *lambda[i]);
-      ExpNorm[i] = new RooRealVar("ExpNorm"+hname, "ExpNorm",  2.0,0.001,15);
-      exp_pdf[i] = new RooAddPdf("exp_pdf"+hname, "exp_pdf", RooArgList(*Expo[i]), RooArgList(*ExpNorm[i]));
-      exp_fitresult[i] = exp_pdf[i]->fitTo(*data[i], Range("R1,R2"), Save());
       
       
       //Gaussian fit for MC
