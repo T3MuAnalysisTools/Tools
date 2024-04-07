@@ -123,7 +123,7 @@ void  ZTau3MuTauh_Skimmer::Configure(){
   dR_betweenTruth_NeutrinoGuess=HConfig.GetTH1D(Name+"_dR_betweenTruth_NeutrinoGuess","dR_betweenTruth_NeutrinoGuess",20,0,0.5,"#Delta R: Truth to Guessed #nu","Events");
   dR_betweenTruth_Tau=HConfig.GetTH1D(Name+"_dR_betweenTruth_Tau","dR_betweenTruth_Tau",20,0,0.5,"#Delta R: Truth to Guessed #tau","Events");
   Z_Pt=HConfig.GetTH1D(Name+"_Z_Pt","Z_Pt",50,0,70,"Z_{pT}","Events");
-  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
+  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",3,-0.5,2.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
   MET_Et=HConfig.GetTH1D(Name+"_MET_Et","MET_Et",100,0.0,100.0,"MET Et, GeV","Events");
   MET_Phi=HConfig.GetTH1D(Name+"_MET_Phi","MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");
@@ -295,10 +295,8 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     TString HLTName = Ntp->HLTName(iTrigger);
     //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
     if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
-    if(HLTName.Contains("HLT_IsoMu24") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
+    if(HLTName.Contains("HLT_PFJet25_v3") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
   }
-  
-  OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
   
   random_num = rndm.Rndm();
   
@@ -406,6 +404,54 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
   int Whether_decay_found_temp(0);
   if(tau_3mu_idx>-0.5) Whether_decay_found_temp=1;
   
+  
+  
+  
+  
+  /*
+  //Checking for alternate triggers
+  bool HasSomeMuTrigger(false);
+  bool HasIsoMuTrigger(false);
+  if(!HLTOk&&Whether_decay_found){
+  std::cout<<"No triple mu trigger for tauh category:  " << std::endl;
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLTName = Ntp->HLTName(iTrigger);
+    
+    if(Ntp->HLTDecision(iTrigger)){
+      HasSomeMuTrigger=true;
+      if(HLTName.Contains("Iso")){
+        HasIsoMuTrigger=true;
+        std::cout<<" HLTName:   "<< HLTName << std::endl;
+      }
+    }
+  }
+  
+  
+  if(HasSomeMuTrigger){
+    std::cout<<"Has some triggers: " << std::endl;
+  }
+  
+  if(HasSomeMuTrigger&&!HasIsoMuTrigger){
+    std::cout<<" Has some mu trigger but no iso " << std::endl;
+  }
+  
+  if(HasIsoMuTrigger){
+    std::cout<<" Has iso triggers " << std::endl;
+  }
+  
+  
+  }
+  
+  
+  OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
+  */
+  
+  
+  
+  
+  
+  
+  
   //std::cout<<"  No of taus from Z:  "<< TausFromZ_Count << std::endl;
   //if(!Whether_decay_found_temp&&id==210233)      Ntp->printMCDecayChainOfEvent(true,true,true,false);
   
@@ -427,6 +473,46 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
       }
     }
     Tau_h_LV = Ntp->MCParticle_p4(tau_h_idx) - Tau_nu_LV;
+    
+    
+    
+    //std::cout << "New h Event" << std::endl;
+    bool triggerCheck_os(false);
+    //Trigger matching for the fourth leg, to be used in Skimmer
+    if(signal_idx!=-1)
+    {
+              //Trigger Matching opposite side
+              if(HLT_OppositeSide)
+                {
+                  vector<TLorentzVector> trigobjTriplet;
+                  for (int i=0; i<Ntp->NTriggerObjects(); i++)
+                    {
+                      TString name = Ntp->TriggerObject_name(i);
+                      //        if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+                      
+                      TLorentzVector tmp;
+                      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+                      trigobjTriplet.push_back(tmp);
+                      
+                      double dpT = fabs(Tau_h_LV.Pt()-tmp.Pt())/Tau_h_LV.Pt();
+                      double dR = Tau_h_LV.DeltaR(tmp);
+                      
+                      if(dpT<0.1 && dR<0.05 && name.Contains("PFJet25")){
+                              //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
+                              triggerCheck_os=true;
+                      }
+                    }
+        	  
+                }
+                
+    }
+    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of HLT triggered is trigger matched to an object
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
+    if(!HLTOk && HLT_OppositeSide){
+            OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
+    }
+    
+    
   }
   
   

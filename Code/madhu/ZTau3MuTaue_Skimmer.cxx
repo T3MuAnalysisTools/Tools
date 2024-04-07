@@ -122,7 +122,7 @@ void  ZTau3MuTaue_Skimmer::Configure(){
   dR_betweenTruth_NeutrinoGuess=HConfig.GetTH1D(Name+"_dR_betweenTruth_NeutrinoGuess","dR_betweenTruth_NeutrinoGuess",20,0,0.5,"#Delta R: Truth to Guessed #nu","Events");
   dR_betweenTruth_Tau=HConfig.GetTH1D(Name+"_dR_betweenTruth_Tau","dR_betweenTruth_Tau",20,0,0.5,"#Delta R: Truth to Guessed #tau","Events");
   Z_Pt=HConfig.GetTH1D(Name+"_Z_Pt","Z_Pt",50,0,70,"Z_{pT}","Events");
-  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
+  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",3,-0.5,2.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
   MET_Et=HConfig.GetTH1D(Name+"_MET_Et","MET_Et",100,0.0,100.0,"MET Et, GeV","Events");
   MET_Phi=HConfig.GetTH1D(Name+"_MET_Phi","MET_Phi",20,-3.2,3.2,"MET #Phi ","Events");
@@ -298,12 +298,12 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
     //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
     if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
     if(HLTName.Contains("HLT_Ele32_WPTight_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
-    if(HLTName.Contains("HLT_Ele35_WPTight_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
+    if(HLTName.Contains("HLT_Ele15_WPLoose_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
   }
   
-  OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
-  
   random_num = rndm.Rndm();
+  
+  //std::cout<<"  Event:   "  << std::endl;
   
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
@@ -316,6 +316,11 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
     if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
       randomFailed = true;
     }
+    
+    //if(Ntp->L1Decision(il1)){
+    //  std::cout<<"L1 fired:   "  << L1TriggerName  << std::endl;
+    //}
+    
   }
   value.at(L1_TriggerOk)=0;  
   value.at(HLT_TriggerOk)= 0 ;
@@ -342,6 +347,8 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
       signal_idx = i_idx;
     }
   }
+  
+  TLorentzVector MC_NeutrinoSum_LV(0.,0.,0.,0.);
   
   bool WhetherSignalMC = id==210||id==210231||id==210232||id==210233;
   if(WhetherSignalMC){
@@ -405,6 +412,91 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
   int Whether_decay_found_temp(0);
   if(tau_3mu_idx>-0.5) Whether_decay_found_temp=1;
   
+  
+  
+  
+  
+  //Checking for alternate triggers
+  bool HasSomeMuTrigger(false);
+  bool HasIsoEleTrigger(false);
+  bool HasSingleEle_L1Trigger(false);
+  
+  //L1T
+  
+  if(!HLTOk&&Whether_decay_found){
+  
+  std::cout<<" Events:  "<<std::endl;
+  
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
+    
+    if(Ntp->L1Decision(il1)&&L1TriggerName.Contains("L1_SingleEG")){
+      HasSingleEle_L1Trigger=true;
+    }
+    
+  }
+  
+  //if(HasSingleEle_L1Trigger) std::cout<<" Single Ele L1 fired   "  << std::endl;
+  //if(!HasSingleEle_L1Trigger) std::cout<<" Single Ele L1 Not fired   "  << std::endl;
+  
+  //If there's no single electron L1 trigger
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
+    
+    if(Ntp->L1Decision(il1)&&!HasSingleEle_L1Trigger){
+      std::cout<<"L1 fired:   "  << L1TriggerName  << std::endl;
+    }
+    
+  }
+  
+  }
+  
+  
+  
+  /*
+  //HLT
+  if(!HLTOk&&Whether_decay_found){
+  //std::cout<<"No triple mu trigger for taue category:  " << std::endl;
+  for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
+    TString HLTName = Ntp->HLTName(iTrigger);
+    
+    if(Ntp->HLTDecision(iTrigger)){
+      HasSomeMuTrigger=true;
+      if(HLTName.Contains("Ele")){
+        HasIsoEleTrigger=true;
+        //std::cout<<" HLTName:   "<< HLTName << std::endl;
+      }
+    }
+  }
+  
+  
+  OS_vs_3mu_trigger.at(t).Fill(2,HasSomeMuTrigger,1 );
+  if(HasSomeMuTrigger){
+    OS_vs_3mu_trigger.at(t).Fill(3,HasIsoEleTrigger,1 );
+    //std::cout<<"Has some triggers: " << std::endl;
+  }
+  
+  if(HasSomeMuTrigger&&!HasIsoEleTrigger){
+    //std::cout<<" Has some mu trigger but no ele " << std::endl;
+  }
+  
+  if(HasIsoEleTrigger){
+    //std::cout<<" Has ele triggers " << std::endl;
+  }
+  
+  
+  }
+  
+  OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
+  */
+  
+  
+  
+  
+  
+  
   //std::cout<<"  No of taus from Z:  "<< TausFromZ_Count << std::endl;
   //if(Whether_decay_found&&id==210233)      Ntp->printMCDecayChainOfEvent(true,true,true,true);
   
@@ -423,7 +515,49 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
       if(abs(Ntp->MCParticle_childpdgid(tau_e_idx).at(i))==11){
         Electron_LV=Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_e_idx).at(i));
       }
+      if(abs(Ntp->MCParticle_childpdgid(tau_e_idx).at(i))==12||abs(Ntp->MCParticle_childpdgid(tau_e_idx).at(i))==14||abs(Ntp->MCParticle_childpdgid(tau_e_idx).at(i))==16){
+        MC_NeutrinoSum_LV=MC_NeutrinoSum_LV+Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_e_idx).at(i));
+      }
     }
+    
+    
+    
+    //std::cout << "New e Event" << std::endl;
+    bool triggerCheck_os(false);
+    //Trigger matching for the fourth leg, to be used in Skimmer
+    if(signal_idx!=-1)
+    {
+              //Trigger Matching opposite side
+              if(HLT_OppositeSide)
+                {
+                  vector<TLorentzVector> trigobjTriplet;
+                  for (int i=0; i<Ntp->NTriggerObjects(); i++)
+                    {
+                      TString name = Ntp->TriggerObject_name(i);
+                      //        if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+                      
+                      TLorentzVector tmp;
+                      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+                      trigobjTriplet.push_back(tmp);
+                      
+                      double dpT = fabs(Electron_LV.Pt()-tmp.Pt())/Electron_LV.Pt();
+                      double dR = Electron_LV.DeltaR(tmp);
+                      
+                      if(dpT<0.1 && dR<0.05 && name.Contains("hltEle15WPLoose") ){
+                              //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
+                              triggerCheck_os=true;
+                      }
+                    }
+        	  
+                }
+                
+    }
+    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of HLT triggered is trigger matched to an object
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
+    if(!HLTOk && HLT_OppositeSide){
+            OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
+    }
+    
   }
   
   double cut_Mu_Candidate_p=2.49;
