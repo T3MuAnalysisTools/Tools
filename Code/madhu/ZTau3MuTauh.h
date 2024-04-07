@@ -17,9 +17,12 @@
 #include "SimpleFits/FitSoftware/interface/PTObject.h"
 #include "SimpleFits/FitSoftware/interface/TPTRObject.h"
 
+#include "SimpleFits/FitSoftware/interface/Track_Functor.h"
+
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
+#include "EventClassifier.h"
 
 
 class ZTau3MuTauh : public Selection {
@@ -115,158 +118,314 @@ class ZTau3MuTauh : public Selection {
   
   //After Selection
   
-  std::vector<TH1D>   PostSelection_NumberOfTaus;
-  std::vector<TH1D>   PostSelection_Tau3MuRelativeIsolation;
-  std::vector<TH1D>   PostSelection_TauHDecayMode;
-  std::vector<TH1D>   PostSelection_VisibleDiTauMass;
-  std::vector<TH1D>   PostSelection_MTT;
-  std::vector<TH1D>   PostSelection_TripletMass;
+  //Cat A
+  std::vector<TH1D>   PostSelection_A_NumberOfTaus;
+  std::vector<TH1D>   PostSelection_A_Tau3MuRelativeIsolation;
+  std::vector<TH1D>   PostSelection_A_TauHDecayMode;
+  std::vector<TH1D>   PostSelection_A_VisibleDiTauMass;
+  std::vector<TH1D>   PostSelection_A_MTT;
+  std::vector<TH1D>   PostSelection_A_TripletMass;
   
-  std::vector<TH1D>   PostSelection_TripletPt;
-  std::vector<TH1D>   PostSelection_OppositeTauPt;
-  std::vector<TH1D>   PostSelection_TripletEta;
-  std::vector<TH1D>   PostSelection_OppositeTauEta;
+  std::vector<TH1D>   PostSelection_A_TripletPt;
+  std::vector<TH1D>   PostSelection_A_OppositeTauPt;
+  std::vector<TH1D>   PostSelection_A_TripletEta;
+  std::vector<TH1D>   PostSelection_A_OppositeTauEta;
   
-  std::vector<TH1D>   PostSelection_MET_Et;
-  std::vector<TH1D>   PostSelection_MET_Phi;
-  std::vector<TH2D>   PostSelection_MET_Phi_vs_NeutrinoPhi;
-  std::vector<TH2D>   PostSelection_MET_vs_NeutrinoPt;
+  std::vector<TH1D>   PostSelection_A_MET_Et;
+  std::vector<TH1D>   PostSelection_A_MET_Phi;
+  std::vector<TH2D>   PostSelection_A_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   PostSelection_A_MET_vs_NeutrinoPt;
   
-  std::vector<TH1D>   PostSelection_Mu1_Pt;
-  std::vector<TH1D>   PostSelection_Mu1_Eta;
-  std::vector<TH1D>   PostSelection_Mu2_Pt;
-  std::vector<TH1D>   PostSelection_Mu2_Eta;
-  std::vector<TH1D>   PostSelection_Mu3_Pt;
-  std::vector<TH1D>   PostSelection_Mu3_Eta;
-  std::vector<TH1D>   PostSelection_h_Pt;
-  std::vector<TH1D>   PostSelection_h_Eta;
+  std::vector<TH1D>   PostSelection_A_Mu1_Pt;
+  std::vector<TH1D>   PostSelection_A_Mu1_Eta;
+  std::vector<TH1D>   PostSelection_A_Mu2_Pt;
+  std::vector<TH1D>   PostSelection_A_Mu2_Eta;
+  std::vector<TH1D>   PostSelection_A_Mu3_Pt;
+  std::vector<TH1D>   PostSelection_A_Mu3_Eta;
+  std::vector<TH1D>   PostSelection_A_h_Pt;
+  std::vector<TH1D>   PostSelection_A_h_Eta;
   
-  std::vector<TH1D>   PostSelection_FLSignificance;
-  std::vector<TH1D>   PostSelection_SVPVTauDirAngle;
-  std::vector<TH1D>   PostSelection_SVPVTauDirAngle_largescale;
-  std::vector<TH1D>   PostSelection_VertexChi2KF;
-  std::vector<TH1D>   PostSelection_MinDistToIsoTrack;
-  std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass;
-  std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_cos;
-  std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_pT;
-  std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_MET;
-  std::vector<TH1D>   PostSelection_VisibleDiTauMass_Collinear;
+  std::vector<TH1D>   PostSelection_A_FLSignificance;
+  std::vector<TH1D>   PostSelection_A_SVPVTauDirAngle;
+  std::vector<TH1D>   PostSelection_A_SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   PostSelection_A_VertexChi2KF;
+  std::vector<TH1D>   PostSelection_A_MinDistToIsoTrack;
+  std::vector<TH1D>   PostSelection_A_Kinematics_MissingTrMass;
+  std::vector<TH1D>   PostSelection_A_Kinematics_MissingTrMass_cos;
+  std::vector<TH1D>   PostSelection_A_Kinematics_MissingTrMass_pT;
+  std::vector<TH1D>   PostSelection_A_Kinematics_MissingTrMass_MET;
+  std::vector<TH1D>   PostSelection_A_VisibleDiTauMass_Collinear;
   
-  std::vector<TH1D>   PostSelection_Phi_Triplet_to_Spectator_Tau;
+  std::vector<TH1D>   PostSelection_A_Phi_Triplet_to_Spectator_Tau;
   
-  std::vector<TH1D>   PostSelection_prod_size;
+  std::vector<TH1D>   PostSelection_A_prod_size;
   
-  std::vector<TH1D>   PostSelection_BDT_Output;
-  std::vector<TH1D>   PostSelection_BDT_Output_MC_Bkg;
-  std::vector<TH2D>   PostSelection_BDT_Output_Data_vs_MC_Bkg;
+  std::vector<TH1D>   PostSelection_A_BDT_Output;
+  std::vector<TH1D>   PostSelection_A_BDT_Output_MC_Bkg;
+  std::vector<TH2D>   PostSelection_A_BDT_Output_Data_vs_MC_Bkg;
   
-  std::vector<TH1D>   PostSelection_HPS_Vtx_DiTauMass;
-  std::vector<TH1D>   PostSelection_HPS_FL_Sigfig;
-  std::vector<TH1D>   PostSelection_HPS_Vtx_Tau_to_Tauh;
+  std::vector<TH1D>   PostSelection_A_HPS_Vtx_DiTauMass;
+  std::vector<TH1D>   PostSelection_A_HPS_FL_Sigfig;
+  std::vector<TH1D>   PostSelection_A_HPS_Vtx_Tau_to_Tauh;
   
   
-  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR12;
-  std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR13;
+  std::vector<TH1D>   PostSelection_A_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostSelection_A_PairMass_OppositeSign_dR13;
+  
+  //Cat B
+  std::vector<TH1D>   PostSelection_B_NumberOfTaus;
+  std::vector<TH1D>   PostSelection_B_Tau3MuRelativeIsolation;
+  std::vector<TH1D>   PostSelection_B_TauHDecayMode;
+  std::vector<TH1D>   PostSelection_B_VisibleDiTauMass;
+  std::vector<TH1D>   PostSelection_B_MTT;
+  std::vector<TH1D>   PostSelection_B_TripletMass;
+  
+  std::vector<TH1D>   PostSelection_B_TripletPt;
+  std::vector<TH1D>   PostSelection_B_OppositeTauPt;
+  std::vector<TH1D>   PostSelection_B_TripletEta;
+  std::vector<TH1D>   PostSelection_B_OppositeTauEta;
+  
+  std::vector<TH1D>   PostSelection_B_MET_Et;
+  std::vector<TH1D>   PostSelection_B_MET_Phi;
+  std::vector<TH2D>   PostSelection_B_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   PostSelection_B_MET_vs_NeutrinoPt;
+  
+  std::vector<TH1D>   PostSelection_B_Mu1_Pt;
+  std::vector<TH1D>   PostSelection_B_Mu1_Eta;
+  std::vector<TH1D>   PostSelection_B_Mu2_Pt;
+  std::vector<TH1D>   PostSelection_B_Mu2_Eta;
+  std::vector<TH1D>   PostSelection_B_Mu3_Pt;
+  std::vector<TH1D>   PostSelection_B_Mu3_Eta;
+  std::vector<TH1D>   PostSelection_B_h_Pt;
+  std::vector<TH1D>   PostSelection_B_h_Eta;
+  
+  std::vector<TH1D>   PostSelection_B_FLSignificance;
+  std::vector<TH1D>   PostSelection_B_SVPVTauDirAngle;
+  std::vector<TH1D>   PostSelection_B_SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   PostSelection_B_VertexChi2KF;
+  std::vector<TH1D>   PostSelection_B_MinDistToIsoTrack;
+  std::vector<TH1D>   PostSelection_B_Kinematics_MissingTrMass;
+  std::vector<TH1D>   PostSelection_B_Kinematics_MissingTrMass_cos;
+  std::vector<TH1D>   PostSelection_B_Kinematics_MissingTrMass_pT;
+  std::vector<TH1D>   PostSelection_B_Kinematics_MissingTrMass_MET;
+  std::vector<TH1D>   PostSelection_B_VisibleDiTauMass_Collinear;
+  
+  std::vector<TH1D>   PostSelection_B_Phi_Triplet_to_Spectator_Tau;
+  
+  std::vector<TH1D>   PostSelection_B_prod_size;
+  
+  std::vector<TH1D>   PostSelection_B_BDT_Output;
+  std::vector<TH1D>   PostSelection_B_BDT_Output_MC_Bkg;
+  std::vector<TH2D>   PostSelection_B_BDT_Output_Data_vs_MC_Bkg;
+  
+  std::vector<TH1D>   PostSelection_B_HPS_Vtx_DiTauMass;
+  std::vector<TH1D>   PostSelection_B_HPS_FL_Sigfig;
+  std::vector<TH1D>   PostSelection_B_HPS_Vtx_Tau_to_Tauh;
+  
+  
+  std::vector<TH1D>   PostSelection_B_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostSelection_B_PairMass_OppositeSign_dR13;
+
+
   
   //After BDT
   
-  std::vector<TH1D>   PostBDT_TripletMass_VeryLooseCut;
+  //Cat A
+  std::vector<TH1D>   PostBDT_A_TripletMass_VeryLooseCut;
   
-  std::vector<TH1D>   PostBDT_NumberOfTaus;
-  std::vector<TH1D>   PostBDT_Tau3MuRelativeIsolation;
-  std::vector<TH1D>   PostBDT_TauHDecayMode;
-  std::vector<TH1D>   PostBDT_VisibleDiTauMass;
-  std::vector<TH1D>   PostBDT_MTT;
-  std::vector<TH1D>   PostBDT_TripletMass;
-  std::vector<TH1D>   PostBDT_TripletMass_a;
-  std::vector<TH1D>   PostBDT_TripletMass_b;
+  std::vector<TH1D>   PostBDT_A_NumberOfTaus;
+  std::vector<TH1D>   PostBDT_A_Tau3MuRelativeIsolation;
+  std::vector<TH1D>   PostBDT_A_TauHDecayMode;
+  std::vector<TH1D>   PostBDT_A_VisibleDiTauMass;
+  std::vector<TH1D>   PostBDT_A_MTT;
+  std::vector<TH1D>   PostBDT_A_TripletMass;
+  std::vector<TH1D>   PostBDT_A_TripletMass_a;
+  std::vector<TH1D>   PostBDT_A_TripletMass_b;
   
-  std::vector<TH1D>   PostBDT_TripletPt;
-  std::vector<TH1D>   PostBDT_OppositeTauPt;
-  std::vector<TH1D>   PostBDT_TripletEta;
-  std::vector<TH1D>   PostBDT_OppositeTauEta;
+  std::vector<TH1D>   PostBDT_A_TripletPt;
+  std::vector<TH1D>   PostBDT_A_OppositeTauPt;
+  std::vector<TH1D>   PostBDT_A_TripletEta;
+  std::vector<TH1D>   PostBDT_A_OppositeTauEta;
   
-  std::vector<TH1D>   PostBDT_MET_Et;
-  std::vector<TH1D>   PostBDT_MET_Phi;
-  std::vector<TH2D>   PostBDT_MET_Phi_vs_NeutrinoPhi;
-  std::vector<TH2D>   PostBDT_MET_vs_NeutrinoPt;
+  std::vector<TH1D>   PostBDT_A_MET_Et;
+  std::vector<TH1D>   PostBDT_A_MET_Phi;
+  std::vector<TH2D>   PostBDT_A_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   PostBDT_A_MET_vs_NeutrinoPt;
   
-  std::vector<TH1D>   PostBDT_Mu1_Pt;
-  std::vector<TH1D>   PostBDT_Mu1_Eta;
-  std::vector<TH1D>   PostBDT_Mu2_Pt;
-  std::vector<TH1D>   PostBDT_Mu2_Eta;
-  std::vector<TH1D>   PostBDT_Mu3_Pt;
-  std::vector<TH1D>   PostBDT_Mu3_Eta;
-  std::vector<TH1D>   PostBDT_h_Pt;
-  std::vector<TH1D>   PostBDT_h_Eta;
+  std::vector<TH1D>   PostBDT_A_Mu1_Pt;
+  std::vector<TH1D>   PostBDT_A_Mu1_Eta;
+  std::vector<TH1D>   PostBDT_A_Mu2_Pt;
+  std::vector<TH1D>   PostBDT_A_Mu2_Eta;
+  std::vector<TH1D>   PostBDT_A_Mu3_Pt;
+  std::vector<TH1D>   PostBDT_A_Mu3_Eta;
+  std::vector<TH1D>   PostBDT_A_h_Pt;
+  std::vector<TH1D>   PostBDT_A_h_Eta;
   
-  std::vector<TH1D>   PostBDT_FLSignificance;
-  std::vector<TH1D>   PostBDT_SVPVTauDirAngle;
-  std::vector<TH1D>   PostBDT_SVPVTauDirAngle_largescale;
-  std::vector<TH1D>   PostBDT_VertexChi2KF;
-  std::vector<TH1D>   PostBDT_MinDistToIsoTrack;
-  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass;
-  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_cos;
-  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_pT;
-  std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_MET;
-  std::vector<TH1D>   PostBDT_VisibleDiTauMass_Collinear;
+  std::vector<TH1D>   PostBDT_A_FLSignificance;
+  std::vector<TH1D>   PostBDT_A_SVPVTauDirAngle;
+  std::vector<TH1D>   PostBDT_A_SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   PostBDT_A_VertexChi2KF;
+  std::vector<TH1D>   PostBDT_A_MinDistToIsoTrack;
+  std::vector<TH1D>   PostBDT_A_Kinematics_MissingTrMass;
+  std::vector<TH1D>   PostBDT_A_Kinematics_MissingTrMass_cos;
+  std::vector<TH1D>   PostBDT_A_Kinematics_MissingTrMass_pT;
+  std::vector<TH1D>   PostBDT_A_Kinematics_MissingTrMass_MET;
+  std::vector<TH1D>   PostBDT_A_VisibleDiTauMass_Collinear;
   
-  std::vector<TH1D>   PostBDT_Phi_Triplet_to_Spectator_Tau;
+  std::vector<TH1D>   PostBDT_A_Phi_Triplet_to_Spectator_Tau;
   
-  std::vector<TH1D>   PostBDT_prod_size;
+  std::vector<TH1D>   PostBDT_A_prod_size;
   
-  std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR12;
-  std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR13;
+  std::vector<TH1D>   PostBDT_A_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostBDT_A_PairMass_OppositeSign_dR13;
+  
+  //Cat B
+  std::vector<TH1D>   PostBDT_B_TripletMass_VeryLooseCut;
+  
+  std::vector<TH1D>   PostBDT_B_NumberOfTaus;
+  std::vector<TH1D>   PostBDT_B_Tau3MuRelativeIsolation;
+  std::vector<TH1D>   PostBDT_B_TauHDecayMode;
+  std::vector<TH1D>   PostBDT_B_VisibleDiTauMass;
+  std::vector<TH1D>   PostBDT_B_MTT;
+  std::vector<TH1D>   PostBDT_B_TripletMass;
+  std::vector<TH1D>   PostBDT_B_TripletMass_a;
+  std::vector<TH1D>   PostBDT_B_TripletMass_b;
+  
+  std::vector<TH1D>   PostBDT_B_TripletPt;
+  std::vector<TH1D>   PostBDT_B_OppositeTauPt;
+  std::vector<TH1D>   PostBDT_B_TripletEta;
+  std::vector<TH1D>   PostBDT_B_OppositeTauEta;
+  
+  std::vector<TH1D>   PostBDT_B_MET_Et;
+  std::vector<TH1D>   PostBDT_B_MET_Phi;
+  std::vector<TH2D>   PostBDT_B_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   PostBDT_B_MET_vs_NeutrinoPt;
+  
+  std::vector<TH1D>   PostBDT_B_Mu1_Pt;
+  std::vector<TH1D>   PostBDT_B_Mu1_Eta;
+  std::vector<TH1D>   PostBDT_B_Mu2_Pt;
+  std::vector<TH1D>   PostBDT_B_Mu2_Eta;
+  std::vector<TH1D>   PostBDT_B_Mu3_Pt;
+  std::vector<TH1D>   PostBDT_B_Mu3_Eta;
+  std::vector<TH1D>   PostBDT_B_h_Pt;
+  std::vector<TH1D>   PostBDT_B_h_Eta;
+  
+  std::vector<TH1D>   PostBDT_B_FLSignificance;
+  std::vector<TH1D>   PostBDT_B_SVPVTauDirAngle;
+  std::vector<TH1D>   PostBDT_B_SVPVTauDirAngle_largescale;
+  std::vector<TH1D>   PostBDT_B_VertexChi2KF;
+  std::vector<TH1D>   PostBDT_B_MinDistToIsoTrack;
+  std::vector<TH1D>   PostBDT_B_Kinematics_MissingTrMass;
+  std::vector<TH1D>   PostBDT_B_Kinematics_MissingTrMass_cos;
+  std::vector<TH1D>   PostBDT_B_Kinematics_MissingTrMass_pT;
+  std::vector<TH1D>   PostBDT_B_Kinematics_MissingTrMass_MET;
+  std::vector<TH1D>   PostBDT_B_VisibleDiTauMass_Collinear;
+  
+  std::vector<TH1D>   PostBDT_B_Phi_Triplet_to_Spectator_Tau;
+  
+  std::vector<TH1D>   PostBDT_B_prod_size;
+  
+  std::vector<TH1D>   PostBDT_B_PairMass_OppositeSign_dR12;
+  std::vector<TH1D>   PostBDT_B_PairMass_OppositeSign_dR13;
+
   
   //Pre BDT 2D scan
   
-  std::vector<TH2D>   BDT_2Dscan_NumberOfTaus;
-  std::vector<TH2D>   BDT_2Dscan_Tau3MuRelativeIsolation;
-  std::vector<TH2D>   BDT_2Dscan_TauHDecayMode;
-  std::vector<TH2D>   BDT_2Dscan_VisibleDiTauMass;
-  std::vector<TH2D>   BDT_2Dscan_MTT;
-  std::vector<TH2D>   BDT_2Dscan_TripletMass;
   
-  std::vector<TH2D>   BDT_2Dscan_TripletPt;
-  std::vector<TH2D>   BDT_2Dscan_OppositeTauPt;
-  std::vector<TH2D>   BDT_2Dscan_TripletEta;
-  std::vector<TH2D>   BDT_2Dscan_OppositeTauEta;
+  //Cat A
+  std::vector<TH2D>   BDT_2Dscan_A_NumberOfTaus;
+  std::vector<TH2D>   BDT_2Dscan_A_Tau3MuRelativeIsolation;
+  std::vector<TH2D>   BDT_2Dscan_A_TauHDecayMode;
+  std::vector<TH2D>   BDT_2Dscan_A_VisibleDiTauMass;
+  std::vector<TH2D>   BDT_2Dscan_A_MTT;
+  std::vector<TH2D>   BDT_2Dscan_A_TripletMass;
   
-  std::vector<TH2D>   BDT_2Dscan_MET_Et;
-  std::vector<TH2D>   BDT_2Dscan_MET_Phi;
-  std::vector<TH2D>   BDT_2Dscan_MET_Phi_vs_NeutrinoPhi;
-  std::vector<TH2D>   BDT_2Dscan_MET_vs_NeutrinoPt;
+  std::vector<TH2D>   BDT_2Dscan_A_TripletPt;
+  std::vector<TH2D>   BDT_2Dscan_A_OppositeTauPt;
+  std::vector<TH2D>   BDT_2Dscan_A_TripletEta;
+  std::vector<TH2D>   BDT_2Dscan_A_OppositeTauEta;
   
-  std::vector<TH2D>   BDT_2Dscan_Mu1_Pt;
-  std::vector<TH2D>   BDT_2Dscan_Mu1_Eta;
-  std::vector<TH2D>   BDT_2Dscan_Mu2_Pt;
-  std::vector<TH2D>   BDT_2Dscan_Mu2_Eta;
-  std::vector<TH2D>   BDT_2Dscan_Mu3_Pt;
-  std::vector<TH2D>   BDT_2Dscan_Mu3_Eta;
-  std::vector<TH2D>   BDT_2Dscan_h_Pt;
-  std::vector<TH2D>   BDT_2Dscan_h_Eta;
+  std::vector<TH2D>   BDT_2Dscan_A_MET_Et;
+  std::vector<TH2D>   BDT_2Dscan_A_MET_Phi;
+  std::vector<TH2D>   BDT_2Dscan_A_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   BDT_2Dscan_A_MET_vs_NeutrinoPt;
   
-  std::vector<TH2D>   BDT_2Dscan_FLSignificance;
-  std::vector<TH2D>   BDT_2Dscan_SVPVTauDirAngle;
-  std::vector<TH2D>   BDT_2Dscan_SVPVTauDirAngle_largescale;
-  std::vector<TH2D>   BDT_2Dscan_VertexChi2KF;
-  std::vector<TH2D>   BDT_2Dscan_MinDistToIsoTrack;
-  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass;
-  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_cos;
-  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_pT;
-  std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_MET;
-  std::vector<TH2D>   BDT_2Dscan_VisibleDiTauMass_Collinear;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu1_Pt;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu1_Eta;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu2_Pt;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu2_Eta;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu3_Pt;
+  std::vector<TH2D>   BDT_2Dscan_A_Mu3_Eta;
+  std::vector<TH2D>   BDT_2Dscan_A_h_Pt;
+  std::vector<TH2D>   BDT_2Dscan_A_h_Eta;
   
-  std::vector<TH2D>   BDT_2Dscan_Phi_Triplet_to_Spectator_Tau;
+  std::vector<TH2D>   BDT_2Dscan_A_FLSignificance;
+  std::vector<TH2D>   BDT_2Dscan_A_SVPVTauDirAngle;
+  std::vector<TH2D>   BDT_2Dscan_A_SVPVTauDirAngle_largescale;
+  std::vector<TH2D>   BDT_2Dscan_A_VertexChi2KF;
+  std::vector<TH2D>   BDT_2Dscan_A_MinDistToIsoTrack;
+  std::vector<TH2D>   BDT_2Dscan_A_Kinematics_MissingTrMass;
+  std::vector<TH2D>   BDT_2Dscan_A_Kinematics_MissingTrMass_cos;
+  std::vector<TH2D>   BDT_2Dscan_A_Kinematics_MissingTrMass_pT;
+  std::vector<TH2D>   BDT_2Dscan_A_Kinematics_MissingTrMass_MET;
+  std::vector<TH2D>   BDT_2Dscan_A_VisibleDiTauMass_Collinear;
   
-  std::vector<TH2D>   BDT_2Dscan_prod_size;
+  std::vector<TH2D>   BDT_2Dscan_A_Phi_Triplet_to_Spectator_Tau;
   
-  std::vector<TH2D>   BDT_2Dscan_PairMass_OppositeSign_dR12;
-  std::vector<TH2D>   BDT_2Dscan_PairMass_OppositeSign_dR13;
+  std::vector<TH2D>   BDT_2Dscan_A_prod_size;
   
+  std::vector<TH2D>   BDT_2Dscan_A_PairMass_OppositeSign_dR12;
+  std::vector<TH2D>   BDT_2Dscan_A_PairMass_OppositeSign_dR13;
+  
+  //Cat B
+  std::vector<TH2D>   BDT_2Dscan_B_NumberOfTaus;
+  std::vector<TH2D>   BDT_2Dscan_B_Tau3MuRelativeIsolation;
+  std::vector<TH2D>   BDT_2Dscan_B_TauHDecayMode;
+  std::vector<TH2D>   BDT_2Dscan_B_VisibleDiTauMass;
+  std::vector<TH2D>   BDT_2Dscan_B_MTT;
+  std::vector<TH2D>   BDT_2Dscan_B_TripletMass;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_TripletPt;
+  std::vector<TH2D>   BDT_2Dscan_B_OppositeTauPt;
+  std::vector<TH2D>   BDT_2Dscan_B_TripletEta;
+  std::vector<TH2D>   BDT_2Dscan_B_OppositeTauEta;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_MET_Et;
+  std::vector<TH2D>   BDT_2Dscan_B_MET_Phi;
+  std::vector<TH2D>   BDT_2Dscan_B_MET_Phi_vs_NeutrinoPhi;
+  std::vector<TH2D>   BDT_2Dscan_B_MET_vs_NeutrinoPt;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_Mu1_Pt;
+  std::vector<TH2D>   BDT_2Dscan_B_Mu1_Eta;
+  std::vector<TH2D>   BDT_2Dscan_B_Mu2_Pt;
+  std::vector<TH2D>   BDT_2Dscan_B_Mu2_Eta;
+  std::vector<TH2D>   BDT_2Dscan_B_Mu3_Pt;
+  std::vector<TH2D>   BDT_2Dscan_B_Mu3_Eta;
+  std::vector<TH2D>   BDT_2Dscan_B_h_Pt;
+  std::vector<TH2D>   BDT_2Dscan_B_h_Eta;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_FLSignificance;
+  std::vector<TH2D>   BDT_2Dscan_B_SVPVTauDirAngle;
+  std::vector<TH2D>   BDT_2Dscan_B_SVPVTauDirAngle_largescale;
+  std::vector<TH2D>   BDT_2Dscan_B_VertexChi2KF;
+  std::vector<TH2D>   BDT_2Dscan_B_MinDistToIsoTrack;
+  std::vector<TH2D>   BDT_2Dscan_B_Kinematics_MissingTrMass;
+  std::vector<TH2D>   BDT_2Dscan_B_Kinematics_MissingTrMass_cos;
+  std::vector<TH2D>   BDT_2Dscan_B_Kinematics_MissingTrMass_pT;
+  std::vector<TH2D>   BDT_2Dscan_B_Kinematics_MissingTrMass_MET;
+  std::vector<TH2D>   BDT_2Dscan_B_VisibleDiTauMass_Collinear;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_Phi_Triplet_to_Spectator_Tau;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_prod_size;
+  
+  std::vector<TH2D>   BDT_2Dscan_B_PairMass_OppositeSign_dR12;
+  std::vector<TH2D>   BDT_2Dscan_B_PairMass_OppositeSign_dR13;
+
   
   Float_t m3m;
   Float_t dataMCtype;
+  Float_t ifCommonCV;
   Float_t event_weight;
   Float_t m12;
   Float_t m13;
@@ -316,6 +475,8 @@ class ZTau3MuTauh : public Selection {
   Float_t dimu_OS2;
   
   TMVA::Reader *reader_Tauh;
+  TMVA::Reader *reader_Tauh_CV;
+  TMVA::Reader *reader_Tauh_NoCV;
   TMVA::Reader *reader_Tauh_MC_Bkg;
   
   TTree *T3MMiniTree;

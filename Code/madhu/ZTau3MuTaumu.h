@@ -292,6 +292,7 @@ class ZTau3MuTaumu : public Selection {
   
   Float_t m3m;
   Float_t dataMCtype;
+  Float_t ifCommonCV;
   Float_t event_weight;
   Float_t m12;
   Float_t m13;

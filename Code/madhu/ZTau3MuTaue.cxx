@@ -136,6 +136,7 @@ void  ZTau3MuTaue::Configure(){
   T3MCombineTree= new TTree(AnalysisName,"Mini Tree Input for combine");
 
   T3MCombineTree->Branch("tripletMass",&tripletMass);
+  T3MCombineTree->Branch("ifCommonCV",&ifCommonCV);
   T3MCombineTree->Branch("bdt_cv",&bdt_cv);
   T3MCombineTree->Branch("category",&category);
   T3MCombineTree->Branch("isMC",&isMC);
@@ -158,8 +159,8 @@ void  ZTau3MuTaue::Configure(){
     if(i==nElectrons_pT)      cut.at(nElectrons_pT)=6;
     if(i==nElectrons_eta)     cut.at(nElectrons_eta)=2.41;
     if(i==nElectrons_dR)      cut.at(nElectrons_dR)=1.8;
-    if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1;
-    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=0.5;
+    if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1.5;
+    if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=1.5;
     if(i==TriggerMatch)       cut.at(TriggerMatch)=1;
     if(i==TripletPT)          cut.at(TripletPT)=20;
     if(i==VisMass)            cut.at(VisMass)=1;
@@ -309,7 +310,7 @@ void  ZTau3MuTaue::Configure(){
   dR_betweenTruth_NeutrinoGuess=HConfig.GetTH1D(Name+"_dR_betweenTruth_NeutrinoGuess","dR_betweenTruth_NeutrinoGuess",20,0,0.5,"#Delta R: Truth to Guessed #nu","Events");
   dR_betweenTruth_Tau=HConfig.GetTH1D(Name+"_dR_betweenTruth_Tau","dR_betweenTruth_Tau",20,0,0.5,"#Delta R: Truth to Guessed #tau","Events");
   Z_Pt=HConfig.GetTH1D(Name+"_Z_Pt","Z_Pt",50,0,70,"Z_{pT}","Events");
-  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
+  OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",3,-0.5,2.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
   Selection_Cut_3mu_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Pt","Selection_Cut_3mu_Pt",100,0,50.0,"3#mu p_{T}, GeV","Events");
   Selection_Cut_3mu_Rel_Iso=HConfig.GetTH1D(Name+"_Selection_Cut_3mu_Rel_Iso","Selection_Cut_3mu_Rel_Iso",50,0,1.1,"3 #mu Relative Isolation, p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","Events");
@@ -371,8 +372,8 @@ void  ZTau3MuTaue::Configure(){
   PostSelection_MET_Phi_vs_NeutrinoPhi=HConfig.GetTH2D(Name+"_PostSelection_MET_Phi_vs_NeutrinoPhi","PostSelection_MET_Phi_vs_NeutrinoPhi",40,-3.2,3.2,40,-3.2,3.2,"MET #Phi","#nu #Phi");
   PostSelection_MET_vs_NeutrinoPt=HConfig.GetTH2D(Name+"_PostSelection_MET_vs_NeutrinoPt","PostSelection_MET_vs_NeutrinoPt",50,0,100,50,0,100,"MET Et, GeV","#nu p_{T}, GeV");
   
-  PostSelection_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostSelection_Tau3MuRelativeIsolation","PostSelection_Tau3MuRelativeIsolation",50,0.,1.1,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostSelection_Tau3MuRelativeIsolation);
-  PostSelection_ElectronSumIsolation=HConfig.GetTH1D(Name+"_PostSelection_ElectronSumIsolation","PostSelection_ElectronSumIsolation",50,0.,10,"I= neutralH + chargedH + photon Iso, GeV","Events ");InputFeatureCollection.push_back(&PostSelection_ElectronSumIsolation);
+  PostSelection_Tau3MuRelativeIsolation=HConfig.GetTH1D(Name+"_PostSelection_Tau3MuRelativeIsolation","PostSelection_Tau3MuRelativeIsolation",50,0.,2.0,"I= p_{T}(#tau)/(p_{T}(#tau) + #sum p_{T})","#Delta R < 0.4 ");InputFeatureCollection.push_back(&PostSelection_Tau3MuRelativeIsolation);
+  PostSelection_ElectronSumIsolation=HConfig.GetTH1D(Name+"_PostSelection_ElectronSumIsolation","PostSelection_ElectronSumIsolation",50,0.,2.0,"I= neutralH + chargedH + photon Iso, GeV","Events ");InputFeatureCollection.push_back(&PostSelection_ElectronSumIsolation);
   PostSelection_VisibleDiTauMass=HConfig.GetTH1D(Name+"_PostSelection_VisibleDiTauMass","PostSelection_VisibleDiTauMass",70,0.,150,"M_{#tau(e) - #tau(3#mu)}, GeV (visible mass)","Events");InputFeatureCollection.push_back(&PostSelection_VisibleDiTauMass);
   PostSelection_MTT=HConfig.GetTH1D(Name+"_PostSelection_MTT","PostSelection_MTT",70,0.,140,"M_{#tau(e) - #tau(3#mu)}, GeV (collinear approximation)","Events");
   PostSelection_TripletMass=HConfig.GetTH1D(Name+"_PostSelection_TripletMass","PostSelection_TripletMass",40,1.4,2.1,"M_{3#mu}, GeV","Events");
@@ -698,15 +699,15 @@ void  ZTau3MuTaue::doEvent(){
   bool HLT_OppositeSide(false);
   
   
+  
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLTName = Ntp->HLTName(iTrigger);
     //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
     if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
     if(HLTName.Contains("HLT_Ele32_WPTight_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
-    if(HLTName.Contains("HLT_Ele35_WPTight_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
+    if(HLTName.Contains("HLT_Ele15_WPLoose_Gsf") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
   }
   
-  OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
   
   random_num = rndm.Rndm();
   
@@ -835,6 +836,45 @@ void  ZTau3MuTaue::doEvent(){
         MC_NeutrinoSum_LV=MC_NeutrinoSum_LV+Ntp->MCParticle_p4(Ntp->MCParticle_childidx(tau_e_idx).at(i));
       }
     }
+    
+    
+    
+    std::cout << "New e Event" << std::endl;
+    bool triggerCheck_os(false);
+    //Trigger matching for the fourth leg, to be used in Skimmer
+    if(signal_idx!=-1)
+    {
+              //Trigger Matching opposite side
+              if(HLT_OppositeSide)
+                {
+                  vector<TLorentzVector> trigobjTriplet;
+                  for (int i=0; i<Ntp->NTriggerObjects(); i++)
+                    {
+                      TString name = Ntp->TriggerObject_name(i);
+                      //        if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
+                      
+                      TLorentzVector tmp;
+                      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+                      trigobjTriplet.push_back(tmp);
+                      
+                      double dpT = fabs(Electron_LV.Pt()-tmp.Pt())/Electron_LV.Pt();
+                      double dR = Electron_LV.DeltaR(tmp);
+                      
+                      if(dpT<0.1 && dR<0.05 && name.Contains("hltEle15WPLoose") ){
+                              cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
+                              triggerCheck_os=true;
+                      }
+                    }
+        	  
+                }
+                
+    }
+    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of HLT triggered is trigger matched to an object
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
+    if(!HLTOk && HLT_OppositeSide){
+            OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
+    }
+    
   }
   
   double cut_Mu_Candidate_p=2.49;
@@ -1081,7 +1121,7 @@ void  ZTau3MuTaue::doEvent(){
     {
       unsigned int electron_idx = Electrons_OppositeHemisphere.at(0);
       //value.at(ElectronIsolation)=  Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx) + Ntp->Electron_puppiChargedHadronIso(electron_idx);
-      value.at(ElectronIsolation)=  Ntp->Electron_relativeIsolation(electron_idx);
+      value.at(ElectronIsolation)=  (Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx))/Ntp->Electron_P4(electron_idx).Pt();
       
       Electron_Isolation_relative.at(t).Fill(Ntp->Electron_relativeIsolation(electron_idx),1 );
       Electron_Isolation_trackIso.at(t).Fill(Ntp->Electron_trackIso(electron_idx),1 );
@@ -1109,9 +1149,9 @@ void  ZTau3MuTaue::doEvent(){
     TLorentzVector TripletmuLV = Ntp->Muon_P4(index_mu_1) +  Ntp->Muon_P4(index_mu_2) +  Ntp->Muon_P4(index_mu_3);
     
     
-    value.at(Tau3MuIsolation) = TripletmuLV.Pt()/  (TripletmuLV.Pt()  + Ntp->Muon_RelIso(index_mu_1) +
-					                          Ntp->Muon_RelIso(index_mu_2) +
-					                          Ntp->Muon_RelIso(index_mu_3) );
+    value.at(Tau3MuIsolation) = (   Ntp->Muon_RelIso(index_mu_1) +
+                                    Ntp->Muon_RelIso(index_mu_2) +
+                                    Ntp->Muon_RelIso(index_mu_3) )/TripletmuLV.Pt();
                                                                                                 
     Selection_Cut_3mu_Rel_Iso.at(t).Fill(value.at(Tau3MuIsolation));
     
@@ -1176,7 +1216,7 @@ void  ZTau3MuTaue::doEvent(){
     
     value.at(VisMass) = central_VisMass;
     
-    pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) > cut.at(Tau3MuIsolation));
+    pass.at(Tau3MuIsolation) = (value.at(Tau3MuIsolation) < cut.at(Tau3MuIsolation));
     pass.at(VisMass)         = (value.at(VisMass) > 35  && value.at(VisMass) < 90);
     
     
@@ -1210,11 +1250,10 @@ void  ZTau3MuTaue::doEvent(){
     unsigned int electron_idx = Electrons_OppositeHemisphere_OppositeCharge[0][1];
     
     double val_Phi_To_Opposite_Side=Electrons_OppositeHemisphere_OppositeCharge[0][0];
-    PostSelection_Phi_Triplet_to_Spectator_Tau.at(t).Fill(Electrons_OppositeHemisphere_OppositeCharge[0][0]);
     
     TLorentzVector ElectronLV = Ntp->Electron_P4(electron_idx);
     
-    PostSelection_prod_size.at(t).Fill(Electrons_OppositeHemisphere_OppositeCharge.size());
+
 
 
     unsigned int muon_1_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
@@ -1237,15 +1276,6 @@ void  ZTau3MuTaue::doEvent(){
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1)) + 
       Ntp->Muon_P4(Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2));
     
-    PostSelection_Mu1_Pt.at(t).Fill(Ntp->Muon_P4(muon_1_idx).Pt(),1 );
-    PostSelection_Mu1_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_1_idx).Eta()),1 );
-    PostSelection_Mu2_Pt.at(t).Fill(Ntp->Muon_P4(muon_2_idx).Pt(),1 );
-    PostSelection_Mu2_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_2_idx).Eta()),1 );
-    PostSelection_Mu3_Pt.at(t).Fill(Ntp->Muon_P4(muon_3_idx).Pt(),1 );
-    PostSelection_Mu3_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_3_idx).Eta()),1 );
-    
-    PostSelection_El_Pt.at(t).Fill(highest_pT,1 );
-    PostSelection_El_Eta.at(t).Fill(lowest_eta,1 );
     
     //Primary Vertex
     double val_FLSignificance=Ntp->FlightLength_significance(Ntp->Vertex_HighestPt_PrimaryVertex(),Ntp->Vertex_HighestPt_PrimaryVertex_Covariance(),
@@ -1265,20 +1295,11 @@ void  ZTau3MuTaue::doEvent(){
       }
     }// end of j for loop
     
-    PostSelection_FLSignificance.at(t).Fill(val_FLSignificance);
-    PostSelection_VertexChi2KF.at(t).Fill(val_ThreeMuVertexChi2KF);
-    PostSelection_SVPVTauDirAngle.at(t).Fill(val_SVPVTauDirAngle);
-    PostSelection_SVPVTauDirAngle_largescale.at(t).Fill(val_SVPVTauDirAngle);
-    PostSelection_MinDistToIsoTrack.at(t).Fill(val_MinDistToIsoTrack);
-    
+
     // Missing transverse mass
-    PostSelection_Kinematics_MissingTrMass.at(t).Fill(sqrt(   2*Ntp->METEt()*TMath::Sqrt(ElectronLV.Px()*ElectronLV.Px()+ElectronLV.Py()*ElectronLV.Py())*(1-TMath::Cos(Ntp->METPhi()-(ElectronLV.Vect()).Phi()))   )); //use definition transverse mass for 2 particles
-    PostSelection_Kinematics_MissingTrMass_cos.at(t).Fill(  val_DeltaPhi   );
-    
     TVector3 Neutrino_Vect(Ntp->METEt()*TMath::Cos(Ntp->METPhi()),Ntp->METEt()*TMath::Sin(Ntp->METPhi()),Ntp->METEt()/TMath::Tan(ElectronLV.Theta()));
     TLorentzVector Neutrino_LV(Neutrino_Vect,Neutrino_Vect.Mag());
     double val_DiTauMass_Collinear=(ElectronLV + Tau3muLV + Neutrino_LV).M();
-    PostSelection_VisibleDiTauMass_Collinear.at(t).Fill(val_DiTauMass_Collinear, 1);
     
     std::vector<unsigned int> exclude_cuts;
     exclude_cuts.push_back(VisMass);
@@ -1305,28 +1326,11 @@ void  ZTau3MuTaue::doEvent(){
 
 
 
-    if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
-
-      PostSelection_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
-      PostSelection_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
-
-
-    }else{
-
-      PostSelection_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
-      PostSelection_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
-
-    }
     //////
     ///////////////////////////
     
     double val_MET_Et=Ntp->METEt();
     double val_MET_Phi=Ntp->METPhi();
-    
-    PostSelection_MET_Et.at(t).Fill(val_MET_Et );
-    PostSelection_MET_Phi.at(t).Fill( val_MET_Phi );
-    PostSelection_MET_Phi_vs_NeutrinoPhi.at(t).Fill( Ntp->METPhi(),(MC_NeutrinoSum_LV.Vect()).Phi() );
-    PostSelection_MET_vs_NeutrinoPt.at(t).Fill( Ntp->METEt(),MC_NeutrinoSum_LV.Pt() );
 
 
 
@@ -1346,28 +1350,19 @@ void  ZTau3MuTaue::doEvent(){
     float RelativeIsolationMu1 = Ntp->Muon_RelIso(muon_1_idx);
     float RelativeIsolationMu2 = Ntp->Muon_RelIso(muon_2_idx);
     float RelativeIsolationMu3 = Ntp->Muon_RelIso(muon_3_idx);
+
+
+
+
+    double val_Tau3MuIsolation=(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3)/Tau3muLV.Pt();
+    double val_ElectronSumIsolation=(Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx))/Ntp->Electron_P4(electron_idx).Pt();
     
-    PostSelection_TripletPt.at(t).Fill(Tau3muLV.Pt(),1);
-    PostSelection_TripletEta.at(t).Fill(Tau3muLV.Eta(),1);
-
-
-
-
-    double val_ElectronSumIsolation=Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_trackIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx);
-    
-    PostSelection_Tau3MuRelativeIsolation.at(t).Fill(    Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt()),1);
-    PostSelection_ElectronSumIsolation.at(t).Fill( val_ElectronSumIsolation   ,1);
-    //    ElectronSumIsolation.at(t).Fill( Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_puppiChargedHadronIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx)   ,1);
-
-    PostSelection_VisibleDiTauMass.at(t).Fill((Tau3muLV + ElectronLV).M(), 1);
-    PostSelection_MTT.at(t).Fill( (Tau3muLV + ElectronLV  + Neutrino_LV).M(), 1);
     
 
 
     bool PlotMCOnly(false);  // and blind for data
     if(id!=1) PlotMCOnly = true;
     if(id==1 && (  (TauRefitLV.M() > 1.1 && TauRefitLV.M() < 1.715) or (TauRefitLV.M() > 1.8375 && TauRefitLV.M() < 2.2)) ) PlotMCOnly=true;
-    if(PlotMCOnly)  PostSelection_TripletMass.at(t).Fill(TauRefitLV.M(),1);
 
 
 
@@ -1472,12 +1467,14 @@ void  ZTau3MuTaue::doEvent(){
         else if(dataMCtype == 210232){event_weight =4.93e-04;}
         else if(dataMCtype == 210231){event_weight =4.87e-04;}
         
+        ifCommonCV = 0; // 0 = no CV; 1 = CV
+        
         m12 = (MuonOS+MuonSS1).M();
         m13 = (MuonOS+MuonSS2).M();
         
         var_TripletPT=Tau3muLV.Pt();
         var_TripletEta=Tau3muLV.Eta();
-        var_Tau3MuIsolation=Tau3muLV.Pt()/(RelativeIsolationMu1 + RelativeIsolationMu2 + RelativeIsolationMu3 + Tau3muLV.Pt());
+        var_Tau3MuIsolation=val_Tau3MuIsolation;
         var_mu1_pT=Muon1LV.Pt();
         var_mu2_pT=Muon2LV.Pt();
         var_mu3_pT=Muon3LV.Pt();
@@ -1506,13 +1503,96 @@ void  ZTau3MuTaue::doEvent(){
         
         //Evaluate BDT
         BDT_Evaluated = reader_Taue->EvaluateMVA("BDT");
-        PostSelection_BDT_Output.at(t).Fill(BDT_Evaluated);
         
         //Evaluate BDT with MC bkg
         BDT_Evaluated_MC_Bkg = reader_Taue_MC_Bkg->EvaluateMVA("BDT");
-        PostSelection_BDT_Output_MC_Bkg.at(t).Fill(BDT_Evaluated_MC_Bkg);
         
-        PostSelection_BDT_Output_Data_vs_MC_Bkg.at(t).Fill(BDT_Evaluated,BDT_Evaluated_MC_Bkg);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    //Post Selection Plots
+    
+    
+    PostSelection_Phi_Triplet_to_Spectator_Tau.at(t).Fill(Electrons_OppositeHemisphere_OppositeCharge[0][0]);
+    PostSelection_prod_size.at(t).Fill(Electrons_OppositeHemisphere_OppositeCharge.size());
+
+    PostSelection_Mu1_Pt.at(t).Fill(Ntp->Muon_P4(muon_1_idx).Pt(),1 );
+    PostSelection_Mu1_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_1_idx).Eta()),1 );
+    PostSelection_Mu2_Pt.at(t).Fill(Ntp->Muon_P4(muon_2_idx).Pt(),1 );
+    PostSelection_Mu2_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_2_idx).Eta()),1 );
+    PostSelection_Mu3_Pt.at(t).Fill(Ntp->Muon_P4(muon_3_idx).Pt(),1 );
+    PostSelection_Mu3_Eta.at(t).Fill(abs(Ntp->Muon_P4(muon_3_idx).Eta()),1 );
+    
+    PostSelection_El_Pt.at(t).Fill(highest_pT,1 );
+    PostSelection_El_Eta.at(t).Fill(lowest_eta,1 );
+
+    PostSelection_FLSignificance.at(t).Fill(val_FLSignificance);
+    PostSelection_VertexChi2KF.at(t).Fill(val_ThreeMuVertexChi2KF);
+    PostSelection_SVPVTauDirAngle.at(t).Fill(val_SVPVTauDirAngle);
+    PostSelection_SVPVTauDirAngle_largescale.at(t).Fill(val_SVPVTauDirAngle);
+    PostSelection_MinDistToIsoTrack.at(t).Fill(val_MinDistToIsoTrack);
+    
+    // Missing transverse mass
+    PostSelection_Kinematics_MissingTrMass.at(t).Fill(sqrt(   2*Ntp->METEt()*TMath::Sqrt(ElectronLV.Px()*ElectronLV.Px()+ElectronLV.Py()*ElectronLV.Py())*(1-TMath::Cos(Ntp->METPhi()-(ElectronLV.Vect()).Phi()))   )); //use definition transverse mass for 2 particles
+    PostSelection_Kinematics_MissingTrMass_cos.at(t).Fill(  val_DeltaPhi   );
+
+    PostSelection_VisibleDiTauMass_Collinear.at(t).Fill(val_DiTauMass_Collinear, 1);
+
+    if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
+
+      PostSelection_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+      PostSelection_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+
+
+    }else{
+
+      PostSelection_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+      PostSelection_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+
+    }
+
+
+    PostSelection_MET_Et.at(t).Fill(val_MET_Et );
+    PostSelection_MET_Phi.at(t).Fill( val_MET_Phi );
+    PostSelection_MET_Phi_vs_NeutrinoPhi.at(t).Fill( Ntp->METPhi(),(MC_NeutrinoSum_LV.Vect()).Phi() );
+    PostSelection_MET_vs_NeutrinoPt.at(t).Fill( Ntp->METEt(),MC_NeutrinoSum_LV.Pt() );
+
+    PostSelection_TripletPt.at(t).Fill(Tau3muLV.Pt(),1);
+    PostSelection_TripletEta.at(t).Fill(Tau3muLV.Eta(),1);
+
+
+
+    PostSelection_Tau3MuRelativeIsolation.at(t).Fill( val_Tau3MuIsolation,1);
+    PostSelection_ElectronSumIsolation.at(t).Fill( val_ElectronSumIsolation   ,1);
+    //    ElectronSumIsolation.at(t).Fill( Ntp->Electron_puppiPhotonIso(electron_idx)  + Ntp->Electron_puppiChargedHadronIso(electron_idx)  + Ntp->Electron_puppiNeutralHadronIso(electron_idx)   ,1);
+
+    PostSelection_VisibleDiTauMass.at(t).Fill((Tau3muLV + ElectronLV).M(), 1);
+    PostSelection_MTT.at(t).Fill( (Tau3muLV + ElectronLV  + Neutrino_LV).M(), 1);
+
+
+    if(PlotMCOnly)  PostSelection_TripletMass.at(t).Fill(TauRefitLV.M(),1);
+    
+    PostSelection_BDT_Output.at(t).Fill(BDT_Evaluated);
+    PostSelection_BDT_Output_MC_Bkg.at(t).Fill(BDT_Evaluated_MC_Bkg);
+    PostSelection_BDT_Output_Data_vs_MC_Bkg.at(t).Fill(BDT_Evaluated,BDT_Evaluated_MC_Bkg);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
