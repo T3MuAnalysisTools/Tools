@@ -4,7 +4,7 @@
 import sys    # exit
 import time   # time accounting
 import getopt # command line parser
-from TrainConfigs_ZTT import configuration,selection
+from TrainConfigs_ZTT_test import configuration,selection
 
 DEFAULT_INFNAME  = "MVA_Mini_Tree_ZTT.root"
 
@@ -38,14 +38,27 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ",category_wagon
             prefix = ""
-            outfname = "Trainin_N_"+str(count)+"_"+category_wagon+prefix+".root"
+
+            outfname = "category_"+str(count)+"_"+category_wagon+prefix+".root"
             outputFile = TFile(outfname , 'RECREATE' )
 
 
             factory = TMVA.Factory( "TMVAClassification", outputFile,
                                     "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" )
 
-            dataloader = TMVA.DataLoader("Trainin_N_"+str(count)+"_"+category_wagon + prefix)
+            dataloader = TMVA.DataLoader("output"+"_"+str(count)+"_"+category_wagon + prefix)
+
+
+
+
+
+#            outfname = "Training_N_"+str(count)+"_"+category_wagon+prefix+".root"
+#            outputFile = TFile(outfname , 'RECREATE' )
+#            factory = TMVA.Factory( "TMVAClassification", outputFile,
+#                                    "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" )
+#            dataloader = TMVA.DataLoader("Trainin_N_"+str(count)+"_"+category_wagon + prefix)
+ 
+
             factory.SetVerbose( True  )
 
 
@@ -87,6 +100,24 @@ def doTrain(configs,training_cuts,mlist,infname):
                 background       = input.Get("DoubleMuonLowMass_ztau3mutauh")
                 dataloader.AddSignalTree    ( signal_ztt_tau3mu,     signalWeight          );
                 dataloader.AddBackgroundTree( background,            backgroundWeight      );
+                
+                
+            if category_wagon=="ZTT_tau_NoCV_3mu":
+                categoryCut=''
+                cuts  = cuts + 'dataMCtype      == 210233  && ifCommonCV == 0   '
+                signal_ztt_tau3mu= input.Get("z2tautau_ztau3mutauh_A")
+                background       = input.Get("DoubleMuonLowMass_ztau3mutauh_A")
+                dataloader.AddSignalTree    ( signal_ztt_tau3mu,     signalWeight          );
+                dataloader.AddBackgroundTree( background,            backgroundWeight      );
+                
+                
+            if category_wagon=="ZTT_tau_CV_3mu":
+                categoryCut=''
+                cuts  = cuts + 'dataMCtype      == 210233  && ifCommonCV == 1   '
+                signal_ztt_tau3mu= input.Get("z2tautau_ztau3mutauh_B")
+                background       = input.Get("DoubleMuonLowMass_ztau3mutauh_B")
+                dataloader.AddSignalTree    ( signal_ztt_tau3mu,     signalWeight          );
+                dataloader.AddBackgroundTree( background,            backgroundWeight      );
 
 
             if category_wagon=="ZTT_e3mu":
@@ -94,7 +125,7 @@ def doTrain(configs,training_cuts,mlist,infname):
                 cuts  = cuts + 'dataMCtype      == 210231   '
                 signal_ztt_e3mu= input.Get("z2tautau_ztau3mutaue")
                 background     = input.Get("DoubleMuonLowMass_ztau3mutaue")
-                dataloader.AddSignalTree    ( signal_ztt_mu3mu,     signalWeight          );
+                dataloader.AddSignalTree    ( signal_ztt_e3mu,      signalWeight          );
                 dataloader.AddBackgroundTree( background,           backgroundWeight      );
 
 
@@ -112,11 +143,37 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             if "BDTG" in mlist:
                 factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDTG",
-                                    "!H:!V:NTrees=1000:MinNodeSize=1.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3" )                        
+                                    "!H:!V:NTrees=1000:MinNodeSize=1.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3" )       
+                                    
+                                    
+                                                     
 
-            if "BDT" in mlist:
-                factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                    "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=20" )
+            if category_wagon=="ZTT_mu3mu":
+                    if "BDT" in mlist:
+                        factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
+                                            "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            
+            if category_wagon=="ZTT_tau3mu":
+                    if "BDT" in mlist:
+                        factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
+                                            "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            
+            if category_wagon=="ZTT_tau_NoCV_3mu":
+                    if "BDT" in mlist:
+                        factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
+                                            "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            
+            if category_wagon=="ZTT_tau_CV_3mu":
+                    if "BDT" in mlist:
+                        factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
+                                            "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            
+            if category_wagon=="ZTT_e3mu":
+                    if "BDT" in mlist:
+                        factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
+                                            "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+
+
 
 
             if "Likelihood" in mlist:
