@@ -839,7 +839,7 @@ void  ZTau3MuTaue::doEvent(){
     
     
     
-    std::cout << "New e Event" << std::endl;
+    //std::cout << "New e Event" << std::endl;
     bool triggerCheck_os(false);
     //Trigger matching for the fourth leg, to be used in Skimmer
     if(signal_idx!=-1)
@@ -861,7 +861,7 @@ void  ZTau3MuTaue::doEvent(){
                       double dR = Electron_LV.DeltaR(tmp);
                       
                       if(dpT<0.1 && dR<0.05 && name.Contains("hltEle15WPLoose") ){
-                              cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
+                              //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
                               triggerCheck_os=true;
                       }
                     }
@@ -1516,6 +1516,56 @@ void  ZTau3MuTaue::doEvent(){
         
         
         
+        
+        
+        /*
+        //Category A(ZTT)
+        if(TauMassRes < tauMassResCutLow ){
+              category=0;
+        }
+
+        //Category B(ZTT)
+        if(TauMassRes >= tauMassResCutLow && TauMassRes < tauMassResCutHigh){
+              category =1 ;
+        }
+
+        //Category C(ZTT)
+        if(TauMassRes >= tauMassResCutHigh){
+              category = 2;
+        }
+        */
+        category=0;
+        
+        
+        
+        
+        double PhiVeto   = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2;
+        double OmegaVeto = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
+        double EtaPVeto = fabs(M_osss1-0.95778)< fabs(M_osss2-0.95778) ? M_osss1 : M_osss2;
+        
+        bool Whether_PhiVeto = (fabs(PhiVeto-PDG_Var::Phi_mass()) > 5*PDG_Var::Phi_width());
+        bool Whether_OmegaVeto = (fabs(OmegaVeto-PDG_Var::Omega_mass())> 5*PDG_Var::Omega_width());
+        bool Whether_EtaPVeto = (fabs(OmegaVeto-PDG_Var::Omega_mass())> 5*0.00023);
+        
+        //For combine
+        if(Whether_PhiVeto && Whether_OmegaVeto && Whether_EtaPVeto){
+        
+        tripletMass=TauRefitLV.M();
+        //OutputTree=dataMCtype;
+        bdt_cv=BDT_Evaluated;
+        isMC=  (id==1)?0:6; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
+        weight=0.0000293;
+        if(isMC==0) weight=1.0;
+        dimu_OS1=m12;
+        dimu_OS2=m13;
+        T3MCombineTree->Fill();
+        
+        }
+        
+        
+        
+        
+        
     
     
     //Post Selection Plots
@@ -1596,49 +1646,7 @@ void  ZTau3MuTaue::doEvent(){
         
         
         
-        /*
-        //Category A(ZTT)
-        if(TauMassRes < tauMassResCutLow ){
-              category=0;
-        }
 
-        //Category B(ZTT)
-        if(TauMassRes >= tauMassResCutLow && TauMassRes < tauMassResCutHigh){
-              category =1 ;
-        }
-
-        //Category C(ZTT)
-        if(TauMassRes >= tauMassResCutHigh){
-              category = 2;
-        }
-        */
-        category=0;
-        
-        
-        
-        
-        double PhiVeto   = fabs(M_osss1-PDG_Var::Phi_mass())  < fabs(M_osss2-PDG_Var::Phi_mass()) ? M_osss1 : M_osss2;
-        double OmegaVeto = fabs(M_osss1-PDG_Var::Omega_mass())< fabs(M_osss2-PDG_Var::Omega_mass()) ? M_osss1 : M_osss2;
-        double EtaPVeto = fabs(M_osss1-0.95778)< fabs(M_osss2-0.95778) ? M_osss1 : M_osss2;
-        
-        bool Whether_PhiVeto = (fabs(PhiVeto-PDG_Var::Phi_mass()) > 5*PDG_Var::Phi_width());
-        bool Whether_OmegaVeto = (fabs(OmegaVeto-PDG_Var::Omega_mass())> 5*PDG_Var::Omega_width());
-        bool Whether_EtaPVeto = (fabs(OmegaVeto-PDG_Var::Omega_mass())> 5*0.00023);
-        
-        //For combine
-        if(Whether_PhiVeto && Whether_OmegaVeto && Whether_EtaPVeto){
-        
-        tripletMass=TauRefitLV.M();
-        //OutputTree=dataMCtype;
-        bdt_cv=BDT_Evaluated;
-        isMC=  (id==1)?0:6; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
-        weight=0.0000293;
-        if(isMC==0) weight=1.0;
-        dimu_OS1=m12;
-        dimu_OS2=m13;
-        T3MCombineTree->Fill();
-        
-        }
         
         
         

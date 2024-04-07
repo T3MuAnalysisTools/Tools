@@ -461,7 +461,8 @@ class ZTau3MuTauh : public Selection {
   Float_t var_HPS_FL_Sig;
   Float_t var_HPS_Inv_Mass_Z_Tau3mu_SpecTau;
   
-  Float_t BDT_Evaluated;
+  Float_t BDT_Evaluated_A;
+  Float_t BDT_Evaluated_B;
   
   Float_t BDT_Evaluated_MC_Bkg;
   
@@ -479,10 +480,12 @@ class ZTau3MuTauh : public Selection {
   TMVA::Reader *reader_Tauh_NoCV;
   TMVA::Reader *reader_Tauh_MC_Bkg;
   
-  TTree *T3MMiniTree;
+  TTree *T3MMiniTree_A;
+  TTree *T3MMiniTree_B;
   TFile *T3MFMiniTree;
   
-  TTree *T3MCombineTree;
+  TTree *T3MCombineTree_A;
+  TTree *T3MCombineTree_B;
   TFile *T3MFCombineTree;
   
   TRandom rndm;
