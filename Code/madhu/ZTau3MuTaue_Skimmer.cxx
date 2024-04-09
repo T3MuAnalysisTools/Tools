@@ -422,7 +422,7 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
   bool HasSingleEle_L1Trigger(false);
   
   //L1T
-  
+  /*
   if(!HLTOk&&Whether_decay_found){
   
   std::cout<<" Events:  "<<std::endl;
@@ -432,7 +432,7 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
     //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
     
     if(Ntp->L1Decision(il1)&&L1TriggerName.Contains("L1_SingleEG")){
-      HasSingleEle_L1Trigger=true;
+      //HasSingleEle_L1Trigger=true;
     }
     
   }
@@ -447,6 +447,22 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
     
     if(Ntp->L1Decision(il1)&&!HasSingleEle_L1Trigger){
       std::cout<<"L1 fired:   "  << L1TriggerName  << std::endl;
+    }
+    
+  }
+  
+  }
+  */
+  
+  if(!HLTOk&&Whether_decay_found){
+  
+  std::cout<<" Events:  "<<std::endl;
+  
+  for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
+    TString L1TriggerName = Ntp->L1Name(il1);
+    
+    if(Ntp->L1Decision(il1)){
+      //std::cout<<"L1 fired:   "  << L1TriggerName  << std::endl;
     }
     
   }
@@ -528,8 +544,9 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
     if(signal_idx!=-1)
     {
               //Trigger Matching opposite side
-              if(HLT_OppositeSide)
+              if(fabs(Electron_LV.Eta())<2.41&&!HLTOk&&Electron_LV.Pt()>4.9)
                 {
+                  //std::cout << "tau e: No 3mu trig, yes OS trig" << std::endl;
                   vector<TLorentzVector> trigobjTriplet;
                   for (int i=0; i<Ntp->NTriggerObjects(); i++)
                     {
@@ -543,18 +560,20 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
                       double dpT = fabs(Electron_LV.Pt()-tmp.Pt())/Electron_LV.Pt();
                       double dR = Electron_LV.DeltaR(tmp);
                       
-                      if(dpT<0.1 && dR<0.05 && name.Contains("hltEle15WPLoose") ){
+                      if(dpT<0.1 && dR<0.05 && (name.Contains("hltEle15WPLoose1EcalIsoFilter")||name.Contains("hltEle5WPTightEcalIsoFilter")||name.Contains("hltL1sSingleEGor")||name.Contains("hltEle8EtFilter")) ){
                               //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
                               triggerCheck_os=true;
+                              continue;
                       }
                     }
         	  
                 }
                 
     }
-    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of HLT triggered is trigger matched to an object
-    OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
-    if(!HLTOk && HLT_OppositeSide){
+    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of reconstructable object is trigger matched to an object
+    
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk,(fabs(Electron_LV.Eta())<2.41&&Electron_LV.Pt()>4.9),1 );
+    if(fabs(Electron_LV.Eta())<2.41&&!HLTOk&&Electron_LV.Pt()>4.9){
             OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
     }
     

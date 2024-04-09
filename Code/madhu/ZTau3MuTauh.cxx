@@ -1584,6 +1584,8 @@ void  ZTau3MuTauh::doEvent(){
       if(pass.at(HLT_TriggerOk))
         {
           vector<TLorentzVector> trigobjTriplet;
+          vector<TString> trigobjNames;
+          bool Whether_Tau_Matched(false);
           for (int i=0; i<Ntp->NTriggerObjects(); i++)
             {
               TString name = Ntp->TriggerObject_name(i);
@@ -1592,13 +1594,15 @@ void  ZTau3MuTauh::doEvent(){
               TLorentzVector tmp;
               tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
               trigobjTriplet.push_back(tmp);
+              trigobjNames.push_back(name);
+              Whether_Tau_Matched=(fabs(TripletmuLV.Pt()-tmp.Pt())/TripletmuLV.Pt() < 0.1 && TripletmuLV.DeltaR(tmp) < 0.05 && name.Contains("hltTau3MuIsoFilterCharge1"));
             }
 	  std::vector<TLorentzVector> muonTriplet;
           muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)));
           muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1)));
           muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2)));
 
-          if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet(muonTriplet, trigobjTriplet).first;
+          if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet_withMuFilter(muonTriplet, trigobjTriplet, trigobjNames).first && Whether_Tau_Matched;
         }
       value.at(TriggerMatch) = triggerCheck;
     

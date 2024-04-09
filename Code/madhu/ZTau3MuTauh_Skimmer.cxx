@@ -482,8 +482,9 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     if(signal_idx!=-1)
     {
               //Trigger Matching opposite side
-              if(HLT_OppositeSide)
+              if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0)
                 {
+                  //std::cout << "No 3mu trig, yes OS trig" << std::endl;
                   vector<TLorentzVector> trigobjTriplet;
                   for (int i=0; i<Ntp->NTriggerObjects(); i++)
                     {
@@ -497,7 +498,7 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
                       double dpT = fabs(Tau_h_LV.Pt()-tmp.Pt())/Tau_h_LV.Pt();
                       double dR = Tau_h_LV.DeltaR(tmp);
                       
-                      if(dpT<0.1 && dR<0.05 && name.Contains("PFJet25")){
+                      if(dpT<0.1 && dR<0.05 && (name.Contains("hltSinglePFJet15")||name.Contains("hltAK4PFJetCollection20Filter")||name.Contains("hltAK8TrimPFJetCollection20Filter")||name.Contains("hltPFTauTrack")||name.Contains("hltSingleCaloJet5")) ){
                               //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
                               triggerCheck_os=true;
                       }
@@ -506,9 +507,10 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
                 }
                 
     }
-    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of HLT triggered is trigger matched to an object
-    OS_vs_3mu_trigger.at(t).Fill(HLTOk,HLT_OppositeSide,1 );
-    if(!HLTOk && HLT_OppositeSide){
+    //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of reconstructable object is trigger matched to an object
+    
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk,(fabs(Tau_h_LV.Eta())<2.41&&Tau_h_LV.Pt()>18.0),1 );
+    if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0){
             OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
     }
     
