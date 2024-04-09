@@ -784,8 +784,9 @@ void  ZTau3MuTaumu::doEvent(){
 
   bool HLTOk(false);
   bool L1Ok(false);
-  bool DoubleMu0Fired(false);
-  bool DoubleMu4Fired(false);
+  bool SingleMuFired(false);
+  //bool DoubleMu0Fired(false);
+  //bool DoubleMu4Fired(false);
   bool DoubleMuFired(false);
   bool TripleMuFired(false);
   bool randomFailed(false);
@@ -805,20 +806,20 @@ void  ZTau3MuTaumu::doEvent(){
   
   for(int il1=0; il1 < Ntp->NL1Seeds(); il1++){
     TString L1TriggerName = Ntp->L1Name(il1);
-    // if(Ntp->L1Decision(il1))    std::cout<<" l1 name  "<< Ntp->L1Name(il1) <<  " =   "<<Ntp->L1Decision(il1) <<std::endl;
-    //    std::cout<<" random number   "<< random_num << std::endl;
-    if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
-    if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
-    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
-    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
-    if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
-      randomFailed = true;
-    }
+    //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
+    
+    if( ( L1TriggerName.Contains("L1_SingleMu22") || L1TriggerName.Contains("L1_SingleMu25") )  && Ntp->L1Decision(il1)) { SingleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") || L1TriggerName.Contains("L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4") ) && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    //if( ( L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") ) && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") || L1TriggerName.Contains("L1_DoubleMu4p5_SQ_OS_dR_Max1p2") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu_15_7") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") || L1TriggerName.Contains("") ) && Ntp->L1Decision(il1)) { TripleMuFired = true; }
   }
+  
   value.at(L1_TriggerOk)=0;
   value.at(HLT_TriggerOk)=0;
-  if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
-  if (DoubleMuFired || TripleMuFired) L1Ok = true;
+  //if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
+  if (SingleMuFired || DoubleMuFired || TripleMuFired) L1Ok = true;
 
   value.at(L1_TriggerOk)=(L1Ok);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
