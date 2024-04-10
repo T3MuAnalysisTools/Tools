@@ -32,8 +32,7 @@
 #include <utility>      // std::pair
 #include <tuple>
 #include <functional>
-#include <algorithm>
-#include <set>
+
 #include "NtupleReader.h"
 #include "HistoConfig.h"
 #include "PDG_Var.h"
@@ -468,10 +467,6 @@ class Ntuple_Controller{
       double TwoMuonsTrack_SV_Chi2(unsigned int i){return Ntp->TwoMuonsTrack_SV_Chi2->at(i);}
       std::vector<float> TwoMuonsTrack_TriggerMatch_dR(unsigned int i){return Ntp->TwoMuonsTrack_TriggerMatch_dR->at(i);}
 
-      double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
-      double TransverseFlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
-
-
       unsigned int   NTwoMuonsTrack(){return Ntp->TwoMuonsTrack_Muonsindex->size();}
       std::vector<unsigned int> TwoMuonsTrackMuonIndices(unsigned int i){return Ntp->TwoMuonsTrack_Muonsindex->at(i);}
       std::vector<unsigned int> TwoMuonsTrackTrackIndex(unsigned int i){return Ntp->TwoMuonsTrack_Trackindex->at(i);}
@@ -862,7 +857,7 @@ class Ntuple_Controller{
       double TriggerObject_eta(unsigned int i){return Ntp->TriggerObject_eta->at(i);}
       double TriggerObject_phi(unsigned int i){return Ntp->TriggerObject_phi->at(i);}
       int NTriggerObjects(){return Ntp->TriggerObject_name->size();}
-      std::pair<bool, std::vector<float>> triggerMatchTriplet(std::vector<TLorentzVector>, std::vector<TLorentzVector>);
+
 
 
       unsigned int               NMCParticles(){return Ntp->MC_p4->size();}
@@ -932,9 +927,6 @@ class Ntuple_Controller{
       std::vector<unsigned int> SortedPtMuons(std::vector<unsigned int> indixes);
       std::vector<int> SortedPtMuons_MC(std::vector<int> indices);
       std::vector<unsigned int> SortedEtaMuons(std::vector<unsigned int> indixes);
-      std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
-
-
       double TauMassResolution(std::vector<unsigned int>  indices, int type, bool UseRefited); // type = 0 - only pt propagation; type = 1 - indluding direction
       TLorentzVector MatchedLV(std::vector<TLorentzVector> list, unsigned int index);
 
@@ -942,26 +934,26 @@ class Ntuple_Controller{
       float ThreeMuonDsGenMatch(unsigned int tmp_idx);
       float TauGenMatch(unsigned int tmp_idx);
       bool isPromptDs();
-
       int DsMotherPdgId(unsigned int index);
       std::pair<int, int> GENMatchedPdgId(TLorentzVector vec);
       TLorentzVector GENMatchedLV(TLorentzVector vec);
       double deltaR(double eta1, double phi1, double eta2, double phi2); 
       TLorentzVector matchToTruthTauDecay(TLorentzVector vector);
-
-
-
       std::vector<int> MuonStandardSelectorBitMask(unsigned int MuonIndex);
       std::vector<int> MuonCustomID(unsigned int MuonIndex);
-      TMatrixT<double> convertToMatrix(TVectorT<double> V);
-
+      double FlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
+      double TransverseFlightLength_significance(TVector3 pv,TMatrixTSym<double> PVcov, TVector3 sv, TMatrixTSym<double> SVcov );
       TLorentzVector Boost(TLorentzVector pB, TLorentzVector frame);
       TVector3 Rotate(TVector3 LVec, TVector3 Rot);
 
 
+
+      TMatrixT<double> convertToMatrix(TVectorT<double> V);
+
+      std::vector<unsigned int> SortedChargeMuons(std::vector<unsigned int> indices);
       template<typename T>
          void printVec(int size, T& vec);
-
+      std::pair<bool, std::vector<float>> triggerMatchTriplet(std::vector<TLorentzVector>, std::vector<TLorentzVector>);
 
       bool CHECK_BIT(int var, int pos){  return ((var & (1 << pos)) == (1 << pos)); }
       void  printMCDecayChainOfParticle(unsigned int index, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
@@ -970,8 +962,5 @@ class Ntuple_Controller{
       void printMCDecayChainOfMother(unsigned int i, bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // decay chain of object i
       void printMCDecayChainOfEvent(bool printStatus = false, bool printPt = false, bool printEtaPhi = false, bool printQCD = false); // full event decay chain
       std::string  MCParticleToString(unsigned int par, bool printStatus = false, bool printPt = false, bool printEtaPhi = false);
-
-
-
 };
 #endif
