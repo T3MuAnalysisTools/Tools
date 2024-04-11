@@ -20,8 +20,8 @@ Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
    ,isInit(false)
 {
    // TChains the ROOTuple file
-    TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
-   // TChain *chain = new TChain("t3mtree"); //  SKIMMED
+   // TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
+  TChain *chain = new TChain("t3mtree"); //  SKIMMED
    //  Logger(Logger::Verbose) << "Loading " << RootFiles.size() << " files" << std::endl;
    for(unsigned int i=0; i<RootFiles.size(); i++){
       chain->Add(RootFiles[i]);
@@ -286,6 +286,52 @@ std::pair<bool, std::vector<float>> Ntuple_Controller::triggerMatchTriplet(std::
             if (k==i || k==j) continue;
             if ( dpt[0][i]<0.1 && dpt[1][j]<0.1 && dpt[2][k]<0.1 &&
                   dR[0][i]<0.03 && dR[1][j]<0.03 && dR[2][k]<0.03 ) {
+               matched.first = true;
+               matched.second.at(0) = dR[0][i]; 
+               matched.second.at(1) = dR[1][j]; 
+               matched.second.at(2) = dR[2][k]; 
+            }
+         }
+      }
+   }
+
+   return matched;
+}
+
+//-------------------------- --------------------------------- -------------------
+// Trigger matching with mu filter
+//-------------------------- --------------------------------- -------------------
+std::pair<bool, std::vector<float>> Ntuple_Controller::triggerMatchTriplet_withMuFilter(std::vector<TLorentzVector> v1, std::vector<TLorentzVector> v2, std::vector<TString> v3){
+
+   std::pair<bool, std::vector<float>> matched;
+   int SIZE = v2.size();
+   matched.first = false;
+
+   for (int i=0; i<3; i++) matched.second.push_back(999.);
+
+   double dpt[3][SIZE];
+   double dR[3][SIZE];
+   bool muon_filter_pass[3][SIZE];
+
+   for (int i=0; i<3; i++){
+      for (int j=0; j<SIZE; j++){
+         double p = fabs(v1[i].Pt()-v2[j].Pt())/v1[i].Pt();
+         double r = v1[i].DeltaR(v2[j]);
+         dpt[i][j] = p;
+         dR[i][j] = r;
+         muon_filter_pass[i][j] = v3[j].Contains("hltTau3MuTriMuon1filter");
+      }
+   }
+
+   // Find if any combination matches the trigger matching criteria
+   for (int i=0; i<SIZE; i++){
+      for (int j=0; j<SIZE; j++){
+         if (i==j) continue;
+         for (int k=0; k<SIZE; k++){
+            if (k==i || k==j) continue;
+            if (  dpt[0][i]<0.1 && dpt[1][j]<0.1 && dpt[2][k]<0.1 &&
+                  dR[0][i]<0.03 && dR[1][j]<0.03 && dR[2][k]<0.03 &&
+                  muon_filter_pass[0][j] && muon_filter_pass[1][j] && muon_filter_pass[2][j]) {
                matched.first = true;
                matched.second.at(0) = dR[0][i]; 
                matched.second.at(1) = dR[1][j]; 
@@ -1065,12 +1111,13 @@ TMatrixTSym<double>  Ntuple_Controller::RegulariseCovariance(TMatrixTSym<double>
   }
 
   TVectorD eigen_val = EigenValues(M_infl);
-  for(unsigned int i=0; i<eigen_val.GetNrows(); i++){
+  for(int i=0; i<eigen_val.GetNrows(); i++){
     if(eigen_val(i) < 0){
       coef*=1.01;
       return RegulariseCovariance(M_infl,coef);
     }
   }
+
   return M_infl;
 }
 
@@ -1351,14 +1398,17 @@ void Ntuple_Controller::printMCDecayChainOfEvent(bool printStatus, bool printPt,
    }
 }
 
+
 void Ntuple_Controller::printMCDecayChainOfParticle(unsigned int index, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "=== Draw MC decay chain of particle ===" << std::endl;
    printMCDecayChainOfMother(index, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChainOfMother(unsigned int par, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    Logger(Logger::Info) << "Draw decay chain for mother particle at index " << par << " :" << std::endl;
    printMCDecayChain(par, 0, printStatus, printPt, printEtaPhi, printQCD);
 }
+
 void Ntuple_Controller::printMCDecayChain(unsigned int par, unsigned int level, bool printStatus, bool printPt, bool printEtaPhi, bool printQCD){
    std::ostringstream out;
    for(unsigned int l = 0; l < level; l++) out << "    ";
