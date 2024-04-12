@@ -34,7 +34,7 @@ class ZTau3MuTauh : public Selection {
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {PassedFiducialCuts=0,
+  enum cuts {WhetherZTTDecayFound=0,
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
@@ -460,6 +460,7 @@ class ZTau3MuTauh : public Selection {
   Float_t var_Whether_HPS_Tau_Vtx_Exists;
   Float_t var_HPS_FL_Sig;
   Float_t var_HPS_Inv_Mass_Z_Tau3mu_SpecTau;
+  Float_t var_HPS_GJ_Angle_Ratio;
   
   Float_t BDT_Evaluated_A;
   Float_t BDT_Evaluated_B;

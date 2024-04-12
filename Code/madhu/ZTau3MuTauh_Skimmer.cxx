@@ -47,7 +47,7 @@ void  ZTau3MuTauh_Skimmer::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==PassedFiducialCuts) cut.at(PassedFiducialCuts)=1;
+    if(i==WhetherZTTDecayFound) cut.at(WhetherZTTDecayFound)=1;
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
@@ -75,11 +75,11 @@ void  ZTau3MuTauh_Skimmer::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==PassedFiducialCuts){
+    else if(i==WhetherZTTDecayFound){
       title.at(i)="Passed fiducial cuts";
       hlabel="Passed fiducial cuts ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==SignalCandidate){
       title.at(i)="At least one $\\tau_{3\\mu}$ candidate (3,3,2 GeV,  $|\\eta| < 2.4$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
@@ -282,18 +282,21 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
   
   bool HLTOk(false);
   bool L1Ok(false);
-  bool DoubleMu0Fired(false);
-  bool DoubleMu4Fired(false);
+  bool SingleMuFired(false);
+  //bool DoubleMu0Fired(false);
+  //bool DoubleMu4Fired(false);
   bool DoubleMuFired(false);
   bool TripleMuFired(false);
   bool randomFailed(false);
   bool HLT_OppositeSide(false);
 
-  
+  std::cout<<"Events:  "<<std::endl;
   
   for(int iTrigger=0; iTrigger < Ntp->NHLT(); iTrigger++){
     TString HLTName = Ntp->HLTName(iTrigger);
-    //std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
+    //if(Ntp->HLTDecision(iTrigger)){
+    //        std::cout<<"HLT:   "  << Ntp->HLTName(iTrigger)  << "  fires  "<< Ntp->HLTDecision(iTrigger)<< std::endl;
+    //}
     if(HLTName.Contains("HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v") && Ntp->HLTDecision(iTrigger) ) { HLTOk = true;}
     if(HLTName.Contains("HLT_PFJet25_v3") && Ntp->HLTDecision(iTrigger) ) { HLT_OppositeSide = true;}
   }
@@ -304,19 +307,22 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     TString L1TriggerName = Ntp->L1Name(il1);
     //std::cout<<" l1 name  "<< Ntp->L1Name(il1) << std::endl;
     
-    if(L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") && Ntp->L1Decision(il1)) { DoubleMu0Fired = true; }
-    if(L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") && Ntp->L1Decision(il1)) { TripleMuFired = true; }
-    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true; }
-    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMu4Fired = true;}
+    if( ( L1TriggerName.Contains("L1_SingleMu22") || L1TriggerName.Contains("L1_SingleMu25") )  && Ntp->L1Decision(il1)) { SingleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") || L1TriggerName.Contains("L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4") ) && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu4p5_SQ_OS_dR_Max1p2") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMuFired = true;}
     if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
       randomFailed = true;
     }
+    if( ( L1TriggerName.Contains("L1_DoubleMu_15_7") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") || L1TriggerName.Contains("") ) && Ntp->L1Decision(il1)) { TripleMuFired = true; }
   }
 
   value.at(L1_TriggerOk)=0;
   value.at(HLT_TriggerOk)=0;  
-  if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
-  if (DoubleMuFired || TripleMuFired) L1Ok = true;
+  //if (DoubleMu0Fired || DoubleMu4Fired) {DoubleMuFired = true;}
+  if (SingleMuFired || DoubleMuFired || TripleMuFired) L1Ok = true;
 
 
 
@@ -482,7 +488,8 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     if(signal_idx!=-1)
     {
               //Trigger Matching opposite side
-              if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0)
+              //if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0)
+              if(true)
                 {
                   //std::cout << "No 3mu trig, yes OS trig" << std::endl;
                   vector<TLorentzVector> trigobjTriplet;
@@ -498,6 +505,13 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
                       double dpT = fabs(Tau_h_LV.Pt()-tmp.Pt())/Tau_h_LV.Pt();
                       double dR = Tau_h_LV.DeltaR(tmp);
                       
+                      double dpT1 = fabs((Mu1_LV+Mu2_LV+Mu3_LV).Pt()-tmp.Pt())/(Mu1_LV+Mu2_LV+Mu3_LV).Pt();
+                      double dR1 = (Mu1_LV+Mu2_LV+Mu3_LV).DeltaR(tmp);
+                      
+                      //if(dpT1<0.1 && dR1<0.05 ){
+                              //cout << " The trigger object is "<< name << " with dR: " << dR1 << " and dpT: "<< dpT1 << endl;
+                      //}
+                      
                       if(dpT<0.1 && dR<0.05 && (name.Contains("hltSinglePFJet15")||name.Contains("hltAK4PFJetCollection20Filter")||name.Contains("hltAK8TrimPFJetCollection20Filter")||name.Contains("hltPFTauTrack")||name.Contains("hltSingleCaloJet5")) ){
                               //cout << " The trigger object is "<< name << " with dR: " << dR << " and dpT: "<< dpT << endl;
                               triggerCheck_os=true;
@@ -509,10 +523,11 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     }
     //x-axis: 0: HLTOk not pass, 1: HLTOk pass, 2: what part of reconstructable object is trigger matched to an object
     
-    OS_vs_3mu_trigger.at(t).Fill(HLTOk,(fabs(Tau_h_LV.Eta())<2.41&&Tau_h_LV.Pt()>18.0),1 );
-    if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0){
-            OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
-    }
+    //OS_vs_3mu_trigger.at(t).Fill(HLTOk,(fabs(Tau_h_LV.Eta())<2.41&&Tau_h_LV.Pt()>18.0),1 );
+    //if(fabs(Tau_h_LV.Eta())<2.41&&!HLTOk&&Tau_h_LV.Pt()>18.0){
+    //        OS_vs_3mu_trigger.at(t).Fill(2,triggerCheck_os,1 );
+    //}
+    OS_vs_3mu_trigger.at(t).Fill(HLTOk&&L1Ok,triggerCheck_os,1 );
     
     
   }
@@ -574,8 +589,9 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
   bool var_Mu3_Candidate_recod = (dR3_max<0.01);
   bool var_Tau_h_Candidate_recod = (dR4_max<0.05);
   
-  value.at(PassedFiducialCuts)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_h_Candidate_p&&var_Tau_h_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_h_Candidate_recod;
-  pass.at(PassedFiducialCuts)=(value.at(PassedFiducialCuts)==cut.at(PassedFiducialCuts));
+  //value.at(WhetherZTTDecayFound)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_h_Candidate_p&&var_Tau_h_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_h_Candidate_recod;
+  value.at(WhetherZTTDecayFound)=var_Whether_decay_found;
+  pass.at(WhetherZTTDecayFound)=(value.at(WhetherZTTDecayFound)==cut.at(WhetherZTTDecayFound));
   
   // This is to print out selected event content
   if(id==210233){
@@ -664,8 +680,8 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
   }//if(id!=1)
   //  std::cout << "Test 2. " << std::endl;
   if(!WhetherSignalMC){
-    value.at(PassedFiducialCuts)=1;
-    pass.at(PassedFiducialCuts)=1;
+    value.at(WhetherZTTDecayFound)=1;
+    pass.at(WhetherZTTDecayFound)=1;
   }
   
   

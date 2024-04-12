@@ -31,7 +31,7 @@ class ZTau3MuTaumu : public Selection {
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {PassedFiducialCuts=0,
+  enum cuts {WhetherZTTDecayFound=0,
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,

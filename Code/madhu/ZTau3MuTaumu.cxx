@@ -179,7 +179,7 @@ void  ZTau3MuTaumu::Configure(){
     cut.push_back(0);
     value.push_back(0);
     pass.push_back(false);
-    if(i==PassedFiducialCuts) cut.at(PassedFiducialCuts)=1;
+    if(i==WhetherZTTDecayFound) cut.at(WhetherZTTDecayFound)=1;
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
@@ -215,11 +215,11 @@ void  ZTau3MuTaumu::Configure(){
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
-    else if(i==PassedFiducialCuts){
+    else if(i==WhetherZTTDecayFound){
       title.at(i)="Passed fiducial cuts";
       hlabel="Passed fiducial cuts ";
-      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
-      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_PassedFiducialCuts_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nMuons_PF_GL){
       //      title.at(i)=" At least one extra loose(PF+Gl/Tr) $\\mu$, $pT>15 GeV, |\\eta| < 2.4$ ";
@@ -323,7 +323,7 @@ void  ZTau3MuTaumu::Configure(){
     }
 
     else if(i==TriggerMatch){
-      title.at(i)="Selected (by $\\chi^2$) 3$\\mu$ matched to trg ";
+      title.at(i)="Selected (by closest to hltTau3MuIsoFilterCharge1) 3$\\mu$ matched to trg ";
       hlabel="Trigger Matched ";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_TriggerMatch_",htitle,2,-0.5,1.5,hlabel,"Events"));
@@ -810,8 +810,12 @@ void  ZTau3MuTaumu::doEvent(){
     
     if( ( L1TriggerName.Contains("L1_SingleMu22") || L1TriggerName.Contains("L1_SingleMu25") )  && Ntp->L1Decision(il1)) { SingleMuFired = true; }
     if( ( L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") || L1TriggerName.Contains("L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4") ) && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
-    //if( ( L1TriggerName.Contains("L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4") ) && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
-    if( ( L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") || L1TriggerName.Contains("L1_DoubleMu4p5_SQ_OS_dR_Max1p2") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_DoubleMu4p5_SQ_OS_dR_Max1p2") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( id==1 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
+    if( id!=1 && random_num>0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) { DoubleMuFired = true;}
+    if( id!=1 && random_num<0.30769 && L1TriggerName.Contains("L1_DoubleMu4_SQ_OS_dR_Max1p2") && Ntp->L1Decision(il1)) {
+      randomFailed = true;
+    }
     if( ( L1TriggerName.Contains("L1_DoubleMu_15_7") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
     if( ( L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") || L1TriggerName.Contains("") ) && Ntp->L1Decision(il1)) { TripleMuFired = true; }
   }
@@ -833,12 +837,28 @@ void  ZTau3MuTaumu::doEvent(){
 
   int  signal_idx=-1;
   double min_chi2(99.);
+  double min_dR_3mu_trig(299.);
+  
 
-  for(unsigned int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
-    if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
-      min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
-      signal_idx = i_idx;
+  for(int i_idx =0; i_idx < Ntp->NThreeMuons(); i_idx++){
+    
+    //if(Ntp->Vertex_Signal_KF_Chi2(i_idx) < min_chi2){
+    //  min_chi2 = Ntp->Vertex_Signal_KF_Chi2(i_idx);
+    //  signal_idx = i_idx;
+    //}
+    
+    int index_mu_1 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(i_idx)).at(0);
+    int index_mu_2 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(i_idx)).at(1);
+    int index_mu_3 = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(i_idx)).at(2);
+    TLorentzVector TripletmuLV = Ntp->Muon_P4(index_mu_1) +  Ntp->Muon_P4(index_mu_2) +  Ntp->Muon_P4(index_mu_3);
+    
+    for (int i=0; i<Ntp->NTriggerObjects(); i++){
+            TString name = Ntp->TriggerObject_name(i);
+            TLorentzVector tmp;
+            tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+            if ( (TripletmuLV).DeltaR(tmp) < min_dR_3mu_trig ) { min_dR_3mu_trig = (TripletmuLV).DeltaR(tmp); signal_idx = i_idx; }
     }
+    
   }
   
   // Define some stuff here if you want them after if(status)
@@ -1026,8 +1046,9 @@ void  ZTau3MuTaumu::doEvent(){
   bool var_Mu3_Candidate_recod = (dR3_max<0.01);
   bool var_Tau_mu_Candidate_recod = (dR4_max<0.01);
   
-  value.at(PassedFiducialCuts)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_mu_Candidate_p&&var_Tau_mu_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_mu_Candidate_recod;
-  pass.at(PassedFiducialCuts)=(value.at(PassedFiducialCuts)==cut.at(PassedFiducialCuts));
+  //value.at(WhetherZTTDecayFound)=var_Whether_decay_found&&var_Mu1_Candidate_p&&var_Mu1_Candidate_eta&&var_Mu2_Candidate_p&&var_Mu2_Candidate_eta&&var_Mu3_Candidate_p&&var_Mu3_Candidate_eta&&var_Tau_mu_Candidate_p&&var_Tau_mu_Candidate_eta&&var_Mu1_Candidate_recod&&var_Mu2_Candidate_recod&&var_Mu3_Candidate_recod&&var_Tau_mu_Candidate_recod;
+  value.at(WhetherZTTDecayFound)=var_Whether_decay_found;
+  pass.at(WhetherZTTDecayFound)=(value.at(WhetherZTTDecayFound)==cut.at(WhetherZTTDecayFound));
   
   // This is to print out selected event content
   if(id==210232){
@@ -1117,8 +1138,8 @@ void  ZTau3MuTaumu::doEvent(){
   }//if(id!=1)
   
   if(!WhetherSignalMC){
-    value.at(PassedFiducialCuts)=1;
-    pass.at(PassedFiducialCuts)=1;
+    value.at(WhetherZTTDecayFound)=1;
+    pass.at(WhetherZTTDecayFound)=1;
   }
   
 
@@ -1278,14 +1299,16 @@ void  ZTau3MuTaumu::doEvent(){
 	      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
 	      trigobjTriplet.push_back(tmp);
               trigobjNames.push_back(name);
-              Whether_Tau_Matched=(fabs(TripletmuLV.Pt()-tmp.Pt())/TripletmuLV.Pt() < 0.1 && TripletmuLV.DeltaR(tmp) < 0.05 && name.Contains("hltTau3MuIsoFilterCharge1"));
+              if(!Whether_Tau_Matched) Whether_Tau_Matched=(fabs(TripletmuLV.Pt()-tmp.Pt())/TripletmuLV.Pt() < 0.1 && TripletmuLV.DeltaR(tmp) < 0.01 && name.Contains("hltTau3MuIsoFilterCharge1"));
 	    }
 	  std::vector<TLorentzVector> muonTriplet;
 	  muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)));
 	  muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(1)));
 	  muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(2)));
-	  //	  std::cout<<" trigobjTriplet.size()  "<< trigobjTriplet.size() << std::endl;
-	  if (trigobjTriplet.size()>=3) triggerCheck = Ntp->triggerMatchTriplet_withMuFilter(muonTriplet, trigobjTriplet, trigobjNames).first && Whether_Tau_Matched;
+	  
+          if (trigobjTriplet.size()>=3){
+                  triggerCheck = Ntp->triggerMatchTriplet_withMuFilter(muonTriplet, trigobjTriplet, trigobjNames).first && Whether_Tau_Matched;
+          }
 	}
 
         value.at(TriggerMatch) = triggerCheck;      
