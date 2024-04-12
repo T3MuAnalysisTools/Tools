@@ -169,8 +169,66 @@ Long64_t  Ntuple_Controller::GetMCID(){
 
    Long64_t  DataMCTypeFromTupel =  Ntp->Event_DataMC_Type;
 
-   if(DataMCTypeFromTupel==40 || DataMCTypeFromTupel==60 ||  DataMCTypeFromTupel==90 ){
-      //    return 555;
+   if(DataMCTypeFromTupel==210 || DataMCTypeFromTupel==210231 ||  DataMCTypeFromTupel==210232 ||  DataMCTypeFromTupel==210233 ){// reassign ZTT ID to prevent migration btw. subcategories
+   
+           int Whether_decay_found(0);
+           int TausFromZ_Count(0);
+           int tau_3mu_idx(-1);
+           int tau_mu_idx(-1);
+           int tau_e_idx(-1);
+           int tau_h_idx(-1);
+           for(unsigned int imc =0; imc< NMCParticles(); imc++){
+                    if(abs(MCParticle_pdgid(imc)) == 15 && MCParticle_pdgid(MCParticle_midx(imc) ) == 23){
+                      TausFromZ_Count++;
+                          
+                          //correcting for cases where tau decays multiple times
+                          int ChildIdx = imc;
+                          bool Whether_Another_Tau_Decay_In_Chain(false);
+                          for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15) Whether_Another_Tau_Decay_In_Chain=true;
+                          }
+                          while (Whether_Another_Tau_Decay_In_Chain){
+                            Whether_Another_Tau_Decay_In_Chain=false;
+                            for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                              if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15){
+                                ChildIdx = MCParticle_childidx(ChildIdx).at(i);
+                                Whether_Another_Tau_Decay_In_Chain=true;
+                              }
+                            }
+                          }
+                          
+                          int nmuons_temp(0);
+                          int nelectrons_temp(0);
+                          for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==13){
+                              nmuons_temp++;
+                            }
+                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==11){
+                              nelectrons_temp++;
+                            }
+                          }
+                          
+                          if(nmuons_temp==3){
+                            tau_3mu_idx=ChildIdx;
+                          }
+                          else if(nmuons_temp==1){
+                            tau_mu_idx=ChildIdx;
+                          }
+                          else if(nelectrons_temp==1){
+                            tau_e_idx=ChildIdx;
+                          }
+                          else{
+                            tau_h_idx=ChildIdx;
+                          }
+                          
+                          
+                      }
+           }
+           
+           if(tau_3mu_idx>-0.5 && tau_h_idx>-0.5) DataMCTypeFromTupel=210233;
+           if(tau_3mu_idx>-0.5 && tau_mu_idx>-0.5) DataMCTypeFromTupel=210232;
+           if(tau_3mu_idx>-0.5 && tau_e_idx>-0.5) DataMCTypeFromTupel=210231;
+   
    }
    return DataMCTypeFromTupel;
 
@@ -330,7 +388,7 @@ std::pair<bool, std::vector<float>> Ntuple_Controller::triggerMatchTriplet_withM
          for (int k=0; k<SIZE; k++){
             if (k==i || k==j) continue;
             if (  dpt[0][i]<0.1 && dpt[1][j]<0.1 && dpt[2][k]<0.1 &&
-                  dR[0][i]<0.03 && dR[1][j]<0.03 && dR[2][k]<0.03 &&
+                  dR[0][i]<0.01 && dR[1][j]<0.01 && dR[2][k]<0.01 &&
                   muon_filter_pass[0][j] && muon_filter_pass[1][j] && muon_filter_pass[2][j]) {
                matched.first = true;
                matched.second.at(0) = dR[0][i]; 
