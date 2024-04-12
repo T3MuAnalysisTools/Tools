@@ -188,8 +188,8 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_TriggerOk_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==WhetherZTTDecayFound){
-      title.at(i)="Passed fiducial cuts";
-      hlabel="Passed fiducial cuts ";
+      title.at(i)="Whether decay found";
+      hlabel="Whether decay found ";
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
@@ -726,7 +726,7 @@ void  ZTau3MuTaue::doEvent(){
       randomFailed = true;
     }
     if( ( L1TriggerName.Contains("L1_DoubleMu_15_7") )  && Ntp->L1Decision(il1)) { DoubleMuFired = true; }
-    if( ( L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") || L1TriggerName.Contains("") ) && Ntp->L1Decision(il1)) { TripleMuFired = true; }
+    if( ( L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9") || L1TriggerName.Contains("L1_TripleMu_5SQ_3SQ_0OQ_DoubleMu_5_3_SQ_OS_Mass_Max9") ) && Ntp->L1Decision(il1)) { TripleMuFired = true; }
   }
   
   value.at(L1_TriggerOk)=0;  
