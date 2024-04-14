@@ -1,3 +1,9 @@
+import os
+
+pathbase=os.getcwd()
+username='mmadhu'
+tag='skimmed_apr_2024'
+
 
 samplepath=''
 
@@ -24,11 +30,11 @@ while ifDirExists:
     
   trimmed_sample_path=samplepath.split('/')[5]
   
-  gfalcopy_cmd='(eval `scram unsetenv -sh`; gfal-copy '+skimmed_filepath+' davs://cmsio7.rc.ufl.edu:1094/store/user/'+username+'/'+ tag +'/'+trimmed_sample_path+'/Skimmed_'+setno+'.root )'
+  gfalcopy_cmd='(eval `scram unsetenv -sh`; gfal-copy '+skimmed_filepath+' davs://cmsio7.rc.ufl.edu:1094/store/user/'+username+'/ntuples/final/'+ tag +'/'+trimmed_sample_path+'/Skimmed_'+setno+'.root )'
   
   if ifSkimmedFileExists:
     os.system(gfalcopy_cmd)
-    print('File Copied to: '+username+'/'+ tag +'/'+trimmed_sample_path)
+    print('File Copied')
   else:
     print('Skimmed file for set ' + setno + ' doesn\'t exist')
   set_no_int=set_no_int+1

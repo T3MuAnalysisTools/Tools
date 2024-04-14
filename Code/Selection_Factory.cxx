@@ -70,6 +70,9 @@
 #include "madhu/ZTau3MuTauh_Skimmer.h"
 #include "madhu/ZTau3MuTaue_Skimmer.h"
 #include "madhu/ZTau3MuTaumu_Skimmer.h"
+#include "madhu/ZTau3MuTauh_PreFC.h"
+#include "madhu/ZTau3MuTaue_PreFC.h"
+#include "madhu/ZTau3MuTaumu_PreFC.h"
 
 #endif
 
@@ -147,6 +150,9 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("ztau3mutauh_skimmer"))s=new ZTau3MuTauh_Skimmer(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaue_skimmer"))s=new ZTau3MuTaue_Skimmer(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaumu_skimmer"))s=new ZTau3MuTaumu_Skimmer(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutauh_prefc"))s=new ZTau3MuTauh_PreFC(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaue_prefc"))s=new ZTau3MuTaue_PreFC(Analysis,UncertType);
+  else if(Analysis.Contains("ztau3mutaumu_prefc"))s=new ZTau3MuTaumu_PreFC(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutauh"))s=new ZTau3MuTauh(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaue"))s=new ZTau3MuTaue(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaumu"))s=new ZTau3MuTaumu(Analysis,UncertType);
