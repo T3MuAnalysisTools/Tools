@@ -529,6 +529,10 @@ void  ZTau3MuTauh_Skimmer::doEvent(){
     //}
     OS_vs_3mu_trigger.at(t).Fill(HLTOk&&L1Ok,triggerCheck_os,1 );
     
+    if(!HLTOk){
+            //cout << "The trigger check is "<< triggerCheck_os << " for event "<< t << " with tauh pT " << Tau_h_LV.Pt() << endl;
+    }
+    
     
   }
   

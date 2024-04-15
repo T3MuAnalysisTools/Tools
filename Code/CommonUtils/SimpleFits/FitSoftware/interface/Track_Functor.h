@@ -3,6 +3,8 @@
 #include "Math/Minimizer.h"
 #include "Math/Factory.h"
 
+#pragma once
+
 // Define a functor class
 class Track_Functor : public ROOT::Math::IBaseFunctionMultiDim {
 public:
