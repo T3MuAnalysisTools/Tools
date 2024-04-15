@@ -1,8 +1,6 @@
-import os
-
 pathbase=os.getcwd()
-username='mmadhu'
-tag='skimmed_apr_2024'
+pathbase=pathbase+'/'
+#tag='skimmed_apr_2024'
 
 
 samplepath=''
