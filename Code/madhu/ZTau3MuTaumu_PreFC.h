@@ -120,6 +120,7 @@ class ZTau3MuTaumu_PreFC : public Selection {
   std::vector<TH2D>   Selection_Cut_Mu1_p_eta_before;
   std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after;
   std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after_reco;
+  std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after_noreco;
   std::vector<TH2D>   Selection_Cut_Mu1_p_eta_after_trigger;
   std::vector<TH1D>   Selection_Cut_Mu2_P;
   std::vector<TH1D>   Selection_Cut_Mu2_Eta;
@@ -128,6 +129,7 @@ class ZTau3MuTaumu_PreFC : public Selection {
   std::vector<TH2D>   Selection_Cut_Mu2_p_eta_before;
   std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after;
   std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after_reco;
+  std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after_noreco;
   std::vector<TH2D>   Selection_Cut_Mu2_p_eta_after_trigger;
   std::vector<TH1D>   Selection_Cut_Mu3_P;
   std::vector<TH1D>   Selection_Cut_Mu3_Eta;
@@ -136,6 +138,7 @@ class ZTau3MuTaumu_PreFC : public Selection {
   std::vector<TH2D>   Selection_Cut_Mu3_p_eta_before;
   std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after;
   std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after_reco;
+  std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after_noreco;
   std::vector<TH2D>   Selection_Cut_Mu3_p_eta_after_trigger;
   std::vector<TH1D>   Selection_Cut_mu_P;
   std::vector<TH1D>   Selection_Cut_mu_Eta;
@@ -144,6 +147,7 @@ class ZTau3MuTaumu_PreFC : public Selection {
   std::vector<TH2D>   Selection_Cut_mu_p_eta_before;
   std::vector<TH2D>   Selection_Cut_mu_p_eta_after;
   std::vector<TH2D>   Selection_Cut_mu_p_eta_after_reco;
+  std::vector<TH2D>   Selection_Cut_mu_p_eta_after_noreco;
   std::vector<TH2D>   Selection_Cut_mu_p_eta_after_trigger;
   
   std::vector<TH1D>   Selection_Cut_RecoMu_P;

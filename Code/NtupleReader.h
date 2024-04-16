@@ -370,6 +370,7 @@ public :
    std::vector<double>  *Vertex_signal_KF_BS_2Ddistance;
    std::vector<double>  *Vertex_signal_KF_BS_error;
    std::vector<double>  *Vertex_signal_KF_BS_significance;
+   std::vector<std::vector<double> >  *Vertex_signal_KF_BS;
 
 
    // List of branches
@@ -640,6 +641,7 @@ public :
    TBranch        *b_Vertex_signal_KF_BS_2Ddistance;   //!
    TBranch        *b_Vertex_signal_KF_BS_error;   //!
    TBranch        *b_Vertex_signal_KF_BS_significance;   //!
+   TBranch        *b_Vertex_signal_KF_BS;   //!
    TBranch        *b_Vertex_signal_AF_pos;   //!
    TBranch        *b_Vertex_signal_AF_Chi2;   //!
    TBranch        *b_Vertex_signal_AF_Ndf;   //!
@@ -1026,6 +1028,7 @@ void NtupleReader::Init(TTree *tree)
    Vertex_signal_KF_BS_2Ddistance = 0;
    Vertex_signal_KF_BS_error = 0;
    Vertex_signal_KF_BS_significance = 0;
+   Vertex_signal_KF_BS = 0;
    Vertex_pair_quality = 0;
    Vertex_Pair12_Pos = 0;
    Vertex_Pair23_Pos = 0;
@@ -1363,6 +1366,7 @@ void NtupleReader::Init(TTree *tree)
    fChain->SetBranchAddress("Vertex_signal_KF_BS_2Ddistance", &Vertex_signal_KF_BS_2Ddistance, &b_Vertex_signal_KF_BS_2Ddistance);
    fChain->SetBranchAddress("Vertex_signal_KF_BS_error", &Vertex_signal_KF_BS_error, &b_Vertex_signal_KF_BS_error);
    fChain->SetBranchAddress("Vertex_signal_KF_BS_significance", &Vertex_signal_KF_BS_significance, &b_Vertex_signal_KF_BS_significance);
+   fChain->SetBranchAddress("Vertex_signal_KF_BS", &Vertex_signal_KF_BS, &b_Vertex_signal_KF_BS);
    fChain->SetBranchAddress("Vertex_signal_AF_pos", &Vertex_signal_AF_pos, &b_Vertex_signal_AF_pos);
    fChain->SetBranchAddress("Vertex_signal_AF_Chi2", &Vertex_signal_AF_Chi2, &b_Vertex_signal_AF_Chi2);
    fChain->SetBranchAddress("Vertex_signal_AF_Ndf", &Vertex_signal_AF_Ndf, &b_Vertex_signal_AF_Ndf);

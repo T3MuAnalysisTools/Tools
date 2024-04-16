@@ -17,6 +17,8 @@
 #include "SimpleFits/FitSoftware/interface/PTObject.h"
 #include "SimpleFits/FitSoftware/interface/TPTRObject.h"
 
+#include "SimpleFits/FitSoftware/interface/Track_Functor.h"
+
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
@@ -141,7 +143,7 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   PostSelection_SVPVTauDirAngle_largescale;
   std::vector<TH1D>   PostSelection_VertexChi2KF;
   std::vector<TH1D>   PostSelection_MinDistToIsoTrack;
-  std::vector<TH1D>   PostSelection_MinDistToIsoTrack_cm;
+  std::vector<TH1D>   PostSelection_MinDistToIsoTrack_mm;
   std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass;
   std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_cos;
   std::vector<TH1D>   PostSelection_Kinematics_MissingTrMass_pT;
@@ -207,7 +209,7 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   PostBDT_SVPVTauDirAngle_largescale;
   std::vector<TH1D>   PostBDT_VertexChi2KF;
   std::vector<TH1D>   PostBDT_MinDistToIsoTrack;
-  std::vector<TH1D>   PostBDT_MinDistToIsoTrack_cm;
+  std::vector<TH1D>   PostBDT_MinDistToIsoTrack_mm;
   std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass;
   std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_cos;
   std::vector<TH1D>   PostBDT_Kinematics_MissingTrMass_pT;
@@ -264,7 +266,7 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH2D>   BDT_2Dscan_SVPVTauDirAngle_largescale;
   std::vector<TH2D>   BDT_2Dscan_VertexChi2KF;
   std::vector<TH2D>   BDT_2Dscan_MinDistToIsoTrack;
-  std::vector<TH2D>   BDT_2Dscan_MinDistToIsoTrack_cm;
+  std::vector<TH2D>   BDT_2Dscan_MinDistToIsoTrack_mm;
   std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass;
   std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_cos;
   std::vector<TH2D>   BDT_2Dscan_Kinematics_MissingTrMass_pT;
@@ -324,6 +326,8 @@ class ZTau3MuTaumu : public Selection {
   Float_t var_VisMass;
   Float_t var_DiTauMass_Collinear;
   Float_t var_4Mu_Chi2;
+  Float_t var_4Mu_Vertex_Disp;
+  Float_t var_4Mu_MinDistToIsoTrack_mm;
   
   Float_t BDT_Evaluated;
   Float_t BDT_Evaluated_Without_Vis_Mass;

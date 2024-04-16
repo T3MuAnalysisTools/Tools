@@ -30,6 +30,7 @@ LIBS          = $(ROOTLIBS) $(SHAREDLIBFLAGS)
 
 TARGETS       =	Ntuple_Controller \
 		NtupleReader \
+                EventClassifier \
 		Parameters \
 		Selection_Base \
 		Selection_Factory \

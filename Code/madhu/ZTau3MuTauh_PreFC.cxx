@@ -247,6 +247,7 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_noreco","Selection_Cut_Mu1_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   Selection_Cut_Mu1_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_trigger","Selection_Cut_Mu1_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   
   Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",160,0.0,80.0,"#mu_{2} p, GeV","Events");
@@ -254,6 +255,7 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_noreco","Selection_Cut_Mu2_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
   Selection_Cut_Mu2_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_trigger","Selection_Cut_Mu2_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   
   Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",160,0.0,80.0,"#mu_{3} p, GeV","Events");
@@ -261,6 +263,7 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_noreco","Selection_Cut_Mu3_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
   Selection_Cut_Mu3_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_trigger","Selection_Cut_Mu3_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
   
   Selection_Cut_h_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_h_Pt","Selection_Cut_h_Pt",40,0.0,80.0,"#tau_{h}, p_{T}, GeV","Events");
@@ -268,6 +271,7 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_h_pt_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_before","Selection_Cut_h_pt_eta_before",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after","Selection_Cut_h_pt_eta_after",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_reco","Selection_Cut_h_pt_eta_after_reco",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
+  Selection_Cut_h_pt_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_noreco","Selection_Cut_h_pt_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_trigger","Selection_Cut_h_pt_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   
   Selection_Cut_Mu1_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR","Selection_Cut_Mu1_dR",200,0,0.002,"#Delta R","Events");
@@ -356,18 +360,22 @@ void  ZTau3MuTauh_PreFC::Store_ExtraDist(){
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_before);
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after);
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after_reco);
+  Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after_noreco);
   Extradist2d.push_back(&Selection_Cut_Mu1_p_eta_after_trigger);
   Extradist2d.push_back(&Selection_Cut_Mu2_p_eta_before);
   Extradist2d.push_back(&Selection_Cut_Mu2_p_eta_after);
   Extradist2d.push_back(&Selection_Cut_Mu2_p_eta_after_reco);
+  Extradist2d.push_back(&Selection_Cut_Mu2_p_eta_after_noreco);
   Extradist2d.push_back(&Selection_Cut_Mu2_p_eta_after_trigger);
   Extradist2d.push_back(&Selection_Cut_Mu3_p_eta_before);
   Extradist2d.push_back(&Selection_Cut_Mu3_p_eta_after);
   Extradist2d.push_back(&Selection_Cut_Mu3_p_eta_after_reco);
+  Extradist2d.push_back(&Selection_Cut_Mu3_p_eta_after_noreco);
   Extradist2d.push_back(&Selection_Cut_Mu3_p_eta_after_trigger);
   Extradist2d.push_back(&Selection_Cut_h_pt_eta_before);
   Extradist2d.push_back(&Selection_Cut_h_pt_eta_after);
   Extradist2d.push_back(&Selection_Cut_h_pt_eta_after_reco);
+  Extradist2d.push_back(&Selection_Cut_h_pt_eta_after_noreco);
   Extradist2d.push_back(&Selection_Cut_h_pt_eta_after_trigger);
   
   Extradist1d.push_back(&Selection_Cut_Mu1_dR);
@@ -790,10 +798,13 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                   if(pass.at(Mu1_Candidate_recod)){
                       Selection_Cut_Mu1_p_eta_after_reco.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
                   }
+                  if(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta)&&!pass.at(Mu1_Candidate_recod)){
+                      Selection_Cut_Mu1_p_eta_after_noreco.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                  }
                   if(L1Ok&&HLTOk){
                     Selection_Cut_Mu1_p_eta_after_trigger.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
                   }
-                  Whether_Mu1_fiducial_and_reco.at(t).Fill(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta) , pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta)&&pass.at(Mu1_Candidate_recod));
+                  Whether_Mu1_fiducial_and_reco.at(t).Fill(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta) , pass.at(Mu1_Candidate_recod));
                   
                   
                   
@@ -804,10 +815,13 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                   if(pass.at(Mu2_Candidate_recod)){
                       Selection_Cut_Mu2_p_eta_after_reco.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
                   }
+                  if(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta)&&!pass.at(Mu2_Candidate_recod)){
+                      Selection_Cut_Mu2_p_eta_after_noreco.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                  }
                   if(L1Ok&&HLTOk){
                     Selection_Cut_Mu2_p_eta_after_trigger.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
                   }
-                  Whether_Mu2_fiducial_and_reco.at(t).Fill(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta) , pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta)&&pass.at(Mu2_Candidate_recod));
+                  Whether_Mu2_fiducial_and_reco.at(t).Fill(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta) , pass.at(Mu2_Candidate_recod));
                   
                   
                   Selection_Cut_Mu3_p_eta_before.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
@@ -817,10 +831,13 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                   if(pass.at(Mu3_Candidate_recod)){
                       Selection_Cut_Mu3_p_eta_after_reco.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
                   }
+                  if(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta)&&!pass.at(Mu3_Candidate_recod)){
+                      Selection_Cut_Mu3_p_eta_after_noreco.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                  }
                   if(L1Ok&&HLTOk){
                     Selection_Cut_Mu3_p_eta_after_trigger.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
                   }
-                  Whether_Mu3_fiducial_and_reco.at(t).Fill(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta) , pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta)&&pass.at(Mu3_Candidate_recod));
+                  Whether_Mu3_fiducial_and_reco.at(t).Fill(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta) , pass.at(Mu3_Candidate_recod));
                   
                   
                   
@@ -833,10 +850,13 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                       Selection_Cut_h_pt_eta_after_reco.at(t).Fill(Tau_h_LV.Pt(),abs(Tau_h_LV.Eta()));
                       //std::cout<<"Reco Tau_h p: "<< Tau_h_LV.Vect().Mag() <<" pT: "<< Tau_h_LV.Pt() << std::endl;
                   }
+                  if(pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta)&&!pass.at(Tau_h_Candidate_recod)){
+                      Selection_Cut_h_pt_eta_after_noreco.at(t).Fill(Tau_h_LV.Pt(),abs(Tau_h_LV.Eta()));
+                  }
                   if(L1Ok&&HLTOk){
                     Selection_Cut_h_pt_eta_after_trigger.at(t).Fill(Tau_h_LV.Vect().Pt(),abs(Tau_h_LV.Eta()));
                   }
-                  Whether_Tau_h_fiducial_and_reco.at(t).Fill(pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta) , pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta)&&pass.at(Tau_h_Candidate_recod));
+                  Whether_Tau_h_fiducial_and_reco.at(t).Fill(pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta) , pass.at(Tau_h_Candidate_recod));
                   
                   
                   
