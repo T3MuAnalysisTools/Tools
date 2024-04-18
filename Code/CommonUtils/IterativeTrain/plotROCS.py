@@ -10,7 +10,7 @@ import ROOT
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f","--files", help="List of files (coma separated); [Default: %(default)s]",  nargs="+", action="store", default = ["a.root","b.root"])
+parser.add_argument("-f","--files", help="List of files (whitespace separated); [Default: %(default)s]",  nargs="+", action="store", default = 'a.root b.root')
 parser.add_argument("-m","--method", help="name of method; [Default: %(default)s]",  type = str, action="store", default = "BDT")
 parser.add_argument("-o","--output", help="output files prefix; [Default: %(default)s]",  type = str, action="store", default = "Out")
 args = parser.parse_args()
@@ -61,12 +61,16 @@ if __name__== "__main__":
     legend.SetHeader("Trains")
 
     color = 1
+    print('Files = ', args.files)
     for ifile in args.files:
         print ifile
-        datasets_prefix = ifile[:-5]
+        datasets_prefix = ifile[9:-5]
+        print('datasets_prefix ', datasets_prefix)
         color +=2
         rdict = get_file_dict(ifile)
+
         hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
+        print("--- ", hist)
 #output_4_A
 
         hist.SetTitle("")
