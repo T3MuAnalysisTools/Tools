@@ -4,9 +4,9 @@
 import sys    # exit
 import time   # time accounting
 import getopt # command line parser
-from TrainConfigs_ZTT_plots import configuration,selection
+from TrainConfigs_taue_comparisons import configuration,selection
 
-DEFAULT_INFNAME  = "../MVA_Mini_Tree_ZTT.root"
+DEFAULT_INFNAME  = "../../MVA_Mini_Tree_ZTT.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"

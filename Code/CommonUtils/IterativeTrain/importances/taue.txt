@@ -1,0 +1,14 @@
+Variable                 Value
+var_Tau3MuIsolation      1.208e-01
+var_VisMass              9.836e-02
+var_Electron_pT          9.455e-02
+var_DeltaPhi             8.369e-02
+var_ThreeMuVertexChi2KF  8.203e-02
+var_TripletPT            8.066e-02
+var_DiTauMass_Collinear  6.946e-02
+var_ElectronSumIsolation 6.721e-02
+var_Phi_To_Opposite_Side 6.400e-02
+var_Electron_eta         6.349e-02
+var_MinDrToIsoTrack      6.212e-02
+var_FLSignificance       5.767e-02
+var_mu2_pT               5.600e-02

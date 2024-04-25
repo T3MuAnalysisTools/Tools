@@ -4,9 +4,9 @@
 import sys    # exit
 import time   # time accounting
 import getopt # command line parser
-from TrainConfigs_ZTT_plots import configuration,selection
+from TrainConfigs_taumu_comparisons import configuration,selection
 
-DEFAULT_INFNAME  = "../MVA_Mini_Tree_ZTT.root"
+DEFAULT_INFNAME  = "../../MVA_Mini_Tree_ZTT.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
@@ -151,7 +151,7 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_mu3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.06:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.02:SeparationType=GiniIndex:nCuts=50" )
                                             
             if category_wagon=="ZTT_tau3mu":
                     if "BDT" in mlist:
@@ -161,17 +161,17 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_tau_NoCV_3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=600:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.02:SeparationType=GiniIndex:nCuts=50" )
                                             
             if category_wagon=="ZTT_tau_CV_3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=200:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.5:SeparationType=GiniIndex:nCuts=25" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.02:SeparationType=GiniIndex:nCuts=50" )
                                             
             if category_wagon=="ZTT_e3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=600:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.15:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.02:SeparationType=GiniIndex:nCuts=50" )
 
 
 
