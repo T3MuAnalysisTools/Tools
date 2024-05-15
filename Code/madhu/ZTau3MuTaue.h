@@ -282,6 +282,7 @@ class ZTau3MuTaue : public Selection {
   Float_t var_FLSignificance;
   Float_t var_SVPVTauDirAngle;
   Float_t var_ThreeMuVertexChi2KF;
+  Float_t var_MinDrToIsoTrack;
   Float_t var_MinDistToIsoTrack;
   Float_t var_DeltaPhi;
   Float_t var_Phi_To_Opposite_Side;

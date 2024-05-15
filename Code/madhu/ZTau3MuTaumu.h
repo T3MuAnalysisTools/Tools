@@ -173,6 +173,9 @@ class ZTau3MuTaumu : public Selection {
   std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR12;
   std::vector<TH1D>   PostSelection_PairMass_OppositeSign_dR13;
   
+  std::vector<TH1D>   PostSelection_3Mu_MinDistToMuTrack_mm;
+  std::vector<TH1D>   PostSelection_AvgDeltaZ_3Mu_Mu_mm;
+  
   //After BDT
   
   std::vector<TH1D>   PostBDT_TripletMass_VeryLooseCut;
@@ -233,6 +236,9 @@ class ZTau3MuTaumu : public Selection {
   
   std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR12;
   std::vector<TH1D>   PostBDT_PairMass_OppositeSign_dR13;
+  
+  std::vector<TH1D>   PostBDT_3Mu_MinDistToMuTrack_mm;
+  std::vector<TH1D>   PostBDT_AvgDeltaZ_3Mu_Mu_mm;
   
   //Pre BDT 2D scan
   
@@ -316,6 +322,7 @@ class ZTau3MuTaumu : public Selection {
   Float_t var_FLSignificance;
   Float_t var_SVPVTauDirAngle;
   Float_t var_ThreeMuVertexChi2KF;
+  Float_t var_MinDrToIsoTrack;
   Float_t var_MinDistToIsoTrack;
   Float_t var_DeltaPhi;//MET and Visible tau
   Float_t var_Phi_To_Opposite_Side;
@@ -327,7 +334,8 @@ class ZTau3MuTaumu : public Selection {
   Float_t var_DiTauMass_Collinear;
   Float_t var_4Mu_Chi2;
   Float_t var_4Mu_Vertex_Disp;
-  Float_t var_4Mu_MinDistToIsoTrack_mm;
+  Float_t var_3Mu_MinDistToMuTrack_mm;
+  Float_t var_AvgDeltaZ_3Mu_Mu_mm;
   
   Float_t BDT_Evaluated;
   Float_t BDT_Evaluated_Without_Vis_Mass;

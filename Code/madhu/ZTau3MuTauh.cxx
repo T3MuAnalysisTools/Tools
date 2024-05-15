@@ -67,7 +67,7 @@ void  ZTau3MuTauh::Configure(){
   T3MMiniTree_A->Branch("var_FLSignificance",&var_FLSignificance);
   T3MMiniTree_A->Branch("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   T3MMiniTree_A->Branch("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
-  T3MMiniTree_A->Branch("var_MinDistToIsoTrack",&var_MinDistToIsoTrack);
+  T3MMiniTree_A->Branch("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
   T3MMiniTree_A->Branch("var_DeltaPhi",&var_DeltaPhi);
   T3MMiniTree_A->Branch("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   
@@ -108,7 +108,7 @@ void  ZTau3MuTauh::Configure(){
   T3MMiniTree_B->Branch("var_FLSignificance",&var_FLSignificance);
   T3MMiniTree_B->Branch("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   T3MMiniTree_B->Branch("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
-  T3MMiniTree_B->Branch("var_MinDistToIsoTrack",&var_MinDistToIsoTrack);
+  T3MMiniTree_B->Branch("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
   T3MMiniTree_B->Branch("var_DeltaPhi",&var_DeltaPhi);
   T3MMiniTree_B->Branch("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   
@@ -155,7 +155,7 @@ void  ZTau3MuTauh::Configure(){
   
 
   
-  
+  /*
   //*** define the bdt reader for event selection. Has no CV
   reader_Tauh_NoCV = new TMVA::Reader( "!Color:!Silent" );   //For the tauh category without vertex
   
@@ -211,6 +211,51 @@ void  ZTau3MuTauh::Configure(){
   reader_Tauh_CV->AddVariable("var_HPS_Inv_Mass_Z_Tau3mu_SpecTau",&var_HPS_Inv_Mass_Z_Tau3mu_SpecTau);
   
   reader_Tauh_CV->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/BDToutputs/output_1_ZTT_tau_CV_3mu/weights/TMVAClassification_BDT.weights.xml");
+  */
+  
+  
+    //*** define the bdt reader for event selection. Has no CV
+  reader_Tauh_NoCV = new TMVA::Reader( "!Color:!Silent" );   //For the tauh category without vertex
+  
+  
+  reader_Tauh_NoCV->AddVariable("var_mu2_pT",&var_mu2_pT);
+  reader_Tauh_NoCV->AddVariable("var_TripletPT",&var_TripletPT);
+  reader_Tauh_NoCV->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
+  
+  reader_Tauh_NoCV->AddVariable("var_Tau_pT",&var_Tau_pT);
+  
+  reader_Tauh_NoCV->AddVariable("var_FLSignificance",&var_FLSignificance);
+  reader_Tauh_NoCV->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
+  reader_Tauh_NoCV->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
+  reader_Tauh_NoCV->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
+  reader_Tauh_NoCV->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
+  
+  reader_Tauh_NoCV->AddVariable("var_VisMass",&var_VisMass);
+  
+  reader_Tauh_NoCV->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/final_BDT/output_0_ZTT_tau_NoCV_3mu/weights/TMVAClassification_BDT.weights.xml");
+  
+  
+  //*** define the bdt reader for event selection. Has CV
+  reader_Tauh_CV = new TMVA::Reader( "!Color:!Silent" );   //For the tauh category with vertex
+  
+  
+  reader_Tauh_CV->AddVariable("var_mu2_pT",&var_mu2_pT);
+  reader_Tauh_CV->AddVariable("var_mu3_eta",&var_mu3_eta);
+  reader_Tauh_CV->AddVariable("var_TripletPT",&var_TripletPT);
+  reader_Tauh_CV->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
+  
+  reader_Tauh_CV->AddVariable("var_Tau_eta",&var_Tau_eta);
+  
+  reader_Tauh_CV->AddVariable("var_FLSignificance",&var_FLSignificance);
+  reader_Tauh_CV->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
+  reader_Tauh_CV->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
+  reader_Tauh_CV->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
+  
+  reader_Tauh_CV->AddVariable("var_VisMass",&var_VisMass);
+  
+  reader_Tauh_CV->AddVariable("var_HPS_FL_Sig",&var_HPS_FL_Sig);
+  
+  reader_Tauh_CV->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/final_BDT/output_0_ZTT_tau_CV_3mu/weights/TMVAClassification_BDT.weights.xml");
   
   
   
@@ -1704,9 +1749,11 @@ void  ZTau3MuTauh::doEvent(){
   
   for(auto i : PassedDeepMuonsLoose)
     {
-      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back({Ntp->Tau_P4(i).DeltaPhi(Tau3MuLV),i});
-      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back({Ntp->Tau_P4(i).DeltaPhi(Tau3MuLV),i});
-      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back({Ntp->Tau_P4(i).DeltaPhi(Tau3MuLV),i});
+      double OS_DelPhi = fabs(Ntp->Tau_P4(i).DeltaPhi(Tau3MuLV));
+      
+      if(Ntp->Tau_byLooseDeepTau2017v2p1VSe(i)) PassedDeepElectronsLoose.push_back({OS_DelPhi,i});
+      if(Ntp->Tau_byMediumDeepTau2017v2p1VSe(i)) PassedDeepElectronsMedium.push_back({OS_DelPhi,i});
+      if(Ntp->Tau_byTightDeepTau2017v2p1VSe(i)) PassedDeepElectronsTight.push_back({OS_DelPhi,i});
 
     }
 
@@ -1780,6 +1827,10 @@ void  ZTau3MuTauh::doEvent(){
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int muon_3_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
     
+    TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
+    TLorentzVector Muon2LV = Ntp->Muon_P4(muon_2_idx);
+    TLorentzVector Muon3LV = Ntp->Muon_P4(muon_3_idx);
+    
     unsigned int Muon_Eta_index_1=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int Muon_Eta_index_2=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
     unsigned int Muon_Eta_index_3=Ntp->SortedEtaMuons(Ntp->ThreeMuonIndices(signal_idx)).at(2);
@@ -1803,20 +1854,31 @@ void  ZTau3MuTauh::doEvent(){
 	   							Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_Signal_KF_Covariance(signal_idx));
     TVector3 SVPV = Ntp->SVPVDirection(Ntp->Vertex_Signal_KF_pos(signal_idx),Ntp->Vertex_HighestPt_PrimaryVertex());
     double val_SVPVTauDirAngle=SVPV.Angle(Tau3muLV.Vect());
+    if(val_SVPVTauDirAngle >= (TMath::Pi()/2.0)) val_SVPVTauDirAngle = TMath::Pi()-val_SVPVTauDirAngle;
     double val_ThreeMuVertexChi2KF=Ntp->Vertex_signal_KF_Chi2(signal_idx);
     double val_MinDistToIsoTrack=1000.0;
     double val_DeltaPhi=fabs(Ntp->METPhi()-(TauHLV.Vect()).Phi());
+    if(val_DeltaPhi >= TMath::Pi() ) val_DeltaPhi = 2*TMath::Pi()-val_DeltaPhi;
+    //std::cout << "MET Phi: " << Ntp->METPhi() << " TauHLV Phi: " << TauHLV.Vect().Phi()<< " val_DeltaPhi: " << val_DeltaPhi << std::endl;
     
     //std::cout << "bs x: " << Ntp->Vertex_signal_KF_BS().x() << " highest pT PV x: "<< Ntp->Vertex_HighestPt_PrimaryVertex().x() << std::endl;
     //std::cout << " highest pT PV x: "<< Ntp->Vertex_HighestPt_PrimaryVertex().x() << std::endl;
     
     for(int j=0;j<Ntp->NIsolationTrack(signal_idx);j++){//loop over isolation tracks
       TLorentzVector TrackLV = Ntp->IsolationTrack_p4(signal_idx,j);
-      double dR1=fabs(Tau3muLV.DeltaR(TrackLV));
-      if(dR1 < val_MinDistToIsoTrack){
-        val_MinDistToIsoTrack=dR1;
+      
+      if(fabs(Muon1LV.DeltaR(TrackLV)) < val_MinDistToIsoTrack){
+        val_MinDistToIsoTrack=fabs(Muon1LV.DeltaR(TrackLV));
       }
+      if(fabs(Muon2LV.DeltaR(TrackLV)) < val_MinDistToIsoTrack){
+        val_MinDistToIsoTrack=fabs(Muon2LV.DeltaR(TrackLV));
+      }
+      if(fabs(Muon3LV.DeltaR(TrackLV)) < val_MinDistToIsoTrack){
+        val_MinDistToIsoTrack=fabs(Muon3LV.DeltaR(TrackLV));
+      }
+      
     }// end of j for loop
+    
     
     // Missing transverse mass
     
@@ -2062,16 +2124,29 @@ void  ZTau3MuTauh::doEvent(){
             TLorentzVector Spectator_Tau_p_minus_LV1 = TLorentzVector(Spectator_Tau_Dirn*Spectator_Tau_p_minus1,sqrt(pow(Spectator_Tau_p_minus1,2)+mass_tau_sq));
             
             Inv_Mass_Z_Tau3mu_SpecTau = (Spectator_Tau_p_LV1+Tau3muLV).M();
+            double val_DeltaPhi_alt=fabs(Ntp->METPhi()-((Spectator_Tau_p_LV1-TauHLV).Vect()).Phi());
+            double phi1 = ((Spectator_Tau_p_LV1-TauHLV).Vect()).Phi();
+            
             if(!isnan(Spectator_Tau_p_plus1)){
             if(abs((Spectator_Tau_p_plus_LV1+Tau3muLV).M()-91.1876)<abs(Inv_Mass_Z_Tau3mu_SpecTau-91.1876) ){
                     Inv_Mass_Z_Tau3mu_SpecTau = (Spectator_Tau_p_plus_LV1+Tau3muLV).M();
+                    val_DeltaPhi_alt=fabs(Ntp->METPhi()-((Spectator_Tau_p_plus_LV1-TauHLV).Vect()).Phi());
+                    phi1 = ((Spectator_Tau_p_plus_LV1-TauHLV).Vect()).Phi();
             }
             }
             if(!isnan(Spectator_Tau_p_minus1)){
             if(abs((Spectator_Tau_p_minus_LV1+Tau3muLV).M()-91.1876)<abs(Inv_Mass_Z_Tau3mu_SpecTau-91.1876) ){
                     Inv_Mass_Z_Tau3mu_SpecTau = (Spectator_Tau_p_minus_LV1+Tau3muLV).M();
+                    val_DeltaPhi_alt=fabs(Ntp->METPhi()-((Spectator_Tau_p_minus_LV1-TauHLV).Vect()).Phi());
+                    phi1 = ((Spectator_Tau_p_minus_LV1-TauHLV).Vect()).Phi();
             }
             }
+            
+            //std::cout << "val_DeltaPhi: " << val_DeltaPhi << " val_DeltaPhi_alt: " << val_DeltaPhi_alt << std::endl;
+            //std::cout << "MET Phi: " << Ntp->METPhi() << " TauHLV Phi: " << TauHLV.Vect().Phi() << " neutrino estimated phi: " << phi1 << " actual neutrino phi: " << Tau_nu_LV.Vect().Phi() << std::endl;
+            
+            //std::cout << "HPS FL_Sig: " << FL_Sig << " val_FLSignificance: " << val_FLSignificance << std::endl;
+            
             
             //std::cout << "GJ ratio: " << GJ_Angle_Ratio << " inv mass1: " << Inv_Mass_Z_Tau3mu_SpecTau << " dr_tau SV to actual: " << Spectator_Tau_Dirn.DeltaR((Tau_h_LV+Tau_nu_LV).Vect()) << std::endl;
             
@@ -2109,11 +2184,6 @@ void  ZTau3MuTauh::doEvent(){
     
     double val_MET_Et=Ntp->METEt();
     double val_MET_Phi=Ntp->METPhi();
-
-
-    TLorentzVector Muon1LV = Ntp->Muon_P4(muon_1_idx);
-    TLorentzVector Muon2LV = Ntp->Muon_P4(muon_2_idx);
-    TLorentzVector Muon3LV = Ntp->Muon_P4(muon_3_idx);
 
     TLorentzVector TauRefitLV = Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,0) +
       Ntp->Vertex_signal_KF_refittedTracksP4(signal_idx,1) +
@@ -2267,9 +2337,10 @@ void  ZTau3MuTauh::doEvent(){
         dataMCtype = id;
         event_weight =1; // 1 for data
         if(dataMCtype == 1){event_weight =1;}
-        else if(dataMCtype == 210233){event_weight =5.00e-04;}
-        else if(dataMCtype == 210232){event_weight =4.93e-04;}
-        else if(dataMCtype == 210231){event_weight =4.87e-04;}
+        //Not what I actually use. Checkout the section "For combine" and the end: rescaling section
+        else if(dataMCtype == 210233){event_weight =0.000027019659;}
+        else if(dataMCtype == 210232){event_weight =0.000027227541;}
+        else if(dataMCtype == 210231){event_weight =0.000028342254;}
         
         ifCommonCV = Whether_HPS_Tau_Vtx_Exists; // 0 = no CV; 1 = CV
         
@@ -2292,6 +2363,7 @@ void  ZTau3MuTauh::doEvent(){
         var_FLSignificance=val_FLSignificance;
         var_SVPVTauDirAngle=val_SVPVTauDirAngle;
         var_ThreeMuVertexChi2KF=val_ThreeMuVertexChi2KF;
+        var_MinDrToIsoTrack=val_MinDistToIsoTrack;
         var_MinDistToIsoTrack=val_MinDistToIsoTrack;
         var_DeltaPhi=val_DeltaPhi;
         var_Phi_To_Opposite_Side=val_Phi_To_Opposite_Side;
@@ -2307,17 +2379,56 @@ void  ZTau3MuTauh::doEvent(){
         var_HPS_Inv_Mass_Z_Tau3mu_SpecTau=Inv_Mass_Z_Tau3mu_SpecTau;
         var_HPS_GJ_Angle_Ratio=GJ_Angle_Ratio;
         
+        
+        //Creating overflow bins based on some cuts after making sure that at least 97% of signal events pass the cut
+        double var_Muon_pT_cut = 65;
+        double var_Electron_pT_cut = 70;
+        double var_SVPVTauDirAngle_cut = 0.4;
+        double var_Tau3MuIsolation_cut = 8;
+        double var_FLSignificance_cut = 100;
+        double var_MinDrToIsoTrack_cut = 1.45;
+        double var_HPS_FL_Sig_cut = 50;
+        double var_HPS_GJ_Angle_Ratio_cut = 25;
+        double var_MuonIsolation_cut = 12;
+        double var_4Mu_Chi2_cut = 3000;
+        double var_4Mu_Vertex_Disp_cut = 2.5;
+        double var_3Mu_MinDistToMuTrack_mm_cut = 2.0;
+        double var_ElectronSumIsolation_cut = 4;
+        
+        if(var_SVPVTauDirAngle>var_SVPVTauDirAngle_cut){
+                var_SVPVTauDirAngle=0.999*var_SVPVTauDirAngle_cut;
+        }
+        if(var_Tau3MuIsolation>var_Tau3MuIsolation_cut){
+                var_Tau3MuIsolation=0.999*var_Tau3MuIsolation_cut;
+        }
+        if(var_FLSignificance>var_FLSignificance_cut){
+                var_FLSignificance=0.999*var_FLSignificance_cut;
+        }
+        if(var_MinDrToIsoTrack>var_MinDrToIsoTrack_cut){
+                var_MinDrToIsoTrack=0.999*var_MinDrToIsoTrack_cut;
+        }
+        
+        if(var_HPS_FL_Sig>var_HPS_FL_Sig_cut){
+                var_HPS_FL_Sig=0.999*var_HPS_FL_Sig_cut;
+        }
+        if(var_HPS_GJ_Angle_Ratio>var_HPS_GJ_Angle_Ratio_cut){
+                var_HPS_GJ_Angle_Ratio=0.999*var_HPS_GJ_Angle_Ratio_cut;
+        }
+        
+        
+        
+        
         //Evaluate BDT
         BDT_Evaluated_A = 0.0;
         BDT_Evaluated_B = 0.0;
         //BDT_Evaluated = reader_Tauh->EvaluateMVA("BDT");
         if(!Whether_HPS_Tau_Vtx_Exists){// Tauh,A category
                 T3MMiniTree_A->Fill();
-                BDT_Evaluated_A = reader_Tauh_CV->EvaluateMVA("BDT");
+                BDT_Evaluated_A = reader_Tauh_NoCV->EvaluateMVA("BDT");
         }
         else{                          // Tauh,B category
                 T3MMiniTree_B->Fill();
-                BDT_Evaluated_B = reader_Tauh_NoCV->EvaluateMVA("BDT");
+                BDT_Evaluated_B = reader_Tauh_CV->EvaluateMVA("BDT");
         }
         
         //Evaluate BDT with MC bkg
@@ -2361,11 +2472,11 @@ void  ZTau3MuTauh::doEvent(){
         bool Whether_EtaPVeto = (fabs(OmegaVeto-PDG_Var::Omega_mass())> 5*0.00023);
         
         //For combine
-        if(Whether_PhiVeto && Whether_OmegaVeto && Whether_EtaPVeto){
+        //if(Whether_PhiVeto && Whether_OmegaVeto && Whether_EtaPVeto){
         tripletMass=TauRefitLV.M();
         //OutputTree=dataMCtype;
         isMC=  (id==1)?0:7; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
-        weight=0.0000280;
+        weight=0.000027019659;
         if(isMC==0) weight=1.0;
         dimu_OS1=m12;
         dimu_OS2=m13;
@@ -2381,7 +2492,7 @@ void  ZTau3MuTauh::doEvent(){
         }
         
         
-        }
+        //}
         
         
         
@@ -2576,7 +2687,7 @@ void  ZTau3MuTauh::doEvent(){
         BDT_2Dscan_A_FLSignificance.at(t).Fill(BDT_Evaluated_A,var_FLSignificance);
         BDT_2Dscan_A_VertexChi2KF.at(t).Fill(BDT_Evaluated_A,var_ThreeMuVertexChi2KF);
         BDT_2Dscan_A_SVPVTauDirAngle.at(t).Fill(BDT_Evaluated_A,var_SVPVTauDirAngle);
-        BDT_2Dscan_A_MinDistToIsoTrack.at(t).Fill(BDT_Evaluated_A,var_MinDistToIsoTrack);
+        BDT_2Dscan_A_MinDistToIsoTrack.at(t).Fill(BDT_Evaluated_A,var_MinDrToIsoTrack);
         BDT_2Dscan_A_Kinematics_MissingTrMass_cos.at(t).Fill(BDT_Evaluated_A,var_DeltaPhi);
         
         BDT_2Dscan_A_MET_Et.at(t).Fill(BDT_Evaluated_A,var_MET_Et);
@@ -2614,7 +2725,7 @@ void  ZTau3MuTauh::doEvent(){
         BDT_2Dscan_B_FLSignificance.at(t).Fill(BDT_Evaluated_B,var_FLSignificance);
         BDT_2Dscan_B_VertexChi2KF.at(t).Fill(BDT_Evaluated_B,var_ThreeMuVertexChi2KF);
         BDT_2Dscan_B_SVPVTauDirAngle.at(t).Fill(BDT_Evaluated_B,var_SVPVTauDirAngle);
-        BDT_2Dscan_B_MinDistToIsoTrack.at(t).Fill(BDT_Evaluated_B,var_MinDistToIsoTrack);
+        BDT_2Dscan_B_MinDistToIsoTrack.at(t).Fill(BDT_Evaluated_B,var_MinDrToIsoTrack);
         BDT_2Dscan_B_Kinematics_MissingTrMass_cos.at(t).Fill(BDT_Evaluated_B,var_DeltaPhi);
         
         BDT_2Dscan_B_MET_Et.at(t).Fill(BDT_Evaluated_B,var_MET_Et);
@@ -2636,8 +2747,6 @@ void  ZTau3MuTauh::doEvent(){
         
         
         
-        
-        
         //For fitting BDT shape
         if(BDT_Evaluated_A>0.05){
           if(PlotMCOnly)  PostBDT_A_TripletMass_VeryLooseCut.at(t).Fill(TauRefitLV.M(),1);
@@ -2655,7 +2764,7 @@ void  ZTau3MuTauh::doEvent(){
         
         
         //if(BDT_Evaluated>0.309056){
-        if(BDT_Evaluated_A>0.309056 && !Whether_HPS_Tau_Vtx_Exists){// Tauh,A category
+        if(BDT_Evaluated_A>0.345 && !Whether_HPS_Tau_Vtx_Exists){// Tauh,A category
         
         PostBDT_A_TripletPt.at(t).Fill(var_TripletPT);
         PostBDT_A_TripletEta.at(t).Fill(var_TripletEta);
@@ -2673,7 +2782,7 @@ void  ZTau3MuTauh::doEvent(){
         PostBDT_A_FLSignificance.at(t).Fill(var_FLSignificance);
         PostBDT_A_VertexChi2KF.at(t).Fill(var_ThreeMuVertexChi2KF);
         PostBDT_A_SVPVTauDirAngle.at(t).Fill(var_SVPVTauDirAngle);
-        PostBDT_A_MinDistToIsoTrack.at(t).Fill(var_MinDistToIsoTrack);
+        PostBDT_A_MinDistToIsoTrack.at(t).Fill(var_MinDrToIsoTrack);
         PostBDT_A_Kinematics_MissingTrMass_cos.at(t).Fill(var_DeltaPhi);
         
         PostBDT_A_MET_Et.at(t).Fill(var_MET_Et);
@@ -2699,47 +2808,47 @@ void  ZTau3MuTauh::doEvent(){
         
         }//if BDT_Evaluated
         
-        if(BDT_Evaluated_B>0.309056 && Whether_HPS_Tau_Vtx_Exists){// Tauh,B category
+        if(BDT_Evaluated_B>0.18 && Whether_HPS_Tau_Vtx_Exists){// Tauh,B category
         
-        PostBDT_A_TripletPt.at(t).Fill(var_TripletPT);
-        PostBDT_A_TripletEta.at(t).Fill(var_TripletEta);
-        PostBDT_A_Tau3MuRelativeIsolation.at(t).Fill(var_Tau3MuIsolation);
-        PostBDT_A_Mu1_Pt.at(t).Fill(var_mu1_pT);
-        PostBDT_A_Mu2_Pt.at(t).Fill(var_mu2_pT);
-        PostBDT_A_Mu3_Pt.at(t).Fill(var_mu3_pT);
-        PostBDT_A_Mu1_Eta.at(t).Fill(var_mu1_eta);
-        PostBDT_A_Mu2_Eta.at(t).Fill(var_mu2_eta);
-        PostBDT_A_Mu3_Eta.at(t).Fill(var_mu3_eta);
+        PostBDT_B_TripletPt.at(t).Fill(var_TripletPT);
+        PostBDT_B_TripletEta.at(t).Fill(var_TripletEta);
+        PostBDT_B_Tau3MuRelativeIsolation.at(t).Fill(var_Tau3MuIsolation);
+        PostBDT_B_Mu1_Pt.at(t).Fill(var_mu1_pT);
+        PostBDT_B_Mu2_Pt.at(t).Fill(var_mu2_pT);
+        PostBDT_B_Mu3_Pt.at(t).Fill(var_mu3_pT);
+        PostBDT_B_Mu1_Eta.at(t).Fill(var_mu1_eta);
+        PostBDT_B_Mu2_Eta.at(t).Fill(var_mu2_eta);
+        PostBDT_B_Mu3_Eta.at(t).Fill(var_mu3_eta);
         
-        PostBDT_A_h_Pt.at(t).Fill(var_Tau_pT);
-        PostBDT_A_h_Eta.at(t).Fill(var_Tau_eta);
+        PostBDT_B_h_Pt.at(t).Fill(var_Tau_pT);
+        PostBDT_B_h_Eta.at(t).Fill(var_Tau_eta);
         
-        PostBDT_A_FLSignificance.at(t).Fill(var_FLSignificance);
-        PostBDT_A_VertexChi2KF.at(t).Fill(var_ThreeMuVertexChi2KF);
-        PostBDT_A_SVPVTauDirAngle.at(t).Fill(var_SVPVTauDirAngle);
-        PostBDT_A_MinDistToIsoTrack.at(t).Fill(var_MinDistToIsoTrack);
-        PostBDT_A_Kinematics_MissingTrMass_cos.at(t).Fill(var_DeltaPhi);
+        PostBDT_B_FLSignificance.at(t).Fill(var_FLSignificance);
+        PostBDT_B_VertexChi2KF.at(t).Fill(var_ThreeMuVertexChi2KF);
+        PostBDT_B_SVPVTauDirAngle.at(t).Fill(var_SVPVTauDirAngle);
+        PostBDT_B_MinDistToIsoTrack.at(t).Fill(var_MinDrToIsoTrack);
+        PostBDT_B_Kinematics_MissingTrMass_cos.at(t).Fill(var_DeltaPhi);
         
-        PostBDT_A_MET_Et.at(t).Fill(var_MET_Et);
-        PostBDT_A_MET_Phi.at(t).Fill(var_MET_Phi);
+        PostBDT_B_MET_Et.at(t).Fill(var_MET_Et);
+        PostBDT_B_MET_Phi.at(t).Fill(var_MET_Phi);
         
-        PostBDT_A_VisibleDiTauMass.at(t).Fill(var_VisMass);
-        PostBDT_A_VisibleDiTauMass_Collinear.at(t).Fill(var_DiTauMass_Collinear);
+        PostBDT_B_VisibleDiTauMass.at(t).Fill(var_VisMass);
+        PostBDT_B_VisibleDiTauMass_Collinear.at(t).Fill(var_DiTauMass_Collinear);
         
         if(MuonOS.DeltaR(MuonSS1) > MuonOS.DeltaR(MuonSS2)){
         
-          PostBDT_A_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
-          PostBDT_A_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+          PostBDT_B_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+          PostBDT_B_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS1).M(),1 );
 
 
         }else{
       
-          PostBDT_A_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
-          PostBDT_A_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
+          PostBDT_B_PairMass_OppositeSign_dR12.at(t).Fill((MuonOS+MuonSS1).M(),1 );
+          PostBDT_B_PairMass_OppositeSign_dR13.at(t).Fill((MuonOS+MuonSS2).M(),1 );
       
         }
         
-        if(PlotMCOnly)  PostBDT_A_TripletMass.at(t).Fill(TauRefitLV.M(),1);
+        if(PlotMCOnly)  PostBDT_B_TripletMass.at(t).Fill(TauRefitLV.M(),1);
         
         }//if BDT_Evaluated
         
@@ -2764,9 +2873,9 @@ void  ZTau3MuTauh::Finish(){
   }
   
   if (mode==RECONSTRUCT){
-    double lumi_scale_1_taue(0.0000293); //need to be entered manually
-    double lumi_scale_2_taumu(0.0000283);
-    double lumi_scale_3_tauh(0.0000280);
+    double lumi_scale_1_taue(0.000028342254); //need to be entered manually
+    double lumi_scale_2_taumu(0.000027227541);
+    double lumi_scale_3_tauh(0.000027019659);
     for ( unsigned int j=0; j<InputFeatureCollection.size(); ++j){
       double scale(1.0);
       if(InputFeatureCollection.at(j)->size()>=4){

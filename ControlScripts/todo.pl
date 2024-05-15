@@ -10,6 +10,7 @@ $ARGV[$argnum];
 $UserID= POSIX::cuserid();
 $UserDir="";
 $UserName="";
+$HPGUserName="";
 if($UserID eq "cherepan"){
     $UserDir="--cherepanov";
     $UserName="Vladimir";
@@ -36,6 +37,7 @@ if($UserID eq "nimenend"){
 if($UserID eq "mmadhu"){
     $UserDir="--madhu";
     $UserName="Arun";
+    $HPGUserName="arunmadhu";
 }
 
 
@@ -488,7 +490,7 @@ if( $ARGV[0] eq "--DCache" ){
     # Generate script to copy skimmed files to T2
     system(sprintf("echo \"import os\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
     system(sprintf("echo \"\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
-    system(sprintf("echo \"pathbase='$OutputDir/workdir$set/'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
+    #system(sprintf("echo \"pathbase='$OutputDir/workdir$set/'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
     system(sprintf("echo \"username='$UserID'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
     system(sprintf("echo \"tag='$set'\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
     system(sprintf("echo \"\" >> $OutputDir/workdir$set/CopySkimmedFiles.py")); 
@@ -566,7 +568,8 @@ if( $ARGV[0] eq "--DCache" ){
 	#	system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cmsuf/data$DS/ \" | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/) | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/)  >> junk0"));
-    system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
+  # system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
+    system(sprintf(" ssh $HPGUserName\@hpg.rc.ufl.edu \'ls /cmsuf/data/$DS/\' | grep .root >&junk0"));
     system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
 
 
