@@ -264,7 +264,7 @@ void KSTest ()
         ref_line->SetLineStyle(2); // Set line style (dashed)
         //ref_line->Draw(); // Draw the line on the canvas
         
-        TLegend *legend = new TLegend(0.81, 0.7, 0.9, 0.9); // Specify legend position (x1, y1, x2, y2)
+        TLegend *legend = new TLegend(0.81, 0.6, 0.9, 0.8); // Specify legend position (x1, y1, x2, y2)
         // Add entries to the legend
         legend->AddEntry(graph1, "S", "lp"); // "lp" option indicates line and marker for the entry
         legend->AddEntry(graph2, "B", "lp");

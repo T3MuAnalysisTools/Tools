@@ -130,7 +130,7 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
             mycutSig = TCut(  cuts + categoryCut) 
-            mycutBkg = TCut(  cutb + categoryCut + " (m3m < 1.75 || m3m > 1.81) ") 
+            mycutBkg = TCut(  cutb + categoryCut + " (m3m < 1.74 || m3m > 1.81) ") 
 
 
             print "-------------------------------------------------------------------------------------------- Signal Cut", mycutSig
@@ -151,7 +151,7 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_mu3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.06:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.04:SeparationType=GiniIndex:nCuts=100" )
                                             
             if category_wagon=="ZTT_tau3mu":
                     if "BDT" in mlist:
@@ -161,12 +161,12 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_tau_NoCV_3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=600:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.1:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=600:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.085:SeparationType=GiniIndex:nCuts=100" )
                                             
             if category_wagon=="ZTT_tau_CV_3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=200:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.4:SeparationType=GiniIndex:nCuts=25" )
+                                            "!H:!V:NTrees=200:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.28:SeparationType=GiniIndex:nCuts=25" )
                                             
             if category_wagon=="ZTT_e3mu":
                     if "BDT" in mlist:

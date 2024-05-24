@@ -49,8 +49,8 @@ def get_file_dict(rfilename):
 
 if __name__== "__main__":
  
-    cat=0 #tauha: 0, #tauhb: 1, #taumu: 2, #taue: 3
-    no_of_vars_tested = [15,18,19,16] # no of trainings tested - 1. tauha: 15, #tauhb: 18, #taumu: 19, #taue: 16
+    cat=3 #tauha: 0, #tauhb: 1, #taumu: 2, #taue: 3
+    no_of_vars_tested = [10,13,14,11] # no of trainings tested - 1. tauha: 15, #tauhb: 18, #taumu: 19, #taue: 16
     title_type = ["{h,A}","{h,B}","{#mu}","{e}"]
     
     w = 1100 

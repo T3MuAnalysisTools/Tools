@@ -49,7 +49,7 @@ private:
         double s=(z-dz)/tan(lambda);
         //double radius=2.0/kappa; // Radius of curvature
         //double radius=1.0/(kappa*particle.BField()); // Radius of curvature
-        double radius=1.0/(kappa); // Radius of curvature
+        double radius=1.0/(2.0*kappa); // Radius of curvature
         
         // Calculate the helix parameters
         double x=radius*sin(2.0*s*kappa+phi0)-(radius+dxy)*sin(phi0);

@@ -12,9 +12,9 @@ void KSTest ()
         //cat_type = "_ZTT_mu3mu";
         //cat_type = "_ZTT_e3mu"
         
-        TString cat_type = "_ZTT_mu3mu";
+        TString cat_type = "_ZTT_tau_CV_3mu";
             
-        const int no_cats(14+1);
+        const int no_cats(13+1);
         
         TString cat_label[4];
         cat_label[0] = "{h,A}";
@@ -22,7 +22,7 @@ void KSTest ()
         cat_label[2] = "{#mu}";
         cat_label[3] = "{e}";
         
-        TString cat_l=cat_label[2];
+        TString cat_l=cat_label[1];
         
         TFile *TreeFile[no_cats];
         TString hname;
@@ -221,7 +221,7 @@ void KSTest ()
             cout<< "K-S Probabibility Background Tail Unbinned: " << ks_score_bkg_restr_unbinned[i] << endl;
             
             //if(ks_score_sig[i]>0.20&&ks_score_sig[i]<0.80 && ks_score_bkg[i]>0.20&&ks_score_bkg[i]<0.80 && ks_score_bkg_restr[i]>0.40&&ks_score_bkg_restr[i]<0.60){
-            if(ks_score_sig_unbinned[i]>0.20 && ks_score_bkg_unbinned[i]>0.20 && ks_score_bkg_restr_unbinned[i]>0.40){
+            if(ks_score_sig_unbinned[i]>0.20 && ks_score_bkg_unbinned[i]>0.20 && ks_score_bkg_restr_unbinned[i]>0.50){
                     cout << "Use: " << i << " to plot ROC curves." << endl;
             }
         
@@ -274,7 +274,7 @@ void KSTest ()
         legend->Draw();
         
         //canvas->Draw();
-        canvas->SaveAs("taumu.png");
+        canvas->SaveAs("tauhb.png");
         delete canvas;
         
     

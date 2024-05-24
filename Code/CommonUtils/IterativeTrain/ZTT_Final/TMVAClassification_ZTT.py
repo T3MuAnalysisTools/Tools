@@ -4,9 +4,9 @@
 import sys    # exit
 import time   # time accounting
 import getopt # command line parser
-from TrainConfigs_tauha_comparisons import configuration,selection
+from TrainConfigs_ZTT_final import configuration,selection
 
-DEFAULT_INFNAME  = "../../MVA_Mini_Tree_ZTT.root"
+DEFAULT_INFNAME  = "../MVA_Mini_Tree_ZTT.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
@@ -151,7 +151,7 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_mu3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=2:BoostType=AdaBoost:AdaBoostBeta=0.04:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.04:SeparationType=GiniIndex:nCuts=100" )
                                             
             if category_wagon=="ZTT_tau3mu":
                     if "BDT" in mlist:

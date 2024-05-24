@@ -6,7 +6,7 @@ import time   # time accounting
 import getopt # command line parser
 from TrainConfigs_ZTT_plots import configuration,selection
 
-DEFAULT_INFNAME  = "../MVA_Mini_Tree_ZTT.root"
+DEFAULT_INFNAME  = "../MVA_Mini_Tree_ZTT_No_Overflow.root"
 
 
 #DEFAULT_METHODS  = "Cuts,CutsD,CutsPCA,CutsGA,CutsSA,Likelihood,LikelihoodD,LikelihoodPCA,LikelihoodKDE,LikelihoodMIX,PDERS,PDERSD,PDERSPCA,PDEFoam,PDEFoamBoost,KNN,LD,Fisher,FisherG,BoostedFisher,HMatrix,FDA_GA,FDA_SA,FDA_MC,FDA_MT,FDA_GAMT,FDA_MCMT,MLP,MLPBFGS,MLPBNN,CFMlpANN,TMlpANN,SVM,BDT,BDTD,BDTG,BDTB,RuleFit"
@@ -66,7 +66,8 @@ def doTrain(configs,training_cuts,mlist,infname):
 
             # Setup dataloader and define cuts
             cuts=''
-            cutb='dataMCtype      == 1      && '
+            cutb=''
+            
 
             for v in train.get(category_wagon):
                 dataloader.AddVariable(v,v,"F")
@@ -77,6 +78,9 @@ def doTrain(configs,training_cuts,mlist,infname):
                           " && "+v+" < "+str(selection[v][1])+")  && "
                   cutb = cutb+"("+v+" > "+str(selection[v][0])+ \
                           " && "+v+" < "+str(selection[v][1])+")  && "
+                          
+            
+            cutb  = cutb + 'dataMCtype      == 1   '
 
 
 
@@ -130,7 +134,8 @@ def doTrain(configs,training_cuts,mlist,infname):
 
 
             mycutSig = TCut(  cuts + categoryCut) 
-            mycutBkg = TCut(  cutb + categoryCut + " (m3m < 1.75 || m3m > 1.81) ") 
+            #mycutBkg = TCut(  cutb + categoryCut + " (m3m < 1.74 || m3m > 1.81) ") 
+            mycutBkg = TCut(  cutb + categoryCut) 
 
 
             print "-------------------------------------------------------------------------------------------- Signal Cut", mycutSig
