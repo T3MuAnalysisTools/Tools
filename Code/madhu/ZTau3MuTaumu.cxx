@@ -114,10 +114,13 @@ void  ZTau3MuTaumu::Configure(){
   reader_Taumu = new TMVA::Reader( "!Color:!Silent" );
   
   
-  reader_Taumu->AddVariable("var_mu2_pT",&var_mu2_pT);
   reader_Taumu->AddVariable("var_TripletPT",&var_TripletPT);
   reader_Taumu->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
   
+  reader_Taumu->AddVariable("var_Muon_pT",&var_Muon_pT);
+  
+  reader_Taumu->AddVariable("var_FLSignificance",&var_FLSignificance);
+  reader_Taumu->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Taumu->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   reader_Taumu->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   reader_Taumu->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
@@ -127,7 +130,8 @@ void  ZTau3MuTaumu::Configure(){
   reader_Taumu->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
   
   reader_Taumu->AddVariable("var_MuonIsolation",&var_MuonIsolation);
-  reader_Taumu->AddVariable("var_3Mu_MinDistToMuTrack_mm",&var_3Mu_MinDistToMuTrack_mm);
+  reader_Taumu->AddVariable("var_4Mu_Chi2",&var_4Mu_Chi2);
+  reader_Taumu->AddVariable("var_AvgDeltaZ_3Mu_Mu_mm",&var_AvgDeltaZ_3Mu_Mu_mm);
   
   reader_Taumu->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/final_BDT/output_0_ZTT_mu3mu/weights/TMVAClassification_BDT.weights.xml"); 
   
@@ -210,6 +214,7 @@ void  ZTau3MuTaumu::Configure(){
     if(i==L1_TriggerOk)       cut.at(L1_TriggerOk)=1;
     if(i==HLT_TriggerOk)      cut.at(HLT_TriggerOk)=1;
     if(i==SignalCandidate)    cut.at(SignalCandidate)=1;
+    if(i==HLT_reinforcements) cut.at(HLT_reinforcements)=1;
     if(i==TripletPT)          cut.at(TripletPT)=20;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nMuons_PF_GL)       cut.at(nMuons_PF_GL)=1;
@@ -303,6 +308,15 @@ void  ZTau3MuTaumu::Configure(){
       htitle.ReplaceAll("\\","#");
       Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_SignalCandidate_",htitle,5,-0.5,4.5,hlabel,"Events"));
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_SignalCandidate_",htitle,5,-0.5,4.5,hlabel,"Events"));
+    }
+    else if(i==HLT_reinforcements){
+      title.at(i)="HLT Reinforcements ($\\mu_{1,Pt}>$7.0, $\\mu_{2,Pt}>$1.0, $\\mu_{3,Pt}>$1.0, dR($\\mu_{i} , \\mu_{j}$)$<$0.5 for atleast one muon pair, Invariant Mass ($\\mu_{i} , \\mu_{j}$)$<$1.9 for atleast one muon pair, $\\tau_{3\\mu,Pt}>$15.0, $\\tau_{3\\mu,\\eta}<$2.5";
+      htitle=title.at(i);
+      hlabel="HLT Reinforcements";
+      htitle.ReplaceAll("$","");
+      htitle.ReplaceAll("\\","#");
+      Nminus1.push_back(HConfig.GetTH1D(Name+c+"_Nminus1_HLT_reinforcements_",htitle,2,-0.5,1.5,hlabel,"Events"));
+      Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_HLT_reinforcements_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==OSCharge){
       title.at(i)="Charge $\\mu$ * $\\tau_{3\\mu}$ = -1 ";
@@ -867,6 +881,8 @@ void  ZTau3MuTaumu::doEvent(){
   value.at(L1_TriggerOk)=(L1Ok);
   pass.at(L1_TriggerOk)=(value.at(L1_TriggerOk)==cut.at(L1_TriggerOk));
   
+  pass.at(L1_TriggerOk)=1;//because random number generated here maybe different from that in the skimmer
+  
   value.at(HLT_TriggerOk)=(HLTOk);
   pass.at(HLT_TriggerOk)=(value.at(HLT_TriggerOk)==cut.at(HLT_TriggerOk));
 
@@ -875,7 +891,7 @@ void  ZTau3MuTaumu::doEvent(){
   value.at(SignalCandidate) = Ntp->NThreeMuons();
 
   int  signal_idx=-1;
-  double min_chi2(99.);
+  double min_chi2(299.);
   double min_dR_3mu_trig(299.);
   
 
@@ -894,8 +910,8 @@ void  ZTau3MuTaumu::doEvent(){
     for (int i=0; i<Ntp->NTriggerObjects(); i++){
             TString name = Ntp->TriggerObject_name(i);
             TLorentzVector tmp;
-            tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
-            if ( (TripletmuLV).DeltaR(tmp) < min_dR_3mu_trig ) { min_dR_3mu_trig = (TripletmuLV).DeltaR(tmp); signal_idx = i_idx; }
+            tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Tau_mass());
+            if ( (TripletmuLV).DeltaR(tmp) < min_dR_3mu_trig && name.Contains("hltTau3MuIsoFilterCharge1") ) { min_dR_3mu_trig = (TripletmuLV).DeltaR(tmp); signal_idx = i_idx; }
     }
     
   }
@@ -1304,8 +1320,9 @@ void  ZTau3MuTaumu::doEvent(){
   value.at(Tau3MuIsolation) = -1;
   value.at(MuonIsolation)   = -1;
   value.at(VisMass)         = -1;
-
   value.at(TriggerMatch) = 0;
+  value.at(HLT_reinforcements) = 0;
+  
   if(signal_idx!=-1)
     {
 
@@ -1315,14 +1332,27 @@ void  ZTau3MuTaumu::doEvent(){
 
       TLorentzVector TripletmuLV = Ntp->Muon_P4(index_mu_1) +  Ntp->Muon_P4(index_mu_2) +  Ntp->Muon_P4(index_mu_3);
       
+      TLorentzVector mu1_lv = Ntp->Muon_P4(index_mu_1);
+      TLorentzVector mu2_lv = Ntp->Muon_P4(index_mu_2);
+      TLorentzVector mu3_lv = Ntp->Muon_P4(index_mu_3);
+      
       value.at(Tau3MuIsolation) =    (Ntp->Muon_RelIso(index_mu_1) +
                                       Ntp->Muon_RelIso(index_mu_2) +
                                       Ntp->Muon_RelIso(index_mu_3) )/TripletmuLV.Pt();
                                                                                                     
       Selection_Cut_3mu_Rel_Iso.at(t).Fill(value.at(Tau3MuIsolation));
+      
+      //HLT Reinforcement
+      
+      bool muon_pt_cuts = ( mu1_lv.Pt() > 7.0 && mu2_lv.Pt() > 1.0 && mu3_lv.Pt() > 1.0 );
+      bool tau_pt_eta_cut = ( TripletmuLV.Pt() > 15.0 && TripletmuLV.Eta() < 2.5 );
+      bool dr_0p5_cuts = ( mu1_lv.DeltaR(mu2_lv) < 0.5 || mu1_lv.DeltaR(mu3_lv) < 0.5 || mu2_lv.DeltaR(mu3_lv) < 0.5 );
+      bool pairMass_1p9_cuts = ( (mu1_lv+mu2_lv).M() < 1.9 || (mu1_lv+mu3_lv).M() < 1.9 || (mu2_lv+mu3_lv).M() < 1.9 );
+      
+      value.at(HLT_reinforcements) = ( muon_pt_cuts && tau_pt_eta_cut && dr_0p5_cuts && pairMass_1p9_cuts );
     
     
-    //Trigger Matching
+      //Trigger Matching
 
       int triggerCheck = 0.1;
       if(pass.at(HLT_TriggerOk))
@@ -1335,10 +1365,14 @@ void  ZTau3MuTaumu::doEvent(){
 	      TString name = Ntp->TriggerObject_name(i);
 	      //	if (!(name.Contains("tau3muDisplaced3muFltr"))) continue;
 	      TLorentzVector tmp;
-	      tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
-	      trigobjTriplet.push_back(tmp);
+              tmp.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Muon_mass());
+              trigobjTriplet.push_back(tmp);
               trigobjNames.push_back(name);
-              if(!Whether_Tau_Matched) Whether_Tau_Matched=(fabs(TripletmuLV.Pt()-tmp.Pt())/TripletmuLV.Pt() < 0.1 && TripletmuLV.DeltaR(tmp) < 0.01 && name.Contains("hltTau3MuIsoFilterCharge1"));
+              
+              TLorentzVector tmp_tau = tmp;
+              tmp_tau.SetPtEtaPhiM(Ntp->TriggerObject_pt(i), Ntp->TriggerObject_eta(i), Ntp->TriggerObject_phi(i), PDG_Var::Tau_mass());
+              
+              if(!Whether_Tau_Matched) Whether_Tau_Matched=(fabs(TripletmuLV.Pt()-tmp_tau.Pt())/TripletmuLV.Pt() < 0.1 && TripletmuLV.DeltaR(tmp_tau) < 0.01 && name.Contains("hltTau3MuIsoFilterCharge1"));
 	    }
 	  std::vector<TLorentzVector> muonTriplet;
 	  muonTriplet.push_back(Ntp->Muon_P4(Ntp->ThreeMuonIndices(signal_idx).at(0)));
@@ -1373,6 +1407,7 @@ void  ZTau3MuTaumu::doEvent(){
 	
     }
   
+    pass.at(HLT_reinforcements) = (value.at(HLT_reinforcements)  ==  cut.at(HLT_reinforcements)); 
     pass.at(TriggerMatch) = (value.at(TriggerMatch)  ==  cut.at(TriggerMatch));
     //    std::cout<<" (value.at(TriggerMatch)   " << value.at(TriggerMatch)  << " cut.at(TriggerMatch)   " << cut.at(TriggerMatch) << "  ??   " 
     //	     <<(value.at(TriggerMatch)  ==  cut.at(TriggerMatch) )<< std::endl;
@@ -1953,7 +1988,9 @@ void  ZTau3MuTaumu::doEvent(){
         double var_4Mu_Chi2_cut = 3000;
         double var_4Mu_Vertex_Disp_cut = 2.5;
         double var_3Mu_MinDistToMuTrack_mm_cut = 2.0;
+        double var_AvgDeltaZ_3Mu_Mu_mm_cut = 3.0;
         double var_ElectronSumIsolation_cut = 4;
+        
         
         if(var_SVPVTauDirAngle>var_SVPVTauDirAngle_cut){
                 var_SVPVTauDirAngle=0.999*var_SVPVTauDirAngle_cut;
@@ -1974,15 +2011,19 @@ void  ZTau3MuTaumu::doEvent(){
         if(var_MuonIsolation>var_MuonIsolation_cut){
                 var_MuonIsolation=0.999*var_MuonIsolation_cut;
         }
-        if(var_4Mu_Chi2>var_4Mu_Chi2_cut){
+        if(var_4Mu_Chi2>var_4Mu_Chi2_cut || isnan(var_4Mu_Chi2) || var_4Mu_Chi2 < -0.000001 ){
                 var_4Mu_Chi2=0.999*var_4Mu_Chi2_cut;
         }
-        if(var_4Mu_Vertex_Disp>var_4Mu_Vertex_Disp_cut){
+        if(var_4Mu_Vertex_Disp>var_4Mu_Vertex_Disp_cut || isnan(var_4Mu_Chi2) || var_4Mu_Chi2 < -0.000001 ){
                 var_4Mu_Vertex_Disp=0.999*var_4Mu_Vertex_Disp_cut;
         }
         if(var_3Mu_MinDistToMuTrack_mm>var_3Mu_MinDistToMuTrack_mm_cut){
                 var_3Mu_MinDistToMuTrack_mm=0.999*var_3Mu_MinDistToMuTrack_mm_cut;
         }
+        if(var_AvgDeltaZ_3Mu_Mu_mm>var_AvgDeltaZ_3Mu_Mu_mm_cut){
+                var_AvgDeltaZ_3Mu_Mu_mm=0.999*var_AvgDeltaZ_3Mu_Mu_mm_cut;
+        }
+        
         
         
         T3MMiniTree->Fill();

@@ -38,6 +38,7 @@ class ZTau3MuTauh : public Selection {
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
+	     HLT_reinforcements,
 	     TriggerMatch,
              TripletPT,
              Tau3MuIsolation,
@@ -426,6 +427,7 @@ class ZTau3MuTauh : public Selection {
   Float_t m3m;
   Float_t dataMCtype;
   Float_t ifCommonCV;
+  Float_t decay_mode;
   Float_t event_weight;
   Float_t m12;
   Float_t m13;

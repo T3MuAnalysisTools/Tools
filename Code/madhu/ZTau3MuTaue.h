@@ -35,6 +35,7 @@ class ZTau3MuTaue : public Selection {
              L1_TriggerOk,
 	     HLT_TriggerOk,
 	     SignalCandidate,
+	     HLT_reinforcements,
 	     TriggerMatch,
 	     TripletPT,
 	     nElectrons_PF_cut,
