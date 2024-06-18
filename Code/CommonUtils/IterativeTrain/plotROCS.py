@@ -10,7 +10,7 @@ import ROOT
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f","--files", help="List of files (coma separated); [Default: %(default)s]",  nargs="+", action="store", default = ["a.root","b.root"])
+parser.add_argument("-f","--files", help="List of files (whitespace separated); [Default: %(default)s]",  nargs="+", action="store", default = 'a.root b.root')
 parser.add_argument("-m","--method", help="name of method; [Default: %(default)s]",  type = str, action="store", default = "BDT")
 parser.add_argument("-o","--output", help="output files prefix; [Default: %(default)s]",  type = str, action="store", default = "Out")
 args = parser.parse_args()
@@ -61,6 +61,7 @@ if __name__== "__main__":
     legend.SetHeader("Trains")
 
     color = 1
+    print('Files = ', args.files)
     for ifile in args.files:
         print ifile
         datasets_prefix = ifile[:-5]
