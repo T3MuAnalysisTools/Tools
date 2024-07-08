@@ -1,5 +1,5 @@
-#ifndef ZTau3MuTaue_h
-#define ZTau3MuTaue_h
+#ifndef ZTauTau_h
+#define ZTauTau_h
 
 #include "Selection.h"
 #include <vector>
@@ -22,31 +22,22 @@
 #include "TMVA/MethodCuts.h"
 
 
-class ZTau3MuTaue : public Selection {
+class ZTauTau : public Selection {
 
  public:
-  ZTau3MuTaue(TString Name_, TString id_);
-  virtual ~ZTau3MuTaue();
+  ZTauTau(TString Name_, TString id_);
+  virtual ~ZTauTau();
 
   virtual void  Configure();
   virtual void  Finish();
   
-  enum cuts {WhetherZTTDecayFound=0,
-             L1_TriggerOk,
+  enum cuts {L1_TriggerOk=0,
 	     HLT_TriggerOk,
 	     SignalCandidate,
 	     HLT_reinforcements,
 	     TriggerMatch,
 	     TripletPT,
-	     nElectrons_PF_cut,
-             nElectrons_dR,
-             nElectrons_pT,
-             nElectrons_eta,
-             nElectrons_dz,
-	     OSCharge,
-	     ElectronIsolation,
 	     Tau3MuIsolation,
-	     VisMass,
 	     NCuts}; 
 
  protected:

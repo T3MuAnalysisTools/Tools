@@ -73,6 +73,7 @@
 #include "madhu/ZTau3MuTauh_PreFC.h"
 #include "madhu/ZTau3MuTaue_PreFC.h"
 #include "madhu/ZTau3MuTaumu_PreFC.h"
+#include "madhu/ZTauTau.h"
 
 #endif
 
@@ -156,6 +157,7 @@ Selection_Base* Selection_Factory::Factory(TString Analysis, TString UncertType,
   else if(Analysis.Contains("ztau3mutauh"))s=new ZTau3MuTauh(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaue"))s=new ZTau3MuTaue(Analysis,UncertType);
   else if(Analysis.Contains("ztau3mutaumu"))s=new ZTau3MuTaumu(Analysis,UncertType);
+  else if(Analysis.Contains("ztautau"))s=new ZTauTau(Analysis,UncertType);
 #endif
 
 

@@ -568,8 +568,8 @@ if( $ARGV[0] eq "--DCache" ){
 	#	system(sprintf("uberftp cmsio.rc.ufl.edu \"ls /cmsuf/data$DS/ \" | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/) | grep .root >&junk0"));
   # system(sprintf(" (eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/)  >> junk0"));
-  # system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
-    system(sprintf(" ssh $HPGUserName\@hpg.rc.ufl.edu \'ls /cmsuf/data/$DS/\' | grep .root >&junk0"));
+   system(sprintf(" eval `scram unsetenv -sh`; gfal-ls davs://cmsio7.rc.ufl.edu:1094$DS/ | grep .root >&junk0"));
+  #  system(sprintf(" ssh $HPGUserName\@hpg.rc.ufl.edu \'ls /cmsuf/data/$DS/\' | grep .root >&junk0"));
     system(sprintf("cat junk0 | awk '{print \$1}' >& junk1")); 
 
 

@@ -45,11 +45,13 @@ class ZTau3MuTauh : public Selection {
              nTaus_dR,
              nTaus_pT,
              nTaus_eta,
+             nTaus_dz,
 	     OSCharge,
 	     DeepTauJets,
 	     DeepTauMuons,
 	     DeepTauElectrons,
 	     VisMass,
+	     ExclNewMode,
 	     NCuts}; 
 
  protected:

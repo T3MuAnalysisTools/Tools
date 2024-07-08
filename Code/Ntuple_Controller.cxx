@@ -21,7 +21,7 @@ Ntuple_Controller::Ntuple_Controller(std::vector<TString> RootFiles):
 {
    // TChains the ROOTuple file
    // TChain *chain = new TChain("T3MTree/t3mtree"); // NOT SKIMMED
-  TChain *chain = new TChain("t3mtree"); //  SKIMMED
+    TChain *chain = new TChain("t3mtree"); //  SKIMMED
    //  Logger(Logger::Verbose) << "Loading " << RootFiles.size() << " files" << std::endl;
    for(unsigned int i=0; i<RootFiles.size(); i++){
       chain->Add(RootFiles[i]);
@@ -178,51 +178,53 @@ Long64_t  Ntuple_Controller::GetMCID(){
            int tau_e_idx(-1);
            int tau_h_idx(-1);
            for(unsigned int imc =0; imc< NMCParticles(); imc++){
-                    if(abs(MCParticle_pdgid(imc)) == 15 && MCParticle_pdgid(MCParticle_midx(imc) ) == 23){
-                      TausFromZ_Count++;
-                          
-                          //correcting for cases where tau decays multiple times
-                          int ChildIdx = imc;
-                          bool Whether_Another_Tau_Decay_In_Chain(false);
-                          for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
-                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15) Whether_Another_Tau_Decay_In_Chain=true;
-                          }
-                          while (Whether_Another_Tau_Decay_In_Chain){
-                            Whether_Another_Tau_Decay_In_Chain=false;
-                            for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
-                              if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15){
-                                ChildIdx = MCParticle_childidx(ChildIdx).at(i);
-                                Whether_Another_Tau_Decay_In_Chain=true;
-                              }
+                    if(MCParticle_midx(imc)>-0.5){
+                            if(abs(MCParticle_pdgid(imc)) == 15 && MCParticle_pdgid(MCParticle_midx(imc) ) == 23){
+                                  TausFromZ_Count++;
+                                  
+                                  //correcting for cases where tau decays multiple times
+                                  int ChildIdx = imc;
+                                  bool Whether_Another_Tau_Decay_In_Chain(false);
+                                  for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                                    if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15) Whether_Another_Tau_Decay_In_Chain=true;
+                                  }
+                                  while (Whether_Another_Tau_Decay_In_Chain){
+                                    Whether_Another_Tau_Decay_In_Chain=false;
+                                    for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                                      if(abs(MCParticle_childpdgid(ChildIdx).at(i))==15){
+                                        ChildIdx = MCParticle_childidx(ChildIdx).at(i);
+                                        Whether_Another_Tau_Decay_In_Chain=true;
+                                      }
+                                    }
+                                  }
+                                  
+                                  int nmuons_temp(0);
+                                  int nelectrons_temp(0);
+                                  for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
+                                    if(abs(MCParticle_childpdgid(ChildIdx).at(i))==13){
+                                      nmuons_temp++;
+                                    }
+                                    if(abs(MCParticle_childpdgid(ChildIdx).at(i))==11){
+                                      nelectrons_temp++;
+                                    }
+                                  }
+                                  
+                                  if(nmuons_temp==3){
+                                    tau_3mu_idx=ChildIdx;
+                                  }
+                                  else if(nmuons_temp==1){
+                                    tau_mu_idx=ChildIdx;
+                                  }
+                                  else if(nelectrons_temp==1){
+                                    tau_e_idx=ChildIdx;
+                                  }
+                                  else{
+                                    tau_h_idx=ChildIdx;
+                                  }
+                                  
+                                  
                             }
-                          }
-                          
-                          int nmuons_temp(0);
-                          int nelectrons_temp(0);
-                          for(unsigned int i =0; i< MCParticle_childpdgid(ChildIdx).size(); i++){
-                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==13){
-                              nmuons_temp++;
-                            }
-                            if(abs(MCParticle_childpdgid(ChildIdx).at(i))==11){
-                              nelectrons_temp++;
-                            }
-                          }
-                          
-                          if(nmuons_temp==3){
-                            tau_3mu_idx=ChildIdx;
-                          }
-                          else if(nmuons_temp==1){
-                            tau_mu_idx=ChildIdx;
-                          }
-                          else if(nelectrons_temp==1){
-                            tau_e_idx=ChildIdx;
-                          }
-                          else{
-                            tau_h_idx=ChildIdx;
-                          }
-                          
-                          
-                      }
+                    }
            }
            
            if(tau_3mu_idx>-0.5 && tau_h_idx>-0.5) DataMCTypeFromTupel=210233;

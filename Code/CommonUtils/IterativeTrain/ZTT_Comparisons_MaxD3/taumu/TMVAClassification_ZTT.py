@@ -151,7 +151,7 @@ def doTrain(configs,training_cuts,mlist,infname):
             if category_wagon=="ZTT_mu3mu":
                     if "BDT" in mlist:
                         factory.BookMethod(dataloader, TMVA.Types.kBDT, "BDT",
-                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.04:SeparationType=GiniIndex:nCuts=100" )
+                                            "!H:!V:NTrees=2000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.048:SeparationType=GiniIndex:nCuts=100" )
                                             
             if category_wagon=="ZTT_tau3mu":
                     if "BDT" in mlist:

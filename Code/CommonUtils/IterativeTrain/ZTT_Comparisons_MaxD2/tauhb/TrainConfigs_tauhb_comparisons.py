@@ -12,65 +12,65 @@ varsets0 = {'ZTT_tau_CV_3mu':['var_mu3_pT','var_TripletPT','var_TripletEta','var
                          'var_HPS_FL_Sig','var_HPS_Inv_Mass_Z_Tau3mu_SpecTau','var_HPS_GJ_Angle_Ratio'
                         ]}
                         
-#Removed var_MET_Et
-varsets1 = {'ZTT_tau_CV_3mu':['var_mu3_pT', 'var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 
-            'var_Tau_eta', 'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-            'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_HPS_FL_Sig', 
+#Removed var_mu3_pT
+varsets1 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 
+            'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
+            'var_Phi_To_Opposite_Side', 'var_MET_Et', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_HPS_FL_Sig', 
             'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau', 'var_HPS_GJ_Angle_Ratio']}
 
-#Removed var_DiTauMass_Collinear
-varsets2 = {'ZTT_tau_CV_3mu':['var_mu3_pT', 'var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 
-            'var_Tau_eta', 'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-            'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau', 
+#Removed var_MET_Et
+varsets2 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 
+            'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
+            'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau', 
             'var_HPS_GJ_Angle_Ratio']}
 
-#Removed var_HPS_GJ_Angle_Ratio
-varsets3 = {'ZTT_tau_CV_3mu':['var_mu3_pT', 'var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 
-            'var_Tau_eta', 'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-            'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau']}
+#Removed var_HPS_Inv_Mass_Z_Tau3mu_SpecTau
+varsets3 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 
+            'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
+            'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_HPS_FL_Sig', 'var_HPS_GJ_Angle_Ratio']}
 
-#Removed var_mu3_pT
+#Removed var_HPS_GJ_Angle_Ratio
 varsets4 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 
             'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
-            'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau']}
+            'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_HPS_FL_Sig']}
 
-#Removed var_TripletEta
-varsets5 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 'var_FLSignificance', 
+#Removed var_DiTauMass_Collinear
+varsets5 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 
+            'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
+            'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig']}
+
+#Removed var_Tau_eta
+varsets6 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_FLSignificance', 
             'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 
-            'var_VisMass', 'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau']}
-
-#Removed var_Phi_To_Opposite_Side
-varsets6 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 'var_FLSignificance', 
-            'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_VisMass', 
-            'var_HPS_FL_Sig', 'var_HPS_Inv_Mass_Z_Tau3mu_SpecTau']}
-
-#Removed var_HPS_Inv_Mass_Z_Tau3mu_SpecTau
-varsets7 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_pT', 'var_Tau_eta', 'var_FLSignificance', 
-            'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_VisMass', 
-            'var_HPS_FL_Sig']}
+            'var_VisMass', 'var_HPS_FL_Sig']}
 
 #Removed var_Tau_pT
-varsets8 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_FLSignificance', 'var_SVPVTauDirAngle', 
-            'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_VisMass', 'var_HPS_FL_Sig']}
+varsets7 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_FLSignificance', 'var_SVPVTauDirAngle', 
+            'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 
+            'var_HPS_FL_Sig']}
+
+#Removed var_TripletEta
+varsets8 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 
+            'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig']}
 
 #Removed var_FLSignificance
-varsets9 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 
-            'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_VisMass', 'var_HPS_FL_Sig']}
+varsets9 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
+            'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_HPS_FL_Sig']}
 
 #Removed var_HPS_FL_Sig
-varsets10 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 
-             'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_VisMass']}
+varsets10 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
+             'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass']}
 
 #Removed var_SVPVTauDirAngle
-varsets11 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-             'var_MinDrToIsoTrack', 'var_VisMass']}
+varsets11 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
+             'var_Phi_To_Opposite_Side', 'var_VisMass']}
 
-#Removed var_MinDrToIsoTrack
-varsets12 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
+#Removed var_Phi_To_Opposite_Side
+varsets12 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
              'var_VisMass']}
 
 #Removed var_DeltaPhi
-varsets13 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Tau_eta', 'var_ThreeMuVertexChi2KF', 'var_VisMass']}
+varsets13 = {'ZTT_tau_CV_3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_ThreeMuVertexChi2KF', 'var_MinDrToIsoTrack', 'var_VisMass']}
 
 
 

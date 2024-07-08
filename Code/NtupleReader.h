@@ -176,6 +176,7 @@ public :
 
 
    std::vector<std::vector<float> > *Electron_p4;
+   std::vector<std::vector<float> > *Electron_Poca;
    std::vector<int>                 *Electron_Charge;
    std::vector<float>               *Electron_puppiNeutralHadronIso;
    std::vector<float>               *Electron_puppiChargedHadronIso;
@@ -194,6 +195,7 @@ public :
 
 
    std::vector<std::vector<float> > *Tau_p4;
+   std::vector<std::vector<float> > *Tau_Poca;
    std::vector<int> *Tau_charge;
    std::vector<int> *Tau_DecayMode;
    std::vector<int> *Tau_DecayModeFinding;
@@ -519,6 +521,7 @@ public :
    TBranch        *b_Muon_par;   //!
    TBranch        *b_Muon_cov;   //!
    TBranch        *b_Electron_p4;   //!
+   TBranch        *b_Electron_Poca;   //!
    TBranch        *b_Electron_Charge;   //!
    TBranch        *b_Electron_puppiNeutralHadronIso;   //!
    TBranch        *b_Electron_puppiChargedHadronIso;   //!
@@ -531,6 +534,7 @@ public :
    TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_medium;   //!
    TBranch        *b_Electron_cutBasedElectronID_Fall17_94X_V2_tight;   //!
    TBranch        *b_Tau_p4;   //!
+   TBranch        *b_Tau_Poca;   //!
    TBranch        *b_Tau_charge;   //!
    TBranch        *b_Tau_DecayMode;   //!
    TBranch        *b_Tau_DecayModeFinding;   //!
@@ -910,6 +914,7 @@ void NtupleReader::Init(TTree *tree)
    Muon_par = 0;
    Muon_cov = 0;
    Electron_p4 = 0;
+   Electron_Poca = 0;
    Electron_Charge = 0;
    Electron_puppiNeutralHadronIso = 0;
    Electron_puppiChargedHadronIso = 0;
@@ -922,6 +927,7 @@ void NtupleReader::Init(TTree *tree)
    Electron_cutBasedElectronID_Fall17_94X_V2_medium = 0;
    Electron_cutBasedElectronID_Fall17_94X_V2_tight = 0;
    Tau_p4 = 0;
+   Tau_Poca = 0;
    Tau_charge = 0;
    Tau_DecayMode = 0;
    Tau_DecayModeFinding = 0;
@@ -1248,6 +1254,7 @@ void NtupleReader::Init(TTree *tree)
 
 
    fChain->SetBranchAddress("Electron_p4", &Electron_p4, &b_Electron_p4);
+   fChain->SetBranchAddress("Electron_Poca", &Electron_Poca, &b_Electron_Poca);
    fChain->SetBranchAddress("Electron_Charge", &Electron_Charge, &b_Electron_Charge);
    fChain->SetBranchAddress("Electron_puppiNeutralHadronIso", &Electron_puppiNeutralHadronIso, &b_Electron_puppiNeutralHadronIso);
    fChain->SetBranchAddress("Electron_puppiChargedHadronIso", &Electron_puppiChargedHadronIso, &b_Electron_puppiChargedHadronIso);  
@@ -1262,6 +1269,7 @@ void NtupleReader::Init(TTree *tree)
 
 
    fChain->SetBranchAddress("Tau_p4", &Tau_p4, &b_Tau_p4);
+   fChain->SetBranchAddress("Tau_Poca", &Tau_Poca, &b_Tau_Poca);
    fChain->SetBranchAddress("Tau_charge", &Tau_charge, &b_Tau_charge);
    fChain->SetBranchAddress("Tau_DecayMode", &Tau_DecayMode, &b_Tau_DecayMode);
    fChain->SetBranchAddress("Tau_DecayModeFinding", &Tau_DecayModeFinding, &b_Tau_DecayModeFinding);

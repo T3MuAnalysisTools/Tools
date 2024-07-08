@@ -221,7 +221,7 @@ void KSTest ()
             cout<< "K-S Probabibility Background Tail Unbinned: " << ks_score_bkg_restr_unbinned[i] << endl;
             
             //if(ks_score_sig[i]>0.20&&ks_score_sig[i]<0.80 && ks_score_bkg[i]>0.20&&ks_score_bkg[i]<0.80 && ks_score_bkg_restr[i]>0.40&&ks_score_bkg_restr[i]<0.60){
-            if(ks_score_sig_unbinned[i]>0.20 && ks_score_bkg_unbinned[i]>0.20 && ks_score_bkg_restr_unbinned[i]>0.40){
+            if(ks_score_sig_unbinned[i]>0.10 && ks_score_bkg_unbinned[i]>0.20 && ks_score_bkg_restr_unbinned[i]>0.40){
                     cout << "Use: " << i << " to plot ROC curves." << endl;
             }
         

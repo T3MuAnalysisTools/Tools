@@ -49,7 +49,7 @@ def get_file_dict(rfilename):
 
 if __name__== "__main__":
  
-    cat=3 #tauha: 0, #tauhb: 1, #taumu: 2, #taue: 3
+    cat=2 #tauha: 0, #tauhb: 1, #taumu: 2, #taue: 3
     no_of_vars_tested = [10,13,14,11] # no of trainings tested - 1. tauha: 15, #tauhb: 18, #taumu: 19, #taue: 16
     title_type = ["{h,A}","{h,B}","{#mu}","{e}"]
     
@@ -61,11 +61,13 @@ if __name__== "__main__":
     can.SetTickx();
     can.SetTicky();
 
-    legend = ROOT.TLegend(0.15,0.20,0.45,0.50)
+    legend = ROOT.TLegend(0.15,0.55,0.45,0.85)
+    
+    #For Bkg rejection
     #legend = ROOT.TLegend(0.15,0.20,0.45,0.50)
     legend.SetHeader("Training")
 
-    color = 1
+    color = 5
     for ifile in args.files:
         print ifile
         datasets_prefix = ifile.split("/")[-1][9:-5]
@@ -82,18 +84,22 @@ if __name__== "__main__":
         rdict = get_file_dict(ifile)
 #        hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
         hist = rdict["output_"+datasets_prefix]["Method_"+args.method][args.method]["MVA_"+args.method+"_trainingRejBvsS"]
-#output_4_A
+        
+        # Access and modify y-axis values
+        for bin in range(1, hist.GetNbinsX() + 1):
+                y_value = hist.GetBinContent(bin)
+                hist.SetBinContent(bin, 1.0 - y_value)
 
         hist.SetTitle("")
         hist.SetLineColor(color)
         hist.SetStats(0)
         hist.SetTitle("ROC Curve, #tau_"+title_type[cat]);
         hist.GetXaxis().SetTitle("Signal Efficiency");
-        hist.GetYaxis().SetTitle("Background Rejection");
+        hist.GetYaxis().SetTitle("Background Efficiency");
         #hist.GetYaxis().SetRangeUser(0.8,1.05);
         #hist.GetXaxis().SetRangeUser(0.9,1.05);
-        hist.GetYaxis().SetRangeUser(0.80,1.05);
-        hist.GetXaxis().SetRangeUser(0.90,1.0);
+        hist.GetYaxis().SetRangeUser(0.0,0.25);
+        hist.GetXaxis().SetRangeUser(0.75,1.0);
         
         hist.SetLineWidth(2)
         hist.Draw("same")

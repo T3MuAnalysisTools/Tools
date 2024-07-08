@@ -44,6 +44,7 @@ class ZTau3MuTaumu : public Selection {
              nMuons_dR,
              nMuons_pT,
              nMuons_eta,
+             nMuons_dz,
 	     OSCharge,
 	     Tau3MuIsolation,
 	     MuonIsolation,

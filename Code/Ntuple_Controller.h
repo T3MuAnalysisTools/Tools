@@ -225,6 +225,7 @@ class Ntuple_Controller{
       unsigned int             NTaus(){return Ntp->Tau_p4->size();}
       int                      Tau_charge(unsigned int i){return Ntp->Tau_charge->at(i);}
       TLorentzVector           Tau_P4(unsigned int i){return TLorentzVector(Ntp->Tau_p4->at(i).at(1),Ntp->Tau_p4->at(i).at(2),Ntp->Tau_p4->at(i).at(3),Ntp->Tau_p4->at(i).at(0));}
+      TVector3                 Tau_Poca(unsigned int i){return TVector3(Ntp->Tau_Poca->at(i).at(0),Ntp->Tau_Poca->at(i).at(1),Ntp->Tau_Poca->at(i).at(2));}
       int                      Tau_DecayMode(unsigned int i){return Ntp->Tau_DecayMode->at(i);}
       int                      Tau_DecayModeFinding(unsigned int i){return Ntp->Tau_DecayModeFinding->at(i);}
       int                      Tau_NewDecayModeFinding(unsigned int i){return Ntp->Tau_NewDecayModeFinding->at(i);}
@@ -273,6 +274,7 @@ class Ntuple_Controller{
 										 Ntp->Electron_p4->at(i).at(3),
 										 Ntp->Electron_p4->at(i).at(0));}
 
+      TVector3                 Electron_Poca(unsigned int i){return TVector3(Ntp->Electron_Poca->at(i).at(0),Ntp->Electron_Poca->at(i).at(1),Ntp->Electron_Poca->at(i).at(2));}
       float                    Electron_puppiNeutralHadronIso(unsigned int i){return Ntp->Electron_puppiNeutralHadronIso->at(i);}
       float                    Electron_puppiChargedHadronIso(unsigned int i){return Ntp->Electron_puppiChargedHadronIso->at(i);}
       float                    Electron_puppiPhotonIso(unsigned int i){return Ntp->Electron_puppiPhotonIso->at(i);}

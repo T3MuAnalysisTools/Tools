@@ -94,6 +94,7 @@ class ZTau3MuTaue_PreFC : public Selection {
   std::vector<TH2D>   OS_vs_3mu_trigger;
   
   std::vector<TH1D>   Whether_4object_reconstructed;
+  std::vector<TH2D>   Whether_4object_fiducial_and_reconstructed;
   std::vector<TH2D>   Whether_triplet_fiducial_or_reco;
   std::vector<TH2D>   Whether_reco_triplet_trigger_L1_and_HLT;
   std::vector<TH2D>   Whether_Mu1_fiducial_and_reco;

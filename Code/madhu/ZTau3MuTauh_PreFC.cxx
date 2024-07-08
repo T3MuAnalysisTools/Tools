@@ -42,14 +42,14 @@ void  ZTau3MuTauh_PreFC::Configure(){
     value.push_back(0);
     pass.push_back(false);
     if(i==WhetherDecayFound)        cut.at(WhetherDecayFound)=1;
-    if(i==Mu1_Candidate_p)          cut.at(Mu1_Candidate_p)=3.5;
+    if(i==Mu1_Candidate_p)          cut.at(Mu1_Candidate_p)=2.5;
     if(i==Mu1_Candidate_eta)        cut.at(Mu1_Candidate_eta)=2.41;
-    if(i==Mu2_Candidate_p)          cut.at(Mu2_Candidate_p)=3.5;
+    if(i==Mu2_Candidate_p)          cut.at(Mu2_Candidate_p)=2.5;
     if(i==Mu2_Candidate_eta)        cut.at(Mu2_Candidate_eta)=2.41;
-    if(i==Mu3_Candidate_p)          cut.at(Mu3_Candidate_p)=3.5;
+    if(i==Mu3_Candidate_p)          cut.at(Mu3_Candidate_p)=2.5;
     if(i==Mu3_Candidate_eta)        cut.at(Mu3_Candidate_eta)=2.41;
-    if(i==Tau_h_Candidate_p)        cut.at(Tau_h_Candidate_p)=18.0;
-    if(i==Tau_h_Candidate_eta)      cut.at(Tau_h_Candidate_eta)=2.41;
+    if(i==Tau_h_Candidate_p)        cut.at(Tau_h_Candidate_p)=14.0;
+    if(i==Tau_h_Candidate_eta)      cut.at(Tau_h_Candidate_eta)=2.51;
     if(i==Mu1_Candidate_recod)      cut.at(Mu1_Candidate_recod)=1;
     if(i==Mu2_Candidate_recod)      cut.at(Mu2_Candidate_recod)=1;
     if(i==Mu3_Candidate_recod)      cut.at(Mu3_Candidate_recod)=1;
@@ -227,6 +227,7 @@ void  ZTau3MuTauh_PreFC::Configure(){
   OS_vs_3mu_trigger=HConfig.GetTH2D(Name+"_OS_vs_3mu_trigger","OS_vs_3mu_trigger",3,-0.5,2.5,2,-0.5,1.5,"Whether 3mu Triggered","Whether OS #tau Triggered");
   
   Whether_4object_reconstructed=HConfig.GetTH1D(Name+"_Whether_4object_reconstructed","Whether_4object_reconstructed",2,-0.5,1.5,"Whether 4 object reconstructed","Events");
+  Whether_4object_fiducial_and_reconstructed=HConfig.GetTH2D(Name+"_Whether_4object_fiducial_and_reconstructed","Whether_4object_fiducial_and_reconstructed",2,-0.5,1.5,2,-0.5,1.5,"Whether 4obj fiducial","Whether 4obj reco");
   Whether_triplet_fiducial_or_reco=HConfig.GetTH2D(Name+"_Whether_triplet_fiducial_or_reco","Whether_triplet_fiducial_or_reco",2,-0.5,1.5,2,-0.5,1.5,"Whether 3mu fiducial","Whether 3mu reco");
   Whether_reco_triplet_trigger_L1_and_HLT=HConfig.GetTH2D(Name+"_Whether_reco_triplet_trigger_L1_and_HLT","Whether_reco_triplet_trigger_L1_and_HLT",2,-0.5,1.5,2,-0.5,1.5,"Whether reco 3mu L1","Whether reco 3mu HLT");
   Whether_Mu1_fiducial_and_reco=HConfig.GetTH2D(Name+"_Whether_Mu1_fiducial_and_reco","Whether_Mu1_fiducial_and_reco",2,-0.5,1.5,2,-0.5,1.5,"Whether mu1 fiducial","Whether mu1 reco");
@@ -242,29 +243,29 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_tauh_DeltaR_3mu=HConfig.GetTH1D(Name+"_Selection_Cut_tauh_DeltaR_3mu","Selection_Cut_tauh_DeltaR_3mu",60,0,1.2,"#Delta R (#tau_{h}-3#mu)","Events");
   Selection_Cut_Vis_InvM=HConfig.GetTH1D(Name+"_Selection_Cut_Vis_InvM","Selection_Cut_Vis_InvM",75,0,150.0,"M_{#tau(h) + #tau(3#mu)}, GeV (visible mass)","Events");
   
-  Selection_Cut_Mu1_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_P","Selection_Cut_Mu1_P",160,0.0,80.0,"#mu_{1} p, GeV","Events");
+  Selection_Cut_Mu1_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_P","Selection_Cut_Mu1_P",160,0.0,80.0,"#mu_{1} p_{T}, GeV","Events");
   Selection_Cut_Mu1_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu1_Eta","Selection_Cut_Mu1_Eta",30,0,3.14,"#mu_{1} |#eta|","Events");
-  Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_noreco","Selection_Cut_Mu1_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
-  Selection_Cut_Mu1_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_trigger","Selection_Cut_Mu1_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_before","Selection_Cut_Mu1_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after","Selection_Cut_Mu1_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_reco","Selection_Cut_Mu1_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_noreco","Selection_Cut_Mu1_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu1_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu1_p_eta_after_trigger","Selection_Cut_Mu1_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
   
-  Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",160,0.0,80.0,"#mu_{2} p, GeV","Events");
+  Selection_Cut_Mu2_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_P","Selection_Cut_Mu2_P",160,0.0,80.0,"#mu_{2} p_{T}, GeV","Events");
   Selection_Cut_Mu2_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu2_Eta","Selection_Cut_Mu2_Eta",30,0,3.14,"#mu_{2} |#eta|","Events");
-  Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_noreco","Selection_Cut_Mu2_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{2} p, GeV","#mu_{2} |#eta|");
-  Selection_Cut_Mu2_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_trigger","Selection_Cut_Mu2_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu2_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_before","Selection_Cut_Mu2_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{2} p_{T}, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after","Selection_Cut_Mu2_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{2} p_{T}, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_reco","Selection_Cut_Mu2_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{2} p_{T}, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_noreco","Selection_Cut_Mu2_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{2} p_{T}, GeV","#mu_{2} |#eta|");
+  Selection_Cut_Mu2_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu2_p_eta_after_trigger","Selection_Cut_Mu2_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
   
-  Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",160,0.0,80.0,"#mu_{3} p, GeV","Events");
+  Selection_Cut_Mu3_P=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_P","Selection_Cut_Mu3_P",160,0.0,80.0,"#mu_{3} p_{T}, GeV","Events");
   Selection_Cut_Mu3_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_Mu3_Eta","Selection_Cut_Mu3_Eta",30,0,3.14,"#mu_{3} |#eta|","Events");
-  Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_noreco","Selection_Cut_Mu3_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{3} p, GeV","#mu_{3} |#eta|");
-  Selection_Cut_Mu3_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_trigger","Selection_Cut_Mu3_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p, GeV","#mu_{1} |#eta|");
+  Selection_Cut_Mu3_p_eta_before=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_before","Selection_Cut_Mu3_p_eta_before",200,0.0,100.0,100,0,5.0,"#mu_{3} p_{T}, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after","Selection_Cut_Mu3_p_eta_after",200,0.0,100.0,100,0,5.0,"#mu_{3} p_{T}, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after_reco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_reco","Selection_Cut_Mu3_p_eta_after_reco",200,0.0,100.0,100,0,5.0,"#mu_{3} p_{T}, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_noreco","Selection_Cut_Mu3_p_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#mu_{3} p_{T}, GeV","#mu_{3} |#eta|");
+  Selection_Cut_Mu3_p_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_Mu3_p_eta_after_trigger","Selection_Cut_Mu3_p_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#mu_{1} p_{T}, GeV","#mu_{1} |#eta|");
   
   Selection_Cut_h_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_h_Pt","Selection_Cut_h_Pt",40,0.0,80.0,"#tau_{h}, p_{T}, GeV","Events");
   Selection_Cut_h_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_h_Eta","Selection_Cut_h_Eta",30,0,3.14,"#tau_{h}, |#eta|","Events");
@@ -274,16 +275,16 @@ void  ZTau3MuTauh_PreFC::Configure(){
   Selection_Cut_h_pt_eta_after_noreco=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_noreco","Selection_Cut_h_pt_eta_after_noreco",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   Selection_Cut_h_pt_eta_after_trigger=HConfig.GetTH2D(Name+"_Selection_Cut_h_pt_eta_after_trigger","Selection_Cut_h_pt_eta_after_trigger",200,0.0,100.0,100,0,5.0,"#tau_{h} pT, GeV","#tau_{h} |#eta|");
   
-  Selection_Cut_Mu1_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR","Selection_Cut_Mu1_dR",200,0,0.002,"#Delta R","Events");
-  Selection_Cut_Mu2_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR","Selection_Cut_Mu2_dR",200,0,0.002,"#Delta R","Events");
-  Selection_Cut_Mu3_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR","Selection_Cut_Mu3_dR",200,0,0.002,"#Delta R","Events");
-  Selection_Cut_h_dR=HConfig.GetTH1D(Name+"Selection_Cut_h_dR","Selection_Cut_h_dR",200,0,0.003,"#Delta R","Events");
+  Selection_Cut_Mu1_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR","Selection_Cut_Mu1_dR",200,0,0.05,"#Delta R","Events");
+  Selection_Cut_Mu2_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR","Selection_Cut_Mu2_dR",200,0,0.05,"#Delta R","Events");
+  Selection_Cut_Mu3_dR=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR","Selection_Cut_Mu3_dR",200,0,0.05,"#Delta R","Events");
+  Selection_Cut_h_dR=HConfig.GetTH1D(Name+"Selection_Cut_h_dR","Selection_Cut_h_dR",200,0,0.075,"#Delta R","Events");
   Selection_Cut_Mu1_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu1_dR_large_scale","Selection_Cut_Mu1_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_Mu2_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu2_dR_large_scale","Selection_Cut_Mu2_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_Mu3_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_Mu3_dR_large_scale","Selection_Cut_Mu3_dR_large_scale",100,0,2.0,"#Delta R","Events");
   Selection_Cut_h_dR_large_scale=HConfig.GetTH1D(Name+"Selection_Cut_h_dR_large_scale","Selection_Cut_h_dR_large_scale",100,0,2.0,"#Delta R","Events");
   
-  Selection_Cut_RecoMu_P=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_P","Selection_Cut_RecoMu_P",100,0.0,5.0,"#mu p, GeV","Events");
+  Selection_Cut_RecoMu_P=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_P","Selection_Cut_RecoMu_P",100,0.0,5.0,"#mu p_{T}, GeV","Events");
   Selection_Cut_RecoMu_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoMu_Eta","Selection_Cut_RecoMu_Eta",50,2,3.0,"#mu |#eta|","Events");
   Selection_Cut_RecoH_Pt=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Pt","Selection_Cut_RecoH_Pt",100,10.0,20.0,"p_{T}, GeV","Events");
   Selection_Cut_RecoH_Eta=HConfig.GetTH1D(Name+"_Selection_Cut_RecoH_Eta","Selection_Cut_RecoH_Eta",50,2,3.0,"|#eta|","Events");
@@ -316,24 +317,25 @@ void  ZTau3MuTauh_PreFC::Store_ExtraDist(){
 
 
   Extradist1d.push_back(&matched_pdgId);
-  Extradist1d.push_back(&matched_dR);
+  //Extradist1d.push_back(&matched_dR);
 
 
-  Extradist1d.push_back(&Muon1DRToTruth);
-  Extradist1d.push_back(&Muon2DRToTruth);
-  Extradist1d.push_back(&Muon3DRToTruth);
+  //Extradist1d.push_back(&Muon1DRToTruth);
+  //Extradist1d.push_back(&Muon2DRToTruth);
+  //Extradist1d.push_back(&Muon3DRToTruth);
 
   Extradist1d.push_back(&dR_betweenTruth_VisibleTaus);
 
   Extradist1d.push_back(&TripletPt);
   Extradist1d.push_back(&OppositeTauPt);
   
-  Extradist1d.push_back(&dR_betweenTruth_NeutrinoGuess);
-  Extradist1d.push_back(&dR_betweenTruth_Tau);
+  //Extradist1d.push_back(&dR_betweenTruth_NeutrinoGuess);
+  //Extradist1d.push_back(&dR_betweenTruth_Tau);
   Extradist1d.push_back(&Z_Pt);
   Extradist2d.push_back(&OS_vs_3mu_trigger);
   
   Extradist1d.push_back(&Whether_4object_reconstructed);
+  Extradist2d.push_back(&Whether_4object_fiducial_and_reconstructed);    
   Extradist2d.push_back(&Whether_triplet_fiducial_or_reco);
   Extradist2d.push_back(&Whether_reco_triplet_trigger_L1_and_HLT);
   Extradist2d.push_back(&Whether_Mu1_fiducial_and_reco);
@@ -777,13 +779,18 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                   
                   //Non-Sequential
                   bool whether_4_obj_reco = pass.at(Mu1_Candidate_recod) && pass.at(Mu2_Candidate_recod) && pass.at(Mu3_Candidate_recod) && pass.at(Tau_h_Candidate_recod);
+                  bool whether_4_obj_fiducial = pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta) && pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta) && pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta) && pass.at(Tau_h_Candidate_p)&&pass.at(Tau_h_Candidate_eta);
+                  
+                  Whether_4object_fiducial_and_reconstructed.at(t).Fill(whether_4_obj_fiducial,whether_4_obj_reco);                                                      
+                  
+                                                                                          
                   bool whether_3_obj_fiducial = pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta) && pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta) && pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta);
                   bool whether_3_obj_reco = pass.at(Mu1_Candidate_recod) && pass.at(Mu2_Candidate_recod) && pass.at(Mu3_Candidate_recod);
                   
-                  Whether_4object_reconstructed.at(t).Fill( whether_4_obj_reco );
+                  Whether_4object_reconstructed.at(t).Fill( whether_4_obj_reco ); //problem: doesn't have fiducial
                   Whether_triplet_fiducial_or_reco.at(t).Fill(whether_3_obj_fiducial,whether_3_obj_reco);
                   
-                  if(whether_3_obj_fiducial&&whether_3_obj_reco){
+                  if(whether_4_obj_fiducial&&whether_4_obj_reco){
                           Whether_reco_triplet_trigger_L1_and_HLT.at(t).Fill(L1Ok,HLTOk);
                   }
                   
@@ -791,51 +798,51 @@ void  ZTau3MuTauh_PreFC::doEvent(){
                   
                   
                   
-                  Selection_Cut_Mu1_p_eta_before.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                  Selection_Cut_Mu1_p_eta_before.at(t).Fill(Mu1_LV.Pt(),abs(Mu1_LV.Eta()));
                   if(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta)){
-                    Selection_Cut_Mu1_p_eta_after.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                    Selection_Cut_Mu1_p_eta_after.at(t).Fill(Mu1_LV.Pt(),abs(Mu1_LV.Eta()));
                   }
                   if(pass.at(Mu1_Candidate_recod)){
-                      Selection_Cut_Mu1_p_eta_after_reco.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                      Selection_Cut_Mu1_p_eta_after_reco.at(t).Fill(Mu1_LV.Pt(),abs(Mu1_LV.Eta()));
                   }
                   if(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta)&&!pass.at(Mu1_Candidate_recod)){
-                      Selection_Cut_Mu1_p_eta_after_noreco.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                      Selection_Cut_Mu1_p_eta_after_noreco.at(t).Fill(Mu1_LV.Pt(),abs(Mu1_LV.Eta()));
                   }
                   if(L1Ok&&HLTOk){
-                    Selection_Cut_Mu1_p_eta_after_trigger.at(t).Fill(Mu1_LV.Vect().Mag(),abs(Mu1_LV.Eta()));
+                    Selection_Cut_Mu1_p_eta_after_trigger.at(t).Fill(Mu1_LV.Pt(),abs(Mu1_LV.Eta()));
                   }
                   Whether_Mu1_fiducial_and_reco.at(t).Fill(pass.at(Mu1_Candidate_p)&&pass.at(Mu1_Candidate_eta) , pass.at(Mu1_Candidate_recod));
                   
                   
                   
-                  Selection_Cut_Mu2_p_eta_before.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                  Selection_Cut_Mu2_p_eta_before.at(t).Fill(Mu2_LV.Pt(),abs(Mu2_LV.Eta()));
                   if(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta)){
-                    Selection_Cut_Mu2_p_eta_after.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                    Selection_Cut_Mu2_p_eta_after.at(t).Fill(Mu2_LV.Pt(),abs(Mu2_LV.Eta()));
                   }
                   if(pass.at(Mu2_Candidate_recod)){
-                      Selection_Cut_Mu2_p_eta_after_reco.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                      Selection_Cut_Mu2_p_eta_after_reco.at(t).Fill(Mu2_LV.Pt(),abs(Mu2_LV.Eta()));
                   }
                   if(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta)&&!pass.at(Mu2_Candidate_recod)){
-                      Selection_Cut_Mu2_p_eta_after_noreco.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                      Selection_Cut_Mu2_p_eta_after_noreco.at(t).Fill(Mu2_LV.Pt(),abs(Mu2_LV.Eta()));
                   }
                   if(L1Ok&&HLTOk){
-                    Selection_Cut_Mu2_p_eta_after_trigger.at(t).Fill(Mu2_LV.Vect().Mag(),abs(Mu2_LV.Eta()));
+                    Selection_Cut_Mu2_p_eta_after_trigger.at(t).Fill(Mu2_LV.Pt(),abs(Mu2_LV.Eta()));
                   }
                   Whether_Mu2_fiducial_and_reco.at(t).Fill(pass.at(Mu2_Candidate_p)&&pass.at(Mu2_Candidate_eta) , pass.at(Mu2_Candidate_recod));
                   
                   
-                  Selection_Cut_Mu3_p_eta_before.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                  Selection_Cut_Mu3_p_eta_before.at(t).Fill(Mu3_LV.Pt(),abs(Mu3_LV.Eta()));
                   if(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta)){
-                    Selection_Cut_Mu3_p_eta_after.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                    Selection_Cut_Mu3_p_eta_after.at(t).Fill(Mu3_LV.Pt(),abs(Mu3_LV.Eta()));
                   }
                   if(pass.at(Mu3_Candidate_recod)){
-                      Selection_Cut_Mu3_p_eta_after_reco.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                      Selection_Cut_Mu3_p_eta_after_reco.at(t).Fill(Mu3_LV.Pt(),abs(Mu3_LV.Eta()));
                   }
                   if(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta)&&!pass.at(Mu3_Candidate_recod)){
-                      Selection_Cut_Mu3_p_eta_after_noreco.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                      Selection_Cut_Mu3_p_eta_after_noreco.at(t).Fill(Mu3_LV.Pt(),abs(Mu3_LV.Eta()));
                   }
                   if(L1Ok&&HLTOk){
-                    Selection_Cut_Mu3_p_eta_after_trigger.at(t).Fill(Mu3_LV.Vect().Mag(),abs(Mu3_LV.Eta()));
+                    Selection_Cut_Mu3_p_eta_after_trigger.at(t).Fill(Mu3_LV.Pt(),abs(Mu3_LV.Eta()));
                   }
                   Whether_Mu3_fiducial_and_reco.at(t).Fill(pass.at(Mu3_Candidate_p)&&pass.at(Mu3_Candidate_eta) , pass.at(Mu3_Candidate_recod));
                   

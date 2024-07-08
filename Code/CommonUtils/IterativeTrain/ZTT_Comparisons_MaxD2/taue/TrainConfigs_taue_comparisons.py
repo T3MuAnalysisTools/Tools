@@ -17,48 +17,48 @@ varsets1 = {'ZTT_e3mu':['var_mu3_pT', 'var_TripletPT', 'var_TripletEta', 'var_Ta
             'var_Electron_eta', 'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
             'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
-#Removed var_mu3_pT
-varsets2 = {'ZTT_e3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_Electron_eta', 
+#Removed var_TripletEta
+varsets2 = {'ZTT_e3mu':['var_mu3_pT', 'var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_Electron_eta', 
             'var_FLSignificance', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 
             'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
-#Removed var_Electron_eta
-varsets3 = {'ZTT_e3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 
+#Removed var_mu3_pT
+varsets3 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_Electron_eta', 'var_FLSignificance', 
             'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 
             'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
-#Removed var_SVPVTauDirAngle
-varsets4 = {'ZTT_e3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 
+#Removed var_Electron_eta
+varsets4 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 'var_SVPVTauDirAngle', 
             'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 
             'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
-#Removed var_MinDrToIsoTrack
-varsets5 = {'ZTT_e3mu':['var_TripletPT', 'var_TripletEta', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 
-            'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 
+#Removed var_FLSignificance
+varsets5 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_SVPVTauDirAngle', 'var_ThreeMuVertexChi2KF', 
+            'var_DeltaPhi', 'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 
             'var_ElectronSumIsolation']}
 
-#Removed var_TripletEta
-varsets6 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 'var_ThreeMuVertexChi2KF', 
-            'var_DeltaPhi', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
-
-#Removed var_DiTauMass_Collinear
-varsets7 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 'var_ThreeMuVertexChi2KF', 
-            'var_DeltaPhi', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_ElectronSumIsolation']}
+#Removed var_SVPVTauDirAngle
+varsets6 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
+            'var_MinDrToIsoTrack', 'var_Phi_To_Opposite_Side', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
 #Removed var_Phi_To_Opposite_Side
-varsets8 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_FLSignificance', 'var_ThreeMuVertexChi2KF', 
-            'var_DeltaPhi', 'var_VisMass', 'var_ElectronSumIsolation']}
-
-#Removed var_FLSignificance
-varsets9 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-            'var_VisMass', 'var_ElectronSumIsolation']}
-
-#Removed var_ElectronSumIsolation
-varsets10 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
-             'var_VisMass']}
+varsets7 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_DeltaPhi', 
+            'var_MinDrToIsoTrack', 'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
 
 #Removed var_DeltaPhi
-varsets11 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_VisMass']}
+varsets8 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_MinDrToIsoTrack', 
+            'var_VisMass', 'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
+
+#Removed var_MinDrToIsoTrack
+varsets9 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_VisMass', 
+            'var_DiTauMass_Collinear', 'var_ElectronSumIsolation']}
+
+#Removed var_ElectronSumIsolation
+varsets10 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_ThreeMuVertexChi2KF', 'var_VisMass', 
+             'var_DiTauMass_Collinear']}
+
+#Removed var_ThreeMuVertexChi2KF
+varsets11 = {'ZTT_e3mu':['var_TripletPT', 'var_Tau3MuIsolation', 'var_Electron_pT', 'var_VisMass', 'var_DiTauMass_Collinear']}
 
 
 

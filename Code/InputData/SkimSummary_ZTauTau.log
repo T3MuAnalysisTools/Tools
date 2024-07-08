@@ -2,3 +2,7 @@ ID= 1      AllEvt= 173064453.000000  AllEvtErr= 13155.39634  SelEvt= 0.000000  S
 ID= 210233 AllEvt= 476283.0000  AllEvtErr= 690.13259  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 476283.0000 SelEvtnoweight= 0.000000 Nfile= 16
 ID= 210232 AllEvt= 126861.0000  AllEvtErr= 356.17551  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 126861.0000 SelEvtnoweight= 0.000000 Nfile= 16
 ID= 210231 AllEvt= 124885.0000  AllEvtErr= 353.39071  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 124885.0000 SelEvtnoweight= 0.000000 Nfile= 16
+ID= 550    AllEvt= 105698900.000000 AllEvtErr= 10280.9970  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 105698900.000000 SelEvtnoweight= 0.000000 Nfile= 16
+ID= 560    AllEvt= 21997587.000000 AllEvtErr= 4690.1585  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 21997587.000000 SelEvtnoweight= 0.000000 Nfile= 16
+ID= 700    AllEvt= 239782695.000000 AllEvtErr= 15484.9183  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 239782695.000000 SelEvtnoweight= 0.000000 Nfile= 16
+ID= 120    AllEvt= 2150302.000000 AllEvtErr= 1466.3908  SelEvt= 0.000000  SelEvtErr= 0.000000 AllEvtnoweight= 2150302.000000 SelEvtnoweight= 0.000000 Nfile= 16

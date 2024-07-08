@@ -26,7 +26,8 @@ while ifDirExists:
   if samplepath=='' or samplepath!=current_samplepath:
     samplepath=current_samplepath
     
-  trimmed_sample_path=samplepath.split('/')[5]
+  tag=samplepath.split('/')[6]
+  trimmed_sample_path=samplepath.split('/')[7]
   
   gfalcopy_cmd='(eval `scram unsetenv -sh`; gfal-copy '+skimmed_filepath+' davs://cmsio7.rc.ufl.edu:1094/store/user/'+username+'/ntuples/final/'+ tag +'/'+trimmed_sample_path+'/Skimmed_'+setno+'.root )'
   

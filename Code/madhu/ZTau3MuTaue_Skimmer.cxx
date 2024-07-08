@@ -360,6 +360,7 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
   int tau_e_idx(-1);
   int tau_h_idx(-1);
   for(unsigned int imc =0; imc< Ntp->NMCParticles(); imc++){
+    if(Ntp->MCParticle_midx(imc)>-0.5){
     if(abs(Ntp->MCParticle_pdgid(imc)) == 15 && Ntp->MCParticle_pdgid(Ntp->MCParticle_midx(imc) ) == 23){
       TausFromZ_Count++;
           
@@ -405,6 +406,7 @@ void  ZTau3MuTaue_Skimmer::doEvent(){
           }
           
           
+      }
       }
   }
     
