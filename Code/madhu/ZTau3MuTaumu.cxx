@@ -116,17 +116,14 @@ void  ZTau3MuTaumu::Configure(){
   
   reader_Taumu->AddVariable("var_TripletPT",&var_TripletPT);
   reader_Taumu->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
-  
+  reader_Taumu->AddVariable("var_Muon_pT",&var_Muon_pT);
   reader_Taumu->AddVariable("var_FLSignificance",&var_FLSignificance);
   reader_Taumu->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Taumu->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   reader_Taumu->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   reader_Taumu->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
   reader_Taumu->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
-  
   reader_Taumu->AddVariable("var_VisMass",&var_VisMass);
-  reader_Taumu->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
-  
   reader_Taumu->AddVariable("var_MuonIsolation",&var_MuonIsolation);
   reader_Taumu->AddVariable("var_4Mu_Chi2",&var_4Mu_Chi2);
   reader_Taumu->AddVariable("var_AvgDeltaZ_3Mu_Mu_mm",&var_AvgDeltaZ_3Mu_Mu_mm);
@@ -216,8 +213,8 @@ void  ZTau3MuTaumu::Configure(){
     if(i==TripletPT)          cut.at(TripletPT)=20;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nMuons_PF_GL)       cut.at(nMuons_PF_GL)=1;
-    if(i==nMuons_pT)          cut.at(nMuons_pT)=2.5;
-    if(i==nMuons_eta)         cut.at(nMuons_eta)=2.41;
+    if(i==nMuons_pT)          cut.at(nMuons_pT)=3.0;
+    if(i==nMuons_eta)         cut.at(nMuons_eta)=2.4;
     if(i==nMuons_dR)          cut.at(nMuons_dR)=0.5;
     if(i==nMuons_dz)          cut.at(nMuons_dz)=0.2;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=1.5;
@@ -254,7 +251,7 @@ void  ZTau3MuTaumu::Configure(){
     }
     else if(i==nMuons_PF_GL){
       //      title.at(i)=" At least one extra loose(PF+Gl/Tr) $\\mu$, $pT>15 GeV, |\\eta| < 2.4$ ";
-      title.at(i)=" At least one extra (PF+GL) $\\mu$";
+      title.at(i)=" At least one extra (PF+GL+Soft) $\\mu$";
       hlabel="At least one extra muon (loose)";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -263,7 +260,7 @@ void  ZTau3MuTaumu::Configure(){
     }
     else if(i==nMuons_pT){
       //      title.at(i)=" At least one extra loose(PF+Gl/Tr) $\\mu$, $pT>15 GeV, |\\eta| < 2.4$ ";
-      title.at(i)=" At least one extra $\\mu$, $pT>2.5 GeV$";
+      title.at(i)=" At least one extra $\\mu$, $pT>3.0 GeV$";
       hlabel="pT, GeV";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -290,7 +287,7 @@ void  ZTau3MuTaumu::Configure(){
     }
     else if(i==nMuons_dz){
       //      title.at(i)=" At least one extra loose(PF+Gl/Tr) $\\mu$, $pT>15 GeV, |\\eta| < 2.4$ ";
-      title.at(i)=" At least one $\\mu$ with dz to PV <$ 0.2";
+      title.at(i)=" At least one $\\mu$ with dz to PV $<$ 0.2";
       hlabel="$dz (\\mu,PV) $";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -308,7 +305,7 @@ void  ZTau3MuTaumu::Configure(){
     }
 
     else if(i==SignalCandidate){
-      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.4$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
+      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.5$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
       htitle=title.at(i);
       hlabel="N $3\\mu$ candidates";
       htitle.ReplaceAll("$","");
@@ -1223,6 +1220,9 @@ void  ZTau3MuTaumu::doEvent(){
 
   pass.at(TripletPT) = ( value.at(TripletPT) >= cut.at(TripletPT) );
   //  std::cout<<"   index  "<< signal_idx << "  id  "<< id << std::endl;
+  
+
+  pass.at(TripletPT) = ( value.at(TripletPT) >= cut.at(TripletPT) );
 
   std::vector<int> Muons;
   std::vector<int> Muons_OppositeHemisphere;
@@ -1269,7 +1269,7 @@ void  ZTau3MuTaumu::doEvent(){
                    //value.at(nMuons_eta)  = fabs(Ntp->Muon_P4(imu).Eta());
                    //value.at(nMuons_dR)  = Ntp->Muon_P4(imu).DeltaR(Tau3MuLV);
                    
-                   if(Ntp->Muon_isPFMuon(imu) && Ntp->Muon_isGlobalMuon(imu)  ){
+                   if(Ntp->Muon_isPFMuon(imu) && Ntp->Muon_isGlobalMuon(imu) &&  Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(imu),Ntp->MuonStandardSelectors::SoftCutBasedId)  ){
                            highest_PF_GL=true;
                            Muons_OppositeHemisphere_PF_GL.push_back(imu);
                            
@@ -1309,7 +1309,7 @@ void  ZTau3MuTaumu::doEvent(){
                    }
                    
                    
-                   if(Ntp->Muon_P4(imu).Pt() > cut.at(nMuons_pT) && fabs(Ntp->Muon_P4(imu).Eta()) < cut.at(nMuons_eta) && Ntp->Muon_isPFMuon(imu) && Ntp->Muon_isGlobalMuon(imu) &&
+                   if(Ntp->Muon_P4(imu).Pt() > cut.at(nMuons_pT) && fabs(Ntp->Muon_P4(imu).Eta()) < cut.at(nMuons_eta) && Ntp->Muon_isPFMuon(imu) && Ntp->Muon_isGlobalMuon(imu) &&  Ntp->CHECK_BIT(Ntp->Muon_StandardSelection(imu),Ntp->MuonStandardSelectors::SoftCutBasedId) &&
                    Ntp->Muon_P4(imu).DeltaR(Tau3MuLV) > cut.at(nMuons_dR) && fabs(Ntp->Vertex_HighestPt_PrimaryVertex().z()-Ntp->Muon_Poca(imu).Z()) < cut.at(nMuons_dz)  )Muons_OppositeHemisphere.push_back(imu);
                    
                    
@@ -1522,7 +1522,8 @@ void  ZTau3MuTaumu::doEvent(){
     double val_Phi_To_Opposite_Side=Muons_OppositeHemisphere_OppositeCharge[0][0];
     
     TLorentzVector MuLV = Ntp->Muon_P4(muon_idx);
-
+    
+    
 
     unsigned int muon_1_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(0);
     unsigned int muon_2_idx = Ntp->SortedPtMuons(Ntp->ThreeMuonIndices(signal_idx)).at(1);
@@ -2104,7 +2105,7 @@ void  ZTau3MuTaumu::doEvent(){
         tripletMass=TauRefitLV.M();
         //OutputTree=dataMCtype;
         bdt_cv=BDT_Evaluated;
-        isMC=  (id==1)?0:5; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
+        isMC=  (id==1)?0:id; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
         weight=0.000027227541;
         if(isMC==0) weight=1.0;
         dimu_OS1=m12;

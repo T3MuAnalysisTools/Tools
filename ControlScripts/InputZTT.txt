@@ -6,7 +6,7 @@ Analysis: ZTau3MuTaue
 Analysis: ZTau3MuTaumu
 UncertType: default
 SkimInfo: InputData/SkimSummary_ZTauTau.log
-Lumi: 58800
+Lumi: 59800
 PlotStyle: style2
 
 

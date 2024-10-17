@@ -221,17 +221,13 @@ void  ZTau3MuTauh::Configure(){
   
   
   reader_Tauh_NoCV->AddVariable("var_TripletPT",&var_TripletPT);
+  reader_Tauh_NoCV->AddVariable("var_TripletEta",&var_TripletEta);
   reader_Tauh_NoCV->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
-  
-  reader_Tauh_NoCV->AddVariable("var_Tau_pT",&var_Tau_pT);
-  
   reader_Tauh_NoCV->AddVariable("var_FLSignificance",&var_FLSignificance);
   reader_Tauh_NoCV->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Tauh_NoCV->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   reader_Tauh_NoCV->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   reader_Tauh_NoCV->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
-  
-  reader_Tauh_NoCV->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   reader_Tauh_NoCV->AddVariable("var_VisMass",&var_VisMass);
   
   reader_Tauh_NoCV->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/final_BDT/output_0_ZTT_tau_NoCV_3mu/weights/TMVAClassification_BDT.weights.xml");
@@ -243,16 +239,11 @@ void  ZTau3MuTauh::Configure(){
   
   reader_Tauh_CV->AddVariable("var_TripletPT",&var_TripletPT);
   reader_Tauh_CV->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
-  
   reader_Tauh_CV->AddVariable("var_FLSignificance",&var_FLSignificance);
-  
   reader_Tauh_CV->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Tauh_CV->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
   reader_Tauh_CV->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   reader_Tauh_CV->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
-  
-  reader_Tauh_CV->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
-  
   reader_Tauh_CV->AddVariable("var_VisMass",&var_VisMass);
   reader_Tauh_CV->AddVariable("var_HPS_FL_Sig",&var_HPS_FL_Sig);
   
@@ -330,7 +321,7 @@ void  ZTau3MuTauh::Configure(){
     if(i==DeepTauElectrons)   cut.at(DeepTauElectrons)=1;
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nTaus_pT)           cut.at(nTaus_pT)=20.0;
-    if(i==nTaus_eta)          cut.at(nTaus_eta)=2.51;
+    if(i==nTaus_eta)          cut.at(nTaus_eta)=2.3;
     if(i==nTaus_dR)           cut.at(nTaus_dR)=0.5;
     if(i==nTaus_dz)           cut.at(nTaus_dz)=0.2;
     if(i==Tau3MuIsolation)    cut.at(Tau3MuIsolation)=1.5;
@@ -368,7 +359,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_WhetherZTTDecayFound_",htitle,2,-0.5,1.5,hlabel,"Events"));
     }
     else if(i==nTaus_pT){
-      title.at(i)=" At least one $\\tau_{h}$, $pT>18.0 GeV$";
+      title.at(i)=" At least one $\\tau_{h}$, $pT>20.0 GeV$";
       hlabel="pT, GeV";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -376,7 +367,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nTaus_pT_",htitle,80,0.0,40,hlabel,"Events"));
     }
     else if(i==nTaus_eta){
-      title.at(i)=" At least one $\\tau_{h}$, $|\\eta| < 2.41$";
+      title.at(i)=" At least one $\\tau_{h}$, $|\\eta| < 2.3$";
       hlabel="$|\\eta|$";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -392,7 +383,7 @@ void  ZTau3MuTauh::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nTaus_dR_",htitle,20,0.0,3.14,hlabel,"Events"));
     }
     else if(i==nTaus_dz){
-      title.at(i)=" At least one $\\tau_{h}$ with dz to PV <$ 0.2";
+      title.at(i)=" At least one $\\tau_{h}$ with dz to PV $<$ 0.2";
       hlabel="$dz (\\tau_{h},PV) $";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -437,7 +428,7 @@ void  ZTau3MuTauh::Configure(){
     }
 
     else if(i==SignalCandidate){
-      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.4$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
+      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.5$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
       htitle=title.at(i);
       hlabel="N $3\\mu$ candidates";
       htitle.ReplaceAll("$","");
@@ -2564,7 +2555,7 @@ void  ZTau3MuTauh::doEvent(){
         //if(Whether_PhiVeto && Whether_OmegaVeto && Whether_EtaPVeto){
         tripletMass=TauRefitLV.M();
         //OutputTree=dataMCtype;
-        isMC=  (id==1)?0:7; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
+        isMC=  (id==1)?0:id; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
         weight=0.000027019659;
         if(isMC==0) weight=1.0;
         dimu_OS1=m12;

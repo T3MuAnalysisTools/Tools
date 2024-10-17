@@ -110,15 +110,13 @@ void  ZTau3MuTaue::Configure(){
   
   reader_Taue->AddVariable("var_TripletPT",&var_TripletPT);
   reader_Taue->AddVariable("var_Tau3MuIsolation",&var_Tau3MuIsolation);
-  
-  
-  reader_Taue->AddVariable("var_Electron_pT",&var_Electron_pT);
-  
+  reader_Taue->AddVariable("var_FLSignificance",&var_FLSignificance);
+  reader_Taue->AddVariable("var_SVPVTauDirAngle",&var_SVPVTauDirAngle);
   reader_Taue->AddVariable("var_ThreeMuVertexChi2KF",&var_ThreeMuVertexChi2KF);
+  reader_Taue->AddVariable("var_DeltaPhi",&var_DeltaPhi);
   reader_Taue->AddVariable("var_MinDrToIsoTrack",&var_MinDrToIsoTrack);
-  
+  reader_Taue->AddVariable("var_Phi_To_Opposite_Side",&var_Phi_To_Opposite_Side);
   reader_Taue->AddVariable("var_VisMass",&var_VisMass);
-  reader_Taue->AddVariable("var_DiTauMass_Collinear",&var_DiTauMass_Collinear);
   reader_Taue->AddVariable("var_ElectronSumIsolation",&var_ElectronSumIsolation);
   
   reader_Taue->BookMVA( "BDT", "/afs/cern.ch/work/m/mmadhu/public/final_BDT/output_0_ZTT_e3mu/weights/TMVAClassification_BDT.weights.xml"); 
@@ -178,7 +176,7 @@ void  ZTau3MuTaue::Configure(){
     if(i==OSCharge)           cut.at(OSCharge)=1;
     if(i==nElectrons_PF_cut)  cut.at(nElectrons_PF_cut)=1;
     if(i==nElectrons_pT)      cut.at(nElectrons_pT)=5;
-    if(i==nElectrons_eta)     cut.at(nElectrons_eta)=2.51;
+    if(i==nElectrons_eta)     cut.at(nElectrons_eta)=2.5;
     if(i==nElectrons_dR)      cut.at(nElectrons_dR)=0.5;
     if(i==nElectrons_dz)      cut.at(nElectrons_dz)=0.2;
     if(i==ElectronIsolation)  cut.at(ElectronIsolation)=1.5;
@@ -232,7 +230,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nElectrons_pT_",htitle,80,0.0,40,hlabel,"Events"));
     }
     else if(i==nElectrons_eta){
-      title.at(i)=" At least 1 e, $|\\eta| < 2.4$ ";
+      title.at(i)=" At least 1 e, $|\\eta| < 2.5$, excluding transition region ";
       hlabel="$|\\eta|$";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -248,7 +246,7 @@ void  ZTau3MuTaue::Configure(){
       Nminus0.push_back(HConfig.GetTH1D(Name+c+"_Nminus0_nElectrons_dR_",htitle,20,0.0,3.14,hlabel,"Events"));
     }
     else if(i==nElectrons_dz){
-      title.at(i)=" At least one e with dz to PV <$ 0.2";
+      title.at(i)=" At least one e with dz to PV $<$ 0.2";
       hlabel="$dz (e},PV) $";
       htitle.ReplaceAll("$","");
       htitle.ReplaceAll("\\","#");
@@ -267,7 +265,7 @@ void  ZTau3MuTaue::Configure(){
 
 
     else if(i==SignalCandidate){
-      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.4$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
+      title.at(i)="At least one $\\tau_{3\\mu}$ candidate ($|\\eta| < 2.5$, dz($\\mu_{i} , \\mu_{j}$)$<$0.5, dR($\\mu_{i} , \\mu_{j}$)$<$0.8, $\\Sigma \\mu_{charge}$ = +-1)";
       htitle=title.at(i);
       hlabel="N $3\\mu$ candidates";
       htitle.ReplaceAll("$","");
@@ -1159,7 +1157,7 @@ void  ZTau3MuTaue::doEvent(){
                                 lowest_eta=fabs(Ntp->Electron_P4(ie).Eta());
                               }
                               
-                              if(fabs(Ntp->Electron_P4(ie).Eta()) < cut.at(nElectrons_eta)   ){
+                              if(fabs(Ntp->Electron_P4(ie).Eta()) < cut.at(nElectrons_eta)   && !(fabs(Ntp->Electron_P4(ie).Eta())<1.57&&fabs(Ntp->Electron_P4(ie).Eta())>1.44)   ){
                                 Electrons_OppositeHemisphere_eta.push_back(ie);
                                 
                                 
@@ -1176,7 +1174,7 @@ void  ZTau3MuTaue::doEvent(){
               }
       }
       
-      if(Ntp->Electron_P4(ie).Pt() > cut.at(nElectrons_pT) && fabs(Ntp->Electron_P4(ie).Eta()) < cut.at(nElectrons_eta) && 
+      if(Ntp->Electron_P4(ie).Pt() > cut.at(nElectrons_pT) && fabs(Ntp->Electron_P4(ie).Eta())<cut.at(nElectrons_eta) && !(fabs(Ntp->Electron_P4(ie).Eta())<1.57&&fabs(Ntp->Electron_P4(ie).Eta())>1.44) && 
 	 Ntp->Electron_cutBasedElectronID_Fall17_94X_V2_loose(ie) &&
 	 Ntp->Electron_P4(ie).DeltaR(Tau3MuLV) > cut.at(nElectrons_dR)  && fabs(Ntp->Vertex_HighestPt_PrimaryVertex().z()-Ntp->Electron_Poca(ie).Z()) < cut.at(nElectrons_dz)  ) Electrons_OppositeHemisphere.push_back(ie);
    
@@ -1712,7 +1710,7 @@ void  ZTau3MuTaue::doEvent(){
         tripletMass=TauRefitLV.M();
         //OutputTree=dataMCtype;
         bdt_cv=BDT_Evaluated;
-        isMC=  (id==1)?0:6; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
+        isMC=  (id==1)?0:id; //0=data, 1=Ds, 2=B0, 3=Bp, 4=W, 5=ztt(taumu), 6=ztt(taue), 7=ztt(tauh)
         weight=0.000028342254;
         if(isMC==0) weight=1.0;
         dimu_OS1=m12;
