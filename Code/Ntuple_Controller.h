@@ -190,6 +190,7 @@ class Ntuple_Controller{
       float     NVtx(){return Ntp->Vertex_N_primary;}
       double    DeltaPhi(double, double);
       double    TruthNumberOfInteraction(){return Ntp->puN;}
+      double    getMCEventWeight(){if (!std::isfinite(Ntp->genWeight) || Ntp->genWeight < 1e-10) return 1.0;return Ntp->genWeight;}
       TString   WhichEra(int year);
 
 

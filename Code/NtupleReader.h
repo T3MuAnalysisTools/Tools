@@ -39,6 +39,7 @@ public :
    UInt_t          Event_ndsphipi_candidate;
    Int_t           Event_DataMC_Type;
    Double_t        puN;
+   Double_t        genWeight;
    float           Event_METEt;
    float           Event_METPhi;
    float           Event_METXX;
@@ -392,6 +393,7 @@ public :
    TBranch        *b_Event_METYY;
 
    TBranch        *b_puN;   //!
+   TBranch        *b_genWeight;   //!
    TBranch        *b_Track_p4;   //!
    TBranch        *b_Track_normalizedChi2;   //!
    TBranch        *b_Track_numberOfValidHits;   //!
@@ -1122,6 +1124,7 @@ void NtupleReader::Init(TTree *tree)
 
 
    fChain->SetBranchAddress("puN", &puN, &b_puN);
+   fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
    fChain->SetBranchAddress("Track_p4", &Track_p4, &b_Track_p4);
    fChain->SetBranchAddress("Track_normalizedChi2", &Track_normalizedChi2, &b_Track_normalizedChi2);
    fChain->SetBranchAddress("Track_numberOfValidHits", &Track_numberOfValidHits, &b_Track_numberOfValidHits);
